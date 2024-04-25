@@ -91,7 +91,7 @@ export class PricingBaseComponent implements OnInit {
           // console.log('[P-BASE] - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
 
           this.subscription_is_active = projectProfileData.subscription_is_active;
-          // console.log('[P-BASE] - GET PROJECT PROFILE - subscription_is_active ', this.subscription_is_active);
+          console.log('[P-BASE] - GET PROJECT PROFILE - subscription_is_active ', this.subscription_is_active);
 
           this.subscription_end_date = projectProfileData.subscription_end_date;
           // console.log('[P-BASE] - GET PROJECT PROFILE - subscription_end_date ', this.subscription_end_date);
@@ -612,10 +612,10 @@ export class PricingBaseComponent implements OnInit {
                 // Chatbot limit CHATBOT_MAX_NUM[PLAN_NAME.F]
                 // this.chatBotLimit = null;
                 this.chatBotLimit = projectProfileData.profile_chatbots;
-                // console.log('[P-BASE] - CUSTOM PLAN (SUB ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                console.log('[P-BASE] - CUSTOM PLAN (SUB ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
                 if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
                   this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.F]
-                  // console.log('[P-BASE] - CUSTOM PLAN (SUB ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                  console.log('[P-BASE] - CUSTOM PLAN (SUB ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
                 }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
@@ -864,14 +864,34 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                // // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
+
+                // // KB limit
+                // this.kbLimit = KB_MAX_NUM.free;
+                // this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
+
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
+                  this.chatBotLimit =  CHATBOT_MAX_NUM.free;
+                  console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
+                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM.free;
-                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
+                // this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                 // Kb contents Limit
+                 this.kbLimit = projectProfileData.profile_kbs;
+                //  console.log('[P-BASE] - CUSTOM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                 if (this.kbLimit === null || this.kbLimit === undefined) {
+                   this.kbLimit = KB_MAX_NUM.free;
+                  //  console.log('[P-BASE] - CUSTOM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                 }
+                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
 
                 // Translate params for static page
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
