@@ -211,6 +211,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     { pos: 7, type: 'child7' },
     { pos: 8, type: 'child8' }
   ];
+
   areVisibleChatbot: boolean;
 
   constructor(
@@ -313,27 +314,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      this.logger.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+      this.logger.log('[HOME] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
 
       if (projectProfileData['customization']['chatbot'] === true) {
         this.areVisibleChatbot = true;
-        this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE A areVisibleChatbot', this.areVisibleChatbot)
+        this.logger.log('[HOME] USECASE A areVisibleChatbot', this.areVisibleChatbot)
       } else if (projectProfileData['customization']['chatbot'] === false) {
 
         this.areVisibleChatbot = false;
-        this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE A areVisibleChatbot', this.areVisibleChatbot)
+        this.logger.log('[HOME] USECASE A areVisibleChatbot', this.areVisibleChatbot)
       }
 
     } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      this.logger.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.logger.log('[HOME] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
       this.areVisibleChatbot = true;
 
     } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'] )
+      this.logger.log('[HOME] USECASE C customization is  ', projectProfileData['customization'] )
       this.areVisibleChatbot = true;
 
     }
   }
+
+
 
   ngAfterViewInit() {
     if (!isDevMode()) {
