@@ -65,7 +65,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-  displayInviteTeammateBtn: string;
+  displayInviteTeammateBtn: boolean;
 
 
   yourTrialHasEnded: string;

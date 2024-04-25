@@ -33,8 +33,10 @@
         <!-- -------------------------------------------------------------------- -->
         <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
         <!-- -------------------------------------------------------------------- -->
-        <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit && isVisiblePAY"></appdashboard-chatbot-alert>
-
+        <!-- chatBotLimit {{ chatBotLimit }} - chatBotCount {{chatBotCount}} -  isVisiblePAY {{ isVisiblePAY }} -->
+        <ng-container *ngIf="chatBotLimit || chatBotLimit === 0 " > 
+          <appdashboard-chatbot-alert *ngIf="chatBotCount > chatBotLimit && isVisiblePAY"></appdashboard-chatbot-alert>
+        </ng-container>
         <div class="row">
           <div class="col-xs-12">
             <button class="btn btn-new btn-size-m btn--primary pull-right" (click)="createBlankTilebot()"

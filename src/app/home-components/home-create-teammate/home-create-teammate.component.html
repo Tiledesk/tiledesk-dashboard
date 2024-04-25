@@ -1,7 +1,7 @@
 <div class="home-block-wpr">
     <div class="home-block-header-wpr">
         <div class="home-block-header">
-            <div class="home-block-title">
+            <div class="home-block-title"  *ngIf="displayInviteTeammateBtn">
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 0">Invite Teammates </span>
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 1">
                     Kudos! You've invited {{countOfInvitedTeammates}} teammate. Keep striving for greatness!
@@ -11,6 +11,11 @@
                 </span>
                 <span *ngIf="USER_ROLE ==='agent'">Teammates </span>
             </div>
+
+            <div class="home-block-title"  *ngIf="!displayInviteTeammateBtn">
+                Teammates
+            </div>
+
         </div>
     </div>
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
@@ -173,7 +178,7 @@
 
     <div class="ct-home-block-description-and-menu-btn-wpr">
 
-        <div *ngIf="USER_ROLE !== 'agent'" class="home-block-description" style="padding-right: 55px;">
+        <div *ngIf="USER_ROLE !== 'agent' && displayInviteTeammateBtn === true" class="home-block-description" style="padding-right: 55px;">
             Bring your team on board for collaborative automation and customer interactions
         </div>
 

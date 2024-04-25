@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ChatbotAlertModule } from '../bots-list/chatbot-alert/chatbot-alert.module';
 
 const routes: Routes = [
   { path: "", component: TemplatesComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     SharedModule,
+    ChatbotAlertModule,
     TranslateModule,
     BotsSidebarModule,
     FormsModule,

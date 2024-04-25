@@ -491,22 +491,21 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   }
 
   createBlankTilebot() {
-    this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
-
+    console.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.countOfChatbots < this.chatBotLimit) {
-          this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          console.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: Go to crete chatbot')
           // this.presentModalAddBotFromScratch()
           this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
 
         } else if (this.countOfChatbots >= this.chatBotLimit) {
-          this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
+          console.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
-        this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+      } else if (this.chatBotLimit === null) {
+        console.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: Go to crete chatbot')
         // this.presentModalAddBotFromScratch()
         this.router.navigate(['project/' + this.projectId  + '/bots/create/tilebot/blank']);
       }

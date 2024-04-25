@@ -468,7 +468,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
     this.logger.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
           this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
@@ -477,7 +477,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
+      } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN NAVIGATE')
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       }

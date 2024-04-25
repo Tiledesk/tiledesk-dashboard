@@ -301,7 +301,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     this.logger.log('FORM DATA ', formData)
 
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
           this.importChatbotFromJSON(formData)
@@ -309,7 +309,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('[BOT-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
+      } else if (this.chatBotLimit === null) {
         this.logger.log('[BOT-CREATE] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
         this.importChatbotFromJSON(formData)
       }
@@ -607,7 +607,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   createBlankTilebot() {
     this.logger.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-CREATE] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
           this.createTilebotBotFromScratch()
@@ -615,7 +615,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('[BOTS-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
+      } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-CREATE] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
         this.createTilebotBotFromScratch()
       } 

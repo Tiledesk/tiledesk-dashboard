@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ChatbotAlertComponent } from './chatbot-alert/chatbot-alert.component';
+import { ChatbotAlertModule } from './chatbot-alert/chatbot-alert.module';
 
 const routes: Routes = [
   { path: "", component: BotListComponent},
@@ -24,6 +26,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     BotsSidebarModule,
+    ChatbotAlertModule,
     SharedModule,
     TranslateModule,
     MatIconModule,
