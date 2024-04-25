@@ -543,7 +543,7 @@
 
             <div class="row" style="display: block;">
 
-              <div class="col-xs-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
+              <div *ngIf="hideExternalChatbotLeranMore"  class="col-xs-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
@@ -551,7 +551,7 @@
 
 
 
-              <div class="col-xs-6 app-store-right-col-btn" (click)="createExternalBot('external')">
+              <div [ngClass]="{'col-xs-6': hideExternalChatbotLeranMore, 'col-xs-12': !hideExternalChatbotLeranMore }" class="app-store-right-col-btn" (click)="createExternalBot('external')">
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>

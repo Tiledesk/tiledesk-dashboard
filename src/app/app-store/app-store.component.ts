@@ -65,6 +65,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   project: any;
   callingPage: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  hideExternalChatbotLeranMore: boolean
 
   public chatBotCount: any;
   constructor(
@@ -85,6 +86,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.hideExternalChatbotLeranMore = brand['DOCS'];
 
   }
 
