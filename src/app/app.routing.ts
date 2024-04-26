@@ -927,6 +927,12 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Chatbots demo page
+  {
+    path: 'project/:projectid/bots-demo',
+    loadChildren: () => import('app/static-pages/bots-static/bots-static.module').then(m => m.BotsStaticModule),
+    canActivate: [AuthGuard]
+  },
   // Templates
   {
     path: 'project/:projectid/bots/templates/all',
