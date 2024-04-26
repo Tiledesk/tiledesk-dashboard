@@ -466,7 +466,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Наш изворни, лак и моћан НЛП (обрада природног језика) четбот",
     "ResolutionBotDescription": "Аутоматизујте одговоре на ваша уобичајена питања за тренутна решења и срећније клијенте",
     "UseDialogflowToTrainYourBot...": "Користите Диалогфлов да обучите свог бота помоћу наше изворне и иновативне Диалогфлов интеграције",
-    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}. Take a look at our",
+    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}.",
     "GetStartedTutorial": "Водич за почетак",
     "AnIdentityBotRepresents": "Идентитетски бот представља виртуелни профил који се користи за аутоматске поруке које систем шаље (нпр. слање порука у окидачима)",
     "DialogflowKnowledgeBaseID": "ИД базе знања Диалогфлов",
