@@ -466,7 +466,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Yerel, kolay ve güçlü NLP (Doğal Dil İşleme) sohbet robotumuz",
     "ResolutionBotDescription": "Anında çözümler ve daha mutlu müşteriler için sık sorulan soruların yanıtlarını otomatikleştirin",
     "UseDialogflowToTrainYourBot...": "Botunuzu yerel ve yenilikçi Dialogflow entegrasyonumuzla eğitmek için Dialogflow'u kullanın",
-    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}. Take a look at our",
+    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}.",
     "GetStartedTutorial": "Başlangıç Eğitimi",
     "AnIdentityBotRepresents": "Bir kimlik botu, sistem tarafından gönderilen otomatik mesajlar için kullanılan sanal bir profili temsil eder (örneğin, tetikleyicilerde mesaj gönderme)",
     "DialogflowKnowledgeBaseID": "Dialogflow bilgi tabanı kimliği",
