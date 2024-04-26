@@ -331,7 +331,7 @@ export class PricingBaseComponent implements OnInit {
                   // this.kbLimit = projectProfileData.profile_kbs;
                   // if (this.kbLimit === null) {
                   //   this.kbLimit = KB_MAX_NUM.free
-                    // console.log('[P-BASE] - SANDBOX (TRIAL EXPIRED)- KB DEFAULT LIMIT   ', this.kbLimit)
+                  // console.log('[P-BASE] - SANDBOX (TRIAL EXPIRED)- KB DEFAULT LIMIT   ', this.kbLimit)
                   // }
 
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
@@ -622,13 +622,13 @@ export class PricingBaseComponent implements OnInit {
 
                 // KB limit
                 // this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
-                 // Kb contents Limit
-                 this.kbLimit = projectProfileData.profile_kbs;
-                //  console.log('[P-BASE] - CUSTOM  (SUB ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
-                 if (this.kbLimit === null || this.kbLimit === undefined) {
-                   this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
-                  //  console.log('[P-BASE] - CUSTOM (SUB ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
-                 }
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                console.log('[P-BASE] - CUSTOM  (SUB ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined) {
+                  this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                  console.log('[P-BASE] - CUSTOM (SUB ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
                 this.dispayBadgeAvaibleFromInAppStore = false;
@@ -688,7 +688,7 @@ export class PricingBaseComponent implements OnInit {
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
-              } else if (this.profile_name === PLAN_NAME.B  ) {
+              } else if (this.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -795,12 +795,24 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                  console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 // console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM.free;
+                // this.kbLimit = KB_MAX_NUM.free;
+                this.kbLimit = projectProfileData.profile_kbs;
+                console.log('[P-BASE] - BASIC  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  console.log('[P-BASE] - BASIC (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 // console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
 
@@ -830,12 +842,24 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                  console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM.free;
+                // this.kbLimit = KB_MAX_NUM.free;
+                this.kbLimit = projectProfileData.profile_kbs;
+                console.log('[P-BASE] - PREMIUM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  console.log('[P-BASE] - PREMIUM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
 
@@ -875,8 +899,8 @@ export class PricingBaseComponent implements OnInit {
 
                 this.chatBotLimit = projectProfileData.profile_chatbots;
                 console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
-                if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
-                  this.chatBotLimit =  CHATBOT_MAX_NUM.free;
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
                   console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
                 }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
@@ -884,14 +908,14 @@ export class PricingBaseComponent implements OnInit {
 
                 // KB limit
                 // this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
-                 // Kb contents Limit
-                 this.kbLimit = projectProfileData.profile_kbs;
-                //  console.log('[P-BASE] - CUSTOM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
-                 if (this.kbLimit === null || this.kbLimit === undefined) {
-                   this.kbLimit = KB_MAX_NUM.free;
-                  //  console.log('[P-BASE] - CUSTOM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
-                 }
-                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                console.log('[P-BASE] - CUSTOM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  console.log('[P-BASE] - CUSTOM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
 
                 // Translate params for static page
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
