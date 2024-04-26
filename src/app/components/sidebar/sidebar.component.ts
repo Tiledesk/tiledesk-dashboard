@@ -207,7 +207,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
- 
+
 
 
   prjct_profile_name: string;
@@ -325,14 +325,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // For test in local host
     // const href= "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
-    
-    console.log('[SIDEBAR] href ', href)
+
+    this.logger.log('[SIDEBAR] href ', href)
 
     const hrefArray = href.split('/#/');
     const dshbrdBaseUrl = hrefArray[0]
 
-    console.log('[SIDEBAR] dshbrdBaseUrl ', dshbrdBaseUrl)
-    console.log('[SIDEBAR]  dshbrdBaseUrl includes tiledesk.com' , dshbrdBaseUrl.includes('tiledesk.com'));
+    this.logger.log('[SIDEBAR] dshbrdBaseUrl ', dshbrdBaseUrl)
+    this.logger.log('[SIDEBAR]  dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
 
     if (dshbrdBaseUrl.includes('tiledesk.com')) {
       this.areVisibleChatbot = true;
@@ -363,30 +363,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   manageChatbotVisibility(projectProfileData) {
     if (projectProfileData['customization']) {
-      console.log('[SIDEBAR] USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+      this.logger.log('[SIDEBAR] USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
     }
 
     if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      console.log('[SIDEBAR] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+      this.logger.log('[SIDEBAR] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
 
       if (projectProfileData['customization']['chatbot'] === true) {
         this.areVisibleChatbot = true;
-        console.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
+        this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
       } else if (projectProfileData['customization']['chatbot'] === false) {
 
         this.areVisibleChatbot = false;
-        console.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
+        this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
       }
 
     } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      // console.log('[SIDEBAR] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      //this.logger.log('[SIDEBAR] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
       this.areVisibleChatbot = true;
-      console.log('[SIDEBAR] manageChatbotVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'] , ' areVisibleChatbot ', this.areVisibleChatbot)
+      this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'], ' areVisibleChatbot ', this.areVisibleChatbot)
 
     } else if (projectProfileData['customization'] === undefined) {
-      // console.log('[SIDEBAR] USECASE C customization is  ', projectProfileData['customization'])
+      //this.logger.log('[SIDEBAR] USECASE C customization is  ', projectProfileData['customization'])
       this.areVisibleChatbot = true;
-      console.log('[SIDEBAR] manageChatbotVisibility USECASE C customization is  ', projectProfileData['customization'], ' areVisibleChatbot ',  this.areVisibleChatbot )
+      this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE C customization is  ', projectProfileData['customization'], ' areVisibleChatbot ', this.areVisibleChatbot)
 
     }
   }
@@ -700,7 +700,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
       }
 
-  
+
 
     });
 
@@ -1157,7 +1157,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
-    
+
 
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
@@ -1178,7 +1178,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         }
 
-      
+
 
       }
     });
