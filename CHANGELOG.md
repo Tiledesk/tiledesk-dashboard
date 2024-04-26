@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.6.18-rc1
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the  "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management via DB
+
 ### 2.6.17
 - Deploys in production
 - Fixes the bug: Agents can't edit requester information
@@ -12,12 +19,9 @@
 - Deploys in production
 - Improves performance and bug fixing
 
-<<<<<<< HEAD
-=======
 ### 2.6.15-rc1
 - Improves performance and bug fixing
 
->>>>>>> master-PRE
 ### 2.6.14
 - Deploys in production
 - Improves performance and bug fixing
