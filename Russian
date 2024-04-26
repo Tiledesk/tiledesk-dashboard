@@ -466,7 +466,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Наш родной, простой и мощный чат-бот NLP (обработка естественного языка)",
     "ResolutionBotDescription": "Автоматизируйте ответы на ваши распространенные вопросы для мгновенного решения и более довольных клиентов",
     "UseDialogflowToTrainYourBot...": "Используйте Dialogflow для обучения своего бота с нашей собственной инновационной интеграцией Dialogflow",
-    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}. Take a look at our",
+    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}.",
     "GetStartedTutorial": "Руководство по началу работы",
     "AnIdentityBotRepresents": "Идентификационный бот представляет собой виртуальный профиль, используемый для автоматических сообщений, отправляемых системой (например, отправка сообщений в триггерах)",
     "DialogflowKnowledgeBaseID": "Идентификатор базы знаний Dialogflow",
