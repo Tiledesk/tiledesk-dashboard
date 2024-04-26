@@ -466,7 +466,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Nosso chatbot de NLP (Natural Language Processing) nativo, fácil e poderoso",
     "ResolutionBotDescription": "Automatize as respostas às suas perguntas comuns para soluções instantâneas e clientes mais felizes",
     "UseDialogflowToTrainYourBot...": "Use o Dialogflow para treinar seu bot com nossa integração nativa e inovadora do Dialogflow",
-    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}. Take a look at our",
+    "UseYourFavouriteTechnology...": "Use your favourite technology to embed your chatbot with {{ BRAND_NAME }}.",
     "GetStartedTutorial": "Tutorial de primeiros passos",
     "AnIdentityBotRepresents": "Um bot de identidade representa um perfil virtual usado para mensagens automáticas enviadas pelo sistema (por exemplo, envio de mensagens em gatilhos)",
     "DialogflowKnowledgeBaseID": "ID da base de conhecimento do Dialogflow",
