@@ -741,7 +741,7 @@ export class ProjectService {
   enableDisableSupportWidgetVisibility(status) {
     let promise = new Promise((resolve, reject) => {
 
-      console.log("[PROJECT-SERV] ENABLE/DISABLE WIDGET VISIBILITY status", status)
+      // console.log("[PROJECT-SERV] ENABLE/DISABLE WIDGET VISIBILITY status", status)
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN

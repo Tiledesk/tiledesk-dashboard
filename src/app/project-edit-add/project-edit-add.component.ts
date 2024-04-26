@@ -2303,15 +2303,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           if (project.settings.displayWidget) {
             if (project.settings.displayWidget === true ) {
               this.displaySupportWidget = true
-              console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
+              // console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
             } else {
               this.displaySupportWidget = false;
-              console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
+              // console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
             }
          
           } else {
             this.displaySupportWidget = true
-            console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget, 'so set to true displaySupportWidget ', this.displaySupportWidget);
+            // console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget, 'so set to true displaySupportWidget ', this.displaySupportWidget);
           }
 
           if (project.settings.email) {
@@ -2484,15 +2484,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleSupportWidgetVisibility($event) {
-    console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
+    // console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
     this.displaySupportWidget = $event.target.checked;
-    console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility displaySupportWidget: ", this.displaySupportWidget);
+    // console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility displaySupportWidget: ", this.displaySupportWidget);
    
     this.projectService.enableDisableSupportWidgetVisibility(this.displaySupportWidget).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility RESULT: ", result)
+      // console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
     }).catch((err) => {
-      console.error("[PRJCT-EDIT-ADD] - Toggle Widget Visibility ERROR: ", err)
+      // console.error("[PRJCT-EDIT-ADD] - Toggle Widget Visibility ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
