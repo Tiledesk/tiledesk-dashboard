@@ -227,10 +227,9 @@
             </div>
         </div>
 
-        <div *ngIf="USER_ROLE === 'agent' && areActivePay" class="temmates-redeemed">
+        <!-- <div *ngIf="USER_ROLE === 'agent' && areActivePay" class="temmates-redeemed">
             
             <span class="redeemed-temmates-redeemed-num-agent-role">
-                <!-- -->
                 <span  [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#3c4858'}">
                     {{countOfPendingInvites + projectUsersLength}} seats redeemed
                 </span>
@@ -251,7 +250,7 @@
                 matTooltipHideDelay="100">
                 error
             </span>
-        </div>
+        </div> -->
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
             <!-- goToTeammates() presentModalInviteTeammate()  -->
