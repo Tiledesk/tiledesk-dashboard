@@ -105,17 +105,8 @@
       <!-- ---------------------------------- -->
       <!-- Bot -->
       <!-- ---------------------------------- -->
-
-            <!--  -->
-     <!-- <div style="color: #fff"> ALL_BOTS {{MY_BOTS_ALL_ROUTE_IS_ACTIVE}} </div> 
-     <div style="color: #fff"> IS_BOTS {{MY_BOTS_IS_ROUTE_IS_ACTIVE}} </div> 
-     <div style="color: #fff"> CS_BOTS {{MY_BOTS_CS_ROUTE_IS_ACTIVE}} </div>
-     <div style="color: #fff"> TMPLT_ALL {{ TMPLT_ALL_ROUTE_IS_ACTIVE}} </div> 
-     <div style="color: #fff"> CMNT_TMPLT {{TMPLT_CMNT_ROUTE_IS_ACTIVE}} </div>
-     <div style="color: #fff"> IS_TMPLT {{TMPLT_IS_ROUTE_IS_ACTIVE}} </div>
-     <div style="color: #fff"> CS_TMPLT {{TMPLT_CS_ROUTE_IS_ACTIVE}} </div> -->
-     <!-- routerLinkActive="active" -->
      <!-- routerLink="project/{{ project._id }}/bots/my-chatbots/all" -->
+     <!--  -->
       <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
         <li id="bot-anchor-wpr" *ngIf="project"  
           matTooltipClass="sb-mat-tooltip"
@@ -128,6 +119,7 @@
             'active': 
             MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
             MY_BOTS_IS_ROUTE_IS_ACTIVE || 
+            BOTS_DEMO_ROUTE_IS_ACTIVE || 
             MY_BOTS_CS_ROUTE_IS_ACTIVE, 
             'menu_item_active': 
             TMPLT_ALL_ROUTE_IS_ACTIVE || 
