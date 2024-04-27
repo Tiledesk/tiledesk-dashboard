@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.18
+- Deploys in production
+- Improves the Community page UI
+
 ### 2.6.17
 - Deploys in production
 - Fixes the bug: Agents can't edit requester information
