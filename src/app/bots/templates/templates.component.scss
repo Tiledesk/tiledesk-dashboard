@@ -28,7 +28,7 @@
     font-size: 32px;
     font-weight: 500;
     margin-bottom: 26px;
-    padding-left: 19px;
+    // padding-left: 19px;
 
 }
 
@@ -1712,4 +1712,25 @@
     font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
+}
+
+.cmnty-tmplt-list--wpr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.cmnty-img-wpr > img {
+    width: 340px;
+    height: auto;
+}
+
+.cmnty-text {
+    max-width: 800px;
+    text-align: center;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-size: 16px;
+    line-height: normal;
+    font-weight: 400;
 }

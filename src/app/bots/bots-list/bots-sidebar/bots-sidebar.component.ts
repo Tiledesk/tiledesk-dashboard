@@ -61,10 +61,11 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getCurrentRoute()
-    this.getOSCODE();
+   
     this.getCurrentProject();
     this.IS_OPEN = true
     this.listenToKbVersion()
+    this.getDahordBaseUrlThenOSCODE()
     // this.getProjectPlan()
     // this.logger.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
   }
@@ -75,7 +76,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     // this.logger.log('[BOTS-SIDEBAR] - myChatbotOtherCount ', this.myChatbotOtherCount)
   }
 
-  getOSCODE() {
+  getDahordBaseUrlThenOSCODE() {
     const href = window.location.href;
 
     // For test in local host
@@ -87,37 +88,44 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     const dshbrdBaseUrl = hrefArray[0]
     this.logger.log('[BOTS-SIDEBAR]  dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
 
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-   
-    if (this.public_Key.includes("KNB")) {
-      let parts = this.public_Key.split('-');
-      // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
+    if (dshbrdBaseUrl.includes('tiledesk.com')) {
+      this.isVisibleKNB = true;
+    } else if (!dshbrdBaseUrl.includes('tiledesk.com')) {
+      this.logger.log('[BOTS-SIDEBAR] dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
+      this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+      if (this.public_Key.includes("KNB")) {
+        let parts = this.public_Key.split('-');
+        // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
 
-      let kbn = parts.find((part) => part.startsWith('KNB'));
-      this.logger.log('[BOTS-SIDEBAR] kbn from FT', kbn);
-      let kbnParts = kbn.split(':');
-      this.logger.log('[BOTS-SIDEBAR] kbnParts from FT', kbnParts);
-      let kbnValue = kbnParts[1]
-      this.logger.log('[BOTS-SIDEBAR] kbnValue from FT', kbnValue);
-     
-      if (kbnValue === 'T') {
-        if (dshbrdBaseUrl.includes('tiledesk.com')) {
-          this.isVisibleKNB = true;
-          this.logger.log('[BOTS-SIDEBAR] dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
-          this.logger.log('[BOTS-SIDEBAR] isVisibleKNB from FT',  this.isVisibleKNB);
-        }  else if (!dshbrdBaseUrl.includes('tiledesk.com')) {
-          this.logger.log('[BOTS-SIDEBAR] dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
+        let kbn = parts.find((part) => part.startsWith('KNB'));
+        this.logger.log('[BOTS-SIDEBAR] kbn from FT', kbn);
+        let kbnParts = kbn.split(':');
+        this.logger.log('[BOTS-SIDEBAR] kbnParts from FT', kbnParts);
+        let kbnValue = kbnParts[1]
+        this.logger.log('[BOTS-SIDEBAR] kbnValue from FT', kbnValue);
+
+        if (kbnValue === 'T') {
           this.getProjectPlan()
+          // if (dshbrdBaseUrl.includes('tiledesk.com')) {
+          //   this.isVisibleKNB = true;
+          //   this.logger.log('[BOTS-SIDEBAR] dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
+          //   this.logger.log('[BOTS-SIDEBAR] isVisibleKNB from FT', this.isVisibleKNB);
+          // } else if (!dshbrdBaseUrl.includes('tiledesk.com')) {
+          //   this.logger.log('[BOTS-SIDEBAR] dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
+          //   this.getProjectPlan()
+          // }
+        } else if (kbnValue === 'F') {
+          this.isVisibleKNB = false;
         }
-      } else if (kbnValue === 'F') {
+
+      } else {
         this.isVisibleKNB = false;
+        this.logger.log('[BOTS-SIDEBAR] this.public_Key.includes("KNB")', this.public_Key.includes("KNB"))
       }
-  
-    } else {
-      this.isVisibleKNB = false;
-      this.logger.log('[BOTS-SIDEBAR] this.public_Key.includes("KNB")', this.public_Key.includes("KNB"))
     }
+
   }
+
 
 
 
@@ -188,11 +196,12 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     } else if (projectProfileData['customization'] === undefined) {
       this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE C customization is  ', projectProfileData['customization'], 'get value from FT')
       // if (this.public_Key.includes("KNB")) {
-      // this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+        // this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
 
-      this.isVisibleKNB = this.getKnbValue()
-      this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+        this.isVisibleKNB = this.getKnbValue()
+        this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
 
+      
       // } else if (!this.public_Key.includes("KNB")) {
       //   this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B (from FT) -  EXIST KNB ', this.public_Key.includes("KNB"));
       //   this.isVisibleKNB = false;
@@ -225,24 +234,10 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
 
   }
 
-  // getBaseUrlAndThenProjectPlan() {
-  //   // const href = window.location.href;
+  // getOSCODE() {
+  //   this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
-  //   // For test in local host
-  //   const href = "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
 
-  //   this.logger.log('[BOTS-SIDEBAR] href ', href)
-
-  //   const hrefArray = href.split('/#/');
-  //   const dshbrdBaseUrl = hrefArray[0]
-
-  //   this.logger.log('[BOTS-SIDEBAR] dshbrdBaseUrl ', dshbrdBaseUrl)
-
-  //   this.logger.log('[BOTS-SIDEBAR]  dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
-
-  //   if (!dshbrdBaseUrl.includes('tiledesk.com')) {
-  //     this.getProjectPlan()
-  //   }
   // }
 
   listenToKbVersion() {
