@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.19
+- Deploys in production
+- Improves the Community page UI
+
 ### 2.6.18
 - Deploys in production
 - Hides the External chatbot learn more button if the DOCS key is set to false

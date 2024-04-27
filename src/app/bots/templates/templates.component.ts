@@ -515,6 +515,11 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/template-details/' + templateid]);
   }
 
+  goToExternalCommunity() {
+   const url = "https://tiledesk.com/community/"
+   window.open(url, '_blank');
+  }
+
 
 
   searchInCommunityTemplates() {
