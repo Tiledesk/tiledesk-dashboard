@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
@@ -20,6 +20,7 @@ import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { BrandService } from 'app/services/brand.service';
 import { goToCDSVersion } from 'app/utils/util';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 const swal = require('sweetalert');
 
@@ -34,6 +35,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number;
   @Input() current_selected_prjct: any;
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   CHAT_BASE_URL: string;
   storageBucket: string;
@@ -76,6 +79,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   botLogo: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
+  scrollEl: any;
+  scrollYposition: any;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -107,9 +112,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
+    public route: ActivatedRoute
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
-   
+
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
@@ -127,8 +133,53 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
+    this.getRouteParams()
+
 
   }
+
+  onContextMenu(event: MouseEvent, item) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'item': item };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }
+
+  onContextMenuAction1(item) {
+    alert(`Click on Action 1 for ${item.name}`);
+  }
+
+  onContextMenuAction2(item) {
+    alert(`Click on Action 2 for ${item.name}`);
+  }
+
+
+
+  getRouteParams() {
+    this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] oninit scrollEl', this.scrollEl)
+    this.route.params.subscribe((params) => {
+      // this.projectId = params.projectid
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET ROUTE PARAMS ', params);
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition;
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
+        if (this.scrollEl) {
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
+          setTimeout(() => {
+            this.scrollEl.scrollTo(0, +this.scrollYposition);
+            // this.scrollEl.scrollTo({top: +this.scrollYposition, behavior: 'smooth'});
+          }, 1000);
+        } else {
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl)
+        }
+      }
+    })
+
+  }
+
 
 
   overfirstTextGetRequestMsg(request) {
@@ -516,8 +567,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToRequestMsgs(request_id: string) {
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     this.logger.log("[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS ")
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages/' + this.scrollEl.scrollTop]);
   }
 
   // goToWsRequestsNoRealtimeServed() {

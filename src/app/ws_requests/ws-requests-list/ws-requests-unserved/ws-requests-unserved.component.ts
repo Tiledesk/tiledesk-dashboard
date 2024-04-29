@@ -4,7 +4,7 @@ import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
@@ -59,6 +59,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   requests_selected = [];
   allChecked = false;
   allConversationsaveBeenArchivedMsg: string;
+  scrollEl: any;
+  scrollYposition: any;
+
   /**
    * Constructor
    * @param botLocalDbService 
@@ -87,7 +90,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public notify: NotifyService,
     public translate: TranslateService,
     public logger: LoggerService,
-    private wsMsgsService: WsMsgsService
+    private wsMsgsService: WsMsgsService,
+    public route: ActivatedRoute
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
@@ -104,6 +108,27 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.getTranslations();
     this.getLoggedUser();
     this.getProjectUserRole();
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] oninit scrollEl', this.scrollEl)
+    this.route.params.subscribe((params) => {
+      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET ROUTE PARAMS ', params);
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition;
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - scrollYposition', +this.scrollYposition);
+        if (this.scrollEl) {
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
+          setTimeout(() => {
+            this.scrollEl.scrollTo(0, +this.scrollYposition);
+          }, 1000);
+        } else {
+          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] scrollEl', this.scrollEl)
+        }
+      }
+    })
 
   }
 
@@ -211,7 +236,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     //   });
     // }
 
- 
+
   }
 
 
@@ -544,8 +569,9 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   goToRequestMsgs(request_id: string) {
+    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages' ]);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages/' + this.scrollEl.scrollTop]);
   }
 
 

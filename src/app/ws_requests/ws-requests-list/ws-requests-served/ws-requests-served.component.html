@@ -51,10 +51,8 @@
           <!-- ---------------------------------------------------------- -->
           <th style="padding-top: 6px;padding-bottom: 6px !important;">
             <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button"
-              (click)="archiveSelected()" 
-              matTooltipClass="mat-white-tooltip"
-              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" 
-              matTooltipPosition='above'
+              (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
+              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
               matTooltipHideDelay="100">
 
               <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">
@@ -234,12 +232,9 @@
                 <span *ngIf="request?.subject">
 
                   <img style="width: 30px;" src="assets/img/request_icons/status200_no_joined_internal.svg"
-                    class="img-fluid" 
-                    matTooltipClass="mat-white-tooltip"
-                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='right' 
-                    matTooltipHideDelay="100">
+                    class="img-fluid" matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
                 </span>
 
               </span>
@@ -251,21 +246,19 @@
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!--  -->
           <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
-            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; " >
-            <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;" 
-              matTooltipClass="mat-white-tooltip" 
-              matTooltip="{{ 'TicketId' | translate }}" 
-              #tooltip="matTooltip"
-              matTooltipPosition='right' 
-              matTooltipHideDelay="100">
-              #{{request?.ticket_id }}
-            </span>
-            <!-- *ngIf="request?.channel?.name !== 'email'" -->
-            <p class="column-td request-first-text" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
-            [tooltip]="HtmlContent" 
-            contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
-              {{ request?.first_text }} 
-            </p>
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; " (contextmenu)="onContextMenu($event, request)">
+              <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
+                matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
+                matTooltipPosition='right' matTooltipHideDelay="100">
+                #{{request?.ticket_id }}
+              </span>
+              <!-- *ngIf="request?.channel?.name !== 'email'" -->
+              <p class="column-td request-first-text"
+                style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
+                [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
+                {{ request?.first_text }}
+              </p>
+           
 
 
             <ng-template #HtmlContent>
@@ -316,7 +309,8 @@
                   <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
                 </div>
 
-                <p *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment' [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">
+                <p *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment'
+                  [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">
                 </p>
 
                 <div *ngIf="!request?.msgsArray?.length">
@@ -361,7 +355,7 @@
                 </div>
               </div>
 
-               
+
               <!-- -------------------------------------------------------------------- -->
               <!-- Display more tags -->
               <!-- -------------------------------------------------------------------- -->
@@ -374,7 +368,7 @@
                 </a>
               </div>
 
-               
+
               <!-- -------------------------------------------------------------------- -->
               <!-- Tag from 3 to ... -->
               <!-- -------------------------------------------------------------------- -->
@@ -401,10 +395,20 @@
                   </div>
                 </div>
               </div>
-
             </section>
 
+            <!-- <div style="visibility: hidden; position: fixed"
+                [style.left]="contextMenuPosition.x"
+                [style.top]="contextMenuPosition.y"
+                [matMenuTriggerFor]="contextMenu">
+            </div>
 
+            <mat-menu #contextMenu="matMenu">
+              <ng-template matMenuContent let-item="item">
+                <button mat-menu-item (click)="onContextMenuAction1(item)">Action 1</button>
+                <button mat-menu-item (click)="onContextMenuAction2(item)">Action 2</button>
+              </ng-template>
+            </mat-menu> -->
           </td>
 
           <!-- <ng-template #HtmlContent>
@@ -424,28 +428,24 @@
                 <!-- ---------------------------------------- -->
                 <!-- Priority High -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.priority === 'high'"   
-                matTooltipClass="mat-white-tooltip"
-                matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip" 
-                matTooltipPosition='above'
-                matTooltipHideDelay="100">
+                <span *ngIf="request?.priority === 'high'" matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'Priority' | translate}}: {{'high' | translate}}" #tooltip="matTooltip"
+                  matTooltipPosition='above' matTooltipHideDelay="100">
                   <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/high_v2.svg" class="img-fluid">
                   <!-- <span class="bottom tool-tip-bottom--custom"> -->
-                    <!-- <span style="font-weight: 400;">
+                  <!-- <span style="font-weight: 400;">
                       
                     </span> -->
-                    <!-- <span style="font-weight: 400;">{{ 'high' | translate }} </span>
+                  <!-- <span style="font-weight: 400;">{{ 'high' | translate }} </span>
                     <i></i> -->
                   <!-- </span> -->
                 </span>
                 <!-- ---------------------------------------- -->
                 <!-- Priority Urgent -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.priority === 'urgent'"   
-                matTooltipClass="mat-white-tooltip"
-                matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" #tooltip="matTooltip" 
-                matTooltipPosition='above'
-                matTooltipHideDelay="100">
+                <span *ngIf="request?.priority === 'urgent'" matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'Priority' | translate}}: {{'urgent' | translate}}" #tooltip="matTooltip"
+                  matTooltipPosition='above' matTooltipHideDelay="100">
                   <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/urgent_v2.svg"
                     class="img-fluid">
                   <!-- <span class="bottom tool-tip-bottom--custom">
@@ -459,12 +459,9 @@
                 <!-- ---------------------------------------- -->
                 <!-- Priority Low -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.priority === 'low'"
-                matTooltipClass="mat-white-tooltip"
-                matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" 
-                #tooltip="matTooltip" 
-                matTooltipPosition='above'
-                matTooltipHideDelay="100">
+                <span *ngIf="request?.priority === 'low'" matTooltipClass="mat-white-tooltip"
+                  matTooltip="{{'Priority' | translate}}: {{'low' | translate}}" #tooltip="matTooltip"
+                  matTooltipPosition='above' matTooltipHideDelay="100">
                   <img style="width: 15px;height: 15px;" src="assets/img/priority_icons/low_v2.svg" class="img-fluid">
                   <!-- <span class="bottom tool-tip-bottom--custom">
                     <span style="font-weight: 400;">
@@ -587,12 +584,9 @@
               </span>
               <!-- [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname , 'verified-icon-requester-internal-ticket': request?.subject}" -->
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                <svg
-                  class="requester-verified-icon"
-                  
-                  version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                <svg class="requester-verified-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                  height="17"  xml:space="preserve">
+                  height="17" xml:space="preserve">
                   <style type="text/css">
                     .st0_UserVerified {
                       fill: none;
@@ -618,7 +612,7 @@
               </span>
             </span>
             <!-- [ngClass]="{'requester-verified' : request?.requester_is_verified === true}" -->
-            <span class="column-td" style="white-space: nowrap;" >
+            <span class="column-td" style="white-space: nowrap;">
 
               <span class="lead_data">
 
@@ -649,17 +643,18 @@
           <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
           <td>
             <span *ngIf="request?.userAgent" class="tooltipx">
-              <!-- 
-              // ----------------------------------------------------------------
-              // @ OS - if not is
-              // ---------------------------------------------------------------- -->
+
+              <!-- ---------------------------------------------------------------- -->
+              <!-- @ OS - if not is -->
+              <!-- ---------------------------------------------------------------- -->
               <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
                             (request?.ua_os?.indexOf('Mac OS') === -1) && 
                             (request?.ua_os?.indexOf('iOS') === -1) &&
                             (request?.ua_os?.indexOf('Windows') === -1) &&
                             (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                <img style="width: 13px;margin-top: 2px;margin-right: 6px;" class="" src="assets/img/user_agent/laptop.svg" />
+                <img style="width: 13px;margin-top: 2px;margin-right: 6px;" class=""
+                  src="assets/img/user_agent/laptop.svg" />
               </span>
 
               <!-- <i class="material-icons user-agent-icon">
@@ -679,7 +674,8 @@
               // if is Mac OS or iOS
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
-                <img style="width: 13px;margin-bottom: 2px;margin-right: 6px;" class="" src="assets/img/user_agent/apple.svg" />
+                <img style="width: 13px;margin-bottom: 2px;margin-right: 6px;" class=""
+                  src="assets/img/user_agent/apple.svg" />
               </span>
 
               <!-- 
@@ -687,7 +683,8 @@
               // if is Windows
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
-                <img style="width: 12px; margin-top: 2px;margin-right: 6px;" class="" src="assets/img/user_agent/windows.svg" />
+                <img style="width: 12px; margin-top: 2px;margin-right: 6px;" class=""
+                  src="assets/img/user_agent/windows.svg" />
               </span>
 
               <!-- 
@@ -841,7 +838,7 @@
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'internal'">
                       <div class="bot-type-logo-img-wpr">
                         <img class="served-by-bot--type-logo" src="assets/img/tiledesk_logo_no_text.png" />
-                      </div> 
+                      </div>
                     </div>
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'external'">
                       <div class="bot-type-logo-img-wpr">
@@ -851,7 +848,7 @@
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'dialogflow'">
                       <div class="bot-type-logo-img-wpr">
                         <img class="served-by-bot--type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                      </div> 
+                      </div>
                     </div>
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'rasa'">
                       <div class="bot-type-logo-img-wpr">
@@ -921,12 +918,9 @@
                 <span *ngIf="agent.is_bot === false">
 
                   <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c"
-                      (click)="goToAgentProfile(agent?._id)"
-                      matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ agent?.firstname }} {{ agent?.lastname }}" 
-                      #tooltip="matTooltip"
-                      matTooltipPosition='above' 
-                      matTooltipHideDelay="100">
+                    (click)="goToAgentProfile(agent?._id)" matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ agent?.firstname }} {{ agent?.lastname }}" #tooltip="matTooltip"
+                    matTooltipPosition='above' matTooltipHideDelay="100">
                     <div class="served-by-desktop-d">
                       <div size="32" class="served-by-desktop-e">
                         <!-- {{  agent.hasImage }} -->
@@ -939,10 +933,10 @@
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                           alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)"> -->
 
-                          <!-- ------------------------------------- -->
-                          <!-- thumb_photo -->
-                          <!-- ------------------------------------- -->
-                          <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                        <!-- ------------------------------------- -->
+                        <!-- thumb_photo -->
+                        <!-- ------------------------------------- -->
+                        <img *ngIf="agent?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                           [ngClass]="{'current-user-member-border' : agent._id === currentUserID}"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                           alt="" onerror="this.src='assets/img/no_image_user.png'" (error)="updateUrl($event, agent)">
@@ -990,11 +984,8 @@
                 <div class="bot---avatar-wpr" *ngIf="agent.is_bot === true">
                   <div (click)="goToBotProfile(agent, agent?._id, agent?.type)"
                     [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}" class="bot---avatar"
-                    matTooltipClass="mat-white-tooltip"
-                    matTooltip="{{ agent.name}} (bot)" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='above' 
-                    matTooltipHideDelay="100">
+                    matTooltipClass="mat-white-tooltip" matTooltip="{{ agent.name}} (bot)" #tooltip="matTooltip"
+                    matTooltipPosition='above' matTooltipHideDelay="100">
 
                     <!-- --------------------------------------- -->
                     <!-- Usecase  Firebase (bot) -->
@@ -1037,7 +1028,7 @@
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'dialogflow'">
                       <div class="bot-type-logo-img-wpr">
                         <img class="served-by-bot--type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                      </div> 
+                      </div>
                     </div>
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'rasa'">
                       <div class="bot-type-logo-img-wpr">
@@ -1053,7 +1044,7 @@
                         <img class="served-by-bot--type-logo" [src]="botLogo" />
                       </div>
                     </div>
-                    
+
                     <!-- <div *ngIf="agent.type === 'tiledesk-ai'">
                       <img class="served-by-bot-type-logo" src="assets/img/tiledesk-ai-logo.png" />
                     </div> -->
@@ -1062,6 +1053,7 @@
                 </div>
 
               </div>
+
             </div>
 
           </td>

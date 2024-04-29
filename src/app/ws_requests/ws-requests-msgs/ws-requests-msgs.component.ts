@@ -406,6 +406,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   mailtoBody: any;
   REQUEST_EXIST: boolean = true;
   botLogo: string;
+  scrollYposition: any;
 
   /**
    * Constructor
@@ -711,7 +712,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] params', params)
+      console.log('[WS-REQUESTS-MSGS] params', params)
+
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition
+      }
 
       if (params.isopenadvancedsearch) {
         this.isOpenedAdvancedSearch = params.isopenadvancedsearch
@@ -723,6 +728,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl',    this.previousUrl)
       }
 
       if (params.calledby === '2') {
@@ -744,7 +750,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goBack() {
     if (this.previousUrl === 'wsrequests') {
+      if(!this.scrollYposition) { 
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    } else if(this.scrollYposition) { 
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
+    }
       // && this.hasSearchedBy
 
       // Called by history with advanced search options opened 
