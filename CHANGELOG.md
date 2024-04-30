@@ -1,8 +1,27 @@
 # tiledesk-dashboard
 
-### 2.6.18
+### 2.6.20-rc1
+- Implements on the "Monitor" page the scroll position restoration
+
+### 2.6.19
 - Deploys in production
 - Improves the Community page UI
+
+### 2.6.18
+- Deploys in production
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management set via DB
+- Other improvements and bug fixing
+
+### 2.6.18-rc1
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the  "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management via DB
 
 ### 2.6.17
 - Deploys in production
@@ -14,6 +33,9 @@
 
 ### 2.6.15
 - Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.15-rc1
 - Improves performance and bug fixing
 
 ### 2.6.14
@@ -110,8 +132,18 @@
 - Adds the customer.io integration
 - Fixes the bug: app cards are not all the same height
 
-### 2.6.0-rc6
-- Fixes the bug: App cards are not of the same height
+### 2.5.21
+- Deploys in production
+- Adds the ability to sort chatbot by name
+
+### 2.5.20
+- Deploys in production
+- Refactors the teammates table
+
+### 2.5.19
+- Deploys in production
+- Fixes the bug: not all chatbot images are displayed
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.6.0-rc4
 - Improves Knowledge Base
