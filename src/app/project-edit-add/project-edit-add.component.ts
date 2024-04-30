@@ -2299,19 +2299,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.project_name = project.name;
 
         if (project.settings) {
+         this.logger.log('[PRJCT-EDIT-ADD] -  project.settings ', project.settings);
+         this.logger.log('[PRJCT-EDIT-ADD] -  project.settings displayWidget ', project.settings.displayWidget);
+         this.logger.log('[PRJCT-EDIT-ADD] -  project.settings .hasOwnProperty(displayWidget) ', project.settings.hasOwnProperty('displayWidget'));
+          if (project.settings.hasOwnProperty('displayWidget') ) {
 
-          if (project.settings.displayWidget) {
             if (project.settings.displayWidget === true ) {
               this.displaySupportWidget = true
-              // console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
-            } else {
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
+            } else if (project.settings.displayWidget === false) {
               this.displaySupportWidget = false;
-              // console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
             }
          
-          } else {
+          } else  if (!project.settings.hasOwnProperty('displayWidget') ){
             this.displaySupportWidget = true
-            // console.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget, 'so set to true displaySupportWidget ', this.displaySupportWidget);
+            this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget, 'so set to true displaySupportWidget ', this.displaySupportWidget);
           }
 
           if (project.settings.email) {
@@ -2360,6 +2363,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
         } else {
+          this.displaySupportWidget = true
           this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
           this.assigned_conv_on = true;
           this.unassigned_conv_on = true;
@@ -2484,15 +2488,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleSupportWidgetVisibility($event) {
-    // console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
+    // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
     this.displaySupportWidget = $event.target.checked;
-    // console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility displaySupportWidget: ", this.displaySupportWidget);
+    // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility displaySupportWidget: ", this.displaySupportWidget);
    
     this.projectService.enableDisableSupportWidgetVisibility(this.displaySupportWidget).then((result) => {
-      // console.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility RESULT: ", result)
+      // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
     }).catch((err) => {
-      // console.error("[PRJCT-EDIT-ADD] - Toggle Widget Visibility ERROR: ", err)
+      // this.logger.error("[PRJCT-EDIT-ADD] - Toggle Widget Visibility ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
@@ -2528,7 +2532,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   allowedIPsChanged($event) {
-    // console.log("[PRJCT-EDIT-ADD] allowedIPsChanged $event ", $event)
+    // this.logger.log("[PRJCT-EDIT-ADD] allowedIPsChanged $event ", $event)
   }
 
   saveIPranges() {
