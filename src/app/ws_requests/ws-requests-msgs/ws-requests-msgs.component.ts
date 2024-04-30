@@ -712,7 +712,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      console.log('[WS-REQUESTS-MSGS] params', params)
+      this.logger.log('[WS-REQUESTS-MSGS] params', params)
 
       if (params.scrollposition) {
         this.scrollYposition = params.scrollposition
@@ -728,7 +728,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
-        console.log('[WS-REQUESTS-MSGS] this.previousUrl',    this.previousUrl)
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl',    this.previousUrl)
       }
 
       if (params.calledby === '2') {
