@@ -439,6 +439,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Conversation details with scrollposition
+  {
+    path: 'project/:projectid/wsrequest/:requestid/:calledby/messages/:scrollposition',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+
   {
     path: 'project/:projectid/wsrequest/:requestid/:calledby/messages',
     loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
@@ -467,12 +474,20 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Conversations list - Served - Unserved
+  // Conversations list  (Served - Unserved)
   {
     path: 'project/:projectid/wsrequests',
     loadChildren: () => import('app/ws_requests/ws-requests-list/ws-requests-list.module').then(m => m.WsRequestsListModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
+
+  // Conversations list  (Served - Unserved) with scroll position
+  {
+    path: 'project/:projectid/wsrequests/:scrollposition',
+    loadChildren: () => import('app/ws_requests/ws-requests-list/ws-requests-list.module').then(m => m.WsRequestsListModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
   // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
   // Conversations list demo page

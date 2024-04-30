@@ -5,6 +5,7 @@
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #e5effe !important;
     padding: 0 8px;
@@ -73,11 +74,11 @@
     font-weight: 500;
 }
 
-.add-teammates-to-group-wrap {
-    // position: fixed;
-    // bottom: 0px;
-    // width: 100%;
-}
+// .add-teammates-to-group-wrap {
+//     position: fixed;
+//     bottom: 0px;
+//     width: 100%;
+// }
 
 @media screen and (max-width: 767px) {
     .table-responsive {
