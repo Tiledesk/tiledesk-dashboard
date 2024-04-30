@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.20-rc2
+- Improves on the "Monitor" page the scroll position restoration
+
 ### 2.6.20-rc1
 - Implements on the "Monitor" page the scroll position restoration
 
