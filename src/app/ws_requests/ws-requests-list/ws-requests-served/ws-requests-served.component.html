@@ -50,9 +50,13 @@
           <!-- Requests Icons th (in this th put the button to archive -->
           <!-- ---------------------------------------------------------- -->
           <th style="padding-top: 6px;padding-bottom: 6px !important;">
-            <button *ngIf="requests_selected.length > 0" class="custom-input-group---btn tool_tip" type="button"
-              (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
-              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" matTooltipPosition='above'
+            <button *ngIf="requests_selected.length > 0" 
+              class="custom-input-group---btn tool_tip" 
+              type="button"
+              (click)="archiveSelected()" 
+              matTooltipClass="mat-white-tooltip"
+              matTooltip="{{'VisitorsPage.Resolve' | translate}}" #tooltip="matTooltip" 
+              matTooltipPosition='above'
               matTooltipHideDelay="100">
 
               <span class="material-icons archive-icon" style="vertical-align:middle; cursor: pointer; color:grey;">

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Request } from '../../../models/request-model';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-
+import scrollToWithAnimation from 'scrollto-with-animation'
 const swal = require('sweetalert');
 
 @Component({
@@ -119,18 +119,60 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       if (params.scrollposition) {
         this.scrollYposition = params.scrollposition;
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - scrollYposition', +this.scrollYposition);
-        if (this.scrollEl) {
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
-          setTimeout(() => {
-            this.scrollEl.scrollTo(0, +this.scrollYposition);
-          }, 1000);
-        } else {
-          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] scrollEl', this.scrollEl)
-        }
+        // if (this.scrollEl) {
+        //   this.logger.log('[WS-REQUESTS-LIST][UNSERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
+        //   setTimeout(() => {
+        //     this.scrollEl.scrollTo(0, +this.scrollYposition);
+        //   }, 1000);
+        // } else {
+        //   this.logger.error('[WS-REQUESTS-LIST][UNSERVED] scrollEl', this.scrollEl)
+        // }
       }
     })
 
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+   this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+   this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
+    
+
+   if (changes.current_selected_prjct || changes.ws_requests_length && changes.ws_requests_length.previousValue === 0 || changes.ws_requests_length.previousValue === undefined) {
+    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
+    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
+    this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
+
+    if (this.wsRequestsUnserved.length > 0) {
+      this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
+      setTimeout(() => {
+        scrollToWithAnimation(
+          this.scrollEl, // element to scroll
+          'scrollTop', // direction to scroll
+          +this.scrollYposition, // target scrollY (0 means top of the page)
+          500, // duration in ms
+          'easeInOutCirc', 
+          // Can be a name of the list of 'Possible easing equations' or a callback
+          // that defines the ease. # http://gizma.com/easing/
+     
+          () => { // callback function that runs after the animation (optional)
+            this.logger.log('done!')
+          }
+        );
+      }, 100);
+
+    }
+  }
+
+  }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  
 
 
   // -------------------------------------------------------------
@@ -165,7 +207,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         msgs.forEach((msgs, index) => {
           if ((msgs)) {
             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-              // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+              // this.logger.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
             } else {
               msgsArray.push(msgs)
             }
@@ -181,7 +223,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           });
         });
       }
-      // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+      // this.logger.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
     }, (err) => {
       this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
 
@@ -191,59 +233,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     });
   }
 
-
-  ngOnChanges() {
-    this.logger.log('WS-REQUEST-UNSERVED from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
-    // if (this.wsRequestsUnserved && this.wsRequestsUnserved.length > 0) {
-    //   this.wsRequestsUnserved.forEach(request => {
-
-
-    //     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-
-    //     this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
-    //       //  console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - RES: ', msgs);
-    //       if (msgs) {
-    //         const parsedMsgs = JSON.parse(msgs)
-    //         const msgsArray = [];
-    //         parsedMsgs.forEach((msgs, index) => {
-    //           if ((msgs)) {
-    //             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-    //               // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
-    //             } else {
-    //               msgsArray.push(msgs)
-    //             }
-    //           }
-    //           request['msgsArray'] = msgsArray.sort(function compare(a, b) {
-    //             if (a['createdAt'] > b['createdAt']) {
-    //               return -1;
-    //             }
-    //             if (a['createdAt'] < b['createdAt']) {
-    //               return 1;
-    //             }
-    //             return 0;
-    //           });
-    //         });
-    //       }
-    //       // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
-    //     }, (err) => {
-    //       this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
-
-    //     }, () => {
-    //       this.logger.log('[WS-REQUESTS-LIST][UNSERVED] * COMPLETE *');
-
-    //     });
-    //   });
-    // }
-
-
-  }
-
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   // -------------------------------------------------------------
   // @ Subscribe to project user role
@@ -335,7 +324,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
       this.allChecked = true;
       for (let request of this.wsRequestsUnserved) {
-        // console.log('SELECT ALL request ', request)
+        // this.logger.log('SELECT ALL request ', request)
 
 
         const index = this.requests_selected.indexOf(request.request_id);
@@ -357,7 +346,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
     } else if (e.target.checked == false) {
       for (let request of this.wsRequestsUnserved) {
-        // console.log('SELECT ALL request ', request)
+        // this.logger.log('SELECT ALL request ', request)
         // const index = this.requests_selected.indexOf(request.request_id);
         if (request.hasOwnProperty('isSelected')) {
           if (request['isSelected'] === true) {

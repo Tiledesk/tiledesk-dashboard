@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, SimpleChanges } from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
@@ -21,8 +21,10 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { BrandService } from 'app/services/brand.service';
 import { goToCDSVersion } from 'app/utils/util';
 import { MatMenuTrigger } from '@angular/material/menu';
+// import { Location, PopStateEvent } from '@angular/common';
 
 const swal = require('sweetalert');
+import scrollToWithAnimation from 'scrollto-with-animation'
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -112,7 +114,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -135,6 +138,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getFirebaseAuth();
     this.getRouteParams()
 
+    // this.router.events.subscribe((event) => { 
+    //   if (event instanceof NavigationEnd || event instanceof NavigationStart) {    
+    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] event', event)
+    //   }
+    // })
 
   }
 
@@ -168,16 +176,66 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
         if (this.scrollEl) {
           this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
-          setTimeout(() => {
-            this.scrollEl.scrollTo(0, +this.scrollYposition);
-            // this.scrollEl.scrollTo({top: +this.scrollYposition, behavior: 'smooth'});
-          }, 1000);
+          // setTimeout(() => {
+          // this.scrollEl.scrollTo(0, +this.scrollYposition);
+
+          // scrollToWithAnimation(
+          //   this.scrollEl, // element to scroll
+          //   'scrollTop', // direction to scroll
+          //   +this.scrollYposition, // target scrollY (0 means top of the page)
+          //   10000, // duration in ms
+          //   'easeInOutCirc', /*
+          //       Can be a name of the list of 'Possible easing equations' or a callback
+          //       that defines the ease. # http://gizma.com/easing/
+          //   */
+          //   function () { // callback function that runs after the animation (optional)
+          //     this.logger.log('done!')
+          //   }
+          // );
+          // this.scrollEl.scrollTo({top: +this.scrollYposition, behavior: 'smooth'});
+          // }, 100);
         } else {
           this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl)
         }
       }
     })
 
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+
+    if (changes.current_selected_prjct || changes.ws_requests_length && changes.ws_requests_length.previousValue === 0 || changes.ws_requests_length.previousValue === undefined) {
+      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
+      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
+
+
+      if (this.wsRequestsServed.length > 0) {
+        setTimeout(() => {
+          scrollToWithAnimation(
+            this.scrollEl, // element to scroll
+            'scrollTop', // direction to scroll
+            +this.scrollYposition, // target scrollY (0 means top of the page)
+            500, // duration in ms
+            'easeInOutCirc', 
+            // Can be a name of the list of 'Possible easing equations' or a callback
+            // that defines the ease. # http://gizma.com/easing/
+       
+            () => { // callback function that runs after the animation (optional)
+              this.logger.log('done!')
+            }
+          );
+        }, 100);
+
+      }
+    }
+  }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 
@@ -195,7 +253,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         msgs.forEach((msgs, index) => {
           if ((msgs)) {
             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-              // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+              // this.logger.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
             } else {
               msgsArray.push(msgs)
             }
@@ -211,7 +269,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           });
         });
       }
-      // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+      // this.logger.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
     }, (err) => {
       this.logger.error('[WS-REQUESTS-LIST][SERVED] - GET REQUESTS MSGS - ERROR: ', err);
 
@@ -221,31 +279,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     });
   }
 
-  ngOnChanges() {
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
-    // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    // if (this.wsRequestsServed && this.wsRequestsServed.length > 0) {
-    //   this.wsRequestsServed.forEach(request => {
-    //      console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //   });
-    // }
-  }
 
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-
-    // if (this.wsRequestsServed.length > 0) {
-    //   this.wsRequestsServed.forEach(request => {
-    //     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
 
   // unsuscribeRequestById(idrequest) {
   //   this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
@@ -276,7 +310,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //           if ((id_request === msgs['recipient'])) {
   //             if ((msgs)) {
   //               if ( (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') ||  (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support') ){
-  //                 // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+  //                 // this.logger.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
   //               } else {
   //                 msgsArray.push(msgs)
   //               }
@@ -284,7 +318,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   //           }
   //         });
-  //         // console.log('[WS-REQUESTS-MSGS] msgsArray ', msgsArray)
+  //         // this.logger.log('[WS-REQUESTS-MSGS] msgsArray ', msgsArray)
 
 
 
@@ -621,9 +655,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // Join request
   // ------------------------------------------
   joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
-    //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
-    //  console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
-    //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
+    //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
 
     const participantingagentslength = participantingagents.length
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
@@ -729,11 +763,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
   //   const chatTabCount = localStorage.getItem('tabCount')
-  //   console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
+  //   this.logger.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
 
   //   let url = ''
   //   if (chatTabCount && +chatTabCount > 0) {
-  //     console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount > 0 - FOCUS')
+  //     this.logger.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount > 0 - FOCUS')
   //     url = this.CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
   //     // this.focusWin('Tiledesk - Open Source Live Chat')
   //     this.openWindow('Tiledesk - Open Source Live Chat', url)
@@ -827,7 +861,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
       this.allChecked = true;
       for (let request of this.wsRequestsServed) {
-        // console.log('SELECT ALL request ', request)
+        // this.logger.log('SELECT ALL request ', request)
 
 
         const index = this.requests_selected.indexOf(request.request_id);
@@ -841,7 +875,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         if (request['isSelected'] === true) {
           this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ Already selected")
         } else {
-          // console.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
+          // this.logger.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
 
           request['isSelected'] = true
 
@@ -851,7 +885,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
     } else if (e.target.checked == false) {
       for (let request of this.wsRequestsServed) {
-        // console.log('SELECT ALL request ', request)
+        // this.logger.log('SELECT ALL request ', request)
         // const index = this.requests_selected.indexOf(request.request_id);
         if (request.hasOwnProperty('isSelected')) {
           if (request['isSelected'] === true) {
