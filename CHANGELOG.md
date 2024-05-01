@@ -1,8 +1,17 @@
 # tiledesk-dashboard
 
+### 2.6.19
+Deploys in production
+Improves the Community page UI
+
 ### 2.6.18
 - Deploys in production
-- Improves the Community page UI
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management set via DB
+- Other improvements and bug fixing
 
 ### 2.6.17
 - Deploys in production
