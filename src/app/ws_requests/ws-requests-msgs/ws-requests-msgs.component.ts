@@ -407,6 +407,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   REQUEST_EXIST: boolean = true;
   botLogo: string;
   scrollYposition: any;
+  storedRequestId: string
 
   /**
    * Constructor
@@ -3774,6 +3775,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsRequestsService.closeSupportGroup(requestid)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+
+        this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+        if (requestid === this.storedRequestId) {
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
+        }
       },
         (err) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
@@ -5480,7 +5490,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   // Note: on mac keyboard "metakey" matches "cmd"
   //   if (this.CURRENT_USER_ROLE !== 'agent') {
   //     if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
-  //       console.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
+  //       this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
   //       if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
   //         //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
   //         this.chat_message = this.chat_message + "\r\n"

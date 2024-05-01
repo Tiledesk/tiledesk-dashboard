@@ -811,3 +811,29 @@ $f21blue: #039be5;
   left: -40px;
   top: -18px;
 }
+
+.active-row {
+  animation-name: ripple_effect;
+  animation-duration: 3s;
+  animation-iteration-count: 1s;
+
+}
+
+@keyframes ripple_effect {
+  0% {
+    // background-color: #f5f5f5;
+    background-color: rgb(210, 210, 210, 1);
+
+    // transform: scale(0);
+    // opacity: 1;
+  }
+
+  // 80% {
+
+  //   background-color: rgb(245, 245, 245, 0.5);
+  // }
+
+  100% {
+    background-color: rgb(210, 210, 210, 0);
+  }
+}
