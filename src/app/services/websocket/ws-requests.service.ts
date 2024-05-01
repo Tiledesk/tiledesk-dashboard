@@ -1168,14 +1168,15 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   public getBotConversationAttribute(id_request) {
 
-    const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
+    // const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + id_request + '/chatbot/parameters';
     // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
 
     // 'Authorization': this.TOKEN,
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-
+        'Authorization': this.TOKEN,
       }),
     };
     return this._httpClient
