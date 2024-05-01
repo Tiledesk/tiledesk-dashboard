@@ -134,36 +134,36 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   ngOnChanges(changes: SimpleChanges) {
-   this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
-   this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
-    
+    this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+    this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
 
-   if (changes.current_selected_prjct || changes.ws_requests_length && changes.ws_requests_length.previousValue === 0 || changes.ws_requests_length.previousValue === undefined) {
-    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
-    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
-    this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
 
-    if (this.wsRequestsUnserved.length > 0) {
-      this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
-      setTimeout(() => {
-        scrollToWithAnimation(
-          this.scrollEl, // element to scroll
-          'scrollTop', // direction to scroll
-          +this.scrollYposition, // target scrollY (0 means top of the page)
-          500, // duration in ms
-          'easeInOutCirc', 
-          // Can be a name of the list of 'Possible easing equations' or a callback
-          // that defines the ease. # http://gizma.com/easing/
-     
-          () => { // callback function that runs after the animation (optional)
-            this.logger.log('done!')
-            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          }
-        );
-      }, 100);
+    if (changes.current_selected_prjct || changes.ws_requests_length && changes.ws_requests_length.previousValue === 0 || changes.ws_requests_length.previousValue === undefined) {
+      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
+      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
+      this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
 
+      if (this.wsRequestsUnserved.length > 0) {
+        this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
+        setTimeout(() => {
+          scrollToWithAnimation(
+            this.scrollEl, // element to scroll
+            'scrollTop', // direction to scroll
+            +this.scrollYposition, // target scrollY (0 means top of the page)
+            500, // duration in ms
+            'easeInOutCirc',
+            // Can be a name of the list of 'Possible easing equations' or a callback
+            // that defines the ease. # http://gizma.com/easing/
+
+            () => { // callback function that runs after the animation (optional)
+              this.logger.log('done!')
+              this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            }
+          );
+        }, 100);
+
+      }
     }
-  }
 
   }
 
@@ -174,7 +174,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
 
-  
+
 
 
   // -------------------------------------------------------------
@@ -434,6 +434,16 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         .subscribe((data: any) => {
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
+
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - requestid ', requestid);
+
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+  
+          if (requestid === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
           // this.allChecked = false;
           // this.requests_selected = []
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
@@ -575,6 +585,16 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
+
+        this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+        if (request_id === this.storedRequestId) {
+          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
+        }
+
       }, (err) => {
         this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
@@ -582,6 +602,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
 
+        // this.usersLocalDbService.removeFromStorage('last-selection-id')
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS

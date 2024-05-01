@@ -638,7 +638,17 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
+       
+       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+       this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+       if (request_id === this.storedRequestId) {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
+       }
+      
       }, (err) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
@@ -646,7 +656,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         //  NOTIFY ERROR 
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        // this.ngOnInit();
+        
+        
         this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS
@@ -970,6 +981,17 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
+
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
+   
+          if (requestid === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STORAGE storedRequestId ', this.storedRequestId);
+             this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+
 
           // this.allChecked = false;
           // this.requests_selected = []
