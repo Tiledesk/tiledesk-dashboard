@@ -61,6 +61,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   allConversationsaveBeenArchivedMsg: string;
   scrollEl: any;
   scrollYposition: any;
+  storedRequestId: string
 
   /**
    * Constructor
@@ -156,6 +157,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
      
           () => { // callback function that runs after the animation (optional)
             this.logger.log('done!')
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
           }
         );
       }, 100);
@@ -561,6 +563,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages/' + this.scrollEl.scrollTop]);
+    this.usersLocalDbService.setInStorage('last-selection-id', request_id)
   }
 
 
