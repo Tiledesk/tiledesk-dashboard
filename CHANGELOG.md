@@ -2,7 +2,7 @@
 
 ### 2.6.20-rc3
 - Displays, on the Monitor page, after the restore of scroll position an, effect that highlight the row selected
-- Chages the endpoint of the Get request getBotConversationAttribute()
+- Changes the endpoint of the Get request getBotConversationAttribute()
 
 ### 2.6.20-rc2
 - Improves on the "Monitor" page the scroll position restoration
