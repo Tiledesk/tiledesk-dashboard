@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.6.20
+- Implements on the "Monitor" page the scroll position restoration
+- Changes the endpoint of the GET request that retrieve the chatbot attributes
+- Displays, on the "Monitor" page, after restoring the scrolling position, an effect that highlights the previously selected conversation
+
 ### 2.6.19
 - Deploys in production
 - Improves the Community page UI
