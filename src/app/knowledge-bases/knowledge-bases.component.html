@@ -25,12 +25,14 @@
 
 
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
+        <!-- <appdashboard-knowledge-bases-alert [kbsListCount]="kbsListCount" *ngIf="kbsListCount && kbsListCount > kbLimit"> </appdashboard-knowledge-bases-alert> -->
+
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
           <!-- *ngIf="kbsListCount>0" -->
           <div class="add-kb-div">
             <button class="btn btn-new btn-size-m btn--primary pull-right btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-              <span class="">{{ 'KbPage.Add' | translate }} </span>
+              <span class=""> {{ 'KbPage.Add' | translate }} </span>
               <!-- <mat-icon class="icon-big-button">add</mat-icon> -->
             </button>
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">

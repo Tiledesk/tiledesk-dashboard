@@ -14,6 +14,12 @@
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+   
+    <div class="page-title--sidebar-settings"
+        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+        {{ 'ProjectSettings' | translate }}
+    </div>
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
     <ng-container *ngIf="isVisiblePaymentTab">
       <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" class="row">
@@ -190,6 +196,46 @@
                     </div>
                   </div>
 
+                  <!-- ------------------------------------ -->
+                  <!-- Display Support Widget in project -->
+                  <!-- ------------------------------------ -->
+                  <!-- <div class="row" style="margin-top: 44px;margin-bottom: 24px ">
+                    <div class="col-md-6">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+                          Display support widget in project
+                        </span>
+                      </h3>
+                    </div>
+
+                    <!- - SWITCH BUTTON - ->
+                    <div class="col-md-6">
+                      <h3 class="card-title onoffswitch_container_first_line">
+
+                        <div class="onoffswitch">
+                          <input (change)="toggleSupportWidgetVisibility($event)"
+                            [checked]="displaySupportWidget === true" type="checkbox" name="display_support_widget_onoffswitch"
+                            class="onoffswitch-checkbox" id="display_support_widget_onoffswitch">
+                          <label class="onoffswitch-label" for="display_support_widget_onoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
+                      </h3>
+                    </div>
+
+                    <!- - SUBTITLE - ->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p style="margin-top: -10px;">
+                        Hide / Display the support widget in the project</p>
+                    </div>
+                  </div>  -->
+
+
+                  <!-- --------------------------- -->
+                  <!-- Delete ptoject -->
+                  <!-- --------------------------- -->
                   <div class="row">
                     <div class="col-md-12">
                       <h3 class="card_title__underlined" style="margin-top: 30px;">
@@ -972,7 +1018,7 @@
                       <div class="col-xs-12">
                         <button (click)="goToWidgetTestPage()" class="btn btn-primary test-widget-api-btn"
                           style="margin-top:5px; padding:6px 15px ">
-                          {{ "WidgetTest" | translate | translate }}
+                          {{ "WidgetTest" | translate }}
                         </button>
                       </div>
                     </div>
@@ -2197,7 +2243,7 @@
             <div class="row">
               <div class="col-sm-8">
                 <label class="change-card-label" for="expirationDate">{{'ExpirationDate' | translate }}</label>
-                <input #ccExpdate id="cc-exp-date" placeholder="MM / YY" formControlName="expirationDate"
+                <input #ccExpdate id="cc-exp-date" placeholder="MM / YYYY" formControlName="expirationDate"
                   name="expirationDate" type="tel" autocomplete="off" ccExp minlength="7" maxlength="7">
               </div>
               <div class="col-sm-4">

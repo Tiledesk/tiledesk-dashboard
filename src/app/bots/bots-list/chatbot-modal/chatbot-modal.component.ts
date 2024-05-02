@@ -27,9 +27,12 @@ export class ChatbotModalComponent implements OnInit {
     private logger: LoggerService
   ) {
     this.logger.log('[CHATBOT-MODAL] data ', data)
-    if (data && data.projectProfile) {
-      this.logger.log('[CHATBOT-MODAL] id_project ', data.projectProfile)
+    if (data && data.projectProfile && data.chatBotLimit != 0) {
+      this.logger.log('[CHATBOT-MODAL] projectProfile ', data.projectProfile , ' USECASE chatBotLimit ', data.chatBotLimit)
       this.getTranslatedStringChatbotLimitReached(data.projectProfile)
+    } else  if (data && data.projectProfile && data.chatBotLimit == 0) {
+      this.logger.log('[CHATBOT-MODAL] projectProfile ', data.projectProfile , ' USECASE chatBotLimit ', data.chatBotLimit)
+      this.getTranslatedStringChatbotAreNotAvailableInYourCurrentPlan()
     }
     if (data && data.callingPage) { 
       this.callingPage = data.callingPage
@@ -55,6 +58,11 @@ export class ChatbotModalComponent implements OnInit {
       this.trialExpired = data.trialExpired;
       this.logger.log('[CHATBOT-MODAL] trialExpired ', this.trialExpired)
     }
+
+    if (data && data.chatBotLimit) { 
+      this.logger.log('[CHATBOT-MODAL] chatBotLimit ', data.chatBotLimit)
+    }
+    
  
 
     const brand = brandService.getBrand();
@@ -67,6 +75,15 @@ export class ChatbotModalComponent implements OnInit {
 
   getTranslatedStringChatbotLimitReached(projectProfile) {
     this.translate.get('Pricing.ChatbotLimitReached', { plan_name: projectProfile })
+      .subscribe((text: string) => {
+
+        this.chatbotLimitReached = text;
+        this.logger.log('+ + + ChatbotLimitReached', text)
+      });
+  }
+
+  getTranslatedStringChatbotAreNotAvailableInYourCurrentPlan() {
+    this.translate.get('Pricing.ChatbotsNotAvailableWithCurrentPlan')
       .subscribe((text: string) => {
 
         this.chatbotLimitReached = text;

@@ -4,8 +4,19 @@
   App Store
 </p>
 
+
+
 <div class="main-content">
-  <div class="container-fluid">
+
+  <div class="row app-alert" *ngIf="areActivePay">
+    <div class="col-md-12"> 
+  
+      Are you looking for the <span class="link-to-integrations" (click)="goToWhatsapp()"> Whatsapp</span> , <span class="link-to-integrations"  (click)="goToMessenger()"> Facebook Messenger</span> or <span class="link-to-integrations" (click)="goToTelegram()">Telegram</span> app? Check out the new <span class="link-to-integrations" (click)="goToIntegrations()">Integrations</span> section
+    </div>
+  
+  </div>
+  
+  <div class="container-fluid" style="margin-top: 25px;">
 
     <!-- <div class="row">
 
@@ -274,9 +285,8 @@
       <!-- -------------------------------------------------------------------- -->
       <!-- @ App cards -->
       <!-- -------------------------------------------------------------------- -->
-      
-      <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer"
-        [ngClass]="{'hide-paid-app': areVisiblePaidApps === false  && (app.title === 'WhatsApp Business' || app.title === 'Facebook Messenger' || app.title === 'Help Center') }">
+      <!-- [ngClass]="{'hide-paid-app': areVisiblePaidApps === false  && (app.title === 'WhatsApp Business' || app.title === 'Facebook Messenger' || app.title === 'Help Center') }" -->
+      <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer" >
         <div class="card card-app-store" >
 
           <div class="card-content">
@@ -533,7 +543,7 @@
 
             <div class="row" style="display: block;">
 
-              <div class="col-xs-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
+              <div *ngIf="hideExternalChatbotLeranMore"  class="col-xs-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
@@ -541,7 +551,7 @@
 
 
 
-              <div class="col-xs-6 app-store-right-col-btn" (click)="createExternalBot('external')">
+              <div [ngClass]="{'col-xs-6': hideExternalChatbotLeranMore, 'col-xs-12': !hideExternalChatbotLeranMore }" class="app-store-right-col-btn" (click)="createExternalBot('external')">
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>

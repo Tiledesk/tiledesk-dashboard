@@ -461,7 +461,11 @@ button.close {
 
 // Nk addded
 .nav>li>a:hover {
-  background-color: unset!important;
+  background-color: unset !important;
+}
+
+.nav>li>a:focus {
+  background-color: unset !important;
 }
 
 #sidebar_wrapper>div>ul>li:hover>a {
@@ -474,7 +478,7 @@ button.close {
 }
 
 #sidebar_wrapper>div>ul>li:hover>#home-btn>i {
-  color: #a9afbb !important; 
+  color: #a9afbb !important;
   background-color: transparent !important;
 }
 

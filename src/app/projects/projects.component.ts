@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, HostListener, OnDestroy, AfterContentInit } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
@@ -80,6 +80,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
   prjct_profile_name: string;
+  DISPLAY_PROJECT_ID: boolean = false;
 
   constructor(
     private projectService: ProjectService,
@@ -94,6 +95,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     public wsRequestsService: WsRequestsService,
     private logger: LoggerService,
     private translate: TranslateService,
+    private route: ActivatedRoute
   ) {
     const brand = brandService.getBrand();
 
@@ -127,6 +129,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     // this.getStorageBucket();
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
+    this.getRouteParams();
   }
 
   ngAfterContentInit(): void {
@@ -152,6 +155,18 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  getRouteParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
+      if (params.showid) {
+        this.logger.log('[PROJECTS] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.showid)
+        if (params.showid === 'y') {
+          this.DISPLAY_PROJECT_ID = true;
+        }
+      }
+    });
   }
 
   getLoggedUserAndCheckProfilePhoto() {

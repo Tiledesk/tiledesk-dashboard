@@ -290,7 +290,7 @@ export class MessagesStatsModalComponent implements OnInit {
         }]
       })
     }, (error) => {
-      console.error('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - ERROR ', error);
+      this.logger.error('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - ERROR ', error);
       this.showSpinner = false
     }, () => {
       this.logger.log('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - * COMPLETE * ');

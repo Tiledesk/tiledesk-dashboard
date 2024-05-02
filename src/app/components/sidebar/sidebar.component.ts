@@ -36,6 +36,7 @@ import { KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 
 declare const $: any;
 
@@ -73,7 +74,7 @@ declare interface RouteInfo {
 export class SidebarComponent implements OnInit, AfterViewInit {
 
   // tparams = brand;
- 
+
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
   tparams: any;
   sidebarLogoWhite_Url: string;
@@ -185,15 +186,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
+  CONV_DEMO_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
+  CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
-    // Chatbot sidebar
+  BOTS_DEMO_ROUTE_IS_ACTIVE: boolean;
+  // Chatbot sidebar
   MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
@@ -203,6 +207,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
+
 
 
   prjct_profile_name: string;
@@ -249,6 +254,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   companyName: string;
   dialogRef: MatDialogRef<any>;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  areVisibleChatbot: boolean;
 
   constructor(
     private router: Router,
@@ -269,7 +275,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private sanitizer: DomSanitizer,
     private faqKbService: FaqKbService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private prjctPlanService: ProjectPlanService,
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -279,7 +286,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (brand) {
       this.companyLogoNoText = brand['COMPANY_LOGO_NO_TEXT'];
       this.companySiteUrl = brand["COMPANY_SITE_URL"]
-      this.companyName = brand["COMPANY_NAME"] 
+      this.companyName = brand["COMPANY_NAME"]
     }
   }
 
@@ -309,13 +316,87 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.listenSoundPreference();
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
-    
+    // this.getProjectPlan()
+    this.getBaseUrlAndThenProjectPlan()
+  }
+
+  getBaseUrlAndThenProjectPlan() {
+    const href = window.location.href;
+
+    // For test in local host
+    // const href= "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
+
+    this.logger.log('[SIDEBAR] href ', href)
+
+    const hrefArray = href.split('/#/');
+    const dshbrdBaseUrl = hrefArray[0]
+
+    this.logger.log('[SIDEBAR] dshbrdBaseUrl ', dshbrdBaseUrl)
+    this.logger.log('[SIDEBAR]  dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
+
+    if (dshbrdBaseUrl.includes('tiledesk.com')) {
+      this.areVisibleChatbot = true;
+    }
+
+    if (!dshbrdBaseUrl.includes('tiledesk.com')) {
+      this.getProjectPlan()
+    }
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[SIDEBAR] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
+          this.manageChatbotVisibility(projectProfileData)
+        }
+      }, error => {
+
+        this.logger.error('[SIDEBAR] - getProjectPlan - ERROR', error);
+      }, () => {
+        this.logger.log('[SIDEBAR] - getProjectPlan * COMPLETE *')
+      });
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+    if (projectProfileData['customization']) {
+      this.logger.log('[SIDEBAR] USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[SIDEBAR] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      //this.logger.log('[SIDEBAR] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'], ' areVisibleChatbot ', this.areVisibleChatbot)
+
+    } else if (projectProfileData['customization'] === undefined) {
+      //this.logger.log('[SIDEBAR] USECASE C customization is  ', projectProfileData['customization'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE C customization is  ', projectProfileData['customization'], ' areVisibleChatbot ', this.areVisibleChatbot)
+
+    }
   }
 
 
-  presentDialogResetBusy(){
+
+
+  presentDialogResetBusy() {
     this.logger.log('[SIDEBAR] presentDialogResetBusy ')
-    if(this.dialogRef) {
+    if (this.dialogRef) {
       this.dialogRef.close();
       return
     }
@@ -324,7 +405,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       data: {
-       
+
       },
     });
 
@@ -618,6 +699,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.isVisibleINT = true;
         }
       }
+
+
+
     });
 
     if (!this.public_Key.includes("INT")) {
@@ -654,7 +738,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getCurrentRoute() {
     this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationEnd) {
-        this.logger.log('[SIDEBAR] NavigationEnd event.url' , event.url.substring(event.url.lastIndexOf('/') + 1)) 
+        this.logger.log('[SIDEBAR] NavigationEnd event.url', event.url.substring(event.url.lastIndexOf('/') + 1))
         if (event.url.indexOf('/request-for-panel') !== -1) {
           this.IS_REQUEST_FOR_PANEL_ROUTE = true;
           // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
@@ -842,7 +926,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
         }
-       
+
         // Chatbot sidebar
         if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
@@ -852,7 +936,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1 ) {
+        if (event.url.indexOf('/bots-demo') !== -1) {
+          this.BOTS_DEMO_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.BOTS_DEMO_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
           this.MY_BOTS_IS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
         } else {
@@ -860,7 +952,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1 ) {
+        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
           this.MY_BOTS_CS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
         } else {
@@ -868,7 +960,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/all') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/all') !== -1) {
           this.TMPLT_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
         } else {
@@ -876,7 +968,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/community') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/community') !== -1) {
           this.TMPLT_CMNT_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
         } else {
@@ -884,7 +976,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/increase-sales') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/increase-sales') !== -1) {
           this.TMPLT_IS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
         } else {
@@ -892,7 +984,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1) {
           this.TMPLT_CS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
         } else {
@@ -997,6 +1089,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/wsrequests-demo') !== -1) {
+          this.CONV_DEMO_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONV_DEMO_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+
+
         if (event.url.indexOf('/contact/edit/') !== -1) {
           this.CONTACT_EDIT_ROUTE_IS_ACTIVE = true;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
@@ -1012,6 +1114,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/contacts-demo') !== -1) {
+          this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+
 
         if (event.url.indexOf('/integrations') !== -1) {
           this.INTEGRATIONS_ROUTE_IS_ACTIVE = true;
@@ -1045,8 +1157,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
+
+
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
-        if(event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre' ) {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
           this.OLD_KB_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         } else {
@@ -1065,7 +1179,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
 
-        
+
       }
     });
   }
@@ -1446,20 +1560,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
-      if( kbSettings && kbSettings.kbs) {
+      if (kbSettings && kbSettings.kbs) {
         if (kbSettings.kbs.length === 0) {
           this.kbService.areNewwKb(true)
-        } else if  (kbSettings.kbs.length > 0) {
+        } else if (kbSettings.kbs.length > 0) {
           this.kbService.areNewwKb(false)
         }
 
+      } else {
+        this.kbService.areNewwKb(true)
       }
-     
+
     }, (error) => {
       this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
     }, () => {
       this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
-    
+
     })
   }
 
@@ -1712,10 +1828,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   goToAllMyChatbot() {
     this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    // if (this.areVisibleChatbot) {
+    //   this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    // } else {
+    //   this.router.navigate(['/project/' + this.projectId + '/bots-demo']);
+    // }
   }
-
-
-
 
   goToWidgetSetUpOrToCannedResponses() {
     if (this.USER_ROLE !== 'agent') {

@@ -64,6 +64,7 @@ export class GroupEditAddComponent implements OnInit {
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   isChromeVerGreaterThan100: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -92,6 +93,14 @@ export class GroupEditAddComponent implements OnInit {
     this.getCurrentProject();
     this.getProfileImageStorage();
     this.getBrowserVersion();
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[GROUP-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getBrowserVersion() {

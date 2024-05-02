@@ -734,6 +734,29 @@ export class ProjectService {
     })
     return promise;
   }
+
+   // --------------------------------------------------------------------------------------
+  // ENABLE/DISABLE WIDGET VISIBILITY - IS IN THE TAB GENERAL OF PROJECT SETTINGS
+  // --------------------------------------------------------------------------------------
+  enableDisableSupportWidgetVisibility(status) {
+    let promise = new Promise((resolve, reject) => {
+
+      // console.log("[PROJECT-SERV] ENABLE/DISABLE WIDGET VISIBILITY status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.displayWidget": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
   // --------------------------------------------------------------------------------------
   // ENABLE/DISABLE UNASSIGNED NOTIFICATION - IS IN THE TAB NOTIFICATION OF PROJECT SETTINGS
   // --------------------------------------------------------------------------------------

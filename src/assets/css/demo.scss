@@ -1214,6 +1214,21 @@ span.navbar-brand-title {
   margin-left: 4px;
 }
 
+.page-title--sidebar-settings{
+  position: absolute;
+  top: 21px;
+  z-index: 1050;
+  font-size: 18px;
+}
+
+.page-title--sidebar-settings_opened {
+  left: 253px;
+}
+
+.page-title--sidebar-settings_closed {
+  left: 78px;
+}
+
 .tag-input-wrap .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: rgba(0, 0, 0, 0.87) !important;
 }

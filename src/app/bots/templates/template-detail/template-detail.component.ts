@@ -274,7 +274,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     // }
 
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
@@ -282,7 +282,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
           this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
+      } else if (this.chatBotLimit === null) {
         this.logger.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
         this.forkTemplate()
       }
@@ -305,7 +305,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
       },
     });
 

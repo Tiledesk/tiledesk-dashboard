@@ -102,7 +102,7 @@
       </li>
 
 
-      <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE}"
+      <li *ngIf="displayChatbotsCommunity" class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE}"
         (click)="goToBotCommunityTemplates()">
 
         <a class="sidebar-item">
@@ -134,7 +134,7 @@
         </a>
 
       </li>
-      <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE}"
+      <li *ngIf="displayTemplatesCategory" class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE}"
         (click)="goToBotIncreaseSalesTemplates()">
         <a class="sidebar-item">
           <!-- <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
@@ -154,7 +154,7 @@
 
       </li>
 
-      <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}"
+      <li *ngIf="displayTemplatesCategory" class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}"
         (click)="goToBotCustomerSatisfactionTemplates()">
         <a class="sidebar-item">
           <!-- <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px" viewBox="0 0 24 24"
@@ -185,7 +185,8 @@
     <!-- -------------------------------------------------------- -->
     <!--  @ Knowledge Bases  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="ARE_NEW_KB == true">
+    
+    <ng-container *ngIf="ARE_NEW_KB == true && isVisibleKNB">
       <li class="sidebar-item-wpr-no-link" style="margin-top: 16px;">
         <a class="sidebar-item-no-link">
           KNOWLEDGE BASE

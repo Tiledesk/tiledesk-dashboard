@@ -2874,6 +2874,8 @@ img {
   margin-top: 0px;
   // background: rgb(241, 245, 249);
   background: #fcfcfc;
+  min-height: calc(100% - 70px) !important;
+
 }
 
 .home-blocks-wpr {

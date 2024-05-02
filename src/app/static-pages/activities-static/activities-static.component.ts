@@ -5,7 +5,6 @@ import { AuthService } from '../../core/auth.service';
 // import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
@@ -22,7 +21,7 @@ const swal = require('sweetalert');
   templateUrl: './activities-static.component.html',
   styleUrls: ['./activities-static.component.scss']
 })
-// extends StaticPageBaseComponent
+
 export class ActivitiesStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME

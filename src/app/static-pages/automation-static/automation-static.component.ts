@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -19,7 +18,7 @@ import { Location } from '@angular/common';
   templateUrl: './automation-static.component.html',
   styleUrls: ['./automation-static.component.scss']
 })
-// extends StaticPageBaseComponent 
+
 export class AutomationStaticComponent extends PricingBaseComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
   public_Key: any

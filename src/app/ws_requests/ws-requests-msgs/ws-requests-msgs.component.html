@@ -808,9 +808,9 @@
                               </svg>
                             </div>
                           </div>
-                          <!-- style="left: -48px;" -->
+                          <!-- style="left: -48px;"  [ngStyle]="{'left':CHAT_PANEL_MODE === false ? '0px' : '-32px;' }"-->
                           <div class="dropdown__menu-form"
-                            [ngStyle]="{'left':CHAT_PANEL_MODE === false ? '0px' : '-48px;' }">
+                            [ngClass]="{'dropdown__menu-form-chat-mode': CHAT_PANEL_MODE === true}">
                             <div id="edit-fullname-content-form" class="dropdown__content-form">
                               <form id="edit-fullname-form" class="contact-form">
                                 <div #editFullnameDropdown id="edit-fullname-input-wrapper" class="input-wrapper">

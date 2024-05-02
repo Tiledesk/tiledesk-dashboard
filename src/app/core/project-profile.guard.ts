@@ -77,6 +77,12 @@ export class ProjectProfileGuard implements CanActivate {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
 
+        if ((planName !== PLAN_NAME.C && planName !== PLAN_NAME.F && url.indexOf('/email') !== -1)) {
+          this.userIsAuthorized = false;
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+        }
+
 
         // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
@@ -168,8 +174,8 @@ export class ProjectProfileGuard implements CanActivate {
         //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
         // }
 
-        // PLAN D (Basic) UNAUTHORIZED TO email ticketing
-        if ( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) {
+        // PLAN D (Basic) + PLAN E (Premium) UNAUTHORIZED TO email ticketing
+        if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1)) {
           this.userIsAuthorized = false;
           this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
         }
@@ -200,11 +206,11 @@ export class ProjectProfileGuard implements CanActivate {
         if ((planName === PLAN_NAME.B && url.indexOf('/groups') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/groups') !== -1)) {
           this.userIsAuthorized = true;
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email groups', url.indexOf('/groups') !== -1);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS  groups', url.indexOf('/groups') !== -1);
 
         }
         // else {
-        //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email groups', url.indexOf('/groups') !== -1);
+        //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS  groups', url.indexOf('/groups') !== -1);
         // }
 
         // PLAN B and PLAN C AUTHORIZED TO ANALYTICS
@@ -239,6 +245,11 @@ export class ProjectProfileGuard implements CanActivate {
       } else if (isActiveSubscription === false) {
         // console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
         this.userIsAuthorized = false;
+
+        if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.F && url.indexOf('/email') !== -1)) {
+          this.userIsAuthorized = false;
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+        }
 
         // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }

@@ -189,7 +189,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
-  showsNewsFeedSkeleton : boolean = true;
+  showsNewsFeedSkeleton: boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
   displayNewsAndDocumentation: string;
@@ -212,6 +212,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     { pos: 8, type: 'child8' }
   ];
 
+  areVisibleChatbot: boolean;
 
   constructor(
     public auth: AuthService,
@@ -284,8 +285,58 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.localDbService.removeFromStorage('swg')
       // console.log('[SIGN-UP] removeFromStorage swg')
     }
-
+    this.getProjectPlan()
   }
+
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[SIDEBAR] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
+          this.manageChatbotVisibility(projectProfileData)
+        }
+      }, error => {
+
+        this.logger.error('[SIDEBAR] - getProjectPlan - ERROR', error);
+      }, () => {
+        this.logger.log('[SIDEBAR] - getProjectPlan * COMPLETE *')
+      });
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+
+    if (projectProfileData['customization']) {
+      this.logger.log('[WIDGET-SET-UP] USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[HOME] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[HOME] USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[HOME] USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      this.logger.log('[HOME] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[HOME] USECASE C customization is  ', projectProfileData['customization'] )
+      this.areVisibleChatbot = true;
+
+    }
+  }
+
+
 
   ngAfterViewInit() {
     if (!isDevMode()) {
@@ -325,7 +376,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           this.findCurrentProjectAmongAll(this.projectId)
-          this.getProjectById(this.projectId);
+          // this.getProjectById(this.projectId);
           this.getProjectBots();
           this.init()
         }
@@ -360,7 +411,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
-    
+
     });
   }
 
@@ -374,7 +425,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showskeleton = false;
       this.delayNewsFeedSkeleton()
 
-      
+
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
@@ -384,10 +435,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   delayNewsFeedSkeleton() {
-     setTimeout(() => {
-        this.showsNewsFeedSkeleton = false;
-        // console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
-      }, 500);
+    setTimeout(() => {
+      this.showsNewsFeedSkeleton = false;
+      // console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+    }, 500);
   }
 
 
@@ -405,7 +456,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getDashlet(project_attributes) {
-    this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
+    // console.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
@@ -461,7 +512,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
       // this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
-      // this.logger.log('[HOME] getProjects By id project', project);
+      // console.log('[HOME] getProjects findCurrentProjectAmongAll projects ', projects);
       if (projects) {
         this.projects = projects;
 
@@ -477,6 +528,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
       if (this.current_prjct) {
         this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
+        const project = this.current_prjct.id_project
+        if (project && project.attributes && project.attributes.dashlets) {
+          this.PROJECT_ATTRIBUTES = project.attributes;
+          this.getDashlet(this.PROJECT_ATTRIBUTES)
+        }
+
+        if (project && project.attributes && project.attributes.userPreferences) {
+          this.PROJECT_ATTRIBUTES = project.attributes;
+          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
+
+        } else {
+          this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
+          this.setDefaultPreferences()
+        }
       }
 
 
@@ -826,7 +891,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    // console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
@@ -1413,7 +1478,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.userHasUnistalledWa === false) {
                 this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-                 
+
                   this.installApp();
 
                 }
@@ -1468,7 +1533,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        
+
         // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
         return false
       } else {

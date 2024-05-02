@@ -1,0 +1,23 @@
+
+.content {
+    padding: 2px;
+    height: calc(100vh - 158px);
+    // display: flex;
+    position: relative;
+}
+
+.custom-spinner {
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    background: white;
+    top: 0;
+    bottom: 0;
+}
+
+iframe {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}

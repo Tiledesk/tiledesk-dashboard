@@ -65,7 +65,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-  displayInviteTeammateBtn: string;
+  displayInviteTeammateBtn: boolean;
 
 
   yourTrialHasEnded: string;
@@ -387,8 +387,10 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
 
   goToTeammates() {
-    this.logger.log('[HOME-CREATE-TEAMMATE] - goToTeammates clicked')
-    this.router.navigate(['project/' + this.projectId + '/users'])
+    if (this.USER_ROLE !== 'agent') {
+      this.logger.log('[HOME-CREATE-TEAMMATE] - goToTeammates clicked')
+      this.router.navigate(['project/' + this.projectId + '/users'])
+    }
   }
 
   inviteTeammate() {
@@ -399,7 +401,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
         if (this.prjct_profile_type === 'free') {
           this.notify.displayGoToPricingModal('user_exceeds')
         } else {
-          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed')
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan()
@@ -613,7 +615,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   openModalTrialExpired() {
     if (this.USER_ROLE === 'owner') {
-      this.notify.displayTrialHasExpiredModal(this.projectId,this.yourTrialHasEnded, this.upgradeNowToKeepOurAmazingFeatures, this.upgrade);
+      this.notify.displayTrialHasExpiredModal(this.projectId, this.yourTrialHasEnded, this.upgradeNowToKeepOurAmazingFeatures, this.upgrade);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
@@ -626,19 +628,19 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   translateString() {
     this.translateModalOnlyOwnerCanManageProjectAccount()
     this.translate.get('Pricing.YourTrialHasEnded')
-    .subscribe((translation: any) => {
-      this.yourTrialHasEnded = translation;
-    });
+      .subscribe((translation: any) => {
+        this.yourTrialHasEnded = translation;
+      });
 
     this.translate.get('Pricing.UpgradeNowToKeepOurAmazingFeatures')
-    .subscribe((translation: any) => {
-      this.upgradeNowToKeepOurAmazingFeatures = translation;
-    });
+      .subscribe((translation: any) => {
+        this.upgradeNowToKeepOurAmazingFeatures = translation;
+      });
 
     this.translate.get('Upgrade')
-    .subscribe((translation: any) => {
-      this.upgrade = translation;
-    });
+      .subscribe((translation: any) => {
+        this.upgrade = translation;
+      });
 
   }
   translateModalOnlyOwnerCanManageProjectAccount() {

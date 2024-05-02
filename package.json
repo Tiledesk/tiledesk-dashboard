@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.6.7",
+  "version": "2.6.20-rc3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -81,6 +81,7 @@
     "roboto-fontface": "^0.10.0",
     "rxjs": "^6.5.4",
     "sass": "^1.54.9",
+    "scrollto-with-animation": "^3.0.4",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.10.6",
     "terser": "^5.15.0",

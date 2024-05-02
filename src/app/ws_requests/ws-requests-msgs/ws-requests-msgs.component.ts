@@ -220,7 +220,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
 
-  CHAT_PANEL_MODE: boolean // = true; // nk for test change color
+  CHAT_PANEL_MODE: boolean  // = true; // Nikola for test change color
   dshbrdBaseUrl: string;
   project_name: string;
 
@@ -406,6 +406,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   mailtoBody: any;
   REQUEST_EXIST: boolean = true;
   botLogo: string;
+  scrollYposition: any;
 
   /**
    * Constructor
@@ -711,7 +712,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] params', params)
+      this.logger.log('[WS-REQUESTS-MSGS] params', params)
+
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition
+      }
 
       if (params.isopenadvancedsearch) {
         this.isOpenedAdvancedSearch = params.isopenadvancedsearch
@@ -723,6 +728,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl',    this.previousUrl)
       }
 
       if (params.calledby === '2') {
@@ -744,7 +750,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goBack() {
     if (this.previousUrl === 'wsrequests') {
+      if(!this.scrollYposition) { 
       this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+    } else if(this.scrollYposition) { 
+      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
+    }
       // && this.hasSearchedBy
 
       // Called by history with advanced search options opened 
@@ -1241,7 +1251,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
-      // this.CHAT_PANEL_MODE = true; // nk for test change color
+
       this.CHAT_PANEL_MODE = false;
       // this.CHAT_PANEL_MODE = true; // Nikola to test chat mode
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
@@ -2286,7 +2296,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] members_array', this.members_array)
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
-          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants , 'this.currentUserID ', this.currentUserID)
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants, 'this.currentUserID ', this.currentUserID)
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
         }
@@ -4631,7 +4641,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goToContactDetails() {
-    this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+    if (this.CHAT_PANEL_MODE === false) {
+      this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+    }
   }
 
   openContactDetailsInNewWindow() {
@@ -5463,21 +5475,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    // Note: on mac keyboard "metakey" matches "cmd"
-    if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
-      this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
-      if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
-        //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
-        this.chat_message = this.chat_message + "\r\n"
-        this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-      }
-    }
+  // @HostListener('document:keydown', ['$event'])
+  // handleKeyboardEvent(event: KeyboardEvent) {
+  //   // Note: on mac keyboard "metakey" matches "cmd"
+  //   if (this.CURRENT_USER_ROLE !== 'agent') {
+  //     if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
+  //       console.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
+  //       if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
+  //         //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
+  //         this.chat_message = this.chat_message + "\r\n"
+  //         this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+  //       }
+  //     }
 
-    this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement)
-    this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight)
-  }
+  //     this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement)
+  //   this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight)
+  //   }
+  // }
 
   onChangeReplyType(selectedResponseTypeID) {
     // this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)

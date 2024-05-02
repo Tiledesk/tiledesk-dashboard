@@ -53,7 +53,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   USER_ROLE: string;
   public_Key: string;
   isVisiblePAY: boolean;
-  areVisiblePaidApps: boolean;
+  // areVisiblePaidApps: boolean = false;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
@@ -65,6 +65,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   project: any;
   callingPage: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  hideExternalChatbotLeranMore: boolean
+
   public chatBotCount: any;
   constructor(
     public appStoreService: AppStoreService,
@@ -84,6 +86,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.hideExternalChatbotLeranMore = brand['DOCS'];
 
   }
 
@@ -206,29 +209,29 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         }
       }
 
-      if (key.includes("DPA")) {
+      // if (key.includes("DPA")) {
 
-        let paidApps = key.split(":");
+      //   let paidApps = key.split(":");
 
-        if (paidApps[1] === "F") {
-          this.areVisiblePaidApps = false;
-          this.logger.log('APP-STORE areVisiblePaidApps ',this.areVisiblePaidApps) 
-        } else {
-          this.areVisiblePaidApps = true;
-          this.logger.log('APP-STORE areVisiblePaidApps ',this.areVisiblePaidApps) 
-        }
-      }
+      //   if (paidApps[1] === "F") {
+      //     this.areVisiblePaidApps = false;
+      //     this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
+      //   } else {
+      //     this.areVisiblePaidApps = true;
+      //     this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
+      //   }
+      // }
 
-      
+
     });
 
 
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePAY = false;
     }
-    if (!this.public_Key.includes("DPA")) {
-      this.areVisiblePaidApps = false;
-    }
+    // if (!this.public_Key.includes("DPA")) {
+    //   this.areVisiblePaidApps = false;
+    // }
   }
 
   getCurrentProject() {
@@ -268,21 +271,18 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.logger.log('APP-STORE - getApps APPS ', this.apps);
 
 
-      const paidApps = [
-        {
-          title: "WhatsApp Business"
-        },
-        {
-          title: "Facebook Messenger"
-        },
-        {
-          title: "Help Center"
-        }
-      ]
+
+      // 'Help Center'
+      let paidApps = ['WhatsApp Business', 'Facebook Messenger', 'Telegram']
+      this.apps = this.apps.filter(x => !paidApps.includes(x.title));
+      this.logger.log('APP-STORE - getApps APPS ', this.apps)
+
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
         return object.title === "Send transcript by email";
       });
+
+
 
       this.logger.log('sendTranscriptAppIndex ', sendTranscriptAppIndex);
       if (sendTranscriptAppIndex > -1) {
@@ -290,13 +290,13 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       }
 
       this.apps.forEach(app => {
-        this.logger.log('APP-STORE - getApps APPS app ', app )
+        this.logger.log('APP-STORE - getApps APPS app ', app)
 
 
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
-        
+
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
             // this.logger.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)
@@ -696,13 +696,13 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.showSpinner = false;
     }, () => {
       this.logger.log('[APP-STORE] GET BOTS COMPLETE');
-  
+
     });
   }
 
 
   createExternalBot(type: string) {
-   console.log('[APP-STORE] createExternalBot ', type)
+    this.logger.log('[APP-STORE] createExternalBot ', type)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
@@ -721,7 +721,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     }
   }
 
- 
+
 
   goToCreateBot(type: string) {
     //  this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
@@ -746,7 +746,9 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
+
       },
     });
 
@@ -767,7 +769,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   // Modals
   // -----------------------------
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    this.logger.log( 'presentModalFeautureAvailableFromTier2Plan' , planName)
+    this.logger.log('presentModalFeautureAvailableFromTier2Plan', planName)
     const el = document.createElement('div')
     el.innerHTML = planName //this.featureAvailableFromBPlan
     // swal({
@@ -819,7 +821,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       html: el,
-      icon: "info",      
+      icon: "info",
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.upgradePlan,
@@ -931,13 +933,13 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.learnMoreAboutDefaultRoles = translation;
       });
 
-      this.translate
+    this.translate
       .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
         this.onlyOwnerCanManageTheAccountPlanMsg = translation
       })
 
-      this.translate
+    this.translate
       .get('AgentsCannotManageChatbots')
       .subscribe((translation: any) => {
         this.agentsCannotManageChatbots = translation
@@ -980,6 +982,22 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     this.translate.get('Done').subscribe((text: string) => {
       this.done_msg = text;
     });
+  }
+
+  goToWhatsapp() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })
+  }
+
+  goToMessenger() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'messenger' } })
+  }
+
+  goToTelegram() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'telegram' } })
+  }
+
+  goToIntegrations() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ])
   }
 
 }

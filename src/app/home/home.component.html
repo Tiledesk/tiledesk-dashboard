@@ -312,8 +312,8 @@
 
           <!-- // Skeleton START   -->
           <div *ngIf="showskeleton" class="skeleton">
-
-            <div class="first-card is-loading">
+            <!-- *ngIf="areVisibleChatbot" -->
+            <div  class="first-card is-loading">
               <div class="fake--circle"></div>
               <div class="fake--box"></div>
               <div class="sm--fake--box"></div>
@@ -426,7 +426,7 @@
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
               <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
-              <home-cds 
+              <home-cds *ngIf="areVisibleChatbot"
                 (goToCreateChatbot)="goToCreateChatbot()" 
                 [chatbots] = "chatbots"> </home-cds>
 
@@ -483,7 +483,7 @@
                 <!-- ----------------------- -->
                 <!-- Child 5 Create Chatbot -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child5'">
+                <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
                     [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
                     [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
@@ -523,19 +523,18 @@
             <span *ngIf="USER_ROLE === 'agent'">
               <div class="home--blocks">
 
-                <!-- *ngIf="displayAnalyticsConvsGraph" -->
-                <!-- style="min-width: 834px; display: block;" -->
-                <appdashboard-home-convs-graph *ngIf="isVisibleANA"
+               
+                <!-- <appdashboard-home-convs-graph *ngIf="isVisibleANA"
                   [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
                   [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-convs-graph>
+                </appdashboard-home-convs-graph> -->
 
-                <!-- *ngIf="displayAnalyticsIndicators" -->
-                <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
+               
+                <!-- <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
                   [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-analytics-indicator>
+                </appdashboard-home-analytics-indicator> -->
 
-                <!-- *ngIf="displayInviteTeammate" -->
+                
                 <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
 
                 <appdashboard-home-go-to-chat></appdashboard-home-go-to-chat>
@@ -546,7 +545,7 @@
           </ng-container>
         </div>
 
-        <ng-container *ngIf="displayNewsAndDocumentation"> 
+        <ng-container *ngIf="displayNewsAndDocumentation && USER_ROLE !== 'agent'"> 
           <div *ngIf="!showsNewsFeedSkeleton" class="news-feed-wpr">
             <!-- [showskeleton]="showskeleton" -->
             <appdashboard-home-news-feed *ngIf="displayNewsFeed"></appdashboard-home-news-feed>

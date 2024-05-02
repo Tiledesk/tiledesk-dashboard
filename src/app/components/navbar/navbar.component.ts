@@ -40,7 +40,7 @@ import { ThemePalette} from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
-import { APP_SUMO_PLAN_NAME, PLANS_LIST, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, PLANS_LIST ,PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 
 const swal = require('sweetalert');
 
@@ -162,6 +162,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tlangparams: any;
 
   // QUOTES
+  isVisibleQuoteBtn: boolean;
+  isVisiblePay: boolean
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
   requests_count = 0;
@@ -417,7 +419,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
 
         this.currentUserId = this.user._id;
-        this.getProjects();
+        // this.getProjects();
       }
     });
   }
@@ -539,16 +541,52 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
         }
       }
+
+      if (key.includes("QIN")) {
+        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
+        let qt = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+        if (qt[1] === "F") {
+          this.isVisibleQuoteBtn = false;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        } else {
+          this.isVisibleQuoteBtn = true;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        }
+      }
+
+      if (key.includes("PAY")) {
+        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+        if (pay[1] === "F") {
+          this.isVisiblePay = false;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        } else {
+          this.isVisiblePay = true;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        }
+      }
+
+      
     });
 
     if (!this.public_Key.includes("MTT")) {
       this.MT = false;
       // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
     }
+    if (!this.public_Key.includes("QIN")) {
+      this.isVisibleQuoteBtn = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn', this.isVisibleQuoteBtn);
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePay = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisiblePay', this.isVisiblePay);
+    }
   }
 
   getProjects() {
-    this.logger.log('[NAVBAR] calling getProjects ... ');
+    // console.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
 

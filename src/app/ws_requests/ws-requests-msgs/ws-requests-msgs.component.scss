@@ -3679,6 +3679,10 @@ span .conv-svg-icon {
   z-index: 20;
 }
 
+.dropdown__menu-form-chat-mode {
+  left: -37px !important;
+}
+
 .dropdown__content-form {
   background-color: var(--conv-details-edit-contact-fullname-form-background-color);
   border-radius: var(--conv-details-edit-contact-fullname-form-border-radius);

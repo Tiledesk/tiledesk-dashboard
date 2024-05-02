@@ -92,7 +92,7 @@ export class ProjectPlanService {
 
 
   getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish(calledBy) {
-    this.logger.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called', calledBy);
+    this.logger.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called by)', calledBy);
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
@@ -142,7 +142,8 @@ export class ProjectPlanService {
       this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      // console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      
      
       if (current_prjct) {
         const projectPlanData: Project = {
@@ -152,6 +153,9 @@ export class ProjectPlanService {
           createdAt: current_prjct.id_project.createdAt,
           profile_name: current_prjct.id_project.profile['name'],
           profile_agents: current_prjct.id_project.profile['agents'],
+          // profile_chatbots: current_prjct.id_project.profile['quote']['chatbots'],
+          profile_chatbots: current_prjct.id_project.profile['quotes'] ? current_prjct.id_project.profile['quotes']['chatbots'] : null,
+          profile_kbs: current_prjct.id_project.profile['quotes'] ? current_prjct.id_project.profile['quotes']['kbs'] : null,
           trial_days: current_prjct.id_project.profile['trialDays'],
           trial_days_left: current_prjct.id_project.trialDaysLeft,
           trial_expired: current_prjct.id_project.trialExpired,
@@ -161,8 +165,11 @@ export class ProjectPlanService {
           subscription_end_date: current_prjct.id_project.profile['subEnd'],
           subscription_id: current_prjct.id_project.profile['subscriptionId'],
           subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
+          extra1: current_prjct.id_project.profile['extra1'],
+          extra2: current_prjct.id_project.profile['extra2'],
           extra3: current_prjct.id_project.profile['extra3'],
           extra4: current_prjct.id_project.profile['extra4'],
+          customization: current_prjct.id_project.profile['customization'],
           user_role: current_prjct.role,
           payActive: this.areActivePay
         }
@@ -201,56 +208,56 @@ export class ProjectPlanService {
     })
   }
 
-  getProjectByIdAndPublish(project_id: string, calledBy: string) {
-    this.logger.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
+  // getProjectByIdAndPublish(project_id: string, calledBy: string) {
+  //   this.logger.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
     
-    this.projectService.getProjectById(project_id).subscribe((project: any) => {
-      this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project, '(called', calledBy, ')');
+  //   this.projectService.getProjectById(project_id).subscribe((project: any) => {
+  //     this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project, '(called', calledBy, ')');
 
-      const projectPlanData: Project = {
+  //     const projectPlanData: Project = {
 
-        _id: project._id,
-        name: project.name,
-        createdAt: project.createdAt,
-        profile_name: project.profile['name'],
-        profile_agents: project.profile['agents'],
-        trial_days: project.profile['trialDays'],
-        trial_days_left: project.trialDaysLeft,
-        trial_expired: project.trialExpired,
-        subscription_is_active: project.isActiveSubscription,
-        profile_type: project.profile['type'],
-        subscription_start_date: project.profile['subStart'],
-        subscription_end_date: project.profile['subEnd'],
-        subscription_id: project.profile['subscriptionId'],
-        subscription_creation_date: project.profile['subscription_creation_date']
-      }
+  //       _id: project._id,
+  //       name: project.name,
+  //       createdAt: project.createdAt,
+  //       profile_name: project.profile['name'],
+  //       profile_agents: project.profile['agents'],
+  //       trial_days: project.profile['trialDays'],
+  //       trial_days_left: project.trialDaysLeft,
+  //       trial_expired: project.trialExpired,
+  //       subscription_is_active: project.isActiveSubscription,
+  //       profile_type: project.profile['type'],
+  //       subscription_start_date: project.profile['subStart'],
+  //       subscription_end_date: project.profile['subEnd'],
+  //       subscription_id: project.profile['subscriptionId'],
+  //       subscription_creation_date: project.profile['subscription_creation_date']
+  //     }
 
-      this.projectPlan$.next(projectPlanData);
+  //     this.projectPlan$.next(projectPlanData);
 
-    }, error => {
-      this.logger.error('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - ERROR ', error);
+  //   }, error => {
+  //     this.logger.error('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - ERROR ', error);
 
-      if (error.status === 404) {
-        this.router.navigate(['/projects']);
-        this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
-        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to projects');
-      }
+  //     if (error.status === 404) {
+  //       this.router.navigate(['/projects']);
+  //       this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
+  //       this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to projects');
+  //     }
 
-      if (error.status === 401) {
-        this.router.navigate(['/login']);
-        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to login');
-      }
+  //     if (error.status === 401) {
+  //       this.router.navigate(['/login']);
+  //       this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to login');
+  //     }
 
-      if (error.status === 403) {
+  //     if (error.status === 403) {
 
-        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to unauthorized_access progetIdGetFromParams', this.progetIdGetFromParams);
-        this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to unauthorized_access projectID', this.projectID);
-        this.router.navigate([`project/${this.progetIdGetFromParams}/unauthorized_access`]);
-      }
-    }, () => {
-      this.logger.log('[PROJECT-PLAN-SERV] - getProjectByID * complete ');
-    });
-  }
+  //       this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to unauthorized_access progetIdGetFromParams', this.progetIdGetFromParams);
+  //       this.logger.log('[PROJECT-PLAN-SERV] - hey i redirect to unauthorized_access projectID', this.projectID);
+  //       this.router.navigate([`project/${this.progetIdGetFromParams}/unauthorized_access`]);
+  //     }
+  //   }, () => {
+  //     this.logger.log('[PROJECT-PLAN-SERV] - getProjectByID * complete ');
+  //   });
+  // }
 
   // ------------------------------------
   // USED BY PROJECT-PROFILE-GUARD

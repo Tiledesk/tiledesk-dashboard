@@ -95,9 +95,11 @@ export class SidebarUserDetailsComponent implements OnInit {
     public dialog: MatDialog,
     public brandService: BrandService
   ) {
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
   //  console.log('[SIDEBAR-USER-DETAILS] !!!!! HELLO SIDEBAR-USER-DETAILS')
-  const brand = brandService.getBrand(); 
-  this.hideHelpLink= brand['DOCS'];
+  // const brand = brandService.getBrand(); 
+  // this.hideHelpLink= brand['DOCS'];
   }
 
 

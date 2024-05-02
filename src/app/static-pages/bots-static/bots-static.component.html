@@ -1,0 +1,93 @@
+<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+  <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+    keyboard_arrow_left
+  </i> -->
+  Chatbot
+</p>
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span> -->
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+    
+    
+    
+   
+      
+
+        <div class="row col-container">
+
+          <div class="col-md-6 left-side-in-col-container">
+
+            <div class="left-div-padding">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="demopage-title" >
+
+                    
+                    {{ "Pricing.ChatbotsNotAvailableWithCurrentPlan" | translate}}
+
+                  </h2>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12" style="display: flex;justify-content: center;">
+                  <h3 class="demopage-subtitle" style="max-width: 700px;">
+
+                    Elevate customer interactions with the magic of Generative AI ✨, enjoy open-source flexibility 🌐, and design dynamic conversation flows and chatbots for engaging chats across all your digital channels, all without the need for complex tech
+           
+                  </h3>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div style="text-align: center;">
+                    <!-- (click)="goToPricing()" -->
+                    <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px"
+                      (click)="goToPricing()">
+
+                      <span> {{ 'UpgradeNow' | translate }} </span>
+
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 right-side-in-col-container">
+            <div style="max-width:780px;margin:auto">
+              <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <ng-image-slider #nav 
+                        [images]="imageObject" 
+                        [imageSize]="{width: 766, height: 410}" 
+                        [infinite]="true"
+                        [manageImageRatio]="true" 
+                        [showArrow]="false" 
+                        [autoSlide]="3">
+                      </ng-image-slider>
+                   
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+    
+  </div>
+</div>

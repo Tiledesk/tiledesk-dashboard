@@ -1,5 +1,90 @@
 # tiledesk-dashboard
 
+### 2.6.20-rc3
+- Displays, on the Monitor page, after the restore of scroll position an, effect that highlight the row selected
+- Changes the endpoint of the Get request getBotConversationAttribute()
+
+### 2.6.20-rc2
+- Improves on the "Monitor" page the scroll position restoration
+
+### 2.6.20-rc1
+- Implements on the "Monitor" page the scroll position restoration
+
+### 2.6.19
+- Deploys in production
+- Improves the Community page UI
+
+### 2.6.18
+- Deploys in production
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management set via DB
+- Other improvements and bug fixing
+
+### 2.6.18-rc1
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the  "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management via DB
+
+### 2.6.17
+- Deploys in production
+- Fixes the bug: Agents can't edit requester information
+
+### 2.6.16
+- Deploys in production
+- Improves performance and the settings sidebar
+
+### 2.6.15
+- Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.15-rc1
+- Improves performance and bug fixing
+
+### 2.6.14
+- Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.13
+- Minor improvements
+
+### 2.6.12
+- Deploys in production
+- Adds an alert on the app store page to explain that some apps have been moved to the integrations page
+- Adds the ability to manage the visibility of menu item chatbot and the home chatbot section via DB
+- Handles chatbot limit of zero
+- Moves email ticketing features to "Custom" plan
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents via DB
+- Adds the ability to manage the visibility of menu items widget unbranding, SMTP settings and Knowledge Bases via DB
+
+### 2.6.12-rc2
+- Adds an alert on the app store page to explain that some apps have been moved to the integrations page
+
+### 2.6.12-rc1
+- Adds the ability to manage the visibility of menu item chatbot and the home chatbot section via DB
+- Manages chatbot limit of zero
+
+### 2.6.11
+- Moves email ticketing features to "Custom" plan
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents via DB
+- Adds the ability to manage the visibility of menu items widget unbranding, SMTP settings and Knowledge Bases via DB
+
+### 2.6.10
+- Deploys in production
+- Improves pricing page
+
+### 2.6.9
+- Deploys in production
+- Improves performance
+
+### 2.6.8
+- Deploys in production
+- Improves the app config service
+
 ### 2.6.7
 - Deploys in production
 - Improves bot list page
@@ -8,9 +93,15 @@
 - Deploys in production 
 - Fixes the bug: WordPress section does not open on installations page
 
+### 2.6.6-rc1
+- Move email ticketing features to "Custom" plan
+
 ### 2.6.5
 - Deploys in production
 - Improvements and bug fixing
+
+### 2.6.5-rc1
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
 
 ### 2.6.4
 - Deploys in production
@@ -20,6 +111,15 @@
 - Deploys in production
 - Improves the path to the knowledge bases page on the home page
 
+### 2.6.3-rc3
+- Improves pop-up windows
+
+### 2.6.3-rc2
+- Bug fixing
+
+### 2.6.3-rc1
+- Improvements and bug fixing
+
 ### 2.6.2
 - Deploys in production
 - Improvements and bug fixing
@@ -27,6 +127,10 @@
 ### 2.6.1
 - Deploys in production
 - Improves the Get and Save methods used for translation strings
+
+### 2.6.1-rc1
+- Improves get and save methods of translation strings
+- Improves performance
 
 ### 2.6.0
 - Deploys in production
@@ -48,14 +152,32 @@
 - Fixes the bug: not all chatbot images are displayed
 - Fixes the bug: published chatbots is appearing as a draft
 
-### 2.5.18
-- Deploys in production
-- Fixes the bug: in the settings sidebar 'setAttribute' on 'Element' is not a valid attribute name
-- User profile image is called in loop
+### 2.6.0-rc4
+- Improves Knowledge Base
 
-### 2.5.17
+### 2.6.0-rc3
+- Improves Knowledge Base
+
+### 2.6.0-rc2
+- Improves Knowledge Base (added sitemap)
+
+### 2.6.0-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+- Refactors the bot list page
+
+### 2.5.21
 - Deploys in production
-- Fixes the bug: multiple status call in kb page
+- Adds the ability to sort chatbot by name
+
+### 2.5.20
+- Deploys in production
+- Refactors the teammates table
+
+### 2.5.19
+- Deploys in production
+- Fixes the bug: not all chatbot images are displayed
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.5.16
 - Deploys in production
