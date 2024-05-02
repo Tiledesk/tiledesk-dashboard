@@ -705,7 +705,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // AddContentMenuComponent, // now lazy
     UserModalComponent,
     MessagesStatsModalComponent,
-    N8nIntegrationComponent,
     KnowledgeBasesAlertComponent
   ],
   imports: [
