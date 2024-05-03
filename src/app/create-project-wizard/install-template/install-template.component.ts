@@ -192,7 +192,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
   getProjects(projectid) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
+     console.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
       if (projects && projects.length > 0) {
         projects.forEach(project => {
           // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);

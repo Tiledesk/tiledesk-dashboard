@@ -246,7 +246,7 @@ export class AutologinComponent implements OnInit {
   getProjectFromRemotePublishAndSaveInStorage(project_id) {
 
     this.projectService.getProjects().subscribe((prjcts: any) => {
-      this.logger.log('[AUTOLOGIN] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+      console.log('[AUTOLOGIN] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
 
       const prjct = prjcts.filter(p => p.id_project._id === project_id);
 

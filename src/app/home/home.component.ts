@@ -330,7 +330,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.areVisibleChatbot = true;
 
     } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[HOME] USECASE C customization is  ', projectProfileData['customization'] )
+      this.logger.log('[HOME] USECASE C customization is  ', projectProfileData['customization'])
       this.areVisibleChatbot = true;
 
     }
@@ -362,7 +362,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+       console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.project = project
@@ -512,7 +512,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
       // this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
-      // console.log('[HOME] getProjects findCurrentProjectAmongAll projects ', projects);
+      console.log('[HOME] getProjects findCurrentProjectAmongAll projects ', projects);
       if (projects) {
         this.projects = projects;
 
@@ -1404,7 +1404,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   init() {
     // this.logger.log("[HOME] > CALLING INIT")
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-    this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
+    // this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
     // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
     // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
     // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
@@ -2275,10 +2275,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user) => {
-        // console.log('[HOME] - USER GET IN HOME ', user)
+        console.log('[HOME] - USER GET IN HOME ', user)
         // tslint:disable-next-line:no-debugger
         // debugger
-        this.user = user;
+        if (user) {
+          this.user = user;
+        }
 
         if (this.user) {
           if (!isDevMode()) {

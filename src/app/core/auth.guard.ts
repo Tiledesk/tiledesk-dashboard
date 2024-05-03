@@ -56,7 +56,7 @@ export class AuthGuard implements CanActivate {
     private logger: LoggerService,
     public localDbService: LocalDbService
   ) {
-    this.logger.log('[AUTH-GUARD] hello !!!')
+    console.log('[AUTH-GUARD] hello !!!')
 
     this.user = auth.user_bs.value;
     this.auth.user_bs.subscribe((user) => {
@@ -105,7 +105,7 @@ export class AuthGuard implements CanActivate {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
 
-        // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
+        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
 
@@ -158,11 +158,11 @@ export class AuthGuard implements CanActivate {
 
   checkStoredProject(navigationProjectId) {
     const storedProjectJson = localStorage.getItem(navigationProjectId);
-    this.logger.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
+    console.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
 
 
     if (storedProjectJson === null) {
-      this.logger.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjects and filter for project id ')
+      console.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjects and filter for project id ')
 
       this.getProjectFromRemotePublishAndSaveInStorage();
     }
@@ -171,7 +171,7 @@ export class AuthGuard implements CanActivate {
   getProjectFromRemotePublishAndSaveInStorage() {
     // this.projectService.getProjectAndUserDetailsByProjectId(this.nav_project_id).subscribe((prjct: any) => {
     this.projectService.getProjects().subscribe((prjcts: any) => {
-      this.logger.log('[AUTH-GUARD] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+      console.log('[AUTH-GUARD] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
 
       const prjct = prjcts.filter(p => p.id_project._id === this.nav_project_id);
 

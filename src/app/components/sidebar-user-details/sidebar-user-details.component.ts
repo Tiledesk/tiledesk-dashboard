@@ -200,13 +200,13 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   findCurrentProjectAmongAll(projectId: string) {
     this.projectService.getProjects().subscribe((projects: any) => {
-
+      console.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[SIDEBAR] - GET PROJECTS - current_prjct ', this.current_prjct);
+      this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - current_prjct ', this.current_prjct);
 
 
       if (this.current_prjct) {
-        this.logger.log('[SIDEBAR] PROJECT current_prjct', this.current_prjct);
+        this.logger.log('[IDEBAR-USER-DETAILS] PROJECT current_prjct', this.current_prjct);
 
         this.is_active_subscription = this.current_prjct.id_project.isActiveSubscription;
         this.plan_name = this.current_prjct.id_project.profile.name;
@@ -214,11 +214,11 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.prjct_name = this.current_prjct.id_project.name;
         this.trialExpired = this.current_prjct.id_project.trialExpired
         this.extra3 = this.current_prjct.id_project.profile.extra3;
-        this.logger.log('[SIDEBAR] PROJECT is_active_subscription', this.is_active_subscription);
-        this.logger.log('[SIDEBAR] PROJECT plan_name ', this.plan_name);
-        this.logger.log('[SIDEBAR] PROJECT plan_typeD', this.plan_type);
-        this.logger.log('[SIDEBAR] PROJECT trialExpired', this.trialExpired);
-        this.logger.log('[SIDEBAR] PROJECT extra3', this.extra3);
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT is_active_subscription', this.is_active_subscription);
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_name ', this.plan_name);
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_typeD', this.plan_type);
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT trialExpired', this.trialExpired);
+        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT extra3', this.extra3);
 
         if (this.extra3) {
           this.appSumoProfile = APP_SUMO_PLAN_NAME[this.extra3];
@@ -578,9 +578,9 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         }
       }, error => {
-        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+        this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
       }, () => {
-        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+        this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
       });
   }
 
@@ -767,7 +767,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   createUserAvatar(user) {
-    this.logger.log('[USERS] - createProjectUserAvatar ', user)
+    this.logger.log('[SIDEBAR-USER-DETAILS] - createProjectUserAvatar ', user)
     let fullname = ''
     if (user && user.firstname && user.lastname) {
       fullname = user.firstname + ' ' + user.lastname

@@ -190,7 +190,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   findCurrentProjectAmongAll(projectId: string) {
     this.projectService.getProjects().subscribe((projects: any) => {
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      //  console.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+       console.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
 
       const project: Project = {
         _id: current_prjct.id_project.id,

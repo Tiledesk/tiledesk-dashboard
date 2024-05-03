@@ -57,7 +57,7 @@ export class HomeGoToChatComponent implements OnInit {
   findCurrentProjectAmongAll(projectId: string) {
 
     this.projectService.getProjects().subscribe((projects: any) => {
- 
+      this.logger.log('[HOME-GO-TO-CHAT] getProjects projects ', projects);
       if (projects) {
        
 

@@ -588,7 +588,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjects() {
     // console.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
+      console.log('[NAVBAR] getProjects PROJECTS ', projects);
 
       if (projects) {
         // this.projects = projects;
@@ -904,10 +904,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getCurrentProject() {
     // this.project = this.auth.project_bs.value;
     this.auth.project_bs.subscribe((project) => {
+      console.log('[NAVBAR] project from AUTH service subscription ', this.project);
       if (project) {
+        this.project = project
         if (project.name) {
-          this.project = project
-          // this.logger.log('[NAVBAR] project from AUTH service subscription ', this.project);
+          
           this.projectId = project._id;
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours

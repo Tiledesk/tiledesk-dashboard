@@ -45,7 +45,7 @@ export class CreateProjectGsComponent implements OnInit {
   getProjects(user) {
    
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjects PROJECTS ', projects);
+      console.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjects PROJECTS ', projects);
 
       if (projects && projects.length === 0) {
         this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] THERE IS NOT PROJECTS ');

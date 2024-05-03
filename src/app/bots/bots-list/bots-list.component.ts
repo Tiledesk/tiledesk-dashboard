@@ -418,7 +418,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   getProjects(bot_id, bot_name) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
+      console.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
       if (projects) {
 
         if (projects && projects.length === 1) {

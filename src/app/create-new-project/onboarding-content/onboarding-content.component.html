@@ -1,3 +1,10 @@
+<div style="color: #000;
+position: relative;
+top: 70px;
+width: 610px;
+background: aliceblue;
+min-width: 610px;
+z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps}} </div> 
 <div class="main-content css-create-project">
     <div *ngIf="showSpinner" class="on-bording-spinner"
         [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
@@ -35,13 +42,14 @@
     </div>
 
 
-
+   
     <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <div *ngFor="let nameStep of arrayOfSteps; index as i" 
             class="step-page"
             [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
 
             <!-- SET NAME PROJECT -->
+            nameStep > {{ nameStep }}
             <div *ngIf="nameStep === typeStep.NAME_PROJECT" class="type-step fade-in-right"
                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.NAME_PROJECT}">
                 <cnp-project-name 

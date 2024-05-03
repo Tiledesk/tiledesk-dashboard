@@ -1373,11 +1373,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   findCurrentProjectAmongAll(projectId: string) {
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', this.current_selected_prjct);
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // thia.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+      
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // thia.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
         // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);

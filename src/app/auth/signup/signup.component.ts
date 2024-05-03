@@ -885,7 +885,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      console.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
       if (projects) {
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.

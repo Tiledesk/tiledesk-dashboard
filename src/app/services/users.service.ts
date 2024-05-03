@@ -337,7 +337,7 @@ export class UsersService {
 
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
-    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+    console.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

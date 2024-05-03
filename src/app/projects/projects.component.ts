@@ -521,7 +521,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[PROJECTS] - GET PROJECTS ', projects);
+      console.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 

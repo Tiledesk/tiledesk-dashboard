@@ -191,7 +191,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   getProjects(projectid?: string) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
+      console.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
       if (projects) {
         this.projects = projects;
 

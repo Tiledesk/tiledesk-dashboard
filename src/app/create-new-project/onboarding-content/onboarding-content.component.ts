@@ -134,12 +134,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.initialize();
     this.onInitWindowHeight();
     this.detectMobile();
-    this.getOSCODE()
+    // this.getOSCODE()
   }
 
   getOSCODE() {
+    
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-
+    console.log('[ONBOARDING-CONTENT] getOSCODE public_Key',  this.public_Key);
+    
     let keys = this.public_Key.split("-");
 
     keys.forEach(key => {
@@ -270,16 +272,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[ONBOARDING-CONTENT] projects ', projects)
+     console.log('[ONBOARDING-CONTENT] projects ', projects)
+     console.log('[ONBOARDING-CONTENT] projects length ', projects.length)
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
       }
       if (projects.length > 0) {
         this.isFirstProject = false; // the good one
-        // this.isFirstProject = true; // for test without sign up
+        // this.isFirstProject = true; // for test onbording without sign up
+        console.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
       }
-      this.logger.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
+      console.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
       this.getLoggedUser();
     }, (error) => {
       this.logger.error('[ONBOARDING-CONTENT] - GET PROJECTS ', error);
@@ -302,30 +306,52 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   });
   }
 
+  getMTTValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+    let parts = this.public_Key.split('-');
+  
+
+    let mtt = parts.find((part) => part.startsWith('MTT'));
+    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mtt ', mtt);
+    let mttParts = mtt.split(':');
+    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mttParts ', mttParts);
+    let mttValue = mttParts[1]
+    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mttValue ', mttValue);
+    if (mttValue === 'T') {
+      return true
+    } else if (mttValue === 'F') {
+      return false
+    }
+
+  }
+
   private getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.user = user;
         this.userFullname = user.displayName ? user.displayName : user.firstname;
-        // this.logger.log('getLoggedUser:: ', user);
+        console.log('[ONBOARDING-CONTENT] getLoggedUser:: ', user);
         // this.projectName = this.setProjectName();
         // this.logger.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
-
+        console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject);
         if (this.isFirstProject) {
 
           this.projectName = this.setProjectName();
           if (!this.projectName) {
-            // this.logger.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
+            console.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
 
-          // this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+          console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
+          this.isMTT = this.getMTTValue()
+          console.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
           if (this.isMTT) {
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
 
-            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
+            console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
           } else  if (this.isMTT === false) {
             this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT)
             this.router.navigate(['/unauthorized']);
@@ -364,7 +390,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    this.logger.log('loadJsonOnboardingConfig:: ', onboardingConfig);
+    console.log('loadJsonOnboardingConfig:: ', onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -388,7 +414,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
       // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
     });
   }
@@ -447,7 +473,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   goToSetProjectName($event) {
     this.projectName = $event;
     this.nextNumberStep();
-    this.logger.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
+    console.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
     this.createNewProject();
   }
 
@@ -564,7 +590,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
     this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project) => {
-      this.logger.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
+      console.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
       if (project) {
 
         this.newProject = project

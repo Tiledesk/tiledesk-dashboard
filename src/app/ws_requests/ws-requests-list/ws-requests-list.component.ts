@@ -853,6 +853,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   findCurrentProjectAmongAll(projectId: string) {
 
     this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[WS-REQUESTS-LIST] - GET PROJECTS - projects ', projects);
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
       // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
