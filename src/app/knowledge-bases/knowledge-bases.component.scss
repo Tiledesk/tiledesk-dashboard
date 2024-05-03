@@ -2,6 +2,42 @@
 
 .card-content {
     font-family: 'Poppins';
+    padding-top: 10px; 
+    // margin: 0 60px;
+}
+
+.template-content {
+    flex: 1 1 auto; 
+    margin: 0 20px; 
+    display: flex; 
+    justify-content: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p.header-title {
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 0px;
+    }
+    
+    .buttons-div {
+        display: flex;
+
+        button {
+            margin-left: 8px;
+        }
+    }
+}
+
+
+.template-content-container {
+    width: 80%;
+    max-width: 1600px;
+    min-width: 900px;
 }
 
 .add-kb-div {

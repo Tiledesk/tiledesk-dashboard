@@ -38,6 +38,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   previewKnowledgeBaseModal = 'none';
   deleteKnowledgeBaseModal = 'none';
   baseModalDelete: boolean = false;
+  showDeleteNamespaceModal: boolean = false;
   baseModalPreview: boolean = false;
   baseModalError: boolean = false;
   baseModalDetail: boolean = false;
@@ -105,6 +106,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   upgrade: string;
   cancel: string;
 
+  paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
+
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
@@ -136,8 +139,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getBrowserVersion();
     this.getTranslations();
     this.listenSidebarIsOpened();
-    let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-    this.getListOfKb(paramsDefault);
+    
+    this.getListOfKb(this.paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
     this.kbFormContent = this.createConditionGroupContent();
     this.trackPage();
@@ -523,7 +526,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   //   })
   // }
 
-  onLoadPage(searchParams) {
+  onLoadPage(searchParams?) {
     // this.logger.log('onLoadNextPage:',searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT
     //if(searchParams?.page){
@@ -536,6 +539,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // }
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
+    }
+    if (searchParams?.type) {
+      params += "&type=" + searchParams.type;
     }
     if (searchParams?.search) {
       params += "&search=" + searchParams.search;
@@ -911,6 +917,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
       this.trackUserActioOnKB('Deleted Knowledge Base')
     })
+  }
+
+  onDeleteNamespace() {
+    
+    let id_namespace = this.id_project;
+    this.logger.log("delete namespace " + id_namespace);
+    this.showSpinner = true;
+    this.closeDeleteNamespaceModal();
+
+    this.kbService.deleteNamespace(id_namespace).subscribe((response: any) => {
+      this.logger.log("deleteNamespace response: ", response)
+      this.showSpinner = false;
+
+      this.onLoadByFilter(this.paramsDefault);
+    }, (error) => {
+      this.logger.error("deleteNamespace response ", error);
+      this.showSpinner = false;
+    })
+
   }
 
 
@@ -1325,6 +1350,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.baseModalDelete = false;
   }
 
+  closeDeleteNamespaceModal() {
+    this.showDeleteNamespaceModal = false;
+  }
+
   contactSalesForChatGptKey() {
     this.closeSecretsModal()
     window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
@@ -1335,6 +1364,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   onDeleteKnowledgeBase(kb) {
     this.onDeleteKb(kb);
     // this.baseModalDelete = false;
+  }
+
+  onOpenDeleteNamespaceModal() {
+    this.logger.log("onOpenDeleteNamespaceModal called....")
+    this.showDeleteNamespaceModal = true;
   }
 
   onOpenBaseModalDelete(kb) {
