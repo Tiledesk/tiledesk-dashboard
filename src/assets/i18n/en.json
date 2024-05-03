@@ -2419,7 +2419,11 @@
         "PrestashopStep7": "At the end of the installation of the module, click on “configure“, in the text area select “Tools > Source code“ and paste the JavaScript code copied in point one.",
         "JoomlaStep2": "Log in to the Joomla control panel.",
         "JoomlaStep3": "Go to “System > Templates > Site Templates“ and click on the default theme template.",
-        "JoomlaStep4": "Open the index.php file from the menu on the left side and paste in the editor the JavaScript code you copied in step one, before the closing tag"
+        "JoomlaStep4": "Open the index.php file from the menu on the left side and paste in the editor the JavaScript code you copied in step one, before the closing tag",
+        "MagentoStep2":"Go to your Magento admin page, then Content > Design > Configuration",
+        "MagentoStep3":"Expand the HTML Head section and paste the JavaScript code copied in point one into the Scripts and Style Sheets field, and then press the “Save configuration” button",
+        "MagentoStep4":"Go to System > Cache management, select ALL checkboxes, and press the Refresh/Submit button",
+        "MagentoStep5":"Once you save the settings open your website. Your Widget should appear in the bottom right corner."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Note that the widget phrases on a website (and on the live test page) will be displayed in the browser language if the same is present among the languages of the Multilinguage page, otherwise they will be displayed in the language that has been set as the default language.",
     "Message": "Message",

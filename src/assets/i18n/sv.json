@@ -2419,7 +2419,11 @@
         "PrestashopStep7": "I slutet av installationen av modulen, klicka på “konfigurera“, i textområdet välj “Verktyg> Källkod“ och klistra in JavaScript-koden kopierad i punkt ett.",
         "JoomlaStep2": "Logga in på Joomla kontrollpanel.",
         "JoomlaStep3": "Gå till “System > Mallar > Webbplatsmallar“ och klicka på standardtemamallen.",
-        "JoomlaStep4": "Öppna filen index.php från menyn på vänster sida och klistra in JavaScript-koden du kopierade i steg ett i editorn före den avslutande taggen"
+        "JoomlaStep4": "Öppna filen index.php från menyn på vänster sida och klistra in JavaScript-koden du kopierade i steg ett i editorn före den avslutande taggen",
+        "MagentoStep2":"Gå till din Magento-administratörssida, sedan Innehåll > Design > Konfiguration",
+        "MagentoStep3":"Expandera HTML Head-avsnittet och klistra in JavaScript-koden som kopierades i punkt ett i fältet Skript och formatmallar och tryck sedan på knappen Spara konfiguration",
+        "MagentoStep4":"Gå till System > Cachehantering, markera ALLA kryssrutor och tryck på knappen Uppdatera/Skicka",
+        "MagentoStep5":"När du har sparat inställningarna öppnar du din webbplats. Din widget bör visas i det nedre högra hörnet."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Observera att widgetfraserna på en webbplats (och på livetestsidan) kommer att visas på webbläsarspråket om detsamma finns bland språken på sidan för flerspråkig sida, annars kommer de att visas på det språk som har ställts in som standardspråk.",
     "Message": "Meddelande",

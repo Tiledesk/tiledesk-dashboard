@@ -2418,7 +2418,11 @@
         "PrestashopStep7": "Modulni o'rnatish oxirida “konfiguratsiya“ tugmasini bosing, matn maydonida “Asboblar > Manba kodi“ ni tanlang va birinchi nuqtada ko'chirilgan JavaScript kodini joylashtiring.",
         "JoomlaStep2": "Joomla boshqaruv paneliga kiring.",
         "JoomlaStep3": "“Tizim > Shablonlar > Sayt shablonlari“ ga o'ting va standart mavzu shablonini bosing.",
-        "JoomlaStep4": "Chap tarafdagi menyudan index.php faylini oching va yopilish yorlig'i oldiga birinchi bosqichda ko'chirilgan JavaScript kodini muharrirga joylashtiring."
+        "JoomlaStep4": "Chap tarafdagi menyudan index.php faylini oching va yopilish yorlig'i oldiga birinchi bosqichda ko'chirilgan JavaScript kodini muharrirga joylashtiring.",
+        "MagentoStep2":"Magento administrator sahifangizga, so'ng Kontent > Dizayn > Konfiguratsiyaga o'ting",
+        "MagentoStep3":"HTML bosh bo'limini kengaytiring va birinchi nuqtada ko'chirilgan JavaScript kodini Skriptlar va uslublar jadvallari maydoniga qo'ying va so'ng Konfiguratsiyani saqlash tugmasini bosing.",
+        "MagentoStep4":"Tizim > Keshni boshqarish-ga o'ting, HAMMA katakchalarni belgilang va Yangilash/Yuborish tugmasini bosing",
+        "MagentoStep5":"Sozlamalarni saqlaganingizdan so'ng veb-saytingizni oching. Vidjetingiz pastki o'ng burchakda paydo bo'lishi kerak."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "E'tibor bering, veb-saytdagi (va jonli test sahifasida) vidjet iboralari, agar ko'p tilli sahifa tillari orasida bir xil bo'lsa, brauzer tilida ko'rsatiladi, aks holda ular o'rnatilgan tilda ko'rsatiladi. standart til.",
     "Message": "Xabar",

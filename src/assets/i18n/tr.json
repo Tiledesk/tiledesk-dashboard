@@ -2420,7 +2420,11 @@
         "PrestashopStep7": "Modül kurulumunun sonunda, “yapılandır“ a tıklayın, metin alanında “Araçlar > Kaynak kodu“ nu seçin ve kopyalanan JavaScript kodunu birinci noktaya yapıştırın.",
         "JoomlaStep2": "Joomla kontrol paneline giriş yapın.",
         "JoomlaStep3": "“Sistem > Şablonlar > Site Şablonları” na gidin ve varsayılan tema şablonuna tıklayın.",
-        "JoomlaStep4": "Sol taraftaki menüden index.php dosyasını açın ve birinci adımda kopyaladığınız JavaScript kodunu kapanış etiketinden önce düzenleyiciye yapıştırın."
+        "JoomlaStep4": "Sol taraftaki menüden index.php dosyasını açın ve birinci adımda kopyaladığınız JavaScript kodunu kapanış etiketinden önce düzenleyiciye yapıştırın.",
+        "MagentoStep2":"Magento yönetici sayfanıza gidin, ardından İçerik > Tasarım > Yapılandırma",
+        "MagentoStep3":"HTML Başlığı bölümünü genişletin ve birinci maddede kopyaladığınız JavaScript kodunu Komut Dosyaları ve Stil Sayfaları alanına yapıştırın ve ardından Yapılandırmayı kaydet düğmesine basın",
+        "MagentoStep4":"Sistem > Önbellek yönetimi'ne gidin, TÜM onay kutularını seçin ve Yenile/Gönder düğmesine basın",
+        "MagentoStep5":"Ayarları kaydettikten sonra web sitenizi açın. Widget'ınız sağ alt köşede görünmelidir."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Bir web sitesindeki (ve canlı test sayfasındaki) widget ifadelerinin, Çoklu Dil sayfasının dilleri arasında mevcutsa tarayıcı dilinde görüntüleneceğini unutmayın, aksi takdirde bunlar, varsayılan dil.",
     "Message": "İleti",

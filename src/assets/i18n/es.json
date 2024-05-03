@@ -2419,7 +2419,11 @@
         "PrestashopStep7": "Al finalizar la instalación del módulo, haga clic en “configurar“, en el área de texto seleccione “Herramientas > Código fuente“ y pegue el código JavaScript copiado en el punto uno.",
         "JoomlaStep2": "Inicie sesión en el panel de control de Joomla.",
         "JoomlaStep3": "Vaya a “Sistema > Plantillas > Plantillas de sitio“ y haga clic en la plantilla de tema predeterminada.",
-        "JoomlaStep4": "Abra el archivo index.php desde el menú del lado izquierdo y pegue en el editor el código JavaScript que copió en el paso uno, antes de la etiqueta de cierre."
+        "JoomlaStep4": "Abra el archivo index.php desde el menú del lado izquierdo y pegue en el editor el código JavaScript que copió en el paso uno, antes de la etiqueta de cierre.",
+        "MagentoStep2":"Vaya a su página de administración de Magento, luego Contenido > Diseño > Configuración",
+        "MagentoStep3": "Expanda la sección Encabezado HTML y pegue el código JavaScript copiado en el punto uno en el campo Scripts y hojas de estilo, y luego presione el botón Guardar configuración.",
+        "MagentoStep4":"Vaya a Sistema > Administración de caché, seleccione TODAS las casillas de verificación y presione el botón Actualizar/Enviar",
+        "MagentoStep5":"Una vez que guarde la configuración, abra su sitio web. Su widget debería aparecer en la esquina inferior derecha."
     },
     "NoteThatTheWidgetLabelsOnAwebsite":"Tenga en cuenta que las frases del widget en un sitio web (y en la página de prueba en vivo) se mostrarán en el idioma del navegador si el mismo está presente entre los idiomas de la página multilingüe; de lo contrario, se mostrarán en el idioma que se ha establecido como el idioma predeterminado.",
     "Message": "Mensaje",
