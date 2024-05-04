@@ -2423,7 +2423,15 @@
         "MagentoStep2":"Gå till din Magento-administratörssida, sedan Innehåll > Design > Konfiguration",
         "MagentoStep3":"Expandera HTML Head-avsnittet och klistra in JavaScript-koden som kopierades i punkt ett i fältet Skript och formatmallar och tryck sedan på knappen Spara konfiguration",
         "MagentoStep4":"Gå till System > Cachehantering, markera ALLA kryssrutor och tryck på knappen Uppdatera/Skicka",
-        "MagentoStep5":"När du har sparat inställningarna öppnar du din webbplats. Din widget bör visas i det nedre högra hörnet."
+        "MagentoStep5":"När du har sparat inställningarna öppnar du din webbplats. Din widget bör visas i det nedre högra hörnet.",
+        "Wix2": "Gå till din Wix-webbplats instrumentpanel, sedan Inställningar > Avancerat > fliken \"Anpassad kod\".",
+        "Wix3": "Klicka på knappen \"+ Lägg till anpassad kod\" och klistra in JavaScript-koden som kopierades i punkt ett i textrutan.",
+        "Wix4": "Ge ditt kodavsnitt ett igenkännbart namn. Detta gör det lättare att identifiera senare.",
+        "Wix5":"Välj var du vill att koden ska tillämpas:",
+        "Wix5A":"\"Alla sidor\": Detta lägger till widgeten på alla sidor på din webbplats, inklusive framtida sidor.",
+        "Wix5B":"\"Välj specifika sidor\": Använd rullgardinsmenyn för att välja de specifika sidor där du vill visa widgeten.",
+        "Wix6":"Välj var du vill placera koden i din sidas HTML-struktur. Alternativen inkluderar:",
+        "Wix7":"Klicka slutligen på knappen \"Använd\" för att spara dina ändringar och aktivera widgeten på din Wix-webbplats."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Observera att widgetfraserna på en webbplats (och på livetestsidan) kommer att visas på webbläsarspråket om detsamma finns bland språken på sidan för flerspråkig sida, annars kommer de att visas på det språk som har ställts in som standardspråk.",
     "Message": "Meddelande",

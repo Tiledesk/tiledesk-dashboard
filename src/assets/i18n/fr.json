@@ -2424,7 +2424,15 @@
         "MagentoStep2":"Accédez à votre page d'administration Magento, puis Contenu > Conception > Configuration",
         "MagentoStep3": "Développez la section HTML Head et collez le code JavaScript copié au point un dans le champ Scripts et feuilles de style, puis appuyez sur le bouton Enregistrer la configuration.",
         "MagentoStep4":"Accédez à Système > Gestion du cache, cochez TOUTES les cases et appuyez sur le bouton Actualiser/Soumettre.",
-        "MagentoStep5":"Une fois les paramètres enregistrés, ouvrez votre site Web. Votre widget devrait apparaître dans le coin inférieur droit."
+        "MagentoStep5":"Une fois les paramètres enregistrés, ouvrez votre site Web. Votre widget devrait apparaître dans le coin inférieur droit.",
+        "Wix2": "Accédez au tableau de bord de votre site Wix, puis Paramètres > Avancé > onglet « Code personnalisé »",
+        "Wix3": "Cliquez sur le bouton \"+ Ajouter un code personnalisé\" et, dans la zone de texte prévue à cet effet, collez le code JavaScript copié au premier point.",
+        "Wix4": "Donnez à votre extrait de code un nom reconnaissable. Cela facilitera son identification ultérieure.",
+        "Wix5":"Choisissez où vous souhaitez que le code soit appliqué :",
+        "Wix5A":"\"Toutes les pages\": Ceci ajoute le widget à toutes les pages de votre site, y compris les futures pages.",
+        "Wix5B":"\"Choisir des pages spécifiques\": utilisez le menu déroulant pour sélectionner les pages spécifiques sur lesquelles vous souhaitez afficher le widget.",
+        "Wix6":"Sélectionnez l'endroit où vous souhaitez placer le code dans la structure HTML de votre page. Les options incluent:",
+        "Wix7":"Enfin, cliquez sur le bouton \"Appliquer\" pour enregistrer vos modifications et activer le widget sur votre site Web Wix."
     },
     "NoteThatTheWidgetLabelsOnAwebsite":"Notez que les phrases du widget sur un site Web (et sur la page de test en direct) seront affichées dans la langue du navigateur si celle-ci est présente parmi les langues de la page multilingue, sinon elles seront affichées dans la langue qui a été définie comme langage par défaut.",
     "Message": "Message",

@@ -2423,7 +2423,15 @@
         "MagentoStep2":"Vá para a página de administração do Magento, então Conteúdo > Design > Configuração",
         "MagentoStep3":"Expanda a seção HTML Head e cole o código JavaScript copiado no ponto um no campo Scripts and Style Sheets e pressione o botão Salvar configuração",
         "MagentoStep4":"Vá para Sistema > Gerenciamento de cache, marque TODAS as caixas de seleção e pressione o botão Atualizar/Enviar",
-        "MagentoStep5":"Depois de salvar as configurações, abra seu site. Seu widget deve aparecer no canto inferior direito."
+        "MagentoStep5":"Depois de salvar as configurações, abra seu site. Seu widget deve aparecer no canto inferior direito.",
+        "Wix2":"Vá para o painel do seu site Wix, então Configurações > Avançado > guia “Código Personalizado“",
+        "Wix3": "Clique no botão\"+ Adicionar código personalizado\" e, na caixa de texto fornecida, cole o código JavaScript copiado no ponto um",
+        "Wix4": "Dê ao seu snippet de código um nome reconhecível. Isso tornará mais fácil identificá-lo posteriormente.",
+        "Wix5": "Escolha onde deseja que o código seja aplicado:",
+        "Wix5A":"\"Todas as páginas\": adiciona o widget a todas as páginas do seu site, incluindo páginas futuras.",
+        "Wix5B":"\"Escolher páginas específicas\": Use o menu suspenso para selecionar as páginas específicas onde deseja exibir o widget.",
+        "Wix6":"Selecione onde deseja colocar o código na estrutura HTML da sua página. As opções incluem:",
+        "Wix7":"Por fim, clique no botão \"Aplicar\" para salvar suas alterações e ativar o widget em seu site Wix."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Observe que as frases do widget em um site (e na página de teste ao vivo) serão exibidas no idioma do navegador se o mesmo estiver presente entre os idiomas da página Multilíngue, caso contrário, serão exibidos no idioma definido como o idioma padrão.",
     "Message": "Mensagem",

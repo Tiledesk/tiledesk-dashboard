@@ -2423,7 +2423,15 @@
         "MagentoStep2":"Vaya a su página de administración de Magento, luego Contenido > Diseño > Configuración",
         "MagentoStep3": "Expanda la sección Encabezado HTML y pegue el código JavaScript copiado en el punto uno en el campo Scripts y hojas de estilo, y luego presione el botón Guardar configuración.",
         "MagentoStep4":"Vaya a Sistema > Administración de caché, seleccione TODAS las casillas de verificación y presione el botón Actualizar/Enviar",
-        "MagentoStep5":"Una vez que guarde la configuración, abra su sitio web. Su widget debería aparecer en la esquina inferior derecha."
+        "MagentoStep5":"Una vez que guarde la configuración, abra su sitio web. Su widget debería aparecer en la esquina inferior derecha.",
+        "Wix2":"Vaya al panel de control de su sitio web Wix, luego a Configuración > Avanzado > pestaña “Código personalizado”",
+        "Wix3":"Haga clic en el botón \"+ Agregar código personalizado\" y, en el cuadro de texto provisto, pegue el código JavaScript copiado en el punto uno.",
+        "Wix4": "Dale a tu fragmento de código un nombre reconocible. Esto hará que sea más fácil de identificar más adelante.",
+        "Wix5":"Elija dónde desea que se aplique el código:",
+        "Wix5A":"\"Todas las páginas\": esto agrega el widget a todas las páginas de su sitio, incluidas las páginas futuras.",
+        "Wix5B":"\"Elegir páginas específicas\": utilice el menú desplegable para seleccionar las páginas específicas donde desea mostrar el widget.",
+        "Wix6":"Seleccione dónde desea colocar el código dentro de la estructura HTML de su página. Las opciones incluyen:",
+        "Wix7":"Finalmente, haz clic en el botón \"Aplicar\" para guardar los cambios y activar el widget en tu sitio web Wix."
     },
     "NoteThatTheWidgetLabelsOnAwebsite":"Tenga en cuenta que las frases del widget en un sitio web (y en la página de prueba en vivo) se mostrarán en el idioma del navegador si el mismo está presente entre los idiomas de la página multilingüe; de lo contrario, se mostrarán en el idioma que se ha establecido como el idioma predeterminado.",
     "Message": "Mensaje",

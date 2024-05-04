@@ -2423,7 +2423,15 @@
         "MagentoStep2":"Go to your Magento admin page, then Content > Design > Configuration",
         "MagentoStep3":"Expand the HTML Head section and paste the JavaScript code copied in point one into the Scripts and Style Sheets field, and then press the “Save configuration” button",
         "MagentoStep4":"Go to System > Cache management, select ALL checkboxes, and press the Refresh/Submit button",
-        "MagentoStep5":"Once you save the settings open your website. Your Widget should appear in the bottom right corner."
+        "MagentoStep5":"Once you save the settings open your website. Your Widget should appear in the bottom right corner.",
+        "Wix2": "Go to your Wix website's dashboard, then Settings > Advanced > \"Custom Code\" tab.",
+        "Wix3": "Click on the \"+ Add Custom Code\" button and, in the text box provided, paste the JavaScript code copied in point one",
+        "Wix4":"Give your code snippet a recognizable name. This will make it easier to identify later.",
+        "Wix5":"Choose where you want the code to be applied:",
+        "Wix5A":"\"All pages\": This adds the widget to all of your site's pages, including future pages.",
+        "Wix5B": "\"Choose specific pages\": Use the drop-down menu to select the specific pages where you want to display the widget.",
+        "Wix6":"Select where you want to place the code within your page's HTML structure. Options include:",
+        "Wix7":"Finally, click the \"Apply\" button to save your changes and activate widget on your Wix website."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Note that the widget phrases on a website (and on the live test page) will be displayed in the browser language if the same is present among the languages of the Multilinguage page, otherwise they will be displayed in the language that has been set as the default language.",
     "Message": "Message",

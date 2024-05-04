@@ -2423,7 +2423,15 @@
         "MagentoStep2":"Magento admin səhifənizə keçin, sonra Məzmun > Dizayn > Konfiqurasiya",
         "MagentoStep3":"HTML Başlıq bölməsini genişləndirin və birinci bənddə kopyalanan JavaScript kodunu Skriptlər və Stil vərəqləri sahəsinə yapışdırın və sonra Konfiqurasiyanı Saxla düyməsini basın.",
         "MagentoStep4":"Sistem > Keşin idarə edilməsi bölməsinə keçin, BÜTÜN onay qutularını seçin və Yenilə/Göndər düyməsini basın",
-        "MagentoStep5":"Parametrləri saxladıqdan sonra veb saytınızı açın. Vidcetiniz sağ alt küncdə görünməlidir."
+        "MagentoStep5":"Parametrləri saxladıqdan sonra veb saytınızı açın. Vidcetiniz sağ alt küncdə görünməlidir.",
+        "Wix2":"Wix veb saytınızın idarə panelinə, sonra Parametrlər > Qabaqcıl > “Xüsusi Kod” sekmesine keçin",
+        "Wix3":" \"+ Xüsusi kod əlavə et\" düyməsini klikləyin və verilən mətn qutusuna birinci bənddə kopyalanan JavaScript kodunu yapışdırın",
+        "Wix4":"Kod parçanıza tanınan ad verin. Bu, sonradan müəyyən edilməsini asanlaşdıracaq.",
+        "Wix5":"Kodun harada tətbiq edilməsini istədiyinizi seçin:",
+        "Wix5A":"\"Bütün səhifələr\": Bu, gələcək səhifələr də daxil olmaqla, saytınızın bütün səhifələrinə vidceti əlavə edir.",
+        "Wix5B":"\"Xüsusi səhifələri seçin\": Vidceti göstərmək istədiyiniz xüsusi səhifələri seçmək üçün açılan menyudan istifadə edin.",
+        "Wix6":"Səhifənizin HTML strukturunda kodu yerləşdirmək istədiyiniz yeri seçin. Seçimlərə aşağıdakılar daxildir:",
+        "Wix7":"Nəhayət, dəyişikliklərinizi saxlamaq və Wix veb saytınızda vidceti aktivləşdirmək üçün \"Tətbiq et\" düyməsini klikləyin."
     },
     "NoteThatTheWidgetLabelsOnAwebsite":"Nəzərə alın ki, vebsaytdakı (və canlı sınaq səhifəsində) vidcet ifadələri çoxdilli səhifənin dilləri arasında mövcuddursa, brauzer dilində göstəriləcək, əks halda onlar dildə göstərilən dildə göstəriləcək. defolt dil.",
     "Message":"Mesaj",

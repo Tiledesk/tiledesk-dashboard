@@ -2424,7 +2424,15 @@
         "MagentoStep2":"Magento yönetici sayfanıza gidin, ardından İçerik > Tasarım > Yapılandırma",
         "MagentoStep3":"HTML Başlığı bölümünü genişletin ve birinci maddede kopyaladığınız JavaScript kodunu Komut Dosyaları ve Stil Sayfaları alanına yapıştırın ve ardından Yapılandırmayı kaydet düğmesine basın",
         "MagentoStep4":"Sistem > Önbellek yönetimi'ne gidin, TÜM onay kutularını seçin ve Yenile/Gönder düğmesine basın",
-        "MagentoStep5":"Ayarları kaydettikten sonra web sitenizi açın. Widget'ınız sağ alt köşede görünmelidir."
+        "MagentoStep5":"Ayarları kaydettikten sonra web sitenizi açın. Widget'ınız sağ alt köşede görünmelidir.",
+        "Wix2":"Wix web sitenizin kontrol paneline gidin, ardından Ayarlar > Gelişmiş > \"Özel Kod\" sekmesine gidin",
+        "Wix3": "\"+ Özel Kod Ekle\" düğmesini tıklayın ve sağlanan metin kutusuna birinci maddede kopyaladığınız JavaScript kodunu yapıştırın",
+        "Wix4": "Kod pasajınıza tanınabilir bir ad verin. Bu daha sonra tanımlamayı kolaylaştıracaktır.",
+        "Wix5":"Kodun uygulanmasını istediğiniz yeri seçin:",
+        "Wix5A":"\"Tüm sayfalar\": Bu, widget'ı gelecekteki sayfalar da dahil olmak üzere sitenizin tüm sayfalarına ekler.",
+        "Wix5B":"\"Belirli sayfaları seçin\": Widget'ı görüntülemek istediğiniz belirli sayfaları seçmek için açılır menüyü kullanın.",
+        "Wix6":"Kodu sayfanızın HTML yapısında nereye yerleştirmek istediğinizi seçin. Seçenekler şunları içerir:",
+        "Wix7":"Son olarak, değişikliklerinizi kaydetmek ve widget'ı Wix web sitenizde etkinleştirmek için \"Uygula\" düğmesine tıklayın."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Bir web sitesindeki (ve canlı test sayfasındaki) widget ifadelerinin, Çoklu Dil sayfasının dilleri arasında mevcutsa tarayıcı dilinde görüntüleneceğini unutmayın, aksi takdirde bunlar, varsayılan dil.",
     "Message": "İleti",

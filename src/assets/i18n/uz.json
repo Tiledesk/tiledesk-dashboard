@@ -2422,7 +2422,15 @@
         "MagentoStep2":"Magento administrator sahifangizga, so'ng Kontent > Dizayn > Konfiguratsiyaga o'ting",
         "MagentoStep3":"HTML bosh bo'limini kengaytiring va birinchi nuqtada ko'chirilgan JavaScript kodini Skriptlar va uslublar jadvallari maydoniga qo'ying va so'ng Konfiguratsiyani saqlash tugmasini bosing.",
         "MagentoStep4":"Tizim > Keshni boshqarish-ga o'ting, HAMMA katakchalarni belgilang va Yangilash/Yuborish tugmasini bosing",
-        "MagentoStep5":"Sozlamalarni saqlaganingizdan so'ng veb-saytingizni oching. Vidjetingiz pastki o'ng burchakda paydo bo'lishi kerak."
+        "MagentoStep5":"Sozlamalarni saqlaganingizdan so'ng veb-saytingizni oching. Vidjetingiz pastki o'ng burchakda paydo bo'lishi kerak.",
+        "Wix2": "Wix veb-saytingizning boshqaruv paneliga, so‘ng Sozlamalar > Kengaytirilgan > “Maxsus kod” yorlig‘iga o‘ting.",
+        "Wix3": "\"+ Maxsus kod qo'shish\" tugmasini bosing va taqdim etilgan matn maydoniga birinchi nuqtada ko'chirilgan JavaScript kodini joylashtiring.",
+        "Wix4": "Kod snippetiga taniqli nom bering. Bu keyinchalik aniqlashni osonlashtiradi.",
+        "Wix5":"Kod qo'llanilishi kerak bo'lgan joyni tanlang:",
+        "Wix5A":"\"Barcha sahifalar\": Bu vidjetni saytingizning barcha sahifalariga, jumladan, kelajakdagi sahifalarga ham qo'shadi.",
+        "Wix5B":"\"Muayyan sahifalarni tanlang\": Vidjetni ko'rsatmoqchi bo'lgan maxsus sahifalarni tanlash uchun ochiladigan menyudan foydalaning.",
+        "Wix6":"Kodni sahifangizning HTML tuzilmasi ichida joylashtirmoqchi bo'lgan joyni tanlang. Variantlar quyidagilarni o'z ichiga oladi:",
+        "Wix7":"Nihoyat, Wix veb-saytida o'zgarishlarni saqlash va vidjetni faollashtirish uchun \"Ilova\" tugmasini bosing."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "E'tibor bering, veb-saytdagi (va jonli test sahifasida) vidjet iboralari, agar ko'p tilli sahifa tillari orasida bir xil bo'lsa, brauzer tilida ko'rsatiladi, aks holda ular o'rnatilgan tilda ko'rsatiladi. standart til.",
     "Message": "Xabar",
