@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.21-rc2
+- Adds, in the Magento section of the Installation page, the link to the Help center documentation
+
 ### 2.6.21-rc1
 - Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
 
