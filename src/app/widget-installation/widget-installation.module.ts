@@ -14,6 +14,7 @@ import { GoogleTagManagerInstallationComponent } from 'app/components/widget-ins
 import { CodeInstallationModule } from 'app/components/widget-installations/code-installation/code-installation.module';
 import { MagentoInstallationComponent } from 'app/components/widget-installations/magento-installation/magento-installation.component';
 import { WixComponent } from 'app/components/widget-installations/wix/wix.component';
+import { BigcommerceInstallationComponent } from 'app/components/widget-installations/bigcommerce-installation/bigcommerce-installation.component';
 
 const routes: Routes = [
   { path: "", component: WidgetInstallationComponent},
@@ -29,7 +30,8 @@ const routes: Routes = [
     ShopifyInstallationComponent,
     GoogleTagManagerInstallationComponent,
     MagentoInstallationComponent,
-    WixComponent
+    WixComponent,
+    BigcommerceInstallationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

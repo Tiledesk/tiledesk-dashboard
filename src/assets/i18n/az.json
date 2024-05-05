@@ -2431,7 +2431,11 @@
         "Wix5A":"\"Bütün səhifələr\": Bu, gələcək səhifələr də daxil olmaqla, saytınızın bütün səhifələrinə vidceti əlavə edir.",
         "Wix5B":"\"Xüsusi səhifələri seçin\": Vidceti göstərmək istədiyiniz xüsusi səhifələri seçmək üçün açılan menyudan istifadə edin.",
         "Wix6":"Səhifənizin HTML strukturunda kodu yerləşdirmək istədiyiniz yeri seçin. Seçimlərə aşağıdakılar daxildir:",
-        "Wix7":"Nəhayət, dəyişikliklərinizi saxlamaq və Wix veb saytınızda vidceti aktivləşdirmək üçün \"Tətbiq et\" düyməsini klikləyin."
+        "Wix7":"Nəhayət, dəyişikliklərinizi saxlamaq və Wix veb saytınızda vidceti aktivləşdirmək üçün \"Tətbiq et\" düyməsini klikləyin.",
+        "Bc1":"BigCommerce hesabınıza daxil olun. Sol naviqasiyadan \"Storefront\" üzərinə klikləyin.",
+        "Bc2":"\"Script Manager\" üzərinə klikləyin və \"Create a Script\" düyməsini basın.",
+        "Bc3":"Skriptinizi adlandırın, ona Təsvir verin (istəyə görə), yerləşdirmə üçün \"Footer\" və \"Script category\"nda \"Functional\" seçin.",
+        "Bc4":"\"Script type\" bölməsində \"Script\"i yoxlayın və birinci addımda kopyaladığınız JavaScript kodunu \"Script contents\" qutusuna yapışdırın. \"Save\" düyməsini basın."
     },
     "NoteThatTheWidgetLabelsOnAwebsite":"Nəzərə alın ki, vebsaytdakı (və canlı sınaq səhifəsində) vidcet ifadələri çoxdilli səhifənin dilləri arasında mövcuddursa, brauzer dilində göstəriləcək, əks halda onlar dildə göstərilən dildə göstəriləcək. defolt dil.",
     "Message":"Mesaj",

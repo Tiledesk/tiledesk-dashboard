@@ -2430,7 +2430,11 @@
         "Wix5A":"\"Barcha sahifalar\": Bu vidjetni saytingizning barcha sahifalariga, jumladan, kelajakdagi sahifalarga ham qo'shadi.",
         "Wix5B":"\"Muayyan sahifalarni tanlang\": Vidjetni ko'rsatmoqchi bo'lgan maxsus sahifalarni tanlash uchun ochiladigan menyudan foydalaning.",
         "Wix6":"Kodni sahifangizning HTML tuzilmasi ichida joylashtirmoqchi bo'lgan joyni tanlang. Variantlar quyidagilarni o'z ichiga oladi:",
-        "Wix7":"Nihoyat, Wix veb-saytida o'zgarishlarni saqlash va vidjetni faollashtirish uchun \"Ilova\" tugmasini bosing."
+        "Wix7":"Nihoyat, Wix veb-saytida o'zgarishlarni saqlash va vidjetni faollashtirish uchun \"Ilova\" tugmasini bosing.",
+        "Bc1": "BigCommerce hisobingizga kiring. Chap navigatsiyadan \"Storefront\" tugmasini bosing.",
+        "Bc2":"\"Script Manager\" ni bosing va \"Create a Script\" tugmasini bosing.",
+        "Bc3":"Skriptingizga nom bering, unga Tavsif bering (ixtiyoriy), joylashtirish uchun “Footer”ni va “Script category” “Functional” ni tanlang.",
+        "Bc4":"\"Script type\" bo'limida \"Script\" ni belgilang va birinchi bosqichda ko'chirilgan JavaScript kodini \"Script contents\" maydoniga joylashtiring. \"Save\" tugmasini bosing."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "E'tibor bering, veb-saytdagi (va jonli test sahifasida) vidjet iboralari, agar ko'p tilli sahifa tillari orasida bir xil bo'lsa, brauzer tilida ko'rsatiladi, aks holda ular o'rnatilgan tilda ko'rsatiladi. standart til.",
     "Message": "Xabar",

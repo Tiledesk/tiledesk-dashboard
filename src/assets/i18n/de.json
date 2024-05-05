@@ -2430,7 +2430,11 @@
 		"Wix5A":"„Alle Seiten“: Dadurch wird das Widget zu allen Seiten Ihrer Site hinzugefügt, einschließlich zukünftiger Seiten.",
 		"Wix5B":"„Bestimmte Seiten auswählen“: Verwenden Sie das Dropdown-Menü, um die bestimmten Seiten auszuwählen, auf denen das Widget angezeigt werden soll.",
 		"Wix6":"Wählen Sie aus, wo Sie den Code in der HTML-Struktur Ihrer Seite platzieren möchten. Zu den Optionen gehören:",
-		"Wix7":"Klicken Sie abschließend auf die Schaltfläche „Übernehmen“, um Ihre Änderungen zu speichern und das Widget auf Ihrer Wix-Website zu aktivieren."
+		"Wix7":"Klicken Sie abschließend auf die Schaltfläche „Übernehmen“, um Ihre Änderungen zu speichern und das Widget auf Ihrer Wix-Website zu aktivieren.",
+		"Bc1": "Melden Sie sich bei Ihrem BigCommerce-Konto an. Klicken Sie in der linken Navigation auf „Storefront“.",
+		"Bc2":"Klicken Sie auf „Script Manager“ und dann auf „Create a Script“.",
+		"Bc3":"Komut dosyanıza bir ad verin, bir Açıklama verin (isteğe bağlı), yerleşim için \"Footer\"yi ve \"Script category\"nde \"Functional\"i seçin.",
+		"Bc4":"Aktivieren Sie im Abschnitt „Script type“ das Kontrollkästchen „Script“ und fügen Sie anschließend den JavaScript-Code, den Sie in Schritt 1 kopiert haben, in das Feld „Script contents“ ein. Klicken Sie auf „Save“."
 	},
 	"NoteThatTheWidgetLabelsOnAwebsite": "Beachten Sie, dass die Widget-Phrasen auf einer Website (und auf der Live-Testseite) in der Browsersprache angezeigt werden, wenn dieselbe unter den Sprachen der mehrsprachigen Seite vorhanden ist, andernfalls werden sie in der Sprache angezeigt, die als festgelegt wurde Standardsprache.",
 	"Message": "Nachricht",

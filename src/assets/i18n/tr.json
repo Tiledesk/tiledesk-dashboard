@@ -2432,7 +2432,11 @@
         "Wix5A":"\"Tüm sayfalar\": Bu, widget'ı gelecekteki sayfalar da dahil olmak üzere sitenizin tüm sayfalarına ekler.",
         "Wix5B":"\"Belirli sayfaları seçin\": Widget'ı görüntülemek istediğiniz belirli sayfaları seçmek için açılır menüyü kullanın.",
         "Wix6":"Kodu sayfanızın HTML yapısında nereye yerleştirmek istediğinizi seçin. Seçenekler şunları içerir:",
-        "Wix7":"Son olarak, değişikliklerinizi kaydetmek ve widget'ı Wix web sitenizde etkinleştirmek için \"Uygula\" düğmesine tıklayın."
+        "Wix7":"Son olarak, değişikliklerinizi kaydetmek ve widget'ı Wix web sitenizde etkinleştirmek için \"Uygula\" düğmesine tıklayın.",
+        "Bc1": "BigCommerce hesabınıza giriş yapın. Soldaki gezinme menüsünden \"Storefront\"yı tıklayın.",
+        "Bc2":"\"Script Manager\"ne tıklayın ve \"Create a Script\"a tıklayın.",
+        "Bc3":"Komut dosyanıza bir ad verin, bir Açıklama verin (isteğe bağlı), yerleşim için \"Footer\"yi ve \"Script category\"nde \"Functional\"i seçin.",
+        "Bc4":"\"Script type\" bölümünde \"Script\"nı işaretleyin ve ardından birinci adımda kopyaladığınız JavaScript kodunu \"Script contents\" kutusuna yapıştırın. \"Save\"i tıklayın."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Bir web sitesindeki (ve canlı test sayfasındaki) widget ifadelerinin, Çoklu Dil sayfasının dilleri arasında mevcutsa tarayıcı dilinde görüntüleneceğini unutmayın, aksi takdirde bunlar, varsayılan dil.",
     "Message": "İleti",

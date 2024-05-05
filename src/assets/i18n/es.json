@@ -2431,7 +2431,11 @@
         "Wix5A":"\"Todas las páginas\": esto agrega el widget a todas las páginas de su sitio, incluidas las páginas futuras.",
         "Wix5B":"\"Elegir páginas específicas\": utilice el menú desplegable para seleccionar las páginas específicas donde desea mostrar el widget.",
         "Wix6":"Seleccione dónde desea colocar el código dentro de la estructura HTML de su página. Las opciones incluyen:",
-        "Wix7":"Finalmente, haz clic en el botón \"Aplicar\" para guardar los cambios y activar el widget en tu sitio web Wix."
+        "Wix7":"Finalmente, haz clic en el botón \"Aplicar\" para guardar los cambios y activar el widget en tu sitio web Wix.",
+        "Bc1": "Inicie sesión en su cuenta de BigCommerce. Desde la navegación izquierda, haga clic en \"Storefront\".",
+        "Bc2":"Haga clic en \"Script Manager\" y haga clic en \"Create a Script\".",
+        "Bc3":"Asigne un nombre a su secuencia de comandos, asígnele una Descripción (opcional), seleccione \"Footer\" para la ubicación y \"Functional\" en \"Script category\".",
+        "Bc4":"Marque \"Script\" en la sección \"Script type\" y luego pegue el código JavaScript que copió en el paso uno en el cuadro \"Script contents\". Clic en \"Save\"."
     },
     "NoteThatTheWidgetLabelsOnAwebsite":"Tenga en cuenta que las frases del widget en un sitio web (y en la página de prueba en vivo) se mostrarán en el idioma del navegador si el mismo está presente entre los idiomas de la página multilingüe; de lo contrario, se mostrarán en el idioma que se ha establecido como el idioma predeterminado.",
     "Message": "Mensaje",

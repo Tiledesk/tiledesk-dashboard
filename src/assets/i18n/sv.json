@@ -2431,7 +2431,11 @@
         "Wix5A":"\"Alla sidor\": Detta lägger till widgeten på alla sidor på din webbplats, inklusive framtida sidor.",
         "Wix5B":"\"Välj specifika sidor\": Använd rullgardinsmenyn för att välja de specifika sidor där du vill visa widgeten.",
         "Wix6":"Välj var du vill placera koden i din sidas HTML-struktur. Alternativen inkluderar:",
-        "Wix7":"Klicka slutligen på knappen \"Använd\" för att spara dina ändringar och aktivera widgeten på din Wix-webbplats."
+        "Wix7":"Klicka slutligen på knappen \"Använd\" för att spara dina ändringar och aktivera widgeten på din Wix-webbplats.",
+        "Bc1":"Logga in på ditt BigCommerce-konto. Från den vänstra navigeringen klickar du på \"Storefront\".",
+        "Bc2":"Klicka på \"Script Manager\" och klicka på \"Create a Script\".",
+        "Bc3":"Namnge ditt skript, ge det en beskrivning (valfritt), välj \"Footer\" för placeringen och \"Functional\" i \"Script category\".",
+        "Bc4":"Markera \"Script\" i avsnittet \"Script type\" och klistra sedan in JavaScript-koden du kopierade i steg ett i rutan \"Script contents\". Klicka på \"Save\"."
     },
     "NoteThatTheWidgetLabelsOnAwebsite": "Observera att widgetfraserna på en webbplats (och på livetestsidan) kommer att visas på webbläsarspråket om detsamma finns bland språken på sidan för flerspråkig sida, annars kommer de att visas på det språk som har ställts in som standardspråk.",
     "Message": "Meddelande",

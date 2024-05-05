@@ -647,6 +647,7 @@ export const URL_install_tiledesk_on_shopify = 'https://gethelp.tiledesk.com/art
 export const URL_install_tiledesk_on_wordpress = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-wordpress/'
 export const URL_install_tiledesk_on_prestashop = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-prestashop/'
 export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
-
+export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
+export const URL_install_tiledesk_on_wix ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
 
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';
