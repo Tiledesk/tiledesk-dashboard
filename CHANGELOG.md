@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.20-rc4
+- Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
+
 ### 2.6.20-rc3
 - Displays, on the Monitor page, after the restore of scroll position an, effect that highlight the row selected
 - Changes the endpoint of the Get request getBotConversationAttribute()
