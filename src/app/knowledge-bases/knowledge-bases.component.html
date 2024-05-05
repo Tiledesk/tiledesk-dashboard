@@ -24,41 +24,54 @@
       </appdashboard-bots-sidebar>
 
 
-      <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
+      <div class="template-content">
         <!-- <appdashboard-knowledge-bases-alert [kbsListCount]="kbsListCount" *ngIf="kbsListCount && kbsListCount > kbLimit"> </appdashboard-knowledge-bases-alert> -->
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
-        <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
-          <!-- *ngIf="kbsListCount>0" -->
-          <div class="add-kb-div">
-            <button class="btn btn-new btn-size-m btn--primary pull-right btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-              <span class=""> {{ 'KbPage.Add' | translate }} </span>
-              <!-- <mat-icon class="icon-big-button">add</mat-icon> -->
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-              <add-content-menu class="mat-menu"
-                  (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
-              </add-content-menu>
-            </mat-menu>
+        <div class="template-content-container">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div class="card-content" *ngIf="!showSpinner">
+            
+            <div class="header">
+              <p class="header-title">All data sources</p>
+              <div class="buttons-div">
+                <button class="btn btn-new btn-size-m btn-danger btn-big-button" [disabled]="addButtonDisabled" aria-label="Delete" style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
+                  <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
+                  Delete Namespace
+                </button>
+                <div class="add-kb-div">
+                  <button class="btn btn-new btn-size-m btn--primary btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions" style="text-transform: capitalize; width: 150px;">
+                    <span class=""> {{ 'KbPage.Add' | translate }} </span>
+                  </button>
+                  <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">
+                    <add-content-menu class="mat-menu"
+                        (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
+                    </add-content-menu>
+                  </mat-menu>
+                </div>
+              </div>
+            </div>
+  
+            <!-- START TABLE -->
+            <knowledge-base-table
+              [kbsList]="kbsList"
+              [kbsListCount]="kbsListCount"
+              [refresh]="refreshKbsList"
+              (openBaseModalDetail)="onOpenBaseModalDetail($event)"
+              (openBaseModalDelete)="onOpenBaseModalDelete($event)"
+              (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
+              (openBaseModalPreview)="onOpenBaseModalPreview()"
+              (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)"
+              (checkStatus)="onCheckStatus($event)"
+              (runIndexing)="onRunIndexing($event)"
+              (loadPage)="onLoadPage($event)"
+              (loadByFilter)="onLoadByFilter($event)"
+            ></knowledge-base-table>
+            <!-- END TABLE -->
+  
           </div>
-
-          <!-- START TABLE -->
-          <knowledge-base-table
-            [kbsList]="kbsList"
-            [kbsListCount]="kbsListCount"
-            [refresh]="refreshKbsList"
-            (openBaseModalDetail)="onOpenBaseModalDetail($event)"
-            (openBaseModalDelete)="onOpenBaseModalDelete($event)"
-            (openBaseModalPreview)="onOpenBaseModalPreview()"
-            (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)"
-            (checkStatus)="onCheckStatus($event)"
-            (runIndexing)="onRunIndexing($event)"
-            (loadPage)="onLoadPage($event)"
-            (loadByFilter)="onLoadByFilter($event)"
-          ></knowledge-base-table>
-          <!-- END TABLE -->
-
         </div>
+
       </div>
     </div>
   </div>
@@ -94,26 +107,31 @@
 <modal-detail-knowledge-base *ngIf="baseModalDetail"
   [kb]="kbid_selected"
   (updateKnowledgeBase)="onUpdateKb($event)"
-  (closeBaseModal)="onCloseBaseModal()"
-></modal-detail-knowledge-base>
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-detail-knowledge-base>
 <!-- DETAIL KNOWLEDGE BASE MODAL - END -->
 
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
 <modal-delete-knowledge-base *ngIf="baseModalDelete"
   [kb]="kbid_selected"
   (deleteKnowledgeBase)="onDeleteKnowledgeBase($event)"
-  (closeBaseModal)="onCloseBaseModal()"
-></modal-delete-knowledge-base>
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-delete-knowledge-base>
 <!-- DELETE KNOWLEDGE BASE MODAL - END -->
+
+<!-- DELETE NAMESPACE MODAL - START -->
+<modal-delete-namespace *ngIf="showDeleteNamespaceModal"
+  (deleteNamespace)="onDeleteNamespace()"
+  (closeModal)="closeDeleteNamespaceModal()">
+</modal-delete-namespace>
+<!-- DELETE NAMESPACE MODAL - END -->
 
 <!-- PREVIEW KNOWLEDGE BASE MODAL - START -->
 <modal-preview-knowledge-base *ngIf="baseModalPreview" 
   [namespace]="id_project"
-  (closeBaseModal)="onCloseBaseModal()"
-></modal-preview-knowledge-base>
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-preview-knowledge-base>
 <!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
-
-
 
 <!-- ERROR KNOWLEDGE BASE MODAL - START -->
 <modal-error-knowledge-base *ngIf="baseModalError" 

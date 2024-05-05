@@ -22,6 +22,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MomentModule } from 'ngx-moment';
+import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -41,6 +42,7 @@ const routes: Routes = [
     ModalSiteMapComponent,
     ModalTextFileComponent,
     ModalUrlsKnowledgeBaseComponent,
+    ModalDeleteNamespaceComponent,
    
   ],
   imports: [
