@@ -197,7 +197,7 @@ export class AuthGuard implements CanActivate {
         }
         // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
         this.auth.projectSelected(project, 'auth-guard');
-        this.logger.log('[AUTH-GUARD] - PROJECT THAT IS PUBLISHED ', project);
+        console.log('[AUTH-GUARD] - PROJECT THAT IS PUBLISHED ', project);
         // this.project_bs.next(project);
 
         const projectForStorage: Project = {

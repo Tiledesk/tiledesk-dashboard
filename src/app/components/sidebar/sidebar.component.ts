@@ -1526,7 +1526,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // console.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
+      console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
       if (this.project) {
 
 
@@ -1624,7 +1624,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
      console.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
+      console.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
 
 
       if (this.current_selected_prjct) {

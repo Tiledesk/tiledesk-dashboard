@@ -190,7 +190,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       if (project) {
         this.project = project
         this.projectId = project._id;
-        this.logger.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+       console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
 
         this.findCurrentProjectAmongAll(this.projectId)
         // this.projectName = project.name;

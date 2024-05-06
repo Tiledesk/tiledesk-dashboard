@@ -260,8 +260,8 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project)
-    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED calledBy', calledBy)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED calledBy', calledBy)
 
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
@@ -359,8 +359,7 @@ export class AuthService {
               url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
-              this.logger.log(
-                '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+              this.logger.log( '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
 
               this.subscription.unsubscribe()
 
@@ -395,13 +394,13 @@ export class AuthService {
 
                 /**** ******* ******* NEW BUG FIX ***** *** ** ***/
 
-                this.logger.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
+                console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 if (this.project_bs.value == null) {
-                  this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
+                  console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
                   this.project_bs.next(project)
                 }
               } else {
-                this.logger.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
+                console.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
                 // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
                 // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
                 // WITHOUT BEING PASSED FROM THE PROJECT LIST.
@@ -416,7 +415,7 @@ export class AuthService {
                 const project: Project = {
                   _id: this.nav_project_id,
                 }
-                this.logger.log('[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)', project)
+                console.log('[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)', project)
 
                 this.project_bs.next(project)
               }

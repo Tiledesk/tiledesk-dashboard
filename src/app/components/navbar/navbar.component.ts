@@ -598,7 +598,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           return project.id_project.status === 100;
 
         });
-        this.logger.log('[NAVBAR] getProjects this.projects ', this.projects);
+        console.log('[NAVBAR] getProjects this.projects ', this.projects);
       }
     }, error => {
       this.logger.error('[NAVBAR] getProjects - ERROR ', error)
