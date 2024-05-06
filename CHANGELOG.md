@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.22-rc1
+- Knowledge Base page improvements
+
 ### 2.6.21-rc2
 - Adds, in the Magento section of the Installation page, the link to the Help center documentation
 
