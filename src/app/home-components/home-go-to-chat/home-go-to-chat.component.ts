@@ -40,7 +40,7 @@ export class HomeGoToChatComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        console.log('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.findCurrentProjectAmongAll(project._id)

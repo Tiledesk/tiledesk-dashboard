@@ -30,11 +30,11 @@
                     </g>
                     <g class="running">
                       <path [ngClass]="{
-                        'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
-                        'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
-                        'b-plan-badge': current_prjct?.plan_badge_background_type === 'b_plan_badge', 
-                        'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
-                        'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                        'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                        'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                        'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                        'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+                        'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
                         }" d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
 		                    C58,24.9,57.1,25.7,56.1,25.7" />
                     </g>
@@ -83,11 +83,11 @@
                   <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
                     (click)="goToSubscription()">
                     <div class="home-project-plan-badge" [ngClass]="{
-                      'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
-                      'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
-                      'b-plan-badge': current_prjct?.plan_badge_background_type === 'b_plan_badge', 
-                      'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
-                      'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                      'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                      'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                      'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
                       }">
                       <span style="border-bottom: 1px dotted #3ea9f5;"> 
                         {{ prjct_profile_name }} 

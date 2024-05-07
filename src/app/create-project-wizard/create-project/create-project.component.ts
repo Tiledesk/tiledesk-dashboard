@@ -139,7 +139,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
     this.projectService.createProject(this.project_name, 'create-project')
       .subscribe((project) => {
-        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+         console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT

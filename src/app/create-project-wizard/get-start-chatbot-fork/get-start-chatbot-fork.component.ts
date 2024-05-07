@@ -1,14 +1,12 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { LocalDbService } from 'app/services/users-local-db.service';
-import { CreateProjectComponent } from '../create-project/create-project.component';
 import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';

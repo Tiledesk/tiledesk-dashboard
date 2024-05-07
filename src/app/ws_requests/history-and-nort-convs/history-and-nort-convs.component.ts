@@ -2527,7 +2527,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
+     console.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
       if (project) {
         this.projectId = project._id;
         this.findCurrentProjectAmongAll(this.projectId)

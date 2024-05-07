@@ -134,38 +134,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.initialize();
     this.onInitWindowHeight();
     this.detectMobile();
-    // this.getOSCODE()
-  }
-
-  getOSCODE() {
-    
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    console.log('[ONBOARDING-CONTENT] getOSCODE public_Key',  this.public_Key);
-    
-    let keys = this.public_Key.split("-");
-
-    keys.forEach(key => {
-
-      if (key.includes("MTT")) {
-
-        let mtt = key.split(":");
-
-        if (mtt[1] === "F") {
-          this.isMTT = false;
-        } else {
-          this.isMTT = true;
-        }
-      }
-    });
-
-    if (!this.public_Key.includes("MTT")) {
-      this.isMTT = false;
-    }
-
   }
 
   onInitWindowHeight(): any {
-
     this.logger.log('[ONBOARDING-CONTENT] ACTUAL WIDTH ', window.innerWidth);
 
     if (window.innerWidth < 452) {
@@ -218,29 +189,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       }
     });
   }
-
-
-  // private checkCurrentUrlAndHideCloseBtn() {
-  //   if (this.router.url.startsWith('/create-project-itw/')) {
-  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true;
-  //     this.browser_lang = this.translate.getBrowserLang();
-  //     if (tranlatedLanguage.includes(this.browser_lang)) {
-  //       const langName = this.getLanguageNameFromCode(this.browser_lang);
-  //       this.temp_SelectedLangName = langName;
-  //       this.temp_SelectedLangCode = this.browser_lang;
-  //     } else {
-  //       this.temp_SelectedLangName = 'English';
-  //       this.temp_SelectedLangCode = 'en';
-  //     }
-  //   }  else if (this.router.url === '/create-project') {
-  //     this.CLOSE_BTN_IS_HIDDEN = true;
-  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-  //   } else if (this.router.url === '/create-new-project') {
-  //     this.CLOSE_BTN_IS_HIDDEN = false;
-  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-  //   }
-  // }
-
 
 
   private setProjectName() {
@@ -568,13 +516,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToSaveProjectAndCreateBot($event) {
     this.goToNextStep()
-
-    // this.createNewProject();
-    // if(this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT){
-    //   this.createNewProject();
-    // } else {
-    //   this.createBot();
-    // }
   }
 
   goBack() {
@@ -624,75 +565,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
 
 
+      this.trackNewProjectCreated(trialStarDate, trialEndDate)
 
-      // let segmentPageName = "Wizard, Create project";
-      // let segmentTrackName = "Trial Started";
-      // let segmentTrackAttr = {
-      //   "userId": this.user._id,
-      //   "trial_start_date": trialStarDate,
-      //   "trial_end_date": trialEndDate,
-      //   "trial_plan_name": "Pro (trial)",
-      //   "context": {
-      //     "groupId": this.newProject._id
-      //   }
-      // }
-      // this.segment(segmentPageName, segmentTrackName,segmentTrackAttr);
 
-      if (!isDevMode()) {
-        if (window['analytics']) {
-          try {
-            window['analytics'].page("Wizard, Create project", {
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create project page error', err);
-          }
-
-          let userFullname = ''
-          if (this.user.firstname && this.user.lastname) {
-            userFullname = this.user.firstname + ' ' + this.user.lastname
-          } else if (this.user.firstname && !this.user.lastname) {
-            userFullname = this.user.firstname
-          }
-
-          try {
-            window['analytics'].identify(this.user._id, {
-              name: userFullname,
-              email: this.user.email,
-              logins: 5,
-              plan: "Premium (trial)"
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create project identify error', err);
-          }
-          try {
-            window['analytics'].track('Trial Started', {
-              "userId": this.user._id,
-              "trial_start_date": trialStarDate,
-              "trial_end_date": trialEndDate,
-              "trial_plan_name": "Premium (trial)",
-              "context": {
-                "groupId": this.newProject._id
-              }
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create track Trial Started event error', err);
-          }
-          try {
-            window['analytics'].group(this.newProject._id, {
-              name: this.newProject.name,
-              plan: "Premium (trial)",
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create project group error', err);
-          }
-        }
-      }
-      // setTimeout(() => {
-      //   if(auto == true){
-      //     this.DISPLAY_SPINNER_SECTION = false;
-      //   }
-      //   this.DISPLAY_SPINNER = false;
-      // }, 2000);
       this.getProjectsAndSaveInStorage();
       this.callback('createNewProject');
     });
@@ -703,8 +578,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
    *  GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   
    * */
   getProjectsAndSaveInStorage() {
+
     this.projectService.getProjects().subscribe((projects: any) => {
       // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      console.log('[ONBOARDING-CONTENT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
       if (projects) {
         this.projects = projects;
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
@@ -730,6 +607,59 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     }, () => {
       this.logger.log('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - COMPLETE')
     });
+  }
+
+
+  trackNewProjectCreated(trialStarDate, trialEndDate) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Wizard, Create project", {
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project page error', err);
+        }
+
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname) {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: userFullname,
+            email: this.user.email,
+            logins: 5,
+            plan: "Premium (trial)"
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project identify error', err);
+        }
+        try {
+          window['analytics'].track('Trial Started', {
+            "userId": this.user._id,
+            "trial_start_date": trialStarDate,
+            "trial_end_date": trialEndDate,
+            "trial_plan_name": "Premium (trial)",
+            "context": {
+              "groupId": this.newProject._id
+            }
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create track Trial Started event error', err);
+        }
+        try {
+          window['analytics'].group(this.newProject._id, {
+            name: this.newProject.name,
+            plan: "Premium (trial)",
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project group error', err);
+        }
+      }
+    }
   }
 
 

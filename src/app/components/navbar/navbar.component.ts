@@ -419,7 +419,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
 
         this.currentUserId = this.user._id;
-        // this.getProjects();
+        
       }
     });
   }
@@ -1092,7 +1092,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getIfIsCreatedNewProject() {
     this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
-      this.logger.log('[NAVBAR] »»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
+      console.log('[NAVBAR] »»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
       if (hasCreatedNewProject) {
         this.getProjects();
       }
