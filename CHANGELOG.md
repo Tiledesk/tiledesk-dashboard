@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.22
+- Deploys in production
+- Changes the link that redirect to the installation of WhatsApp on the home page
+
 ### 2.6.21
 - Deploys in production
 - Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
