@@ -12,6 +12,9 @@ import { WordpressInstallationComponent } from 'app/components/widget-installati
 import { ShopifyInstallationComponent } from 'app/components/widget-installations/shopify-installation/shopify-installation.component';
 import { GoogleTagManagerInstallationComponent } from 'app/components/widget-installations/google-tag-manager-installation/google-tag-manager-installation.component';
 import { CodeInstallationModule } from 'app/components/widget-installations/code-installation/code-installation.module';
+import { MagentoInstallationComponent } from 'app/components/widget-installations/magento-installation/magento-installation.component';
+import { WixComponent } from 'app/components/widget-installations/wix/wix.component';
+import { BigcommerceInstallationComponent } from 'app/components/widget-installations/bigcommerce-installation/bigcommerce-installation.component';
 
 const routes: Routes = [
   { path: "", component: WidgetInstallationComponent},
@@ -25,7 +28,10 @@ const routes: Routes = [
     PrestashopInstallationComponent,
     WordpressInstallationComponent,
     ShopifyInstallationComponent,
-    GoogleTagManagerInstallationComponent
+    GoogleTagManagerInstallationComponent,
+    MagentoInstallationComponent,
+    WixComponent,
+    BigcommerceInstallationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

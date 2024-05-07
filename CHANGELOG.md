@@ -1,6 +1,11 @@
 # tiledesk-dashboard
 
+### 2.6.21
+- Deploys in production
+- Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
+
 ### 2.6.20
+- Deploys in production
 - Implements on the "Monitor" page the scroll position restoration
 - Changes the endpoint of the GET request that retrieve the chatbot attributes
 - Displays, on the "Monitor" page, after restoring the scrolling position, an effect that highlights the previously selected conversation
