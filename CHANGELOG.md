@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.23
+- Deploys in production
+- Improves the branding service 
+
 ### 2.6.22
 - Deploys in production
 - Changes the link that redirect to the installation of WhatsApp on the home page
