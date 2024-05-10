@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.24
+- Deploys in production
+- Minor improvements and bug fixing
+
 ### 2.6.23
 - Deploys in production
 - Improves the branding service 
