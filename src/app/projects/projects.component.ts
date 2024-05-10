@@ -98,7 +98,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     const brand = brandService.getBrand();
-    this.logoutBtnVisible = brand['logoutEnabled'];
+    this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
     this.tparams = brand;
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogo_width = brand['recent_project_page']['company_logo_width'];

@@ -97,7 +97,7 @@ export class BrandService {
       BRAND_PRIMARY_COLOR: "#f0806f",
       BRAND_SECONDARY_COLOR: "#f0806f",
       DOCS: true,
-      logoutEnabled: true
+      LOGOUT_ENABLED: true
     }
   }
 

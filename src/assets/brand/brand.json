@@ -76,6 +76,6 @@
     "BRAND_PRIMARY_COLOR": "#00c0f0",
     "BRAND_SECONDARY_COLOR": "#002159",
     "DOCS": false,
-    "logoutEnabled": false
+    "LOGOUT_ENABLED": false
   }
 }
