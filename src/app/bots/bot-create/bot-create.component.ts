@@ -134,6 +134,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   USER_ROLE : string;
   learnMoreAboutDefaultRoles : string;
   agentsCannotManageChatbots: string;
+  public hideHelpLink: boolean;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -158,6 +159,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dialogflowLang = dialogflowLanguage
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit() {

@@ -546,9 +546,9 @@
                 </div>
               </div>
 
-              <p style="color:#7695a5">
+              <p  style="color:#7695a5">
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
-                <span class="link-in-right-sidebar" (click)="openExternalBotIntegrationTutorial()">
+                <span *ngIf="hideHelpLink" class="link-in-right-sidebar" (click)="openExternalBotIntegrationTutorial()">
                   <!-- {{ "HereTheTutorial" | translate: tparams }} -->
                   {{ "HereThe_Tutorial" | translate }}
 
