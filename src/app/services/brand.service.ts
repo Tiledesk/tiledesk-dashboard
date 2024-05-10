@@ -95,8 +95,8 @@ export class BrandService {
       CONTACT_SALES_EMAIL: "sales@tiledesk.com",
       BRAND_PRIMARY_COLOR: "#f0806f",
       BRAND_SECONDARY_COLOR: "#f0806f",
-      DOCS: true
-
+      DOCS: true,
+      logoutEnabled: true
     }
   }
 
