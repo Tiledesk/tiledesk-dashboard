@@ -153,14 +153,14 @@
                     <!-- <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
                       <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
                     </button> -->
-                    <li class="divider"></li>
+                    <li *ngIf="logoutBtnVisible" class="divider"></li>
                     <!-- <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
                       {{ 'NavBar.LogOut' | translate }}
                     </button> -->
 
-                    <div class="user-profile-link" (click)="openLogoutModal()">
+                    <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
 
-                      <div class="user-profile-link-icon">
+                      <div  class="user-profile-link-icon">
 
                         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                           viewBox="0 0 24 24">
