@@ -1685,8 +1685,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // || this.appTitle === "Facebook Messenger"
     if (this.appTitle === "WhatsApp Business" ) {
+      this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })
       // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
-      this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })}
+     
+    }
   }
 
   openInAppStoreInstall() {
