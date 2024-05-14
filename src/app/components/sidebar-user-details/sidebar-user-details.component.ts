@@ -20,6 +20,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
+import { Project } from 'app/models/project-model';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -95,11 +96,11 @@ export class SidebarUserDetailsComponent implements OnInit {
     public dialog: MatDialog,
     public brandService: BrandService
   ) {
-    const brand = brandService.getBrand(); 
-    this.hideHelpLink= brand['DOCS'];
-  //  console.log('[SIDEBAR-USER-DETAILS] !!!!! HELLO SIDEBAR-USER-DETAILS')
-  // const brand = brandService.getBrand(); 
-  // this.hideHelpLink= brand['DOCS'];
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+    //  console.log('[SIDEBAR-USER-DETAILS] !!!!! HELLO SIDEBAR-USER-DETAILS')
+    // const brand = brandService.getBrand(); 
+    // this.hideHelpLink= brand['DOCS'];
   }
 
 
@@ -126,10 +127,10 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   onMouseOutBusyIcon() {
-   
-   const busyIconEl = <HTMLElement>document.querySelector('.busy-status-tooltip');
-  //  console.log('[SIDEBAR] onMouseOutBusyIcon ', busyIconEl)
-   busyIconEl.style.opacity = "0";
+
+    const busyIconEl = <HTMLElement>document.querySelector('.busy-status-tooltip');
+    //  console.log('[SIDEBAR] onMouseOutBusyIcon ', busyIconEl)
+    busyIconEl.style.opacity = "0";
   }
 
   onMouseOverBusyIcon() {
@@ -139,9 +140,9 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
 
-  presentDialogResetBusy(){
+  presentDialogResetBusy() {
     this.logger.log('[SIDEBAR] presentDialogResetBusy ')
-    if(this.dialogRef) {
+    if (this.dialogRef) {
       this.dialogRef.close();
       return
     }
@@ -152,7 +153,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       data: {},
     });
 
-    
+
 
     this.dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
@@ -190,108 +191,194 @@ export class SidebarUserDetailsComponent implements OnInit {
       if (project) {
         this.project = project
         this.projectId = project._id;
-       console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+        console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+        console.log('[SIDEBAR-USER-DETAILS] project from $ubscription', this.project);
+        this.destructureProjectAndBuildProjectPlanName(this.project)
 
-        this.findCurrentProjectAmongAll(this.projectId)
+        // this.findCurrentProjectAmongAll(this.projectId)
         // this.projectName = project.name;
       }
     });
   }
 
-  findCurrentProjectAmongAll(projectId: string) {
-    this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
-      this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - current_prjct ', this.current_prjct);
+
+  destructureProjectAndBuildProjectPlanName(project: Project) {
+    this.is_active_subscription = project.isActiveSubscription;
+
+    this.prjct_name = project.name;
+    console.log('[SIDEBAR-USER-DETAILS] prjct_name ', this.prjct_name) 
+    this.trialExpired = project.trialExpired
+    console.log('[SIDEBAR-USER-DETAILS] trialExpired ', this.trialExpired) 
+    
+    if (project.profile) {
+      
+      this.plan_type = project.profile.type;
+      console.log('[SIDEBAR-USER-DETAILS] plan_type ', this.plan_type) 
+
+      this.extra3 = project.profile.extra3;
+      console.log('[SIDEBAR-USER-DETAILS] extra3 ', this.extra3) 
 
 
-      if (this.current_prjct) {
-        this.logger.log('[IDEBAR-USER-DETAILS] PROJECT current_prjct', this.current_prjct);
+      this.plan_name = project.profile.name
 
-        this.is_active_subscription = this.current_prjct.id_project.isActiveSubscription;
-        this.plan_name = this.current_prjct.id_project.profile.name;
-        this.plan_type = this.current_prjct.id_project.profile.type;
-        this.prjct_name = this.current_prjct.id_project.name;
-        this.trialExpired = this.current_prjct.id_project.trialExpired
-        this.extra3 = this.current_prjct.id_project.profile.extra3;
-        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT is_active_subscription', this.is_active_subscription);
-        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_name ', this.plan_name);
-        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_typeD', this.plan_type);
-        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT trialExpired', this.trialExpired);
-        this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT extra3', this.extra3);
-
-        if (this.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[this.extra3];
-        }
-
-        if (this.plan_type === 'free') {
-          // USECASE: TRIAL ACTIVE 
-          if (this.trialExpired === false) {
-            if (this.plan_name === 'free') {
-              this._prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-            } else if (this.plan_name === 'Sandbox') {
-              this._prjct_profile_name = PLAN_NAME.E + " plan (trial)"
-            }
-            // USECASE: TRIAL EXPIRED 
-          } else {
-            if (this.plan_name === 'free') {
-              this._prjct_profile_name = "Free plan"
-            } else if (this.plan_name === 'Sandbox') {
-              this._prjct_profile_name = "Sandbox plan"
-            }
-          }
-        } else if (this.plan_type === 'payment') {
-
-          if (this.is_active_subscription === true) {
-            if (this.plan_name === PLAN_NAME.A) {
-              if (!this.appSumoProfile) {
-                this._prjct_profile_name = PLAN_NAME.A + " plan";
-              } else {
-                this._prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-              }
-            } else if (this.plan_name === PLAN_NAME.B) {
-              if (!this.appSumoProfile) {
-                this._prjct_profile_name = PLAN_NAME.B + " plan";
-              } else {
-                this._prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-              }
-            } else if (this.plan_name === PLAN_NAME.C) {
-              this._prjct_profile_name = PLAN_NAME.C + " plan";
-            } else if (this.plan_name === PLAN_NAME.D) {
-              this._prjct_profile_name = PLAN_NAME.D + " plan";
-            } else if (this.plan_name === PLAN_NAME.E) {
-              this._prjct_profile_name = PLAN_NAME.E + " plan";
-            } else if (this.plan_name === PLAN_NAME.F) {
-              this._prjct_profile_name = PLAN_NAME.F + " plan";
-            }
-
-          } else if (this.is_active_subscription === false) {
-            if (this.plan_name === PLAN_NAME.A) {
-              this._prjct_profile_name = PLAN_NAME.A + " plan";
-            } else if (this.plan_name === PLAN_NAME.B) {
-              this._prjct_profile_name = PLAN_NAME.B + " plan";
-            } else if (this.plan_name === PLAN_NAME.C) {
-              this._prjct_profile_name = PLAN_NAME.C + " plan";
-            } else if (this.plan_name === PLAN_NAME.D) {
-              this._prjct_profile_name = PLAN_NAME.D + " plan";
-            } else if (this.plan_name === PLAN_NAME.E) {
-              this._prjct_profile_name = PLAN_NAME.E + " plan";
-            } else if (this.plan_name === PLAN_NAME.F) {
-              this._prjct_profile_name = PLAN_NAME.F + " plan";
-            }
-            
-          }
-
-        }
-
+      if (this.extra3) {
+        this.appSumoProfile = APP_SUMO_PLAN_NAME[this.extra3];
       }
-      this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
-    }, error => {
-      this.logger.error('[SIDEBAR-USER-DETAILS] - GET PROJECTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS * COMPLETE * ');
-    });
+
+      if (this.plan_type === 'free') {
+        // USECASE: TRIAL ACTIVE 
+        if (this.trialExpired === false) {
+          if (this.plan_name === 'free') {
+            this._prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+          } else if (this.plan_name === 'Sandbox') {
+            this._prjct_profile_name = PLAN_NAME.E + " plan (trial)"
+          }
+          // USECASE: TRIAL EXPIRED 
+        } else {
+          if (this.plan_name === 'free') {
+            this._prjct_profile_name = "Free plan"
+          } else if (this.plan_name === 'Sandbox') {
+            this._prjct_profile_name = "Sandbox plan"
+          }
+        }
+      } else if (this.plan_type === 'payment') {
+
+        if (this.is_active_subscription === true) {
+          if (this.plan_name === PLAN_NAME.A) {
+            if (!this.appSumoProfile) {
+              this._prjct_profile_name = PLAN_NAME.A + " plan";
+            } else {
+              this._prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+            }
+          } else if (this.plan_name === PLAN_NAME.B) {
+            if (!this.appSumoProfile) {
+              this._prjct_profile_name = PLAN_NAME.B + " plan";
+            } else {
+              this._prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+            }
+          } else if (this.plan_name === PLAN_NAME.C) {
+            this._prjct_profile_name = PLAN_NAME.C + " plan";
+          } else if (this.plan_name === PLAN_NAME.D) {
+            this._prjct_profile_name = PLAN_NAME.D + " plan";
+          } else if (this.plan_name === PLAN_NAME.E) {
+            this._prjct_profile_name = PLAN_NAME.E + " plan";
+          } else if (this.plan_name === PLAN_NAME.F) {
+            this._prjct_profile_name = PLAN_NAME.F + " plan";
+          }
+
+        } else if (this.is_active_subscription === false) {
+          if (this.plan_name === PLAN_NAME.A) {
+            this._prjct_profile_name = PLAN_NAME.A + " plan";
+          } else if (this.plan_name === PLAN_NAME.B) {
+            this._prjct_profile_name = PLAN_NAME.B + " plan";
+          } else if (this.plan_name === PLAN_NAME.C) {
+            this._prjct_profile_name = PLAN_NAME.C + " plan";
+          } else if (this.plan_name === PLAN_NAME.D) {
+            this._prjct_profile_name = PLAN_NAME.D + " plan";
+          } else if (this.plan_name === PLAN_NAME.E) {
+            this._prjct_profile_name = PLAN_NAME.E + " plan";
+          } else if (this.plan_name === PLAN_NAME.F) {
+            this._prjct_profile_name = PLAN_NAME.F + " plan";
+          }
+        }
+      }
+    }
   }
+
+  // findCurrentProjectAmongAll(projectId: string) {
+  //   this.projectService.getProjects().subscribe((projects: any) => {
+  //     console.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
+  //     this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
+  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - current_prjct ', this.current_prjct);
+
+
+  //     if (this.current_prjct) {
+  //       this.logger.log('[IDEBAR-USER-DETAILS] PROJECT current_prjct', this.current_prjct);
+
+  //       this.is_active_subscription = this.current_prjct.id_project.isActiveSubscription;
+  //       this.plan_name = this.current_prjct.id_project.profile.name;
+  //       this.plan_type = this.current_prjct.id_project.profile.type;
+  //       this.prjct_name = this.current_prjct.id_project.name;
+  //       this.trialExpired = this.current_prjct.id_project.trialExpired
+  //       this.extra3 = this.current_prjct.id_project.profile.extra3;
+  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT is_active_subscription', this.is_active_subscription);
+  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_name ', this.plan_name);
+  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_typeD', this.plan_type);
+  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT trialExpired', this.trialExpired);
+  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT extra3', this.extra3);
+
+  //       if (this.extra3) {
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[this.extra3];
+  //       }
+
+  //       if (this.plan_type === 'free') {
+  //         // USECASE: TRIAL ACTIVE 
+  //         if (this.trialExpired === false) {
+  //           if (this.plan_name === 'free') {
+  //             this._prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+  //           } else if (this.plan_name === 'Sandbox') {
+  //             this._prjct_profile_name = PLAN_NAME.E + " plan (trial)"
+  //           }
+  //           // USECASE: TRIAL EXPIRED 
+  //         } else {
+  //           if (this.plan_name === 'free') {
+  //             this._prjct_profile_name = "Free plan"
+  //           } else if (this.plan_name === 'Sandbox') {
+  //             this._prjct_profile_name = "Sandbox plan"
+  //           }
+  //         }
+  //       } else if (this.plan_type === 'payment') {
+
+  //         if (this.is_active_subscription === true) {
+  //           if (this.plan_name === PLAN_NAME.A) {
+  //             if (!this.appSumoProfile) {
+  //               this._prjct_profile_name = PLAN_NAME.A + " plan";
+  //             } else {
+  //               this._prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+  //             }
+  //           } else if (this.plan_name === PLAN_NAME.B) {
+  //             if (!this.appSumoProfile) {
+  //               this._prjct_profile_name = PLAN_NAME.B + " plan";
+  //             } else {
+  //               this._prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+  //             }
+  //           } else if (this.plan_name === PLAN_NAME.C) {
+  //             this._prjct_profile_name = PLAN_NAME.C + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.D) {
+  //             this._prjct_profile_name = PLAN_NAME.D + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.E) {
+  //             this._prjct_profile_name = PLAN_NAME.E + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.F) {
+  //             this._prjct_profile_name = PLAN_NAME.F + " plan";
+  //           }
+
+  //         } else if (this.is_active_subscription === false) {
+  //           if (this.plan_name === PLAN_NAME.A) {
+  //             this._prjct_profile_name = PLAN_NAME.A + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.B) {
+  //             this._prjct_profile_name = PLAN_NAME.B + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.C) {
+  //             this._prjct_profile_name = PLAN_NAME.C + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.D) {
+  //             this._prjct_profile_name = PLAN_NAME.D + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.E) {
+  //             this._prjct_profile_name = PLAN_NAME.E + " plan";
+  //           } else if (this.plan_name === PLAN_NAME.F) {
+  //             this._prjct_profile_name = PLAN_NAME.F + " plan";
+  //           }
+
+  //         }
+
+  //       }
+
+  //     }
+  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
+  //   }, error => {
+  //     this.logger.error('[SIDEBAR-USER-DETAILS] - GET PROJECTS - ERROR: ', error);
+  //   }, () => {
+  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS * COMPLETE * ');
+  //   });
+  // }
 
   // getProPlanTrialTranslation() {
   //   this.translate.get('ProPlanTrial')

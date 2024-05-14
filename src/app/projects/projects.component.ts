@@ -416,21 +416,18 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   //   this.logger.log('[PROJECTS] !!! GO TO HOME >  display_loading - loadingInProjectCardEle ', loadingInProjectCardEle)
   //   loadingInProjectCardEle.style.color = "red";
   // }
-
+ 
   goToHome(
     project: any,
+    role: string,
     project_id: string,
-    project_name: string,
-    project_profile_name: string,
-    project_trial_expired: string,
-    project_trial_days_left: number,
     project_status: number,
-    activeOperatingHours: boolean) {
-    this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+    ) {
+    console.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
     // localStorage.setItem('last_project', JSON.stringify(project))
     // window.top.postMessage('hasChangedProject', '*')
 
-    this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
+    console.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
 
     project['is_selected'] = true;
 
@@ -448,19 +445,32 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
 
-      // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
-      const project: Project = {
-        _id: project_id,
-        name: project_name,
-        profile_name: project_profile_name,
-        trial_expired: project_trial_expired,
-        trial_days_left: project_trial_days_left,
-        operatingHours: activeOperatingHours
+      // // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
+      // const project: Project = {
+      //   _id: project_id,
+      //   name: project_name,
+      //   profile_name: project_profile_name,
+      //   trial_expired: project_trial_expired,
+      //   trial_days_left: project_trial_days_left,
+      //   operatingHours: activeOperatingHours
+      // }
+
+      project['role'] = role
+      this.auth.projectSelected(project, 'PROJECTS')
+      localStorage.setItem(project_id, JSON.stringify(project));
+     
+      
+      const storedProjectJson = localStorage.getItem(project_id);
+
+      if (storedProjectJson === null) {
+        this.getProjectFromRemotePublishAndSaveInStorage(project_id, role);
       }
+      console.log('[PROJECTS] - GO TO HOME - storedProjectJson ', storedProjectJson)
 
-      this.auth.projectSelected(project, 'projects')
-      this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+      localStorage.setItem('project', JSON.stringify(project)); // ?? serve
 
+
+      console.log('[PROJECTS] - GO TO HOME - PROJECT ', project.id_project)
       setTimeout(() => {
         this.router.navigate([`/project/${project_id}/home`]);
       }, 0);
@@ -468,7 +478,21 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
      * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
-    // localStorage.setItem('project', JSON.stringify(project));
+    
+  }
+
+  getProjectFromRemotePublishAndSaveInStorage(project_id, role){
+    this.projectService.getProjectById(project_id).subscribe((prjct: any) => {
+      console.log('[PROJECTS] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjct)
+      prjct[role] = role
+      this.auth.projectSelected(prjct, 'PROJECTS');
+      localStorage.setItem(project_id, JSON.stringify(prjct));
+    }, (error) => {
+      this.logger.error('[PROJECTS] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[PROJECTS] - GET PROJECT BY ID - COMPLETE ');
+
+    });
   }
 
   // GO TO  PROJECT-EDIT-ADD COMPONENT
@@ -618,17 +642,20 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
           }
           if (project.id_project) {
-            const prjct: Project = {
-              _id: project.id_project._id,
-              name: project.id_project.name,
-              role: project.role,
-              profile_name: project.id_project.profile.name,
-              trial_expired: project.id_project.trialExpired,
-              trial_days_left: project.id_project.trialDaysLeft,
-              profile_type: project.id_project.profile.type,
-              subscription_is_active: project.id_project.isActiveSubscription,
-              operatingHours: project.id_project.activeOperatingHours
-            }
+            // console.log( '[PROJECTS] project.id_project',  project.id_project) 
+            // console.log( '[PROJECTS] project',  project) 
+
+            // const prjct: Project = {
+            //   _id: project.id_project._id,
+            //   name: project.id_project.name,
+            //   role: project.role,
+            //   profile_name: project.id_project.profile.name,
+            //   trial_expired: project.id_project.trialExpired,
+            //   trial_days_left: project.id_project.trialDaysLeft,
+            //   profile_type: project.id_project.profile.type,
+            //   subscription_is_active: project.id_project.isActiveSubscription,
+            //   operatingHours: project.id_project.activeOperatingHours
+            // }
 
             // this.subsTo_WsCurrentUser( project.id_project._id)
             // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
@@ -649,7 +676,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
             }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+            localStorage.setItem(project.id_project._id, JSON.stringify(project.id_project));
           }
         });
         this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);

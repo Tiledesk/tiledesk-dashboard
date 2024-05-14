@@ -35,6 +35,7 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
+import { UsersService } from './services/users.service';
 
 
 
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     route: string;
     LOGIN_PAGE: boolean;
-
+    USER_ROLE: string;
     userIsSignedIn: boolean;
     IS_REQUEST_X_PANEL_ROUTE: boolean;
     IS_PROJECTS_FOR_PANEL: boolean;
@@ -96,6 +97,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
+        public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
 
@@ -118,20 +120,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         })
 
-        
 
-        this.auth.project_bs.subscribe((project) => {
-            if (project) {
-                // console.log('[APP-COMPONENT] project from project_bs subscription ', project)
-                this.projectService.getProjects().subscribe((projects: any) => {
-                    console.log('[APP-COMPONENT] getProjects projects ', projects)
-                    if (projects) {
-                        this.current_selected_prjct = projects.find(prj => prj.id_project.id === project._id);
-                        console.log('[APP-COMPONENT] current_selected_prjct ', this.current_selected_prjct)
-                    }
-                })
-            }
-        })
+
+
         // console.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
@@ -181,7 +172,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.log('[APP-COMPONENT] getConfig pushEngine', appConfigService.getConfig().pushEngine)
         // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
         if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
-            this.logger.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
+            console.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
 
             // ----------------------------
             // FIREBASE initializeApp 
@@ -193,14 +184,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             }
 
             const firebase_conf = appConfigService.getConfig().firebase;
-            this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
+            console.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
 
             // ----------------------------------------------------
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            // console.log('[APP-COMPONENT] isSafari ', isSafari)
+            console.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
                 this.listenToFCMForegroundMsgs();
             }
@@ -254,38 +245,38 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
     }
 
-    async loadStyle(data){
-       
-        if(!data || !data.parameter){
-          let className =  document.body.className.replace(new RegExp(/style-\S*/gm), '')
-          document.body.className = className
-          document.body.classList.remove('light')
-          document.body.classList.remove('dark')
-          document.body.classList.remove('custom')
-          let link = document.getElementById('themeCustom');
-          if(link){
-            link.remove();
-          }
-          /** remove style INFO from storage */
-         localStorage.removeItem('custom_style')
+    async loadStyle(data) {
 
-          return;
-        } 
-    
+        if (!data || !data.parameter) {
+            let className = document.body.className.replace(new RegExp(/style-\S*/gm), '')
+            document.body.className = className
+            document.body.classList.remove('light')
+            document.body.classList.remove('dark')
+            document.body.classList.remove('custom')
+            let link = document.getElementById('themeCustom');
+            if (link) {
+                link.remove();
+            }
+            /** remove style INFO from storage */
+            localStorage.removeItem('custom_style')
+
+            return;
+        }
+
         // Create link
         let link = document.createElement('link');
-        link.id= 'themeCustom'
+        link.id = 'themeCustom'
         link.href = data.parameter;
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.media='all';
-        
+        link.media = 'all';
+
         this.logger.log('[APP-COMPONENT] link', link, 'document ', document)
         let head = document.getElementsByTagName('head')[0];
         head.appendChild(link);
         document.body.classList.add(data.type) //ADD class to body element as theme type ('light', 'dark', 'custom')
         return;
-      }
+    }
 
 
     ngOnInit() {
@@ -353,7 +344,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // -----------------------------------------------------------------------------------------------------
         this.getCurrentUserAndConnectToWs();
 
-        this.listenToSwPostMessage()
+        this.listenToSwPostMessage();
+        this.getCurrentProject()
+    }
+
+
+
+    getCurrentProject() {
+        this.auth.project_bs.subscribe((project) => {
+            if (project) {
+                console.log('[APP-COMPONENT] project from $ubscription ', project)
+                this.current_selected_prjct = project
+                // this.projectService.getProjects().subscribe((projects: any) => {
+                //     console.log('[APP-COMPONENT] getProjects projects ', projects)
+                //     if (projects) {
+                //         this.current_selected_prjct = projects.find(prj => prj.id_project.id === project._id);
+                //         console.log('[APP-COMPONENT] current_selected_prjct ', this.current_selected_prjct)
+                //     }
+                // })
+            }
+        });
     }
 
     listenToSwPostMessage() {
@@ -465,6 +475,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     listenToFCMForegroundMsgs() {
+        console.log('[APP-COMPONENT] listenToFCMForegroundMsgs')
         try {
             const messaging = firebase.messaging()
             messaging.onMessage((payload) => {
@@ -513,9 +524,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 icon: 'https://console.tiledesk.com/chat/assets/img/icon.png'
             });
             const self = this
-            notification.onclick = function () {
+            notification.onclick = () => {
                 window.open(link);
-                localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+                localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
             };
         }
     }

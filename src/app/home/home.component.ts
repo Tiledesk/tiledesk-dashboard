@@ -321,8 +321,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
           console.log('[HOME] - getCurrentProjectAndInit  hasEmittedTrialEnded ', hasEmittedTrialEnded, '  for project id', this.project._id)
 
-          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          console.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+          this.OPERATING_HOURS_ACTIVE = this.project.activeOperatingHours
+          console.log('[HOME] - getCurrentProjectAndInit OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
@@ -1683,10 +1683,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       return
     }
 
-
-    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
-      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
-    }
+    // || this.appTitle === "Facebook Messenger"
+    if (this.appTitle === "WhatsApp Business" ) {
+      // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+      this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })}
   }
 
   openInAppStoreInstall() {
@@ -3208,34 +3208,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  openChat() {
-    // const url = this.CHAT_BASE_URL;
-    this.notify.publishHasClickedChat(true);
-    // window.open(url, '_blank');
+  // openChat() {
+  //   // const url = this.CHAT_BASE_URL;
+  //   this.notify.publishHasClickedChat(true);
+  //   // window.open(url, '_blank');
 
-    // --- new
-    localStorage.setItem('last_project', JSON.stringify(this.current_prjct))
-    let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl
-    const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
-    myWindow.focus();
-    // const chatTabCount = localStorage.getItem('tabCount');
-    // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
-    // if (chatTabCount) {
-    //   if (+chatTabCount > 0) {
-    //     this.logger.log('[HOME] openChat chatTabCount > 0 ')
+  //   // --- new
+  //   localStorage.setItem('last_project', JSON.stringify(this.current_prjct))
+  //   let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
+  //   let url = baseUrl
+  //   const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
+  //   myWindow.focus();
+  //   // const chatTabCount = localStorage.getItem('tabCount');
+  //   // this.logger.log('[HOME] openChat chatTabCount ', chatTabCount);
+  //   // if (chatTabCount) {
+  //   //   if (+chatTabCount > 0) {
+  //   //     this.logger.log('[HOME] openChat chatTabCount > 0 ')
 
-    //     this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
-    //     // this.focusWin('Tiledesk - Open Source Live Chat')
-    //     // window.open('Tiledesk - Open Source Live Chat', url).focus();
-    //   } else if (chatTabCount && +chatTabCount === 0) {
-    //     this.openWindow('Tiledesk - Open Source Live Chat', url);
-    //   }
-    // } else {
-    //   this.openWindow('Tiledesk - Open Source Live Chat', url);
-    // }
+  //   //     this.openWindow('Tiledesk - Open Source Live Chat', url + '?conversation_detail');
+  //   //     // this.focusWin('Tiledesk - Open Source Live Chat')
+  //   //     // window.open('Tiledesk - Open Source Live Chat', url).focus();
+  //   //   } else if (chatTabCount && +chatTabCount === 0) {
+  //   //     this.openWindow('Tiledesk - Open Source Live Chat', url);
+  //   //   }
+  //   // } else {
+  //   //   this.openWindow('Tiledesk - Open Source Live Chat', url);
+  //   // }
 
-  }
+  // }
 
   openWindow(winName: any, winURL: any) {
     const myWindows = new Array();

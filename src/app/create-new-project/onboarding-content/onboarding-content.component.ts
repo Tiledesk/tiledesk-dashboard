@@ -20,6 +20,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { FaqService } from 'app/services/faq.service';
 import { WidgetService } from 'app/services/widget.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { UsersService } from 'app/services/users.service';
 
 
 export enum TYPE_STEP {
@@ -89,6 +90,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   showSpinner: boolean = false;
   public_Key: string;
   isMTT: boolean;
+  USER_ROLE: string;
 
   constructor(
     private auth: AuthService,
@@ -100,13 +102,13 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     public translate: TranslateService,
     private httpClient: HttpClient,
     private projectService: ProjectService,
-    private urlService: UrlService,
     private faqService: FaqService,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     private widgetService: WidgetService,
     public appConfigService: AppConfigService,
+    private usersService: UsersService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -135,6 +137,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.onInitWindowHeight();
     this.detectMobile();
   }
+
 
   onInitWindowHeight(): any {
     this.logger.log('[ONBOARDING-CONTENT] ACTUAL WIDTH ', window.innerWidth);
@@ -167,8 +170,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     }
 
   }
-
-
 
   // CUSTOM FUNCTIONS //
   private getCurrentTranslation() {
@@ -422,7 +423,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.projectName = $event;
     this.nextNumberStep();
     console.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
-    this.createNewProject();
+    this.createNewProject('goToSetProjectName output of cnp-project-name');
   }
 
   goToNextQuestion($event) {
@@ -482,11 +483,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // } 
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
     }
-    // if (this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
-    //   this.createNewProject();
-    //   return
-
-    // }
+   
     this.nextNumberStep();
     this.checkPrevButton();
     // else {
@@ -507,7 +504,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   createProjectFromTemplates() {
-    this.createNewProject()
+    console.log('[ONBOARDING-CONTENT] createProjectFromTemplates arrayOfSteps: ', this.arrayOfSteps)
+    console.log('[ONBOARDING-CONTENT] createProjectFromTemplates this.arrayOfSteps.includes(nameProject) ', this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT))
+    if (!this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT)) {
+      this.createNewProject('createProjectFromTemplates')
+    }
+    
   }
 
   goToTemplatesInstallation($event) {
@@ -525,30 +527,35 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   /** 
    * SERVICES  
-   * create project and bot 
+   * create project 
    * */
-  private createNewProject() {
+  private createNewProject(calledBy) {
+    console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - calledBy ', calledBy);
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
-    this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project) => {
-      console.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
+    this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project: Project) => {
+      console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
       if (project) {
-
+        console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - USER_ROLE ', this.USER_ROLE);
+        console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
+        project['role'] = 'owner';
+        this.auth.projectSelected(project, 'onboarding-content')
+        localStorage.setItem(project._id, JSON.stringify(project));
         this.newProject = project
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-        const newproject: Project = {
-          _id: project['_id'],
-          name: project['name'],
-          operatingHours: project['activeOperatingHours'],
-          profile_type: project['profile'].type,
-          profile_name: project['profile'].name,
-          trial_expired: project['trialExpired']
-        }
+        // const newproject: Project = {
+        //   _id: project['_id'],
+        //   name: project['name'],
+        //   operatingHours: project['activeOperatingHours'],
+        //   profile_type: project['profile'].type,
+        //   profile_name: project['profile'].name,
+        //   trial_expired: project['trialExpired']
+        // }
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-        this.auth.projectSelected(newproject, 'onboarding-content')
-        // this.logger.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
-        this.projectID = newproject._id
+        // this.auth.projectSelected(project, 'onboarding-content')
+        // console.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
+        // this.projectID = newproject._id
       }
       /* 
         * !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
@@ -557,9 +564,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       */
     }, (error) => {
       this.DISPLAY_SPINNER = false;
-      this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
+      this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - ERROR ', error);
     }, () => {
-      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT * COMPLETE *');
       this.projectService.newProjectCreated(true);
       const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
@@ -568,7 +575,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.trackNewProjectCreated(trialStarDate, trialEndDate)
 
 
-      this.getProjectsAndSaveInStorage();
+      // this.getProjectsAndSaveInStorage();
       this.callback('createNewProject');
     });
   }
@@ -577,37 +584,37 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   /** 
    *  GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   
    * */
-  getProjectsAndSaveInStorage() {
+  // getProjectsAndSaveInStorage() {
 
-    this.projectService.getProjects().subscribe((projects: any) => {
-      // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
-      console.log('[ONBOARDING-CONTENT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
-      if (projects) {
-        this.projects = projects;
-        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
-        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
-        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
-        this.projects.forEach(project => {
-          // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
-          if (project.id_project) {
-            const prjct: Project = {
-              _id: project.id_project._id,
-              name: project.id_project.name,
-              role: project.role,
-              operatingHours: project.id_project.activeOperatingHours
-            }
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
-          }
-        });
-      } else {
+  //   this.projectService.getProjects().subscribe((projects: any) => {
+  //     // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     console.log('[ONBOARDING-CONTENT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     if (projects) {
+  //       this.projects = projects;
+  //       // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+  //       // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+  //       // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+  //       this.projects.forEach(project => {
+  //         // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+  //         if (project.id_project) {
+  //           const prjct: Project = {
+  //             _id: project.id_project._id,
+  //             name: project.id_project.name,
+  //             role: project.role,
+  //             operatingHours: project.id_project.activeOperatingHours
+  //           }
+  //           localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+  //         }
+  //       });
+  //     } else {
 
-      }
-    }, error => {
-      this.logger.error('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - ERROR ', error)
-    }, () => {
-      this.logger.log('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - COMPLETE')
-    });
-  }
+  //     }
+  //   }, error => {
+  //     this.logger.error('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - ERROR ', error)
+  //   }, () => {
+  //     this.logger.log('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - COMPLETE')
+  //   });
+  // }
 
 
   trackNewProjectCreated(trialStarDate, trialEndDate) {

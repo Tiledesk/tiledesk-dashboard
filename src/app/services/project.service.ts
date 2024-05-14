@@ -268,7 +268,7 @@ export class ProjectService {
     };
 
     let url = this.PROJECTS_URL + id;
-    this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - URL', url);
+    console.log('[PROJECT-SERV] - GET PROJECT BY ID - URL', url);
 
     return this._httpclient
       .get<Project[]>(url, httpOptions)

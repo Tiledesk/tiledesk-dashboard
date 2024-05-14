@@ -319,15 +319,7 @@
           <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
           <div class="card prjct-card"
             [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
-            (click)='goToHome(
-                project,
-                project?.id_project?._id, 
-                project?.id_project?.name, 
-                project?.id_project?.profile?.name, 
-                project?.id_project?.trialExpired, 
-                project?.id_project?.trialDaysLeft, 
-                project?.id_project?.status, 
-                project?.id_project?.activeOperatingHours)'>
+            (click)='goToHome(project?.id_project, project?.role, project?.id_project?._id, project?.id_project?.status)'>
 
 
             <div class="card-content project-card-content">

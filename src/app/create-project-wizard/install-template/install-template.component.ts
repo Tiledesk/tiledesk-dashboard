@@ -91,10 +91,13 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
     public notify: NotifyService,
 
   ) {
+    
     // super(translate);
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
+    console.log('[INSTALL-TEMPLATE] - HERE !!!!!');
+
     // this.company_name = brand['BRAND_NAME'];
     // this.company_site_url = brand['COMPANY_SITE_URL'];
   }

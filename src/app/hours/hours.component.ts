@@ -153,6 +153,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   // hasSaved: boolean
   isChromeVerGreaterThan100: boolean;
+  USER_ROLE: string;
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
@@ -213,7 +214,16 @@ export class HoursComponent implements OnInit, OnDestroy {
     });
     this.logger.log('[HOURS] - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list);
     this.listenSidebarIsOpened();
-    this.getBrowserVersion() 
+    this.getBrowserVersion();
+    this.getUserRole()
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((userRole) => {
+        console.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
   }
 
   getBrowserVersion() {
@@ -588,28 +598,29 @@ export class HoursComponent implements OnInit, OnDestroy {
       operatingHoursUpdated['tzname'] = this.current_prjct_timezone_name;
 
 
-      this.logger.log('[HOURS] - OPERATING HOURS UPDATED: ', operatingHoursUpdated);
+      console.log('[HOURS] - OPERATING HOURS UPDATED: ', operatingHoursUpdated);
       this.logger.log('[HOURS] - THIS TIMEZONE NAME: ', this.current_prjct_timezone_name);
 
       const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
       this.projectService
         .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
-        .subscribe(project => {
-          this.logger.log('[HOURS] - UPDATED PROJECT ', project);
+        .subscribe((project: any)=> {
+          console.log('[HOURS] - UPDATED PROJECT ', project);
+          console.log('[HOURS] - UPDATED PROJECT this.activeOperatingHours', this.activeOperatingHours);
+          project['role'] = this.USER_ROLE;
+          // const _project: Project = {
+          //   _id: project['_id'],
+          //   name: project['name'],
+          //   profile_name: project['profile'].name,
+          //   trial_expired: project['trialExpired'],
+          //   trial_days_left: project['trialDaysLeft'],
+          //   operatingHours: project['activeOperatingHours']
+          // }
 
-          const _project: Project = {
-            _id: project['_id'],
-            name: project['name'],
-            profile_name: project['profile'].name,
-            trial_expired: project['trialExpired'],
-            trial_days_left: project['trialDaysLeft'],
-            operatingHours: project['activeOperatingHours']
-          }
-
-          this.logger.log('[HOURS] - UPDATED PROJECT _project set in storage', _project);
-          localStorage.setItem(project['_id'], JSON.stringify(_project));
-
-          this.auth.projectSelected(_project, 'hours')
+          this.logger.log('[HOURS] - UPDATED PROJECT _project set in storage', project);
+          localStorage.setItem(project['_id'], JSON.stringify(project));
+          // const _ project = project
+          this.auth.projectSelected(project, 'hours')
 
 
         }, (error) => {

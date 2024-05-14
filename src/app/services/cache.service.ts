@@ -44,5 +44,6 @@ export class CacheService {
 
   clearCache() {
     this.cache = null;
+    console.log('[CACHE SERV] clearCache')
   }
 }

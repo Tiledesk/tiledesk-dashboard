@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -19,7 +20,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
   styleUrls: ['./autologin.component.scss']
 })
 export class AutologinComponent implements OnInit {
-
+  USER_ROLE: string;
   subscription: Subscription;
   FCM_Supported: boolean;
   APP_IS_DEV_MODE: boolean;
@@ -37,7 +38,8 @@ export class AutologinComponent implements OnInit {
     public appConfigService: AppConfigService,
     private projectService: ProjectService,
     private logger: LoggerService,
-    private localDbService: LocalDbService
+    private localDbService: LocalDbService,
+    private usersService: UsersService
   ) {
 
     this.user = auth.user_bs.value;
@@ -64,7 +66,15 @@ export class AutologinComponent implements OnInit {
   ngOnInit() {
     this.logger.log('[AUTOLOGIN] SSO - autologin page');
     this.detectMobile();
-   
+    this.getUserRole()
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((userRole) => {
+        console.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
   }
 
  
@@ -88,9 +98,7 @@ export class AutologinComponent implements OnInit {
         storedJWT = storedUserParsed.token;
         this.logger.log('[AUTOLOGIN] SSO - autologin page stored TOKEN ', storedJWT);
       } else {
-        // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix
-        // storedJWT = localStorage.getItem(chatPrefix + '__tiledeskToken')
-
+        
         storedJWT = localStorage.getItem('tiledesk_token')
       }
 
@@ -107,9 +115,6 @@ export class AutologinComponent implements OnInit {
       }
     });
   }
-
-
-
 
   detectMobile() {
     // this.isMobile = true;
@@ -154,7 +159,7 @@ export class AutologinComponent implements OnInit {
       // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
-      // localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
+    
       localStorage.setItem('tiledesk_token', token);
       this.auth.publishSSOloggedUser();
 
@@ -192,7 +197,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
 
       const storedProjectJson = localStorage.getItem(project_id);
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+      console.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
 
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
@@ -244,51 +249,64 @@ export class AutologinComponent implements OnInit {
   }
 
   getProjectFromRemotePublishAndSaveInStorage(project_id) {
+    
+    this.projectService.getProjectById(project_id).subscribe((prjct: any) => {
+      // this.projectService.getProjects().subscribe((prjcts: any) => {
+      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ', prjct);
+      prjct['role'] = this.USER_ROLE
+      this.auth.projectSelected(prjct, 'auto-login');
+      localStorage.setItem(project_id, JSON.stringify(prjct));
 
-    this.projectService.getProjects().subscribe((prjcts: any) => {
-      console.log('[AUTOLOGIN] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+      // const prjct = prjcts.filter(p => p.id_project._id === project_id);
 
-      const prjct = prjcts.filter(p => p.id_project._id === project_id);
-
-      this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
+      // this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
       // this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID LENGHT ', prjct.length);
 
-      if (prjct && prjct.length > 0) {
-        this.logger.log('[AUTOLOGIN] - TEST --- HERE YES');
+      // if (prjct && prjct.length > 0) {
+      //   this.logger.log('[AUTOLOGIN] - TEST --- HERE YES');
 
 
-        const project_name = prjct[0].id_project.name;
-        this.logger.log('[AUTOLOGIN] - PROJECT NAME GOT BY  PROJECT REMOTE ', project_name);
+      //   // const project_name = prjct[0].id_project.name;
+        
+      //   const project = prjct[0].id_project;
+      //   // project['operatingHours'] = prjct[0].id_project.activeOperatingHours;
+      //   project['role'] = prjct[0].role,
+      //   console.log('[AUTOLOGIN] - PROJECT  GET BY REMOTE ', project);
+        
+      //   this.auth.projectSelected(prjct, 'auto-login');
+      //   localStorage.setItem(project_id, JSON.stringify(project));
+
+
         // tslint:disable-next-line:max-line-length
         // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
 
-        const project: Project = {
-          _id: project_id,
-          name: project_name,
-          profile_name: prjct[0].id_project.profile.name,
-          trial_expired: prjct[0].id_project.trialExpired,
-          trial_days_left: prjct[0].id_project.trialDaysLeft,
-          operatingHours: prjct[0].id_project.activeOperatingHours
-        }
+        // const project: Project = {
+        //   _id: project_id,
+        //   name: project_name,
+        //   profile_name: prjct[0].id_project.profile.name,
+        //   trial_expired: prjct[0].id_project.trialExpired,
+        //   trial_days_left: prjct[0].id_project.trialDaysLeft,
+        //   operatingHours: prjct[0].id_project.activeOperatingHours
+        // }
         // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
-        this.auth.projectSelected(project, 'auto-login');
-        this.logger.log('[AUTOLOGIN] - PROJECT THAT IS PUBLISHED ', project);
+       
+        // this.logger.log('[AUTOLOGIN] - PROJECT THAT IS PUBLISHED ', prjct);
         // this.project_bs.next(project);
 
-        const projectForStorage: Project = {
-          _id: project_id,
-          name: project_name,
-          role: prjct[0].role,
-          profile_name: prjct[0].id_project.profile.name,
-          trial_expired: prjct[0].id_project.trialExpired,
-          trial_days_left: prjct[0].id_project.trialDaysLeft,
-          operatingHours: prjct[0].id_project.activeOperatingHours
-        }
+        // const projectForStorage: Project = {
+        //   _id: project_id,
+        //   name: project_name,
+        //   role: prjct[0].role,
+        //   profile_name: prjct[0].id_project.profile.name,
+        //   trial_expired: prjct[0].id_project.trialExpired,
+        //   trial_days_left: prjct[0].id_project.trialDaysLeft,
+        //   operatingHours: prjct[0].id_project.activeOperatingHours
+        // }
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
-        this.logger.log('[AUTOLOGIN] - PROJECT THAT IS STORED', projectForStorage);
-        localStorage.setItem(project_id, JSON.stringify(projectForStorage));
+        // this.logger.log('[AUTOLOGIN] - PROJECT THAT IS STORED', projectForStorage);
+        // localStorage.setItem(project_id, JSON.stringify(projectForStorage));
 
-      }
+    // }
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] - GET PROJECT BY ID - ERROR ', error);
@@ -331,7 +349,7 @@ export class AutologinComponent implements OnInit {
                 // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
                 const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
                 localStorage.setItem('user', JSON.stringify(user));
-                // localStorage.setItem(chatPrefix+'__tiledeskToken', JWT);
+      
                 localStorage.setItem('tiledesk_token', JWT);
                 this.auth.publishSSOloggedUser();
 

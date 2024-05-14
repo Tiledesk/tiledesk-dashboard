@@ -135,30 +135,35 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   createNewProject() {
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
-    this.logger.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
+    console.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
 
     this.projectService.createProject(this.project_name, 'create-project')
-      .subscribe((project) => {
+      .subscribe((project: Project) => {
          console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
+          project['role'] = 'owner'
+          this.auth.projectSelected(project, 'create-project')
+         
+          localStorage.setItem(project._id, JSON.stringify(project));
+
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
           // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-          const newproject: Project = {
-            _id: project['_id'],
-            name: project['name'],
-            operatingHours: project['activeOperatingHours'],
-            profile_type: project['profile'].type,
-            profile_name: project['profile'].name,
-            trial_expired: project['trialExpired']
-          }
+          // const newproject: Project = {
+          //   _id: project['_id'],
+          //   name: project['name'],
+          //   operatingHours: project['activeOperatingHours'],
+          //   profile_type: project['profile'].type,
+          //   profile_name: project['profile'].name,
+          //   trial_expired: project['trialExpired']
+          // }
 
-          // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-          this.auth.projectSelected(newproject, 'create-project')
-          this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT ', newproject)
+          // // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
+          // this.auth.projectSelected(newproject, 'create-project')
+          // this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT ', newproject)
 
-          this.id_project = this.new_project._id
-          this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT id', this.id_project)
+          // this.id_project = this.new_project._id
+          // this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT id', this.id_project)
 
         }
 
@@ -240,7 +245,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
         // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
         // of the new project resolve the bug  'the auth service not find the project in the storage'
-        this.getProjectsAndSaveInStorage();
+        // this.getProjectsAndSaveInStorage();
 
       });
   }
@@ -249,36 +254,36 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
-  getProjectsAndSaveInStorage() {
-    this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  // getProjectsAndSaveInStorage() {
+  //   this.projectService.getProjects().subscribe((projects: any) => {
+  //     console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
-      if (projects) {
-        this.projects = projects;
+  //     if (projects) {
+  //       this.projects = projects;
 
-        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
-        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
-        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
-        this.projects.forEach(project => {
-          this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
-          if (project.id_project) {
-            const prjct: Project = {
-              _id: project.id_project._id,
-              name: project.id_project.name,
-              role: project.role,
-              operatingHours: project.id_project.activeOperatingHours
-            }
+  //       // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+  //       // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+  //       // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+  //       this.projects.forEach(project => {
+  //         this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+  //         if (project.id_project) {
+  //           const prjct: Project = {
+  //             _id: project.id_project._id,
+  //             name: project.id_project.name,
+  //             role: project.role,
+  //             operatingHours: project.id_project.activeOperatingHours
+  //           }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
-          }
-        });
-      }
-    }, error => {
-      this.logger.error('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - ERROR ', error)
-    }, () => {
-      this.logger.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - COMPLETE')
-    });
-  }
+  //           localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+  //         }
+  //       });
+  //     }
+  //   }, error => {
+  //     this.logger.error('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - ERROR ', error)
+  //   }, () => {
+  //     this.logger.log('[WIZARD - CREATE-PRJCT] getProjectsAndSaveInStorage - COMPLETE')
+  //   });
+  // }
 
   continueToNextStep() {
     if (this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION === false) {

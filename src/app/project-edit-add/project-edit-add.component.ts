@@ -2635,53 +2635,54 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME WHEN EDIT IS PRESSED ', this.projectName_toUpdate);
 
     this.projectService.updateProjectName(this.id_project, this.projectName_toUpdate)
-      .subscribe((prjct) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
+      .subscribe((prjct: Project) => {
+        console.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
 
         if (prjct) {
           if (prjct['name'] === this.projectName_toUpdate) {
             this.DISABLE_UPDATE_BTN = true;
           }
 
-          // WHEN THE USER UPDATE THE PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT RE-PUBLISHES IT
-          const project: Project = {
-            _id: this.id_project,
-            name: prjct['name'],
-          }
-          this.auth.projectSelected(project, 'project-edit-add update-project-name')
+      
+          prjct['role'] = this.USER_ROLE
+          this.auth.projectSelected(prjct, 'project-edit-add update-project-name')
+          localStorage.setItem(prjct._id, JSON.stringify(prjct));
+          this.projectService.newProjectCreated(true);
 
-          const storedProjectJson = localStorage.getItem(this.id_project);
-          this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
+          // const storedProjectJson = localStorage.getItem(this.id_project);
+          // this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
 
-          if (storedProjectJson) {
-            const projectObject = JSON.parse(storedProjectJson);
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ ', projectObject);
+          // if (storedProjectJson) {
+          //   const projectObject = JSON.parse(storedProjectJson);
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ ', projectObject);
 
-            const storedUserRole = projectObject['role'];
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
+          //   const storedUserRole = projectObject['role'];
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
 
-            const storedProjectName = projectObject['name'];
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
+          //   const storedProjectName = projectObject['name'];
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
 
-            const storedProjectId = projectObject['_id'];
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
+          //   const storedProjectId = projectObject['_id'];
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
 
-            const storedProjectOH = projectObject['operatingHours'];
+          //   const storedProjectOH = projectObject['operatingHours'];
 
-            if (storedProjectName !== prjct['name']) {
+          //   if (storedProjectName !== prjct['name']) {
 
-              const updatedProjectForStorage: Project = {
-                _id: storedProjectId,
-                name: prjct['name'],
-                role: storedUserRole,
-                operatingHours: storedProjectOH
-              }
+             
+              
+          //     // const updatedProjectForStorage: Project = {
+          //     //   _id: storedProjectId,
+          //     //   name: prjct['name'],
+          //     //   role: storedUserRole,
+          //     //   operatingHours: storedProjectOH
+          //     // }
 
-              // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
-              localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
+          //     // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
+          //     localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
 
-            }
-          }
+            // }
+          // }
         }
 
       }, (error) => {
@@ -2717,6 +2718,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   updateAdvancedSettings() {
+    // if (this.advancedSettingBtnDisabled) {}
     const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
     this.logger.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
@@ -2727,22 +2729,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
     this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
-      .subscribe((prjct) => {
-        this.logger.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
+      .subscribe((prjct: Project) => {
+        console.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
 
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // I call "this.auth.projectSelected" so that the project is republished and can have the updated data of the advanced options (smart assign) in the conversation list
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        const _project: Project = {
-          _id: prjct['_id'],
-          name: prjct['name'],
-          profile_name: prjct['profile'].name,
-          trial_expired: prjct['trialExpired'],
-          trial_days_left: prjct['trialDaysLeft'],
-          operatingHours: prjct['activeOperatingHours']
-        }
-
-        this.auth.projectSelected(_project, 'project-edit-add update-advanced-settings')
+        // const _project: Project = {
+        //   _id: prjct['_id'],
+        //   name: prjct['name'],
+        //   profile_name: prjct['profile'].name,
+        //   trial_expired: prjct['trialExpired'],
+        //   trial_days_left: prjct['trialDaysLeft'],
+        //   operatingHours: prjct['activeOperatingHours']
+        // }
+        prjct['role'] = this.USER_ROLE
+        this.auth.projectSelected(prjct, 'project-edit-add update-advanced-settings')
+        localStorage.setItem(prjct._id, JSON.stringify(prjct));
 
 
       }, (error) => {

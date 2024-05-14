@@ -21,7 +21,8 @@ import { UsersService } from '../../../services/users.service';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
+
 
 describe('ResponseTimesComponent', () => {
   let component: ResponseTimesComponent;

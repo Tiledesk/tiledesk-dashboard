@@ -17,6 +17,7 @@ import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { CacheService } from 'app/services/cache.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -41,7 +42,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   public templateImg: string;
   public templateNameOnSite: string;
   public projects: Project[];
-  public activeProjects : Project[];
+  public activeProjects: Project[];
   public botid: string;
   public selectedProjectId: string;
   public projectname: string;
@@ -75,10 +76,11 @@ export class GetStartChatbotForkComponent implements OnInit {
     public notify: NotifyService,
     public dialog: MatDialog,
     private translate: TranslateService,
+    private cacheService: CacheService
   ) {
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     // this.company_name = brand['BRAND_NAME'];
     // this.company_site_url = brand['COMPANY_SITE_URL'];
   }
@@ -91,10 +93,15 @@ export class GetStartChatbotForkComponent implements OnInit {
     // this.getCurrentProject();
     this.getUserRole();
     this.traslateString()
+    this.clearCache()
+  }
+
+  clearCache() {
+    this.cacheService.clearCache()
   }
 
   getLoggedUser() {
-    // console.log('[GET START CHATBOT FORK] getLoggedUser called') 
+    console.log('[GET START CHATBOT FORK] getLoggedUser called')
     this.auth.user_bs
       .subscribe((user) => {
         if (user) {
@@ -108,7 +115,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     this.usersService.project_user_role_bs
       .subscribe((userRole) => {
 
-        this.logger.log('[GET START CHATBOT FORK] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        console.log('[GET START CHATBOT FORK] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -135,13 +142,13 @@ export class GetStartChatbotForkComponent implements OnInit {
     // const storedRoute = this.localDbService.getFromStorage('wannago')
     // console.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
 
-    const storedRoute = decodeURIComponent(this.router.url);
-    // console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+  const storedRoute = decodeURIComponent(this.router.url);
+   console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
       // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
 
-      // console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
+      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
       let secondStoredRouteSegment = storedRouteSegments[2]
 
       // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
@@ -152,7 +159,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         // console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
-        // console.log('[GET START CHATBOT FORK] botid ', this.botid)
+        console.log('[GET START CHATBOT FORK] botid ', this.botid)
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
           this.templateNameOnSite = decodeURI(_templateNameOnSite)
@@ -164,7 +171,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     }
 
     this.faqKbService.getChatbotTemplateById(this.botid).subscribe((res: any) => {
-      // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
+     console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
       if (res) {
         this.selectedTemplate = res
         // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - selectedTemplate ', this.selectedTemplate)
@@ -193,15 +200,15 @@ export class GetStartChatbotForkComponent implements OnInit {
       if (projects) {
         this.projects = projects;
 
-        this.activeProjects = this.projects.filter( (project) => {
+        this.activeProjects = this.projects.filter((project) => {
           return project.id_project.status === 100
         });
 
         if (this.activeProjects && this.activeProjects.length === 1) {
-          // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
+          console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
           this.projectName = this.activeProjects[0].id_project.name
           this.selectedProjectId = this.activeProjects[0].id_project._id
-          // console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
+          console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
           this.project = this.activeProjects[0].id_project;
           // console.log('[GET START CHATBOT FORK] this.project ', this.project)
           this.getProjectBotsByPassingProjectId(this.selectedProjectId);
@@ -209,28 +216,29 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.trackGroup(this.selectedProjectId)
         }
         if (projectid) {
-          // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1' , projectid)
+          console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1', projectid)
           if (this.activeProjects && this.activeProjects.length > 1) {
-            // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
+            console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
             this.activeProjects.forEach(project => {
               if (project.id_project.id === projectid) {
                 this.project = project.id_project
-                // console.log('[GET START CHATBOT FORK] this.project ', this.project)
+                console.log('[GET START CHATBOT FORK] this.project ', this.project)
                 this.projectPlan = project.id_project.profile.name
                 this.projectName = project.id_project.name;
                 this.selectedProjectId = projectid
 
 
-
-                const selectedProject: Project = {
-                  _id: this.project['_id'],
-                  name: this.project['name'],
-                  operatingHours: this.project['activeOperatingHours'],
-                  profile_type: this.project['profile'].type,
-                  profile_name: this.project['profile'].name,
-                  trial_expired: this.project['trialExpired']
-                }
-                this.auth.projectSelected(selectedProject, 'get-start-chatbot-fork')
+                const _project = this.project
+                _project['role'] = project['role']
+                // const selectedProject: Project = {
+                //   _id: this.project['_id'],
+                //   name: this.project['name'],
+                //   operatingHours: this.project['activeOperatingHours'],
+                //   profile_type: this.project['profile'].type,
+                //   profile_name: this.project['profile'].name,
+                //   trial_expired: this.project['trialExpired']
+                // }
+                this.auth.projectSelected(_project, 'get-start-chatbot-fork')
 
 
                 this.getProjectBots();
@@ -336,7 +344,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         projectProfile: this.prjct_profile_name,
         callingPage: "getStartChatbotFork",
         projectId: this.project._id,
-        
+
         // subscriptionIsActive: this.subscription_is_active,
         // prjctProfileType: this.prjct_profile_type,
         // trialExpired: this.trial_expired
@@ -350,7 +358,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   presentModalAgentCannotManageChatbotAndGoToHome() {
     const el = document.createElement('div')
-    if (this.hideHelpLink ) {
+    if (this.hideHelpLink) {
       el.innerHTML = this.agentsCannotManageChatbots + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
     } else {
       el.innerHTML = this.agentsCannotManageChatbots + '. '
@@ -391,7 +399,8 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   forkTemplate() {
     // console.log('[GET START CHATBOT FORK] selectedTemplate ',this.selectedTemplate._id)
-    // console.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedProjectId)
+    console.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedProjectId)
+    console.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedTemplate)
     this.faqKbService.installTemplate(this.selectedTemplate._id, this.selectedProjectId, true, this.selectedTemplate._id).subscribe((res: any) => {
       // console.log('[GET START CHATBOT FORK] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id

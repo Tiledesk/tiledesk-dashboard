@@ -25,6 +25,7 @@ import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
 import { BrandService } from 'app/services/brand.service'
+import { CacheService } from 'app/services/cache.service'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
 
 // import { SsoService } from './sso.service';
@@ -103,6 +104,7 @@ export class AuthService {
     private logger: LoggerService,
     public brandService: BrandService,
     private scriptService: ScriptService,
+    private cacheService:  CacheService
     // private prjctPlanService: ProjectPlanService,
   ) // public ssoService: SsoService
   {
@@ -157,8 +159,7 @@ export class AuthService {
     this.SIGNUP_BASE_URL = this.SERVER_BASE_PATH + 'auth/signup'
     this.SIGNIN_BASE_URL = this.SERVER_BASE_PATH + 'auth/signin'
     this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/'
-    this.CREATE_CUSTOM_TOKEN_URL =
-      this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'
+    this.CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'
 
     // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
     // this.logger.log('[AUTH-SERV] AppConfigService getAppConfig SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
@@ -260,10 +261,8 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project)
-    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED calledBy', calledBy)
-
-    this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
+    console.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -359,46 +358,52 @@ export class AuthService {
               url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
-              this.logger.log( '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+              console.log( '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
 
               this.subscription.unsubscribe()
 
               const storedProjectJson = localStorage.getItem(this.nav_project_id)
-              this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
+              console.log('[AUTH-SERV] - STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
               if (storedProjectJson) {
                 const storedProjectObject = JSON.parse(storedProjectJson)
-                this.logger.log('[AUTH-SERV] - OBJECT OF STORED PROJECT', storedProjectObject)
-
-                const project_name = storedProjectObject['name']
-                const project_profile_name = storedProjectObject['profile_name']
-                const project_trial_expired = storedProjectObject['trial_expired']
-                const project_trial_days_left = storedProjectObject['trial_days_left']
-                this.project_trial_expired = storedProjectObject['trial_expired']
-                const storedProjectOH = storedProjectObject['operatingHours']
-
-                // tslint:disable-next-line:max-line-length
-                this.logger.log('[AUTH-SERV] - PROJECT NAME GET FROM STORAGE: ', project_name)
-
-                const project: Project = {
-                  _id: this.nav_project_id,
-                  name: project_name,
-                  profile_name: project_profile_name,
-                  trial_expired: project_trial_expired,
-                  trial_days_left: project_trial_days_left,
-                  operatingHours: storedProjectOH,
-                }
-                this.logger.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
-                // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
-
-                /**** ******* ******* NEW BUG FIX ***** *** ** ***/
+                console.log('[AUTH-SERV] - STORED PROJECT OBJECT', storedProjectObject)
 
                 console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 if (this.project_bs.value == null) {
-                  console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
-                  this.project_bs.next(project)
+                  console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', storedProjectObject)
+                  this.project_bs.next(storedProjectObject)
                 }
+
+                // const project_name = storedProjectObject['name']
+                // const project_profile_name = storedProjectObject['profile_name']
+                // const project_trial_expired = storedProjectObject['trial_expired']
+                // const project_trial_days_left = storedProjectObject['trial_days_left']
+                // this.project_trial_expired = storedProjectObject['trial_expired']
+                // const storedProjectOH = storedProjectObject['operatingHours']
+
+                // // tslint:disable-next-line:max-line-length
+                // this.logger.log('[AUTH-SERV] - PROJECT NAME GET FROM STORAGE: ', project_name)
+
+                // const project: Project = {
+                //   _id: this.nav_project_id,
+                //   name: project_name,
+                //   profile_name: project_profile_name,
+                //   trial_expired: project_trial_expired,
+                //   trial_days_left: project_trial_days_left,
+                //   operatingHours: storedProjectOH,
+                // }
+                // this.logger.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
+                // // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+
+                // /**** ******* ******* NEW BUG FIX ***** *** ** ***/
+
+                // console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
+                // if (this.project_bs.value == null) {
+                //   console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
+                //   this.project_bs.next(project)
+                // }
               } else {
                 console.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
                 // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
@@ -427,9 +432,7 @@ export class AuthService {
   }
 
   checkRoleForCurrentProjectPermissionOnlyToOwner() {
-    this.logger.log(
-      '[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT',
-    )
+    this.logger.log(  '[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -508,7 +511,7 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson,)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
-      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
+      console.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
 
       this._user_role = storedProjectObject['role']
 
@@ -601,23 +604,21 @@ export class AuthService {
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes['token']
 
+        // const userRole = 
+       
+
         // PUBLISH THE USER OBJECT
         this.user_bs.next(user)
 
         // SET USER IN LOCAL STORAGE
-        localStorage.setItem('user', JSON.stringify(user))
-        // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
-        // localStorage.setItem(chatPrefix + '__tiledeskToken', user.token) // x autologin of Chat ionic
+        localStorage.setItem('user', JSON.stringify(user))    
         localStorage.setItem('tiledesk_token', user.token) // x autologin of Chat ionic
         this.logger.log('[AUTH-SERV] > USER ', user)
 
         ///////////////////
-        this.logger.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes)
+        console.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes)
         if (jsonRes['success'] === true) {
-          this.logger.log(
-            '[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth',
-            this.appConfigService.getConfig().firebaseAuth,
-          )
+          this.logger.log( '[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth',this.appConfigService.getConfig().firebaseAuth )
 
           if (this.appConfigService.getConfig().firebaseAuth === true) {
             this.logger.log('[AUTH-SERV] SSO - LOGIN - WORKS WITH FIREBASE ')
@@ -683,6 +684,9 @@ export class AuthService {
         callback(error)
       })
   }
+
+
+
 
   getPermission() {
     this.logger.log('[AUTH-SERV] SSO - LOGIN - 5. getPermission ')
@@ -915,6 +919,7 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
+    this.cacheService.clearCache()
     // console.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {
@@ -1048,7 +1053,7 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[AUTH-SERV] storedRoute: ', storedRoute)
+    console.log('[AUTH-SERV] storedRoute: ', storedRoute)
     if (storedRoute) {
       this.localDbService.removeFromStorage('wannago')
     }
@@ -1065,13 +1070,6 @@ export class AuthService {
     if (current_url.indexOf('request-for-panel') === -1) {
       this.logger.log('[AUTH-SERV] Signout current url  NOT contains request-for-panel ')
 
-      // const chat_stored__currentUser = localStorage.getItem(chatPrefix + '__currentUser')
-      // this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_stored__currentUser : ', chat_stored__currentUser)
-      // if (chat_stored__currentUser) {
-      //   localStorage.removeItem(chatPrefix + '__currentUser')
-      // }
-
-      // const chat_stored__tiledeskToken = localStorage.getItem(chatPrefix + '__tiledeskToken')
       const stored__tiledeskToken = localStorage.getItem('tiledesk_token')
       if (stored__tiledeskToken) {
         localStorage.removeItem('tiledesk_token')

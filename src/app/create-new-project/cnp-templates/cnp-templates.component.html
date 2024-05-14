@@ -140,68 +140,16 @@
                         </div>
                     </div>
 
-                    <!-- ------------------------------------------- -->
-                    <!-- Old preview card -->
-                    <!-- ------------------------------------------- -->
-                    <div style="display: none;" class="tmplt-card-wpr">
-                        <div id="109c8544-130c-4516-8b26-4c58b77701e5-tabpanel" class="tmplt-card">
-
-                            <img *ngIf="templateid === '651a87648cb2c70013d80d8b'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png">
-
-                            <img *ngIf="templateid === '651e66be6717f500135f41b9'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png">
-
-                            <img *ngIf="templateid === '6529582c23034f0013ee1af6'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png">
-
-                            <img *ngIf="templateid === '651ecc5749598e0013305876'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png">
-
-                            <img *ngIf="templateid === '651fc9ef8c10e70013b6e240'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png">
-
-                            <img *ngIf="templateid === '651ad6c1bfdf310013ca90d7'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png">
-
-                            <!-- <video *ngIf="templateid === '651a87648cb2c70013d80d8b'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4"
-                                    type="video/mp4">
-                            </video>
-                            <video *ngIf="templateid === '651e66be6717f500135f41b9'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/pujds7Bw/product-cards.mp4"
-                                    type="video/mp4">
-                            </video>
-                            <video *ngIf="templateid === '6529582c23034f0013ee1af6'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/miWQ0mBX/lead-gen.mp4" type="video/mp4">
-                            </video>
-
-                            <video *ngIf="templateid === '651ecc5749598e0013305876'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/VJfeGCBw/priority-gpt-bot.mp4"
-                                    type="video/mp4">
-                            </video>
-
-                            <video *ngIf="templateid === '651fc9ef8c10e70013b6e240'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/f1mIA27P/gpt-powered-kb.mp4"
-                                    type="video/mp4">
-                            </video>
-
-                            <video *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/o3etQXZJ/customer-service.mp4"
-                                    type="video/mp4">
-                            </video> -->
-                        </div>
-                    </div>
                 </div>
 
 
                 <div *ngIf="isMobile" class="row--navigation">
                     <div class="navigation--btn">
                         <button class="btn btn-lg btn-primary btn-let-start" (click)="forkTemplate()">
-                            Import template
+                            {{ 'ImportChatbot' | translate}}
                         </button>
                         <button class="btn btn-lg btn-primary btn-let-start" (click)="presentModalAddBotFromScratch()">
-                            Start from scratch
+                            {{ 'StartFromScratch' | translate}}
                         </button>
                     </div>
                 </div>

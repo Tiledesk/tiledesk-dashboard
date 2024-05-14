@@ -411,7 +411,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return async () => {
     // console.log('APP INITIALIZED')
-    // localStorage.setItem('isLoading', 'false')
+    
     let loggingLevel = ''
     if (typeof appConfig.getConfig().logLevel === 'string') {
       loggingLevel = appConfig.getConfig().logLevel.toUpperCase()

@@ -50,24 +50,30 @@ export class CloneBotComponent implements OnInit {
 
 
   duplicateChatbot() {
-    this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
-
+    console.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
+    
     this.projects.forEach(project => {
       // this.logger.log('[CLONE-BOT] - GET PROJECTS  project ', project);
       if (project.id_project.id === this.selectedProjectId) {
-        this.logger.log('[CLONE-BOT] - GET PROJECTS selected project ', project);
+        console.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
+        const _project = project.id_project
+        console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
+        console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
+
+        _project['role'] =  project['role']
 
 
 
-        const selectedProject: Project = {
-          _id: project['id_project']['_id'],
-          name: project['id_project']['name'],
-          operatingHours: project['id_project']['activeOperatingHours'],
-          profile_type: project['id_project']['profile'].type,
-          profile_name: project['id_project']['profile'].name,
-          trial_expired: project['id_project']['trialExpired']
-        }
-        this.auth.projectSelected(selectedProject, 'clone-bot')
+        // const selectedProject: Project = {
+        //   _id: project['id_project']['_id'],
+        //   name: project['id_project']['name'],
+        //   operatingHours: project['id_project']['activeOperatingHours'],
+        //   profile_type: project['id_project']['profile'].type,
+        //   profile_name: project['id_project']['profile'].name,
+        //   trial_expired: project['id_project']['trialExpired']
+        // }
+        this.auth.projectSelected(_project, 'clone-bot')
+        // localStorage.setItem(_project._id, JSON.stringify(_project));
         this.router.navigate(['project/' + this.selectedProjectId + '/bots/my-chatbots/all']);
       }
     });

@@ -241,7 +241,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   plan_type: string;
   prjct_name: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
-  current_selected_prjct: any;
+ 
   new_messages_count: number;
 
   NOTIFICATION_SOUND: string;
@@ -1525,14 +1525,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getCurrentProjectProjectUsersProjectBots() {
     // console.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      console.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
-      if (this.project) {
-
+      
+      
+      if (project) {
+        this.project = project
 
         this.projectId = this.project._id
-        this.getProjectUserRole(this.projectId);
-        this.findCurrentProjectAmongAll(this.projectId)
+        console.log('[SIDEBAR] project $ubscription  ', this.project)
+
+        this.getProjectUserRole();
+        
 
         this.prjct_profile_name = this.project.profile_name;
         this.prjct_trial_expired = this.project.trial_expired;
@@ -1593,105 +1595,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getProjectUserRole(projectId) {
-    // this.logger.log('[SIDEBAR] - PROJECT USER ROLE projectId ', projectId);
-    const storedProjectJson = localStorage.getItem(projectId);
-    if (storedProjectJson) {
-      const projectObject = JSON.parse(storedProjectJson);
-      this.USER_ROLE = projectObject['role'];
-      // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from storage ', this.USER_ROLE);
-    } else {
-
-      this.usersService.project_user_role_bs.subscribe((user_role) => {
-        this.USER_ROLE = user_role;
-        this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-        if (this.USER_ROLE) {
-          // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
-          if (this.USER_ROLE === 'agent') {
-            this.SHOW_SETTINGS_SUBMENU = false;
-          }
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      this.USER_ROLE = user_role;
+      console.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+      if (this.USER_ROLE) {
+        // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+        if (this.USER_ROLE === 'agent') {
+          this.SHOW_SETTINGS_SUBMENU = false;
         }
-
-      });
-    }
-  }
-
-
-
-  findCurrentProjectAmongAll(projectId: string) {
-    this.projectService.getProjects().subscribe((projects: any) => {
-     
-     console.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
-
-      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
-
-
-      if (this.current_selected_prjct) {
-        this.logger.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
-        this.logger.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
-        this.logger.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
-        this.logger.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
-        this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
-        this.plan_name = this.current_selected_prjct.id_project.profile.name;
-        this.plan_type = this.current_selected_prjct.id_project.profile.type;
-        this.prjct_name = this.current_selected_prjct.id_project.name;
-        // if (this.current_selected_prjct.id_project.profile.type === 'free') {
-        //     if (this.current_selected_prjct.id_project.trialExpired === false) {
-        //         if (this.isVisiblePAY) {
-        //             this.getProPlanTrialTranslation();
-        //         } else {
-        //             this.getUnavailablePlanProfile()
-        //         }
-        //     } else {
-        //         if (this.isVisiblePAY) {
-        //             this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-        //         } else {
-        //             this.getUnavailablePlanProfile()
-        //         }
-        //     }
-        // } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
-        //     if (this.isVisiblePAY) {
-        //         this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-        //     } else {
-        //         this.getUnavailablePlanProfile()
-        //     }
-        // }
       }
-      this.logger.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
-    }, error => {
-      this.logger.error('[SIDEBAR] - GET PROJECTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
+
     });
+    // }
   }
-
-  // getProPlanTrialTranslation() {
-  //     this.translate.get('ProPlanTrial')
-  //         .subscribe((translation: any) => {
-  //             this._prjct_profile_name = translation;
-
-  //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //         });
-  // }
-
-  // getPaidPlanTranslation(project_profile_name) {
-  //     this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-  //         .subscribe((text: string) => {
-  //             this._prjct_profile_name = text;
-  //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //         });
-  // }
-
-  // getUnavailablePlanProfile() {
-  //     this.translate.get('ProfileNotAvailable')
-  //         .subscribe((text: string) => {
-  //             this._prjct_profile_name = text;
-  //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //         });
-  // }
-
-
 
   round5(x) {
     // const percentageRounded = Math.ceil(x / 5) * 5;
@@ -1913,12 +1830,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.logger.log('[SIDEBAR] - calling openLogoutModal - PROJRCT ID ', this.projectId);
     this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
-
-    // if (this.projectId !== undefined) {
-    //     this.usersService.logout_btn_clicked_from_mobile_sidebar(true);
-    // } else {
-    //     this.usersService.logout_btn_clicked_from_mobile_sidebar_project_undefined(true);
-    // }
   }
 
   onCloseModal() {
@@ -1948,11 +1859,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   openChat() {
     this.elementRef.nativeElement.blur();
     this.notify.publishHasClickedChat(true);
-    // this.logger.log('SIDEBAR openChat ' )
+    console.log('SIDEBAR openChat project ', this.project)
 
     // --- new 
-    if (this.current_selected_prjct) {
-      localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    if (this.project) {
+      this.project['role'] = this.USER_ROLE
+      localStorage.setItem('last_project', JSON.stringify(this.project))
     }
     // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     // let url = baseUrl
@@ -1988,8 +1900,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // event.which === 1  left button - event.which === 3 right button
     // --------------------------------------------------------------------
     if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
-      this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
-      localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+      console.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+      this.project['role'] = this.USER_ROLE
+      localStorage.setItem('last_project', JSON.stringify(this.project))
     }
 
   }

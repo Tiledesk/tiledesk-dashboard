@@ -390,7 +390,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      //  this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+     console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -451,17 +451,17 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   setNotificationSound() {
     // NOTIFICATION_SOUND = 'enabled';
     const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
-    this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
+    console.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
 
     if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
-      this.logger.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+     console.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
       this.NOTIFICATION_SOUND = storedNotificationSound;
     } else {
 
       this.NOTIFICATION_SOUND = 'enabled';
 
       localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
-      this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+      console.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
     }
 
   }
@@ -481,7 +481,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
+        console.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
@@ -904,16 +904,17 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getCurrentProject() {
     // this.project = this.auth.project_bs.value;
     this.auth.project_bs.subscribe((project) => {
-      console.log('[NAVBAR] project from AUTH service subscription ', this.project);
+      
       if (project) {
         this.project = project
+        console.log('[NAVBAR] - project from $ubscription ', this.project);
         if (project.name) {
           
           this.projectId = project._id;
           this.projectName = project.name;
-          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           // this.getQuotes();
-          this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+          // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
         this.getProjects()
@@ -1118,34 +1119,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
   goToHome(
     project: any,
-    id_project: string,
-    project_name: string,
-    project_profile_name: string,
-    project_trial_expired: string,
-    project_trial_days_left: number,
-    activeOperatingHours: boolean) {
-    // this.logger.log('!NAVBAR  goToHome prjct ', project)
-    this.logger.log('[NAVBAR] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
+    project_role,
+    id_project: string,) {
+    console.log('[NAVBAR] goToHome prjct ', project )
+    console.log('[NAVBAR] goToHome project_role ', project_role )
+    console.log('[NAVBAR] goToHome id_project ', id_project )
+   
+    project['role'] =  project_role
     localStorage.setItem('last_project', JSON.stringify(project))
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
     if (id_project !== this.projectId) {
-      // this.subscription.unsubscribe();
-      // this.unsubscribe$.next();
-      // this.unsubscribe$.complete();
-
-      this.router.navigate([`/project/${id_project}/home`]);
-
-      // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
-      const project: Project = {
-        _id: id_project,
-        name: project_name,
-        profile_name: project_profile_name,
-        trial_expired: project_trial_expired,
-        trial_days_left: project_trial_days_left,
-        operatingHours: activeOperatingHours
-      }
+     
       this.auth.projectSelected(project, 'navbar')
-      this.logger.log('[NAVBAR] !!! GO TO HOME - PROJECT ', project)
+      this.router.navigate([`/project/${id_project}/home`]);    
     }
   }
 
@@ -1166,9 +1152,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
 
-  goToOperatingHours() {
-    this.router.navigate(['project/' + this.projectId + '/hours']);
-  }
+  // goToOperatingHours() {
+  //   this.router.navigate(['project/' + this.projectId + '/hours']);
+  // }
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';

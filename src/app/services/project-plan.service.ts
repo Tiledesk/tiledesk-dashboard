@@ -9,6 +9,7 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from './app-config.service';
+import { CacheService } from './cache.service';
 @Injectable()
 
 export class ProjectPlanService {
@@ -28,12 +29,23 @@ export class ProjectPlanService {
     private translate: TranslateService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
+    private cacheService: CacheService
   ) {
     this.getOSCODE()
     this.getUserToken();
     this.translateNotificationMsgs();
+    this.getIfIsCreatedNewProject()
   }
 
+
+  getIfIsCreatedNewProject() { 
+    this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
+      console.log('[PROJECT-PLAN-SERV] hasCreatedNewProject', hasCreatedNewProject)
+      if (hasCreatedNewProject) {
+        this.cacheService.clearCache()
+      }
+    })
+  }
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
     this.logger.log('[USERS] getAppConfig - public_Key', this.public_Key)
@@ -138,6 +150,7 @@ export class ProjectPlanService {
 
 
   findCurrentProjectAmongAll(projectId: string) {
+    // this.cacheService.clearCache()
     this.projectService.getProjects().subscribe((projects: any) => {
       console.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
@@ -180,10 +193,12 @@ export class ProjectPlanService {
         this.projectPlan$.next(projectPlanData);
       } else {
         this.logger.error('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - ERROR - PROJECT NOT FOUND') 
+        this.cacheService.clearCache()
       }
 
     }, error => {
       this.logger.error('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - ERROR ', error);
+
 
       if (error.status === 404) {
         this.router.navigate(['/projects']);

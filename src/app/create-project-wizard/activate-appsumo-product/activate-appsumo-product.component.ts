@@ -251,7 +251,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
     this.projectService.createProject(projectName, 'activate-appsumo')
       .subscribe((project) => {
-        // console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT RESPONSE ', project);
+        console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT

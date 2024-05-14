@@ -124,7 +124,7 @@ export class UsersService {
         this.AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
         this.USERS_ACTIVITIES_URL = this.SERVER_BASE_PATH + this.project._id + '/activities';
 
-        this.logger.log('[USER-SERV] - PROJECT_USER_URL ', this.PROJECT_USER_URL);
+        console.log('[USER-SERV] - PROJECT_USER_URL ', this.PROJECT_USER_URL);
         this.logger.log('[USER-SERV] - INVITE_USER_URL ', this.INVITE_USER_URL);
         this.logger.log('[USER-SERV] - PENDING_INVITATION_URL ', this.PENDING_INVITATION_URL);
         this.logger.log('[USER-SERV] - AVAILABLE_USERS_URL ', this.AVAILABLE_USERS_URL);
@@ -810,7 +810,7 @@ export class UsersService {
     self.eventlist = []
 
     const path = '/' + projectid + '/events/' + leadid
-    this.logger.log('[USER-SERV] - SUBSCR TO WS CONTACT EVENTS PATH: ', path);
+    console.log('[USER-SERV] - SUBSCR TO WS CONTACT EVENTS PATH: ', path);
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsContactEvents', function (data, notification) {
@@ -848,37 +848,37 @@ export class UsersService {
    * @param projectUser_role 
    */
   public user_role(projectUser_role: string) {
-    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+    console.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
 
     // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);
 
     // COMPARE THE STORED ROLE WITH THE USER ROLE PUBLISHED
-    const storedProjectJson = localStorage.getItem(this.project_id);
-    if (storedProjectJson) {
-      const projectObject = JSON.parse(storedProjectJson);
-      const storedUserRole = projectObject['role'];
-      const storedProjectName = projectObject['name'];
-      const storedProjectId = projectObject['_id'];
-      const storedProjectOH = projectObject['operatingHours'];
-      this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
-      this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
-      this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
+    // const storedProjectJson = localStorage.getItem(this.project_id);
+    // if (storedProjectJson) {
+    //   const projectObject = JSON.parse(storedProjectJson);
+    //   const storedUserRole = projectObject['role'];
+    //   const storedProjectName = projectObject['name'];
+    //   const storedProjectId = projectObject['_id'];
+    //   const storedProjectOH = projectObject['operatingHours'];
+    //   this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
+    //   this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
+    //   this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
 
-      if (storedUserRole !== projectUser_role) {
-        this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
+      // if (storedUserRole !== projectUser_role) {
+      // console.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
 
-        const projectForStorage: Project = {
-          _id: storedProjectId,
-          name: storedProjectName,
-          role: projectUser_role,
-          operatingHours: storedProjectOH
-        }
+      //   // const projectForStorage: Project = {
+      //   //   _id: storedProjectId,
+      //   //   name: storedProjectName,
+      //   //   role: projectUser_role,
+      //   //   operatingHours: storedProjectOH
+      //   // }
 
-        // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
-        localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
-      }
-    }
+      //   // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
+      //   localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
+      // }
+    // }
   }
 
 

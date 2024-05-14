@@ -2495,6 +2495,24 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
   color: #4caf50;
 }
 
+
+.error-snackbar {
+  font-weight: 400;
+  color: #fff !important;
+  min-width: fit-content !important;
+}
+
+.error-snackbar>div>div>simple-snack-bar>span {
+  margin-left: 22px;
+}
+
+.error-snackbar::before {
+  font-family: "FontAwesome";
+  content: "\f06a";
+  position: absolute;
+  color: #f44336;
+}
+
 /*
 /* Settings sidebar / Bot sidebar 
 /* ---------------------------------------------- */

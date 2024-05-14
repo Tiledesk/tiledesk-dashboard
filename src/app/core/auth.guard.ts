@@ -13,6 +13,9 @@ import { Subscription } from 'rxjs';
 
 import { LoggerService } from '../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AppConfigService } from 'app/services/app-config.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
@@ -36,7 +39,7 @@ export class AuthGuard implements CanActivate {
   allow_navigation = true;
   unauthorizedPage: boolean;
 
-  USER_ROLE: string;
+  
   subscription: Subscription;
 
   // »> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD)
@@ -54,7 +57,10 @@ export class AuthGuard implements CanActivate {
     private projectService: ProjectService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public localDbService: LocalDbService
+    public localDbService: LocalDbService,
+    private _snackBar: MatSnackBar,
+    public appConfigService: AppConfigService,
+    private _httpClient: HttpClient,
   ) {
     console.log('[AUTH-GUARD] hello !!!')
 
@@ -63,42 +69,18 @@ export class AuthGuard implements CanActivate {
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
-      this.logger.log('[AUTH-GUARD] USER ', user)
+      console.log('[AUTH-GUARD] USER ', user)
+     
     });
 
     this.detectRoute();
     this.detectVerifyEmailRoute();
     this.detectSignUpRoute();
     this.detectResetPswRoute();
-
-
-
-
-    /**
-     * !!! having made a change of logic getCurrentProject() is no more used
-     * NEW: initialize the new project when the id of the project get from url does not match with the current project id  */
-    // this.getCurrentProject();
     this.getProjectIdFromUrl();
-
-
-    // this.canActivate();
-
-
   }
 
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.logger.log('[AUTH-GUARD] - CURRENT PROJECT: ', project)
-      // tslint:disable-next-line:no-debugger
-      // debugger
-
-      if (project) {
-        this.logger.log('[AUTH-GUARD] - CURRENT PROJECT ID : ', project._id)
-        this.current_project_id = project._id;
-      }
-    });
-  }
 
   getProjectIdFromUrl() {
     this.subscription = this.router.events.subscribe((e) => {
@@ -151,10 +133,42 @@ export class AuthGuard implements CanActivate {
           this.subscription.unsubscribe();
 
           this.checkStoredProject(this.nav_project_id)
+          // this.getUserRole(this.user, this.nav_project_id).then(userRole => { 
+          //   console.log('[AUTH-GUARD] getUserRole ', userRole);
+          //  }, (error) => {
+          //   console.error('[AUTH-GUARD] getUserRole ', error);
+          // });
         }
       }
     }); // this.router.events.subscribe((e)
+
+   
+    
   }
+
+  getUserRole(user, project_id): Promise <any> {
+    console.log('[AUTH-GUARD] getUserRole user' , user, ' project_id ', project_id) 
+    const SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    const PROJECTS_URL = SERVER_BASE_PATH + project_id + '/project_users/users/' + user._id
+
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: user.token
+    });
+    const requestOptions = { headers: headers };
+    return new Promise((resolve, reject) => { 
+      this._httpClient.get(PROJECTS_URL, requestOptions).subscribe((data) => {
+        console.log('[AUTH-GUARD] data' , data ) 
+        resolve(data[0].role)
+        }, (error) => {
+          console.log('[AUTH-GUARD] error' , error ) 
+          reject(error)
+        });
+
+    })
+  }
+
+  
 
   checkStoredProject(navigationProjectId) {
     const storedProjectJson = localStorage.getItem(navigationProjectId);
@@ -162,76 +176,55 @@ export class AuthGuard implements CanActivate {
 
 
     if (storedProjectJson === null) {
-      console.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjects and filter for project id ')
+      console.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjectsById ')
 
-      this.getProjectFromRemotePublishAndSaveInStorage();
+      this.getProjectFromRemotePublishAndSaveInStorage(navigationProjectId);
     }
   }
 
-  getProjectFromRemotePublishAndSaveInStorage() {
+  getProjectFromRemotePublishAndSaveInStorage(navigationProjectId) {
+    console.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjectFromRemotePublishAndSaveInStorage ', navigationProjectId)
     // this.projectService.getProjectAndUserDetailsByProjectId(this.nav_project_id).subscribe((prjct: any) => {
-    this.projectService.getProjects().subscribe((prjcts: any) => {
-      console.log('[AUTH-GUARD] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+    this.projectService.getProjectById(navigationProjectId).subscribe((project: any) => {
+      if (project) {
+        console.log('[AUTH-GUARD] - PROJECT FROM REMOTE CALLBACK project', project);
 
-      const prjct = prjcts.filter(p => p.id_project._id === this.nav_project_id);
-
-      this.logger.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
-      this.logger.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID LENGHT ', prjct.length);
-
-      if (prjct && prjct.length > 0) {
-        this.logger.log('[AUTH-GUARD] - TEST --- HERE YES');
-        // this.logger.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
-
-        this.nav_project_name = prjct[0].id_project.name;
-        this.logger.log('[AUTH-GUARD] - PROJECT NAME GOT BY THE NAV PROJECT ID ', this.nav_project_name);
-        // tslint:disable-next-line:max-line-length
-        // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
-
-        const project: Project = {
-          _id: this.nav_project_id,
-          name: this.nav_project_name,
-          profile_name: prjct[0].id_project.profile.name,
-          trial_expired: prjct[0].id_project.trialExpired,
-          trial_days_left: prjct[0].id_project.trialDaysLeft,
-          operatingHours: prjct[0].id_project.activeOperatingHours
-        }
-        // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
-        this.auth.projectSelected(project, 'auth-guard');
-        console.log('[AUTH-GUARD] - PROJECT THAT IS PUBLISHED ', project);
-        // this.project_bs.next(project);
-
-        const projectForStorage: Project = {
-          _id: this.nav_project_id,
-          name: this.nav_project_name,
-          role: prjct[0].role,
-          profile_name: prjct[0].id_project.profile.name,
-          trial_expired: prjct[0].id_project.trialExpired,
-          trial_days_left: prjct[0].id_project.trialDaysLeft,
-          operatingHours: prjct[0].id_project.activeOperatingHours
-        }
-        // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
-        this.logger.log('[AUTH-GUARD] - PROJECT THAT IS STORED', projectForStorage);
-        localStorage.setItem(this.nav_project_id, JSON.stringify(projectForStorage));
+        this.getUserRole(this.user, this.nav_project_id).then(userRole => { 
+          console.log('[AUTH-GUARD] getUserRole ', userRole);
+          project['role'] = userRole
+          this.auth.projectSelected(project, 'auth-guard');
+          localStorage.setItem(this.nav_project_id, JSON.stringify(project))
+         }, (error) => {
+          console.error('[AUTH-GUARD] getUserRole ', error);
+          this.auth.projectSelected(project, 'auth-guard');
+          localStorage.setItem(this.nav_project_id, JSON.stringify(project));
+        });
+        
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
-        this.logger.log('[AUTH-GUARD] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
-
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getBotsByProjectIdAndSaveInStorage();
 
       } else {
-
-        this.logger.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO UNAUTHORIZED PAGE ');
-
+        console.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO UNAUTHORIZED PAGE ');
         this.router.navigate([`project/${this.nav_project_id}/unauthorized_access`]);
-        // this.goToProjects()
-        // this.logout()
       }
 
     }, (error) => {
       this.logger.error('[AUTH-GUARD] - GET PROJECT BY ID - ERROR ', error);
+      console.log('[AUTH-GUARD] error', error.error)
+      if (error.error.msg === "you dont belong to the project.") {
+
+        this._snackBar.open("Oops! " + error.error.msg, null, {
+          duration: 5000,
+          verticalPosition: 'top',
+          panelClass: 'error-snackbar'
+        });
+      }
+
+
     }, () => {
       this.logger.log('[AUTH-GUARD] - GET PROJECT BY ID - COMPLETE ');
 
