@@ -1719,6 +1719,10 @@ footer ul {
   // width: 503px;
 }
 
+.ng-select.custom-input .ng-select-container {
+  border: none;
+}
+
 .ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
   margin-top: 0px !important;
   margin-left: 0px !important;
