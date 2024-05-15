@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.26
+- Deploys in production
+- Improves Knowledge Base UI
+
 ### 2.6.25
 - Deploys in production
 - Added support for GPT-4o in Knwoledge Base Preview
