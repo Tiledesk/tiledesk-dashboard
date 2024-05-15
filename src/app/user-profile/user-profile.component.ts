@@ -20,6 +20,7 @@ import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
 
 
@@ -159,7 +160,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   ];
   isChromeVerGreaterThan100: boolean;
-
+  displayChangePwd: boolean;
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -174,9 +175,13 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     private route: ActivatedRoute,
     private usersLocalDbService: LocalDbService,
     public prjctPlanService: ProjectPlanService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public brandService: BrandService
   ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand(); 
+    this.displayChangePwd = brand['display_change_pwd']
+    // console.log('[USER-PROFILE] displayChangePwd ' , this.displayChangePwd) 
    }
 
   ngOnInit() {

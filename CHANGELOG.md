@@ -1,5 +1,25 @@
 # tiledesk-dashboard
 
+### 2.6.25
+- Deploys in production
+- Added support for GPT-4o in Knwoledge Base Preview
+
+### 2.6.24
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.6.23
+- Deploys in production
+- Improves the branding service 
+
+### 2.6.22
+- Deploys in production
+- Changes the link that redirect to the installation of WhatsApp on the home page
+
+### 2.6.21
+- Deploys in production
+- Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
+
 ### 2.6.20
 - Deploys in production
 - Implements on the "Monitor" page the scroll position restoration

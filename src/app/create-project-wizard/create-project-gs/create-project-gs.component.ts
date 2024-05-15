@@ -36,7 +36,8 @@ export class CreateProjectGsComponent implements OnInit {
         this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] USER  ', user)
         this.user = user
         // this.createNewProject(user)
-        this.router.navigate(['/create-new-project']);
+        // this.router.navigate(['/create-new-project']);
+        this.router.navigate(['/onboarding']);
       }
     })
   }

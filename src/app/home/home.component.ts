@@ -1783,10 +1783,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       return
     }
 
-
-    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
-      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
-      // this.openWADetailsInPopup()
+    // || this.appTitle === "Facebook Messenger"
+    if (this.appTitle === "WhatsApp Business" ) {
+      this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })
+      // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+     
     }
   }
 
@@ -1805,15 +1806,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  openWADetailsInPopup() {
-    const whatsappProdlUrl = "https://tiledesk-whatsapp-prod.herokuapp.com"
-    const url = whatsappProdlUrl + "/detail?project_id=" + this.projectId + '&app_id=' + this.whatsAppAppId + '&token=' + this.user.token
-
-    let left = (screen.width - 815) / 2;
-    let top = (screen.height - 727) / 4;
-    let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
-    window.open(url, '_blank', params);
-  }
+ 
 
   openAppStoreInPopupWindow() {
     const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;

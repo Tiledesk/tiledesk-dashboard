@@ -77,6 +77,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
+  public logoutBtnVisible: boolean;
 
   constructor(
     public auth: AuthService,
@@ -97,7 +98,8 @@ export class SidebarUserDetailsComponent implements OnInit {
   ) {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
-  //  console.log('[SIDEBAR-USER-DETAILS] !!!!! HELLO SIDEBAR-USER-DETAILS')
+    this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
+  // console.log('[SIDEBAR-USER-DETAILS] logoutBtnVisible ', this.logoutBtnVisible)
   // const brand = brandService.getBrand(); 
   // this.hideHelpLink= brand['DOCS'];
   }
