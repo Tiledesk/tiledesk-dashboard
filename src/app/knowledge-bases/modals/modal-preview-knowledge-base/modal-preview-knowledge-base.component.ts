@@ -16,7 +16,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
 
   models_list = [
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
-    { name: "GPT-4 (ChatGPT)", value: "gpt-4" }
+    { name: "GPT-4 (ChatGPT)", value: "gpt-4" },
+    { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview" }, 
+    { name: "GPT-4o (ChatGPT)", value: "gpt-4o" }
   ];
   selectedModel: any = this.models_list[1].value;
 

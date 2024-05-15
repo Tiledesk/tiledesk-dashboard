@@ -182,6 +182,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_perc = 0;
   tokens_limit = 0;
 
+  project_limits: any;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -276,8 +278,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
 
- 
-
   } // OnInit
 
 
@@ -288,36 +288,27 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.unsubscribe$.complete();
   }
 
+  getProjectQuotes() {
+    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
+      this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
+      this.project_limits = response;
+    }).catch((err) => {
+      this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
+    })
+  }
+
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("quotes retrieved: ", resp)
-
-      // let profile_name = this.project.profile_name;
-      this.logger.log('[NAVBAR] project ', this.project)
-      // this.logger.log('[NAVBAR] project > profile_name ', profile_name)
-      this.logger.log('[NAVBAR] prjct_profile_name ', this.prjct_profile_name)
-      this.logger.log('[NAVBAR] profile_name ', this.profile_name)
-
-
-      switch(this.profile_name) {
-        case PLAN_NAME.A:
-          this.profile_name = PLAN_NAME.D;
-          break;
-        case PLAN_NAME.B:
-          this.profile_name = PLAN_NAME.E
-          break;
-        case PLAN_NAME.C:
-          this.profile_name = PLAN_NAME.F
-          break;
-      }
-
-      this.logger.log('[NAVBAR] PLANS_LIST ', PLANS_LIST)
-      this.logger.log('[NAVBAR] PLANS_LIST[profile_name] ', PLANS_LIST[this.profile_name])
-      this.logger.log('[NAVBAR] PLANS_LIST[profile_name].requests ', PLANS_LIST[this.profile_name].requests)
-      this.requests_limit = PLANS_LIST[this.profile_name].requests;
-      this.messages_limit = PLANS_LIST[this.profile_name].messages;
-      this.email_limit = PLANS_LIST[this.profile_name].email;
-      this.tokens_limit = PLANS_LIST[this.profile_name].tokens;
+      this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
+      
+      // this.requests_limit = PLANS_LIST[this.profile_name].requests;
+      // this.messages_limit = PLANS_LIST[this.profile_name].messages;
+      // this.email_limit = PLANS_LIST[this.profile_name].email;
+      // this.tokens_limit = PLANS_LIST[this.profile_name].tokens;
+      this.messages_limit = this.project_limits.messages;
+      this.requests_limit = this.project_limits.requests;
+      this.email_limit = this.project_limits.email;
+      this.tokens_limit = this.project_limits.tokens;
 
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;
@@ -911,6 +902,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectId = project._id;
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.getProjectQuotes();
           // this.getQuotes();
           this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
