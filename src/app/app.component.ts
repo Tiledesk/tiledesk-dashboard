@@ -78,7 +78,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     public setIntervalTime: any;
     public isTabVisible: boolean = true;
     public tabTitle: string;
-    current_selected_prjct: any;
+    // current_selected_prjct: any;
+    current_selected_prjct_user: any;
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -354,14 +355,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.auth.project_bs.subscribe((project) => {
             if (project) {
                 console.log('[APP-COMPONENT] project from $ubscription ', project)
-                this.current_selected_prjct = project
-                // this.projectService.getProjects().subscribe((projects: any) => {
-                //     console.log('[APP-COMPONENT] getProjects projects ', projects)
-                //     if (projects) {
-                //         this.current_selected_prjct = projects.find(prj => prj.id_project.id === project._id);
-                //         console.log('[APP-COMPONENT] current_selected_prjct ', this.current_selected_prjct)
-                //     }
-                // })
+                // this.current_selected_prjct = project
+                this.projectService.getProjects().subscribe((projects: any) => {
+                    console.log('[APP-COMPONENT] getProjects projects ', projects)
+                    if (projects) {
+                        this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
+                        console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+                    }
+                })
             }
         });
     }
@@ -499,7 +500,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (elemNotification) {
                     elemNotification.addEventListener('click', function handleClick() {
                         // console.log('element clicked');
-                        localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+                        localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct_user))
                     });
                 }
 
@@ -526,7 +527,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const self = this
             notification.onclick = () => {
                 window.open(link);
-                localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+                localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct_user))
             };
         }
     }
@@ -558,7 +559,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const self = this
         elemNotification.addEventListener('click', function handleClick() {
             // console.log('element clicked');
-            localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct))
+            localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct_user))
         });
 
 

@@ -241,7 +241,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   plan_type: string;
   prjct_name: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
- 
+
   new_messages_count: number;
 
   NOTIFICATION_SOUND: string;
@@ -255,6 +255,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   dialogRef: MatDialogRef<any>;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   areVisibleChatbot: boolean;
+  currentProjectUser: any;
 
   constructor(
     private router: Router,
@@ -1391,7 +1392,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getProjectUser() {
     //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+      console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
@@ -1525,31 +1526,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getCurrentProjectProjectUsersProjectBots() {
     // console.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
-      
-      
+
+
       if (project) {
         this.project = project
 
         this.projectId = this.project._id
         console.log('[SIDEBAR] project $ubscription  ', this.project)
 
+        this.projectService.getProjects().subscribe((projects: any) => {
+          console.log('[SIDEBAR] getProjects projects ', projects)
+          if (projects) {
+            this.currentProjectUser = projects.find(prj => prj.id_project.id === this.projectId);
+            console.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+          }
+        });
+
+
         this.getProjectUserRole();
-        
-
-        this.prjct_profile_name = this.project.profile_name;
-        this.prjct_trial_expired = this.project.trial_expired;
-        this.prjc_trial_days_left = this.project.trial_days_left;
-        // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-        this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
-
-        // this.prjc_trial_days_left_percentage IT IS 
-        // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
-        const perc = 100 + this.prjc_trial_days_left_percentage
-        // this.logger.log('[SIDEBAR] project perc ', perc)
-
-
-        this.prjc_trial_days_left_percentage = this.round5(perc)
-        // this.logger.log('[SIDEBAR] project trial days left % rounded', this.prjc_trial_days_left_percentage);
 
         this.getProjectUser();
         // this.getFaqKbByProjectId()
@@ -1864,7 +1858,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // --- new 
     if (this.project) {
       this.project['role'] = this.USER_ROLE
-      localStorage.setItem('last_project', JSON.stringify(this.project))
+      localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
     }
     // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     // let url = baseUrl
@@ -1902,7 +1896,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
       console.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
       this.project['role'] = this.USER_ROLE
-      localStorage.setItem('last_project', JSON.stringify(this.project))
+      localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
     }
 
   }

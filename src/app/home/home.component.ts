@@ -3957,37 +3957,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['/create-new-project']);
   }
 
-  goToHome(
-    project: any,
-    id_project: string,
-    project_name: string,
-    project_profile_name: string,
-    project_trial_expired: string,
-    project_trial_days_left: number,
-    activeOperatingHours: boolean) {
-    // this.logger.log('!NAVBAR  goToHome prjct ', project)
-    this.logger.log('[HOME] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
-    localStorage.setItem('last_project', JSON.stringify(project))
-    // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
-    if (id_project !== this.projectId) {
-      // this.subscription.unsubscribe();
-      // this.unsubscribe$.next();
-      // this.unsubscribe$.complete();
-
-      this.router.navigate([`/project/${id_project}/home`]);
-
-      // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
-      const project: Project = {
-        _id: id_project,
-        name: project_name,
-        profile_name: project_profile_name,
-        trial_expired: project_trial_expired,
-        trial_days_left: project_trial_days_left,
-        operatingHours: activeOperatingHours
-      }
-      this.auth.projectSelected(project, 'home')
-      this.logger.log('[HOME] !!! GO TO HOME - PROJECT ', project)
-    }
-  }
+ 
 
 }

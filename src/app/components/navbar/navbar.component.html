@@ -362,7 +362,7 @@
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
             
             <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome( prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
+              <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
                 [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
                 <span> {{ prjct?.id_project?.name }} </span>

@@ -495,7 +495,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           this.projectId = project._id;
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET CURRENT PROJECT - PROJECT ID ', this.projectId)
           // this.findCurrentProjectAmongAll(this.projectId)
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] -  current_selected_prjct ', this.current_selected_prjct)
+         console.log('[WS-REQUESTS-LIST][SERVED] -  current_selected_prjct ', this.current_selected_prjct)
         }
       });
   }

@@ -242,68 +242,6 @@
                 </mat-menu>
               </div>
             </div>
-            <!-- -------------------------------------- -->
-            <!-- New Menu to change project !! display none  -->
-            <!-- -------------------------------------- -->
-            <div style="display: none !important; " aria-haspopup="true" matripple=""
-              class="change-project-menu-wpr mat-ripple mat-menu-trigger relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default">
-              <div [matMenuTriggerFor]="projectsMenu" class="flex items-center"
-                style="align-items: center !important;display: flex !important;">
-                <div class="overflow-hidden" style="    overflow: hidden !important;">
-                  <div class="font-medium leading-6 truncate" style="    line-height: 1.5rem !important; font-weight: 500 !important;    overflow: hidden !important;
-                  text-overflow: ellipsis !important;
-                  white-space: nowrap !important;">{{ project.name }}</div>
-                </div>
-                <div class="flex items-center justify-center pl-2"
-                  style="    padding-left: 0.5rem !important; justify-content: center !important; align-items: center !important; display: flex !important">
-                  <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
-                    ng-reflect-svg-icon="heroicons_solid:chevron-down" data-mat-icon-type="svg"
-                    data-mat-icon-name="chevron-down" data-mat-icon-namespace="heroicons_solid"><svg
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit="" height="100%"
-                      width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                      <path fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                    </svg>
-                  </mat-icon>
-                </div>
-              </div>
-              <mat-menu #projectsMenu="matMenu" xPosition="after">
-                <button mat-menu-item (click)="goToProjects()">
-                  <mat-icon>view_list</mat-icon>
-                  <span>{{ 'NavBar.ViewAllProjects' | translate }}</span>
-                </button>
-                <button mat-menu-item (click)="goToCreateProject()">
-                  <mat-icon>add_circle_outline</mat-icon>
-                  <span>{{ 'AddProject' | translate }}</span>
-                </button>
-                <button mat-menu-item [matMenuTriggerFor]="recentProjects"> {{ 'RecentProjects' | translate }}</button>
-              </mat-menu>
-
-              <mat-menu #recentProjects="matMenu">
-                <button *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" mat-menu-item (click)="goToHome(
-                  prjct,
-                  prjct?.id_project?._id, prjct?.id_project?.name,
-                  prjct?.id_project?.profile?.name, 
-                  prjct?.id_project?.trialExpired, 
-                  prjct?.id_project?.trialDaysLeft, 
-                  prjct?.id_project?.activeOperatingHours)">
-                  {{ prjct?.id_project?.name }}
-                </button>
-              </mat-menu>
-              <mat-menu #otherProjects="matMenu" *ngIf="projects?.length > 5">
-                <button *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" mat-menu-item (click)="goToHome(
-                  prjct,
-                  prjct?.id_project?._id, prjct?.id_project?.name,
-                  prjct?.id_project?.profile?.name, 
-                  prjct?.id_project?.trialExpired, 
-                  prjct?.id_project?.trialDaysLeft, 
-                  prjct?.id_project?.activeOperatingHours)">
-                  {{ prjct?.id_project?.name }}
-                </button>
-              </mat-menu>
-
-            </div>
           </div>
         </div> <!-- ./ bg-card -->
 

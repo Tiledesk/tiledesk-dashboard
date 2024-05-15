@@ -1118,6 +1118,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
   goToHome(
+    prjct_user:any,
     project: any,
     project_role,
     id_project: string,) {
@@ -1126,7 +1127,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     console.log('[NAVBAR] goToHome id_project ', id_project )
    
     project['role'] =  project_role
-    localStorage.setItem('last_project', JSON.stringify(project))
+    localStorage.setItem('last_project', JSON.stringify(prjct_user))
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
     if (id_project !== this.projectId) {
      
