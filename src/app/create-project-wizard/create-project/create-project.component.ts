@@ -141,6 +141,8 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
       .subscribe((project: Project) => {
          console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
+          this.id_project =  project._id
+          console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE id_project ', this.id_project);
           project['role'] = 'owner'
           this.auth.projectSelected(project, 'create-project')
          
@@ -408,8 +410,9 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
 
   forkTemplate() {
+    console.log('[INSTALL-TEMPLATE] - forkTemplate id_project', this.id_project);
     this.faqKbService.installTemplate(this.template._id, this.id_project, true, this.template._id).subscribe((res: any) => {
-      // console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
