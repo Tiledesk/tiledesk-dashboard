@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.25-rc1
+- Improved quotes widget
+- Added missing gpt model in kb preview
+
 ### 2.6.22-rc1
 - Knowledge Base page improvements
 
