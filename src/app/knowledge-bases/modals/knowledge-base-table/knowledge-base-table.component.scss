@@ -24,28 +24,57 @@ select.select-status {
 
 .preview-count {
     display: flex;
-    width: calc(100% - 23px);
+    // width: calc(100% - 23px);
+    width: 100%;
     justify-content: space-between;
     align-items: center;
     padding: 8px 20px;
-    border-radius: 8px;
-    margin: 10px 16px 10px 10px;
-    box-shadow: 0px 0px 4px #c7c7c7;
+    // border-radius: 8px;
+    // margin: 16px 0px 32px;
+    border-radius: 0px;
+    margin: 20px 0 0px;
+    //box-shadow: 0px 0px 4px #c7c7c7;
+    background-color: #f9f9f9;
+    height: 70px;
 
     .preview-count-left {
         display: flex;
         align-items: baseline;
     }
 }
+    
 
 .contents-count {
     color: #8d8d8d;
     margin-left: 16px;
 }
 
-.custom-input  {
-    background-color:#fff; 
+.filter-icon {
+    margin-right: 12px;
+    font-size: 28px;
+    background-color: #e4e4e4;
+    color: #878787;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: default;
+}
+
+// .custom-input  {
+//     background-color:#fff; 
+//     color:#333333;
+//     box-shadow: 0px 0px 4px #c7c7c7;
+// }
+
+.ng-select.custom-input {            
+    // background-color:#fff; 
     color:#333333;
+    box-shadow: 0px 0px 4px #c7c7c7;
+    border-radius: 6px;
 }
 .control-label {
     padding-top: 0px;
@@ -144,6 +173,10 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:la
 table {
     max-width: 100%;
     width: 100%; 
+}
+
+.table-body {
+    padding: 20px 0px;
 }
 
 .ellipsis-text {
@@ -252,6 +285,7 @@ td {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 200px;
     img {
         width: 300px;
         height: auto;
@@ -307,9 +341,108 @@ td {
 
 .card {
     border: none!important;
-    padding: 0px 15px 20px;
+    margin: 40px 0;
+    //padding: 0px 15px 20px;
 }
 
 .btn {
     text-transform: none;
 } 
+
+.search-filters-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.fake-input {
+    height: 37px;
+    border-radius: 6px;
+    //border: solid 2px #c6cdd4;
+    // border: solid 1px #b5b5b5;
+    box-shadow: 0px 0px 4px #c7c7c7;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    cursor: text;
+
+    &:focus {
+        .fake-input {
+            width: 320px;
+            transition: width 1s ease-in-out;
+        }
+    }
+
+    .fake-input-inner {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    input {
+        height: 32px;
+        width: 160px;
+        border: transparent;
+        transition: 0.2s;
+
+        &:focus {
+            width: 320px;
+            transition: width 0.3s ease-in-out;
+        }
+
+    }
+    .input-bold {
+        font-weight: 400;
+    }
+    .enter-button {
+        display: none;
+        transition: background-color 0.15s ease 0s, color 0.15s ease 0s;
+        cursor: pointer;
+        animation: 0.15s ease 0s 1 normal none running fadein, 0.15s ease 0s 1 normal none running moveinleft;
+        box-sizing: border-box;
+        min-width: 22px;
+        height: 22.4px;
+        margin-top: -4px;
+        margin-bottom: -4px;
+        padding-right: 8px;
+        padding-left: 8px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 24px;
+        text-align: center;
+        border-radius: 5px;
+        // color: #61778c;
+        color: rgb(98, 119, 140);
+        background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+        box-shadow: rgb(212, 217, 230) 0px 1px 0px;
+    }
+    @keyframes fadein {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+    @keyframes moveinleft {
+        0% {
+            transform: translate(16px);
+        }
+
+        100% {
+            transform: translate(0px);
+        }
+    }
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+}
+
+.selector {
+    width: 160px;
+    margin-right: 8px;
+}

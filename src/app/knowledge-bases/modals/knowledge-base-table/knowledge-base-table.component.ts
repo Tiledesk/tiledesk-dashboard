@@ -30,6 +30,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   timeoutId: any;
   // kbsListfilterTypeFilter: KB[] = [];
+  filterStatus: string;
   filterType: string;
   filterText: string;
   @ViewChild('tableBody') tableBody: ElementRef;
@@ -47,6 +48,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.filterStatus = '';
     this.filterType = '';
     this.filterText = '';
     this.searchParams = {
@@ -144,9 +146,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
   onLoadByFilter(filterValue: string, column: string) {
     // let status = '';
     // let search = '';
-    if( column == 'type'){
+    console.log("onLoadByFilter value: ", filterValue)
+    console.log("onLoadByFilter column: ", column)
+    if( column == 'status'){
       this.searchParams.status = filterValue;
-    } else if(column == 'name'){
+    } 
+    else if ( column == 'type') {
+      this.searchParams.type = filterValue;
+    } 
+    else if(column == 'name'){
       this.searchParams.search = filterValue;
     }
     // console.log("this.searchParams ", this.searchParams);

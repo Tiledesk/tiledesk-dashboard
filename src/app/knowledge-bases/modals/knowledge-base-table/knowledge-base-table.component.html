@@ -25,10 +25,64 @@
 
 <div *ngIf="SHOW_TABLE == true" class="card">
 
-    <div class="form-group">
+    <div class="search-filters-card-header">
+        
+        <div class="filters">
+            <span class="material-icons-outlined filter-icon">filter_list</span>
+            <div class="selector status-selector">
+                <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' [ngModel]='filterType'
+                dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'status')">
+                    <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
+                    <ng-option value="">All statuses</ng-option>
+                    <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
+                    <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
+                    <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
+                    <ng-option value="300"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
+                    <ng-option value="400"> {{ 'KbPage.StatusError' | translate }}</ng-option>
+                </ng-select>
+            </div>
+
+            <div class="selector type-selector">
+                <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' [ngModel]='filterType'
+                dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'type')">
+                    <ng-option value="">All types</ng-option>
+                    <ng-option value="text">Text</ng-option>
+                    <ng-option value="url">URL</ng-option>
+                </ng-select>
+            </div>
+            
+        </div>
+
+        <div class="fake-input">
+            <!-- <label for="search">{{ 'KbPage.TextSearch' | translate }}</label> -->
+            <!-- <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}"> -->
+            <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="Search by name">
+            <span class="material-icons-outlined">search</span>
+        </div>
+    </div>
+
+    <div class="form-group preview-count">
+        <div class="preview-count-left">
+            <div>
+                <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="onLoadByFilter()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+            <div class="contents-count"><b>{{ kbsListCount }}</b> total resources</div>
+        </div>
+        <div class="btn-preview">
+            <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+              <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
+            </button>
+        </div>
+    </div>
+
+    
+
+    <!-- <div class="form-group">
         <div class="cerca">
             <label class="col-sm-12 control-label">
-                {{ 'KbPage.TextSearch' | translate }}
+                
             </label>
             <div class="col-sm-12">
                 <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}">
@@ -48,12 +102,6 @@
                     dropdownPosition='bottom' 
                     (ngModelChange)="onLoadByFilter($event, 'type')">
                     <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option>
-                    
-                    <!-- <ng-option value="0"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
-                    <ng-option value="2"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
-                    <ng-option value="3"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
-                    <ng-option value="4"> {{ 'KbPage.StatusError' | translate }}</ng-option> -->
-
                     <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
                     <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
                     <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
@@ -63,23 +111,8 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="form-group preview-count">
-        <div class="preview-count-left">
-            <div>
-                <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="onLoadByFilter()">
-                    <mat-icon>refresh</mat-icon>
-                </button>
-            </div>
-            <div class="contents-count"><b>{{ kbsListCount }}</b> total resources</div>
-        </div>
-        <div class="btn-preview">
-            <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
-              <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
-            </button>
-        </div>
-    </div>
     
     <div *ngIf="!isLoading || SHOW_MORE_BTN" #tableBody class="table-body card-content table-responsive">
         <!-- <div class="btn-preview">
@@ -90,20 +123,20 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th class="column-th-span" style="width:50px; cursor: default;">
+                    <th class="column-th-span" style="width:80px; cursor: default; text-align: center;">
                         <span>{{ 'KbPage.Type' | translate }}</span>
                     </th>
-                    <th class="column-th-span" style="width:50px; text-align:center; cursor: default;">
+                    <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
                         <span>{{ 'KbPage.Status' | translate }}</span>
                     </th>
                     <th class="column-th-span" style="width:150px;" (click)="onOrderBy('updatedAt')">
-                        <span>{{'KbPage.UpdatedAt' | translate }}</span>
+                        <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span>
                         <span *ngIf="directionDesc === 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
                         <span *ngIf="directionDesc === -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
                     </th>
-                    <th class="column-th-span" style="width:auto" (click)="onOrderBy('name')">
+                    <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
                         <div>
-                            <span>{{'Name' | translate }}</span>
+                            <span style="margin: 0px;">{{'Name' | translate }}</span>
                             <span *ngIf="directionDesc === 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
                             <span *ngIf="directionDesc === -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </div>
@@ -127,9 +160,16 @@
 
                 <tr *ngFor="let kb of kbsList">
                     <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
-                        <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>
-                        <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span>
-                        <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span>
+                        <div *ngIf="kb.type == 'text'" class="chip" style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span  id="description" class="material-icons-outlined" style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Text</span>
+                        </div>
+                        <div *ngIf="kb.type == 'url'" class="chip" style="display: flex; align-items: center; justify-content: center; background-color: #333652; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span  id="description" class="material-icons-outlined" style="font-size: 16px; color: white;">link</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
+                        </div>
+                        <!-- <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span> -->
+                        <!-- <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span> -->
                     </td>
 
                     <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
@@ -150,7 +190,7 @@
                     </td>
 
                     <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                        <div class="ellipsis-text" style = "max-width: 100%;" >{{ kb.name }}</div>
+                        <div class="ellipsis-text" style = "max-width: 100%; font-size: 16px;" >{{ kb.name }}</div>
                         <div class="subtitle ellipsis-text" style = "max-width: 100%;">{{getSubtitle(kb)}}</div>
                     </td>
 

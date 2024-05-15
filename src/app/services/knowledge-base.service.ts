@@ -32,6 +32,7 @@ export class KnowledgeBaseService {
     this.getCurrentProject();
     this.getAppConfig();
   }
+
   // ******************************************
   // ********** INITIALIZING SERVICE **********
   // ***************** START ******************
@@ -64,32 +65,20 @@ export class KnowledgeBaseService {
   // ********** INITIALIZING SERVICE **********
   // ***************** END ********************
 
-  // getKbSettings() {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //       'Authorization': this.TOKEN
-  //     })
-  //   }
-  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
-  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
-  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
-  //   return this.httpClient.get(url, httpOptions);
-  // }
+  
   areNewwKb(areNewKb: boolean) {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - areNew ", areNewKb);
     this.newKb.next(areNewKb)
   }
 
-  getKbSettingsPrev() {
+  getListOfKb(params?) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
-    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb" + params;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
     return this.httpClient.get(url, httpOptions);
   }
@@ -102,52 +91,9 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_settings._id;
-    // const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
-
-  saveKbSettingsPrev(kb_settings) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
-    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_settings._id;
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
-    return this.httpClient.put(url, kb_settings, httpOptions);
-  }
-
-  // getListOfKb() {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //       'Authorization': this.TOKEN
-  //     })
-  //   }
-  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
-  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
-  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
-  //   return this.httpClient.get(url, httpOptions);
-  // }
-
-  getListOfKb(params?) {
-    //let params = "?limit=1&page=0&direction=-1&sortField=updatedAt";
-    //let urlParams = params?params:'';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb" + params;
-    //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
-    return this.httpClient.get(url, httpOptions);
-  }
-
   
   addSitemap(body: any) {
     const httpOptions = {
@@ -185,20 +131,59 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
   }
 
-  
-
   deleteKb(data: any){
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       }), 
-      //body: JSON.stringify(data)
     }
-    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb/delete/";
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/"+data.id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
     return this.httpClient.delete(url, httpOptions);
+  }
+
+  
+  deleteNamespace(namespace_id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - delete namsespace ", namespace_id);
+    return this.httpClient.delete(url, httpOptions);
+  }
+
+
+  // DEPRECATED FUNCTIONS - START
+
+  getKbSettingsPrev() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+    return this.httpClient.get(url, httpOptions);
+  }
+
+  addNewKbPrev(settings_id: string, body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
   }
 
   deleteKbPrev(settings_id: string, id: any){
@@ -217,19 +202,37 @@ export class KnowledgeBaseService {
     return this.httpClient.delete(url, httpOptions);
   }
 
-
-  addNewKbPrev(settings_id: string, body: any) {
+  saveKbSettingsPrev(kb_settings) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
-    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_settings._id;
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
+    return this.httpClient.put(url, kb_settings, httpOptions);
   }
+
+  // DEPRECATED FUNCTIONS - END
+
+  
+  // COMMENTED FUNCTIONS - START
+
+  // getKbSettings() {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   }
+  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+  //   return this.httpClient.get(url, httpOptions);
+  // }
+
 
 
   // deleteKb(settings_id: string, kb_id: string){
@@ -245,6 +248,21 @@ export class KnowledgeBaseService {
   //   return this.httpClient.delete(url, httpOptions);
   // }
 
-  
 
+
+  // getListOfKb() {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   }
+  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+  //   return this.httpClient.get(url, httpOptions);
+  // }
+
+
+  // COMMENTED FUNCTIONS - END
 }
