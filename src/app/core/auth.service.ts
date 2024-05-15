@@ -1076,6 +1076,12 @@ export class AuthService {
         this.logger.log('[AUTH-SERV] SIGNOUT - STORED stored__tiledeskToken : ', stored__tiledeskToken)
       }
 
+      const stored__lastProject = localStorage.getItem('last_project') 
+      if (stored__lastProject) {
+        localStorage.removeItem('last_project')
+        this.logger.log('[AUTH-SERV] SIGNOUT - STORED stored__lastProjectn : ', stored__lastProject)
+      }
+
       this.webSocketClose()
     } else {
       this.logger.log('[AUTH-SERV] Signout current url contains request-for-panel ')

@@ -64,7 +64,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   ) {
     super(translate);
     const brand = brandService.getBrand();
-   
+
     this.companyLogo = brand['BASE_LOGO'];
     this.botid = this.route.snapshot.params['botid'];
   }
@@ -78,7 +78,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      // console.log('[WIZARD - CREATE-PRJCT] - USER ', user)
+      console.log('[WIZARD - CREATE-PRJCT] - USER ', user)
       if (user) {
         this.user = user;
       }
@@ -88,15 +88,15 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   checkCurrentUrlAndHideCloseBtn() {
     // console.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
     if (this.router.url.startsWith('/create-project-itw/')) {
-      
+
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true
       // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
       this.browser_lang = this.translate.getBrowserLang();
-      
+
       if (tranlatedLanguage.includes(this.browser_lang)) {
         const langName = this.getLanguageNameFromCode(this.browser_lang)
         // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
-       
+
         this.temp_SelectedLangName = langName;
         this.temp_SelectedLangCode = this.browser_lang
       } else {
@@ -106,7 +106,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
         this.temp_SelectedLangCode = 'en'
       }
 
-    }  else if (this.router.url === '/create-project') {
+    } else if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
       // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
@@ -139,16 +139,18 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
     this.projectService.createProject(this.project_name, 'create-project')
       .subscribe((project: Project) => {
-         console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+        console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
-          this.id_project =  project._id
+          this.id_project = project._id
           console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE id_project ', this.id_project);
           project['role'] = 'owner'
           this.auth.projectSelected(project, 'create-project')
-         
-          localStorage.setItem(project._id, JSON.stringify(project));
 
-          this.new_project = project
+          localStorage.setItem(project._id, JSON.stringify(project));
+          this.new_project = project;
+
+          this.getProjectsAndSaveInStorageLastProject(this.id_project)
+
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
           // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
           // const newproject: Project = {
@@ -198,7 +200,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
             }
 
             let userFullname = ''
-            if (this.user.firstname && this.user.lastname)  {
+            if (this.user.firstname && this.user.lastname) {
               userFullname = this.user.firstname + ' ' + this.user.lastname
             } else if (this.user.firstname && !this.user.lastname) {
               userFullname = this.user.firstname
@@ -252,6 +254,17 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
       });
   }
 
+  getProjectsAndSaveInStorageLastProject(id_project) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[WIZARD - CREATE-PRJCT] getProjects projects ', projects)
+      if (projects) {
+        const project = projects.find(prj => prj.id_project.id === id_project);
+        console.log('[WIZARD - CREATE-PRJCT] project from get projects ', project)
+        localStorage.setItem('last_project', JSON.stringify(project))
+      }
+    });
+  }
+
 
 
   /**
@@ -291,10 +304,10 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     if (this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION === false) {
       // this.goToWidgetOnBoading()
       this.goToConfigureWidget()
-      this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToConfigureWidget') 
+      this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToConfigureWidget')
     } else {
       this.goToInstallTemplate()
-      this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION',  this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToInstallTemplate') 
+      this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION, ' - goToInstallTemplate')
     }
   }
 
@@ -302,7 +315,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     this.router.navigate([`/project/${this.id_project}/configure-widget`]);
   }
 
-  goToWidgetOnBoading(){
+  goToWidgetOnBoading() {
     this.router.navigate([`/project/${this.id_project}/onboarding-widget`]);
   }
 
@@ -346,7 +359,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
       if (res) {
         // console.log('[WIZARD - CREATE-PRJCT] GET TEMPLATES - RES ', res)
-       
+
         this.template = res;
         this.botname = res['name']
 
@@ -369,7 +382,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
             }
 
             let userFullname = ''
-            if (this.user.firstname && this.user.lastname)  {
+            if (this.user.firstname && this.user.lastname) {
               userFullname = this.user.firstname + ' ' + this.user.lastname
             } else if (this.user.firstname && !this.user.lastname) {
               userFullname = this.user.firstname
@@ -420,15 +433,15 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
     }, () => {
       this.logger.log('[INSTALL-TEMPLATE] FORK TEMPLATE COMPLETE');
-     
+
 
       this.getFaqKbById(this.botid);
-     
+
       if (!isDevMode()) {
         if (window['analytics']) {
 
           let userFullname = ''
-          if (this.user.firstname && this.user.lastname)  {
+          if (this.user.firstname && this.user.lastname) {
             userFullname = this.user.firstname + ' ' + this.user.lastname
           } else if (this.user.firstname && !this.user.lastname) {
             userFullname = this.user.firstname
@@ -440,7 +453,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
               "email": this.user.email,
               "userId": this.user._id,
               "chatbotName": this.botname,
-              'chatbotId':  this.botid,
+              'chatbotId': this.botid,
               'page': 'Onboarding, Install template',
               'button': 'Import Template',
             });

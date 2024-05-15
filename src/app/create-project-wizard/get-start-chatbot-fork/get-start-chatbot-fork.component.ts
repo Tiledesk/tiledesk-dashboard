@@ -216,7 +216,7 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.trackGroup(this.selectedProjectId)
         }
         if (projectid) {
-          console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1', projectid)
+
           if (this.activeProjects && this.activeProjects.length > 1) {
             console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
             this.activeProjects.forEach(project => {
@@ -239,7 +239,7 @@ export class GetStartChatbotForkComponent implements OnInit {
                 //   trial_expired: this.project['trialExpired']
                 // }
                 this.auth.projectSelected(_project, 'get-start-chatbot-fork')
-
+                localStorage.setItem('last_project', JSON.stringify(project))  
 
                 this.getProjectBots();
 
