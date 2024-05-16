@@ -803,6 +803,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             
           this.auth.projectSelected(this.new_project, 'sign-up')
           localStorage.setItem(this.new_project._id, JSON.stringify(project));
+          this.router.navigate(['/projects']);
+
+
 
           // // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
           // // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
@@ -822,7 +825,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
           // this.id_project = newproject._id
           // this.router.navigate([`/project/${this.id_project}/configure-widget`]);
           // this.router.navigate(['/create-new-project']);
-          this.router.navigate(['/projects']);
+         
         }
 
 
@@ -834,7 +837,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         this.logger.log('[SIGN-UP] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
         this.projectService.newProjectCreated(true);
 
-
+        this.getProjectsAndSaveLastProject(this.new_project._id)
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
@@ -842,8 +845,6 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         this.trackCreateProject(signupResponse, trialStarDate, trialEndDate)
-
-
         // setTimeout(() => {
         //   this.DISPLAY_SPINNER = false;
         // }, 2000);
@@ -853,6 +854,17 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.getProjectsAndSaveInStorage();
         this.addWidgetDefaultLanguage()
       });
+  }
+
+  getProjectsAndSaveLastProject(project_id) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[SIGN-UP] getProjects projects ', projects)
+      if (projects) {
+        const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
+        console.log('[SIGN-UP] currentProjectUser ', populateProjectUser)
+        localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
+      }
+    });
   }
 
   addWidgetDefaultLanguage() {

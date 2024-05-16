@@ -541,7 +541,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         project['role'] = 'owner';
         this.auth.projectSelected(project, 'onboarding-content')
         localStorage.setItem(project._id, JSON.stringify(project));
-        this.newProject = project
+        this.newProject = project;
+
+        
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
         // const newproject: Project = {
@@ -570,16 +572,26 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.projectService.newProjectCreated(true);
       const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-
-
       this.trackNewProjectCreated(trialStarDate, trialEndDate)
-
-
+      
+      this.projectService.newProjectCreated(true);
+      this.getProjectsAndSaveLastProject(this.newProject._id)
+      
       // this.getProjectsAndSaveInStorage();
       this.callback('createNewProject');
     });
   }
 
+  getProjectsAndSaveLastProject(project_id) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[ONBOARDING-CONTENT] getProjects projects ', projects)
+      if (projects) {
+        const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
+        console.log('[ONBOARDING-CONTENT] currentProjectUser ', populateProjectUser)
+        localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
+      }
+    });
+  }
 
   /** 
    *  GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   
