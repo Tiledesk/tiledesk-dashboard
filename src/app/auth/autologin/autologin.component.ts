@@ -62,7 +62,7 @@ export class AutologinComponent implements OnInit {
 
   }
 
-    
+
   ngOnInit() {
     this.logger.log('[AUTOLOGIN] SSO - autologin page');
     this.detectMobile();
@@ -77,7 +77,7 @@ export class AutologinComponent implements OnInit {
       })
   }
 
- 
+
 
   getJWTAndRouteParamsAndLogin() {
     this.route.params.subscribe((params) => {
@@ -98,7 +98,7 @@ export class AutologinComponent implements OnInit {
         storedJWT = storedUserParsed.token;
         this.logger.log('[AUTOLOGIN] SSO - autologin page stored TOKEN ', storedJWT);
       } else {
-        
+
         storedJWT = localStorage.getItem('tiledesk_token')
       }
 
@@ -136,10 +136,11 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route, storedJWT) {
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
+
     if (JWT !== storedJWT) {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored tiledesk_token is equal to params JWT ');
       this.logout();
@@ -149,7 +150,7 @@ export class AutologinComponent implements OnInit {
 
     // this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
     this.sso.signInWithCustomToken(JWT).subscribe(resp => {
-      
+
       const auth_user = resp['user']
       const token = resp['token']
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  auth_user ', auth_user);
@@ -159,15 +160,25 @@ export class AutologinComponent implements OnInit {
       // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
-    
+
       localStorage.setItem('tiledesk_token', token);
       this.auth.publishSSOloggedUser();
+
+      const routeSegments = route.split('/');
+      console.log('[AUTOLOGIN] SSO - ssoLogin routeSegments ', routeSegments);
+
+      const projectIDGetFromRoute = routeSegments[2]
+      
+      console.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
+    
+      this.getProject(projectIDGetFromRoute)
+    
 
       this.router.navigate([route]);
 
       // get if user has used Signin with Google
       const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
-      if ( hasSigninWithGoogle ) {
+      if (hasSigninWithGoogle) {
         this.localDbService.removeFromStorage('swg')
         // this.logger.log('[AUTOLOGIN] SSO removeFromStorage swg') 
         this.trackUserHasSignedInWithGoogle(user)
@@ -205,6 +216,28 @@ export class AutologinComponent implements OnInit {
     });
   }
 
+ 
+
+
+  getProject(projectIDGetFromRouteIsNumber) {
+    this.projectService.getProjectById(projectIDGetFromRouteIsNumber).subscribe((project: any) => {
+      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK project', project);
+      project['role'] = this.USER_ROLE;
+      this.auth.projectSelected(project, 'AUTOLOGIN');
+      localStorage.setItem(project._id, JSON.stringify(project));
+
+      this.getProjectsAndSaveLastProject(project._id)
+    }, (error) => {
+      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ERROR', error);
+    }, () => {
+      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK * COMPLETE *');
+    })
+  }
+
+ 
+
+
+
   trackUserHasSignedInWithGoogle(user) {
     if (!isDevMode()) {
       if (window['analytics']) {
@@ -217,7 +250,7 @@ export class AutologinComponent implements OnInit {
         // }
 
         let userFullname = ''
-        if (user.firstname && user.lastname)  {
+        if (user.firstname && user.lastname) {
           userFullname = user.firstname + ' ' + user.lastname
         } else if (user.firstname && !user.lastname) {
           userFullname = user.firstname
@@ -245,11 +278,11 @@ export class AutologinComponent implements OnInit {
           this.logger.error('track Sign in with Google event error', err);
         }
       }
-     }
+    }
   }
 
   getProjectFromRemotePublishAndSaveInStorage(project_id) {
-    
+
     this.projectService.getProjectById(project_id).subscribe((prjct: any) => {
       // this.projectService.getProjects().subscribe((prjcts: any) => {
       console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ', prjct);
@@ -257,62 +290,24 @@ export class AutologinComponent implements OnInit {
       this.auth.projectSelected(prjct, 'auto-login');
       localStorage.setItem(project_id, JSON.stringify(prjct));
 
-      // const prjct = prjcts.filter(p => p.id_project._id === project_id);
-
-      // this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
-      // this.logger.log('[AUTOLOGIN] - PROJECT OBJCT FILTERED FOR PROJECT ID LENGHT ', prjct.length);
-
-      // if (prjct && prjct.length > 0) {
-      //   this.logger.log('[AUTOLOGIN] - TEST --- HERE YES');
-
-
-      //   // const project_name = prjct[0].id_project.name;
-        
-      //   const project = prjct[0].id_project;
-      //   // project['operatingHours'] = prjct[0].id_project.activeOperatingHours;
-      //   project['role'] = prjct[0].role,
-      //   console.log('[AUTOLOGIN] - PROJECT  GET BY REMOTE ', project);
-        
-      //   this.auth.projectSelected(prjct, 'auto-login');
-      //   localStorage.setItem(project_id, JSON.stringify(project));
-
-
-        // tslint:disable-next-line:max-line-length
-        // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
-
-        // const project: Project = {
-        //   _id: project_id,
-        //   name: project_name,
-        //   profile_name: prjct[0].id_project.profile.name,
-        //   trial_expired: prjct[0].id_project.trialExpired,
-        //   trial_days_left: prjct[0].id_project.trialDaysLeft,
-        //   operatingHours: prjct[0].id_project.activeOperatingHours
-        // }
-        // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
-       
-        // this.logger.log('[AUTOLOGIN] - PROJECT THAT IS PUBLISHED ', prjct);
-        // this.project_bs.next(project);
-
-        // const projectForStorage: Project = {
-        //   _id: project_id,
-        //   name: project_name,
-        //   role: prjct[0].role,
-        //   profile_name: prjct[0].id_project.profile.name,
-        //   trial_expired: prjct[0].id_project.trialExpired,
-        //   trial_days_left: prjct[0].id_project.trialDaysLeft,
-        //   operatingHours: prjct[0].id_project.activeOperatingHours
-        // }
-        // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
-        // this.logger.log('[AUTOLOGIN] - PROJECT THAT IS STORED', projectForStorage);
-        // localStorage.setItem(project_id, JSON.stringify(projectForStorage));
-
-    // }
+      this.getProjectsAndSaveLastProject(project_id)
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[AUTOLOGIN] - GET PROJECT BY ID - COMPLETE ');
 
+    });
+  }
+
+  getProjectsAndSaveLastProject(project_id) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[AUTOLOGIN] getProjects projects ', projects)
+      if (projects) {
+        const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
+        console.log('[AUTOLOGIN] populateProjectUser ', populateProjectUser)
+        localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
+      }
     });
   }
 
@@ -349,7 +344,7 @@ export class AutologinComponent implements OnInit {
                 // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
                 const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
                 localStorage.setItem('user', JSON.stringify(user));
-      
+
                 localStorage.setItem('tiledesk_token', JWT);
                 this.auth.publishSSOloggedUser();
 

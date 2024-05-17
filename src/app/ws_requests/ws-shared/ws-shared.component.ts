@@ -105,17 +105,27 @@ export class WsSharedComponent implements OnInit {
   //   return index
   // }
   openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
-    this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
+    console.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
+    console.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
+    let _requester_fullanme = ""
+    if (requester_fullanme.indexOf("#") !== -1) {
+      console.log("requester_fullanme contains #");
+      _requester_fullanme = requester_fullanme.replace(/#/g, "%23")
+
+    } else {
+      console.log("String does not contain #");
+      _requester_fullanme = requester_fullanme
+    }
+    console.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
     const chatTabCount = localStorage.getItem('tabCount')
-    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
+    console.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
 
     let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + requestid + '/' + requester_fullanme.trim() + '/active'
-    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
+    let url = baseUrl + requestid + '/' + _requester_fullanme.trim() + '/active'
+    console.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
+
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {
     //     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')

@@ -75,6 +75,8 @@ export class CloneBotComponent implements OnInit {
         this.auth.projectSelected(_project, 'clone-bot')
         // localStorage.setItem(_project._id, JSON.stringify(_project));
         this.router.navigate(['project/' + this.selectedProjectId + '/bots/my-chatbots/all']);
+
+        localStorage.setItem('last_project', JSON.stringify(project))
       }
     });
 

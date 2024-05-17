@@ -277,9 +277,9 @@
 
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
-          <!-- openCreateModal()  -->
+          <!-- openCreateModal()  style="height:207px;" -->
           <div id="create-prjct-card" class="card prjct-card" (click)='goToCreateProject()'>
-            <div class="card-content" style="height:203px;">
+            <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '207px' }">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon"
                 [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
@@ -320,7 +320,7 @@
           <div class="card prjct-card"
             [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
             (click)='goToHome(project, project?.id_project, project?.role, project?.id_project?._id, project?.id_project?.status)'>
-
+            <!-- <div  *ngIf="project?.is_selected === true" class="loading-bar"></div>  -->
 
             <div class="card-content project-card-content">
               <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{

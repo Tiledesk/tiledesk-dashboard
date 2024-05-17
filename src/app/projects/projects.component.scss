@@ -1115,3 +1115,17 @@ input[type="text"] {
   background: white;
   border-radius: 9999px;
 }
+
+.loading-bar {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(#000 0 0) 0/0% no-repeat #ddd;
+  animation: l1 2s infinite linear;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  position: absolute;
+  top: -1px;
+}
+@keyframes l1 {
+    100% {background-size:100%}
+}

@@ -200,7 +200,7 @@ export class AuthGuard implements CanActivate {
           localStorage.setItem(this.nav_project_id, JSON.stringify(project));
         });
         
-
+        this.getProjectsAndSaveLastProject(navigationProjectId)
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
@@ -229,6 +229,17 @@ export class AuthGuard implements CanActivate {
       this.logger.log('[AUTH-GUARD] - GET PROJECT BY ID - COMPLETE ');
 
       // this.resetCurrentProjectAndInizializeNewProject();
+    });
+  }
+
+  getProjectsAndSaveLastProject(project_id) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      console.log('[AUTOLOGIN] getProjects projects ', projects)
+      if (projects) {
+        const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
+        console.log('[AUTOLOGIN] populateProjectUser ', populateProjectUser)
+        localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
+      }
     });
   }
 

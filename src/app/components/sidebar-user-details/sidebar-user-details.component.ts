@@ -471,22 +471,22 @@ export class SidebarUserDetailsComponent implements OnInit {
 
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
-      //  this.logger..log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
+      console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
 
       if (projectUser_bs) {
         if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
-          // this.logger..log('teammateStatus ', this.teammateStatus) 
+          console.log('teammateStatus ', this.teammateStatus) 
           this.selectedStatus = this.teammateStatus[2].id;
-          //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+          console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
           this.teammateStatus = this.teammateStatus.slice(0)
         } else if (projectUser_bs.user_available === false && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
           this.selectedStatus = this.teammateStatus[1].id;
-          //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+          console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
           this.teammateStatus = this.teammateStatus.slice(0)
         } else if (projectUser_bs.user_available === true && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
           this.selectedStatus = this.teammateStatus[0].id
           this.teammateStatus = this.teammateStatus.slice(0)
-          // this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+          console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
       }
       //  this.teammateStatus = this.teammateStatus.slice(0)
@@ -506,7 +506,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   getProjectUser() {
-    this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
+    console.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
@@ -553,7 +553,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   changeAvailabilityState(selecedstatusID) {
-    // this.logger..log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
+  console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -571,7 +571,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       .subscribe((projectUser: any) => {
 
 
-        // this.logger..log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+        console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_btn_clicked(true)
@@ -649,21 +649,21 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - projectUser ', projectUser);
+        console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - projectUser ', projectUser);
         if (projectUser) {
           if (projectUser['user_available'] === false && projectUser['profileStatus'] === 'inactive') {
             // this.logger..log('teammateStatus ', this.teammateStatus) 
             this.selectedStatus = this.teammateStatus[2].id;
-            //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+            console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
             this.teammateStatus = this.teammateStatus.slice(0)
           } else if (projectUser['user_available'] === false && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
             this.selectedStatus = this.teammateStatus[1].id;
-            //  this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+            console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
             this.teammateStatus = this.teammateStatus.slice(0)
           } else if (projectUser['user_available'] === true && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
             this.selectedStatus = this.teammateStatus[0].id
             this.teammateStatus = this.teammateStatus.slice(0)
-            // this.logger..log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+            console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
           }
 
         }
