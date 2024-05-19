@@ -1392,7 +1392,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getProjectUser() {
     //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
@@ -1524,7 +1524,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
   getCurrentProjectProjectUsersProjectBots() {
-    // console.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
+    // this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
 
 
@@ -1532,13 +1532,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.project = project
 
         this.projectId = this.project._id
-        console.log('[SIDEBAR] project $ubscription  ', this.project)
+        this.logger.log('[SIDEBAR] project $ubscription  ', this.project)
 
         this.projectService.getProjects().subscribe((projects: any) => {
-          console.log('[SIDEBAR] getProjects projects ', projects)
+          this.logger.log('[SIDEBAR] getProjects projects ', projects)
           if (projects) {
             this.currentProjectUser = projects.find(prj => prj.id_project.id === this.projectId);
-            console.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+            this.logger.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
           }
         });
 
@@ -1592,7 +1592,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       this.USER_ROLE = user_role;
-      console.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+      this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
       if (this.USER_ROLE) {
         // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
         if (this.USER_ROLE === 'agent') {
@@ -1853,7 +1853,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   openChat() {
     this.elementRef.nativeElement.blur();
     this.notify.publishHasClickedChat(true);
-    console.log('SIDEBAR openChat project ', this.project)
+    this.logger.log('SIDEBAR openChat project ', this.project)
 
     // --- new 
     if (this.project) {
@@ -1894,7 +1894,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // event.which === 1  left button - event.which === 3 right button
     // --------------------------------------------------------------------
     if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
-      console.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
+      this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
       this.project['role'] = this.USER_ROLE
       localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
     }

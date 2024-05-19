@@ -94,7 +94,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   getProjectUserRole() {
     this.usersService.project_user_role_bs
       .subscribe((user_role) => {
-        // console.log('[ACTIVATE-APPSUMO-PRODUCT] - USER ROLE ', user_role);
+        // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
         }
@@ -106,7 +106,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     
     if (tranlatedLanguage.includes(browser_lang)) {
       this.langName = this.getLanguageNameFromCode(browser_lang)
-      // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+      // this.logger.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
       this.langCode = browser_lang
       
     } else {
@@ -147,9 +147,9 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       this.appSumoProductKey = params.licenseproductkeyuuid;
       this.appSumoInvoiceItemKey = params.invoice_item_uuid;
       // const appSumoPlanIdSegments = this.appSumoPlanId.split('_')
-      // console.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > appSumoPlanIdSegment', appSumoPlanIdSegments);
+      // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > appSumoPlanIdSegment', appSumoPlanIdSegments);
       // const appSumoPlanIdSegmentOne = appSumoPlanIdSegments[1].split(/(\d+)/)
-      // console.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > appSumoPlanIdSegmentOne', appSumoPlanIdSegmentOne);
+      // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] GET ROUTE PARAMS > appSumoPlanIdSegmentOne', appSumoPlanIdSegmentOne);
       // this.appSumoLicenseName = appSumoPlanIdSegmentOne[0] + ' ' + appSumoPlanIdSegmentOne[1]
       this.appSumoLicenseName = APP_SUMO_PLAN_NAME[this.appSumoPlanId]
       if (this.appSumoPlanId === 'tiledesk_tier1' || this.appSumoPlanId === 'tiledesk_tier2') {
@@ -188,7 +188,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          // console.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
+          // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  - user ', this.user)
         }
       });
   }
@@ -199,7 +199,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  getProjects > projects ', projects);
       if(projects.length === 0) {
         this.createNewProject()
-        // console.log('[ACTIVATE-APPSUMO-PRODUCT] user has not a projects - create a new one ') 
+        // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] user has not a projects - create a new one ') 
       } else {
         this.showSpinner = false;
         this.presentModalErrorOccured()
@@ -251,7 +251,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
     this.projectService.createProject(projectName, 'activate-appsumo')
       .subscribe((project) => {
-        console.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT RESPONSE ', project);
+        this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -360,7 +360,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[ACTIVATE-APPSUMO-PRODUCT]  !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
       if (projects) {
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.

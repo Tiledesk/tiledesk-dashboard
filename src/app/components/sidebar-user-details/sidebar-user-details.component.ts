@@ -101,7 +101,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
-  // console.log('[SIDEBAR-USER-DETAILS] logoutBtnVisible ', this.logoutBtnVisible)
+  // this.logger.log('[SIDEBAR-USER-DETAILS] logoutBtnVisible ', this.logoutBtnVisible)
   // const brand = brandService.getBrand(); 
   // this.hideHelpLink= brand['DOCS'];
   }
@@ -132,13 +132,13 @@ export class SidebarUserDetailsComponent implements OnInit {
   onMouseOutBusyIcon() {
 
     const busyIconEl = <HTMLElement>document.querySelector('.busy-status-tooltip');
-    //  console.log('[SIDEBAR] onMouseOutBusyIcon ', busyIconEl)
+    //  this.logger.log('[SIDEBAR] onMouseOutBusyIcon ', busyIconEl)
     busyIconEl.style.opacity = "0";
   }
 
   onMouseOverBusyIcon() {
     const busyIconEl = <HTMLElement>document.querySelector('.busy-status-tooltip');
-    // console.log('[SIDEBAR] onMouseOverBusyIcon ',busyIconEl)
+    // this.logger.log('[SIDEBAR] onMouseOverBusyIcon ',busyIconEl)
     busyIconEl.style.opacity = "1";
   }
 
@@ -194,8 +194,8 @@ export class SidebarUserDetailsComponent implements OnInit {
       if (project) {
         this.project = project
         this.projectId = project._id;
-        console.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
-        console.log('[SIDEBAR-USER-DETAILS] project from $ubscription', this.project);
+        this.logger.log('[SIDEBAR-USER-DETAILS] projectId ', this.projectId);
+        this.logger.log('[SIDEBAR-USER-DETAILS] project from $ubscription', this.project);
         this.destructureProjectAndBuildProjectPlanName(this.project)
 
         // this.findCurrentProjectAmongAll(this.projectId)
@@ -209,17 +209,17 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.is_active_subscription = project.isActiveSubscription;
 
     this.prjct_name = project.name;
-    console.log('[SIDEBAR-USER-DETAILS] prjct_name ', this.prjct_name) 
+    this.logger.log('[SIDEBAR-USER-DETAILS] prjct_name ', this.prjct_name) 
     this.trialExpired = project.trialExpired
-    console.log('[SIDEBAR-USER-DETAILS] trialExpired ', this.trialExpired) 
+    this.logger.log('[SIDEBAR-USER-DETAILS] trialExpired ', this.trialExpired) 
     
     if (project.profile) {
       
       this.plan_type = project.profile.type;
-      console.log('[SIDEBAR-USER-DETAILS] plan_type ', this.plan_type) 
+      this.logger.log('[SIDEBAR-USER-DETAILS] plan_type ', this.plan_type) 
 
       this.extra3 = project.profile.extra3;
-      console.log('[SIDEBAR-USER-DETAILS] extra3 ', this.extra3) 
+      this.logger.log('[SIDEBAR-USER-DETAILS] extra3 ', this.extra3) 
 
 
       this.plan_name = project.profile.name
@@ -290,7 +290,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   // findCurrentProjectAmongAll(projectId: string) {
   //   this.projectService.getProjects().subscribe((projects: any) => {
-  //     console.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
+  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
   //     this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
   //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - current_prjct ', this.current_prjct);
 
@@ -471,22 +471,22 @@ export class SidebarUserDetailsComponent implements OnInit {
 
     this.usersService.projectUser_bs.subscribe((projectUser_bs) => {
       // this.PROFILE_STATUS = projectUser_bs;
-      console.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
+      this.logger.log('[SIDEBAR-USER-DETAILS] - projectUser_bs ', projectUser_bs);
 
       if (projectUser_bs) {
         if (projectUser_bs.user_available === false && projectUser_bs.profileStatus === 'inactive') {
-          console.log('teammateStatus ', this.teammateStatus) 
+          this.logger.log('teammateStatus ', this.teammateStatus) 
           this.selectedStatus = this.teammateStatus[2].id;
-          console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
           this.teammateStatus = this.teammateStatus.slice(0)
         } else if (projectUser_bs.user_available === false && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
           this.selectedStatus = this.teammateStatus[1].id;
-          console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
           this.teammateStatus = this.teammateStatus.slice(0)
         } else if (projectUser_bs.user_available === true && (projectUser_bs.profileStatus === '' || !projectUser_bs.profileStatus)) {
           this.selectedStatus = this.teammateStatus[0].id
           this.teammateStatus = this.teammateStatus.slice(0)
-          console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+          this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
       }
       //  this.teammateStatus = this.teammateStatus.slice(0)
@@ -499,14 +499,14 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.IS_BUSY = user_isbusy;
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      // console.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
+      // this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
     });
   }
 
 
 
   getProjectUser() {
-    console.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
+    this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
@@ -553,7 +553,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   changeAvailabilityState(selecedstatusID) {
-  console.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
+  this.logger.log('[SIDEBAR-USER-DETAILS] - CHANGE STATUS - USER SELECTED STATUS ID ', selecedstatusID);
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -571,7 +571,7 @@ export class SidebarUserDetailsComponent implements OnInit {
       .subscribe((projectUser: any) => {
 
 
-        console.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
+        this.logger.log('[SIDEBAR-USER-DETAILS] changeAvailabilityState PROJECT-USER UPDATED  RES ', projectUser)
 
         // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
         this.usersService.availability_btn_clicked(true)
@@ -632,7 +632,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   subsTo_WsCurrentUser(currentuserprjctuserid) {
-    // console.log('[SIDEBAR-USER-DETAILS] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+    // this.logger.log('[SIDEBAR-USER-DETAILS] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
     // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
     this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
 
@@ -649,21 +649,21 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - projectUser ', projectUser);
+        this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - projectUser ', projectUser);
         if (projectUser) {
           if (projectUser['user_available'] === false && projectUser['profileStatus'] === 'inactive') {
             // this.logger..log('teammateStatus ', this.teammateStatus) 
             this.selectedStatus = this.teammateStatus[2].id;
-            console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
+            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[2].name);
             this.teammateStatus = this.teammateStatus.slice(0)
           } else if (projectUser['user_available'] === false && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
             this.selectedStatus = this.teammateStatus[1].id;
-            console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
+            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[1].name);
             this.teammateStatus = this.teammateStatus.slice(0)
           } else if (projectUser['user_available'] === true && (projectUser['profileStatus'] === '' || !projectUser['profileStatus'])) {
             this.selectedStatus = this.teammateStatus[0].id
             this.teammateStatus = this.teammateStatus.slice(0)
-            console.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
+            this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
           }
 
         }
@@ -681,10 +681,10 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_isbusy) => {
-        // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        // this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
         if (currentuser_isbusy !== null) {
           this.IS_BUSY = currentuser_isbusy;
-          // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          // this.logger.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
         this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER IS BUSY * error * ', error)

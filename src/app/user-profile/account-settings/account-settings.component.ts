@@ -84,7 +84,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
 
       if (user) {
         this.currentUser = user;
-        // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - LoggedUser', this.currentUser)
+        // this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - LoggedUser', this.currentUser)
       }
     });
   }
@@ -92,7 +92,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -189,7 +189,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
    */
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS ', projects);
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS ', projects);
 
       if (projects) {
         this.countOfPrjctsInWichAreOwner = 0;

@@ -509,12 +509,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   createNewTag = (newTag: string) => {
     let self = this;
-    // self.this.logger.log("Create New TAG Clicked : " + newTag)
-    this.logger.log("Create New TAG Clicked : " + newTag)
+    
+    // self.logger.log("Create New TAG Clicked : " + newTag)
     let newTagTrimmed = newTag.trim()
     self.contactTags.push(newTagTrimmed)
     // self.this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
-    this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
+    // this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     self.updateContactTag(self.requester_id, self.contactTags)
      const tag_selected_color = '#43B1F2'
     self.addTagsToThePresetList(newTag, tag_selected_color)

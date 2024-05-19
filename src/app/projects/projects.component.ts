@@ -108,7 +108,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
     this.company_brand_color = brand['BRAND_PRIMARY_COLOR'];
-    // console.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
+    // this.logger.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
 
     this.logger.log('[PROJECTS] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
@@ -135,7 +135,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   ngAfterContentInit(): void {
     if (this.company_brand_color) {
       this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
-      // console.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
+      // this.logger.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
       // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-icon').style.setProperty('--brandColor' , this.company_brand_color)
       // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-text').style.setProperty('--brandColor' , this.company_brand_color)
     }
@@ -169,10 +169,10 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   getLoggedUserAndCheckProfilePhoto() {
-    // console.log('window.opener.location ', window.opener.location )
+    // this.logger.log('window.opener.location ', window.opener.location )
 
     this.auth.user_bs.subscribe((user) => {
-      // console.log('[PROJECTS] - USER  ', user)
+      // this.logger.log('[PROJECTS] - USER  ', user)
       this.user = user;
 
       if (user) {
@@ -181,38 +181,38 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
-        // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+        // this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
           this.getLangTranslation(this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
           this.translate.use(this.dsbrd_lang);
-          // console.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
+          // this.logger.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
 
-          // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+          // this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         } else {
           this.browserLang = this.translate.getBrowserLang();
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
-          // console.log('[PROJECTS] - browser_lang ', this.browserLang)
+          // this.logger.log('[PROJECTS] - browser_lang ', this.browserLang)
           this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
           this.translate.use(this.dsbrd_lang);
-          // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
+          // this.logger.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
 
 
         if (!tranlatedLanguage.includes(this.dsbrd_lang)) {
-          // console.log('dsbrd_lang', this.dsbrd_lang)
-          // console.log('tranlatedLanguage', tranlatedLanguage)
-          // console.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang))
+          // this.logger.log('dsbrd_lang', this.dsbrd_lang)
+          // this.logger.log('tranlatedLanguage', tranlatedLanguage)
+          // this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang))
 
           this.logger.log('[PROJECTS] - browser_lang', this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/en.png"
           this.languageNotSupported = true;
-          // console.log('languageNotSupported', this.languageNotSupported)
+          // this.logger.log('languageNotSupported', this.languageNotSupported)
         } else {
           this.languageNotSupported = false;
-          // console.log('languageNotSupported', this.languageNotSupported)
+          // this.logger.log('languageNotSupported', this.languageNotSupported)
         }
 
 
@@ -303,42 +303,42 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("MTT")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
         let mt = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
 
         if (mt[1] === "F") {
           this.MT = false;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
         } else {
           this.MT = true;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
         }
       }
 
 
       if (key.includes("PPB")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
         let ppb = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
 
         if (ppb[1] === "F") {
           this.project_plan_badge = false;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
         } else {
           this.project_plan_badge = true;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
         }
       }
 
 
       if (!this.public_Key.includes("MTT")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST - key.includes("MTT")', this.public_Key.includes("MTT"));
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST - key.includes("MTT")', this.public_Key.includes("MTT"));
         this.MT = false;
       }
 
       if (!this.public_Key.includes("PPB")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
         this.project_plan_badge = false;
       }
 
@@ -424,12 +424,12 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     project_id: string,
     project_status: number,
     ) {
-    console.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+    this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
     
     localStorage.setItem('last_project', JSON.stringify(project_user))
     // window.top.postMessage('hasChangedProject', '*')
 
-    console.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
+    this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
 
     project['is_selected'] = true;
 
@@ -467,12 +467,12 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id, role);
       }
-      console.log('[PROJECTS] - GO TO HOME - storedProjectJson ', storedProjectJson)
+      this.logger.log('[PROJECTS] - GO TO HOME - storedProjectJson ', storedProjectJson)
 
       localStorage.setItem('project', JSON.stringify(project)); // ?? serve
 
 
-      console.log('[PROJECTS] - GO TO HOME - PROJECT ', project.id_project)
+      this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project.id_project)
       setTimeout(() => {
         this.router.navigate([`/project/${project_id}/home`]);
       }, 0);
@@ -485,7 +485,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   getProjectFromRemotePublishAndSaveInStorage(project_id, role){
     this.projectService.getProjectById(project_id).subscribe((prjct: any) => {
-      console.log('[PROJECTS] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjct)
+      this.logger.log('[PROJECTS] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjct)
       prjct[role] = role
       this.auth.projectSelected(prjct, 'PROJECTS');
       localStorage.setItem(project_id, JSON.stringify(prjct));
@@ -547,7 +547,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[PROJECTS] - GET PROJECTS ', projects);
+      this.logger.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 
@@ -560,7 +560,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          // console.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
+          // this.logger.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
           project['is_selected'] = false
 
           if (project.id_project && project.id_project.profile.type === 'free') {
@@ -634,7 +634,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               project.id_project.profile.name !== PLAN_NAME.F
             ) {
               this.prjct_profile_name = project.id_project.profile.name + ' plan (UNSUPPORTED)'
-              // console.log('project.id_project.profile.name' ,project.id_project.profile.name)
+              // this.logger.log('project.id_project.profile.name' ,project.id_project.profile.name)
               project['prjct_profile_name'] = this.prjct_profile_name;
               project['plan_badge_background_type'] = 'unsupported_plan_badge'
             }
@@ -644,8 +644,8 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
           }
           if (project.id_project) {
-            // console.log( '[PROJECTS] project.id_project',  project.id_project) 
-            // console.log( '[PROJECTS] project',  project) 
+            // this.logger.log( '[PROJECTS] project.id_project',  project.id_project) 
+            // this.logger.log( '[PROJECTS] project',  project) 
 
             // const prjct: Project = {
             //   _id: project.id_project._id,
@@ -696,7 +696,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   changeAvailabilityState(projectid, selectedStatusValue) {
-    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    // this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
 
     // available = !available
     let IS_AVAILABLE = null
@@ -704,28 +704,28 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     if (selectedStatusValue === 'available') {
 
       IS_AVAILABLE = true
-      // console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus) 
+      // this.logger.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus) 
     } else if (selectedStatusValue === 'unavailable') {
       IS_AVAILABLE = false
-      // console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
+      // this.logger.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
 
     } else if (selectedStatusValue === 'inactive') {
       IS_AVAILABLE = false
       profilestatus = 'inactive'
-      // console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
+      // this.logger.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
     }
-    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    // this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
     this.usersService.updateCurrentUserAvailability(projectid, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
 
-      //  console.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
+      //  this.logger.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       // this.usersService.availability_btn_clicked(true)
       this.projects.forEach(project => {
         if (project.id_project._id === projectUser.id_project) {
-          // console.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
+          // this.logger.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
           project['ws_projct_user_available'] = projectUser.user_available;
-          // console.log('[PROJECTS] - changeAvailabilityState  projectUser.user_available',  projectUser.user_available);
-          // console.log('[PROJECTS] - changeAvailabilityState  projectUser.profileStatus',  projectUser.profileStatus);
+          // this.logger.log('[PROJECTS] - changeAvailabilityState  projectUser.user_available',  projectUser.user_available);
+          // this.logger.log('[PROJECTS] - changeAvailabilityState  projectUser.profileStatus',  projectUser.profileStatus);
           project['ws_projct_user_profileStatus'] = projectUser.profileStatus
           // project['ws_projct_user_isBusy'] = projectUser['isBusy']
         }
@@ -746,15 +746,15 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
         this.projects.forEach(project => {
           if (project.id_project._id === projectUser['id_project']) {
             project['ws_projct_user_available'] = projectUser['user_available'];
             project['ws_projct_user_isBusy'] = projectUser['isBusy']
             if (projectUser['profileStatus']) {
-              // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+              // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
               project['ws_projct_user_profileStatus'] = projectUser['profileStatus']
-              // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo) projectUser[profileStatus]', projectUser['profileStatus']);
+              // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo) projectUser[profileStatus]', projectUser['profileStatus']);
             }
           }
         });

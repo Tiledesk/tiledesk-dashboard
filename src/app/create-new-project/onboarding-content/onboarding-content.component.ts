@@ -221,8 +221,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-     console.log('[ONBOARDING-CONTENT] projects ', projects)
-     console.log('[ONBOARDING-CONTENT] projects length ', projects.length)
+     this.logger.log('[ONBOARDING-CONTENT] projects ', projects)
+     this.logger.log('[ONBOARDING-CONTENT] projects length ', projects.length)
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
@@ -230,9 +230,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       if (projects.length > 0) {
         this.isFirstProject = false; // the good one
         // this.isFirstProject = true; // for test onbording without sign up
-        console.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
+        this.logger.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
       }
-      console.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
+      this.logger.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
       this.getLoggedUser();
     }, (error) => {
       this.logger.error('[ONBOARDING-CONTENT] - GET PROJECTS ', error);
@@ -280,27 +280,27 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       if (user) {
         this.user = user;
         this.userFullname = user.displayName ? user.displayName : user.firstname;
-        console.log('[ONBOARDING-CONTENT] getLoggedUser:: ', user);
+        this.logger.log('[ONBOARDING-CONTENT] getLoggedUser:: ', user);
         // this.projectName = this.setProjectName();
         // this.logger.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
-        console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject);
+        this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject);
         if (this.isFirstProject) {
 
           this.projectName = this.setProjectName();
           if (!this.projectName) {
-            console.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
+            this.logger.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
 
-          console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
           this.isMTT = this.getMTTValue()
-          console.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
+          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
           if (this.isMTT) {
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
 
-            console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
+            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
           } else  if (this.isMTT === false) {
             this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT)
             this.router.navigate(['/unauthorized']);
@@ -339,7 +339,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    console.log('loadJsonOnboardingConfig:: ', onboardingConfig);
+    this.logger.log('loadJsonOnboardingConfig:: ', onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -363,7 +363,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
       // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
     });
   }
@@ -422,7 +422,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   goToSetProjectName($event) {
     this.projectName = $event;
     this.nextNumberStep();
-    console.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
+    this.logger.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
     this.createNewProject('goToSetProjectName output of cnp-project-name');
   }
 
@@ -504,8 +504,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   createProjectFromTemplates() {
-    console.log('[ONBOARDING-CONTENT] createProjectFromTemplates arrayOfSteps: ', this.arrayOfSteps)
-    console.log('[ONBOARDING-CONTENT] createProjectFromTemplates this.arrayOfSteps.includes(nameProject) ', this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT))
+    this.logger.log('[ONBOARDING-CONTENT] createProjectFromTemplates arrayOfSteps: ', this.arrayOfSteps)
+    this.logger.log('[ONBOARDING-CONTENT] createProjectFromTemplates this.arrayOfSteps.includes(nameProject) ', this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT))
     if (!this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT)) {
       this.createNewProject('createProjectFromTemplates')
     }
@@ -530,14 +530,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
    * create project 
    * */
   private createNewProject(calledBy) {
-    console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - calledBy ', calledBy);
+    this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - calledBy ', calledBy);
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
     this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project: Project) => {
-      console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
+      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
       if (project) {
-        console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - USER_ROLE ', this.USER_ROLE);
-        console.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
+        this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - USER_ROLE ', this.USER_ROLE);
+        this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
         project['role'] = 'owner';
         this.auth.projectSelected(project, 'onboarding-content')
         localStorage.setItem(project._id, JSON.stringify(project));
@@ -556,7 +556,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // }
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
         // this.auth.projectSelected(project, 'onboarding-content')
-        // console.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
+        // this.logger.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
         // this.projectID = newproject._id
       }
       /* 
@@ -584,10 +584,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   getProjectsAndSaveLastProject(project_id) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[ONBOARDING-CONTENT] getProjects projects ', projects)
+      this.logger.log('[ONBOARDING-CONTENT] getProjects projects ', projects)
       if (projects) {
         const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
-        console.log('[ONBOARDING-CONTENT] currentProjectUser ', populateProjectUser)
+        this.logger.log('[ONBOARDING-CONTENT] currentProjectUser ', populateProjectUser)
         localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
       }
     });
@@ -600,7 +600,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   //   this.projectService.getProjects().subscribe((projects: any) => {
   //     // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
-  //     console.log('[ONBOARDING-CONTENT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     this.logger.log('[ONBOARDING-CONTENT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
   //     if (projects) {
   //       this.projects = projects;
   //       // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.

@@ -46,7 +46,7 @@ export class CreateProjectGsComponent implements OnInit {
   getProjects(user) {
    
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjects PROJECTS ', projects);
+      this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjects PROJECTS ', projects);
 
       if (projects && projects.length === 0) {
         this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] THERE IS NOT PROJECTS ');
@@ -126,7 +126,7 @@ export class CreateProjectGsComponent implements OnInit {
   //   }
   //   // this.DISPLAY_SPINNER_SECTION = true;
   //   // this.DISPLAY_SPINNER = true;
-  //   console.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
+  //   this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
 
   //   this.projectService.createProject(projectName, 'signup')
   //     .subscribe((project: Project) => {

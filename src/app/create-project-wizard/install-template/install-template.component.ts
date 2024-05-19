@@ -96,7 +96,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
-    console.log('[INSTALL-TEMPLATE] - HERE !!!!!');
+    this.logger.log('[INSTALL-TEMPLATE] - HERE !!!!!');
 
     // this.company_name = brand['BRAND_NAME'];
     // this.company_site_url = brand['COMPANY_SITE_URL'];
@@ -147,13 +147,13 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
-      // console.log('[INSTALL-TEMPLATE] params ', params)
+      // this.logger.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       // this.logger.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
       this.langCode = params.langcode;
       this.langName = params.langname;
-      // console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
+      // this.logger.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
       // if (this.langCode && this.langName) {
       //   this.addNewLanguage(this.langCode, this.langName)
       //   this.newlyCreatedProject = true
@@ -195,12 +195,12 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
   getProjects(projectid) {
     this.projectService.getProjects().subscribe((projects: any) => {
-     console.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
+     this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS ', projects);
       if (projects && projects.length > 0) {
         projects.forEach(project => {
           // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            // console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
             this.project = project.id_project
             this.projectName = project.id_project.name;
             this.projectProfile = project.id_project.profile
@@ -267,9 +267,9 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
         this.templateTags = res['tags']
         this.templatesCertifiedTags = res['certifiedTags']
         // this.openDialog(this.templates[0])
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateFeature', this.templateFeature)
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateTags', this.templateTags)
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateFeature', this.templateFeature)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateTags', this.templateTags)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
 
         if (this.templates && this.templates.certifiedTags) {
           this.generateTagsBackgroundFromCertifiedTags(this.templates)
@@ -283,7 +283,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
         }
         if (  this.templates && this.templates['name']) {
         this.botname = this.templates['name']
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
         }
 
         if (!isDevMode()) {
@@ -364,10 +364,10 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
   generateTagsBackgroundFromTags(template) {
     
-      // console.log('generateTagsBackground template', template)
+      // this.logger.log('generateTagsBackground template', template)
       if (template && template.tags) {
         template.tags.forEach(tag => {
-          // console.log('generateTagsBackground tag', tag)
+          // this.logger.log('generateTagsBackground tag', tag)
           let tagbckgnd = ''
           if (tag.color === "#a16300" || tag.color === "#A16300") {
             tagbckgnd = 'rgba(255,221,167,1)'

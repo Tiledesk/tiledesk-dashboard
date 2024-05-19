@@ -5,6 +5,7 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChange
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { KB_DEFAULT_PARAMS } from 'app/utils/util';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // kbsListCount: number = 0;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +71,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   // onTableScroll(e) {
-  //   console.log('onTableScroll', e);
+  //   this.logger.log('onTableScroll', e);
   //   const tableViewHeight = e.target.offsetHeight // viewport
   //   const tableScrollHeight = e.target.scrollHeight // length of all table
   //   const scrollLocation = e.target.scrollTop; // how far user scrolled
@@ -91,7 +93,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges){
-    // console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
+    // this.logger.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
     if(this.kbsList.length>0){
       this.SHOW_TABLE = true;
     }
@@ -120,11 +122,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
       this.SHOW_MORE_BTN = false;
     }
 
-    // console.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
+    // this.logger.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
   }
 
   ngAfterViewInit() {
-    //console.log('ngAfterViewInit!!!-->', this.kbsList);
+    //this.logger.log('ngAfterViewInit!!!-->', this.kbsList);
     // this.dataSource = new MatTableDataSource(this.kbsList);
     // this.dataSource.sort = this.sort;
     // this.sort.active = "updatedAt";
@@ -146,8 +148,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   onLoadByFilter(filterValue: string, column: string) {
     // let status = '';
     // let search = '';
-    console.log("onLoadByFilter value: ", filterValue)
-    console.log("onLoadByFilter column: ", column)
+    this.logger.log("onLoadByFilter value: ", filterValue)
+    this.logger.log("onLoadByFilter column: ", column)
     if( column == 'status'){
       this.searchParams.status = filterValue;
     } 
@@ -157,7 +159,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     else if(column == 'name'){
       this.searchParams.search = filterValue;
     }
-    // console.log("this.searchParams ", this.searchParams);
+    // this.logger.log("this.searchParams ", this.searchParams);
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
     }
@@ -178,7 +180,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   onRunIndexing(kb){
-    // console.log('onRunIndexing:: ', kb);
+    // this.logger.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
   }
 
@@ -192,7 +194,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenBaseModalDetail(kb) {
-    // console.log("OPEN DETAIL:: ",kb);
+    // this.logger.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
 
@@ -211,12 +213,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(type){
-    // console.log('onOpenAddKnowledgeBaseModal', type);
+    // this.logger.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
 
   onCheckStatus(kb){
-    // console.log('onCheckStatus:: ', kb);
+    // this.logger.log('onCheckStatus:: ', kb);
     this.checkStatus.emit(kb);
   }
 

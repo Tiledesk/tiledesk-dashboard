@@ -1358,7 +1358,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[WS-REQUESTS-MSGS GET CURRENT PROJECT - project: ', project)
+        this.logger.log('[WS-REQUESTS-MSGS GET CURRENT PROJECT - project: ', project)
         if (project) {
           this.logger.log('[WS-REQUESTS-MSGS] GET CURRENT PROJECT project._id (NEW)', project._id)
           this.logger.log('[WS-REQUESTS-MSGS] GET CURRENT PROJECT this.project_id (OLD)', this.id_project)

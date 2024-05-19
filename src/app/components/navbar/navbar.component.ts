@@ -390,7 +390,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-     console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+     this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -451,17 +451,17 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   setNotificationSound() {
     // NOTIFICATION_SOUND = 'enabled';
     const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
-    console.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
+    this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
 
     if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
-     console.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
       this.NOTIFICATION_SOUND = storedNotificationSound;
     } else {
 
       this.NOTIFICATION_SOUND = 'enabled';
 
       localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
-      console.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+      this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
     }
 
   }
@@ -481,7 +481,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
+        this.logger.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
@@ -586,9 +586,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   getProjects() {
-    // console.log('[NAVBAR] calling getProjects ... ');
+    // this.logger.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[NAVBAR] getProjects PROJECTS ', projects);
+      this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
 
       if (projects) {
         // this.projects = projects;
@@ -598,7 +598,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           return project.id_project.status === 100;
 
         });
-        console.log('[NAVBAR] getProjects this.projects ', this.projects);
+        this.logger.log('[NAVBAR] getProjects this.projects ', this.projects);
       }
     }, error => {
       this.logger.error('[NAVBAR] getProjects - ERROR ', error)
@@ -907,7 +907,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       
       if (project) {
         this.project = project
-        console.log('[NAVBAR] - project from $ubscription ', this.project);
+        this.logger.log('[NAVBAR] - project from $ubscription ', this.project);
         if (project.name) {
           
           this.projectId = project._id;
@@ -1093,7 +1093,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getIfIsCreatedNewProject() {
     this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
-      console.log('[NAVBAR] »»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
+      this.logger.log('[NAVBAR] »»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
       if (hasCreatedNewProject) {
         this.getProjects();
       }
@@ -1122,9 +1122,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     project: any,
     project_role,
     id_project: string,) {
-    console.log('[NAVBAR] goToHome prjct ', project )
-    console.log('[NAVBAR] goToHome project_role ', project_role )
-    console.log('[NAVBAR] goToHome id_project ', id_project )
+    this.logger.log('[NAVBAR] goToHome prjct ', project )
+    this.logger.log('[NAVBAR] goToHome project_role ', project_role )
+    this.logger.log('[NAVBAR] goToHome id_project ', id_project )
    
     project['role'] =  project_role
     localStorage.setItem('last_project', JSON.stringify(prjct_user))

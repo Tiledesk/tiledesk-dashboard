@@ -78,7 +78,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[WIZARD - CREATE-PRJCT] - USER ', user)
+      this.logger.log('[WIZARD - CREATE-PRJCT] - USER ', user)
       if (user) {
         this.user = user;
       }
@@ -86,16 +86,16 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   }
 
   checkCurrentUrlAndHideCloseBtn() {
-    // console.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
+    // this.logger.log('[WIZARD - CREATE-PRJCT] this.router.url  ', this.router.url)
     if (this.router.url.startsWith('/create-project-itw/')) {
 
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true
-      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
       this.browser_lang = this.translate.getBrowserLang();
 
       if (tranlatedLanguage.includes(this.browser_lang)) {
         const langName = this.getLanguageNameFromCode(this.browser_lang)
-        // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+        // this.logger.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
 
         this.temp_SelectedLangName = langName;
         this.temp_SelectedLangCode = this.browser_lang
@@ -109,11 +109,11 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     } else if (this.router.url === '/create-project') {
       this.CLOSE_BTN_IS_HIDDEN = true;
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
     } else if (this.router.url === '/create-new-project') {
       this.CLOSE_BTN_IS_HIDDEN = false;
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false
-      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // this.logger.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
     }
   }
 
@@ -135,14 +135,14 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   createNewProject() {
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
-    console.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
+    this.logger.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
 
     this.projectService.createProject(this.project_name, 'create-project')
       .subscribe((project: Project) => {
-        console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+        this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
           this.id_project = project._id
-          console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE id_project ', this.id_project);
+          this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE id_project ', this.id_project);
           project['role'] = 'owner'
           this.auth.projectSelected(project, 'create-project')
 
@@ -185,9 +185,9 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
         this.projectService.newProjectCreated(true);
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
-        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
+        // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
         const trialEndDate = moment(new Date(this.new_project.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
+        // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         if (!isDevMode()) {
           if (window['analytics']) {
@@ -256,10 +256,10 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   getProjectsAndSaveInStorageLastProject(id_project) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[WIZARD - CREATE-PRJCT] getProjects projects ', projects)
+      this.logger.log('[WIZARD - CREATE-PRJCT] getProjects projects ', projects)
       if (projects) {
         const project = projects.find(prj => prj.id_project.id === id_project);
-        console.log('[WIZARD - CREATE-PRJCT] project from get projects ', project)
+        this.logger.log('[WIZARD - CREATE-PRJCT] project from get projects ', project)
         localStorage.setItem('last_project', JSON.stringify(project))
       }
     });
@@ -271,7 +271,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   // getProjectsAndSaveInStorage() {
   //   this.projectService.getProjects().subscribe((projects: any) => {
-  //     console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
   //     if (projects) {
   //       this.projects = projects;
@@ -358,7 +358,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     // this.faqKbService.getTemplates().subscribe((res: any) => {
     this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
       if (res) {
-        // console.log('[WIZARD - CREATE-PRJCT] GET TEMPLATES - RES ', res)
+        // this.logger.log('[WIZARD - CREATE-PRJCT] GET TEMPLATES - RES ', res)
 
         this.template = res;
         this.botname = res['name']
@@ -368,7 +368,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
         // }
         // if (  this.templates && this.templates['name']) {
         // this.botname = this.templates['name']
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
         // }
 
         if (!isDevMode()) {
@@ -423,9 +423,9 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
 
   forkTemplate() {
-    console.log('[INSTALL-TEMPLATE] - forkTemplate id_project', this.id_project);
+    this.logger.log('[INSTALL-TEMPLATE] - forkTemplate id_project', this.id_project);
     this.faqKbService.installTemplate(this.template._id, this.id_project, true, this.template._id).subscribe((res: any) => {
-      console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      this.logger.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -489,7 +489,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   getFaqKbById(botid) {
     this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
-      // console.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
+      // this.logger.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
 
       this.botLocalDbService.saveBotsInStorage(botid, faqkb);
       this.goToBotDetails(faqkb)

@@ -72,7 +72,7 @@ export class AutologinComponent implements OnInit {
   getUserRole() {
     this.usersService.project_user_role_bs
       .subscribe((userRole) => {
-        console.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -136,9 +136,9 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route, storedJWT) {
-    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
-    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
-    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
 
     if (JWT !== storedJWT) {
@@ -165,11 +165,11 @@ export class AutologinComponent implements OnInit {
       this.auth.publishSSOloggedUser();
 
       const routeSegments = route.split('/');
-      console.log('[AUTOLOGIN] SSO - ssoLogin routeSegments ', routeSegments);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin routeSegments ', routeSegments);
 
       const projectIDGetFromRoute = routeSegments[2]
       
-      console.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
     
       this.getProject(projectIDGetFromRoute)
     
@@ -208,7 +208,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
 
       const storedProjectJson = localStorage.getItem(project_id);
-      console.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
 
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
@@ -221,16 +221,16 @@ export class AutologinComponent implements OnInit {
 
   getProject(projectIDGetFromRouteIsNumber) {
     this.projectService.getProjectById(projectIDGetFromRouteIsNumber).subscribe((project: any) => {
-      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK project', project);
+      this.logger.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK project', project);
       project['role'] = this.USER_ROLE;
       this.auth.projectSelected(project, 'AUTOLOGIN');
       localStorage.setItem(project._id, JSON.stringify(project));
 
       this.getProjectsAndSaveLastProject(project._id)
     }, (error) => {
-      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ERROR', error);
+      this.logger.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ERROR', error);
     }, () => {
-      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK * COMPLETE *');
+      this.logger.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK * COMPLETE *');
     })
   }
 
@@ -285,7 +285,7 @@ export class AutologinComponent implements OnInit {
 
     this.projectService.getProjectById(project_id).subscribe((prjct: any) => {
       // this.projectService.getProjects().subscribe((prjcts: any) => {
-      console.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ', prjct);
+      this.logger.log('[AUTOLOGIN] - PROJECT FROM REMOTE CALLBACK ', prjct);
       prjct['role'] = this.USER_ROLE
       this.auth.projectSelected(prjct, 'auto-login');
       localStorage.setItem(project_id, JSON.stringify(prjct));
@@ -302,10 +302,10 @@ export class AutologinComponent implements OnInit {
 
   getProjectsAndSaveLastProject(project_id) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[AUTOLOGIN] getProjects projects ', projects)
+      this.logger.log('[AUTOLOGIN] getProjects projects ', projects)
       if (projects) {
         const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
-        console.log('[AUTOLOGIN] populateProjectUser ', populateProjectUser)
+        this.logger.log('[AUTOLOGIN] populateProjectUser ', populateProjectUser)
         localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
       }
     });

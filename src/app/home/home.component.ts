@@ -239,7 +239,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.custom_company_home_logo = brand['CUSTOM_COMPANY_HOME_LOGO'];
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
     this.displayNewsAndDocumentation = brand['display-news-and-documentation'];
-    // console.log('[HOME] custom_company_home_logo ', this.custom_company_home_logo)
+    // this.logger.log('[HOME] custom_company_home_logo ', this.custom_company_home_logo)
     this.tparams = brand;
     this.selectedDaysId = 7;
   }
@@ -283,7 +283,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      // console.log('[SIGN-UP] removeFromStorage swg')
+      // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
   }
 
@@ -311,7 +311,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.project = project
@@ -319,10 +319,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
-          console.log('[HOME] - getCurrentProjectAndInit  hasEmittedTrialEnded ', hasEmittedTrialEnded, '  for project id', this.project._id)
+          this.logger.log('[HOME] - getCurrentProjectAndInit  hasEmittedTrialEnded ', hasEmittedTrialEnded, '  for project id', this.project._id)
 
           this.OPERATING_HOURS_ACTIVE = this.project.activeOperatingHours
-          console.log('[HOME] - getCurrentProjectAndInit OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+          this.logger.log('[HOME] - getCurrentProjectAndInit OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
@@ -339,7 +339,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
       if (project) {
         this.project = project
         if (project.attributes && project.attributes.dashlets) {
@@ -358,46 +358,46 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         if (project.attributes && project.attributes.wasettings) {
-          console.log('[HOME] - (getProjectById) - wasettings', project.attributes.wasettings)
+          this.logger.log('[HOME] - (getProjectById) - wasettings', project.attributes.wasettings)
           this.wadepartmentid = project.attributes.wasettings.department_id
           this.getDeptById(this.wadepartmentid)
         } else {
-          console.log('[HOME] - (getProjectById) - not exist wasettings',)
+          this.logger.log('[HOME] - (getProjectById) - not exist wasettings',)
         }
 
         const projectProfileData = project.profile
 
         this.manageChatbotVisibility(projectProfileData)
 
-        console.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
+        this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 
         this.prjct_name = project.name
-        console.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
+        this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
 
         this.prjct_profile_name = projectProfileData.name;
-        console.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
 
         this.profile_name = projectProfileData.name;
-        console.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
 
         this.prjct_trial_expired = project.trialExpired;
-        console.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
 
         this.prjct_profile_type = projectProfileData.type;
-        console.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
 
         this.subscription_is_active = project.isActiveSubscription;
-        console.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
 
         this.subscription_end_date = projectProfileData.subEnd;
-        console.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
 
         if (projectProfileData && projectProfileData.extra3) {
-          console.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
+          this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
 
           this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
           this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-          console.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
+          this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
           this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
         } else if (!projectProfileData.extra3) {
           this.tPlanParams = { 'plan_name': PLAN_NAME.B }
@@ -414,24 +414,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
        
 
         const projectCreatedAt = project.createdAt
-        console.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
+        this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
         const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
-        console.log('[HOME] - getProjectById trialStarDate', trialStarDate)
+        this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
 
         const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-        console.log('[HOME] - getProjectById trialEndDate', trialEndDate)
+        this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
 
         const currentTime = moment();
 
         const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
-        console.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
+        this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
         const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
-        console.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
-        console.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
+        this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
+        this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
 
         if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
-          console.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+          this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
 
           localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
 
@@ -444,7 +444,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, error => {
       this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      console.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
+      this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
 
 
       this.getApps();
@@ -558,33 +558,33 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   } 
 
   manageChatbotVisibility(projectProfileData) {
-    console.log('[HOME] (manageChatbotVisibility) ')
+    this.logger.log('[HOME] (manageChatbotVisibility) ')
 
     if (projectProfileData['customization']) {
-      console.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
     }
 
     if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      console.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
 
       if (projectProfileData['customization']['chatbot'] === true) {
         this.areVisibleChatbot = true;
-        console.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
       } else if (projectProfileData['customization']['chatbot'] === false) {
 
         this.areVisibleChatbot = false;
-        console.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
       }
 
     } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      console.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
       this.areVisibleChatbot = true;
-      console.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
 
     } else if (projectProfileData['customization'] === undefined) {
-      console.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
       this.areVisibleChatbot = true;
-      console.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
 
     }
   }
@@ -665,7 +665,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   delayNewsFeedSkeleton() {
     setTimeout(() => {
       this.showsNewsFeedSkeleton = false;
-      // console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+      // this.logger.log('[HOME] - skeleton showskeleton ', this.showskeleton );
     }, 500);
   }
 
@@ -673,7 +673,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // hasFinishedGetProjectBots() {
   //   // this.showskeleton = false;
-  //   console.log('[HOME] - skeleton hasFinishedGetProjectBots in home-cds ');
+  //   this.logger.log('[HOME] - skeleton hasFinishedGetProjectBots in home-cds ');
   // }
 
   operatingHoursPopoverClosed() {
@@ -684,7 +684,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getDashlet(project_attributes) {
-    // console.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
+    // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
@@ -825,7 +825,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    // console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    // this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
@@ -1359,7 +1359,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('[HOME] - getApps APPS ', this.apps);
+      this.logger.log('[HOME] - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.title === "WhatsApp Business") {
 
@@ -1406,7 +1406,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.logger.log('[HOME] getInstallations WA app index', WAInstallationIndex)
             if (WAInstallationIndex === -1) {
               this.whatsAppIsInstalled = false;
-             console.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
+             this.logger.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
               if (this.userHasUnistalledWa === false) {
                 this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
@@ -1486,16 +1486,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   installApp() {
-    console.log('[HOME] installApp appTitle ', this.appTitle)
+    this.logger.log('[HOME] installApp appTitle ', this.appTitle)
     const isAvailable = this.checkPlan(this.appTitle)
     this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
 
-    console.log('[HOME] appId installApp', this.whatsAppAppId)
-    console.log('[HOME] app app version installApp', this.appVersion)
-    console.log('[HOME] installationType installApp', this.installActionType);
+    this.logger.log('[HOME] appId installApp', this.whatsAppAppId)
+    this.logger.log('[HOME] app app version installApp', this.appVersion)
+    this.logger.log('[HOME] installationType installApp', this.installActionType);
 
     this.installV2App(this.projectId, this.whatsAppAppId)
 
@@ -1636,7 +1636,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onClickOnGoToLearnMoreOrManageApp() {
-   console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+   this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
     if (this.whatsAppIsInstalled === false) {
       this.goToWhatsAppDetails()
     } else {
@@ -1676,9 +1676,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToWhatsAppDetails() {
-    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    console.log('[HOME] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
@@ -2051,25 +2051,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (value === 'catch') {
 
         if (this.isVisiblePay) {
-          // console.log('[APP-STORE] HERE 1')
+          // this.logger.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            // console.log('[APP-STORE] HERE 2')
+            // this.logger.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[APP-STORE] HERE 3')
+              // this.logger.log('[APP-STORE] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // console.log('[APP-STORE] HERE 4')
+              // this.logger.log('[APP-STORE] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            // console.log('[APP-STORE] HERE 5')
+            // this.logger.log('[APP-STORE] HERE 5')
 
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
         } else {
-          // console.log('[APP-STORE] HERE 6')
+          // this.logger.log('[APP-STORE] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -2168,7 +2168,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user) => {
-        console.log('[HOME] - USER GET IN HOME ', user)
+        this.logger.log('[HOME] - USER GET IN HOME ', user)
         // tslint:disable-next-line:no-debugger
         // debugger
         if (user) {
@@ -2680,10 +2680,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisiblePay = false;
-          //  console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
+          //  this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
         } else {
           this.isVisiblePay = true;
-          // console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
+          // this.logger.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
         }
       }
       if (key.includes("ANA")) {

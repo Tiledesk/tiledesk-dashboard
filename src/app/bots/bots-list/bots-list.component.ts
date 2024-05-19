@@ -187,7 +187,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getUserRole();
     this.getDefaultDeptId();
     // this.checkChatbotLimit()
-    //  console.log('[BOTS-LIST] - chatBotLimit »»» ',   this.chatBotLimit)
+    //  this.logger.log('[BOTS-LIST] - chatBotLimit »»» ',   this.chatBotLimit)
   }
 
   ngOnDestroy() {
@@ -195,12 +195,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.unsubscribe$.complete();
   }
   // checkChatbotLimit() {
-  //   console.log('[BOTS-LIST] - checkChatbotLimit »»» 1' ,this.chatBotLimit)
+  //   this.logger.log('[BOTS-LIST] - checkChatbotLimit »»» 1' ,this.chatBotLimit)
   //   if (this.chatBotLimit || this.chatBotLimit === 0) {
-  //     console.log('[BOTS-LIST] - checkChatbotLimit »»» 2')
+  //     this.logger.log('[BOTS-LIST] - checkChatbotLimit »»» 2')
   //     if (this.chatBotCount > this.chatBotLimit || this.chatBotLimit === 0) {
   //       this.chatbotNumExceedChatbotLimit = true;
-  //       console.log('[BOTS-LIST] - chatbotNumExceedChatbotLimit »»» ', this.chatbotNumExceedChatbotLimit)
+  //       this.logger.log('[BOTS-LIST] - chatbotNumExceedChatbotLimit »»» ', this.chatbotNumExceedChatbotLimit)
   //     }
   //   }
   // }
@@ -388,7 +388,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       }, (error) => {
         this.logger.error('[BOTS-LIST] - UPDATED CHATBOT - ERROR  ', error);
-        // self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
       }, () => {
         this.logger.log('[BOTS-LIST] - UPDATED CHATBOT * COMPLETE *');
         this.botIdToRename = '';
@@ -418,7 +417,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   getProjects(bot_id, bot_name) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
+      this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
       if (projects) {
 
         if (projects && projects.length === 1) {

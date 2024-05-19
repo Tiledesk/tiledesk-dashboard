@@ -124,7 +124,7 @@ export class UsersService {
         this.AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
         this.USERS_ACTIVITIES_URL = this.SERVER_BASE_PATH + this.project._id + '/activities';
 
-        console.log('[USER-SERV] - PROJECT_USER_URL ', this.PROJECT_USER_URL);
+        this.logger.log('[USER-SERV] - PROJECT_USER_URL ', this.PROJECT_USER_URL);
         this.logger.log('[USER-SERV] - INVITE_USER_URL ', this.INVITE_USER_URL);
         this.logger.log('[USER-SERV] - PENDING_INVITATION_URL ', this.PENDING_INVITATION_URL);
         this.logger.log('[USER-SERV] - AVAILABLE_USERS_URL ', this.AVAILABLE_USERS_URL);
@@ -337,7 +337,7 @@ export class UsersService {
 
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.PROJECT_USER_URL;
-    console.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
+    this.logger.log('[USER-SERV] - GET PROJECT USERS BY PROJECT ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -810,7 +810,7 @@ export class UsersService {
     self.eventlist = []
 
     const path = '/' + projectid + '/events/' + leadid
-    console.log('[USER-SERV] - SUBSCR TO WS CONTACT EVENTS PATH: ', path);
+    this.logger.log('[USER-SERV] - SUBSCR TO WS CONTACT EVENTS PATH: ', path);
     return new Promise(function (resolve, reject) {
 
       self.webSocketJs.ref(path, 'subscriptionToWsContactEvents', function (data, notification) {
@@ -848,7 +848,7 @@ export class UsersService {
    * @param projectUser_role 
    */
   public user_role(projectUser_role: string) {
-    console.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
 
     // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);
@@ -866,7 +866,7 @@ export class UsersService {
     //   this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
 
       // if (storedUserRole !== projectUser_role) {
-      // console.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
+      // this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
 
       //   // const projectForStorage: Project = {
       //   //   _id: storedProjectId,

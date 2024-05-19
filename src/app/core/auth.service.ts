@@ -261,8 +261,8 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
-    console.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
+    this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -300,7 +300,7 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
-     console.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
+     this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
@@ -358,21 +358,21 @@ export class AuthService {
               url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
-              console.log( '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+              this.logger.log( '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
 
               this.subscription.unsubscribe()
 
               const storedProjectJson = localStorage.getItem(this.nav_project_id)
-              console.log('[AUTH-SERV] - STORED PROJECT: ', storedProjectJson)
+              this.logger.log('[AUTH-SERV] - STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
               if (storedProjectJson) {
                 const storedProjectObject = JSON.parse(storedProjectJson)
-                console.log('[AUTH-SERV] - STORED PROJECT OBJECT', storedProjectObject)
+                this.logger.log('[AUTH-SERV] - STORED PROJECT OBJECT', storedProjectObject)
 
-                console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
+                this.logger.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 if (this.project_bs.value == null) {
-                  console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', storedProjectObject)
+                  this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', storedProjectObject)
                   this.project_bs.next(storedProjectObject)
                 }
 
@@ -399,13 +399,13 @@ export class AuthService {
 
                 // /**** ******* ******* NEW BUG FIX ***** *** ** ***/
 
-                // console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
+                // this.logger.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 // if (this.project_bs.value == null) {
-                //   console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
+                //   this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
                 //   this.project_bs.next(project)
                 // }
               } else {
-                console.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
+                this.logger.log('[AUTH-SERV] THERE IS NOT STORED PRJCT-JSON - FOR THE PROJECT WITH ID ', this.nav_project_id, 'SEE AUTH GUARD')
                 // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
                 // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
                 // WITHOUT BEING PASSED FROM THE PROJECT LIST.
@@ -420,7 +420,7 @@ export class AuthService {
                 const project: Project = {
                   _id: this.nav_project_id,
                 }
-                console.log('[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)', project)
+                this.logger.log('[AUTH-SERV] PROJECT THAT IS PUBLISHED (ONLY THE PROJECT ID BECAUSE THE PROJECT IS NOT PRESENT IN THE STORAGE)', project)
 
                 this.project_bs.next(project)
               }
@@ -511,7 +511,7 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson,)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
-      console.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
+      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
 
       this._user_role = storedProjectObject['role']
 
@@ -616,7 +616,7 @@ export class AuthService {
         this.logger.log('[AUTH-SERV] > USER ', user)
 
         ///////////////////
-        console.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes)
+        this.logger.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes)
         if (jsonRes['success'] === true) {
           this.logger.log( '[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth',this.appConfigService.getConfig().firebaseAuth )
 
@@ -920,7 +920,7 @@ export class AuthService {
 
   signOut(calledby: string) {
     this.cacheService.clearCache()
-    // console.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    // this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {
         if (window && window['tiledesk_widget_logout']) {
@@ -1053,7 +1053,7 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    console.log('[AUTH-SERV] storedRoute: ', storedRoute)
+    this.logger.log('[AUTH-SERV] storedRoute: ', storedRoute)
     if (storedRoute) {
       this.localDbService.removeFromStorage('wannago')
     }

@@ -62,14 +62,14 @@ export class AuthGuard implements CanActivate {
     public appConfigService: AppConfigService,
     private _httpClient: HttpClient,
   ) {
-    console.log('[AUTH-GUARD] hello !!!')
+    this.logger.log('[AUTH-GUARD] hello !!!')
 
     this.user = auth.user_bs.value;
     this.auth.user_bs.subscribe((user) => {
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
-      console.log('[AUTH-GUARD] USER ', user)
+      this.logger.log('[AUTH-GUARD] USER ', user)
      
     });
 
@@ -87,14 +87,14 @@ export class AuthGuard implements CanActivate {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
 
-        console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
+        this.logger.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
 
-        // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
+        // this.logger.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
-        // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+        // this.logger.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
 
         /**
@@ -134,7 +134,7 @@ export class AuthGuard implements CanActivate {
 
           this.checkStoredProject(this.nav_project_id)
           // this.getUserRole(this.user, this.nav_project_id).then(userRole => { 
-          //   console.log('[AUTH-GUARD] getUserRole ', userRole);
+          //   this.logger.log('[AUTH-GUARD] getUserRole ', userRole);
           //  }, (error) => {
           //   console.error('[AUTH-GUARD] getUserRole ', error);
           // });
@@ -147,7 +147,7 @@ export class AuthGuard implements CanActivate {
   }
 
   getUserRole(user, project_id): Promise <any> {
-    console.log('[AUTH-GUARD] getUserRole user' , user, ' project_id ', project_id) 
+    this.logger.log('[AUTH-GUARD] getUserRole user' , user, ' project_id ', project_id) 
     const SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     const PROJECTS_URL = SERVER_BASE_PATH + project_id + '/project_users/users/' + user._id
 
@@ -158,10 +158,10 @@ export class AuthGuard implements CanActivate {
     const requestOptions = { headers: headers };
     return new Promise((resolve, reject) => { 
       this._httpClient.get(PROJECTS_URL, requestOptions).subscribe((data) => {
-        console.log('[AUTH-GUARD] data' , data ) 
+        this.logger.log('[AUTH-GUARD] data' , data ) 
         resolve(data[0].role)
         }, (error) => {
-          console.log('[AUTH-GUARD] error' , error ) 
+          this.logger.log('[AUTH-GUARD] error' , error ) 
           reject(error)
         });
 
@@ -172,25 +172,25 @@ export class AuthGuard implements CanActivate {
 
   checkStoredProject(navigationProjectId) {
     const storedProjectJson = localStorage.getItem(navigationProjectId);
-    console.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
+    this.logger.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
 
 
     if (storedProjectJson === null) {
-      console.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjectsById ')
+      this.logger.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjectsById ')
 
       this.getProjectFromRemotePublishAndSaveInStorage(navigationProjectId);
     }
   }
 
   getProjectFromRemotePublishAndSaveInStorage(navigationProjectId) {
-    console.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjectFromRemotePublishAndSaveInStorage ', navigationProjectId)
+    this.logger.log('[AUTH-GUARD] - PROJECT JSON IS NULL - RUN getProjectFromRemotePublishAndSaveInStorage ', navigationProjectId)
     // this.projectService.getProjectAndUserDetailsByProjectId(this.nav_project_id).subscribe((prjct: any) => {
     this.projectService.getProjectById(navigationProjectId).subscribe((project: any) => {
       if (project) {
-        console.log('[AUTH-GUARD] - PROJECT FROM REMOTE CALLBACK project', project);
+        this.logger.log('[AUTH-GUARD] - PROJECT FROM REMOTE CALLBACK project', project);
 
         this.getUserRole(this.user, this.nav_project_id).then(userRole => { 
-          console.log('[AUTH-GUARD] getUserRole ', userRole);
+          this.logger.log('[AUTH-GUARD] getUserRole ', userRole);
           project['role'] = userRole
           this.auth.projectSelected(project, 'auth-guard');
           localStorage.setItem(this.nav_project_id, JSON.stringify(project))
@@ -208,13 +208,13 @@ export class AuthGuard implements CanActivate {
         this.usersService.getBotsByProjectIdAndSaveInStorage();
 
       } else {
-        console.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO UNAUTHORIZED PAGE ');
+        this.logger.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO UNAUTHORIZED PAGE ');
         this.router.navigate([`project/${this.nav_project_id}/unauthorized_access`]);
       }
 
     }, (error) => {
       this.logger.error('[AUTH-GUARD] - GET PROJECT BY ID - ERROR ', error);
-      console.log('[AUTH-GUARD] error', error.error)
+      this.logger.log('[AUTH-GUARD] error', error.error)
       if (error.error.msg === "you dont belong to the project.") {
 
         this._snackBar.open("Oops! " + error.error.msg, null, {
@@ -234,10 +234,10 @@ export class AuthGuard implements CanActivate {
 
   getProjectsAndSaveLastProject(project_id) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[AUTOLOGIN] getProjects projects ', projects)
+      this.logger.log('[AUTOLOGIN] getProjects projects ', projects)
       if (projects) {
         const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
-        console.log('[AUTOLOGIN] populateProjectUser ', populateProjectUser)
+        this.logger.log('[AUTOLOGIN] populateProjectUser ', populateProjectUser)
         localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
       }
     });
@@ -338,58 +338,58 @@ export class AuthGuard implements CanActivate {
   // canActivate SSO 
   // ------------------------------------------------------------------------
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
-    // console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
+    // this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
+    // this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
 
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state _root queryParams', state['_root']['value'].queryParams )
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state _root queryParams', state['_root']['value'].queryParams )
     // if () 
     const url = state.url;
     const _url = next['_routerState'].url
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next _url  ', _url);
 
     // ----------------------------------------
     // Check if a wannaurl is stored and remove it when the _decodeCurrentUrl is equal to it
     // ----------------------------------------
     const decodeCurrentUrl = decodeURIComponent(url)
-    // console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
+    // this.logger.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
 
     if (decodeCurrentUrl === '/projects') {
       // get if user has used Signin with Google
       const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
       if (hasSigninWithGoogle) {
         this.localDbService.removeFromStorage('swg')
-        // console.log('[AUTH-GUARD] removeFromStorage swg')
+        // this.logger.log('[AUTH-GUARD] removeFromStorage swg')
       }
     }
 
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[AUTH-GUARD] storedRoute getFromStorage ', storedRoute)
+    // this.logger.log('[AUTH-GUARD] storedRoute getFromStorage ', storedRoute)
 
     if (decodeCurrentUrl === storedRoute) {
       this.localDbService.removeFromStorage('wannago')
-      // console.log('Hey baby - I removes the wannago stored url')
+      // this.logger.log('Hey baby - I removes the wannago stored url')
     }
 
     // ----------------------------------------
     // Check if the url has the JWT token
     // ----------------------------------------
     const route = url.substring(0, url.indexOf('?token='));
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE route in url ', route);
     let queryParams = next.queryParams
     // this.logger.log('SSO - CAN ACTIVATE queryParams ', queryParams);
 
     let stringifed_queryParams = JSON.stringify(queryParams)
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
 
     const HAS_JWT = stringifed_queryParams.includes('JWT');
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
 
     let token = next.queryParams.token
-    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
+    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
 
     if ((this.user && !HAS_JWT) ||
       (this.is_verify_email_page === true) ||
@@ -401,17 +401,17 @@ export class AuthGuard implements CanActivate {
       return true;
 
     } else {
-      // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT (2)', HAS_JWT);
+      // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT (2)', HAS_JWT);
       if (!HAS_JWT) {
         this.router.navigate(['/login']);
-        // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
-        // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
+        // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
+        // this.logger.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
+        // this.logger.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
 
         if (!storedRoute) {
           const URLtoStore = url;
-          // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
+          // this.logger.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
           if (URLtoStore !== '/projects') {
             this.localDbService.setInStorage('wannago', URLtoStore);
           }
@@ -420,7 +420,7 @@ export class AuthGuard implements CanActivate {
           }
         }
       } else {
-        // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
+        // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);
         return false;
       }

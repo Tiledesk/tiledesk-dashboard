@@ -16,7 +16,7 @@ export class ModalDeleteNamespaceComponent implements OnInit {
   }
 
   onCloseModal() {
-    console.log("close modal")
+    // console.log("close modal")
     this.closeModal.emit();
   }
 

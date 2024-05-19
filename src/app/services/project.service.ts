@@ -87,7 +87,7 @@ export class ProjectService {
   }
 
   // ------------------------------------------------------
-  // READ (GET ALL PROJECTS)
+  // READ (GET ALL PROJECTS) No cache
   // ------------------------------------------------------
   public _getProjects(): Observable<Project[]> {
     const httpOptions = {
@@ -97,13 +97,15 @@ export class ProjectService {
       })
     };
     const url = this.PROJECTS_URL;
-    console.log('[PROJECT-SERV] - GET PROJECTS URL', url);
+    this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
 
     return this._httpclient
       .get<Project[]>(url, httpOptions)
   }
 
-   // getProjects Cached
+  // ------------------------------------------------------
+  // READ (GET ALL PROJECTS) with cache
+  // ------------------------------------------------------
    public getProjects(): Observable<Project[]> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -114,122 +116,23 @@ export class ProjectService {
   
 
     let projects$ = this.cacheService.getValue();
-    console.log('[PROJECT-SERV] - GET  projects$ from cacheService');
+    this.logger.log('[PROJECT-SERV] - GET  projects$ from cacheService');
 
     if (!projects$) {
       const url = this.PROJECTS_URL;
-      console.log('[PROJECT-SERV] - GET PROJECTS URL', url);
+      this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
       projects$ = this._httpclient.get(url, httpOptions)
       .pipe( // Chains RxJS operators
         map((response: any) => response), // Maps the response to itself. In this case, it's necessary because the response is expected to be an array of Project objects. 
         shareReplay(1) // Shares the response with all subscribers and replays it for new subscribers. 1 indicates it keeps the latest emitted value and replays it for new subscribers.
       );
-      console.log('[PROJECT-SERV] - GET  projects$ from HTTP REQUEST  projects$');
-      // console.log('[PROJECT-SERV] - GET  projects$ from HTTP REQUEST shareReplay(1)', shareReplay(1));
+      this.logger.log('[PROJECT-SERV] - GET  projects$ from HTTP REQUEST  projects$');
       this.cacheService.setValue(projects$);
     }
 
     return  projects$;
   }
 
-  // -------------------------------------------------
-  // getProjects() this works
-  // -------------------------------------------------
-
-  // public getProjects(): Observable<Project[]> {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //       'Authorization': this.TOKEN
-  //     })
-  //   };
-  //   const url = this.PROJECTS_URL;
-
-  //   if (!this.cachedProjects$) {
-  //     console.log('[PROJECT-SERV] - GET PROJECTS URL', url);
-  //     return this._httpclient
-  //       .get<Project[]>(url, httpOptions)
-  //       .pipe(
-  //         map(
-  //           (response: any) => {
-
-  //             this.cachedProjects$ = response;
-
-  //             console.log('[PROJECT-SERV] - GET PROJECTS data', this.cachedProjects$);
-
-
-  //             return this.cachedProjects$;
-  //           })
-  //       );
-  //   } else {
-  //     console.log('[PROJECT-SERV] - GET PROJECTS data (else)', this.cachedProjects$);
-  //     return of (this.cachedProjects$)
-  //   }
-  // }
-
-
- 
-
-
-  // ------------------------------------------------------------------
-  // Implements cache service at above service getProjects() this works
-  // ------------------------------------------------------------------
-  // : Observable<Project[]>
-  public x_getProjects() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-    const url = this.PROJECTS_URL;
-
-    let projects$ = this.cacheService.getValue();
-    console.log('[PROJECT-SERV] - GET PROJECTS projects$', projects$);
-    if (!projects$) {
-      console.log('[PROJECT-SERV] - GET PROJECTS URL', url);
-      return this._httpclient
-        .get<Project[]>(url, httpOptions)
-        .pipe(
-          map(
-            (response: any) => {
-
-              projects$ = response;
-              this.cacheService.setValue(projects$);
-
-
-              console.log('[PROJECT-SERV] - GET PROJECTS projects$', projects$);
-
-
-              return projects$;
-            })
-        );
-    } else {
-      console.log('[PROJECT-SERV] - GET PROJECTS projects$ (else)', projects$);
-      return projects$
-    }
-  }
-
-  public __getProjects(): Observable<Project[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-    const url = this.PROJECTS_URL;
-    this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
-
-    if (!this.cachedProjects$) {
-      this.cachedProjects$ = this._httpclient
-        .get<Project[]>(url, httpOptions).pipe(
-          map((response: any) => response.data),
-          shareReplay(1)
-        );
-    }
-    console.log('[PROJECT-SERV] this.cachedProjects$', this.cachedProjects$)
-    return this.cachedProjects$
-  }
 
   /**
    * DELETE PROJECT
@@ -268,7 +171,7 @@ export class ProjectService {
     };
 
     let url = this.PROJECTS_URL + id;
-    console.log('[PROJECT-SERV] - GET PROJECT BY ID - URL', url);
+    this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - URL', url);
 
     return this._httpclient
       .get<Project[]>(url, httpOptions)
@@ -280,7 +183,7 @@ export class ProjectService {
    * @param id_user
    */
   public createProject(name: string, calledBy) {
-    console.log('[PROJECT-SERV] CREATE PROJECT calledBy ', calledBy);
+    this.logger.log('[PROJECT-SERV] CREATE PROJECT calledBy ', calledBy);
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -875,7 +778,7 @@ export class ProjectService {
   enableDisableSupportWidgetVisibility(status) {
     let promise = new Promise((resolve, reject) => {
 
-      // console.log("[PROJECT-SERV] ENABLE/DISABLE WIDGET VISIBILITY status", status)
+      // this.logger.log("[PROJECT-SERV] ENABLE/DISABLE WIDGET VISIBILITY status", status)
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN

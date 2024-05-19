@@ -175,7 +175,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   getUserRole() {
     this.usersService.project_user_role_bs
       .subscribe((userRole) => {
-        console.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -794,12 +794,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     this.projectService.createProject(projectName, 'signup')
       .subscribe((project: Project) => {
-        console.log('[SIGN-UP] POST DATA PROJECT RESPONSE ', project);
+        this.logger.log('[SIGN-UP] POST DATA PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project;
-          console.log('[SIGN-UP] new_project ',  this.new_project);
+          this.logger.log('[SIGN-UP] new_project ',  this.new_project);
           this.new_project['role'] = 'owner';
-          console.log('[SIGN-UP] role ', this.new_project['role']);
+          this.logger.log('[SIGN-UP] role ', this.new_project['role']);
             
           this.auth.projectSelected(this.new_project, 'sign-up')
           localStorage.setItem(this.new_project._id, JSON.stringify(project));
@@ -858,10 +858,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
   getProjectsAndSaveLastProject(project_id) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[SIGN-UP] getProjects projects ', projects)
+      this.logger.log('[SIGN-UP] getProjects projects ', projects)
       if (projects) {
         const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
-        console.log('[SIGN-UP] currentProjectUser ', populateProjectUser)
+        this.logger.log('[SIGN-UP] currentProjectUser ', populateProjectUser)
         localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
       }
     });
@@ -913,14 +913,14 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
   // getProjectsAndSaveInStorage() {
   //   this.projectService.getProjects().subscribe((projects: any) => {
-  //     console.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
   //     if (projects) {
   //       // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
   //       // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
   //       // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
   //       projects.forEach(project => {
-  //        console.log('[SIGN-UP] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+  //        this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
   //         if (project.id_project) {
   //           // const prjct: Project = {
   //           //   _id: project.id_project._id,

@@ -104,12 +104,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                // console.log('NavigationEnd event ', event)
+                // this.logger.log('NavigationEnd event ', event)
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
 
                 const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
                 if (event.url !== '/signup') {
-                    // console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
+                    // this.logger.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
                     if (grecaptchaBadgeEl) {
                         grecaptchaBadgeEl.style.visibility = 'hidden'
                     }
@@ -124,24 +124,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
-        // console.log('HI! [APP-COMPONENT] ')
+        // this.logger.log('HI! [APP-COMPONENT] ')
         // https://www.freecodecamp.org/news/how-to-check-internet-connection-status-with-javascript/
 
         // const { userAgent } = navigator
         // if (userAgent.includes('Firefox/')) {
-        //     console.log(`Firefox v${userAgent.split('Firefox/')[1]}`)
+        //     this.logger.log(`Firefox v${userAgent.split('Firefox/')[1]}`)
         // } else if (userAgent.includes('Edg/')) {
-        //     console.log(`Edg v${userAgent.split('Edg/')[1]}`)
+        //     this.logger.log(`Edg v${userAgent.split('Edg/')[1]}`)
         // } else if (userAgent.includes('Chrome/')) {
-        //     console.log(`Chrome v${userAgent.split('Chrome/')[1]}`)
+        //     this.logger.log(`Chrome v${userAgent.split('Chrome/')[1]}`)
         // } else if (userAgent.includes('Safari/')) {
-        //     console.log(userAgent)
+        //     this.logger.log(userAgent)
         // }
         // https://www.positronx.io/angular-detect-browser-name-and-version-tutorial-example/
         this.browserName = this.detectBrowserName();
         this.browserVersion = this.detectBrowserVersion();
-        // console.log('[APP-COMPONENT] - browserName  ',  this.browserName)
-        // console.log('[APP-COMPONENT] - browserVersion  ',  this.browserVersion)
+        // this.logger.log('[APP-COMPONENT] - browserName  ',  this.browserName)
+        // this.logger.log('[APP-COMPONENT] - browserVersion  ',  this.browserVersion)
         this.auth.browserNameAndVersion(this.browserName, this.browserVersion)
 
 
@@ -154,7 +154,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const brand = brandService.getBrand();
 
-        // console.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
+        // this.logger.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
 
         if (brand) {
             this.metaTitle.setTitle(brand['META_TITLE']); // here used with: "import brand from ..." now see in getBrand()
@@ -173,7 +173,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.log('[APP-COMPONENT] getConfig pushEngine', appConfigService.getConfig().pushEngine)
         // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
         if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
-            console.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
+            this.logger.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
 
             // ----------------------------
             // FIREBASE initializeApp 
@@ -185,14 +185,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             }
 
             const firebase_conf = appConfigService.getConfig().firebase;
-            console.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
+            this.logger.log('[APP-COMPONENT] AppConfigService - APP-COMPONENT-TS firebase_conf 2', firebase_conf)
             firebase.initializeApp(firebase_conf);
 
             // ----------------------------------------------------
             // Listen to FOREGROND MESSAGES
             // ----------------------------------------------------
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            console.log('[APP-COMPONENT] isSafari ', isSafari)
+            this.logger.log('[APP-COMPONENT] isSafari ', isSafari)
             if (isSafari === false) {
                 this.listenToFCMForegroundMsgs();
             }
@@ -208,12 +208,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-        // console.log('[APP-COMPONENT] browserLang ', browserLang)
+        // this.logger.log('[APP-COMPONENT] browserLang ', browserLang)
         if (this.auth.user_bs && this.auth.user_bs.value) {
             this.logger.log('[APP-COMPONENT] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
             const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
             this.logger.log('[APP-COMPONENT] stored_preferred_lang', stored_preferred_lang)
-            // console.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
+            // this.logger.log('[APP-COMPONENT] !!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
             let dshbrd_lang = ''
             if (browserLang && !stored_preferred_lang) {
                 dshbrd_lang = browserLang
@@ -233,16 +233,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
 
-        // if (!isDevMode()) { 
-        //     let head = document.getElementsByTagName('head')[0];
-        //     let script = document.createElement('script')
-        //     script.type = "text/javascript"
-        //     script.text = `!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Urz01Jdxg6o8wuyzhanlnOy0iwPqK26I";;analytics.SNIPPET_VERSION="4.15.3";
-        //     analytics.load("Urz01Jdxg6o8wuyzhanlnOy0iwPqK26I");
-        //     analytics.page();
-        //     }}();` 
-        //     head.appendChild(script)
-        // }
+       
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
     }
 
@@ -281,7 +272,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     ngOnInit() {
-        // console.log('[APP-COMPONENT] ====== >>> HELLO APP.COMP (ngOnInit)  ')
+        // this.logger.log('[APP-COMPONENT] ====== >>> HELLO APP.COMP (ngOnInit)  ')
         this.logger.log('[APP-COMPONENT] !! FIREBASE  ', firebase);
 
 
@@ -326,7 +317,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter(event => event instanceof NavigationEnd)
             )
             .subscribe((event: NavigationEvent) => {
-                // console.log('[APP-COMPONENT] NavigationEvent ', event);
+                // this.logger.log('[APP-COMPONENT] NavigationEvent ', event);
                 elemMainPanel.scrollTop = 0;
                 elemSidebar.scrollTop = 0;
             }
@@ -354,13 +345,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             if (project) {
-                console.log('[APP-COMPONENT] project from $ubscription ', project)
+                this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
                 // this.current_selected_prjct = project
                 this.projectService.getProjects().subscribe((projects: any) => {
-                    console.log('[APP-COMPONENT] getProjects projects ', projects)
+                    this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
                     if (projects) {
                         this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-                        console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+                        this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
                     }
                 })
             }
@@ -392,15 +383,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @HostListener('document:visibilitychange', [])
     visibilitychange() {
-        // console.log("document ", document);
-        // console.log(">>>> document is hidden", document.hidden, " >>>> document title ", document.title, " >>>> FOREGROUND COUNT ", this.count);
+        // this.logger.log("document ", document);
+        // this.logger.log(">>>> document is hidden", document.hidden, " >>>> document title ", document.title, " >>>> FOREGROUND COUNT ", this.count);
 
         if (document.hidden) {
             this.isTabVisible = false;
             this.manageDocumentTitle()
         } else {
             // TAB IS ACTIVE --> restore title and DO NOT SOUND
-            // console.log("document is hidden 2", document.hidden);
+            // this.logger.log("document is hidden 2", document.hidden);
             this.isTabVisible = true;
             this.manageDocumentTitle()
         }
@@ -408,12 +399,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @HostListener('window:storage', ['$event'])
     onStorageChanged(event: any) {
-        // console.log('>>>>>>>> onStorageChanged event', event)
+        // this.logger.log('>>>>>>>> onStorageChanged event', event)
         if ((event.key !== 'dshbrd----foregroundcount') && (event.key !== 'dshbrd----sound')) {
             return;
         }
         const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
-        // console.log('>>>>>>>> onStorageChanged foregrondNotificationsCount', foregrondNotificationsCount)
+        // this.logger.log('>>>>>>>> onStorageChanged foregrondNotificationsCount', foregrondNotificationsCount)
         this.count = foregrondNotificationsCount
         this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount)
         if (this.count === 0) {
@@ -432,13 +423,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     subscribeToStoredForegroundAndManageAppTab() {
         this.wsRequestsService.foregroundNotificationCount$
             .subscribe((foregroundNoticationCount) => {
-                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
-                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
+                // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+                // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION this.isTabVisible ', this.isTabVisible);
 
                 // && foregroundNoticationCount > 0
                 if (foregroundNoticationCount) {
                     this.count = foregroundNoticationCount;
-                    // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
+                    // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
                 }
 
 
@@ -446,28 +437,28 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     manageDocumentTitle() {
-        // console.log('[APP-COMPONENT] - manageDocumentTitle ', this.count)
+        // this.logger.log('[APP-COMPONENT] - manageDocumentTitle ', this.count)
         const brand = this.brandService.getBrand();
         let isBlurred = false;
 
         const that = this
         // window.onblur = function () {
-        // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS this.count ', this.count)
+        // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS this.count ', this.count)
         if (this.isTabVisible === false && that.count > 0) {
-            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT  isTabVisible ', this.isTabVisible)
+            // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT  isTabVisible ', this.isTabVisible)
             isBlurred = true;
 
             this.setIntervalTime = window.setInterval(function () {
 
-                // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES  document.title ', document.title)
+                // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES  document.title ', document.title)
                 document.title = document.title == brand['META_TITLE'] ? '(' + that.count + ')' + ' ' + brand['META_TITLE'] : brand['META_TITLE'];
 
             }, 1000);
         }
         // window.onfocus = function () {
         if (this.isTabVisible === true) {
-            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION isTabVisible ', this.isTabVisible)
-            // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2  WINDOW HAS FOCUS ')
+            // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION isTabVisible ', this.isTabVisible)
+            // this.logger.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2  WINDOW HAS FOCUS ')
             isBlurred = false;
             document.title = brand['META_TITLE']
             clearInterval(this.setIntervalTime);
@@ -476,30 +467,30 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     listenToFCMForegroundMsgs() {
-        console.log('[APP-COMPONENT] listenToFCMForegroundMsgs')
+        this.logger.log('[APP-COMPONENT] listenToFCMForegroundMsgs')
         try {
             const messaging = firebase.messaging()
             messaging.onMessage((payload) => {
 
-                // console.log(' listenToFCMForegroundMsgs Message received. ', payload);
+                // this.logger.log(' listenToFCMForegroundMsgs Message received. ', payload);
                 const recipient_fullname = payload.data.recipient_fullname
                 const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
                 const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
                 const link = payload.notification.click_action + "#/conversation-detail/" + payload.data.recipient + '/' + payload.data.sender_fullname + '/active'
-                // console.log('Message received link ', link);
+                // this.logger.log('Message received link ', link);
                 if (this.HIDE_FOREGROUND_NOTIFICATION === false) {
                     this.notify.showForegroungPushNotification(payload.data.recipient_fullname, payload.data.text, link, requester_avatar_initial, requester_avatar_bckgrnd);
                 }
                 this.count = this.count + 1;
-                // console.log('snd test foreground notification count ', this.count);
+                // this.logger.log('snd test foreground notification count ', this.count);
                 this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
 
                 const elemNotification = document.getElementById('foreground-not');
-                // console.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
+                // this.logger.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
                 const self = this
                 if (elemNotification) {
                     elemNotification.addEventListener('click', function handleClick() {
-                        // console.log('element clicked');
+                        // this.logger.log('element clicked');
                         localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct_user))
                     });
                 }
@@ -547,25 +538,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const recipient_fullname = 'Milani Salame'
         const requester_avatar_initial = this.doRecipient_fullname_initial(recipient_fullname)
         const requester_avatar_bckgrnd = this.doRecipient_fullname_bckgrnd(recipient_fullname)
-        // console.log('recipient_fullname initial', requester_avatar_initial);
-        // console.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
+        // this.logger.log('recipient_fullname initial', requester_avatar_initial);
+        // this.logger.log('recipient_fullname bckgnd', requester_avatar_bckgrnd);
         // https://support-pre.tiledesk.com/chat-ionic5/#/conversation-detail/support-group-62728d1ca76e050040cee42e-025be323bc914f9f9f727ca0b7364eb7/Chicco/active
-        // console.log('snd test foreground notification');
+        // this.logger.log('snd test foreground notification');
         const link = "https://console.tiledesk.com/v2/chat/#/conversation-detail/support-group-6228d9d792d1ed0019240d2b-7f4cc830069f48458b8fd7070f4a7f48/Bot/active"
-        // console.log('snd test foreground notification link ', link);
+        // this.logger.log('snd test foreground notification link ', link);
         this.notify.showForegroungPushNotification("Milani Salame", "A new support request has been assigned to you: yuppt tutti", link, requester_avatar_initial, requester_avatar_bckgrnd);
         const elemNotification = document.getElementById('foreground-not');
-        // console.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
+        // this.logger.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
         const self = this
         elemNotification.addEventListener('click', function handleClick() {
-            // console.log('element clicked');
+            // this.logger.log('element clicked');
             localStorage.setItem('last_project', JSON.stringify(self.current_selected_prjct_user))
         });
 
 
 
         this.count = this.count + 1;
-        // console.log('snd test foreground notification count ', this.count);
+        // this.logger.log('snd test foreground notification count ', this.count);
         this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
         // const brand = this.brandService.getBrand();
     }
@@ -737,7 +728,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     hideWidgetAndForegroundNotificationInComponentDisplayedInChat() {
         this.subscription = this.router.events.subscribe((e) => {
             if (e instanceof NavigationEnd) {
-                //    console.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
+                //    this.logger.log('[APP-COMP] - HIDE WIDGET -> CURRENT URL ', e.url);
                 if ((e.url.indexOf('/unserved-request-for-panel') !== -1) || (e.url.indexOf('/projects-for-panel') !== -1) || (e.url.indexOf('/request-for-panel') !== -1)) {
 
                     this.HIDE_FOREGROUND_NOTIFICATION = true
@@ -756,10 +747,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 // if (e.url.indexOf('/unserved-request-for-panel') !== -1) {
                 //     this.IS_UNSERVED_REQUEST_FOR_PANEL = true;
-                //     console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                //     this.logger.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
                 // } else {
                 //     this.IS_UNSERVED_REQUEST_FOR_PANEL = false;
-                //     console.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
+                //     this.logger.log('[APP-COMPONENT] NavigationEnd IS_UNSERVED_REQUEST_FOR_PANEL ', this.IS_UNSERVED_REQUEST_FOR_PANEL)
                 // }
             }
         });
@@ -770,7 +761,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         //         this.logger.log('hideWidgetInComponentDisplayedInChat »> route', this.route)
         //         // tslint:disable-next-line:max-line-length
         //         if ((this.route.indexOf('/unserved-request-for-panel') !== -1) || (this.route.indexOf('/projects-for-panel') !== -1) || (this.route.indexOf('/request-for-panel') !== -1)){
-        //             console.log('hideWidgetInComponentDisplayedInChat HERE 1')
+        //             this.logger.log('hideWidgetInComponentDisplayedInChat HERE 1')
         //             // try {
         //             //     if (window && window['tiledeskSettings'] && window['tiledeskSettings'].angularcomponent && window['tiledeskSettings'].angularcomponent.g) {
         //             //         this.logger.log('hideWidgetInComponentDisplayedInChat HERE 2')
@@ -781,10 +772,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         //             // }
 
         //             // let wContext: any = window;
-        //             // // console.log('windowContext 0', wContext);
+        //             // // this.logger.log('windowContext 0', wContext);
         //             // if (window.frameElement && window.frameElement.getAttribute('tiledesk_context') === 'parent') {
         //             //     wContext = window.parent;
-        //             //     console.log('hideWidgetInComponentDisplayedInChat HERE 1', wContext)
+        //             //     this.logger.log('hideWidgetInComponentDisplayedInChat HERE 1', wContext)
 
         //             // }
         //             // window.addEventListener("load", () => {
@@ -891,7 +882,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.IS_REQUEST_X_PANEL_ROUTE = true
                     // #right-col
                     // const elemMainPanel = <HTMLElement>document.querySelector('appdashboard-ws-requests-msgs');
-                    // console.log('[APP-COMP] request-for-panel elemMainPanel' , elemMainPanel) 
+                    // this.logger.log('[APP-COMP] request-for-panel elemMainPanel' , elemMainPanel) 
 
                     // if (this.IS_REQUEST_X_PANEL_ROUTE === true && !this.isMobile()) {
                     //     let ps = new PerfectScrollbar(elemMainPanel, {
@@ -941,9 +932,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
         // this.logger.log('APP.COMP - elem FOOTER ', elemFooter);
         // setTimeout(() => {
-        // console.log('[APP-COMPONENT] window', window)
+        // this.logger.log('[APP-COMPONENT] window', window)
         // var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
-        // console.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
+        // this.logger.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
         // if (tiledeskiframe) {
         //     if (window && window['tiledesk'] && window['tiledesk']['angularcomponent']) {
         //         window['tiledesk'].angularcomponent.component.g.preChatForm = false

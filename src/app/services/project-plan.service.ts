@@ -40,7 +40,7 @@ export class ProjectPlanService {
 
   getIfIsCreatedNewProject() { 
     this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
-      console.log('[PROJECT-PLAN-SERV] hasCreatedNewProject', hasCreatedNewProject)
+      this.logger.log('[PROJECT-PLAN-SERV] hasCreatedNewProject', hasCreatedNewProject)
       if (hasCreatedNewProject) {
         this.cacheService.clearCache()
       }
@@ -109,11 +109,11 @@ export class ProjectPlanService {
       if (ev instanceof NavigationEnd) {
 
         const current_url = ev.url
-        // console.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
+        // this.logger.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
         const url_segments = current_url.split('/');
         this.logger.log('[PROJECT-PLAN-SERV] - CURRENT URL SEGMENTS ', url_segments);
         const nav_project_id = url_segments[2];
-        // console.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
+        // this.logger.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
 
         this.progetIdGetFromParams = nav_project_id
         // -----------------------------------------------------------------
@@ -152,10 +152,10 @@ export class ProjectPlanService {
   findCurrentProjectAmongAll(projectId: string) {
     // this.cacheService.clearCache()
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
+      // this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      // this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
       
      
       if (current_prjct) {
