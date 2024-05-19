@@ -223,7 +223,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME-CREATE-TEAMMATE] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+        // console.log('[HOME-CREATE-TEAMMATE] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
         if (project) {
           this.projectId = project._id
           this.getImageStorageThenProjectUsers();
@@ -259,7 +259,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   getAllUsersOfCurrentProject(storage, uploadEngineIsFirebase) {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('[HOME-CREATE-TEAMMATE] - GET PROJECT-USERS BY PROJECT ID ', projectUsers);
+      // console.log('[HOME-CREATE-TEAMMATE] - GET PROJECT-USERS BY PROJECT ID ', projectUsers);
 
       if (projectUsers) {
         this.projectUsers = projectUsers
