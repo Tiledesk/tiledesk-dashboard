@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.27
+- Deploys in production
+- Adds a cache service for the projects GET requests
+
 ### 2.6.26
 - Deploys in production
 - Improves Knowledge Base UI
