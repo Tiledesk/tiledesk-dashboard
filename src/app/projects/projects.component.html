@@ -317,10 +317,18 @@
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
           <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
+        
           <div class="card prjct-card"
             [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
             (click)='goToHome(project, project?.id_project, project?.role, project?.id_project?._id, project?.id_project?.status)'>
-            <!-- <div  *ngIf="project?.is_selected === true" class="loading-bar"></div>  -->
+            
+            <div  *ngIf="project?.is_selected === true" class="loading-bar"[ngClass]="{
+              'tier0': project?.plan_badge_background_type === 'free_plan_badge', 
+              'tier1': project?.plan_badge_background_type === 'a_plan_badge',
+              'tier2': project?.plan_badge_background_type === 'b_plan_badge',
+              'tier3': project?.plan_badge_background_type === 'c_plan_badge',
+              'tierX': project?.id_project?.status === 0}">
+            </div> 
 
             <div class="card-content project-card-content">
               <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{
@@ -442,16 +450,13 @@
                 </div>
               </div>
 
-
-
-
-              <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
+              <!-- <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
                 <div class="spinner">
                   <div class="bounce1"></div>
                   <div class="bounce2"></div>
                   <div class="bounce3"></div>
                 </div>
-              </div>
+              </div> -->
 
 
 
