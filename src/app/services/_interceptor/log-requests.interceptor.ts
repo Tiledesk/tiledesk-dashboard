@@ -23,12 +23,12 @@ export class LogRequestsInterceptor implements HttpInterceptor {
       tap(event => {
         // Optionally handle the response or log it here
         console.log('[INTERCEPTOR] HTTP GET Request event:', event);
-// vedi telegram 6 settembre 2023
-//         se ti ritorna 429 mostri un alert : Quota exceded. Please contact support. con un pulsante Cancel
+        // vedi telegram 6 settembre 2023
+        // se ti ritorna 429 mostri un alert : Quota exceded. Please contact support. con un pulsante Cancel
 
-// se utente preme cancel può continuare a navigare sulla dashboard
+        // se utente preme cancel può continuare a navigare sulla dashboard
 
-// ma sicuramente se continuerà a navigare usciranno altri alert
+        // ma sicuramente se continuerà a navigare usciranno altri alert
       })
     );
   }
