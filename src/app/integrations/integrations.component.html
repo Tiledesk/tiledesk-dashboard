@@ -44,6 +44,7 @@
                                         (click)="onIntegrationSelect(integration)">
 
                                         <img [src]="integration.src_icon" alt="{{integration.name}}">
+                                        dispayBadgeAvaibleFromInAppStore >  {{dispayBadgeAvaibleFromInAppStore}}
                                         <div class="integration-name-and-badge">
                                             <p>{{ integration.name }}</p>
                                             <div *ngIf="integration.pro === true" class="pro-badge">Pro</div>

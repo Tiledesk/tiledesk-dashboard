@@ -14,6 +14,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 const swal = require('sweetalert');
 
@@ -23,8 +24,8 @@ const swal = require('sweetalert');
   styleUrls: ['./integrations.component.scss']
 })
 
-// extends PricingBaseComponent
-export class IntegrationsComponent implements OnInit, OnDestroy {
+
+export class IntegrationsComponent  implements OnInit, OnDestroy {
   project: any;
   project_plan: any;
   profile_name: string;
@@ -77,7 +78,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private projectPlanService: ProjectPlanService,
     private appService: AppStoreService
   ) {
-
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
@@ -86,8 +86,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentProject();
+   
     this.getProjectPlan();
-
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
@@ -127,17 +127,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(async (projectProfileData: any) => {
         if (projectProfileData) {
+          console.log( '[INTEGRATION-COMP] projectProfileData ',  projectProfileData) 
+          console.log( '[INTEGRATION-COMP] INTEGRATIONS ',  this.INTEGRATIONS) 
+          this.checkPlan(this.INTEGRATIONS['plan'])
+          this.manageProBadgeVisibility(projectProfileData)
           this.profile_name = projectProfileData.profile_name;
           this.customization = projectProfileData.customization;
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
-          this.logger.log("app retrieved")
+          this.logger.log("[INTEGRATION-COMP] app retrieved")
           this.manageAppVisibility(projectProfileData)
           this.getIntegrations();
         }
       }, (error) => {
-        this.logger.error("err: ", error);
+        this.logger.error("[INTEGRATION-COMP] err: ", error);
       })
+  }
+
+  manageProBadgeVisibility(projectProfileData) {
+    console.log( '[INTEGRATION-COMP] projectProfileData ',  projectProfileData) 
   }
 
   // getProjectById(projectId) {
@@ -199,6 +207,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
         this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
+      
         this.showSpinner = false
         resolve(true);
       }, (error) => {
@@ -465,7 +474,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   checkPlan(integration_plan) {
-    this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+    console.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
       // FREE or SANDBOX PLAN
