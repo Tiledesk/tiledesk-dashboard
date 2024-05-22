@@ -3,6 +3,7 @@
 ### 2.6.28
 - Deploys in production
 - Improves the info sidebar on the conversation details page
+- Improves the brand service
 
 ### 2.6.27
 - Deploys in production
