@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.28
+- Deploys in production
+- Improves the info sidebar on the conversation details page
+
 ### 2.6.27
 - Deploys in production
 - Adds a cache service for the projects GET requests
