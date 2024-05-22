@@ -657,4 +657,12 @@ select[disabled] {
 }
 
 
+.bot-description-trunc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px
+}
+
+
 

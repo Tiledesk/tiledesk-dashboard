@@ -170,14 +170,12 @@
                         Bot
                       </label>
                       <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                        <select #selectBot (change)="setSelectedBot(selectBot.value)"
+                        <!-- <select #selectBot (change)="setSelectedBot(selectBot.value)"
                           [disabled]="has_selected_bot === false">
-
                           <option style="color: #d9d9d9 !important; font-weight: 200 !important;" class="not_selected"
                             value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
                             {{ "DeptsAddEditPage.SelectABot" | translate }}
                           </option>
-                          <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
                           <ng-container *ngFor="let bot of botsList" style="font-size: 0;">
                             <option [value]="bot._id" [selected]="selectedId === bot._id">
                               {{bot.name}}
@@ -186,7 +184,25 @@
                             <option *ngIf="bot.truncated_desc" disabled style="font-style:italic">
                               &nbsp;&nbsp;&nbsp;{{ bot.description}}</option>
                           </ng-container>
-                        </select>
+                        </select> -->
+
+                        <ng-select [items]="botsList" bindValue="_id" bindLabel="name"
+                          placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" 
+                          [(ngModel)]="selectedBotId"
+                          (change)="_setSelectedBot()" 
+                          [searchable]="false"
+                          [clearable]="false"
+                          [loading]=loadingBot loadingText='Loading...'
+                          [disabled]="has_selected_bot === false">
+
+                            <ng-template ng-label-tmp let-item="item">
+                              {{item.name}}
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                              <b> {{item.name}} </b> 
+                              <div class="bot-description-trunc" *ngIf="item.description"> {{item.description}} </div>
+                          </ng-template>
+                        </ng-select>
 
 
 

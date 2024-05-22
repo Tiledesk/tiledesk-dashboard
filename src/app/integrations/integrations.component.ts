@@ -14,7 +14,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
-import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+
 
 const swal = require('sweetalert');
 
@@ -25,8 +25,9 @@ const swal = require('sweetalert');
 })
 
 
-export class IntegrationsComponent  implements OnInit, OnDestroy {
+export class IntegrationsComponent implements OnInit, OnDestroy {
   project: any;
+  projectID: string;
   project_plan: any;
   profile_name: string;
   customization: string;
@@ -63,6 +64,9 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
   availableApps = [];
 
   isVisibleTelegram: boolean;
+  trialExpired: boolean
+  subscriptionIsActive: boolean;
+  profileType: string;
 
   constructor(
     private auth: AuthService,
@@ -86,7 +90,7 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentProject();
-   
+
     this.getProjectPlan();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
@@ -117,8 +121,11 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.project = project
-        this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
+        if (project) {
+          this.project = project
+          this.projectID = project._id
+          this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
+        }
       });
   }
 
@@ -127,12 +134,21 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(async (projectProfileData: any) => {
         if (projectProfileData) {
-          console.log( '[INTEGRATION-COMP] projectProfileData ',  projectProfileData) 
-          console.log( '[INTEGRATION-COMP] INTEGRATIONS ',  this.INTEGRATIONS) 
-          this.checkPlan(this.INTEGRATIONS['plan'])
-          this.manageProBadgeVisibility(projectProfileData)
+          this.logger.log('[INTEGRATION-COMP] projectProfileData ', projectProfileData)
+          this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
+
           this.profile_name = projectProfileData.profile_name;
+          this.trialExpired = projectProfileData.trial_expired
+          this.trialExpired = projectProfileData.trial_expired
+          this.profileType = projectProfileData.profile_type
+          this.subscriptionIsActive = projectProfileData.subscription_is_active
+
           this.customization = projectProfileData.customization;
+
+          this.INTEGRATIONS.forEach(integration => {
+            this.manageProBadgeVisibility(integration, projectProfileData)
+          });
+
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
           this.logger.log("[INTEGRATION-COMP] app retrieved")
@@ -143,24 +159,6 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
         this.logger.error("[INTEGRATION-COMP] err: ", error);
       })
   }
-
-  manageProBadgeVisibility(projectProfileData) {
-    console.log( '[INTEGRATION-COMP] projectProfileData ',  projectProfileData) 
-  }
-
-  // getProjectById(projectId) {
-  //   this.projectService.getProjectById(projectId).subscribe( async (project: any) => {
-  //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-
-  //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
-  //   }, error => {
-  //     this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
-  //   }, async () => {
-  //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID * COMPLETE * ');
-  //     await this.getApps();
-  //     this.getIntegrations()
-  //   });
-  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -190,8 +188,6 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
   /**
    * UTILS FUNCTIONS - END
    */
-
-
   getIntegrations() {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
@@ -207,7 +203,7 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
         this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
-      
+
         this.showSpinner = false
         resolve(true);
       }, (error) => {
@@ -403,7 +399,7 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
         //   swal("Deleted" + "!", "You will no longer use this integration", {
         //     icon: "success",
         //   }).then((okpressed) => {
-        //     console.log("ok pressed")
+        //     this.logger.log("ok pressed")
         //   });
         //   this.reloadSelectedIntegration(integration);
 
@@ -421,14 +417,14 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
 
   changeRoute(key) {
     this.logger.log("[INTEGRATION-COMP] change route in ", key);
-    this.router.navigate(['project/' + this.project._id + '/integrations/'], { queryParams: { name: key } })
+    this.router.navigate(['project/' + this.projectID + '/integrations/'], { queryParams: { name: key } })
   }
 
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
       // this.presentModalUpgradePlan()
-      this.router.navigate(['project/' + this.project._id + '/pricing']);
+      this.router.navigate(['project/' + this.projectID + '/pricing']);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
@@ -473,8 +469,141 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
     }
   }
 
+
+  manageProBadgeVisibility(integration: any, projectProfileData: any) {
+    if (this.profileType === 'free') {
+      this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+      
+      if (projectProfileData.trial_expired === true) {
+       
+        this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
+        if (integration.plan === 'Sandbox') {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        if (integration.plan === PLAN_NAME.D) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        if (integration.plan === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+       
+      } else if (projectProfileData.trial_expired === false) {
+        this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
+
+      
+        if (integration.plan === "Sandbox") {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+     
+        if (integration.plan === PLAN_NAME.D) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        // }
+
+
+
+      }
+    } else if (this.profileType === 'payment') {
+      if (this.subscriptionIsActive === true) {
+        this.logger.log('[INTEGRATION-COMP] USE CASE PROFILE TYPE ', this.profileType, ' SUB ACTIVE ', this.subscriptionIsActive)
+        if (projectProfileData.profile_name === PLAN_NAME.A || projectProfileData.profile_name === PLAN_NAME.D) {
+
+          this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+          // BASIC
+          if (integration.plan === PLAN_NAME.D) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // PREMIUM
+          if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+          // CUSTOM
+          if (integration.plan === PLAN_NAME.F) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+
+        } else if (projectProfileData.profile_name === PLAN_NAME.B || projectProfileData.profile_name === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+          // BASIC
+          if (integration.plan === PLAN_NAME.D) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // PREMIUM
+          if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // CUSTOM
+          if (integration.plan === PLAN_NAME.F) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+        } else if (projectProfileData.profile_name === PLAN_NAME.C || projectProfileData.profile_name === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+          // BASIC
+          if (integration.plan === PLAN_NAME.D) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // PREMIUM
+          if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // CUSTOM
+          if (integration.plan === PLAN_NAME.F) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+        }
+      } else if (this.subscriptionIsActive === false) {
+        // BASIC
+        if (integration.plan === PLAN_NAME.D) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        // PREMIUM
+        if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        // CUSTOM
+        if (integration.plan === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+
+      }
+
+    }
+
+
+    this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
+  }
+
   checkPlan(integration_plan) {
-    console.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+    // this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
       // FREE or SANDBOX PLAN
@@ -510,7 +639,7 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
   }
 
   manageAppVisibility(projectProfileData) {
-    
+
     if (projectProfileData && projectProfileData.customization) {
 
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
@@ -528,7 +657,7 @@ export class IntegrationsComponent  implements OnInit, OnDestroy {
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
-        let idx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.CHANNEL); 
+        let idx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.CHANNEL);
         if (idx != -1) {
           this.CATEGORIES.splice(idx, 1);
         }

@@ -10,6 +10,7 @@ import { CreateBotComponent } from './create-bot/create-bot.component';
 import { FormsModule } from '@angular/forms';
 import { PendingChangesGuard } from 'app/core/pending-changes.guard';
 import { MomentModule } from 'ngx-moment';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: "", component: DepartmentEditAddComponent, canDeactivate: [PendingChangesGuard]},
@@ -30,6 +31,7 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     MomentModule,
+    NgSelectModule
   ]
 })
 export class DepartmentEditAddModule { }

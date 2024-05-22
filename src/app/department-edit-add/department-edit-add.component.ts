@@ -54,6 +54,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
   selectedBotId: string;
+  selectedChatbot: string;
   selectedGroupId: string;
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
@@ -126,6 +127,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   projectId: string;
   
   isVisibleGroups: boolean;
+  loadingBot: boolean;
   // prjct_id: string
   // prjct_name: string
   // profile_name: string
@@ -278,6 +280,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.BOT_NOT_SELECTED = true;
       this.has_selected_bot = false;
       this.selectedBotId = null;
+
       this.logger.log('[DEPT-EDIT-ADD] ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
       this.ROUTING_PAGE_MODE = false;
 
@@ -748,7 +751,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
     this.selectedBotId = id;
-    this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED: ', this.selectedBotId);
+    console.log('[DEPT-EDIT-ADD] BOT ID SELECTED: ', this.selectedBotId);
 
     if (this.selectedBotId !== null) {
       this.NOT_HAS_EDITED = false
@@ -769,6 +772,41 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.BOT_NOT_SELECTED = true;
     }
   }
+
+
+  _setSelectedBot() {
+    // this.selectedChatbot
+    // this.selectedBotId = id;
+    // console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2: ', this.selectedBotId);
+    // console.log('[DEPT-EDIT-ADD] BOT ID id: ', id);
+    // console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 $event: ', event);
+    console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 selectedId: ', this.selectedId);
+    console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 selectedBotId: ', this.selectedBotId);
+  
+ 
+
+    if (this.selectedBotId !== null) {
+      this.NOT_HAS_EDITED = false;
+      console.log('[DEPT-EDIT-ADD] NOT_HAS_EDITED ' , this.NOT_HAS_EDITED)
+    }
+
+
+
+    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
+    if (this.selectedBotId !== null) {
+      this.BOT_NOT_SELECTED = false;
+
+      // Used to display bot info in right sidebar
+      this.botId = this.selectedBotId
+      this.getBotById()
+
+    }
+    if (this.selectedBotId === null) {
+      this.BOT_NOT_SELECTED = true;
+    }
+  }
+
+  
 
   /**
    * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
@@ -900,14 +938,28 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    * * USED IN THE OPTION ITEM FORM OF THE CREATE VIEW AND OF THE EDIT VIEW *
    */
   getFaqKbByProjecId() {
+    this.loadingBot = true
     this.faqKbService.getFaqKbByProjectId().subscribe((faqkb: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] - GET BOTS (TO SHOW IN SELECTION FIELD) ', faqkb);
+      console.log('[DEPT-EDIT-ADD] - GET BOTS (TO SHOW IN SELECTION FIELD) ', faqkb);
+     
+      faqkb.sort(function compare(a, b) {
+        if (a['name'].toLowerCase() < b['name'].toLowerCase()) {
+          return -1;
+        }
+        if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+
       this.botsList = faqkb;
 
     }, (error) => {
+      this.loadingBot = false
       this.logger.error('[DEPT-EDIT-ADD] GET BOTS - ERROR ', error);
     }, () => {
       this.logger.log('[DEPT-EDIT-ADD] GET BOTS - COMPLETE ');
+      this.loadingBot = false
     });
 
   }
@@ -960,7 +1012,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getDeptById() {
     this.deptService.getDeptById(this.id_dept).subscribe((dept: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+     console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
@@ -1067,12 +1119,13 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getBotById() {
     this.faqKbService.getFaqKbById(this.botId).subscribe((faqkb: any) => {
-      this.logger.log('[DEPT-EDIT-ADD] ++ GET BOT (DETAILS) BY ID ', faqkb);
+     console.log('[DEPT-EDIT-ADD] ++ GET BOT (DETAILS) BY ID ', faqkb);
       // this.selectedId = bot._id;
 
       if (faqkb) {
         this.selectedBot = faqkb
         this.selectedId = faqkb._id;
+        this.selectedBotId = faqkb._id
         this.bot_type = faqkb.type;
         // USED ONLY FOR DEBUG
         // this.selectedValue = bot.fullname;
@@ -1263,8 +1316,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-    this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
-    this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
+    console.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
+    console.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
