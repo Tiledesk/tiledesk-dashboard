@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.29
+- Deploys in production
+- Minor improvements and bug fixing
+
 ### 2.6.28
 - Deploys in production
 - Improves the info sidebar on the conversation details page
