@@ -428,10 +428,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.widgetLogoURL = brand['widget_logo_URL']
     // this.defaultFooter = brand['widget_default_footer'];
 
-    this.widgetLogoURL = brand['LOGO_CHAT'];
+    this.widgetLogoURL = brand['WIDGET']['LOGO_CHAT'];
     // this.logger.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
 
-    this.defaultFooter = brand['POWERED_BY'];
+    this.defaultFooter = brand['WIDGET']['POWERED_BY'];
     // this.logger.log('[[WIDGET-SET-UP] defaultFooter ', this.defaultFooter)
 
     // this.logger.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)

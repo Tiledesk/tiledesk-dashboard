@@ -1146,12 +1146,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   ngOnDestroy() {
-    this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+  //  console.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
     this.unsuscribeRequesterPresence(this.requester_id);
     if (this.id_request) {
+      // console.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
       this.unsuscribeRequestById(this.id_request);
       this.unsuscribeMessages(this.id_request);
     }
@@ -1358,7 +1359,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[WS-REQUESTS-MSGS GET CURRENT PROJECT - project: ', project)
+        // console.log('[WS-REQUESTS-MSGS GET CURRENT PROJECT - project: ', project)
         if (project) {
           this.logger.log('[WS-REQUESTS-MSGS] GET CURRENT PROJECT project._id (NEW)', project._id)
           this.logger.log('[WS-REQUESTS-MSGS] GET CURRENT PROJECT this.project_id (OLD)', this.id_project)
@@ -1395,7 +1396,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getRequesByIdRest(requestid) {
     this.wsRequestsService.getConversationByIDWithRestRequest(requestid)
       .subscribe((request: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
+      //  console.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
         if (request) {
           this.REQUEST_EXIST = true
         }
@@ -1418,17 +1419,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      // console.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
       if (params.requestid) {
         this.getRequesByIdRest(params.requestid)
       }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
-        // this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
-
-        this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
-
-
+        // console.log('[WS-REQUESTS-MSGS] - getParamRequestId - id_request ', this.id_request);
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -1445,9 +1442,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.id_request = params.requestid;
 
-
-
-      this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
+      // console.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
     });
 
     if (this.id_request) {
@@ -1533,6 +1528,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param idrequest 
    */
   unsuscribeRequestById(idrequest) {
+    // console.log('[WS-REQUESTS-MSGS] - unsuscribeRequestById ', idrequest);
     this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
   }
 
@@ -1555,7 +1551,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
+    // console.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id: ', id_request)
     let _id_request = ''
     if (id_request.includes('%2B')) {
       // this.logger.log('[WS-REQUESTS-MSGS] - CALLING SUBSCRIBE to Request-By-Id id_request contains %2B' ,id_request.includes('%2B') ,' run replace' )
@@ -1654,7 +1650,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
 
@@ -2525,7 +2521,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((data) => {
         const user = data
-        this.logger.log("[WS-REQUESTS-MSGS] - getWsRequesterPresence user ", user);
+        // console.log("[WS-REQUESTS-MSGS] - getWsRequesterPresence user ", user);
         if (user && user.presence) {
 
           if (user.presence.status === "offline") {
@@ -5697,7 +5693,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.contactNewFirstName && !this.contactNewLastName) {
 
       const lead_fullname = this.contactNewFirstName
-      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
+      // console.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
       this._createRequesterAvatar(lead_fullname)
 
       this.request.lead.fullname = lead_fullname
@@ -5705,7 +5701,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else if (this.contactNewFirstName && this.contactNewLastName) {
 
       const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
-      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
+      // console.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
       this.request.lead.fullname = lead_fullname
       this._createRequesterAvatar(lead_fullname)
       this.updateContactName(this.request.lead._id, lead_fullname);

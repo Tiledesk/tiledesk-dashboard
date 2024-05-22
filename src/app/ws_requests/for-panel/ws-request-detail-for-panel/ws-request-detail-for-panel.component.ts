@@ -356,6 +356,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
    * @param idrequest 
    */
   unsuscribeRequestById(idrequest) {
+    // console.log('[REQUEST-DTLS-X-PANEL] - ngOnDestroy')
     this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
   }
 
