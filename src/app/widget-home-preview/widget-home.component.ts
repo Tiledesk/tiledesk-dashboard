@@ -70,10 +70,10 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     // this.widgetLogoURL = brand['widget_logo_URL'];
     // this.defaultFooter = brand['widget_default_footer'];
 
-    this.widgetLogoURL = brand['LOGO_CHAT'];
+    this.widgetLogoURL = brand['WIDGET']['LOGO_CHAT'];
     // console.log('[WIDGET HOME COMP] widgetLogoURL ', this.widgetLogoURL)
     
-    this.defaultFooter = brand['POWERED_BY'];
+    this.defaultFooter = brand['WIDGET']['POWERED_BY'];
     // console.log('[WIDGET HOME COMP] defaultFooter ', this.defaultFooter)
     
     const fileType = this.getFileTypeFromURL(this.widgetLogoURL);
