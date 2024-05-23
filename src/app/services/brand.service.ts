@@ -232,7 +232,7 @@ export class BrandService {
   // }
   getBrand() {
     this.logger.log('BrandService getBrand has been called - brand: ', this.brand);
-    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'], ...this.brand['WIDGET'] };
+    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'], ...{WIDGET: this.brand['WIDGET']} };
 
   }
 

@@ -1,5 +1,22 @@
 # tiledesk-dashboard
 
+### 2.6.30
+- Deploys in production
+- Fixes the bug: on the conversation detail page "Lead updated" message is displayed even if the contact's email has not been updated
+
+### 2.6.29
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.6.28
+- Deploys in production
+- Improves the info sidebar on the conversation details page
+- Improves the brand service
+
+### 2.6.27
+- Deploys in production
+- Adds a cache service for the projects GET requests
+
 ### 2.6.26
 - Deploys in production
 - Improves Knowledge Base UI

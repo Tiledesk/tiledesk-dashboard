@@ -160,27 +160,32 @@ export class WsRequestsService implements OnDestroy {
     var self = this;
     self.wsRequestsList = [];
     self.wsAllRequestsList = [];
-
-    // this.subscription  =  
+ 
     this.auth.project_bs.subscribe((project) => {
-      this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT ', this.auth.project_bs.value)
+      // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT this.auth.project_bs.value', this.auth.project_bs.value)
+      // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT project', project)
 
       // ---------------------------------------------------------------------------------
       // Unsubscribe to websocket requests with the old project id  
       // ---------------------------------------------------------------------------------
       if (this.project_id) {
 
-        this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - ACTUALLY SUBSCRIBED TO THE REQUEST ID', this.subscribed_request_id)
-        this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - UNSUBSCTIBE FROM OLD PROJECT-ID (REQUESTS - REQUEST-ID - MSGS - PRESENCE - AVAILABILITY)', this.project_id)
+        // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - ACTUALLY SUBSCRIBED TO THE REQUEST ID', this.subscribed_request_id)
+        // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - UNSUBSCRIBE FROM OLD PROJECT-ID (REQUESTS - REQUEST-ID - MSGS - PRESENCE - AVAILABILITY)', this.project_id)
 
         this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
 
         // per risolvere: se il cambio progetto vien effettuato quando si è nella pagina del dettaglio conversazioni unsuscibe da request by id viene fatto con un path sbagliato
         // id-nuovo-progetto/requests/id-richiesta invece che con - id-vecchio-progetto/requests/id-richiesta (vedi in ws-msgs.service unsubsToWS_MsgsByRequestId e unsubscribeTo_wsRequestById in questo componente)
-        if (this.subscribed_request_id) {
-          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // WHEN CHANGING THE PROJECT I UNSUBSCRIBE FROM THE "REQUEST BY ID" TO WHICH IT IS POSSIBLY SUBSCRIBED
-          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // AS ABOVE BUT FOR MESSAGES
-        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // Moved under subscribeTo_wsRequestById (fixes the bug: in the chat ionic the conversation detail not works because the request id websocket unsubscribe triggers after that the request has subscribed)
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // if (this.subscribed_request_id) {
+        //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // WHEN CHANGING THE PROJECT I UNSUBSCRIBE FROM THE "REQUEST BY ID" TO WHICH IT IS POSSIBLY SUBSCRIBED
+        //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // AS ABOVE BUT FOR MESSAGES
+        // }
+
         //  unsuscribe requester presence al cambio progetto
         if (this.subscribed_requester_id) {
           this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + this.subscribed_requester_id);
@@ -454,7 +459,14 @@ export class WsRequestsService implements OnDestroy {
     }
   }
 
-
+  unsubscribePreviousRequestId() {
+    // console.log('[WS-REQUESTS-SERV] UNSUBSCRIBE TO PREVIOUS REQUEST ID ', this.subscribed_request_id)
+   
+    if (this.subscribed_request_id) {
+      this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id);
+      this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages');
+    }
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUEST BY ID  
@@ -466,7 +478,10 @@ export class WsRequestsService implements OnDestroy {
    * @param id_request 
    */
   subscribeTo_wsRequestById(id_request) {
-    this.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
+    // console.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
+
+    this.unsubscribePreviousRequestId()
+
     this.subscribed_request_id = id_request
 
     var self = this;
@@ -475,13 +490,14 @@ export class WsRequestsService implements OnDestroy {
 
       function (data, notification) {
         self.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO REQUEST-BY-ID - CREATE data", data);
-
+        
         self.addWsRequest(data);
 
 
       }, function (data, notification) {
 
         self.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO REQUEST-BY-ID - UPDATE data", data);
+       
         self.updateWsRequest(data)
 
       }, function (data, notification) {
@@ -526,8 +542,7 @@ export class WsRequestsService implements OnDestroy {
    */
   unsubscribeTo_wsRequestById(id_request) {
     this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + id_request);
-
-    this.logger.log("[WS-REQUESTS-SERV] - UNSUBSCRIBE REQUEST-BY-ID FROM WS request_id ", id_request, ' project_id ', this.project_id);
+    // console.log("[WS-REQUESTS-SERV] - UNSUBSCRIBE REQUEST-BY-ID FROM WS request_id ", id_request, ' project_id ', this.project_id);
   }
 
 
@@ -540,7 +555,7 @@ export class WsRequestsService implements OnDestroy {
 
     const path = '/' + this.project_id + '/project_users/users/' + requesterid;
 
-    this.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE PATH ", path);
+    // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE PATH ", path);
 
     this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
 
@@ -770,7 +785,7 @@ export class WsRequestsService implements OnDestroy {
     };
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
-    this.logger.log('[WS-REQUESTS-SERV] - DELETE REQUEST - URL ', url)
+    this.logger.log('[WS-REQUESTS-SERV] - getConversationByIDWithRestRequest - URL ', url)
     return this._httpClient.get(url, httpOptions)
   }
 
