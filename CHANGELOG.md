@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.30
+- Deploys in production
+- Fixes the bug: on the conversation detail page "Lead updated" message is displayed even if the contact's email has not been updated
+
 ### 2.6.29
 - Deploys in production
 - Minor improvements and bug fixing
@@ -11,6 +15,8 @@
 
 ### 2.6.27
 - Deploys in production
+
+### 2.6.27-rc1
 - Adds a cache service for the projects GET requests
 
 ### 2.6.26
@@ -21,27 +27,43 @@
 - Deploys in production
 - Added support for GPT-4o in Knwoledge Base Preview
 
+### 2.6.25-rc1
+- Improved quotes widget
+- Added missing gpt model in kb preview
+
 ### 2.6.24
 - Deploys in production
 - Minor improvements and bug fixing
 
 ### 2.6.23
 - Deploys in production
-- Improves the branding service 
+- Improves the branding service
 
 ### 2.6.22
 - Deploys in production
 - Changes the link that redirect to the installation of WhatsApp on the home page
 
+### 2.6.22-rc1
+- Knowledge Base page improvements
+
 ### 2.6.21
 - Deploys in production
+
+### 2.6.21-rc2
+- Adds, in the Magento section of the Installation page, the link to the Help center documentation
+
+### 2.6.21-rc1
 - Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
 
-### 2.6.20
-- Deploys in production
+### 2.6.20-rc3
+- Displays, on the Monitor page, after the restore of scroll position an, effect that highlight the row selected
+- Changes the endpoint of the Get request getBotConversationAttribute()
+
+### 2.6.20-rc2
+- Improves on the "Monitor" page the scroll position restoration
+
+### 2.6.20-rc1
 - Implements on the "Monitor" page the scroll position restoration
-- Changes the endpoint of the GET request that retrieve the chatbot attributes
-- Displays, on the "Monitor" page, after restoring the scrolling position, an effect that highlights the previously selected conversation
 
 ### 2.6.19
 - Deploys in production
@@ -56,6 +78,13 @@
 - Improves chatbots and knowledge bases management set via DB
 - Other improvements and bug fixing
 
+### 2.6.18-rc1
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the  "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management via DB
+
 ### 2.6.17
 - Deploys in production
 - Fixes the bug: Agents can't edit requester information
@@ -66,6 +95,9 @@
 
 ### 2.6.15
 - Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.15-rc1
 - Improves performance and bug fixing
 
 ### 2.6.14
@@ -162,8 +194,18 @@
 - Adds the customer.io integration
 - Fixes the bug: app cards are not all the same height
 
-### 2.6.0-rc6
-- Fixes the bug: App cards are not of the same height
+### 2.5.21
+- Deploys in production
+- Adds the ability to sort chatbot by name
+
+### 2.5.20
+- Deploys in production
+- Refactors the teammates table
+
+### 2.5.19
+- Deploys in production
+- Fixes the bug: not all chatbot images are displayed
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.6.0-rc4
 - Improves Knowledge Base
