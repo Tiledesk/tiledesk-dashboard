@@ -31,10 +31,11 @@
             [(ngModel)]="contactNewEmail" 
             (ngModelChange)="emailChange($event)" 
             (keydown.enter)='inputleademail.blur()'
-            (blur)="editContactEmail()" 
+            (blur)="editContactEmailOnBlur()" 
+            (focus)="contactEmailOnFocus()" 
             placeholder="Email..." 
             maxlength="255" 
-            autocomplete="off"
+            autocomplete="doNotAutoComplete"
             style="padding-bottom: 2px;" 
             [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
         </div>
@@ -97,9 +98,15 @@
         <div class="form-group" style="margin-top: 2px;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
 
-          <input #inputleadphone type="tel" name="phone" data-id="phone" class="form-control input-md"
-            [(ngModel)]="contactPhone" placeholder="{{'PhoneNumber' | translate }}..." maxlength="255"
-            (keydown.enter)='inputleadphone.blur()' (blur)="editContactPhone()" autocomplete="off"
+          <input #inputleadphone type="tel" 
+            name="phone" data-id="phone" 
+            class="form-control input-md"
+            [(ngModel)]="contactPhone" 
+            placeholder="{{'PhoneNumber' | translate }}..." 
+            maxlength="255"
+            (keydown.enter)='inputleadphone.blur()' 
+            (blur)="editContactPhoneOnBlur()" 
+            autocomplete="doNotAutoComplete"
             style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
         </div>
         <div class="action-btns">
@@ -133,9 +140,11 @@
       <div class="contact-row input-row">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-            style="min-width: 22px; min-height: 22px;" fill="none" 
+            style="min-width: 22px; min-height: 22px;" 
+            fill="none" 
             matTooltipClass="conv-dtls-custom-mat-tooltip"
-            matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip" 
+            matTooltip="{{ 'Company' | translate }}" 
+            #tooltip="matTooltip" 
             matTooltipPosition='right'
             matTooltipHideDelay="100">
             <path d="M0 0h24v24H0V0z" fill="none" />
@@ -146,14 +155,17 @@
         <!-- (keydown.enter)='editContactCompany()'  -->
         <div class="form-group" style="margin-top: 2px;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
-          <input #inputcompany type="text" id="lead-company" name="company" data-id="company" 
+          <input #inputcompany type="text" 
+            id="lead-company" 
+            name="company" 
+            data-id="company" 
             class="form-control input-md"
             [(ngModel)]="contactCompany" 
             placeholder="{{ 'Company' | translate }}..." 
             maxlength="255"
             (keydown.enter)='inputcompany.blur()' 
             (blur)="editContactCompany()" 
-            autocomplete="off"
+            autocomplete="doNotAutoComplete"
             style="padding-bottom: 2px;" 
             [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
         </div>
@@ -244,7 +256,7 @@
               maxlength="255" 
               (keydown.enter)='inputleadstreet.blur()' 
               (blur)="editContactAddress()" 
-              autocomplete="off"
+              autocomplete="doNotAutoComplete"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -283,7 +295,8 @@
               placeholder="{{'City' | translate}}..." 
               maxlength="255"
               (keydown.enter)='inputleadcity.blur()' 
-              (blur)="editContactAddress()" autocomplete="off"
+              (blur)="editContactAddress()" 
+              autocomplete="doNotAutoComplete"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -322,7 +335,7 @@
               maxlength="255"
               (keydown.enter)='inputleadstate.blur()' 
               (blur)="editContactAddress()" 
-              autocomplete="off"
+              autocomplete="doNotAutoComplete"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -361,7 +374,7 @@
               maxlength="255"
               (keydown.enter)='inputpostalzip.blur()' 
               (blur)="editContactAddress()" 
-              autocomplete="off"
+              autocomplete="doNotAutoComplete"
               style="width:100%;flex: 1 0 0px">
           </div>
         </div>
@@ -400,7 +413,7 @@
               maxlength="255"
               (keydown.enter)='inputleadcountry.blur()' 
               (blur)="editContactAddress()" 
-              autocomplete="off"
+              autocomplete="doNotAutoComplete"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
