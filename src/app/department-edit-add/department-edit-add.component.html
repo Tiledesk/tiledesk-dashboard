@@ -3,7 +3,7 @@
 <span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-  
+
 
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
@@ -15,21 +15,21 @@
 </p> -->
 
 <div class="main-content main_content_no_left_right_padding" style="padding-top:0px">
-  
+
   <div class="page-title--sidebar-settings"
-  [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    
-      <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-        (click)="goBackToDeptsList()">keyboard_arrow_left</i>
-  
-      <span *ngIf="CREATE_VIEW">
-        {{ "DeptsAddEditPage.AddDept" | translate}}
-      </span>
-  
-      <span *ngIf="EDIT_VIEW && ROUTING_PAGE_MODE === false">
-        {{ "DeptsAddEditPage.EditDept" | translate}}
-      </span>
-    
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+      (click)="goBackToDeptsList()">keyboard_arrow_left</i>
+
+    <span *ngIf="CREATE_VIEW">
+      {{ "DeptsAddEditPage.AddDept" | translate}}
+    </span>
+
+    <span *ngIf="EDIT_VIEW && ROUTING_PAGE_MODE === false">
+      {{ "DeptsAddEditPage.EditDept" | translate}}
+    </span>
+
   </div>
 
   <div class="container-fluid" style="padding-left: 10px;">
@@ -187,20 +187,16 @@
                         </select> -->
 
                         <ng-select [items]="botsList" bindValue="_id" bindLabel="name"
-                          placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" 
-                          [(ngModel)]="selectedBotId"
-                          (change)="_setSelectedBot()" 
-                          [searchable]="false"
-                          [clearable]="false"
-                          [loading]=loadingBot loadingText='Loading...'
-                          [disabled]="has_selected_bot === false">
+                          placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" [(ngModel)]="selectedBotId"
+                          (change)="_setSelectedBot()" [searchable]="false" [clearable]="false" [loading]=loadingBot
+                          loadingText='Loading...' [disabled]="has_selected_bot === false">
 
-                            <ng-template ng-label-tmp let-item="item">
-                              {{item.name}}
-                            </ng-template>
-                            <ng-template ng-option-tmp let-item="item" let-index="index">
-                              <b> {{item.name}} </b> 
-                              <div class="bot-description-trunc" *ngIf="item.description"> {{item.description}} </div>
+                          <ng-template ng-label-tmp let-item="item">
+                            {{item.name}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <b> {{item.name}} </b>
+                            <div class="bot-description-trunc" *ngIf="item.description"> {{item.description}} </div>
                           </ng-template>
                         </ng-select>
 
@@ -299,10 +295,10 @@
                       <!-- Radio btns as imgs -->
                       <!-- ------------------------------------------------------------------- -->
                       <div class="row aligned-row">
-                        <!-- style="min-height: 90px" -->
+                      
                         <div class="col-xs-12">
-                          <label>
-                            <!-- [disabled]="onlybot_disable_routing" -->
+                          <!-- <label>
+                            <!- - [disabled]="onlybot_disable_routing" - ->
                             <input type="radio" name="routing" value="assigned"
                               (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
                               [checked]="dept_routing === 'assigned'">
@@ -317,10 +313,10 @@
 
                             <span class="radio_as_img_label"
                               [ngClass]="{'radio_as_img_label_active': dept_routing === 'assigned'}"> Assigned </span>
-                          </label>
+                          </label> -->
 
-                          <label>
-                            <!-- [disabled]="onlybot_disable_routing" -->
+                          <!-- <label>
+                            <!- - [disabled]="onlybot_disable_routing" - ->
                             <input type="radio" name="routing" value="pooled"
                               (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
                               [checked]="dept_routing === 'pooled'">
@@ -333,22 +329,83 @@
                             </span>
                             <span class="radio_as_img_label"
                               [ngClass]="{'radio_as_img_label_active': dept_routing === 'pooled'}"> Pooled </span>
-                          </label>
+                          </label> -->
+
+                          <div class="routing-rules">
+
+                            <!-- Assigned -->
+                            <div class="routing-rule" [ngClass]="{'rule-active': dept_routing === 'assigned'  }"
+                              (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')">
+                              <div class="routing-rule-content">
+                                <div class="routing-rule-icon">
+
+                                  <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px">
+                                    <path d="M0 0h24v24H0V0z" fill="none" />
+                                    <path
+                                      d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
+                                  </svg>
+
+                                </div>
+                                <div class="routing-rule-text">
+                                  Assigned
+                                </div>
+
+                                <div class="routing-rule-sub-text">
+                                 
+                                  {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                            <!-- Pooled -->
+                            <div class="routing-rule"  [ngClass]="{'rule-active': dept_routing === 'pooled'  }"
+                              (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')">
+                              <div class="routing-rule-content">
+                                <div class="routing-rule-icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                                    height="34px" viewBox="0 0 24 24" width="34px">
+                                    <g>
+                                      <rect fill="none" height="24" width="24" />
+                                    </g>
+                                    <g>
+                                      <g>
+                                        <path
+                                          d="M18.19,12.44l-3.24-1.62c1.29-1,2.12-2.56,2.12-4.32c0-3.03-2.47-5.5-5.5-5.5s-5.5,2.47-5.5,5.5c0,2.13,1.22,3.98,3,4.89 v3.26c-2.15-0.46-2.02-0.44-2.26-0.44c-0.53,0-1.03,0.21-1.41,0.59L4,16.22l5.09,5.09C9.52,21.75,10.12,22,10.74,22h6.3 c0.98,0,1.81-0.7,1.97-1.67l0.8-4.71C20.03,14.32,19.38,13.04,18.19,12.44z M17.84,15.29L17.04,20h-6.3 c-0.09,0-0.17-0.04-0.24-0.1l-3.68-3.68l4.25,0.89V6.5c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5v6h1.76l3.46,1.73 C17.69,14.43,17.91,14.86,17.84,15.29z M8.07,6.5c0-1.93,1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5c0,0.95-0.38,1.81-1,2.44V6.5 c0-1.38-1.12-2.5-2.5-2.5c-1.38,0-2.5,1.12-2.5,2.5v2.44C8.45,8.31,8.07,7.45,8.07,6.5z" />
+                                      </g>
+                                    </g>
+                                  </svg>
+                                </div>
+                                <div class="routing-rule-text">
+                                  Pooled
+                                </div>
+
+                                <div class="routing-rule-sub-text">
+                                  
+                                  {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                          </div>
                         </div>
 
 
                         <!--  ------------------------------------------------------------------ -->
                         <!-- Selected rooting info -->
                         <!-- ------------------------------------------------------------------- -->
-                        <!-- vertical-align -->
-                        <div class="col-xs-12 ">
+                        
+                        <!-- <div class="col-xs-12 ">
                           <span class="selected-routing-info" *ngIf="dept_routing === 'assigned'">
                             {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
                           </span>
                           <span class="selected-routing-info" *ngIf="dept_routing === 'pooled'">
                             {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
                           </span>
-                        </div>
+                        </div> -->
 
                       </div>
 
@@ -364,10 +421,10 @@
                         <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
                           <!-- [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}" -->
                           <!-- [disabled]="onlybot_disable_routing" -->
-                          <select #selectGroup (change)="setSelectedGroup(selectGroup.value)" style="min-width: 150px;"
+                          <!-- <select #selectGroup (change)="setSelectedGroup(selectGroup.value)" style="min-width: 150px;"
                             [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
 
-                            <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
+                            <!- - // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' - ->
                             <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST"
                               [selected]="GROUP_ID_NOT_EXIST">
                               <p>
@@ -375,23 +432,24 @@
                                 {{ "DeptsAddEditPage.Trashed" | translate}}
                               </p>
                             </option>
-
                             <option class="not_selected" value="ALL_USERS_SELECTED">
-
                               {{ "DeptsAddEditPage.AllUsers" | translate }}
                             </option>
-
                             <option *ngFor="let group of groupsList" [value]="group?._id"
                               [selected]="selectedGroupId === group?._id">
                               {{group?.name}} {{ "RoutingPage.GroupLabel" | translate }}
                             </option>
-                          </select>
+                          </select> -->
+
+                          <ng-select (change)="_setSelectedGroup()" [(ngModel)]="selectedGroupId" [items]="groupsList"
+                            bindLabel="name" bindValue="_id" [searchable]="false" [clearable]="true"
+                            placeholder="{{ 'DeptsAddEditPage.AllUsers' | translate }}">
+                          </ng-select>
 
 
                           <!-- ------------------------------------------------------------------- -->
                           <!-- Create a new group link -->
                           <!-- ------------------------------------------------------------------- -->
-
                           <span *ngIf="isVisibleGroups"
                             style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
                             {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}

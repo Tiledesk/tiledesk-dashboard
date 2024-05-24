@@ -24,6 +24,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 declare const $: any;
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'app-department-edit-add',
@@ -191,26 +192,50 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       // youHaveUnsavedChangesMsg
       // cancelMsg
       // this.cancelMsg,
-      return swal({
-        // title: this.areYouSureMsg,
-        text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
-        icon: "warning",
-        buttons: true,
-        // dangerMode: true,
-      })
-        .then((willRemain) => {
-          if (willRemain) {
-            this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
 
-            return true;
+      // return swal({
+      //   // title: this.areYouSureMsg,
+      //   text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
+      //   icon: "warning",
+      //   buttons: true,
+      //   // dangerMode: true,
+      // }).then((willRemain) => {
+      //     if (willRemain) {
+      //       this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
 
-          } else {
-            this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
+      //       return true;
 
-            return false;
+      //     } else {
+      //       this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
 
-          }
-        });
+      //       return false;
+
+      //     }
+      //   });
+
+        return  Swal.fire({
+          title: this.areYouSureMsg,
+          text: this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving,
+          icon: "warning",
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Yes I'm sure",
+          confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+          reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+              this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain pressed OK')
+  
+              return true;
+  
+            } else {
+              this.logger.log('[DEPT-EDIT-ADD] showExitFromComponentConfirmation willRemain else')
+  
+              return false;
+  
+            }
+          });
     }
   }
 
@@ -397,7 +422,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -507,7 +532,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
-          // console.log('[APP-STORE] HERE 5')
+          // this.logger.log('[APP-STORE] HERE 5')
           // this.presentModalAgentCannotManageAvancedSettings();
           this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
@@ -751,7 +776,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
     this.selectedBotId = id;
-    console.log('[DEPT-EDIT-ADD] BOT ID SELECTED: ', this.selectedBotId);
+    this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED: ', this.selectedBotId);
 
     if (this.selectedBotId !== null) {
       this.NOT_HAS_EDITED = false
@@ -777,17 +802,17 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   _setSelectedBot() {
     // this.selectedChatbot
     // this.selectedBotId = id;
-    // console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2: ', this.selectedBotId);
-    // console.log('[DEPT-EDIT-ADD] BOT ID id: ', id);
-    // console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 $event: ', event);
-    console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 selectedId: ', this.selectedId);
-    console.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 selectedBotId: ', this.selectedBotId);
+    // this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2: ', this.selectedBotId);
+    // this.logger.log('[DEPT-EDIT-ADD] BOT ID id: ', id);
+    // this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 $event: ', event);
+    this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 selectedId: ', this.selectedId);
+    this.logger.log('[DEPT-EDIT-ADD] BOT ID SELECTED 2 selectedBotId: ', this.selectedBotId);
   
  
 
     if (this.selectedBotId !== null) {
       this.NOT_HAS_EDITED = false;
-      console.log('[DEPT-EDIT-ADD] NOT_HAS_EDITED ' , this.NOT_HAS_EDITED)
+      this.logger.log('[DEPT-EDIT-ADD] NOT_HAS_EDITED ' , this.NOT_HAS_EDITED)
     }
 
 
@@ -919,6 +944,38 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }
   }
 
+  _setSelectedGroup(){
+    this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED: ', this.selectedGroupId);
+    this.SELECT_GROUP_CREATED_FROM_CREATE_GROUP_SIDEBAR = false;
+
+    this.NOT_HAS_EDITED = false
+    this.getGroupsByProjectId()
+
+   
+    // this.logger.log('[DEPT-EDIT-ADD] - GROUP_ID_NOT_EXIST: ', this.GROUP_ID_NOT_EXIST);
+
+
+
+    // // IF THE GROUP ASSIGNED TO THE DEPT HAS BEEN DELETED,
+    // // this.GROUP_ID_NOT_EXIST IS SET TO TRUE - IN THIS USE-CASE IS SHOWED THE SELECT OPTION
+    // // 'GROUP ERROR' AND the CLASS errorGroup OF THE HTML TAG select IS SET TO TRUE
+    // // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
+    // if (this.selectedGroupId !== 'Group error') {
+    //   this.GROUP_ID_NOT_EXIST = false
+
+    //   this.getGroupsByProjectId()
+    //   this.logger.log('[DEPT-EDIT-ADD] - setSelectedGroup this.selectedGroupId !== Group error');
+    // }
+
+    // // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
+    // // }
+
+    // // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
+    // if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
+    //   this.selectedGroupId = null;
+    // }
+  }
+
   getCurrentProject() {
     this.auth.project_bs
     .pipe(
@@ -940,7 +997,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   getFaqKbByProjecId() {
     this.loadingBot = true
     this.faqKbService.getFaqKbByProjectId().subscribe((faqkb: any) => {
-      console.log('[DEPT-EDIT-ADD] - GET BOTS (TO SHOW IN SELECTION FIELD) ', faqkb);
+      this.logger.log('[DEPT-EDIT-ADD] - GET BOTS (TO SHOW IN SELECTION FIELD) ', faqkb);
      
       faqkb.sort(function compare(a, b) {
         if (a['name'].toLowerCase() < b['name'].toLowerCase()) {
@@ -1012,7 +1069,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getDeptById() {
     this.deptService.getDeptById(this.id_dept).subscribe((dept: any) => {
-     console.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      this.logger.log('[DEPT-EDIT-ADD] ++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
       if (dept) {
         this.IS_DEFAULT_DEPT = dept.default
         this.deptName_toUpdate = dept.name;
@@ -1119,7 +1176,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
    */
   getBotById() {
     this.faqKbService.getFaqKbById(this.botId).subscribe((faqkb: any) => {
-     console.log('[DEPT-EDIT-ADD] ++ GET BOT (DETAILS) BY ID ', faqkb);
+      this.logger.log('[DEPT-EDIT-ADD] ++ GET BOT (DETAILS) BY ID ', faqkb);
       // this.selectedId = bot._id;
 
       if (faqkb) {
@@ -1286,13 +1343,15 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] createDepartment DEPT NAME  ', this.deptName_toUpdate);
     this.logger.log('[DEPT-EDIT-ADD] createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
     this.logger.log('[DEPT-EDIT-ADD] createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
+    this.logger.log('[DEPT-EDIT-ADD] ROUTING_SELECTED ', this.ROUTING_SELECTED);
     this.deptService.addDept(
       this.deptName_toUpdate,
       this.dept_description_toUpdate,
       this.selectedBotId,
       this.bot_only,
       this.selectedGroupId,
-      this.ROUTING_SELECTED).subscribe((department) => {
+      this.ROUTING_SELECTED)
+      .subscribe((department) => {
         this.logger.log('[DEPT-EDIT-ADD] - createDepartment - POST DATA DEPT', department);
       }, (error) => {
         this.logger.error('[DEPT-EDIT-ADD] createDepartment - ERROR ', error);
@@ -1316,8 +1375,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ID WHEN EDIT IS PRESSED ', this.id_dept);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
-    console.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
-    console.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
+    this.logger.log('[DEPT-EDIT-ADD]- EDIT - BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
+    this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
