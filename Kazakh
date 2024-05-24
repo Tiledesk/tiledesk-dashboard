@@ -901,7 +901,10 @@
         "AreYouSureDeleteGroup": "Топты жойғыңыз келетініне сенімдісіз бе",
         "IdGroup": "Идентификатор тобы",
         "UseGroupsToOrganizeSupportTeams": "Қолдау топтарын ұйымдастыру үшін топтарды пайдаланыңыз",
-        "YouCanGroupAgents": "Сіз агенттерді дағдыларға негіздей аласыз және агенттер топтарын бөлімдеріңізге тағайындай аласыз"
+        "YouCanGroupAgents": "Сіз агенттерді дағдыларға негіздей аласыз және агенттер топтарын бөлімдеріңізге тағайындай аласыз",
+        "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
+        "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Топ қосу",
