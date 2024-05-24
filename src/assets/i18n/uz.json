@@ -902,7 +902,10 @@
         "AreYouSureDeleteGroup": "Haqiqatan ham guruhni oʻchirib tashlamoqchimisiz",
         "IdGroup": "Id guruhi",
         "UseGroupsToOrganizeSupportTeams": "Yordam guruhlarini tashkil qilish uchun guruhlardan foydalaning",
-        "YouCanGroupAgents": "Siz agentlarni malakalar asosida guruhlashingiz va bo'limlaringizga agentlar guruhlarini belgilashingiz mumkin"
+        "YouCanGroupAgents": "Siz agentlarni malakalar asosida guruhlashingiz va bo'limlaringizga agentlar guruhlarini belgilashingiz mumkin",
+        "TheGroupIsAssociatedWithTheDepartment": "Guruh {{ depts_name }} boʻlimi bilan bogʻlangan",
+        "TheGroupIsAssociatedWithDepartments": "Guruh {{ depts_name }} boʻlimlari bilan bogʻlangan",
+        "DisassociateTheGroup": "Marshrutlash yoki bo'limlarni o'chirishdan oldin ular bilan bog'langan barcha aloqalarni olib tashlang."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Guruh qo'shish",

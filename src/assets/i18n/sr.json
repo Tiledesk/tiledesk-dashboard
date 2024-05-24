@@ -902,7 +902,10 @@
         "AreYouSureDeleteGroup": "Да ли сте сигурни да желите да избришете групу",
         "IdGroup": "ИД група",
         "UseGroupsToOrganizeSupportTeams": "Користите групе за организовање тимова за подршку",
-        "YouCanGroupAgents": "Можете да групишете агенте на основу вештина и да доделите групе агената својим одељењима"
+        "YouCanGroupAgents": "Можете да групишете агенте на основу вештина и да доделите групе агената својим одељењима",
+        "TheGroupIsAssociatedWithTheDepartment": "Група је повезана са одељењем {{ дептс_наме }}",
+        "TheGroupIsAssociatedWithDepartments": "Група је повезана са {{ дептс_наме }} одељењима",
+        "DisassociateTheGroup": "Уклоните све асоцијације са рутирањем или одељењима пре него што их избришете."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Додај групу",

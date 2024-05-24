@@ -902,7 +902,10 @@
         "AreYouSureDeleteGroup": "Qrupu silmək istədiyinizə əminsiniz",
         "IdGroup": "ID qrupu",
         "UseGroupsToOrganizeSupportTeams": "Dəstək qruplarını təşkil etmək üçün qruplardan istifadə edin",
-        "YouCanGroupAgents": "Siz agentləri bacarıqlara əsasən qruplaşdıra və şöbələrinizə agent qrupları təyin edə bilərsiniz"
+        "YouCanGroupAgents": "Siz agentləri bacarıqlara əsasən qruplaşdıra və şöbələrinizə agent qrupları təyin edə bilərsiniz",
+        "TheGroupIsAssociatedWithTheDepartment": "Qrup {{ depts_name }} şöbəsi ilə əlaqələndirilir",
+        "TheGroupIsAssociatedWithDepartments": "Qrup {{ depts_name }} departamentləri ilə əlaqələndirilir",
+        "DisassociateTheGroup": "Marşrutlaşdırma və ya Departamentləri silməzdən əvvəl hər hansı əlaqəni çıxarın."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Qrup əlavə edin",

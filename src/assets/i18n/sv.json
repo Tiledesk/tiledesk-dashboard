@@ -902,7 +902,10 @@
         "AreYouSureDeleteGroup": "Är du säker på att du vill ta bort gruppen",
         "IdGroup": "ID-grupp",
         "UseGroupsToOrganizeSupportTeams": "Använd grupper för att organisera supportteam",
-        "YouCanGroupAgents": "Du kan gruppera agenter baserat på kompetens och tilldela grupper av agenter till dina avdelningar"
+        "YouCanGroupAgents": "Du kan gruppera agenter baserat på kompetens och tilldela grupper av agenter till dina avdelningar",
+        "TheGroupIsAssociatedWithTheDepartment": "Gruppen är associerad med avdelningen {{ depts_name }}",
+        "TheGroupIsAssociatedWithDepartments": "Gruppen är associerad med {{ depts_name }} avdelningar",
+        "DisassociateTheGroup": "Ta bort eventuella kopplingar till routing eller avdelningar innan du tar bort den."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Lägg till grupp",

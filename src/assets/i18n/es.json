@@ -901,7 +901,10 @@
         "AreYouSureDeleteGroup": "¿Estás seguro de que quieres eliminar el grupo",
         "IdGroup": "Grupo Id",
         "UseGroupsToOrganizeSupportTeams": "Usar grupos para organizar equipos de soporte",
-        "YouCanGroupAgents": "Puedes agrupar agentes basados en habilidades y asignar grupos de agentes a tus departamentos"
+        "YouCanGroupAgents": "Puedes agrupar agentes basados en habilidades y asignar grupos de agentes a tus departamentos",
+        "TheGroupIsAssociatedWithTheDepartment": "El grupo está asociado con el departamento {{ depts_name }}",
+        "TheGroupIsAssociatedWithDepartments": "El grupo está asociado con {{ depts_name }} departamentos",
+        "DisassociateTheGroup": "Elimine cualquier asociación con Enrutamiento o Departamentos antes de eliminarla."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Añadir grupo",

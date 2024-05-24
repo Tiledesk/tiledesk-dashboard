@@ -902,7 +902,10 @@
         "AreYouSureDeleteGroup": "Grubu silmek istediğinizden emin misiniz",
         "IdGroup": "Grubu İD",
         "UseGroupsToOrganizeSupportTeams": "Destek ekiplerini organize etmek için grupları kullanın",
-        "YouCanGroupAgents": "Temsilcileri becerilere göre gruplayabilir ve departmanlarınıza temsilci grupları atayabilirsiniz"
+        "YouCanGroupAgents": "Temsilcileri becerilere göre gruplayabilir ve departmanlarınıza temsilci grupları atayabilirsiniz",
+        "TheGroupIsAssociatedWithTheDepartment": "Grup {{ depts_name }} departmanıyla ilişkilidir",
+        "TheGroupIsAssociatedWithDepartments": "Grup {{ depts_name }} departmanla ilişkilidir",
+        "DisassociateTheGroup": "Silmeden önce Yönlendirme veya Departmanlarla olan tüm ilişkileri kaldırın."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Grup ekle",

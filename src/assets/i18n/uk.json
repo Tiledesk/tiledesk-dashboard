@@ -902,7 +902,10 @@
         "AreYouSureDeleteGroup": "Ви впевнені, що хочете видалити групу",
         "IdGroup": "Група ідентифікаторів",
         "UseGroupsToOrganizeSupportTeams": "Використовуйте групи для організації команд підтримки",
-        "YouCanGroupAgents": "Ви можете групувати агентів на основі навичок і призначати групи агентів своїм відділам"
+        "YouCanGroupAgents": "Ви можете групувати агентів на основі навичок і призначати групи агентів своїм відділам",
+        "TheGroupIsAssociatedWithTheDepartment": "Група пов’язана з відділом {{ depts_name }}",
+        "TheGroupIsAssociatedWithDepartments": "Група пов’язана з відділами {{ depts_name }}",
+        "DisassociateTheGroup": "Перед видаленням видаліть усі зв’язки з Routing або Departments."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Додати групу",
