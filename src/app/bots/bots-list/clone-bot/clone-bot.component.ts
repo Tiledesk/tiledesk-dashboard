@@ -50,15 +50,15 @@ export class CloneBotComponent implements OnInit {
 
 
   duplicateChatbot() {
-    console.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
+    // console.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
     
     this.projects.forEach(project => {
       // this.logger.log('[CLONE-BOT] - GET PROJECTS  project ', project);
       if (project.id_project.id === this.selectedProjectId) {
-        console.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
+        // console.log('[CLONE-BOT] - GET PROJECTS selected project user ', project);
         const _project = project.id_project
-        console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
-        console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
+        // console.log('[CLONE-BOT] - GET PROJECTS selected project  ', _project);
+        // console.log('[CLONE-BOT] - GET PROJECTS selected project id ', _project._id);
 
         _project['role'] =  project['role']
 

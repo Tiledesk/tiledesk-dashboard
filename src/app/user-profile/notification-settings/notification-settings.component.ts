@@ -71,7 +71,7 @@ export class NotificationSettingsComponent implements OnInit {
    */
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS  RES', projects);
+      // console.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS  RES', projects);
 
       if (projects) {
         this.projects_length = projects.length;

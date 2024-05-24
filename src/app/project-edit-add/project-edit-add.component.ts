@@ -2636,7 +2636,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.projectService.updateProjectName(this.id_project, this.projectName_toUpdate)
       .subscribe((prjct: Project) => {
-        console.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
+        // console.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
 
         if (prjct) {
           if (prjct['name'] === this.projectName_toUpdate) {
@@ -2730,7 +2730,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
     this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
       .subscribe((prjct: Project) => {
-        console.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
+        // console.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
 
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // I call "this.auth.projectSelected" so that the project is republished and can have the updated data of the advanced options (smart assign) in the conversation list
