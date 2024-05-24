@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.6.31-rc1
+- Does not allow the deletion of a group linked to a department on the group list page
+- Manages, on the integrations page, the display of the "Pro" badge based on the plan
+- Improves the UI of the department details page
+
 ### 2.6.30
 - Deploys in production
 - Fixes the bug: on the conversation detail page "Lead updated" message is displayed even if the contact's email has not been updated
