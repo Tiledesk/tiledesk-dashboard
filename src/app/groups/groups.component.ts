@@ -9,6 +9,10 @@ import { URL_creating_groups } from '../utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
 import { DepartmentService } from 'app/services/department.service';
+import { TranslateService } from '@ngx-translate/core';
+const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -37,8 +41,12 @@ export class GroupsComponent implements OnInit {
   name_group_to_delete: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public_Key: any;
-  isVisibleGRO
+  isVisibleGRO: any
   isChromeVerGreaterThan100: boolean;
+
+  disassociateTheGroup: string;
+  warning: string;
+
   public hideHelpLink: boolean;
   constructor(
     private auth: AuthService,
@@ -48,7 +56,8 @@ export class GroupsComponent implements OnInit {
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
-    public departmentService: DepartmentService
+    public departmentService: DepartmentService,
+    private translate: TranslateService,
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -62,6 +71,7 @@ export class GroupsComponent implements OnInit {
     this.listenSidebarIsOpened();
     this.getOSCODE();
     this.getBrowserVersion()
+    this.getTranslations();
   }
 
   getBrowserVersion() {
@@ -152,26 +162,26 @@ export class GroupsComponent implements OnInit {
     // this.displayDeleteModal = 'block';
     this.id_group_to_delete = id_group;
     this.name_group_to_delete = group_name;
-    console.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
+    this.logger.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
     this.getDepartments(this.id_group_to_delete)
 
   }
 
   getDepartments(selectedGrouId?: string) {
-    console.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE ', selectedGrouId)
+    this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE ', selectedGrouId)
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+      this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
 
       const deptsArrayWithAssociatedGroup = _departments.filter((obj: any) => {
         return obj.id_group === selectedGrouId;
       });
 
       if (deptsArrayWithAssociatedGroup.length === 0) {
-        console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
         this.displayDeleteModal = 'block'; 
       } else {
-        console.log('[GROUPS] ON MODAL DELETE OPEN - GROUP !!! ASSOCIATED');
-        console.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP !!! ASSOCIATED');
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
 
         const deptsNameAssociatedToGroup = []
 
@@ -179,14 +189,32 @@ export class GroupsComponent implements OnInit {
           deptsNameAssociatedToGroup.push(dept.name)
         });
 
-        console.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
 
-        
+        if (deptsArrayWithAssociatedGroup.length === 1) {
+          Swal.fire({
+            title: this.warning,
+            text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithTheDepartment', { depts_name: deptsNameAssociatedToGroup.join(', ') }) + '. ' + this.disassociateTheGroup,
+            icon: "warning",
+            showCloseButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "var(--blue-light)",
+            focusConfirm: false
+          })
+        }
+
+        if (deptsArrayWithAssociatedGroup.length > 1) {
+          Swal.fire({
+            title: this.warning,
+            text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithDepartments', { depts_name: deptsNameAssociatedToGroup.join(', ') }) +'. ' + this.disassociateTheGroup,
+            icon: "warning",
+            showCloseButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "var(--blue-light)",
+            focusConfirm: false,
+          })
+        }
       }
-    
-
-     
-
     })
   }
 
@@ -211,6 +239,26 @@ export class GroupsComponent implements OnInit {
       // UPDATE THE GROUP LIST
       this.ngOnInit()
     });
+  }
+
+
+  getTranslations() {
+    this.translate.get('GroupsPage')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        this.logger.log('[GROUPS] getTranslations GroupsPage : ', text)
+        this.disassociateTheGroup = text['DisassociateTheGroup'];
+      });
+
+
+    this.translate.get('Warning')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        // this.logger.log('+ + + BotsPage translation: ', text)
+        this.warning = text;
+      });
+
+  
   }
 
 }
