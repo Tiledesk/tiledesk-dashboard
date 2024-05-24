@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.6.31
+- Deploys in production
+- Does not allow the deletion of a group linked to a department on the group list page
+- Manages, on the integrations page, the display of the "Pro" badge based on the plan
+- Improves the UI of the department details page
+
 ### 2.6.31-rc1
 - Does not allow the deletion of a group linked to a department on the group list page
 - Manages, on the integrations page, the display of the "Pro" badge based on the plan
