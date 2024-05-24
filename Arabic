@@ -901,7 +901,10 @@
         "AreYouSureDeleteGroup": "هل أنت متأكد أنك تريد حذف المجموعة",
         "IdGroup": "مجموعة الهوية",
         "UseGroupsToOrganizeSupportTeams": "استخدم المجموعات لتنظيم فرق الدعم",
-        "YouCanGroupAgents": "يمكنك تجميع الوكلاء بناءً على المهارات وتعيين مجموعات من الوكلاء لأقسامك"
+        "YouCanGroupAgents": "يمكنك تجميع الوكلاء بناءً على المهارات وتعيين مجموعات من الوكلاء لأقسامك",
+        "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
+        "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
     },
     "GroupsAddEditPage": {
         "AddGroup": "أضف مجموعة",
