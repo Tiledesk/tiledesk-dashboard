@@ -901,7 +901,10 @@
         "AreYouSureDeleteGroup": "Êtes-vous sûr de vouloir supprimer le groupe",
         "IdGroup": "Groupe d'identifiants",
         "UseGroupsToOrganizeSupportTeams": "Utiliser des groupes pour organiser les équipes d'assistance",
-        "YouCanGroupAgents": "Vous pouvez regrouper les agents en fonction de leurs compétences et affecter des groupes d'agents à vos services"
+        "YouCanGroupAgents": "Vous pouvez regrouper les agents en fonction de leurs compétences et affecter des groupes d'agents à vos services",
+        "TheGroupIsAssociatedWithTheDepartment": "The group is associated with {{ depts_name }} department",
+        "TheGroupIsAssociatedWithDepartments": "The group is associated with {{ depts_name }} departments",
+        "DisassociateTheGroup": "Remove any associations with Routing or Departments before deleting it."
     },
     "GroupsAddEditPage": {
         "AddGroup": "Ajouter un groupe",
