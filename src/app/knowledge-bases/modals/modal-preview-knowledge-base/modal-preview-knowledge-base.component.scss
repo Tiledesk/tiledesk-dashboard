@@ -99,12 +99,14 @@
 
 .answer {
     min-height: 37px;
-    max-height: auto;
+    //max-height: auto;
+    max-height: 600px;
     border-radius: 6px;
     border: solid 2px #c6cdd4;
     padding: 6px 12px 20px;
     cursor: text;
-    overflow: hidden;
+    // overflow: hidden;
+    overflow: scroll;
     transition: max-height 0.5s ease-out;
     .answer-title {
         margin-bottom: 0px;
