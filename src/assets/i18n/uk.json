@@ -521,6 +521,8 @@
     "YourAuthTokenHasBeenInvalidated":"Ваш маркер автентифікації визнано недійсним",
     "PleaseTrySigningInAgain": "Спробуйте ввійти знову",
     "ReturnToLoginPage": "Повернутися на сторінку входу", 
+    "QuotaExceeded": "Квоту перевищено",
+    "PleaseContactSupport": "Будь ласка, зв'яжіться зі службою підтримки",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готові відповіді — це готові повідомлення, які ви можете легко згадати під час чату.",

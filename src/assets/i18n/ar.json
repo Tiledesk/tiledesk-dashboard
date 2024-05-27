@@ -520,6 +520,8 @@
     "YourAuthTokenHasBeenInvalidated":"تم إبطال رمز المصادقة المميز الخاص بك",
     "PleaseTrySigningInAgain": "من فضلك حاول تسجيل الدخول مرة أخرى",
     "ReturnToLoginPage": "العودة إلى صفحة تسجيل الدخول", 
+    "QuotaExceeded": "تم تجاوز الحصة",
+    "PleaseContactSupport": "يرجى الاتصال بالدعم",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",

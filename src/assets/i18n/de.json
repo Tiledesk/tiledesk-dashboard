@@ -520,6 +520,8 @@
     "YourAuthTokenHasBeenInvalidated":"Ihr Authentifizierungstoken wurde ungültig",
     "PleaseTrySigningInAgain": "Bitte versuchen Sie erneut, sich anzumelden",
     "ReturnToLoginPage": "Kehren Sie zur Anmeldeseite zurück", 
+	"QuotaExceeded": "Quote überschritten",
+    "PleaseContactSupport": "Bitte wenden Sie sich an den Support",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",

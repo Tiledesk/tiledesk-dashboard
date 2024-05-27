@@ -520,6 +520,8 @@
     "YourAuthTokenHasBeenInvalidated":"Your authentication token has been invalidated",
     "PleaseTrySigningInAgain": "Please try signing in again",
     "ReturnToLoginPage": "Return to login page", 
+    "QuotaExceeded": "Quota exceeded",
+    "PleaseContactSupport": "Please contact support",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",

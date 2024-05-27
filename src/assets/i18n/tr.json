@@ -521,6 +521,8 @@
     "YourAuthTokenHasBeenInvalidated":"Kimlik doğrulama jetonunuz geçersiz kılındı",
     "PleaseTrySigningInAgain": "Lütfen oturum açmayı tekrar deneyin",
     "ReturnToLoginPage": "Giriş sayfasına dön", 
+    "QuotaExceeded": "Kota aşıldı",
+    "PleaseContactSupport": "Lütfen desteğe başvurun",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",

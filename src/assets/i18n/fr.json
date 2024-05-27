@@ -520,6 +520,8 @@
     "YourAuthTokenHasBeenInvalidated":"Votre jeton d'authentification a été invalidé",
     "PleaseTrySigningInAgain": "Veuillez réessayer de vous connecter",
     "ReturnToLoginPage": "Retour à la page de connexion", 
+    "QuotaExceeded": "Quota dépassé",
+    "PleaseContactSupport": "Veuillez contacter l'assistance",
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",

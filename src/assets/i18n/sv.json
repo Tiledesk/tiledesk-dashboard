@@ -521,6 +521,8 @@
     "YourAuthTokenHasBeenInvalidated":"Din autentiseringstoken har ogiltigförklarats",
     "PleaseTrySigningInAgain": "Försök att logga in igen",
     "ReturnToLoginPage": "Återgå till inloggningssidan", 
+    "QuotaExceeded": "Kvoten överskriden",
+    "PleaseContactSupport": "Vänligen kontakta support",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",

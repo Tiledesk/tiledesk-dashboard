@@ -521,6 +521,8 @@
     "YourAuthTokenHasBeenInvalidated":"Autentifikatsiya tokeningiz yaroqsiz deb topildi",
     "PleaseTrySigningInAgain": "Iltimos, qaytadan kiring",
     "ReturnToLoginPage": "Kirish sahifasiga qaytish", 
+    "QuotaExceeded": "Kvota oshib ketdi",
+    "PleaseContactSupport": "Iltimos, qo'llab-quvvatlash xizmatiga murojaat qiling",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",

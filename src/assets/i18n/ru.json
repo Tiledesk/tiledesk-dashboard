@@ -520,7 +520,9 @@
     "Oops":"yпс",
     "YourAuthTokenHasBeenInvalidated":"Ваш токен аутентификации признан недействительным",
     "PleaseTrySigningInAgain": "Пожалуйста, попробуйте войти снова",
-    "ReturnToLoginPage": "Вернуться на страницу входа",  
+    "ReturnToLoginPage": "Вернуться на страницу входа", 
+    "QuotaExceeded": "Квота превышена",
+    "PleaseContactSupport": "Пожалуйста, свяжитесь со службой поддержки", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Готовые ответы — это готовые сообщения, которые вы можете легко вспомнить во время чата.",

@@ -521,6 +521,8 @@
     "YourAuthTokenHasBeenInvalidated":"Ваш токен за аутентификацију је поништен",
     "PleaseTrySigningInAgain": "Молимо покушајте да се пријавите поново",
     "ReturnToLoginPage": "Вратите се на страницу за пријаву", 
+    "QuotaExceeded": "Квота је премашена",
+    "PleaseContactSupport": "Обратите се подршци",
     "CannedResponses": {
         "QuickTips": {
             "1": "Спремни одговори су унапред направљене поруке које можете лако да се сетите током ћаскања.",

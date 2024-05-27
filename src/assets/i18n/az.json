@@ -521,6 +521,8 @@
     "YourAuthTokenHasBeenInvalidated":"Doğrulama nişanınız etibarsızdır",
     "PleaseTrySigningInAgain": "Lütfən, yenidən daxil olmağa cəhd edin",
     "ReturnToLoginPage": "Giriş səhifəsinə qayıt", 
+    "QuotaExceeded": "Kvota keçib",
+    "PleaseContactSupport": "Zəhmət olmasa dəstək ilə əlaqə saxlayın",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",
