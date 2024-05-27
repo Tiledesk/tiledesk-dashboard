@@ -516,6 +516,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Espere mientras procesamos su solicitud",
     "MyChatbots":"MIS CHATBOTS",
     "ManageYourContents": "Gestiona tus Contenidos",
+    "Oops":"Ups",
+    "YourAuthTokenHasBeenInvalidated":"Su token de autenticación ha sido invalidadod",
+    "PleaseTrySigningInAgain": "Por favor intenta iniciar sesión nuevamente",
+    "ReturnToLoginPage": "Volver a la página de inicio de sesión", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",

@@ -978,14 +978,13 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
 
 
-
-
-
+  // Unathorized page - Token not valid
+  {
+    path: 'invalid-token',
+    loadChildren: () => import('app/auth/unauthorized-token/unauthorized-token.module').then(m => m.UnauthorizedTokenModule),
+  },
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
-
-
-
 
   // { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] }, // removed - was used in the left panel of the chat
   { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },

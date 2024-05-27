@@ -516,6 +516,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Aguarde enquanto processamos sua solicitação",
     "MyChatbots":"MEUS CHATBOTS",
     "ManageYourContents": "Gerencie seu Conteúdo",
+    "Oops":"Ops",
+    "YourAuthTokenHasBeenInvalidated":"Seu token de autenticação foi invalidado",
+    "PleaseTrySigningInAgain": "Por favor, tente entrar novamente",
+    "ReturnToLoginPage": "Retornar à página de login",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",

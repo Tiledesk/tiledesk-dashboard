@@ -516,6 +516,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Veuillez patienter pendant le traitement de votre demande",
     "MyChatbots":"MES CHATBOTS",
     "ManageYourContents": "Gérez votre Contenus",
+    "Oops":"Oops",
+    "YourAuthTokenHasBeenInvalidated":"Votre jeton d'authentification a été invalidé",
+    "PleaseTrySigningInAgain": "Veuillez réessayer de vous connecter",
+    "ReturnToLoginPage": "Retour à la page de connexion", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",

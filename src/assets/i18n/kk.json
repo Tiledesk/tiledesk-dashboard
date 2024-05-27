@@ -516,6 +516,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сұрауыңызды өңдеу кезінде күтіңіз",
     "MyChatbots":"МЕНІҢ ЧАТБОТТАРЫМ",
     "ManageYourContents": "Мазмұныңызды басқарыңыз",
+    "Oops":"Ой",
+    "YourAuthTokenHasBeenInvalidated":"Аутентификация таңбалауышы жарамсыз",
+    "PleaseTrySigningInAgain": "Есептік жазбаға қайта кіріп көріңіз",
+    "ReturnToLoginPage": "Жүйеге кіру бетіне оралу", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Консервіленген жауаптар - чат кезінде оңай еске түсіруге болатын алдын ала жасалған хабарлар.",

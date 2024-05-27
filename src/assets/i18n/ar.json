@@ -515,7 +515,11 @@
     "ThereHasBeenAnErrorProcessing": "كان هناك خطأ في معالجة طلبك",
     "PleaseWaitWhileWeAreProcessingYourRequest": "يرجى الانتظار بينما نقوم بمعالجة طلبك",
     "MyChatbots":"روبوتات الدردشة الخاصة بي",
-    "ManageYourContents": "Gestisci i tuoi Contenuti",
+    "ManageYourContents": "إدارة المحتوى الخاص بك",
+    "Oops":"أُووبس",
+    "YourAuthTokenHasBeenInvalidated":"تم إبطال رمز المصادقة المميز الخاص بك",
+    "PleaseTrySigningInAgain": "من فضلك حاول تسجيل الدخول مرة أخرى",
+    "ReturnToLoginPage": "العودة إلى صفحة تسجيل الدخول", 
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",

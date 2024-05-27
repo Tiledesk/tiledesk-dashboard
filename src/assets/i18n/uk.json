@@ -515,8 +515,12 @@
     "ThisConversationIsNotAssignedToYou": "Ця бесіда не призначена вам. Щоб приєднатися до бесіди, натисніть «Приєднатися».",
     "ThereHasBeenAnErrorProcessing": "Під час обробки вашого запиту сталася помилка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Будь ласка, зачекайте, поки ми обробимо ваш запит",
-    "ManageYourContents": "Керуйте своїм вмістом",
     "MyChatbots": "SOHBETLERİM",
+    "ManageYourContents": "Керуйте своїм вмістом",
+    "Oops":"Ой",
+    "YourAuthTokenHasBeenInvalidated":"Ваш маркер автентифікації визнано недійсним",
+    "PleaseTrySigningInAgain": "Спробуйте ввійти знову",
+    "ReturnToLoginPage": "Повернутися на сторінку входу", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Готові відповіді — це готові повідомлення, які ви можете легко згадати під час чату.",

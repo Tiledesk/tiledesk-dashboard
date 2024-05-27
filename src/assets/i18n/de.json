@@ -516,6 +516,10 @@
 	"PleaseWaitWhileWeAreProcessingYourRequest": "Bitte warten Sie, während wir Ihre Anfrage bearbeiten",
 	"MyChatbots":"MEINE CHATBOTS",
 	"ManageYourContents": "Verwalten Sie Ihre Inhalte",
+	"Oops":"Hoppla",
+    "YourAuthTokenHasBeenInvalidated":"Ihr Authentifizierungstoken wurde ungültig",
+    "PleaseTrySigningInAgain": "Bitte versuchen Sie erneut, sich anzumelden",
+    "ReturnToLoginPage": "Kehren Sie zur Anmeldeseite zurück", 
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",

@@ -517,6 +517,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Lütfen isteğinizi işleme koyarken bekleyin",
     "MyChatbots":"SOHBETLERİM",
     "ManageYourContents": "İçeriğinizi Yönetin",
+    "Oops":"Hata",
+    "YourAuthTokenHasBeenInvalidated":"Kimlik doğrulama jetonunuz geçersiz kılındı",
+    "PleaseTrySigningInAgain": "Lütfen oturum açmayı tekrar deneyin",
+    "ReturnToLoginPage": "Giriş sayfasına dön", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",

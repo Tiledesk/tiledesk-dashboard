@@ -517,6 +517,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Vänta medan vi behandlar din förfrågan",
     "MyChatbots": "MINA CHATBOTS",
     "ManageYourContents": "Hantera ditt innehåll",
+    "Oops":"Hoppsan",
+    "YourAuthTokenHasBeenInvalidated":"Din autentiseringstoken har ogiltigförklarats",
+    "PleaseTrySigningInAgain": "Försök att logga in igen",
+    "ReturnToLoginPage": "Återgå till inloggningssidan", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",

@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.32
+- Handles the "Unauthorized" error that occurs for invalid access tokens
+
 ### 2.6.31
 - Deploys in production
 - Does not allow the deletion of a group linked to a department on the group list page

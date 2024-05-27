@@ -517,6 +517,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Sorğunuzu emal edərkən gözləyin",
     "MyChatbots":"MƏNİM SOHBOTLARIM",
     "ManageYourContents": "Məzmununuzu idarə edin",
+    "Oops":"Ups",
+    "YourAuthTokenHasBeenInvalidated":"Doğrulama nişanınız etibarsızdır",
+    "PleaseTrySigningInAgain": "Lütfən, yenidən daxil olmağa cəhd edin",
+    "ReturnToLoginPage": "Giriş səhifəsinə qayıt", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",

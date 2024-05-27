@@ -516,6 +516,10 @@
     "PleaseWaitWhileWeAreProcessingYourRequest": "Si prega di attendere mentre stiamo elaborando la tua richiesta",
     "MyChatbots":"I MIEI CHATBOT",
     "ManageYourContents": "Gestisci i tuoi Contenuti",
+    "Oops":"Ops",
+    "YourAuthTokenHasBeenInvalidated":"Il tuo token di autenticazione è stato invalidato",
+    "PleaseTrySigningInAgain": "Prova ad accedere di nuovo",
+    "ReturnToLoginPage": "Ritorna alla pagina di accesso", 
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
