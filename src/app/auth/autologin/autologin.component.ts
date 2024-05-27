@@ -200,7 +200,9 @@ export class AutologinComponent implements OnInit {
       this.logger.error('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser  error', error);
       // console.log('[AUTOLOGIN] SSO error.error ',  error.error);
       // console.log('[AUTOLOGIN] SSO error.status ',  error.status);
-      this.router.navigate(['invalid-token'])
+      if (error && error.status && error.status === 401) {
+        this.router.navigate(['invalid-token'])
+      }
      
 
     }, () => {
