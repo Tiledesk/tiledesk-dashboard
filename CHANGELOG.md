@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.32
+- Deploys in production
+- Fixes the bug: selecting a project from the navbar under the "Other projects" section doesn't work
+
 ### 2.6.31
 - Deploys in production
 - Does not allow the deletion of a group linked to a department on the group list page
