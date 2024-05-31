@@ -379,7 +379,7 @@
 
               <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
               <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(project?.id_project, project?.role, project?.id_project?._id)">
+                <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
                   {{ prjct?.id_project?.name }}
                 </a>
               </li>

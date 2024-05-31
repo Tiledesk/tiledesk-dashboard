@@ -1,8 +1,8 @@
 # tiledesk-dashboard
 
-### 2.6.32-rc1
-- Handles the "Unauthorized" error that occurs for invalid access tokens
-- Display a warning when GET requests exceed quota
+### 2.6.32
+- Deploys in production
+- Fixes the bug: selecting a project from the navbar under the "Other projects" section doesn't work
 
 ### 2.6.31
 - Deploys in production
