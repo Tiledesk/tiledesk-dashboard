@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.33
+- Deploys in production
+- Minor improvements and bug fixing
+
 ### 2.6.32
 - Deploys in production
 - Fixes the bug: selecting a project from the navbar under the "Other projects" section doesn't work
