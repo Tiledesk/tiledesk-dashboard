@@ -33,7 +33,7 @@
                 <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' [ngModel]='filterType'
                 dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'status')">
                     <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
-                    <ng-option value="">All statuses</ng-option>
+                    <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
                     <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
                     <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
                     <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
@@ -45,8 +45,14 @@
             <div class="selector type-selector">
                 <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' [ngModel]='filterType'
                 dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'type')">
-                    <ng-option value="">All types</ng-option>
-                    <ng-option value="text">Text</ng-option>
+                    <ng-option value="">
+                        <!-- All types -->
+                        {{ 'KbPage.AllTypes' | translate }}
+                    </ng-option>
+                    <ng-option value="text">
+                        <!-- Text -->
+                        {{ 'Text' | translate }}
+                    </ng-option>
                     <ng-option value="url">URL</ng-option>
                 </ng-select>
             </div>
@@ -56,7 +62,7 @@
         <div class="fake-input">
             <!-- <label for="search">{{ 'KbPage.TextSearch' | translate }}</label> -->
             <!-- <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}"> -->
-            <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="Search by name">
+            <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.SearchByName' | translate }}">
             <span class="material-icons-outlined">search</span>
         </div>
     </div>
@@ -68,7 +74,7 @@
                     <mat-icon>refresh</mat-icon>
                 </button>
             </div>
-            <div class="contents-count"><b>{{ kbsListCount }}</b> total resources</div>
+            <div  class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: <b>{{ kbsListCount }}</b></div>
         </div>
         <div class="btn-preview">
             <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">

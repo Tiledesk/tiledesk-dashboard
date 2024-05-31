@@ -33,14 +33,15 @@
           <div class="card-content" *ngIf="!showSpinner">
             
             <div class="header">
-              <p class="header-title">All data sources</p>
+              <p class="header-title">{{ 'KbPage.AllContents' | translate }}</p>
               <div class="buttons-div">
                 <button class="btn btn-new btn-size-m btn-danger btn-big-button" [disabled]="addButtonDisabled" aria-label="Delete" style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
                   <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
-                  Delete Namespace
+                  {{ 'KbPage.DeleteNamespace' | translate }}
                 </button>
                 <div class="add-kb-div">
-                  <button class="btn btn-new btn-size-m btn--primary btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions" style="text-transform: capitalize; width: 150px;">
+                  <!-- width: 150px; -->
+                  <button class="btn btn-new btn-size-m btn--primary btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions" style="text-transform: capitalize; ">
                     <span class=""> {{ 'KbPage.Add' | translate }} </span>
                   </button>
                   <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">
