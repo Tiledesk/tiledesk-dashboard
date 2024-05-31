@@ -12,6 +12,8 @@ const swal = require('sweetalert');
 @Injectable()
 export class BrandService {
 
+
+
   // "brandSrc":"https://tiledeskbrand.nicolan74.repl.co/mybrand",
 
   public brand: any;
@@ -113,7 +115,7 @@ export class BrandService {
     private logger: LoggerService
   ) {
     this.getTranslations()
-
+    // console.log('[BRAND-SERV] HELLO !!!!!!! ');
   }
 
   getTranslations() {
@@ -166,7 +168,7 @@ export class BrandService {
       }
     } else {
       const res = await this.httpClient.get(environment['remoteConfigUrl']).toPromise();
-      this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
+      // console.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 
 
       const remoteConfigData = res
@@ -183,9 +185,10 @@ export class BrandService {
 
 
         } else {
-          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
+          // console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
 
           this.brand = this._brand;
+          // console.log('[BRAND-SERV] this.brand', this.brand )
         }
 
       } else {
