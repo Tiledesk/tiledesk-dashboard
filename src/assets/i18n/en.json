@@ -1657,6 +1657,7 @@
         "titleTextareaUrls": "List of URLs",
         "placeholderUrls": "Enter URLs",
         "infoUrls": "One url per line.",
+        "NoKbMatchParams": "No match for the specified parameters",
         "Import": "Import",
         "AddKbURL": "URLs",
         "AddKbText": "Plain text",
