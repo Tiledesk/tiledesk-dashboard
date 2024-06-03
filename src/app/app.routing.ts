@@ -150,6 +150,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { ChatbotsComponent } from './chatbots/chatbots.component';
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
 
@@ -1117,6 +1118,13 @@ const routes: Routes = [
 
   { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+
+  {
+    path: 'project/:projectid/chatbots',
+    loadChildren: () => import('app/chatbots/chatbots.module').then(m => m.ChatbotsModule),
+    canActivate: [AuthGuard],
+  },
+  { path: 'project/:projectid/chatbots', component: ChatbotsComponent, canActivate: [AuthGuard] },
 
 
 

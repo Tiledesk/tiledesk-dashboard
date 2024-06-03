@@ -1738,7 +1738,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   goToAllMyChatbot() {
-    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    //this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    this.router.navigate(['/project/' + this.projectId + '/chatbots'])
     // if (this.areVisibleChatbot) {
     //   this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
     // } else {

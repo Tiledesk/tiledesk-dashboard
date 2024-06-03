@@ -1,0 +1,42 @@
+<span class="navbar-brand navbar-brand-sidebar-settings"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+    [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+    <!-- <i class="material-icons">settings</i> -->
+
+    <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Chatbots' | translate }} </span>
+</span>
+
+<div class="main-content">
+
+    <!-- <appdashboard-bots-sidebar *ngIf="ARE_NEW_KB"
+        [allTemplatesCount]="allTemplatesCount"
+        [allCommunityTemplatesCount]="allCommunityTemplatesCount"
+        [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
+        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
+        [myChatbotOtherCount]="myChatbotOtherCount"
+        [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
+        [increaseSalesBotsCount]="increaseSalesBotsCount">
+    </appdashboard-bots-sidebar> -->
+    <div class="custom-bots-sidebar">
+        <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+            [allCommunityTemplatesCount]="allCommunityTemplatesCount"
+            [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
+            [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
+            [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
+            [increaseSalesBotsCount]="increaseSalesBotsCount">
+        </appdashboard-bots-sidebar>
+    </div>
+
+    <div class="content">
+        <ng-container>
+            
+            <bots-list></bots-list>
+
+
+        </ng-container>
+    </div>
+
+
+
+</div>

@@ -66,6 +66,8 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     this.IS_OPEN = true
     this.listenToKbVersion()
     this.getDahordBaseUrlThenOSCODE()
+
+    console.log("BOTS SIDEBARRRR")
     // this.getProjectPlan()
     // this.logger.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
   }

@@ -25,7 +25,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
-    BotsSidebarModule,
+    //BotsSidebarModule,
     ChatbotAlertModule,
     SharedModule,
     TranslateModule,
