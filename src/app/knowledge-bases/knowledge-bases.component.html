@@ -35,13 +35,27 @@
             <div class="header">
               <p class="header-title">{{ 'KbPage.AllContents' | translate }}</p>
               <div class="buttons-div">
-                <button class="btn btn-new btn-size-m btn-danger btn-big-button" [disabled]="addButtonDisabled" aria-label="Delete" style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
+                <button class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete" style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
                   <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
-                  {{ 'KbPage.DeleteNamespace' | translate }}
+                  <span class="material-icons-round">
+                    delete
+                    </span>
+                  <!-- {{ 'KbPage.DeleteNamespace' | translate }} -->
                 </button>
+                
+                <button class="custom-button preview-settings" (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()">
+                  <span class="material-icons-round">settings</span>
+                </button>
+
+                <button class="custom-button preview" aria-label="Preview" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+                  <span class="material-icons-round">play_arrow</span>
+                  <span class=""> Preview </span>
+                </button>
+
                 <div class="add-kb-div">
                   <!-- width: 150px; -->
-                  <button class="btn btn-new btn-size-m btn--primary btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions" style="text-transform: capitalize; ">
+                  <button class="custom-button add-content" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
+                    <span class="material-icons-round">add</span>
                     <span class=""> {{ 'KbPage.Add' | translate }} </span>
                   </button>
                   <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">
@@ -133,6 +147,11 @@
   (closeBaseModal)="onCloseBaseModal()">
 </modal-preview-knowledge-base>
 <!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
+
+<modal-preview-settings *ngIf="baseModalPreviewSettings"
+  [namespace]="id_project"
+  (closeBaseModal)="onCloseBaseModal()"
+></modal-preview-settings>
 
 <!-- ERROR KNOWLEDGE BASE MODAL - START -->
 <modal-error-knowledge-base *ngIf="baseModalError" 

@@ -26,6 +26,7 @@
     
     .buttons-div {
         display: flex;
+        align-items: center;
 
         button {
             margin-left: 8px;
@@ -33,6 +34,57 @@
     }
 }
 
+.custom-button {
+    text-transform: capitalize;
+    color: white;
+    border: none;
+    height: 36px;
+    border-radius: 12px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+.custom-button.add-content {
+    background: #397dff;
+
+    &:hover {
+        background: #256ffd;
+    }
+}
+
+.custom-button.delete {
+    background: #ff5c48;
+
+    span {
+        font-size: 20px !important;
+    }
+}
+
+.custom-button.preview {
+    background-color: #38414a;    
+
+    span {
+        margin-right: 6px;
+    }
+
+    &:hover {
+        background: #38414ae0;
+    }
+}
+
+.custom-button.preview-settings {
+    background-color: #38414a;    
+    
+    span {
+        font-size: 20px !important;
+    }
+
+    &:hover {
+        background: #38414ae0;
+    }
+}
 
 .template-content-container {
     width: 80%;

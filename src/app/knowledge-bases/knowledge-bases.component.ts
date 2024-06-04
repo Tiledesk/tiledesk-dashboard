@@ -40,6 +40,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   baseModalDelete: boolean = false;
   showDeleteNamespaceModal: boolean = false;
   baseModalPreview: boolean = false;
+  baseModalPreviewSettings: boolean = false;
   baseModalError: boolean = false;
   baseModalDetail: boolean = false;
 
@@ -1390,6 +1391,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.baseModalPreview = true;
   }
 
+  onOpenBaseModalPreviewSettings() {
+    this.baseModalPreviewSettings = true;
+  }
+
 
 
   onOpenErrorModal(response) {
@@ -1403,6 +1408,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.listSitesOfSitemap = [];
     this.baseModalDelete = false;
     this.baseModalPreview = false;
+    this.baseModalPreviewSettings = false;
     this.baseModalError = false;
     this.baseModalDetail = false;
     this.typeKnowledgeBaseModal = '';

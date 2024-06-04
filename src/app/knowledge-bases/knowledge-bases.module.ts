@@ -23,6 +23,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MomentModule } from 'ngx-moment';
 import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
+import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -43,7 +45,7 @@ const routes: Routes = [
     ModalTextFileComponent,
     ModalUrlsKnowledgeBaseComponent,
     ModalDeleteNamespaceComponent,
-   
+    ModalPreviewSettingsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -57,7 +59,8 @@ const routes: Routes = [
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    MomentModule,
+    MatSliderModule,
+    MomentModule
   ]
 })
 export class KnowledgeBasesModule { }
