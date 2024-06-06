@@ -1685,7 +1685,7 @@
         "msgSuccesDeleteKb": "Садржај је успешно избрисан",
         "msgErrorDeleteKb": "Није могуће избрисати садржај",
         "DeleteKbInfoFirstText": "Више нећете моћи да користите вештачку интелигенцију на овом садржају",
-        "SureToDeleteNamespace": "Да ли сте сигурни да желите да избришете сав садржај?",
+        "SureToDeleteNamespace": "Да ли сте сигурни да желите да избришете сав садржај namespace <b>{{ namespace_name }}</b>?",
         "SureToDelete": "Да ли сте сигурни да желите да избришете садржај <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Унесите важећи садржај.",
         "KBLimitReached": "Достигнуто је ограничење садржаја за {{plan_name}}",

@@ -25,6 +25,7 @@ import { MomentModule } from 'ngx-moment';
 import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
+// import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -60,7 +61,8 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
-    MomentModule
+    MomentModule,
+    // SatPopoverModule
   ]
 })
 export class KnowledgeBasesModule { }

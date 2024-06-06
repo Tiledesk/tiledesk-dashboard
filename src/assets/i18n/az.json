@@ -1685,7 +1685,7 @@
         "msgSuccesDeleteKb": "Məzmun uğurla silindi",
         "msgErrorDeleteKb": "Məzmunu silmək mümkün deyil",
         "DeleteKbInfoFirstText": "Artıq bu məzmunda süni intellektdən istifadə edə bilməyəcəksiniz",
-        "SureToDeleteNamespace": "Bütün məzmunu silmək istədiyinizə əminsiniz?",
+        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}<b> bütün məzmununu silmək istədiyinizə əminsiniz?",
         "SureToDelete": "<b>{{ name }}</b> məzmununu silmək istədiyinizə əminsiniz?",
         "AddKbInfoTextContent": "Etibarlı məzmun daxil edin.",
         "KBLimitReached": "{{plan_name}} üçün məzmun limitinə çatdı",

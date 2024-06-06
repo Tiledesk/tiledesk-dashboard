@@ -1684,7 +1684,7 @@
         "msgSuccesDeleteKb": "Conteúdo excluído com sucesso",
         "msgErrorDeleteKb": "Não foi possível excluir o conteúdo",
         "DeleteKbInfoFirstText": "Você não poderá mais usar IA neste conteúdo",
-        "SureToDeleteNamespace": "Tem certeza de que deseja excluir todo o conteúdo?",
+        "SureToDeleteNamespace": "Tem certeza de que deseja excluir todo o conteúdo do namespace <b>{{ namespace_name }}</b>?",
         "SureToDelete": "Tem certeza de que deseja excluir o conteúdo de <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Insira conteúdo válido.",
         "KBLimitReached": "Limite de conteúdo atingido para {{plan_name}}",

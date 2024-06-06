@@ -1684,7 +1684,7 @@
         "msgSuccesDeleteKb": "تم حذف المحتوى بنجاح",
         "msgErrorDeleteKb": "غير قادر على حذف المحتوى",
         "DeleteKbInfoFirstText": "لن تتمكن بعد الآن من استخدام الذكاء الاصطناعي في هذا المحتوى",
-        "SureToDeleteNamespace": "هل أنت متأكد أنك تريد حذف كافة المحتويات؟",
+        "SureToDeleteNamespace": "هل أنت متأكد أنك تريد حذف كافة محتويات namespace {{namespace_name }}؟",
         "SureToDelete": "هل أنت متأكد أنك تريد حذف محتوى <b>{{ name }}</b>؟",
         "AddKbInfoTextContent": "الرجاء إدخال محتوى صالح.",
         "KBLimitReached": "تم الوصول إلى حد المحتوى لـ {{plan_name}}",

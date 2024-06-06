@@ -1685,7 +1685,7 @@
         "msgSuccesDeleteKb": "İçerik başarıyla silindi",
         "msgErrorDeleteKb": "İçerik silinemiyor",
         "DeleteKbInfoFirstText": "Artık bu içerikte AI kullanamayacaksınız",
-        "SureToDeleteNamespace": "Tüm içeriği silmek istediğinizden emin misiniz?",
+        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}</b> alanının tüm içeriğini silmek istediğinizden emin misiniz?",
         "SureToDelete": "<b>{{ name }</b> içeriğini silmek istediğinizden emin misiniz?",
         "AddKbInfoTextContent": "Lütfen geçerli içerik girin.",
         "KBLimitReached": "{{plan_name}} için içerik sınırına ulaşıldı",

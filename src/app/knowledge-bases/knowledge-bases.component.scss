@@ -564,3 +564,99 @@ table {
     color: black;
     font-weight: 500;
 }
+
+
+/* Namespaces CRUD
+/* *************************** */
+
+
+
+
+.selected-namespace-content {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+
+.selected-namespace-content > .selected-namespace-name{
+    font-size: 24px;
+    font-family: var(--header-font-family);
+    font-weight: 400;
+    
+}
+.namespace-name-output {
+    padding: 1px 6px;
+}
+
+.namespace-name-input {
+    border-radius: 4px !important;
+    padding: 1px 6px;
+    // border: 1px solid transparent;
+    border: 1px solid #d3dbe5;
+}
+
+.namespace-name-input.edit-mode {
+    border: 1px solid #d3dbe5;
+} 
+
+.open-dropdown-namespace-btn {
+    background: transparent;
+    display: inline-flex;
+    box-shadow: none;
+    outline: none;
+    padding: 0px 4px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgb(211, 219, 229);
+    border-radius: 8px;
+}
+.open-dropdown-namespace-btn > svg {
+    fill: rgb(100, 116, 145);
+}
+
+.open-dropdown-namespace-btn:hover { 
+    background-color: #dce9ff
+}
+
+.open-dropdown-namespace-btn:hover > svg { 
+    fill: #0566ff;
+}
+
+
+.popover-wrapper {
+    box-shadow: 0 5px 15px -5px #0006;
+    margin-top: -2px;
+    border: 1px solid #0000000f;
+    background-color: #fff;
+    color: #000;
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .sat-popover-namespace-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mat-menu-custom-btn > span {
+    background-color: var(--blue-light);
+    border-color: var(--blue-light);
+    padding: 6px;
+    color: #fff;
+    border-radius: 4px;
+
+  }
+
+  .active--namespace {
+    background: rgba(0, 0, 0, .04);
+    font-weight: 500;
+  }

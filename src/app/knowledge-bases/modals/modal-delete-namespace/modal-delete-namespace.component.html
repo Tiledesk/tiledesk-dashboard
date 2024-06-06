@@ -4,8 +4,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+            <div class="modal-header" style="padding-bottom: 24px; background: #f44336;color: #fff;">
+                <button style="color: #fff;" type="button" class="close" aria-label="Close" (click)="onCloseModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -25,16 +25,37 @@
                 </div>
 
                 <div class="form-container">
-                    <p>{{ 'KbPage.SureToDeleteNamespace' | translate }}</p>
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: this.selectedNamespace}">
+                        <!-- {{ 'KbPage.SureToDeleteNamespace' | translate: tparams }} -->
+                    </p>
                 </div>
+
+                <div class="delete-namespace-section">
+                    <div class="checkbox">
+                        <label [ngClass]="{'active--label': deleteAlsoNamespace}">
+                            <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">
+                            Also delete the namespace
+                        </label>
+                    </div>
+                    <div class="col-sm-10">
+                        <label for="delete-namespace-input"  [ngStyle]="{'color':deleteAlsoNamespace === true ? '#3c4858' : '#00000042' }">
+                            To delete the Namespace, type the namespace name
+                        </label>
+                        <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder="Namespace name" [disabled]="!deleteAlsoNamespace">
+                    </div>
+
+                </div>
+
+
 
             </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseModal()">
+            <div class="modal-footer" style="text-align: center;background: unset;">
+                <button class="btn btn-white" style="margin-right: 10px;font-size: 14px;" (click)="onCloseModal()">
                     {{ 'Cancel' | translate }}
                 </button>
-                <button id="addkb-btn" class="btn btn-primary" (click)="onDeleteNamespace()">
+                <button id="addkb-btn" style="margin-left: 10px;font-size: 14px;" class="btn btn-danger" (click)="onDeleteNamespace()"
+                [disabled]="deleteAlsoNamespace && !namespacenameMatch">
                     {{ 'Delete' | translate }}
                 </button>
             </div>

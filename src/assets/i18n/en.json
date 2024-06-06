@@ -1683,7 +1683,7 @@
         "msgSuccesDeleteKb": "Content successfully deleted",
         "msgErrorDeleteKb": "Unable to delete content",
         "DeleteKbInfoFirstText": "You will no longer be able to use AI on this content",
-        "SureToDeleteNamespace": "Are you sure you want to delete all contents?",
+        "SureToDeleteNamespace": "Are you sure you want to delete all contents of the namespace <b>{{namespace_name }}</b>?",
         "SureToDelete": "Are you sure you want to delete the <b>{{ name }}</b> content?",
         "AddKbInfoTextContent": "Please enter valid content.",
         "KBLimitReached": "Content limit reached for {{plan_name}}",

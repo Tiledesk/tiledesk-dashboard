@@ -1684,7 +1684,7 @@
         "msgSuccesDeleteKb": "Мазмұн сәтті жойылды",
         "msgErrorDeleteKb": "Мазмұнды жою мүмкін емес",
         "DeleteKbInfoFirstText": "Сіз бұдан былай бұл мазмұнда AI пайдалана алмайсыз",
-        "SureToDeleteNamespace": "Барлық мазмұнды жойғыңыз келетініне сенімдісіз бе?",
+        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}</b> барлық мазмұнын жойғыңыз келетініне сенімдісіз бе?",
         "SureToDelete": "<b>{{ name }}</b> мазмұнын шынымен жойғыңыз келе ме?",
         "AddKbInfoTextContent": "Жарамды мазмұнды енгізіңіз.",
         "KBLimitReached": "{{plan_name}} үшін мазмұн шегіне жетті",

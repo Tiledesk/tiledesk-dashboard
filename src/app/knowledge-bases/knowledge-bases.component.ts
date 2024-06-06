@@ -20,6 +20,9 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { BrandService } from 'app/services/brand.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
+import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
+import { MatDialog } from '@angular/material/dialog';
 const swal = require('sweetalert');
 
 //import { Router } from '@angular/router';
@@ -107,7 +110,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   upgrade: string;
   cancel: string;
 
-  paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
+  paramsDefault: string // = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
+
+  selectedNamespaceName: any;
+  selectedNamespaceID: string;
+
+  is0penDropDown: boolean = false
+  namespaces: any; // [{ name: 'Namespaces_1', id: 111111, default: true }, { name: 'Namespaces_2', id: 222222, default: false }, { name: 'Namespaces_3', id: 333333, default: false }]
+
+  namespaceIsEditable: boolean = false;
+  newNamespaceName: string;
+  namespaceNameOutputElWidth: any;
+  namespaceValueOnFocus: string;
+ 
+
 
 
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -128,6 +144,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public prjctPlanService: ProjectPlanService,
     private usersService: UsersService,
     public brandService: BrandService,
+    public localDbService: LocalDbService,
+    public dialog: MatDialog,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -140,8 +158,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getBrowserVersion();
     this.getTranslations();
     this.listenSidebarIsOpened();
-    
-    this.getListOfKb(this.paramsDefault);
+
+    // this.getListOfKb(this.paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
     this.kbFormContent = this.createConditionGroupContent();
     this.trackPage();
@@ -156,755 +174,676 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getProjectPlan();
     this.getProjectUserRole()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
+
+    this.getAllNamespaces()
   }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
+  getAllNamespaces() {
+    this.kbService.getAllNamespaces().subscribe((res: any) => {
+      if (res) {
 
-        }
+        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        this.namespaces = res
+       
+
+      }
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP]  GET GET ALL NAMESPACES ERROR ', error);
+
+    }, () => {
+      console.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
+      this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+    });
+  }
+
+
+  selectLastUsedNamespaceAndGetKbList(namespaces) {
+    const storedNamespace = this.localDbService.getFromStorage('last_kbnamespace')
+   
+    if (!storedNamespace) {
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
+      let selectedNameSpaceObjct = namespaces.filter((el) => {
+        return el.default === true
       });
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init selectedNameObjct', selectedNameSpaceObjct)
+
+      this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName)
+      this.selectedNamespaceID = selectedNameSpaceObjct[0]['namespace_id'];
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID', this.selectedNamespaceID)
+
+      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+      this.getListOfKb(this.paramsDefault);
+
+    } else {
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
+      const storedNamespaceObjct = JSON.parse(storedNamespace)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace storedNamespaceObjct ', storedNamespaceObjct),
+
+      this.selectedNamespaceName = storedNamespaceObjct['name']
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM STORAGE)', this.selectedNamespaceName)
+      this.selectedNamespaceID = storedNamespaceObjct['namespace_id'];
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID  (FROM STORAGE)', this.selectedNamespaceID)
+
+      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+      this.getListOfKb(this.paramsDefault);
+    }
   }
 
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval_id);
-  }
+  presentModalAddNewNamespace() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+    const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
+      width: '600px',
+      // data: {
+      //   calledBy: 'step1'
+      // },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
 
-  getTemplates() {
-    this.faqKbService.getTemplates().subscribe((res: any) => {
+      if (result && result.namespaceName) {
 
-      if (res) {
-        const templates = res
-        //  this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
-        this.allTemplatesCount = templates.length;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
+        const namespaceName = result.namespaceName
 
-        // ---------------------------------------------------------------------
-        // Customer Satisfaction templates
-        // ---------------------------------------------------------------------
-        const customerSatisfactionTemplates = templates.filter((obj) => {
-          return obj.mainCategory === "Customer Satisfaction"
-        });
-        this.logger.log('KNOWLEDGE-BASES-COMP] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
-        if (customerSatisfactionTemplates) {
-          this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
-        }
+        this.createNewNamespace(namespaceName)
+        // this.chatbotName = result.chatbotName;
 
-        // ---------------------------------------------------------------------
-        // Customer Increase Sales
-        // ---------------------------------------------------------------------
-        const increaseSalesTemplates = templates.filter((obj) => {
-          return obj.mainCategory === "Increase Sales"
-        });
-        //  this.logger.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
-        if (increaseSalesTemplates) {
-          this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
-        }
-      }
-
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] GET TEMPLATES ERROR ', error);
-      // this.showSpinner = false;
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] GET TEMPLATES COMPLETE');
-      // this.showSpinner = false;
-      // this.generateTagsBackground(this.templates)
-    });
-  }
-
-  getCommunityTemplates() {
-
-    this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
-      if (res) {
-        const communityTemplates = res
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET COMMUNITY TEMPLATES', communityTemplates);
-        this.allCommunityTemplatesCount = communityTemplates.length;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
-      }
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP]  GET COMMUNITY TEMPLATES ERROR ', error);
-
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP]  GET COMMUNITY TEMPLATES COMPLETE');
-
-    });
-  }
-
-  getFaqKbByProjectId() {
-    this.showSpinner = true
-    // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
-      if (faqKb) {
-
-        // this.faqkbList = faqKb;
-        // this.chatBotCount = faqKb.length;
-
-
-        this.myChatbotOtherCount = faqKb.length
-
-        // ---------------------------------------------------------------------
-        // Bot forked from Customer Satisfaction templates
-        // ---------------------------------------------------------------------
-        let customerSatisfactionBots = faqKb.filter((obj) => {
-          return obj.mainCategory === "Customer Satisfaction"
-        });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction BOTS', customerSatisfactionBots);
-        if (customerSatisfactionBots) {
-          this.customerSatisfactionBotsCount = customerSatisfactionBots.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
-        }
-
-
-        // ---------------------------------------------------------------------
-        // Bot forked from Customer Increase Sales
-        // ---------------------------------------------------------------------
-        let increaseSalesBots = faqKb.filter((obj) => {
-          return obj.mainCategory === "Increase Sales"
-        });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS ', increaseSalesBots);
-        if (increaseSalesBots) {
-          this.increaseSalesBotsCount = increaseSalesBots.length;
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
-        }
-
-        // this.route = this.router.url
-        // if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
-        //   this.faqkbList = this.faqkbList
-        //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
-        // } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
-        //   this.faqkbList = this.customerSatisfactionBots
-        //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/customer-satisfaction faqkbList ', this.faqkbList);
-        // } else if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
-        //   this.faqkbList = this.increaseSalesBots
-        //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/increase-sales faqkbList ', this.faqkbList);
+        // if (this.chatbotName) {
+        // this.createTilebotBotFromScratch(this.chatbotName)
         // }
-
-
-
-
       }
+    });
+  }
 
-      /* this.showSpinner = false moved in getAllFaqByFaqKbId:
-       * in this callback stop the spinner only if there isn't faq-kb and
-       * if there is an error */
-      // this.showSpinner = false;
+  createNewNamespace(namespaceName: string) {
+    this.kbService.createNamespace(namespaceName).subscribe((namespace: any) => {
+      if (namespace) {
+
+        console.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
+        this.selectedNamespaceName = namespace['name']
+
+        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
+        this.selectedNamespaceID = namespace['namespace_id'];
+        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
+
+        this.localDbService.setInStorage('last_kbnamespace', JSON.stringify(namespace))
+        this.namespaces.push(namespace)
+        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
+      }
     }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);
-      this.showSpinner = false;
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ', error);
+
     }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] GET BOTS COMPLETE');
-      // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-      this.showSpinner = false;
-      // this.getAllFaqByFaqKbId();
-    });
+      console.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
 
+    });
   }
 
-  getOSCODE() {
+  onChangeNamespaceName(event) {
+    console.log('[KNOWLEDGE-BASES-COMP] ON CHANGE NAMESPACE NAME  event ', event)
+    this.newNamespaceName = event
+  }
+  
 
-    let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+  updateNamespaceName(newNamespaceName, calledBy) {
+    console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME calledBy ', calledBy);
+    console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME newNamespaceName ', newNamespaceName);
+  
+      this.kbService.upadeteNamespaceName(newNamespaceName, this.selectedNamespaceID).subscribe((namespace: any) => {
+        if (namespace) {
+  
+          console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME RES', namespace);
 
-    let keys = public_Key.split("-");
+          let updatedNameSpceName = namespace.name
 
-    keys.forEach(key => {
-      if (key.includes("PAY")) {
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.payIsVisible = false;
-          // this.logger.log("payIsVisible: ", this.payIsVisible)
-        } else {
-          this.payIsVisible = true;
-          // this.logger.log("payIsVisible: ", this.payIsVisible)
+          let storedNamespace = this.localDbService.getFromStorage('last_kbnamespace')
+          if (storedNamespace) {
+           let storedNamespaceObjct = JSON.parse(storedNamespace)
+           console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME storedNamespaceObjct', storedNamespaceObjct);
+           storedNamespaceObjct.name = updatedNameSpceName
+           this.localDbService.setInStorage('last_kbnamespace', JSON.stringify(storedNamespaceObjct))
+
+          }
+         
+  
+          // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
+          // this.selectedNamespaceID = namespace['namespace_id'];
+          // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
+  
+          // this.localDbService.setInStorage('last_kbnamespace', JSON.stringify(namespace))
+          // this.namespaces.push(namespace)
+          // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
         }
+      }, (error) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME ERROR', error);
+  
+      }, () => {
+        console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME * COMPLETE *');
+  
+      });
+    }
+    
+  
+
+
+
+  onSelectNamespace(namespace) {
+    console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
+    // let namespaceID = namespace.namespace_id
+    // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespaceID', namespaceID)
+    // let selectedNameObjct = this.namespaces.filter((el) => {
+    //   return el.id === this.selectedNamespaceID
+    // });
+    if (namespace) {
+      this.selectedNamespaceName = namespace['name']
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespaceName)
+      this.selectedNamespaceID = namespace['namespace_id']
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
+      this.localDbService.setInStorage('last_kbnamespace', JSON.stringify(namespace))
+    }
+}
+
+
+
+removeNamespace(namespace) {
+  console.log('[KNOWLEDGE-BASES-COMP] removeNamespace ', namespace)
+}
+
+
+// onBlurUpdateNamespaceName(event) {
+//   console.log('[KNOWLEDGE-BASES-COMP] ON BLUR UPDATE NAMESPACE NAME event ', event)
+// }
+
+onFocusNamespaceName(value) {
+  console.log('[KNOWLEDGE-BASES-COMP] onFocusNamespaceName ', value)
+  this.namespaceValueOnFocus = value
+}
+
+onPressEnterUpdateNamespaceName(event) {
+  console.log('[KNOWLEDGE-BASES-COMP] ON PRESS ENTER UPDATE NAMESPACE NAME event ', event)
+  if (event.code === 'Enter' || event.which === 13) {
+    this.updateNamespaceName(this.newNamespaceName, 'onEnterPresses')
+    this.namespaceIsEditable = false;
+  }
+}
+
+onMouseOver() {
+  this.namespaceIsEditable = true
+  console.log('[KNOWLEDGE-BASES-COMP] onMouseOver namespace name namespaceIsEditable', this.namespaceIsEditable)
+
+  let namespaceNameOutputEl = document.getElementById("namespace-name-output");
+  if (namespaceNameOutputEl) {
+    this.namespaceNameOutputElWidth = document.getElementById("namespace-name-output").offsetWidth + 10 + 'px';
+  }
+  console.log('[KNOWLEDGE-BASES-COMP] onMouseOver namespace name namespaceNameOutputElWidth', this.namespaceNameOutputElWidth)
+}
+
+onMouseOut() {
+  this.namespaceIsEditable = false
+  console.log('[KNOWLEDGE-BASES-COMP] onMouseOut namespace name namespaceIsEditable', this.namespaceIsEditable)
+  if (this.namespaceValueOnFocus && this.selectedNamespaceName !== this.namespaceValueOnFocus) {
+    console.log('[KNOWLEDGE-BASES-COMP] onMouseOut  selectedNamespaceName ', this.selectedNamespaceName, ' namespaceValueOnFocus ', this.namespaceValueOnFocus, ' RUN UPDATE')
+  } else {
+    console.log('[KNOWLEDGE-BASES-COMP] onMouseOut  selectedNamespaceName ', this.selectedNamespaceName, ' namespaceValueOnFocus ', this.namespaceValueOnFocus, ' NOTHING CHANGE')
+  }
+}
+
+getProjectUserRole() {
+  this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
+      if (user_role) {
+        this.USER_ROLE = user_role
+
       }
+    });
+}
+
+
+ngOnDestroy(): void {
+  clearInterval(this.interval_id);
+}
+
+listenToKbVersion() {
+  this.kbService.newKb
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((newKb) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
+      this.ARE_NEW_KB = newKb;
     })
-  }
+}
 
+getTemplates() {
+  this.faqKbService.getTemplates().subscribe((res: any) => {
 
+    if (res) {
+      const templates = res
+      //  this.logger.log('[BOTS-LIST] - GET ALL TEMPLATES', templates);
+      this.allTemplatesCount = templates.length;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL TEMPLATES COUNT', this.allTemplatesCount);
 
-  // loadKbSettings(){
-  //   this.kbService.getKbSettings().subscribe((kb: any) => {
-  //     if(kb.kbs && kb.kbs.length>0){
-  //       this.logger.log('REDIRECT getKbSettings'+kb.kbs);
-  //       this.router.navigate(['project/' + this.id_project + '/knowledge-bases-pre']);
-  //     }
-  //   }, (error) => {
-  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-  //   })
-  // }
-
-
-  getTranslations() {
-    this.translate.get('KbPage')
-      .subscribe((KbPage: any) => {
-        this.msgSuccesUpdateKb = KbPage['msgSuccesUpdateKb'];
-        this.msgSuccesAddKb = KbPage['msgSuccesAddKb'];
-        this.msgSuccesDeleteKb = KbPage['msgSuccesDeleteKb'];
-        this.msgErrorDeleteKb = KbPage['msgErrorDeleteKb'];
-        this.msgErrorIndexingKb = KbPage['msgErrorIndexingKb'];
-        this.msgSuccesIndexingKb = KbPage['msgSuccesIndexingKb'];
-        this.msgErrorAddUpdateKb = KbPage['msgErrorAddUpdateKb'];
+      // ---------------------------------------------------------------------
+      // Customer Satisfaction templates
+      // ---------------------------------------------------------------------
+      const customerSatisfactionTemplates = templates.filter((obj) => {
+        return obj.mainCategory === "Customer Satisfaction"
       });
-
-    this.translate.get('Warning')
-      .subscribe((text: string) => {
-        // this.deleteContact_msg = text;
-        // this.logger.log('+ + + BotsPage translation: ', text)
-        this.warningTitle = text;
-      });
-
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-
-
-    this.translate.get('AnErrorOccurredWhileUpdating')
-      .subscribe((translation: any) => {
-        this.anErrorOccurredWhileUpdating = translation;
-      });
-
-    this.translate.get('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
-      .subscribe((translation: any) => {
-        this.contactUsToUpgrade = translation;
-      });
-
-    this.translate.get('ContactUs')
-      .subscribe((translation: any) => {
-        this.contactUs = translation;
-      });
-
-    this.translate.get('Upgrade')
-      .subscribe((translation: any) => {
-        this.upgrade = translation;
-      });
-
-    this.translate.get('Cancel')
-      .subscribe((translation: any) => {
-        this.cancel = translation;
-      });
-
-  }
-
-  getTranslatedStringKbLimitReached(max_num) {
-    this.translate.get('KbPage.msgErrorAddUpdateKbLimit', { max_number: max_num })
-      .subscribe((text: string) => { this.msgErrorAddUpdateKbLimit = text; });
-  }
-
-
-
-  getRouteParams() {
-    this.route.params.subscribe((params) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS ', params);
-      if (params.calledby && params.calledby === 'h') {
-        this.callingPage = 'Home'
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
-      } else if (!params.calledby) {
-        this.callingPage = 'Knowledge Bases'
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      this.logger.log('KNOWLEDGE-BASES-COMP] - Customer Satisfaction TEMPLATES', customerSatisfactionTemplates);
+      if (customerSatisfactionTemplates) {
+        this.customerSatisfactionTemplatesCount = customerSatisfactionTemplates.length;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
       }
-    })
-  }
 
-  trackPage() {
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        try {
-          window['analytics'].page("Knowledge Bases Page", {
-          });
-        } catch (err) {
-          this.logger.error('Knowledge page error', err);
-        }
+      // ---------------------------------------------------------------------
+      // Customer Increase Sales
+      // ---------------------------------------------------------------------
+      const increaseSalesTemplates = templates.filter((obj) => {
+        return obj.mainCategory === "Increase Sales"
+      });
+      //  this.logger.log('[BOTS-LIST] - Increase Sales TEMPLATES', increaseSalesTemplates);
+      if (increaseSalesTemplates) {
+        this.increaseSalesTemplatesCount = increaseSalesTemplates.length;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales COUNT', this.increaseSalesTemplatesCount);
       }
     }
-  }
 
-  getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
-      if (user) {
-        this.CURRENT_USER = user
-      }
-    });
-  }
+  }, (error) => {
+    this.logger.error('[KNOWLEDGE-BASES-COMP] GET TEMPLATES ERROR ', error);
+    // this.showSpinner = false;
+  }, () => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] GET TEMPLATES COMPLETE');
+    // this.showSpinner = false;
+    // this.generateTagsBackground(this.templates)
+  });
+}
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT ', this.project)
-      if (this.project) {
-        this.project_name = project.name;
-        this.id_project = project._id;
-        this.getProjectById(this.id_project)
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
-      }
-    });
-  }
+getCommunityTemplates() {
 
-
-  getProjectById(projectId) {
-    this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-      this.profile_name = project.profile.name
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
-    }, error => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID * COMPLETE * ');
-    });
-  }
-
-  // startPooling() {
-  //   this.interval_id = setInterval(() => {
-  //     this.checkAllStatuses();
-  //   }, 30000);
-  // }
-
-  // ----------------------
-  // UTILS FUNCTION - Start
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    })
-  }
-
-  listenSidebarIsOpened() {
-    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
-      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
-    });
-  }
-  // UTILS FUNCTION - End
-  // --------------------
-
-
-  // ---------------- SERVICE FUNCTIONS --------------- // 
-
-  /**
-   * getListOfKb
-   */
-  // getListOfKb() {
-  //   this.logger.log("[KNOWLEDGE-BASES-COMP] getListOfKb ");
-  //   this.kbService.getListOfKb().subscribe((kbList:[KB]) => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbList: ", kbList);
-  //     this.kbsList = kbList;
-  //     this.checkAllStatuses();
-  //   }, (error) => {
-  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-  //     this.showSpinner = false;
-  //   })
-  // }
-
-  onLoadPage(searchParams?) {
-    // this.logger.log('onLoadNextPage:',searchParams);
-    let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT
-    //if(searchParams?.page){
-    let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
-    this.numberPage++;
-    if (this.numberPage > limitPage) this.numberPage = limitPage;
-    params += "&page=" + this.numberPage;
-    // } else {
-    //   +"&page=0";
-    // }
-    if (searchParams?.status) {
-      params += "&status=" + searchParams.status;
+  this.faqKbService.getCommunityTemplates().subscribe((res: any) => {
+    if (res) {
+      const communityTemplates = res
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET COMMUNITY TEMPLATES', communityTemplates);
+      this.allCommunityTemplatesCount = communityTemplates.length;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
     }
-    if (searchParams?.type) {
-      params += "&type=" + searchParams.type;
-    }
-    if (searchParams?.search) {
-      params += "&search=" + searchParams.search;
-    }
-    if (searchParams?.sortField) {
-      params += "&sortField=" + searchParams.sortField;
-    } else {
-      params += "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD;
-    }
-    if (searchParams?.direction) {
-      params += "&direction=" + searchParams.direction;
-    } else {
-      params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-    }
-    this.getListOfKb(params);
-  }
+  }, (error) => {
+    this.logger.error('[KNOWLEDGE-BASES-COMP]  GET COMMUNITY TEMPLATES ERROR ', error);
 
-  onLoadByFilter(searchParams) {
-    // this.logger.log('onLoadByFilter:',searchParams);
-    // searchParams.page = 0;
-    this.numberPage = -1;
-    this.kbsList = [];
-    this.onLoadPage(searchParams);
-  }
+  }, () => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP]  GET COMMUNITY TEMPLATES COMPLETE');
+
+  });
+}
+
+getFaqKbByProjectId() {
+  this.showSpinner = true
+  // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+  this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
+    if (faqKb) {
+
+      // this.faqkbList = faqKb;
+      // this.chatBotCount = faqKb.length;
 
 
-  getListOfKb(params?) {
-    this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
-    this.kbService.getListOfKb(params).subscribe((resp: any) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
-      //this.kbs = resp;
-      this.kbsListCount = resp.count;
-      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
-      resp.kbs.forEach(kb => {
-        // this.kbsList.push(kb);
-        const index = this.kbsList.findIndex(objA => objA._id === kb._id);
-        if (index !== -1) {
-          this.kbsList[index] = kb;
-        } else {
-          this.kbsList.push(kb);
-        }
-        //--> this.updateStatusOfKb(kb._id, 3);
+      this.myChatbotOtherCount = faqKb.length
+
+      // ---------------------------------------------------------------------
+      // Bot forked from Customer Satisfaction templates
+      // ---------------------------------------------------------------------
+      let customerSatisfactionBots = faqKb.filter((obj) => {
+        return obj.mainCategory === "Customer Satisfaction"
       });
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction BOTS', customerSatisfactionBots);
+      if (customerSatisfactionBots) {
+        this.customerSatisfactionBotsCount = customerSatisfactionBots.length;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - Customer Satisfaction COUNT', this.customerSatisfactionTemplatesCount);
+      }
 
-      // if(this.kbsList.length>0){
-      //   this.SHOW_TABLE = true;
-      //   this.checkAllStatuses();
-      // } else {
-      //   this.SHOW_TABLE = false;
+
+      // ---------------------------------------------------------------------
+      // Bot forked from Customer Increase Sales
+      // ---------------------------------------------------------------------
+      let increaseSalesBots = faqKb.filter((obj) => {
+        return obj.mainCategory === "Increase Sales"
+      });
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS ', increaseSalesBots);
+      if (increaseSalesBots) {
+        this.increaseSalesBotsCount = increaseSalesBots.length;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
+      }
+
+      // this.route = this.router.url
+      // if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
+      //   this.faqkbList = this.faqkbList
+      //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
+      // } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
+      //   this.faqkbList = this.customerSatisfactionBots
+      //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/customer-satisfaction faqkbList ', this.faqkbList);
+      // } else if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
+      //   this.faqkbList = this.increaseSalesBots
+      //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/increase-sales faqkbList ', this.faqkbList);
       // }
-      //this.showSpinner = false;
-      //
-      this.refreshKbsList = !this.refreshKbsList;
-
-    }, (error) => {
-      this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
-      //this.showSpinner = false;
-    }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
-      //this.showSpinner = false;
-    })
-  }
-
-  // /**
-  //  * getKnowledgeBaseSettings
-  //  */
-  // getKnowledgeBaseSettings() {
-  //   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings: ", kbSettings);
-  //     // this.kbSettings = kbSettings;
-  //     this.kbsList = kbSettings.kbs;
-  //   }, (error) => {
-  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-  //     this.showSpinner = false;
-  //   })
-  // }
-
-  onSendSitemap(body) {
-    // this.onCloseBaseModal();
-    let error = this.msgErrorAddUpdateKb;
-    this.kbService.addSitemap(body).subscribe((resp: any) => {
-      this.logger.log("onSendSitemap:", resp);
-      if (resp.errors && resp.errors[0]) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
-        })
-      } else {
-        this.listSitesOfSitemap = resp.sites;
-      }
-
-    }, (err) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
-
-      //this.onOpenErrorModal(error);
-
-      swal({
-        title: this.warningTitle,
-        text: error,
-        icon: "warning",
-        className: "custom-swal",
-        buttons: [null, "Cancel"],
-        dangerMode: false
-      })
-
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] send sitemap *COMPLETED*");
-    })
-  }
-
-  /**
-   * onAddKb
-   */
-  onAddKb(body) {
-    // this.logger.log("body:",body);
-    this.onCloseBaseModal();
-    let error = this.msgErrorAddUpdateKb;
-    this.kbService.addKb(body).subscribe((resp: any) => {
-      this.logger.log("onAddKb:", resp);
-      let kb = resp.value;
-      if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
-        //this.logger.log("updatedExisting true:");
-        const index = this.kbsList.findIndex(item => item._id === kb._id);
-        if (index !== -1) {
-          this.kbsList[index] = kb;
-          this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
-        }
-      } else {
-        //this.kbsList.push(kb);
-        this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-        // this.kbsListCount++;
-        this.kbsList.unshift(kb);
-        this.kbsListCount = this.kbsListCount + 1;
-        this.refreshKbsList = !this.refreshKbsList;
-        // let searchParams = {
-        //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
-        //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
-        //   "status": '',
-        //   "search": '',
-        // }
-        // this.onLoadByFilter(searchParams);
-      }
-      this.updateStatusOfKb(kb._id, -1);
-      // this.updateStatusOfKb(kb._id, 0);
-      // this.onLoadByFilter(searchParams);
-      // that.onRunIndexing(kb);
-      // setTimeout(() => {
-      //   this.checkStatusWithRetry(kb);
-      // }, 2000);
-      //that.onCloseBaseModal();
-    }, (err) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
-      // this.onOpenErrorModal(error);
-      if (err.error && err.error.plan_limit) {
-        // console.log('here 1 ')
-        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
-        error = this.msgErrorAddUpdateKbLimit
-      }
-
-      if (this.payIsVisible === true) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.upgrade],
-          dangerMode: false
-        }).then((willUpgradePlan: any) => {
-
-          if (willUpgradePlan) {
-            if (this.USER_ROLE === 'owner') {
-              if (this.prjct_profile_type === 'free') {
-                this.router.navigate(['project/' + this.id_project + '/pricing']);
-              } else {
-                this.notify._displayContactUsModal(true, 'upgrade_plan');
-              }
-            } else {
-              this.presentModalOnlyOwnerCanManageTheAccountPlan();
-            }
-
-          }
-        })
-      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
-        // console.log('here 2 this.kbLimit ', this.kbLimit)
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
-        })
-      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        // console.log('here 1')
-        swal({
-          title: this.warningTitle,
-          text: error + '. ' + this.contactUsToUpgrade,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.contactUs],
-          dangerMode: false
-        }).then((result) => {
-          if (result) {
-            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
-          }
-        })
-      }
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      this.trackUserActioOnKB('Added Knowledge Base')
-    })
-  }
 
 
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
 
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
-  }
-
-  onAddMultiKb(body) {
-    this.onCloseBaseModal();
-    // this.logger.log("onAddMultiKb");
-    let error = this.msgErrorAddUpdateKb;
-    this.kbService.addMultiKb(body).subscribe((kbs: any) => {
-      this.logger.log("onAddMultiKb:", kbs);
-      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-      this.getListOfKb(paramsDefault);
-      // kbs.forEach(kb => {
-      //   //this.kbsList.unshift(kb);
-      //   // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-      //   //   setTimeout(() => {
-      //   //     this.checkStatusWithRetry(kb);
-      //   //   }, 2000);
-      //   // }
-      //   // this.updateStatusOfKb(kb._id, 3);
-      //   //this.updateStatusOfKb(kb._id, -1);
-      // });
-      this.kbsListCount = this.kbsListCount + kbs.length;
-      this.refreshKbsList = !this.refreshKbsList;
-    }, (err) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
-
-      //this.onOpenErrorModal(error);
-      if (err.error && err.error.plan_limit) {
-        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
-        error = this.msgErrorAddUpdateKbLimit
-      }
-
-      if (this.payIsVisible === true) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.upgrade],
-          dangerMode: false
-        }).then((willUpgradePlan: any) => {
-
-          if (willUpgradePlan) {
-            if (this.USER_ROLE === 'owner') {
-              if (this.prjct_profile_type === 'free') {
-                this.router.navigate(['project/' + this.id_project + '/pricing']);
-              } else {
-                this.notify._displayContactUsModal(true, 'upgrade_plan');
-              }
-            } else {
-              this.presentModalOnlyOwnerCanManageTheAccountPlan();
-            }
-          }
-        })
-      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
-        })
-      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        // console.log('here 1')
-        swal({
-          title: this.warningTitle,
-          text: error + '. ' + this.contactUsToUpgrade,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.contactUs],
-          dangerMode: false
-        }).then((result) => {
-          if (result) {
-            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
-          }
-        })
-      }
-
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      this.trackUserActioOnKB('Added Knowledge Base')
-    })
-  }
-
-
-  /**
-   * onDeleteKb
-   */
-  onDeleteKb(kb) {
-    let data = {
-      "id": kb._id,
-      "namespace": kb.id_project
     }
-    // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
-    this.onCloseBaseModal();
-    let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
-    this.kbService.deleteKb(data).subscribe((response: any) => {
-      //this.logger.log('onDeleteKb:: ', response);
-      kb.deleting = false;
-      if (!response || (response.success && response.success === false)) {
-        // this.updateStatusOfKb(kb._id, 0);
 
-        // this.onOpenErrorModal(error);
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
-        })
+    /* this.showSpinner = false moved in getAllFaqByFaqKbId:
+     * in this callback stop the spinner only if there isn't faq-kb and
+     * if there is an error */
+    // this.showSpinner = false;
+  }, (error) => {
+    this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);
+    this.showSpinner = false;
+  }, () => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] GET BOTS COMPLETE');
+    // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+    this.showSpinner = false;
+    // this.getAllFaqByFaqKbId();
+  });
 
+}
 
+getOSCODE() {
 
+  let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+  let keys = public_Key.split("-");
+
+  keys.forEach(key => {
+    if (key.includes("PAY")) {
+      let pay = key.split(":");
+      // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+      if (pay[1] === "F") {
+        this.payIsVisible = false;
+        // this.logger.log("payIsVisible: ", this.payIsVisible)
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
-        // let error = response.error?response.error:"Errore generico";
-        // this.onOpenErrorModal(error);
-        this.removeKb(kb._id);
-        this.kbsListCount = this.kbsListCount - 1;
-        this.refreshKbsList = !this.refreshKbsList;
-        // let searchParams = {
-        //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
-        //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
-        //   "status": '',
-        //   "search": '',
-        // }
-        // this.onLoadByFilter(searchParams);
+        this.payIsVisible = true;
+        // this.logger.log("payIsVisible: ", this.payIsVisible)
       }
-    }, (err) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
-      kb.deleting = false;
-      //this.kbid_selected.deleting = false;
+    }
+  })
+}
 
-      // this.onOpenErrorModal(error);
+
+
+// loadKbSettings(){
+//   this.kbService.getKbSettings().subscribe((kb: any) => {
+//     if(kb.kbs && kb.kbs.length>0){
+//       this.logger.log('REDIRECT getKbSettings'+kb.kbs);
+//       this.router.navigate(['project/' + this.id_project + '/knowledge-bases-pre']);
+//     }
+//   }, (error) => {
+//     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
+//   }, () => {
+//     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
+//   })
+// }
+
+
+getTranslations() {
+  this.translate.get('KbPage')
+    .subscribe((KbPage: any) => {
+      this.msgSuccesUpdateKb = KbPage['msgSuccesUpdateKb'];
+      this.msgSuccesAddKb = KbPage['msgSuccesAddKb'];
+      this.msgSuccesDeleteKb = KbPage['msgSuccesDeleteKb'];
+      this.msgErrorDeleteKb = KbPage['msgErrorDeleteKb'];
+      this.msgErrorIndexingKb = KbPage['msgErrorIndexingKb'];
+      this.msgSuccesIndexingKb = KbPage['msgSuccesIndexingKb'];
+      this.msgErrorAddUpdateKb = KbPage['msgErrorAddUpdateKb'];
+    });
+
+  this.translate.get('Warning')
+    .subscribe((text: string) => {
+      // this.deleteContact_msg = text;
+      // this.logger.log('+ + + BotsPage translation: ', text)
+      this.warningTitle = text;
+    });
+
+  this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+    .subscribe((translation: any) => {
+
+      this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+    });
+
+  this.translate.get('LearnMoreAboutDefaultRoles')
+    .subscribe((translation: any) => {
+      this.learnMoreAboutDefaultRoles = translation;
+    });
+
+
+  this.translate.get('AnErrorOccurredWhileUpdating')
+    .subscribe((translation: any) => {
+      this.anErrorOccurredWhileUpdating = translation;
+    });
+
+  this.translate.get('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    .subscribe((translation: any) => {
+      this.contactUsToUpgrade = translation;
+    });
+
+  this.translate.get('ContactUs')
+    .subscribe((translation: any) => {
+      this.contactUs = translation;
+    });
+
+  this.translate.get('Upgrade')
+    .subscribe((translation: any) => {
+      this.upgrade = translation;
+    });
+
+  this.translate.get('Cancel')
+    .subscribe((translation: any) => {
+      this.cancel = translation;
+    });
+
+}
+
+getTranslatedStringKbLimitReached(max_num) {
+  this.translate.get('KbPage.msgErrorAddUpdateKbLimit', { max_number: max_num })
+    .subscribe((text: string) => { this.msgErrorAddUpdateKbLimit = text; });
+}
+
+
+
+getRouteParams() {
+  this.route.params.subscribe((params) => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS ', params);
+    if (params.calledby && params.calledby === 'h') {
+      this.callingPage = 'Home'
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+    } else if (!params.calledby) {
+      this.callingPage = 'Knowledge Bases'
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+    }
+  })
+}
+
+trackPage() {
+  if (!isDevMode()) {
+    if (window['analytics']) {
+      try {
+        window['analytics'].page("Knowledge Bases Page", {
+        });
+      } catch (err) {
+        this.logger.error('Knowledge page error', err);
+      }
+    }
+  }
+}
+
+getLoggedUser() {
+  this.auth.user_bs.subscribe((user) => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
+    if (user) {
+      this.CURRENT_USER = user
+    }
+  });
+}
+
+getCurrentProject() {
+  this.auth.project_bs.subscribe((project) => {
+    this.project = project
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT ', this.project)
+    if (this.project) {
+      this.project_name = project.name;
+      this.id_project = project._id;
+      this.getProjectById(this.id_project)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+    }
+  });
+}
+
+
+getProjectById(projectId) {
+  this.projectService.getProjectById(projectId).subscribe((project: any) => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+    this.profile_name = project.profile.name
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+  }, error => {
+    this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
+  }, () => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID * COMPLETE * ');
+  });
+}
+
+// startPooling() {
+//   this.interval_id = setInterval(() => {
+//     this.checkAllStatuses();
+//   }, 30000);
+// }
+
+// ----------------------
+// UTILS FUNCTION - Start
+getBrowserVersion() {
+  this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+  })
+}
+
+listenSidebarIsOpened() {
+  this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+    this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+  });
+}
+// UTILS FUNCTION - End
+// --------------------
+
+
+// ---------------- SERVICE FUNCTIONS --------------- // 
+
+
+onLoadPage(searchParams?: any) {
+  // this.logger.log('onLoadNextPage:',searchParams);
+  let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespaceID
+  console.log('onLoadPage:',searchParams);
+  let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
+  this.numberPage++;
+  if (this.numberPage > limitPage) this.numberPage = limitPage;
+  params += "&page=" + this.numberPage;
+  // } else {
+  //   +"&page=0";
+  // }
+  if (searchParams?.status) {
+    params += "&status=" + searchParams.status;
+  }
+  if (searchParams?.type) {
+    params += "&type=" + searchParams.type;
+  }
+  if (searchParams?.search) {
+    params += "&search=" + searchParams.search;
+  }
+  if (searchParams?.sortField) {
+    params += "&sortField=" + searchParams.sortField;
+  } else {
+    params += "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD;
+  }
+  if (searchParams?.direction) {
+    params += "&direction=" + searchParams.direction;
+  } else {
+    params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
+  }
+  this.getListOfKb(params);
+}
+
+onLoadByFilter(searchParams) {
+  // this.logger.log('onLoadByFilter:',searchParams);
+  // searchParams.page = 0;
+  this.numberPage = -1;
+  this.kbsList = [];
+  this.onLoadPage(searchParams);
+}
+
+
+getListOfKb(params ?: any) {
+  console.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
+  this.kbService.getListOfKb(params).subscribe((resp: any) => {
+    console.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
+    //this.kbs = resp;
+    this.kbsListCount = resp.count;
+    this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
+    resp.kbs.forEach(kb => {
+      // this.kbsList.push(kb);
+      const index = this.kbsList.findIndex(objA => objA._id === kb._id);
+      if (index !== -1) {
+        this.kbsList[index] = kb;
+      } else {
+        this.kbsList.push(kb);
+      }
+      //--> this.updateStatusOfKb(kb._id, 3);
+    });
+
+    // if(this.kbsList.length>0){
+    //   this.SHOW_TABLE = true;
+    //   this.checkAllStatuses();
+    // } else {
+    //   this.SHOW_TABLE = false;
+    // }
+    //this.showSpinner = false;
+    //
+    this.refreshKbsList = !this.refreshKbsList;
+
+  }, (error) => {
+    this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+    //this.showSpinner = false;
+  }, () => {
+    this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+    //this.showSpinner = false;
+  })
+}
+
+// /**
+//  * getKnowledgeBaseSettings
+//  */
+// getKnowledgeBaseSettings() {
+//   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
+//     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings: ", kbSettings);
+//     // this.kbSettings = kbSettings;
+//     this.kbsList = kbSettings.kbs;
+//   }, (error) => {
+//     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
+//   }, () => {
+//     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
+//     this.showSpinner = false;
+//   })
+// }
+
+onSendSitemap(body) {
+  // this.onCloseBaseModal();
+  let error = this.msgErrorAddUpdateKb;
+  this.kbService.addSitemap(body).subscribe((resp: any) => {
+    this.logger.log("onSendSitemap:", resp);
+    if (resp.errors && resp.errors[0]) {
       swal({
         title: this.warningTitle,
         text: error,
@@ -913,118 +852,242 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         buttons: [null, this.cancel],
         dangerMode: false
       })
+    } else {
+      this.listSitesOfSitemap = resp.sites;
+    }
 
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
-      this.trackUserActioOnKB('Deleted Knowledge Base')
-    })
-  }
+  }, (err) => {
+    this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
 
-  onDeleteNamespace() {
-    
-    let id_namespace = this.id_project;
-    this.logger.log("delete namespace " + id_namespace);
-    this.showSpinner = true;
-    this.closeDeleteNamespaceModal();
+    //this.onOpenErrorModal(error);
 
-    this.kbService.deleteNamespace(id_namespace).subscribe((response: any) => {
-      this.logger.log("deleteNamespace response: ", response)
-      this.showSpinner = false;
-
-      this.onLoadByFilter(this.paramsDefault);
-    }, (error) => {
-      this.logger.error("deleteNamespace response ", error);
-      this.showSpinner = false;
+    swal({
+      title: this.warningTitle,
+      text: error,
+      icon: "warning",
+      className: "custom-swal",
+      buttons: [null, "Cancel"],
+      dangerMode: false
     })
 
-  }
+  }, () => {
+    this.logger.log("[KNOWLEDGE-BASES-COMP] send sitemap *COMPLETED*");
+  })
+}
 
-
-  /** */
-  onUpdateKb(kb) {
-    this.logger.log('onUpdateKb: ', kb);
-    this.onCloseBaseModal();
-    let error = this.anErrorOccurredWhileUpdating
-    let dataDelete = {
-      "id": kb._id,
-      "namespace": kb.id_project
+/**
+ * onAddKb
+ */
+onAddKb(body) {
+  body.namespace = this.selectedNamespaceID
+  // this.logger.log("body:",body);
+  this.onCloseBaseModal();
+  let error = this.msgErrorAddUpdateKb;
+  this.kbService.addKb(body).subscribe((resp: any) => {
+    this.logger.log("onAddKb:", resp);
+    let kb = resp.value;
+    if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
+      //this.logger.log("updatedExisting true:");
+      const index = this.kbsList.findIndex(item => item._id === kb._id);
+      if (index !== -1) {
+        this.kbsList[index] = kb;
+        this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
+      }
+    } else {
+      //this.kbsList.push(kb);
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+      // this.kbsListCount++;
+      this.kbsList.unshift(kb);
+      this.kbsListCount = this.kbsListCount + 1;
+      this.refreshKbsList = !this.refreshKbsList;
+      // let searchParams = {
+      //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+      //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
+      //   "status": '',
+      //   "search": '',
+      // }
+      // this.onLoadByFilter(searchParams);
     }
-    let dataAdd = {
-      'name': kb.name,
-      'source': kb.source,
-      'content': '',
-      'type': 'url'
-    };
-    if (kb.type === 'text') {
-      dataAdd.source = kb.name;
-      dataAdd.content = kb.content,
-        dataAdd.type = 'text'
+    this.updateStatusOfKb(kb._id, -1);
+    // this.updateStatusOfKb(kb._id, 0);
+    // this.onLoadByFilter(searchParams);
+    // that.onRunIndexing(kb);
+    // setTimeout(() => {
+    //   this.checkStatusWithRetry(kb);
+    // }, 2000);
+    //that.onCloseBaseModal();
+  }, (err) => {
+    this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
+    // this.onOpenErrorModal(error);
+    if (err.error && err.error.plan_limit) {
+      // console.log('here 1 ')
+      this.getTranslatedStringKbLimitReached(err.error.plan_limit);
+      error = this.msgErrorAddUpdateKbLimit
     }
-    this.logger.log('dataAdd: ', dataAdd);
-    kb.deleting = true;
-    this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
-      kb.deleting = false;
-      if (!response || (response.success && response.success === false)) {
 
-        // this.onOpenErrorModal(error);
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
-        })
+    if (this.payIsVisible === true) {
+      swal({
+        title: this.warningTitle,
+        text: error,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [this.cancel, this.upgrade],
+        dangerMode: false
+      }).then((willUpgradePlan: any) => {
 
-
-
-      } else {
-        this.kbService.addKb(dataAdd).subscribe((resp: any) => {
-          let kbNew = resp.value;
-          if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
-            const index = this.kbsList.findIndex(item => item._id === kbNew._id);
-            if (index !== -1) {
-              this.kbsList[index] = kbNew;
-              this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
+        if (willUpgradePlan) {
+          if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'free') {
+              this.router.navigate(['project/' + this.id_project + '/pricing']);
+            } else {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
             }
           } else {
-            // this.kbsList.push(kb);
-            // this.kbsList.unshift(kbNew);
-            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
 
-          const index = this.kbsList.findIndex(item => item.id === kb._id);
-          if (index > -1) {
-            this.kbsList[index] = kbNew;
+        }
+      })
+    } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+      // console.log('here 2 this.kbLimit ', this.kbLimit)
+      swal({
+        title: this.warningTitle,
+        text: error,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [null, this.cancel],
+        dangerMode: false
+      })
+    } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+      // console.log('here 1')
+      swal({
+        title: this.warningTitle,
+        text: error + '. ' + this.contactUsToUpgrade,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [this.cancel, this.contactUs],
+        dangerMode: false
+      }).then((result) => {
+        if (result) {
+          window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+        }
+      })
+    }
+  }, () => {
+    this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+    this.trackUserActioOnKB('Added Knowledge Base')
+  })
+}
+
+
+
+presentModalOnlyOwnerCanManageTheAccountPlan() {
+
+  this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+
+}
+
+onAddMultiKb(body) {
+  this.onCloseBaseModal();
+  // this.logger.log("onAddMultiKb");
+  let error = this.msgErrorAddUpdateKb;
+  this.kbService.addMultiKb(body, this.selectedNamespaceID).subscribe((kbs: any) => {
+    this.logger.log("onAddMultiKb:", kbs);
+    this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+
+    let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespaceID;
+    this.getListOfKb(paramsDefault);
+    // kbs.forEach(kb => {
+    //   //this.kbsList.unshift(kb);
+    //   // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
+    //   //   setTimeout(() => {
+    //   //     this.checkStatusWithRetry(kb);
+    //   //   }, 2000);
+    //   // }
+    //   // this.updateStatusOfKb(kb._id, 3);
+    //   //this.updateStatusOfKb(kb._id, -1);
+    // });
+    this.kbsListCount = this.kbsListCount + kbs.length;
+    this.refreshKbsList = !this.refreshKbsList;
+  }, (err) => {
+    this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
+
+    //this.onOpenErrorModal(error);
+    if (err.error && err.error.plan_limit) {
+      this.getTranslatedStringKbLimitReached(err.error.plan_limit);
+      error = this.msgErrorAddUpdateKbLimit
+    }
+
+    if (this.payIsVisible === true) {
+      swal({
+        title: this.warningTitle,
+        text: error,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [this.cancel, this.upgrade],
+        dangerMode: false
+      }).then((willUpgradePlan: any) => {
+
+        if (willUpgradePlan) {
+          if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'free') {
+              this.router.navigate(['project/' + this.id_project + '/pricing']);
+            } else {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            }
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
-          // this.removeKb(kb._id);
-          //-->this.updateStatusOfKb(kbNew._id, 0);
-          this.refreshKbsList = !this.refreshKbsList;
-          // setTimeout(() => {
-          //   this.checkStatusWithRetry(kbNew);
-          // }, 2000);
-        }, (err) => {
-          this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
+        }
+      })
+    } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+      swal({
+        title: this.warningTitle,
+        text: error,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [null, this.cancel],
+        dangerMode: false
+      })
+    } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+      // console.log('here 1')
+      swal({
+        title: this.warningTitle,
+        text: error + '. ' + this.contactUsToUpgrade,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [this.cancel, this.contactUs],
+        dangerMode: false
+      }).then((result) => {
+        if (result) {
+          window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+        }
+      })
+    }
 
-          //this.onOpenErrorModal(error);
-          swal({
-            title: this.warningTitle,
-            text: error,
-            icon: "warning",
-            className: "custom-swal",
-            buttons: [null, this.cancel],
-            dangerMode: false
-          })
+  }, () => {
+    this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+    this.trackUserActioOnKB('Added Knowledge Base')
+  })
+}
 
 
-
-        }, () => {
-          this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
-        })
-      }
-    }, (err) => {
-      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
-      kb.deleting = false;
+/**
+ * onDeleteKb
+ */
+onDeleteKb(kb) {
+  let data = {
+    "id": kb._id,
+    "namespace": kb.id_project
+  }
+  // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
+  this.onCloseBaseModal();
+  let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
+  this.kbService.deleteKb(data).subscribe((response: any) => {
+    //this.logger.log('onDeleteKb:: ', response);
+    kb.deleting = false;
+    if (!response || (response.success && response.success === false)) {
+      // this.updateStatusOfKb(kb._id, 0);
 
       // this.onOpenErrorModal(error);
       swal({
@@ -1036,383 +1099,538 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         dangerMode: false
       })
 
-    }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
-      kb.deleting = false;
-    })
-  }
-  // ---------------- END SERVICE FUNCTIONS --------------- // 
 
 
-  // ---------------- OPEN AI FUNCTIONS --------------- //
-
-  checkStatusWithRetry(kb) {
-    let data = {
-      "namespace_list": [],
-      "namespace": this.id_project,
-      "id": kb._id
+    } else {
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
+      // let error = response.error?response.error:"Errore generico";
+      // this.onOpenErrorModal(error);
+      this.removeKb(kb._id);
+      this.kbsListCount = this.kbsListCount - 1;
+      this.refreshKbsList = !this.refreshKbsList;
+      // let searchParams = {
+      //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+      //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
+      //   "status": '',
+      //   "search": '',
+      // }
+      // this.onLoadByFilter(searchParams);
     }
-    var status_msg = "Indexing completed successfully!";
-    var status_code = 2;
-    var status_label = "done"
-    this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
+  }, (err) => {
+    this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
+    kb.deleting = false;
+    //this.kbid_selected.deleting = false;
 
-      // this.logger.log('Risposta ricevuta:', response);
-      // if(response.status_code && response.status_code == -1){
-      //   // this.logger.log('risorsa non indicizzata');
-      //   // this.onRunIndexing(kb);
-      //   this.checkStatusWithRetry(kb);
-      // }  
+    // this.onOpenErrorModal(error);
+    swal({
+      title: this.warningTitle,
+      text: error,
+      icon: "warning",
+      className: "custom-swal",
+      buttons: [null, this.cancel],
+      dangerMode: false
+    })
+
+  }, () => {
+    this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
+    this.trackUserActioOnKB('Deleted Knowledge Base')
+  })
+}
+
+onDeleteNamespace() {
+
+  let id_namespace = this.id_project;
+  this.logger.log("delete namespace " + id_namespace);
+  this.showSpinner = true;
+  this.closeDeleteNamespaceModal();
+
+  this.kbService.deleteNamespace(id_namespace).subscribe((response: any) => {
+    this.logger.log("deleteNamespace response: ", response)
+    this.showSpinner = false;
+
+    this.onLoadByFilter(this.paramsDefault);
+  }, (error) => {
+    this.logger.error("deleteNamespace response ", error);
+    this.showSpinner = false;
+  })
+
+}
 
 
-      let resource_status: Number;
-      if (response.status) {
-        resource_status = response.status;
-      } else {
-        resource_status = response.status_code
-      }
-
-      if (response.status == -1) {
-        status_msg = "Indexing not yet started";
-        status_code = 3;
-        status_label = "warning";
-      } else if (response.status == 100 || response.status == 200) {
-        status_msg = "Indexing in progress";
-        status_code = 3;
-        status_label = "warning";
-      } else if (response.status = 300) {
-        // default message already seat
-      } else if (response.status == 400) {
-        status_code = 4;
-        status_label = "dangerous";
-        status_msg = "The resource could not be indexed";
-      } else {
-        this.logger.log("Unrecognized status")
-      }
-
-      /**
-       *    OLD STATUSES - START 
-       */
-      if (response.status_code == -1 || response.status_code == 0 || response.status_code == 2) {
-        // this.logger.log('riprova tra 10 secondi...');
-        // this.updateStatusOfKb(kb._id, response.status_code);
-        // timer(20000).subscribe(() => {
-        //   this.checkStatusWithRetry(kb);
-        // });
-
-        status_msg = "Indexing in progress: " + response.status_code;
-        status_code = 3;
-        status_label = "warning";
-      } else if (response.status_code == 4) { // status == 3 || status == 4
-        // this.logger.log('Risposta corretta:', response.status_code);
-        status_code = 4;
-        status_label = "dangerous";
-        status_msg = "The resource could not be indexed " + response.status_code;
-      } else {
-        //status_msg = "Indicizzazione in corso stato: "+response.status_code;
-      }
-      /**   
-       *    OLD STATUSES - END 
-       */
-
-      this.updateStatusOfKb(kb._id, resource_status);
-      this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
-    },
-      error => {
-        this.logger.error('Error: ', error);
-        //-->this.updateStatusOfKb(kb._id, -2);
-        status_code = 4;
-        status_label = "dangerous";
-        status_msg = "Error: " + error.message;
-        this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
-      });
+/** */
+onUpdateKb(kb) {
+  this.logger.log('onUpdateKb: ', kb);
+  this.onCloseBaseModal();
+  let error = this.anErrorOccurredWhileUpdating
+  let dataDelete = {
+    "id": kb._id,
+    "namespace": kb.id_project
   }
+  let dataAdd = {
+    'name': kb.name,
+    'source': kb.source,
+    'content': '',
+    'type': 'url'
+  };
+  if (kb.type === 'text') {
+    dataAdd.source = kb.name;
+    dataAdd.content = kb.content,
+      dataAdd.type = 'text'
+  }
+  this.logger.log('dataAdd: ', dataAdd);
+  kb.deleting = true;
+  this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
+    kb.deleting = false;
+    if (!response || (response.success && response.success === false)) {
+
+      // this.onOpenErrorModal(error);
+      swal({
+        title: this.warningTitle,
+        text: error,
+        icon: "warning",
+        className: "custom-swal",
+        buttons: [null, this.cancel],
+        dangerMode: false
+      })
+
+
+
+    } else {
+      this.kbService.addKb(dataAdd).subscribe((resp: any) => {
+        let kbNew = resp.value;
+        if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
+          const index = this.kbsList.findIndex(item => item._id === kbNew._id);
+          if (index !== -1) {
+            this.kbsList[index] = kbNew;
+            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
+          }
+        } else {
+          // this.kbsList.push(kb);
+          // this.kbsList.unshift(kbNew);
+          this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+        }
+
+        const index = this.kbsList.findIndex(item => item.id === kb._id);
+        if (index > -1) {
+          this.kbsList[index] = kbNew;
+        }
+        // this.removeKb(kb._id);
+        //-->this.updateStatusOfKb(kbNew._id, 0);
+        this.refreshKbsList = !this.refreshKbsList;
+        // setTimeout(() => {
+        //   this.checkStatusWithRetry(kbNew);
+        // }, 2000);
+      }, (err) => {
+        this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
+
+        //this.onOpenErrorModal(error);
+        swal({
+          title: this.warningTitle,
+          text: error,
+          icon: "warning",
+          className: "custom-swal",
+          buttons: [null, this.cancel],
+          dangerMode: false
+        })
+
+
+
+      }, () => {
+        this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+      })
+    }
+  }, (err) => {
+    this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
+    kb.deleting = false;
+
+    // this.onOpenErrorModal(error);
+    swal({
+      title: this.warningTitle,
+      text: error,
+      icon: "warning",
+      className: "custom-swal",
+      buttons: [null, this.cancel],
+      dangerMode: false
+    })
+
+  }, () => {
+    this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+    kb.deleting = false;
+  })
+}
+// ---------------- END SERVICE FUNCTIONS --------------- // 
+
+
+// ---------------- OPEN AI FUNCTIONS --------------- //
+
+checkStatusWithRetry(kb) {
+  let data = {
+    "namespace_list": [],
+    "namespace": this.id_project,
+    "id": kb._id
+  }
+  var status_msg = "Indexing completed successfully!";
+  var status_code = 2;
+  var status_label = "done"
+  this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
+
+    // this.logger.log('Risposta ricevuta:', response);
+    // if(response.status_code && response.status_code == -1){
+    //   // this.logger.log('risorsa non indicizzata');
+    //   // this.onRunIndexing(kb);
+    //   this.checkStatusWithRetry(kb);
+    // }  
+
+
+    let resource_status: Number;
+    if (response.status) {
+      resource_status = response.status;
+    } else {
+      resource_status = response.status_code
+    }
+
+    if (response.status == -1) {
+      status_msg = "Indexing not yet started";
+      status_code = 3;
+      status_label = "warning";
+    } else if (response.status == 100 || response.status == 200) {
+      status_msg = "Indexing in progress";
+      status_code = 3;
+      status_label = "warning";
+    } else if (response.status = 300) {
+      // default message already seat
+    } else if (response.status == 400) {
+      status_code = 4;
+      status_label = "dangerous";
+      status_msg = "The resource could not be indexed";
+    } else {
+      this.logger.log("Unrecognized status")
+    }
+
+    /**
+     *    OLD STATUSES - START 
+     */
+    if (response.status_code == -1 || response.status_code == 0 || response.status_code == 2) {
+      // this.logger.log('riprova tra 10 secondi...');
+      // this.updateStatusOfKb(kb._id, response.status_code);
+      // timer(20000).subscribe(() => {
+      //   this.checkStatusWithRetry(kb);
+      // });
+
+      status_msg = "Indexing in progress: " + response.status_code;
+      status_code = 3;
+      status_label = "warning";
+    } else if (response.status_code == 4) { // status == 3 || status == 4
+      // this.logger.log('Risposta corretta:', response.status_code);
+      status_code = 4;
+      status_label = "dangerous";
+      status_msg = "The resource could not be indexed " + response.status_code;
+    } else {
+      //status_msg = "Indicizzazione in corso stato: "+response.status_code;
+    }
+    /**   
+     *    OLD STATUSES - END 
+     */
+
+    this.updateStatusOfKb(kb._id, resource_status);
+    this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
+  },
+    error => {
+      this.logger.error('Error: ', error);
+      //-->this.updateStatusOfKb(kb._id, -2);
+      status_code = 4;
+      status_label = "dangerous";
+      status_msg = "Error: " + error.message;
+      this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
+    });
+}
 
   /**
    * updateStatusOfKb
    */
   private updateStatusOfKb(kb_id, status_code) {
-    let kb = this.kbsList.find(item => item._id === kb_id);
-    if (kb) kb.status = status_code;
-    // this.logger.log('AGGIORNO updateStatusOfKb:', kb_id, status_code, kb);
-  }
+  let kb = this.kbsList.find(item => item._id === kb_id);
+  if (kb) kb.status = status_code;
+  // this.logger.log('AGGIORNO updateStatusOfKb:', kb_id, status_code, kb);
+}
 
   private removeKb(kb_id) {
-    //this.kbs = this.kbs.filter(item => item._id !== kb_id);
-    this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
-    // this.logger.log('AGGIORNO kbsList:', this.kbsList);
-    this.refreshKbsList = !this.refreshKbsList;
-    // this.logger.log('AGGIORNO kbsList:', this.kbsList);
+  //this.kbs = this.kbs.filter(item => item._id !== kb_id);
+  this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
+  // this.logger.log('AGGIORNO kbsList:', this.kbsList);
+  this.refreshKbsList = !this.refreshKbsList;
+  // this.logger.log('AGGIORNO kbsList:', this.kbsList);
+}
+
+
+/**
+ * onCheckStatus
+ */
+onCheckStatus(kb) {
+  this.checkStatusWithRetry(kb);
+}
+
+/**
+ * runIndexing
+ */
+onRunIndexing(kb) {
+  let data = {
+    "id": kb._id,
+    "source": kb.source,
+    "type": kb.type,
+    "content": kb.content ? kb.content : '',
+    "namespace": this.id_project
   }
-
-
-  /**
-   * onCheckStatus
-   */
-  onCheckStatus(kb) {
-    this.checkStatusWithRetry(kb);
-  }
-
-  /**
-   * runIndexing
-   */
-  onRunIndexing(kb) {
-    let data = {
-      "id": kb._id,
-      "source": kb.source,
-      "type": kb.type,
-      "content": kb.content ? kb.content : '',
-      "namespace": this.id_project
+  this.updateStatusOfKb(kb._id, 100);
+  this.openaiService.startScraping(data).subscribe((response: any) => {
+    this.logger.log("start scraping response: ", response);
+    if (response.error) {
+      this.notify.showWidgetStyleUpdateNotification(this.msgErrorIndexingKb, 4, 'report_problem');
+    } else {
+      this.notify.showWidgetStyleUpdateNotification(this.msgSuccesIndexingKb, 2, 'done');
+      // this.checkStatusWithRetry(kb);
     }
-    this.updateStatusOfKb(kb._id, 100);
-    this.openaiService.startScraping(data).subscribe((response: any) => {
-      this.logger.log("start scraping response: ", response);
-      if (response.error) {
-        this.notify.showWidgetStyleUpdateNotification(this.msgErrorIndexingKb, 4, 'report_problem');
-      } else {
-        this.notify.showWidgetStyleUpdateNotification(this.msgSuccesIndexingKb, 2, 'done');
-        // this.checkStatusWithRetry(kb);
+  }, (error) => {
+    this.logger.error("error start scraping response: ", error);
+  }, () => {
+    this.logger.log("start scraping *COMPLETE*");
+  })
+}
+
+
+onReloadKbs(params) {
+  params.namespace = this.selectedNamespaceID
+  this.getListOfKb(params);
+}
+// ---------------- END OPEN AI FUNCTIONS --------------- //
+
+createConditionGroupUrl(): FormGroup {
+  const namePattern = /^[^&<>]{3,}$/;
+  return this.formBuilder.group({
+    url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+    name: ['', [Validators.required, Validators.pattern(namePattern)]]
+  })
+}
+
+createConditionGroupContent(): FormGroup {
+  const contentPattern = /^[^&<>]{3,}$/;
+  const namePattern = /^[^&<>]{3,}$/;
+  return this.formBuilder.group({
+    content: ['', [Validators.required, Validators.pattern(contentPattern)]],
+    name: ['', [Validators.required, Validators.pattern(namePattern)]]
+  })
+}
+
+onChangeInput(event, type): void {
+  if(type === 'url') {
+  if (this.kbFormUrl.valid) {
+    this.buttonDisabled = false;
+  } else {
+    this.buttonDisabled = true;
+  }
+} else if (type === 'text') {
+  if (this.kbFormContent.valid) {
+    this.buttonDisabled = false;
+  } else {
+    this.buttonDisabled = true;
+  }
+}
+  }
+
+trackUserActioOnKB(event: any) {
+  if (!isDevMode()) {
+    if (window['analytics']) {
+      let userFullname = ''
+      if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
+        userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
+      } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
+        userFullname = this.CURRENT_USER.firstname
       }
-    }, (error) => {
-      this.logger.error("error start scraping response: ", error);
-    }, () => {
-      this.logger.log("start scraping *COMPLETE*");
-    })
-  }
+      try {
+        window['analytics'].identify(this.CURRENT_USER._id, {
+          name: userFullname,
+          email: this.CURRENT_USER.email,
+          plan: this.profile_name
 
-
-  onReloadKbs(params) {
-    this.getListOfKb(params);
-  }
-  // ---------------- END OPEN AI FUNCTIONS --------------- //
-
-  createConditionGroupUrl(): FormGroup {
-    const namePattern = /^[^&<>]{3,}$/;
-    return this.formBuilder.group({
-      url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      name: ['', [Validators.required, Validators.pattern(namePattern)]]
-    })
-  }
-
-  createConditionGroupContent(): FormGroup {
-    const contentPattern = /^[^&<>]{3,}$/;
-    const namePattern = /^[^&<>]{3,}$/;
-    return this.formBuilder.group({
-      content: ['', [Validators.required, Validators.pattern(contentPattern)]],
-      name: ['', [Validators.required, Validators.pattern(namePattern)]]
-    })
-  }
-
-  onChangeInput(event, type): void {
-    if (type === 'url') {
-      if (this.kbFormUrl.valid) {
-        this.buttonDisabled = false;
-      } else {
-        this.buttonDisabled = true;
+        });
+      } catch (err) {
+        this.logger.error('identify Invite Sent Profile error', err);
       }
-    } else if (type === 'text') {
-      if (this.kbFormContent.valid) {
-        this.buttonDisabled = false;
-      } else {
-        this.buttonDisabled = true;
+      try {
+        window['analytics'].track(event, {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.CURRENT_USER.email,
+          'userId': this.CURRENT_USER._id,
+          'page': this.callingPage
+
+        }, {
+          "context": {
+            "groupId": this.id_project
+          }
+        });
+      } catch (err) {
+        this.logger.error('track Invite Sent event error', err);
       }
-    }
-  }
-
-  trackUserActioOnKB(event: any) {
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        let userFullname = ''
-        if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
-          userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
-        } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
-          userFullname = this.CURRENT_USER.firstname
-        }
-        try {
-          window['analytics'].identify(this.CURRENT_USER._id, {
-            name: userFullname,
-            email: this.CURRENT_USER.email,
-            plan: this.profile_name
-
-          });
-        } catch (err) {
-          this.logger.error('identify Invite Sent Profile error', err);
-        }
-        try {
-          window['analytics'].track(event, {
-            "type": "organic",
-            "username": userFullname,
-            "email": this.CURRENT_USER.email,
-            'userId': this.CURRENT_USER._id,
-            'page': this.callingPage
-
-          }, {
-            "context": {
-              "groupId": this.id_project
-            }
-          });
-        } catch (err) {
-          this.logger.error('track Invite Sent event error', err);
-        }
-        try {
-          window['analytics'].group(this.id_project, {
-            name: this.project_name,
-            plan: this.profile_name + ' plan',
-          });
-        } catch (err) {
-          this.logger.error('group Invite Sent error', err);
-        }
+      try {
+        window['analytics'].group(this.id_project, {
+          name: this.project_name,
+          plan: this.profile_name + ' plan',
+        });
+      } catch (err) {
+        this.logger.error('group Invite Sent error', err);
       }
     }
   }
+}
 
-  /**
-   * 
-   */
-  checkAllStatuses() {
-    this.logger.log('[KNOWLEDGE BASES COMP] checkAllStatuses: ', this.kbsList);
-    this.kbsList.forEach(kb => {
-      //if(kb.status == -1){
-      //   this.onRunIndexing(kb);
-      //} else 
-      this.updateStatusOfKb(kb._id, 3);
-      // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-      //   this.checkStatusWithRetry(kb);
-      // }
-    });
-  }
-
-
-
-  showHideSecret(target) {
-    this.gptkeyVisible = !this.gptkeyVisible;
-    // let el = <HTMLInputElement>document.getElementById(target);
-    // if (el.type === "password") {
-    //   this.gptkeyVisible = true;
-    //   el.type = "text";
-    // } else {
-    //   this.gptkeyVisible = false;
-    //   el.type = "password"
+/**
+ * 
+ */
+checkAllStatuses() {
+  this.logger.log('[KNOWLEDGE BASES COMP] checkAllStatuses: ', this.kbsList);
+  this.kbsList.forEach(kb => {
+    //if(kb.status == -1){
+    //   this.onRunIndexing(kb);
+    //} else 
+    this.updateStatusOfKb(kb._id, 3);
+    // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
+    //   this.checkStatusWithRetry(kb);
     // }
-  }
+  });
+}
 
-  openAddKnowledgeBaseModal(type?) {
-    this.logger.log('openAddKnowledgeBaseModal type', type)
-    this.typeKnowledgeBaseModal = type;
-    this.addKnowledgeBaseModal = 'block';
-  }
 
-  // openPreviewKnowledgeBaseModal(kb) {
-  //   this.kbid_selected = kb;
-  //   this.previewKnowledgeBaseModal = 'block';
-  //   this.baseModalPreview = true;
+
+showHideSecret(target) {
+  this.gptkeyVisible = !this.gptkeyVisible;
+  // let el = <HTMLInputElement>document.getElementById(target);
+  // if (el.type === "password") {
+  //   this.gptkeyVisible = true;
+  //   el.type = "text";
+  // } else {
+  //   this.gptkeyVisible = false;
+  //   el.type = "password"
   // }
+}
 
-  // openDeleteKnowledgeBaseModal(kb) {
-  //   this.kbid_selected = kb;
-  //   this.deleteKnowledgeBaseModal = 'block';
-  //   this.baseModalDelete = true;
-  // }
+openAddKnowledgeBaseModal(type ?) {
+  this.logger.log('openAddKnowledgeBaseModal type', type)
+  this.typeKnowledgeBaseModal = type;
+  this.addKnowledgeBaseModal = 'block';
+}
 
+// openPreviewKnowledgeBaseModal(kb) {
+//   this.kbid_selected = kb;
+//   this.previewKnowledgeBaseModal = 'block';
+//   this.baseModalPreview = true;
+// }
 
-  openSecretsModal() {
-    this.missingGptkeyModal = 'none';
-    setTimeout(() => {
-      this.secretsModal = 'block';
-      // if (this.kbSettings.gptkey) {
-      //   let el = <HTMLInputElement>document.getElementById('gptkey-key');
-      //   el.type = "password"
-      //   this.gptkeyVisible = false;
-      // } else {
-      //   this.gptkeyVisible = true;
-      // }
-    }, 600);
-  }
-
-  openMissingGptkeyModal() {
-    this.missingGptkeyModal = 'block';
-  }
-
-  closeAddKnowledgeBaseModal() {
-    this.addKnowledgeBaseModal = 'none';
-    // this.newKb = { name: '', url: '' }
-  }
-
-  closeSecretsModal() {
-    this.secretsModal = 'none';
-  }
-
-  closeMissingGptkeyModal() {
-    this.missingGptkeyModal = 'none';
-  }
-
-  closeDeleteKnowledgeBaseModal() {
-    this.deleteKnowledgeBaseModal = 'none';
-    this.baseModalDelete = false;
-  }
-
-  closeDeleteNamespaceModal() {
-    this.showDeleteNamespaceModal = false;
-  }
-
-  contactSalesForChatGptKey() {
-    this.closeSecretsModal()
-    window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
-  }
+// openDeleteKnowledgeBaseModal(kb) {
+//   this.kbid_selected = kb;
+//   this.deleteKnowledgeBaseModal = 'block';
+//   this.baseModalDelete = true;
+// }
 
 
-  // ************** DELETE **************** //
-  onDeleteKnowledgeBase(kb) {
-    this.onDeleteKb(kb);
-    // this.baseModalDelete = false;
-  }
+openSecretsModal() {
+  this.missingGptkeyModal = 'none';
+  setTimeout(() => {
+    this.secretsModal = 'block';
+    // if (this.kbSettings.gptkey) {
+    //   let el = <HTMLInputElement>document.getElementById('gptkey-key');
+    //   el.type = "password"
+    //   this.gptkeyVisible = false;
+    // } else {
+    //   this.gptkeyVisible = true;
+    // }
+  }, 600);
+}
 
-  onOpenDeleteNamespaceModal() {
-    this.logger.log("onOpenDeleteNamespaceModal called....")
-    this.showDeleteNamespaceModal = true;
-  }
+openMissingGptkeyModal() {
+  this.missingGptkeyModal = 'block';
+}
 
-  onOpenBaseModalDelete(kb) {
-    this.kbid_selected = kb;
-    this.kbid_selected.deleting = true;
-    this.baseModalDelete = true;
-  }
-  // ************** PREVIEW **************** //
+closeAddKnowledgeBaseModal() {
+  this.addKnowledgeBaseModal = 'none';
+  // this.newKb = { name: '', url: '' }
+}
 
-  onOpenBaseModalDetail(kb) {
-    this.kbid_selected = kb;
-    this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
-    this.baseModalDetail = true;
-  }
+closeSecretsModal() {
+  this.secretsModal = 'none';
+}
 
-  onOpenBaseModalPreview() {
-    // this.logger.log("onOpenBaseModalPreview:: ")
-    //this.kbid_selected = kb;
-    this.baseModalPreview = true;
-  }
+closeMissingGptkeyModal() {
+  this.missingGptkeyModal = 'none';
+}
 
-  onOpenBaseModalPreviewSettings() {
-    this.baseModalPreviewSettings = true;
-  }
+closeDeleteKnowledgeBaseModal() {
+  this.deleteKnowledgeBaseModal = 'none';
+  this.baseModalDelete = false;
+}
 
+closeDeleteNamespaceModal() {
+  this.showDeleteNamespaceModal = false;
+}
 
-
-  onOpenErrorModal(response) {
-    this.errorMessage = response;
-    this.baseModalError = true;
-  }
+contactSalesForChatGptKey() {
+  this.closeSecretsModal()
+  window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
+}
 
 
-  // ************** CLOSE ALL MODAL **************** //
-  onCloseBaseModal() {
-    this.listSitesOfSitemap = [];
-    this.baseModalDelete = false;
-    this.baseModalPreview = false;
-    this.baseModalPreviewSettings = false;
-    this.baseModalError = false;
-    this.baseModalDetail = false;
-    this.typeKnowledgeBaseModal = '';
-  }
+// ************** DELETE **************** //
+onDeleteKnowledgeBase(kb) {
+  this.onDeleteKb(kb);
+  // this.baseModalDelete = false;
+}
+
+onOpenDeleteNamespaceModal() {
+  this.logger.log("onOpenDeleteNamespaceModal called....")
+  this.showDeleteNamespaceModal = true;
+}
+
+onOpenBaseModalDelete(kb) {
+  this.kbid_selected = kb;
+  this.kbid_selected.deleting = true;
+  this.baseModalDelete = true;
+}
+// ************** PREVIEW **************** //
+
+onOpenBaseModalDetail(kb) {
+  this.kbid_selected = kb;
+  this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+  this.baseModalDetail = true;
+}
+
+onOpenBaseModalPreview() {
+  // this.logger.log("onOpenBaseModalPreview:: ")
+  //this.kbid_selected = kb;
+  this.baseModalPreview = true;
+}
+
+onOpenBaseModalPreviewSettings() {
+  this.baseModalPreviewSettings = true;
+}
+
+
+
+onOpenErrorModal(response) {
+  this.errorMessage = response;
+  this.baseModalError = true;
+}
+
+
+// ************** CLOSE ALL MODAL **************** //
+onCloseBaseModal() {
+  this.listSitesOfSitemap = [];
+  this.baseModalDelete = false;
+  this.baseModalPreview = false;
+  this.baseModalPreviewSettings = false;
+  this.baseModalError = false;
+  this.baseModalDetail = false;
+  this.typeKnowledgeBaseModal = '';
+}
 
 
 

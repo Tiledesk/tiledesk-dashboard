@@ -1684,7 +1684,7 @@
         "msgSuccesDeleteKb": "Контент успешно удален",
         "msgErrorDeleteKb": "Невозможно удалить контент",
         "DeleteKbInfoFirstText": "Вы больше не сможете использовать ИИ в этом контенте.",
-        "SureToDeleteNamespace": "Вы уверены, что хотите удалить все содержимое?",
+        "SureToDeleteNamespace": "Вы уверены, что хотите удалить все содержимое namespace <b>{{ namespace_name }}</b>?",
         "SureToDelete": "Вы уверены, что хотите удалить контент <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Пожалуйста, введите действительный контент.",
         "KBLimitReached": "Для {{plan_name}} достигнут лимит контента",

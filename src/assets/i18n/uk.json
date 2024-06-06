@@ -1685,7 +1685,7 @@
         "msgSuccesDeleteKb": "Вміст успішно видалено",
         "msgErrorDeleteKb": "Не вдалося видалити вміст",
         "DeleteKbInfoFirstText": "Ви більше не зможете використовувати ШІ для цього вмісту",
-        "SureToDeleteNamespace": "Ви впевнені, що хочете видалити весь вміст?",
+        "SureToDeleteNamespace": "Ви впевнені, що хочете видалити весь вміст namespace <b>{{namespace_name }}</b>?",
         "SureToDelete": "Ви впевнені, що хочете видалити вміст <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Введіть дійсний вміст.",
         "KBLimitReached": "Досягнуто ліміту вмісту для {{plan_name}}",

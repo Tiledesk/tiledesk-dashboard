@@ -210,3 +210,26 @@
 .btn {
     text-transform: none;
 } 
+
+.active--label {
+    color: #3c4858;
+}
+
+input[type=text] {
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 ;
+    border-top: 1px solid #d9d9d9;
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+}
+input[type=text]:disabled {
+    background-color: #f8f9f9;
+}

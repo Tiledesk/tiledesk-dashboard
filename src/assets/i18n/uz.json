@@ -1684,7 +1684,7 @@
         "msgSuccesDeleteKb": "Kontent muvaffaqiyatli oʻchirildiо",
         "msgErrorDeleteKb": "Kontentni oʻchirib boʻlmadi",
         "DeleteKbInfoFirstText": "Siz endi bu kontentda AIdan foydalana olmaysiz",
-        "SureToDeleteNamespace": "Haqiqatan ham barcha tarkibni oʻchirib tashlamoqchimisiz?",
+        "SureToDeleteNamespace": "Haqiqatan ham namespace <b>{{namespace_name }}</b> barcha mazmunini oʻchirib tashlamoqchimisiz?",
         "SureToDelete": "Haqiqatan ham <b>{{ name }}</b> kontentini oʻchirib tashlamoqchimisiz?",
         "AddKbInfoTextContent": "Iltimos, yaroqli tarkibni kiriting.",
         "KBLimitReached": "Досягнуто ліміту вмісту для {{plan_name}}",

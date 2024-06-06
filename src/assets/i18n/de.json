@@ -1684,7 +1684,7 @@
 		"msgSuccesDeleteKb": "Inhalt erfolgreich gelöscht",
 		"msgErrorDeleteKb": "Inhalt kann nicht gelöscht werden",
 		"DeleteKbInfoFirstText": "Sie können für diesen Inhalt keine KI mehr verwenden",
-		"SureToDeleteNamespace": "Möchten Sie wirklich den gesamten Inhalt löschen?",
+		"SureToDeleteNamespace": "Möchten Sie wirklich den gesamten Inhalt von namespace <b>{{namespace_name }}</b> löschen?",
 		"SureToDelete": "<b>{{ name }}</b> məzmununu silmək istədiyinizə əminsiniz?",
 		"AddKbInfoTextContent": "Bitte geben Sie gültigen Inhalt ein.",
 		"KBLimitReached": "Inhaltslimit für {{plan_name}} erreicht",
