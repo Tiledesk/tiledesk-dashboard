@@ -791,7 +791,20 @@
         "AutomaticUnavailableStatus": "Автоматичний статус недоступний",
         "SetAnAgentStatusToUnavailable": "Установіть статус агента на недоступний, якщо йому перепризначено кількість чатів поспіль",
         "ItSetAnAgentStatusToUnavailable": "Він встановлює статус агента як недоступний, якщо йому перепризначено кількість чатів поспіль",
-        "NumberOfChatsReassignedBefore": "Кількість чатів, перепризначених до зміни статусу агента"
+        "NumberOfChatsReassignedBefore": "Кількість чатів, перепризначених до зміни статусу агента",
+        "Security": {
+            "Security": "Безпека",
+            "SecurityDescription": "Ви можете обмежити доступ до {{ BRAND_NAME }} лише тим користувачам із діапазону IP-адрес. ",
+            "EnableIPRestriction": "Увімкніть обмеження IP",
+            "ThisWillAffects": "Це вплине",
+            "SignInForAllTiledeskProducts": "Увійдіть, щоб отримати доступ до всіх продуктів {{ BRAND_NAME }}",
+            "AllowedIpRanges": "Дозволені діапазони IP-адрес",
+            "AddIpRanges": " Додайте діапазони IP-адрес, яким потрібен доступ {{ BRAND_NAME }}. ",
+            "Use": "використання",
+            "SyntaxWhereN": "синтаксис, де n – число",
+            "RangesPlaceholder": "приклад: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "Увімкнення обмежень доступу на основі IP може порушити інтеграцію сторонніх розробників. Дозвольте всім зовнішнім IP, яким потрібен доступ до вашого облікового запису через {{ BRAND_NAME }} API."
+        }
     },
     "HomePage": {
         "Widget": "Щоб почати, налаштуйте свій віджет!",

@@ -790,7 +790,20 @@
         "AutomaticUnavailableStatus": "Status indisponível automático",
         "SetAnAgentStatusToUnavailable": "Defina o status de um agente como indisponível se ele tiver um número consecutivo de chats reatribuídos",
         "ItSetAnAgentStatusToUnavailable": "Ele define o status de um agente como indisponível se ele tiver um número consecutivo de chats reatribuídos",
-        "NumberOfChatsReassignedBefore": "Número de chats reatribuídos antes que o status do agente seja alterado"
+        "NumberOfChatsReassignedBefore": "Número de chats reatribuídos antes que o status do agente seja alterado",
+        "Security": {
+            "Security": "Segurança",
+            "SecurityDescription": "Você pode restringir o acesso ao {{ BRAND_NAME }} apenas aos usuários dentro de um intervalo de endereços IP. ",
+            "EnableIPRestriction": "Habilitar restrições de IP",
+            "ThisWillAffects": "Isto afetará",
+            "SignInForAllTiledeskProducts": "Faça login para todos os produtos {{ BRAND_NAME }}",
+            "AllowedIpRanges": "Intervalos de IP permitidos",
+            "AddIpRanges": " Adicione os intervalos de IP que precisam de acesso ao {{ BRAND_NAME }}. ",
+            "Use": "Usar",
+            "SyntaxWhereN": "sintaxe onde n é um número",
+            "RangesPlaceholder": "exemplo: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "Habilitar restrições de acesso baseadas em IP pode quebrar integrações de terceiros. Permita que todos os IPs externos que precisam acessar sua conta por meio da API {{ BRAND_NAME }}."
+        }
     },
     "HomePage": {
         "Widget": "Para começar a configurar seu Widget!",

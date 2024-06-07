@@ -790,7 +790,20 @@
 		"AutomaticUnavailableStatus": "Automatischer Nicht verfügbar Status",
 		"SetAnAgentStatusToUnavailable": "Den Status eines Agenten automatisch auf nicht verfügbar ändern wenn eine gewisse Anzahl von folgenden Neuzuweisungen durchgeführt wurde",
 		"ItSetAnAgentStatusToUnavailable": "Der Status eines Agenten wurde auf 'Nicht verfügbar' gesetzt, wenn eine fortlaufende Anzahl von Chats neu zugewiesen wurde",
-		"NumberOfChatsReassignedBefore": "Anzahl von neu zugewiesenen Chats bevor der Status des Agenten geändert wird"
+		"NumberOfChatsReassignedBefore": "Anzahl von neu zugewiesenen Chats bevor der Status des Agenten geändert wird",
+		"Security":{
+			"Security": "Sicherheit",
+			"SecurityDescription": "Sie können den Zugriff auf {{ BRAND_NAME }} nur auf Benutzer innerhalb eines IP-Adressbereichs beschränken. ",
+			"EnableIPRestriction": "Aktivieren Sie IP-Einschränkungen",
+			"ThisWillAffects": "Dies wird Auswirkungen haben",
+			"SignInForAllTiledeskProducts": "Melden Sie sich für alle {{ BRAND_NAME }}-Produkte an",
+			"AllowedIpRanges": "Zulässige IP-Bereiche",
+			"AddIpRanges": " Fügen Sie die IP-Bereiche hinzu, die {{ BRAND_NAME }}-Zugriff benötigen. ",
+			"Use": "Verwenden",
+			"SyntaxWhereN": "Syntax, wobei n eine Zahl ist",
+			"RangesPlaceholder": "Beispiel: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+			"EnableIpBasedAccessRestrictions": "Durch die Aktivierung IP-basierter Zugriffsbeschränkungen können Integrationen von Drittanbietern unterbrochen werden. Erlauben Sie allen externen IPs, die über die {{ BRAND_NAME }}-API auf Ihr Konto zugreifen müssen."
+		}
 	},
 	"HomePage": {
 		"Widget": "Um z ustarten konfigurieren Sie ihr Widget!",

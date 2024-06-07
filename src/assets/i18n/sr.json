@@ -791,7 +791,20 @@
         "AutomaticUnavailableStatus": "Аутоматски статус недоступан",
         "SetAnAgentStatusToUnavailable": "Подесите статус агента на недоступан ако има узастопни предодељен број ћаскања",
         "ItSetAnAgentStatusToUnavailable": "Поставља статус агента на недоступан ако има узастопни број ћаскања поново додељен",
-        "NumberOfChatsReassignedBefore": "Број предодељених ћаскања пре промене статуса агента"
+        "NumberOfChatsReassignedBefore": "Број предодељених ћаскања пре промене статуса агента",
+        "Security": {
+            "Security": "Безбедност",
+            "SecurityDescription": "Можете ограничити приступ {{ BRAND_NAME }}-у само на оне кориснике у опсегу ИП адреса. ",
+            "EnableIPRestriction": "Омогућите ИП ограничења",
+            "ThisWillAffects": "Ово ће утицати",
+            "SignInForAllTiledeskProducts": "Пријавите се за све {{ BRAND_NAME }} производе",
+            "AllowedIpRanges": "Дозвољени ИП опсези",
+            "AddIpRanges": " Додајте ИП опсеге којима је потребан {{ BRAND_NAME }} приступ. ",
+            "Use": "Користите",
+            "SyntaxWhereN": "синтаксе где је н број",
+            "RangesPlaceholder": "пример: кк.ккк.ккк.ккк, кк.ккк.ккк.ккк",
+            "EnableIpBasedAccessRestrictions": "Омогућавање ограничења приступа заснованог на ИП-у може да прекине интеграције трећих страна. Дозволите свим спољним ИП адресама које треба да приступе вашем налогу преко {{ BRAND_NAME }} АПИ-ја."
+        }
     },
     "HomePage": {
         "Widget": "За почетак конфигуришите свој виџет!",

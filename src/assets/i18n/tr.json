@@ -791,7 +791,20 @@
         "AutomaticUnavailableStatus": "Otomatik kullanılamıyor durumu",
         "SetAnAgentStatusToUnavailable": "Ardışık sayıda yeniden atanmış sohbetleri varsa, bir temsilcinin durumunu müsait değil olarak ayarlayın",
         "ItSetAnAgentStatusToUnavailable": "Ardışık sayıda yeniden atanmış sohbetleri varsa, bir temsilcinin durumunu kullanılamaz olarak ayarlar",
-        "NumberOfChatsReassignedBefore": "Temsilcinin durumu değiştirilmeden önce yeniden atanan sohbet sayısı"
+        "NumberOfChatsReassignedBefore": "Temsilcinin durumu değiştirilmeden önce yeniden atanan sohbet sayısı",
+        "Security": {
+            "Security": "Güvenlik",
+            "SecurityDescription": "{{ BRAND_NAME }}'e erişimi yalnızca belirli bir IP adresi aralığındaki kullanıcılarla kısıtlayabilirsiniz. ",
+            "EnableIPRestriction": "IP kısıtlamalarını etkinleştir",
+            "ThisWillAffects": "Bu etkileyecektir",
+            "SignInForAllTiledeskProducts": "Tüm {{ BRAND_NAME }} ürünleri için oturum açın",
+            "AllowedIpRanges": "İzin verilen IP aralıkları",
+            "AddIpRanges": " {{ BRAND_NAME }} erişimine ihtiyaç duyan IP aralıklarını ekleyin. ",
+            "Use": "Kullanmak",
+            "SyntaxWhereN": "sözdizimi burada n bir sayıdır",
+            "RangesPlaceholder": "örnek: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "IP tabanlı erişim kısıtlamalarını etkinleştirmek üçüncü taraf entegrasyonlarını bozabilir. Hesabınıza {{ BRAND_NAME }} API aracılığıyla erişmesi gereken tüm harici IP'lere izin verin."
+        }
     },
     "HomePage": {
         "Widget": "Widget'ınızı yapılandırmaya başlamak için!",

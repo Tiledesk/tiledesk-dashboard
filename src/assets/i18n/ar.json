@@ -790,7 +790,20 @@
         "AutomaticUnavailableStatus": "حالة عدم التوفر التلقائي",
         "SetAnAgentStatusToUnavailable": "عيّن حالة الوكيل على \"غير متاح\" إذا تمت إعادة تعيين عدد متتالي من الدردشات",
         "ItSetAnAgentStatusToUnavailable": "يتم تعيين حالة الوكيل على \"غير متاح\" إذا تمت إعادة تعيين عدد متتالي من الدردشات",
-        "NumberOfChatsReassignedBefore": "عدد الدردشات التي تمت إعادة تعيينها قبل تغيير حالة الوكيل"
+        "NumberOfChatsReassignedBefore": "عدد الدردشات التي تمت إعادة تعيينها قبل تغيير حالة الوكيل",
+        "Security":{
+            "Security": "حماية",
+            "SecurityDescription": "يمكنك قصر الوصول إلى {{ BRAND_NAME }} على المستخدمين الموجودين ضمن نطاق من عناوين IP فقط. ",
+            "EnableIPRestriction": "تمكين قيود IP",
+            "ThisWillAffects": "وهذا سوف يؤثر",
+            "SignInForAllTiledeskProducts": "قم بتسجيل الدخول لجميع منتجات {{ BRAND_NAME }}",
+            "AllowedIpRanges": "نطاقات IP المسموح بها",
+            "AddIpRanges": " أضف نطاقات IP التي تحتاج إلى الوصول إلى {{ BRAND_NAME }}. ",
+            "Use": "يستخدم",
+            "SyntaxWhereN": "بناء الجملة حيث n هو رقم",
+            "RangesPlaceholder": "على سبيل المثال: xx.xxx.xxx.xxx، xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "يمكن أن يؤدي تمكين قيود الوصول المستندة إلى IP إلى كسر عمليات تكامل الجهات الخارجية. السماح لجميع عناوين IP الخارجية التي تحتاج إلى الوصول إلى حسابك عبر {{ BRAND_NAME }} API."
+        }
     },
     "HomePage": {
         "Widget": "لبدء تكوين القطعة الخاصة بك!",
