@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.35-rc2
+- Namespace CRUD (in progress)
+
 ### 2.6.35-rc1
 - Namespace CRUD (in progress)
 
