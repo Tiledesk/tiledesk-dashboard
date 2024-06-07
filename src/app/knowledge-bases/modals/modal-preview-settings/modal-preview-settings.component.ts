@@ -1,13 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
   styleUrls: ['./modal-preview-settings.component.scss']
 })
-export class ModalPreviewSettingsComponent implements OnInit {
+export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   @Output() closeBaseModal = new EventEmitter();
+  @Input() namespaceid: string;
 
   models_list = [
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -23,7 +24,10 @@ export class ModalPreviewSettingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("modal preview settings on init")
+    console.log("[MODAL PREVIEW SETTINGS] on init")
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.namespaceid)
   }
 
   updateSliderValue(value, type) {

@@ -17,23 +17,25 @@
             </div>
 
             <div class="modal-body">
-                <div class="info-container">
+                <!-- <div class="info-container">
                     <i class="material-icons-outlined info-icon">help_outline</i>
                     <div class="info-text">
                         <p>{{ 'KbPage.DeleteKbInfoFirstText' | translate }}</p>
                     </div>
+                </div> -->
+
+                <div *ngIf="kbsList?.length > 0" class="form-container">
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespaceContents' | translate: {namespace_name: selectedNamespaceName}"> </p>
+                </div>
+                <div *ngIf="kbsList?.length === 0" class="form-container">
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: selectedNamespaceName}"> </p>
                 </div>
 
-                <div class="form-container">
-                    <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: this.selectedNamespace}">
-                        <!-- {{ 'KbPage.SureToDeleteNamespace' | translate: tparams }} -->
-                    </p>
-                </div>
-
-                <div class="delete-namespace-section">
-                    <div class="checkbox">
+                <div *ngIf="!selectedNamespaceIsDefault" class="delete-namespace-section">
+                    <div  *ngIf="kbsList?.length > 0" class="checkbox">
                         <label [ngClass]="{'active--label': deleteAlsoNamespace}">
                             <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">
+                           
                             Also delete the namespace
                         </label>
                     </div>

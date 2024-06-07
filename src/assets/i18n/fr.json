@@ -522,6 +522,7 @@
     "ReturnToLoginPage": "Retour à la page de connexion", 
     "QuotaExceeded": "Quota dépassé",
     "PleaseContactSupport": "Veuillez contacter l'assistance",
+    "Rename":"Renommer",
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",
@@ -1674,6 +1675,7 @@
         "InfoSitemapList": "Les URL doivent être inférieures ou égales à ",
         "LabelSitemapList": " URL ajoutée.",
         "PlaceholderInputSitemapList": "Saisissez les URL",
+        "TheDefaultNamespaceCannotBeDeleted": "L'espace de noms par défaut ne peut pas être supprimé",
         "------": "------",
         "NoKbAdded": "Pas de contenu",
         "NoKbAddedText": "Ajoutez des contenus à votre assistant pour créer une base de connaissances.",
@@ -1684,7 +1686,8 @@
         "msgSuccesDeleteKb": "Contenu supprimé avec succès",
         "msgErrorDeleteKb": "Impossible de supprimer le contenu",
         "DeleteKbInfoFirstText": "Vous ne pourrez plus utiliser l'IA sur ce contenu",
-        "SureToDeleteNamespace": "Êtes-vous sûr de vouloir supprimer tout le contenu du namespace <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespace": "Êtes-vous sûr de vouloir supprimer le namespace  <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespaceContents": "Êtes-vous sûr de vouloir supprimer tout le contenu du namespace <b>{{namespace_name }}</b>?",
         "SureToDelete": "Êtes-vous sûr de vouloir supprimer le contenu <b>{{ name }</b>?",
         "AddKbInfoTextContent": "Veuillez saisir un contenu valide.",
         "KBLimitReached": "Limite de contenu atteinte pour {{plan_name}}",

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { KB } from 'app/models/kbsettings-model';
 
 @Component({
   selector: 'modal-delete-namespace',
@@ -8,8 +9,10 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 export class ModalDeleteNamespaceComponent implements OnInit, OnChanges {
 
   @Output() closeModal = new EventEmitter();
-  @Output() deleteNamespace = new EventEmitter();
-  @Input() selectedNamespace: string
+  @Output() deleteNamespace = new EventEmitter<any>();
+  @Input() selectedNamespaceName: string
+  @Input() selectedNamespaceIsDefault: boolean
+  @Input() kbsList: KB[];
 
   deleteAlsoNamespace: boolean = false
   namespaceTyped: string;
@@ -23,8 +26,12 @@ export class ModalDeleteNamespaceComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace', this.selectedNamespace)
-
+    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace', this.selectedNamespaceName)
+    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
+    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] kbsList', this.kbsList)
+    if( this.kbsList.length === 0) {
+      this.deleteAlsoNamespace = true
+    }
   }
 
   onCloseModal() {
@@ -39,7 +46,7 @@ export class ModalDeleteNamespaceComponent implements OnInit, OnChanges {
 
   checkNamespaceTyped() {
     console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaceTyped ', this.namespaceTyped)
-    if (this.namespaceTyped !== this.selectedNamespace) {
+    if (this.namespaceTyped !== this.selectedNamespaceName) {
       this.namespacenameMatch = false 
     } else {
       this.namespacenameMatch = true 
@@ -47,7 +54,8 @@ export class ModalDeleteNamespaceComponent implements OnInit, OnChanges {
   }
 
   onDeleteNamespace() {
-    this.deleteNamespace.emit();
+
+    this.deleteNamespace.emit(this.deleteAlsoNamespace );
   }
 
 }

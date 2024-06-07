@@ -522,6 +522,7 @@
     "ReturnToLoginPage": "العودة إلى صفحة تسجيل الدخول", 
     "QuotaExceeded": "تم تجاوز الحصة",
     "PleaseContactSupport": "يرجى الاتصال بالدعم",
+    "Rename":"إعادة تسمية",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",
@@ -1674,6 +1675,7 @@
         "InfoSitemapList": "يجب أن تكون عناوين URL أقل من أو تساوي ",
         "LabelSitemapList": " تمت إضافة عنوان URL.",
         "PlaceholderInputSitemapList": "أدخل عناوين URL",
+        "TheDefaultNamespaceCannotBeDeleted": "لا يمكن حذف مساحة الاسم الافتراضية",
         "------": "------",
         "NoKbAdded": "لا يوجد محتوى",
         "NoKbAddedText": "أضف محتوى إلى مساعدك لإنشاء قاعدة معرفية.",
@@ -1684,7 +1686,8 @@
         "msgSuccesDeleteKb": "تم حذف المحتوى بنجاح",
         "msgErrorDeleteKb": "غير قادر على حذف المحتوى",
         "DeleteKbInfoFirstText": "لن تتمكن بعد الآن من استخدام الذكاء الاصطناعي في هذا المحتوى",
-        "SureToDeleteNamespace": "هل أنت متأكد أنك تريد حذف كافة محتويات namespace {{namespace_name }}؟",
+        "SureToDeleteNamespace": "هل أنت متأكد أنك تريد حذف namespace <b>{{namespace_name }}</b>؟",
+        "SureToDeleteNamespaceContents": "هل أنت متأكد أنك تريد حذف كافة محتويات namespace <b>{{namespace_name }}</b>؟",
         "SureToDelete": "هل أنت متأكد أنك تريد حذف محتوى <b>{{ name }}</b>؟",
         "AddKbInfoTextContent": "الرجاء إدخال محتوى صالح.",
         "KBLimitReached": "تم الوصول إلى حد المحتوى لـ {{plan_name}}",

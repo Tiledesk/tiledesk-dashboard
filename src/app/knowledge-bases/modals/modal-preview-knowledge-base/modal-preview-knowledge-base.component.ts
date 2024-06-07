@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
@@ -9,8 +9,8 @@ import { OpenaiService } from 'app/services/openai.service';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent implements OnInit {
-  @Input() namespace: string;
+export class ModalPreviewKnowledgeBaseComponent implements OnInit, OnChanges{
+  @Input() namespaceid: string;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
 
@@ -42,10 +42,14 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.namespaceid)
+  }
+
   submitQuestion(){
     let data = {
       "question": this.question,
-      "namespace": this.namespace,
+      "namespace": this.namespaceid,
       "model": this.selectedModel
     }
     // this.error_answer = false;

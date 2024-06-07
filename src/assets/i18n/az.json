@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Giriş səhifəsinə qayıt", 
     "QuotaExceeded": "Kvota keçib",
     "PleaseContactSupport": "Zəhmət olmasa dəstək ilə əlaqə saxlayın",
+    "Rename":"Adını dəyişdirin",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",
@@ -1675,6 +1676,7 @@
         "InfoSitemapList": "URL-lər bundan az və ya bərabər olmalıdır ",
         "LabelSitemapList": " URL əlavə edildi.",
         "PlaceholderInputSitemapList": "URL-ləri daxil edin",
+        "TheDefaultNamespaceCannotBeDeleted": "Defolt ad sahəsi silinə bilməz",
         "------": "------",
         "NoKbAdded": "Məzmun yoxdur",
         "NoKbAddedText": "Bilik bazası yaratmaq üçün köməkçinizə məzmun əlavə edin.",
@@ -1685,7 +1687,8 @@
         "msgSuccesDeleteKb": "Məzmun uğurla silindi",
         "msgErrorDeleteKb": "Məzmunu silmək mümkün deyil",
         "DeleteKbInfoFirstText": "Artıq bu məzmunda süni intellektdən istifadə edə bilməyəcəksiniz",
-        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}<b> bütün məzmununu silmək istədiyinizə əminsiniz?",
+        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}</b>  faylını silmək istədiyinizə əminsiniz??",
+        "SureToDeleteNamespaceContents": "namespace <b>{{namespace_name }}</b> bütün məzmununu silmək istədiyinizə əminsiniz?",
         "SureToDelete": "<b>{{ name }}</b> məzmununu silmək istədiyinizə əminsiniz?",
         "AddKbInfoTextContent": "Etibarlı məzmun daxil edin.",
         "KBLimitReached": "{{plan_name}} üçün məzmun limitinə çatdı",

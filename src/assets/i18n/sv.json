@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Återgå till inloggningssidan", 
     "QuotaExceeded": "Kvoten överskriden",
     "PleaseContactSupport": "Vänligen kontakta support",
+    "Rename":"Döp om",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",
@@ -1675,6 +1676,7 @@
         "InfoSitemapList": "Webbadresser måste vara mindre än eller lika med ",
         "LabelSitemapList": " URL har lagts till.",
         "PlaceholderInputSitemapList": "Ange webbadresser",
+        "TheDefaultNamespaceCannotBeDeleted": "Standardnamnutrymmet kan inte tas bort",
         "------": "------",
         "NoKbAdded": "Inget innehåll",
         "NoKbAddedText": "Lägg till innehåll i din assistent för att skapa en kunskapsbas.",
@@ -1685,7 +1687,8 @@
         "msgSuccesDeleteKb": "Innehållet har raderats",
         "msgErrorDeleteKb": "Није могуће избрисати садржај",
         "DeleteKbInfoFirstText": "Du kommer inte längre att kunna använda AI på detta innehåll",
-        "SureToDeleteNamespace": "Är du säker på att du vill ta bort allt innehåll i namespace <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespace": "Är du säker på att du vill ta bort namnområdet <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespaceContents": "Är du säker på att du vill ta bort allt innehåll i namespace <b>{{namespace_name }}</b>?",
         "SureToDelete": "Är du säker på att du vill ta bort <b>{{ name }}</b> innehållet?",
         "AddKbInfoTextContent": "Vänligen ange giltigt innehåll.",
         "KBLimitReached": "Innehållsgränsen nådd för {{plan_name}}",

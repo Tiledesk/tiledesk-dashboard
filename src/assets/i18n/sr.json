@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Вратите се на страницу за пријаву", 
     "QuotaExceeded": "Квота је премашена",
     "PleaseContactSupport": "Обратите се подршци",
+    "Rename":"Преименуј",
     "CannedResponses": {
         "QuickTips": {
             "1": "Спремни одговори су унапред направљене поруке које можете лако да се сетите током ћаскања.",
@@ -1675,6 +1676,7 @@
         "InfoSitemapList": "УРЛ-ови морају бити мањи или једнаки ",
         "LabelSitemapList": " УРЛ је додат.",
         "PlaceholderInputSitemapList": "Унесите УРЛ адресе",
+        "TheDefaultNamespaceCannotBeDeleted": "Подразумевани простор имена се не може избрисати",
         "------": "------",
         "NoKbAdded": "Без садржаја",
         "NoKbAddedText": "Додајте садржај свом асистенту да бисте креирали базу знања.",
@@ -1685,7 +1687,8 @@
         "msgSuccesDeleteKb": "Садржај је успешно избрисан",
         "msgErrorDeleteKb": "Није могуће избрисати садржај",
         "DeleteKbInfoFirstText": "Више нећете моћи да користите вештачку интелигенцију на овом садржају",
-        "SureToDeleteNamespace": "Да ли сте сигурни да желите да избришете сав садржај namespace <b>{{ namespace_name }}</b>?",
+        "SureToDeleteNamespace": "Да ли сте сигурни да желите да избришете именски простор <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespaceContents": "Да ли сте сигурни да желите да избришете сав садржај namespace <b>{{ namespace_name }}</b>?",
         "SureToDelete": "Да ли сте сигурни да желите да избришете садржај <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Унесите важећи садржај.",
         "KBLimitReached": "Достигнуто је ограничење садржаја за {{plan_name}}",

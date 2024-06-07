@@ -586,14 +586,16 @@ table {
     
 }
 .namespace-name-output {
-    padding: 1px 6px;
+    padding: 8px 6px;
+    border-radius: 4px !important;
+    border: 1px solid transparent;
 }
 
 .namespace-name-input {
     border-radius: 4px !important;
     padding: 1px 6px;
     // border: 1px solid transparent;
-    border: 1px solid #d3dbe5;
+    border: 1px solid #0b57d0!important
 }
 
 .namespace-name-input.edit-mode {
@@ -660,3 +662,13 @@ table {
     background: rgba(0, 0, 0, .04);
     font-weight: 500;
   }
+
+  ::ng-deep .kb-custom-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    color: #fff;
+}

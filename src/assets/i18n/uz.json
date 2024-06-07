@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Kirish sahifasiga qaytish", 
     "QuotaExceeded": "Kvota oshib ketdi",
     "PleaseContactSupport": "Iltimos, qo'llab-quvvatlash xizmatiga murojaat qiling",
+    "Rename":"Nomini o'zgartirish",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",
@@ -1674,6 +1675,7 @@
         "InfoSitemapList": "URL manzillar bundan kichik yoki teng boʻlishi kerak ",
         "LabelSitemapList": " URL qo'shildi.",
         "PlaceholderInputSitemapList": "URL manzillarini kiriting",
+        "TheDefaultNamespaceCannotBeDeleted": "Standart nom maydonini oʻchirib boʻlmaydi",
         "------": "------",
         "NoKbAdded": "Kontent yo'q",
         "NoKbAddedText": "Bilimlar bazasini yaratish uchun yordamchingizga kontent qo‘shing.",
@@ -1684,7 +1686,8 @@
         "msgSuccesDeleteKb": "Kontent muvaffaqiyatli oʻchirildiо",
         "msgErrorDeleteKb": "Kontentni oʻchirib boʻlmadi",
         "DeleteKbInfoFirstText": "Siz endi bu kontentda AIdan foydalana olmaysiz",
-        "SureToDeleteNamespace": "Haqiqatan ham namespace <b>{{namespace_name }}</b> barcha mazmunini oʻchirib tashlamoqchimisiz?",
+        "SureToDeleteNamespace": "Haqiqatan ham <b>{{namespace_name }}</b> nom maydonini oʻchirib tashlamoqchimisiz??",
+        "SureToDeleteNamespaceContents": "Haqiqatan ham namespace <b>{{namespace_name }}</b> barcha mazmunini oʻchirib tashlamoqchimisiz?",
         "SureToDelete": "Haqiqatan ham <b>{{ name }}</b> kontentini oʻchirib tashlamoqchimisiz?",
         "AddKbInfoTextContent": "Iltimos, yaroqli tarkibni kiriting.",
         "KBLimitReached": "Досягнуто ліміту вмісту для {{plan_name}}",

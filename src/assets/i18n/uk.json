@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Повернутися на сторінку входу", 
     "QuotaExceeded": "Квоту перевищено",
     "PleaseContactSupport": "Будь ласка, зв'яжіться зі службою підтримки",
+    "Rename":"Перейменувати",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готові відповіді — це готові повідомлення, які ви можете легко згадати під час чату.",
@@ -1675,6 +1676,7 @@
         "InfoSitemapList": "URL-адреси мають бути меншими або дорівнювати ",
         "LabelSitemapList": " URL додано.",
         "PlaceholderInputSitemapList": "Введіть URL-адреси",
+        "TheDefaultNamespaceCannotBeDeleted": "Простір імен за замовчуванням не можна видалити",
         "------": "------",
         "NoKbAdded": "Немає вмісту",
         "NoKbAddedText": "Додайте вміст до свого помічника, щоб створити базу знань.",
@@ -1685,7 +1687,8 @@
         "msgSuccesDeleteKb": "Вміст успішно видалено",
         "msgErrorDeleteKb": "Не вдалося видалити вміст",
         "DeleteKbInfoFirstText": "Ви більше не зможете використовувати ШІ для цього вмісту",
-        "SureToDeleteNamespace": "Ви впевнені, що хочете видалити весь вміст namespace <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespace": "Ви впевнені, що бажаєте видалити простір імен <b>{{{namespace_name }}</b>?",
+        "SureToDeleteNamespaceContents": "Ви впевнені, що хочете видалити весь вміст namespace <b>{{namespace_name }}</b>?",
         "SureToDelete": "Ви впевнені, що хочете видалити вміст <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Введіть дійсний вміст.",
         "KBLimitReached": "Досягнуто ліміту вмісту для {{plan_name}}",

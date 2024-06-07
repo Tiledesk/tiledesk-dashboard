@@ -25,6 +25,7 @@ import { MomentModule } from 'ngx-moment';
 import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -62,6 +63,7 @@ const routes: Routes = [
     MatButtonModule,
     MatSliderModule,
     MomentModule,
+    MatTooltipModule
     // SatPopoverModule
   ]
 })

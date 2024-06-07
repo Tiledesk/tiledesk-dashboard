@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChange
 // import { MatSort, Sort } from '@angular/material/sort';
 // import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
 
@@ -27,7 +27,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
-  
+
 
   timeoutId: any;
   // kbsListfilterTypeFilter: KB[] = [];
@@ -54,7 +54,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.filterType = '';
     this.filterText = '';
     this.searchParams = {
-      "page":0,
+      "page": 0,
       "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
       "direction": KB_DEFAULT_PARAMS.DIRECTION,
       "status": '',
@@ -82,8 +82,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   loadMoreData() {
     this.isLoading = true;
     this.numberPage++;
-    this.searchParams.page =  this.numberPage;//Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
-    
+    this.searchParams.page = this.numberPage;//Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
+
     this.loadPage.emit(this.searchParams);
   }
 
@@ -92,12 +92,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
   //   return tableBodyElement.scrollTop + tableBodyElement.clientHeight >= tableBodyElement.scrollHeight;
   // }
 
-  ngOnChanges(changes: SimpleChanges){
-    // this.logger.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
-    if(this.kbsList.length>0){
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ' ,  this.kbsList.length, ' changes ' , changes);
+    console.log('[KB TABLE] ngOnChanges kbsList ',this.kbsList);
+    if (this.kbsList.length > 0) {
       this.SHOW_TABLE = true;
+    } else {
+      this.SHOW_TABLE = false;
     }
-    if(changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length){
+    if (changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length) {
       // non è cambiato nulla ho solo rodinato la tab
     } else {
       // if(changes.kbsListCount && changes.kbsListCount.currentValue){
@@ -110,15 +113,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // if(this.kbsListCount==0){
     //   this.SHOW_MORE_BTN = false;
     // }
-    if(this.kbsListCount > this.kbsList.length){
+    if (this.kbsListCount > this.kbsList.length) {
       this.SHOW_MORE_BTN = true;
     } else {
       this.SHOW_MORE_BTN = false;
     }
-    if(changes.refresh){
+    if (changes.refresh) {
       this.isLoading = false;
     }
-    if(this.kbsList?.length == 0){
+    if (this.kbsList?.length == 0) {
       this.SHOW_MORE_BTN = false;
     }
 
@@ -137,26 +140,26 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // this.paginator.pageSize = 20;
   }
 
-  onOrderBy(type){
+  onOrderBy(type) {
     this.searchParams.sortField = type;
-    this.directionDesc = this.directionDesc*-1;
+    this.directionDesc = this.directionDesc * -1;
     this.searchParams.direction = this.directionDesc;
     this.isLoading = true;
     this.loadByFilter.next(this.searchParams);
   }
-  
+
   onLoadByFilter(filterValue: string, column: string) {
     // let status = '';
     // let search = '';
     this.logger.log("onLoadByFilter value: ", filterValue)
     this.logger.log("onLoadByFilter column: ", column)
-    if( column == 'status'){
+    if (column == 'status') {
       this.searchParams.status = filterValue;
-    } 
-    else if ( column == 'type') {
+    }
+    else if (column == 'type') {
       this.searchParams.type = filterValue;
-    } 
-    else if(column == 'name'){
+    }
+    else if (column == 'name') {
       this.searchParams.search = filterValue;
     }
     // this.logger.log("this.searchParams ", this.searchParams);
@@ -179,7 +182,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   //   }
   // }
 
-  onRunIndexing(kb){
+  onRunIndexing(kb) {
     // this.logger.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
   }
@@ -212,12 +215,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
     return subtitle;
   }
 
-  onOpenAddKnowledgeBaseModal(type){
+  onOpenAddKnowledgeBaseModal(type) {
     // this.logger.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
 
-  onCheckStatus(kb){
+  onCheckStatus(kb) {
     // this.logger.log('onCheckStatus:: ', kb);
     this.checkStatus.emit(kb);
   }

@@ -522,6 +522,7 @@
     "ReturnToLoginPage": "Жүйеге кіру бетіне оралу", 
     "QuotaExceeded": "Квота асып кетті",
     "PleaseContactSupport": "Қолдау қызметіне хабарласыңыз",
+    "Rename":"Атын өзгерту",
     "CannedResponses": {
         "QuickTips": {
             "1": "Консервіленген жауаптар - чат кезінде оңай еске түсіруге болатын алдын ала жасалған хабарлар.",
@@ -1674,6 +1675,7 @@
         "InfoSitemapList": "URL мекенжайлары одан кіші немесе тең болуы керек ",
         "LabelSitemapList": " URL қосылды.",
         "PlaceholderInputSitemapList": "URL мекенжайларын енгізіңіз",
+        "TheDefaultNamespaceCannotBeDeleted": "Әдепкі аттар кеңістігін жою мүмкін емес",
         "------": "------",
         "NoKbAdded": "Мазмұн жоқ",
         "NoKbAddedText": "Білім базасын жасау үшін көмекшіңізге мазмұн қосыңыз.",
@@ -1684,7 +1686,8 @@
         "msgSuccesDeleteKb": "Мазмұн сәтті жойылды",
         "msgErrorDeleteKb": "Мазмұнды жою мүмкін емес",
         "DeleteKbInfoFirstText": "Сіз бұдан былай бұл мазмұнда AI пайдалана алмайсыз",
-        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}</b> барлық мазмұнын жойғыңыз келетініне сенімдісіз бе?",
+        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}</b> файлын шынымен жойғыңыз келе ме?",
+        "SureToDeleteNamespaceContents": "namespace <b>{{namespace_name }}</b> барлық мазмұнын жойғыңыз келетініне сенімдісіз бе?",
         "SureToDelete": "<b>{{ name }}</b> мазмұнын шынымен жойғыңыз келе ме?",
         "AddKbInfoTextContent": "Жарамды мазмұнды енгізіңіз.",
         "KBLimitReached": "{{plan_name}} үшін мазмұн шегіне жетті",

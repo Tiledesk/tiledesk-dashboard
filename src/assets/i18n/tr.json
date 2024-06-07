@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Giriş sayfasına dön", 
     "QuotaExceeded": "Kota aşıldı",
     "PleaseContactSupport": "Lütfen desteğe başvurun",
+    "Rename":"Yeniden Adlandır",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",
@@ -1675,6 +1676,7 @@
         "InfoSitemapList": "URL'ler şu değerden küçük veya ona eşit olmalıdır: ",
         "LabelSitemapList": " URL eklendi.",
         "PlaceholderInputSitemapList": "URL'leri girin",
+        "TheDefaultNamespaceCannotBeDeleted": "Varsayılan ad alanı silinemez",
         "------": "------",
         "NoKbAdded": "İçerik yok",
         "NoKbAddedText": "Bir bilgi tabanı oluşturmak için asistanınıza içerik ekleyin.",
@@ -1685,7 +1687,8 @@
         "msgSuccesDeleteKb": "İçerik başarıyla silindi",
         "msgErrorDeleteKb": "İçerik silinemiyor",
         "DeleteKbInfoFirstText": "Artık bu içerikte AI kullanamayacaksınız",
-        "SureToDeleteNamespace": "namespace <b>{{namespace_name }}</b> alanının tüm içeriğini silmek istediğinizden emin misiniz?",
+        "SureToDeleteNamespace": "<b>{{namespace_name }}</b> ad alanını silmek istediğinizden emin misiniz?",
+        "SureToDeleteNamespaceContents": "namespace <b>{{namespace_name }}</b> alanının tüm içeriğini silmek istediğinizden emin misiniz?",
         "SureToDelete": "<b>{{ name }</b> içeriğini silmek istediğinizden emin misiniz?",
         "AddKbInfoTextContent": "Lütfen geçerli içerik girin.",
         "KBLimitReached": "{{plan_name}} için içerik sınırına ulaşıldı",

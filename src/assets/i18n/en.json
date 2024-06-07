@@ -522,6 +522,7 @@
     "ReturnToLoginPage": "Return to login page", 
     "QuotaExceeded": "Quota exceeded",
     "PleaseContactSupport": "Please contact support",
+    "Rename":"Rename",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",
@@ -1673,6 +1674,7 @@
         "InfoSitemapList": "URLs must be less than or equal to ",
         "LabelSitemapList": " URL added.",
         "PlaceholderInputSitemapList": "Enter URLs",
+        "TheDefaultNamespaceCannotBeDeleted": "The default namespace cannot be deleted",
         "------": "------",
         "NoKbAdded": "No content",
         "NoKbAddedText": "Add contents to your assistant to create a knowledge base.",
@@ -1683,7 +1685,8 @@
         "msgSuccesDeleteKb": "Content successfully deleted",
         "msgErrorDeleteKb": "Unable to delete content",
         "DeleteKbInfoFirstText": "You will no longer be able to use AI on this content",
-        "SureToDeleteNamespace": "Are you sure you want to delete all contents of the namespace <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespace": "Are you sure you want to delete the namespace <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespaceContents": "Are you sure you want to delete all contents of the namespace <b>{{namespace_name }}</b>?",
         "SureToDelete": "Are you sure you want to delete the <b>{{ name }}</b> content?",
         "AddKbInfoTextContent": "Please enter valid content.",
         "KBLimitReached": "Content limit reached for {{plan_name}}",

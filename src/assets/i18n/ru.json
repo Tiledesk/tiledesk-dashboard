@@ -523,6 +523,7 @@
     "ReturnToLoginPage": "Вернуться на страницу входа", 
     "QuotaExceeded": "Квота превышена",
     "PleaseContactSupport": "Пожалуйста, свяжитесь со службой поддержки", 
+    "Rename":"Переименовать",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готовые ответы — это готовые сообщения, которые вы можете легко вспомнить во время чата.",
@@ -1674,6 +1675,7 @@
         "InfoSitemapList": "URL-адреса должны быть меньше или равны ",
         "LabelSitemapList": " URL добавлен.",
         "PlaceholderInputSitemapList": "Введите URL-адреса",
+        "TheDefaultNamespaceCannotBeDeleted": "Пространство имен по умолчанию не может быть удалено",
         "------": "------",
         "NoKbAdded": "Без содержания",
         "NoKbAddedText": "Добавьте содержимое в свой помощник, чтобы создать базу знаний.",
@@ -1684,7 +1686,8 @@
         "msgSuccesDeleteKb": "Контент успешно удален",
         "msgErrorDeleteKb": "Невозможно удалить контент",
         "DeleteKbInfoFirstText": "Вы больше не сможете использовать ИИ в этом контенте.",
-        "SureToDeleteNamespace": "Вы уверены, что хотите удалить все содержимое namespace <b>{{ namespace_name }}</b>?",
+        "SureToDeleteNamespace": "Вы уверены, что хотите удалить namespace <b>{{namespace_name }}</b>?",
+        "SureToDeleteNamespaceContents": "Вы уверены, что хотите удалить все содержимое namespace <b>{{ namespace_name }}</b>?",
         "SureToDelete": "Вы уверены, что хотите удалить контент <b>{{ name }}</b>?",
         "AddKbInfoTextContent": "Пожалуйста, введите действительный контент.",
         "KBLimitReached": "Для {{plan_name}} достигнут лимит контента",
