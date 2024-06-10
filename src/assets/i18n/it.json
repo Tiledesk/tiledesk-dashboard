@@ -796,7 +796,7 @@
             "SecurityDescription": "Puoi limitare l'accesso a {{ BRAND_NAME }} solo agli utenti compresi in un intervallo di indirizzi IP. ",
             "EnableIPRestriction": "Abilita le restrizioni IP",
             "ThisWillAffects": "Ciò influirà",
-            "SignInForAllTiledeskProducts": "Accesso per tutti i prodotti {{ BRAND_NAME }}",
+            "SignInForAllTiledeskProducts": "Accesso a tutti i prodotti {{ BRAND_NAME }}",
             "AllowedIpRanges": "Intervalli IP consentiti",
             "AddIpRanges": " Aggiungi gli intervalli IP che necessitano dell'accesso a {{ BRAND_NAME }}. ",
             "Use": "Utilizzo",

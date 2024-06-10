@@ -2,6 +2,10 @@
 
 ### 2.6.35
 - Deploys in production
+- Fixes translations on Project Settings > Security page
+
+### 2.6.34
+- Deploys in production
 - Minor improvements and bug fixing
 
 ### 2.6.33
