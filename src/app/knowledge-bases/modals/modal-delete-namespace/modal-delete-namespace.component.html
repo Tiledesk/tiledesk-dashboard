@@ -25,13 +25,13 @@
                 </div> -->
 
                 <div *ngIf="kbsList?.length > 0" class="form-container">
-                    <p [innerHTML]="'KbPage.SureToDeleteNamespaceContents' | translate: {namespace_name: selectedNamespaceName}"> </p>
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespaceContents' | translate: {namespace_name: selectedNamespace.name}"> </p>
                 </div>
                 <div *ngIf="kbsList?.length === 0" class="form-container">
-                    <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: selectedNamespaceName}"> </p>
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: selectedNamespace.name}"> </p>
                 </div>
 
-                <div *ngIf="!selectedNamespaceIsDefault" class="delete-namespace-section">
+                <div *ngIf="!selectedNamespace.default" class="delete-namespace-section">
                     <div  *ngIf="kbsList?.length > 0" class="checkbox">
                         <label [ngClass]="{'active--label': deleteAlsoNamespace}">
                             <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">

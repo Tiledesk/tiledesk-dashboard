@@ -115,9 +115,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   paramsDefault: string // = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
 
-  selectedNamespaceName: any;
-  selectedNamespaceID: string;
-  selectedNamespaceIsDefault: boolean = false;
+
+  selectedNamespace: any;
+  hasChangedNameSpace: boolean = false;
+
+  // selectedNamespaceName: any;
+  // selectedNamespaceID: string;
+  // selectedNamespaceIsDefault: boolean = false;
 
 
   is0penDropDown: boolean = false
@@ -179,7 +183,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getOSCODE();
     this.getProjectPlan();
     this.getProjectUserRole()
-    this.logger.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
+    console.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
 
     
   }
@@ -224,16 +228,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     if (!storedNamespace) {
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
-      let selectedNameSpaceObjct = namespaces.filter((el) => {
+     
+
+      this.selectedNamespace = namespaces.find((el) => {
         return el.default === true
       });
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init selectedNameObjct', selectedNameSpaceObjct)
 
-      this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName)
-      this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID', this.selectedNamespaceID)
-      this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
+      
+      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init selectedNameObjct', selectedNameSpaceObjct)
+
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace)
+      
+
+      // this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
+      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName)
+      // this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
+      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID', this.selectedNamespaceID)
+      // this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
 
       // this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
       // this.getListOfKb(this.paramsDefault);
@@ -242,40 +253,43 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
       const storedNamespaceObjct = JSON.parse(storedNamespace)
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace storedNamespaceObjct ', storedNamespaceObjct),
-     
-      this.selectedNamespaceID = storedNamespaceObjct['id'];
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID  (FROM STORAGE)', this.selectedNamespaceID)
+    
 
-      let selectedNameSpaceObjct = namespaces.filter((el) => {
-        return el.id === this.selectedNamespaceID
+      this.selectedNamespace = namespaces.find((el) => {
+        return el.id === storedNamespaceObjct['id'];
       });
-      if (selectedNameSpaceObjct.length > 0) {
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct', selectedNameSpaceObjct)
-        this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM NAMESPACES)', this.selectedNamespaceName)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
+
+
+      // if (selectedNameSpaceObjct.length > 0) {
+      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct', selectedNameSpaceObjct)
+      //   this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
+      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM NAMESPACES)', this.selectedNamespaceName)
       
-        this.selectedNamespaceIsDefault =  selectedNameSpaceObjct[0]['default'];
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceIsDefault (FROM NAMESPACES)', this.selectedNamespaceIsDefault)
-      } else {
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct IS EMPTY fallback to default')
-        let selectedNameSpaceObjct = namespaces.filter((el) => {
-          return el.default === true
-        });
-        this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespace', this.selectedNamespaceName)
-        this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespaceID', this.selectedNamespaceID)
-        this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
-      }
+      //   this.selectedNamespaceIsDefault =  selectedNameSpaceObjct[0]['default'];
+      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceIsDefault (FROM NAMESPACES)', this.selectedNamespaceIsDefault)
+      // } else {
+      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct IS EMPTY fallback to default')
+      //   let selectedNameSpaceObjct = namespaces.filter((el) => {
+      //     return el.default === true
+      //   });
+      //   this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
+      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespace', this.selectedNamespaceName)
+      //   this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
+      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespaceID', this.selectedNamespaceID)
+      //   this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
+      // }
 
 
       // this.selectedNamespaceName = storedNamespaceObjct['name']
       // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM STORAGE)', this.selectedNamespaceName)
       
 
-      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
-      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
+      
     }
+      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
 
@@ -307,20 +321,22 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (namespace) {
 
         console.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
-        this.selectedNamespaceName = namespace['name']
+        this.selectedNamespace = namespace
 
-        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
-        this.selectedNamespaceID = namespace['id'];
-        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
+        // this.selectedNamespaceName = namespace['name']
 
-        this.selectedNamespaceIsDefault = namespace['default']; 
-        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
+        // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
+        // this.selectedNamespaceID = namespace['id'];
+        // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
+
+        // this.selectedNamespaceIsDefault = namespace['default']; 
+        // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
         this.namespaces.push(namespace)
         console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
         
-        let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+        let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
         this.getListOfKb(paramsDefault, 'createNewNamespace' );
       }
     }, (error) => {
@@ -342,7 +358,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME calledBy ', calledBy);
     console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME newNamespaceName ', newNamespaceName);
 
-    this.kbService.upadeteNamespaceName(newNamespaceName, this.selectedNamespaceID).subscribe((namespace: any) => {
+    this.kbService.upadeteNamespaceName(newNamespaceName, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
 
         console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME RES', namespace);
@@ -388,23 +404,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onSelectNamespace(namespace) {
     console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
-    // let namespaceID = namespace.namespace_id
-    // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespaceID', namespaceID)
-    // let selectedNameObjct = this.namespaces.filter((el) => {
-    //   return el.id === this.selectedNamespaceID
-    // });
+    
     if (namespace) {
-      this.selectedNamespaceName = namespace['name']
-      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespaceName)
+      this.hasChangedNameSpace = true;
+      this.selectedNamespace = namespace
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
+      // this.selectedNamespaceName = namespace['name']
+      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespaceName)
       
-      this.selectedNamespaceID = namespace['id']
-      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
+      // this.selectedNamespaceID = namespace['id']
+      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
 
-      this.selectedNamespaceIsDefault = namespace['default']
-      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
+      // this.selectedNamespaceIsDefault = namespace['default']
+      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
 
     }
@@ -788,7 +804,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onLoadPage(searchParams?: any) {
     // this.logger.log('onLoadNextPage:',searchParams);
-    let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespaceID
+    let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
     console.log('onLoadPage:', searchParams);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     this.numberPage++;
@@ -829,7 +845,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getListOfKb(params?: any, calledby?: any) {
-    this.showSpinner = true
+    //this.showSpinner = true
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.kbsList = [];
     console.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
@@ -903,7 +919,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    * onAddKb
    */
   onAddKb(body) {
-    body.namespace = this.selectedNamespaceID
+    body.namespace = this.selectedNamespace.id
     // this.logger.log("body:",body);
     this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
@@ -1015,11 +1031,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
-    this.kbService.addMultiKb(body, this.selectedNamespaceID).subscribe((kbs: any) => {
+    this.kbService.addMultiKb(body, this.selectedNamespace.id).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespaceID;
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onAddMultiKb ');
     
       this.kbsListCount = this.kbsListCount + kbs.length;
@@ -1154,13 +1170,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onDeleteNamespace(removeAlsoNamespace) {
     console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace removeAlsoNamespace " + removeAlsoNamespace);
-    console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespaceID);
+    console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespace.id);
     // let id_namespace = this.id_project;
     // this.logger.log("delete namespace " + id_namespace);
     this.showSpinner = true;
     this.closeDeleteNamespaceModal();
 
-    this.kbService.deleteNamespace(this.selectedNamespaceID, removeAlsoNamespace)
+    this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
     .subscribe((response: any) => {
       console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
       this.showSpinner = false;
@@ -1175,16 +1191,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if(removeAlsoNamespace) {
         this.localDbService.removeFromStorage(`last_kbnamespace-${this.id_project}`)
 
-        let selectedNameSpaceObjct = this.namespaces.filter((el) => {
+        this.selectedNamespace = this.namespaces.find((el) => {
           return el.default === true
         });
-        console.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace selectedNameObjct', selectedNameSpaceObjct)
-  
-        this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-        console.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace  selectedNamespace', this.selectedNamespaceName)
-        this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
-        console.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace  selectedNamespaceID', this.selectedNamespaceID)
-        this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
+        console.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace)
       }
     })
 
@@ -1198,13 +1208,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
       "id": kb._id,
-      "namespace": kb.id_project
+      "namespace": kb.namespace
     }
     let dataAdd = {
       'name': kb.name,
       'source': kb.source,
       'content': '',
-      'type': 'url'
+      'type': 'url',
+      "namespace": kb.namespace
     };
     if (kb.type === 'text') {
       dataAdd.source = kb.name;
@@ -1433,7 +1444,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   onReloadKbs(params) {
-    params.namespace = this.selectedNamespaceID
+    params.namespace = this.selectedNamespace.id
     this.getListOfKb(params, 'onReloadKbs');
   }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
@@ -1646,7 +1657,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onOpenDeleteNamespaceModal() {
     this.logger.log("onOpenDeleteNamespaceModal called....")
-    if (this.selectedNamespaceIsDefault && this.kbsList.length === 0) {
+    if (this.selectedNamespace.default && this.kbsList.length === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
     } else {
       this.showDeleteNamespaceModal = true;

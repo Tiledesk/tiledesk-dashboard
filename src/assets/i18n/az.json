@@ -1680,6 +1680,7 @@
         "AlsoDeleteTheNamespace": "Həmçinin ad sahəsini silin",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Ad sahəsini silmək üçün ad sahəsinin adını yazın",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Ad sahəsinin adı uğurla dəyişdirildi",
+        "NewNamespace": "Yeni ad sahəsi", 
         "NamespaceName": "Ad sahəsi adı",
         "------": "------",
         "NoKbAdded": "Məzmun yoxdur",

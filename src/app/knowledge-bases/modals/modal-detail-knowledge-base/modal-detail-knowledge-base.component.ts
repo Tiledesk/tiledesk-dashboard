@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 
 @Component({
@@ -6,7 +6,7 @@ import { KB } from 'app/models/kbsettings-model';
   templateUrl: './modal-detail-knowledge-base.component.html',
   styleUrls: ['./modal-detail-knowledge-base.component.scss']
 })
-export class ModalDetailKnowledgeBaseComponent implements OnInit {
+export class ModalDetailKnowledgeBaseComponent implements OnInit, OnChanges {
   @Input() kb: KB;
   @Output() closeBaseModal = new EventEmitter();
   @Output() updateKnowledgeBase = new EventEmitter();
@@ -21,6 +21,11 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.name = this.kb.name;
     this.source = this.kb.source;
     this.content = this.kb.content;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    
+    console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
   }
 
 
@@ -41,6 +46,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.kb.source = this.source;
     this.kb.content = this.content;
     //console.log('onUpdateKnowledgeBase: ', this.kb);
+    console.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.updateKnowledgeBase.emit(this.kb);
   }
 

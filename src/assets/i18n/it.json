@@ -1677,6 +1677,7 @@
         "AlsoDeleteTheNamespace": "Elimina anche il namespace",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Per eliminare il namespace, digitare il nome del namespace",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Il namespace è stato rinominato correttamente",
+        "NewNamespace": "Nuovo namespace",
         "NamespaceName": "Nome del namespace",
         "------": "------",
         "NoKbAdded": "Nessun contenuto",

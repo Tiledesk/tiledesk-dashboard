@@ -1680,6 +1680,7 @@
         "AlsoDeleteTheNamespace": "Radera även namnområdet",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Om du vill ta bort namnområdet skriver du namnområdets namn",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Namnutrymmet har bytt namn",
+        "NewNamespace": "Nytt namnområde",
         "NamespaceName": "Namnområdets namn",
         "------": "------",
         "NoKbAdded": "Inget innehåll",

@@ -8,7 +8,9 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   @Output() closeBaseModal = new EventEmitter();
-  @Input() namespaceid: string;
+  @Input() selectedNamespace: any;
+
+  namespaceid: string; 
 
   models_list = [
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -27,7 +29,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     console.log("[MODAL PREVIEW SETTINGS] on init")
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.namespaceid)
+    console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.selectedNamespace)
+    this.namespaceid = this.selectedNamespace.id
   }
 
   updateSliderValue(value, type) {

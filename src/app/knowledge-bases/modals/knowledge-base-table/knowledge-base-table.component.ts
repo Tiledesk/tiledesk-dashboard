@@ -19,6 +19,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
   @Input() kbsList: KB[];
   @Input() kbsListCount: number;
+  @Input() hasChangedNameSpace: boolean
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
@@ -47,9 +48,17 @@ export class KnowledgeBaseTableComponent implements OnInit {
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private logger: LoggerService
-  ) { }
+  ) {
+    console.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
+   }
 
   ngOnInit(): void {
+    this.resetFilter()
+   
+  }
+
+  resetFilter() {
+    console.log('[KB TABLE] resetFilter')
     this.filterStatus = '';
     this.filterType = '';
     this.filterText = '';
@@ -95,11 +104,19 @@ export class KnowledgeBaseTableComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     console.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ' ,  this.kbsList.length, ' changes ' , changes);
     console.log('[KB TABLE] ngOnChanges kbsList ',this.kbsList);
+    console.log('[KB TABLE] ngOnChanges hasChangedNameSpace ',this.hasChangedNameSpace);
+
+    if (this.hasChangedNameSpace) {
+      this.resetFilter()
+    }
+    
     if (this.kbsList.length > 0) {
       this.SHOW_TABLE = true;
-    } else {
-      this.SHOW_TABLE = false;
-    }
+    } 
+    
+    // else {
+    //   this.SHOW_TABLE = false;
+    // }
     if (changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length) {
       // non è cambiato nulla ho solo rodinato la tab
     } else {
@@ -149,6 +166,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onLoadByFilter(filterValue: string, column: string) {
+    console.log('[KB TABLE] filterStatus ', this.filterStatus ) 
+    console.log('[KB TABLE] filterType ', this.filterType ) 
     // let status = '';
     // let search = '';
     this.logger.log("onLoadByFilter value: ", filterValue)

@@ -1680,6 +1680,7 @@
         "AlsoDeleteTheNamespace": "Такође избришите именски простор",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Да бисте избрисали именски простор, откуцајте име простора",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Именски простор је успешно преименован",
+        "NewNamespace": "Нови именски простор",
         "NamespaceName": "Име простора имена",
         "------": "------",
         "NoKbAdded": "Без садржаја",

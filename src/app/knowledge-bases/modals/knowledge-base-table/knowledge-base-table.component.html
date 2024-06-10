@@ -30,8 +30,13 @@
         <div class="filters">
             <span class="material-icons-outlined filter-icon">filter_list</span>
             <div class="selector status-selector">
-                <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' [ngModel]='filterType'
-                dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'status')">
+                <ng-select class="custom-input" 
+                    editable="false" 
+                    [clearable]='false' 
+                    [editable]='false' 
+                    [ngModel]='filterStatus'
+                    dropdownPosition='bottom' 
+                    (ngModelChange)="onLoadByFilter($event, 'status')">
                     <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
                     <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
                     <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
@@ -43,8 +48,10 @@
             </div>
 
             <div class="selector type-selector">
-                <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' [ngModel]='filterType'
-                dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'type')">
+                <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' 
+                [ngModel]='filterType'
+                dropdownPosition='bottom' 
+                (ngModelChange)="onLoadByFilter($event, 'type')">
                     <ng-option value="">
                         <!-- All types -->
                         {{ 'KbPage.AllTypes' | translate }}

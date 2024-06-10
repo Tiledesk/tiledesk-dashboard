@@ -1679,6 +1679,7 @@
         "AlsoDeleteTheNamespace": "Eliminar también el namespace.",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Para eliminar el espacio de nombres, escriba el nombre del espacio de nombres",
         "TheNamespaceHasBeenSuccessfullyRenamed":"El espacio de nombres ha sido renombrado exitosamente",
+        "NewNamespace": "Nuevo espacio de nombres",
         "NamespaceName": "Nombre del espacio de nombres",
         "------": "------",
         "NoKbAdded": "Sin contenido",

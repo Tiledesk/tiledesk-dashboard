@@ -10,9 +10,11 @@ import { OpenaiService } from 'app/services/openai.service';
 })
 
 export class ModalPreviewKnowledgeBaseComponent implements OnInit, OnChanges{
-  @Input() namespaceid: string;
+  @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
+
+  namespaceid: string;
 
   models_list = [
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -43,7 +45,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.namespaceid)
+    console.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.selectedNamespace)
+    this.namespaceid = this.selectedNamespace.id;
+    console.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
   }
 
   submitQuestion(){

@@ -1679,6 +1679,7 @@
 		"AlsoDeleteTheNamespace": "Löschen Sie auch den Namespace",
 		"ToDeleteTheNamespaceTypeTheNamespaceName":"Um den Namespace zu löschen, geben Sie den Namespace-Namen ein",
 		"TheNamespaceHasBeenSuccessfullyRenamed":"Der Namespace wurde erfolgreich umbenannt",
+		"NewNamespace": "Neuer Namespace",
 		"NamespaceName": "Namespace-Name",
 		"------": "------",
         "NoKbAdded": "Kein Inhalt",
