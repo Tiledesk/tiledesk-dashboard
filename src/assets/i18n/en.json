@@ -1678,6 +1678,7 @@
         "AlsoDeleteTheNamespace": "Also delete the namespace",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"To delete the namespace, type the namespace name",
         "TheNamespaceHasBeenSuccessfullyRenamed":"The namespace has been successfully renamed",
+        "NamespaceName": "Namespace name",
         "------": "------",
         "NoKbAdded": "No content",
         "NoKbAddedText": "Add contents to your assistant to create a knowledge base.",

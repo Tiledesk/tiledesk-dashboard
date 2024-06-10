@@ -1680,6 +1680,7 @@
         "AlsoDeleteTheNamespace": "Ayrıca ad alanını da silin",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Ad alanını silmek için ad alanı adını yazın",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Ad alanı başarıyla yeniden adlandırıldı",
+        "NamespaceName": "Ad alanı adı",
         "------": "------",
         "NoKbAdded": "İçerik yok",
         "NoKbAddedText": "Bir bilgi tabanı oluşturmak için asistanınıza içerik ekleyin.",

@@ -1679,6 +1679,7 @@
         "AlsoDeleteTheNamespace": "قم أيضًا بحذف مساحة الاسم",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"لحذف مساحة الاسم، اكتب اسم مساحة الاسم",
         "TheNamespaceHasBeenSuccessfullyRenamed":"تمت إعادة تسمية مساحة الاسم بنجاح",
+        "NamespaceName": "اسم مساحة الاسم",
         "------": "------",
         "NoKbAdded": "لا يوجد محتوى",
         "NoKbAddedText": "أضف محتوى إلى مساعدك لإنشاء قاعدة معرفية.",

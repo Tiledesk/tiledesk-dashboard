@@ -1679,6 +1679,7 @@
         "AlsoDeleteTheNamespace": "Также удалите пространство имен",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Чтобы удалить пространство имен, введите имя пространства имен.",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Пространство имен успешно переименовано",
+        "NamespaceName": "Nome do namespace",
         "------": "------",
         "NoKbAdded": "Без содержания",
         "NoKbAddedText": "Добавьте содержимое в свой помощник, чтобы создать базу знаний.",

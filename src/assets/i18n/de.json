@@ -1679,6 +1679,7 @@
 		"AlsoDeleteTheNamespace": "Löschen Sie auch den Namespace",
 		"ToDeleteTheNamespaceTypeTheNamespaceName":"Um den Namespace zu löschen, geben Sie den Namespace-Namen ein",
 		"TheNamespaceHasBeenSuccessfullyRenamed":"Der Namespace wurde erfolgreich umbenannt",
+		"NamespaceName": "Namespace-Name",
 		"------": "------",
         "NoKbAdded": "Kein Inhalt",
 		"NoKbAddedText": "Fügen Sie Ihrem Assistenten Inhalte hinzu, um eine Wissensdatenbank zu erstellen.",

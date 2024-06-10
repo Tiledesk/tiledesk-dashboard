@@ -1679,6 +1679,7 @@
         "AlsoDeleteTheNamespace": "Сондай-ақ аттар кеңістігін жойыңыз",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Аттар кеңістігін жою үшін аттар кеңістігінің атын теріңіз",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Атау кеңістігі сәтті қайта аталды",
+        "NamespaceName": "Атау кеңістігі атауы",
         "------": "------",
         "NoKbAdded": "Мазмұн жоқ",
         "NoKbAddedText": "Білім базасын жасау үшін көмекшіңізге мазмұн қосыңыз.",

@@ -45,7 +45,7 @@
                             <!-- To delete the Namespace type the namespace name -->
                             {{ 'KbPage.ToDeleteTheNamespaceTypeTheNamespaceName' | translate }}
                         </label>
-                        <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder="Namespace name" [disabled]="!deleteAlsoNamespace">
+                        <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder=" {{ 'KbPage.NamespaceName' | translate }}" [disabled]="!deleteAlsoNamespace">
                     </div>
 
                 </div>

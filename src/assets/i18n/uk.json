@@ -1680,6 +1680,7 @@
         "AlsoDeleteTheNamespace": "Також видаліть простір імен",
         "ToDeleteTheNamespaceTypeTheNamespaceName":"Щоб видалити простір імен, введіть назву простору імен",
         "TheNamespaceHasBeenSuccessfullyRenamed":"Простір імен успішно перейменовано",
+        "NamespaceName": "Назва простору імен",
         "------": "------",
         "NoKbAdded": "Немає вмісту",
         "NoKbAddedText": "Додайте вміст до свого помічника, щоб створити базу знань.",
