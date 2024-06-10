@@ -36,12 +36,14 @@
                         <label [ngClass]="{'active--label': deleteAlsoNamespace}">
                             <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">
                            
-                            Also delete the namespace
+                            <!-- Also delete the namespace -->
+                            {{ 'KbPage.AlsoDeleteTheNamespace' | translate }}
                         </label>
                     </div>
                     <div class="col-sm-10">
                         <label for="delete-namespace-input"  [ngStyle]="{'color':deleteAlsoNamespace === true ? '#3c4858' : '#00000042' }">
-                            To delete the Namespace, type the namespace name
+                            <!-- To delete the Namespace type the namespace name -->
+                            {{ 'KbPage.ToDeleteTheNamespaceTypeTheNamespaceName' | translate }}
                         </label>
                         <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder="Namespace name" [disabled]="!deleteAlsoNamespace">
                     </div>

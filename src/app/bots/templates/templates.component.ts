@@ -64,6 +64,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   agentsCannotManageChatbots: string;
   isVisiblePAY: boolean;
   public_Key: string;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
+  pageTitle: string;
  
   constructor(
     private auth: AuthService,
@@ -94,6 +96,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getProjectPlan();
     this.getUserRole();
     this.getOSCODE()
+    this.getCurreURL()
   }
 
 
@@ -101,6 +104,26 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  getCurreURL() {
+    const currentUrl = this.router.url;
+    console.log('[BOTS-TEMPLATES] - current URL »»» ', currentUrl)
+    const currentUrlLastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    console.log('[BOTS-TEMPLATES] - current URL last segment ',  currentUrlLastSegment);
+    if (currentUrlLastSegment === 'all') {
+      this.pageTitle = "All templates"
+    } else if (currentUrlLastSegment === 'community') {
+      this.pageTitle = "Community templates"
+    } else if (currentUrlLastSegment === 'increase-sales') {
+      this.pageTitle = "Increase sales templates "
+    } else if (currentUrlLastSegment === 'customer-satisfaction') {
+      this.pageTitle = "Customer Satisfaction templates "
+    }
+  }
+
+
+
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     // this.logger.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);

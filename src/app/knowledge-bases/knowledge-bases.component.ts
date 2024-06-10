@@ -126,7 +126,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   newNamespaceName: string;
   namespaceNameOutputElWidth: any;
   namespaceValueOnFocus: string;
-
+  newNamespaceNameIndex: number;
+  msgNamespaceHasBeenSuccessfullyRenamed: string;
 
 
 
@@ -206,8 +207,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
-
-
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP]  GET GET ALL NAMESPACES ERROR ', error);
@@ -235,8 +234,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID', this.selectedNamespaceID)
       this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
 
-      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
-      this.getListOfKb(this.paramsDefault);
+      // this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+      // this.getListOfKb(this.paramsDefault);
 
     } else {
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
@@ -274,7 +273,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       
 
       this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
-      this.getListOfKb(this.paramsDefault);
+      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
     }
   }
 
@@ -296,11 +295,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         const namespaceName = result.namespaceName
 
         this.createNewNamespace(namespaceName)
-        // this.chatbotName = result.chatbotName;
-
-        // if (this.chatbotName) {
-        // this.createTilebotBotFromScratch(this.chatbotName)
-        // }
+      
+        
       }
     });
   }
@@ -317,10 +313,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceID', this.selectedNamespaceID)
 
         this.selectedNamespaceIsDefault = namespace['default']; 
+        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
         this.namespaces.push(namespace)
         console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
+        
+        let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+        this.getListOfKb(paramsDefault, 'createNewNamespace' );
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ', error);
@@ -357,6 +357,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         }
 
+        console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME > NAMESPACES ', this.namespaces)
+        console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME NAMESPACES EL to update  ', this.namespaces[this.newNamespaceNameIndex])
+        // let namespaceItemToUpdate  = this.namespaces[this.newNamespaceNameIndex]
+        this.namespaces[this.newNamespaceNameIndex]['name'] = updatedNameSpaceName
 
         // console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
         // this.selectedNamespaceID = namespace['namespace_id'];
@@ -371,7 +375,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     }, () => {
       console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME * COMPLETE *');
-      this.getAllNamespaces()
+      this.notify.showWidgetStyleUpdateNotification(this.msgNamespaceHasBeenSuccessfullyRenamed, 2, 'done');
+     
+      
     });
   }
 
@@ -398,7 +404,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
-      this.getListOfKb(paramsDefault);
+      this.getListOfKb(paramsDefault, 'onSelectNamespace');
 
     }
   }
@@ -439,6 +445,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    
       namespaceNameInputEl.focus()
       this.namespaceValueOnFocus = (<HTMLInputElement>namespaceNameInputEl).value
+      this.newNamespaceNameIndex = this.namespaces.findIndex((e) => e.name === this.namespaceValueOnFocus);
+      console.log('[KNOWLEDGE-BASES-COMP] hasClickedNamespaceName >>> index <<< in namespaces of namespace name cliked ', this.newNamespaceNameIndex)
+
       console.log('[KNOWLEDGE-BASES-COMP] hasClickedNamespaceName namespaceNameInputEl value', this.namespaceValueOnFocus) 
     }, 100);
 
@@ -541,11 +550,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] GET TEMPLATES ERROR ', error);
-      // this.showSpinner = false;
+      
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] GET TEMPLATES COMPLETE');
-      // this.showSpinner = false;
-      // this.generateTagsBackground(this.templates)
+
     });
   }
 
@@ -568,16 +576,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getFaqKbByProjectId() {
-    this.showSpinner = true
-    // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+    // this.showSpinner = true
+  
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
-
-        // this.faqkbList = faqKb;
-        // this.chatBotCount = faqKb.length;
-
-
         this.myChatbotOtherCount = faqKb.length
 
         // ---------------------------------------------------------------------
@@ -604,36 +607,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.increaseSalesBotsCount = increaseSalesBots.length;
           this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
         }
-
-        // this.route = this.router.url
-        // if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
-        //   this.faqkbList = this.faqkbList
-        //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
-        // } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
-        //   this.faqkbList = this.customerSatisfactionBots
-        //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/customer-satisfaction faqkbList ', this.faqkbList);
-        // } else if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
-        //   this.faqkbList = this.increaseSalesBots
-        //   this.logger.log('[BOTS-LIST] ROUTE my-chatbots/increase-sales faqkbList ', this.faqkbList);
-        // }
-
-
-
-
       }
-
-      /* this.showSpinner = false moved in getAllFaqByFaqKbId:
-       * in this callback stop the spinner only if there isn't faq-kb and
-       * if there is an error */
-      // this.showSpinner = false;
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);
-      this.showSpinner = false;
+      // this.showSpinner = false;
     }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] GET BOTS COMPLETE');
+      console.log('[KNOWLEDGE-BASES-COMP] GET BOTS COMPLETE');
       // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-      this.showSpinner = false;
-      // this.getAllFaqByFaqKbId();
+      // this.showSpinner = false;
     });
 
   }
@@ -661,20 +642,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-  // loadKbSettings(){
-  //   this.kbService.getKbSettings().subscribe((kb: any) => {
-  //     if(kb.kbs && kb.kbs.length>0){
-  //       this.logger.log('REDIRECT getKbSettings'+kb.kbs);
-  //       this.router.navigate(['project/' + this.id_project + '/knowledge-bases-pre']);
-  //     }
-  //   }, (error) => {
-  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-  //   })
-  // }
-
-
   getTranslations() {
     this.translate.get('KbPage')
       .subscribe((KbPage: any) => {
@@ -685,6 +652,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.msgErrorIndexingKb = KbPage['msgErrorIndexingKb'];
         this.msgSuccesIndexingKb = KbPage['msgSuccesIndexingKb'];
         this.msgErrorAddUpdateKb = KbPage['msgErrorAddUpdateKb'];
+        this.msgNamespaceHasBeenSuccessfullyRenamed =  KbPage['TheNamespaceHasBeenSuccessfullyRenamed'];
       });
 
     this.translate.get('Warning')
@@ -847,7 +815,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     } else {
       params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
     }
-    this.getListOfKb(params);
+    this.getListOfKb(params, 'onLoadPage');
   }
 
   onLoadByFilter(searchParams) {
@@ -859,7 +827,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
-  getListOfKb(params?: any) {
+  getListOfKb(params?: any, calledby?: any) {
+    this.showSpinner = true
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.kbsList = [];
     console.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
     this.kbService.getListOfKb(params).subscribe((resp: any) => {
@@ -876,44 +846,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         } else {
           this.kbsList.push(kb);
         }
-        //--> this.updateStatusOfKb(kb._id, 3);
-        // console.log("[KNOWLEDGE BASES COMP] getListOfKb kbsList" , this.kbsList) 
       });
 
-      // if(this.kbsList.length>0){
-      //   this.SHOW_TABLE = true;
-      //   this.checkAllStatuses();
-      // } else {
-      //   this.SHOW_TABLE = false;
-      // }
-      //this.showSpinner = false;
-      //
       this.refreshKbsList = !this.refreshKbsList;
 
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
-      //this.showSpinner = false;
+      this.showSpinner = false
     }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
-      //this.showSpinner = false;
+      console.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+     this.showSpinner = false
     })
   }
 
-  // /**
-  //  * getKnowledgeBaseSettings
-  //  */
-  // getKnowledgeBaseSettings() {
-  //   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings: ", kbSettings);
-  //     // this.kbSettings = kbSettings;
-  //     this.kbsList = kbSettings.kbs;
-  //   }, (error) => {
-  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-  //     this.showSpinner = false;
-  //   })
-  // }
+  
 
   onSendSitemap(body) {
     // this.onCloseBaseModal();
@@ -1073,17 +1019,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespaceID;
-      this.getListOfKb(paramsDefault);
-      // kbs.forEach(kb => {
-      //   //this.kbsList.unshift(kb);
-      //   // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-      //   //   setTimeout(() => {
-      //   //     this.checkStatusWithRetry(kb);
-      //   //   }, 2000);
-      //   // }
-      //   // this.updateStatusOfKb(kb._id, 3);
-      //   //this.updateStatusOfKb(kb._id, -1);
-      // });
+      this.getListOfKb(paramsDefault, 'onAddMultiKb ');
+    
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.refreshKbsList = !this.refreshKbsList;
     }, (err) => {
@@ -1496,7 +1433,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onReloadKbs(params) {
     params.namespace = this.selectedNamespaceID
-    this.getListOfKb(params);
+    this.getListOfKb(params, 'onReloadKbs');
   }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
 

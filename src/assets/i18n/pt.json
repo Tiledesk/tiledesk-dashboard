@@ -522,6 +522,7 @@
     "ReturnToLoginPage": "Retornar à página de login",
     "QuotaExceeded": "Cota excedida",
     "PleaseContactSupport": "Entre em contato com o suporte",
+    "Rename":"Renomear",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",
@@ -1675,7 +1676,9 @@
         "LabelSitemapList": " URL adicionado.",
         "PlaceholderInputSitemapList": "Insira URLs",
         "TheDefaultNamespaceCannotBeDeleted": "O namespace padrão não pode ser excluído",
-        "Rename":"Renomear",
+        "AlsoDeleteTheNamespace": "Exclua também o namespace",
+        "ToDeleteTheNamespaceTypeTheNamespaceName":"Para excluir o namespace, digite o nome do namespace",
+        "TheNamespaceHasBeenSuccessfullyRenamed":"O namespace foi renomeado com sucesso",
         "------": "------",
         "NoKbAdded": "Sem conteúdo",
         "NoKbAddedText": "Adicione conteúdo ao seu assistente para criar uma base de conhecimento.",

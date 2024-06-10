@@ -88,7 +88,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   public_Key: string;
   isVisibleAnalytics: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
-  IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
   isChromeVerGreaterThan100: boolean;
 
   allTemplatesCount: number;

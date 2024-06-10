@@ -1229,6 +1229,21 @@ span.navbar-brand-title {
   left: 78px;
 }
 
+// ---------------------------------------------
+// For chatbot sidebar 
+// ---------------------------------------------
+
+.navbar-brand-sidebar-settings > .chatbot-svg-icon {
+  width: 29px; position: relative; top: -5px;
+}
+
+.navbar-brand-sidebar-settings > .chatbot-sidebar-title {
+  position: absolute; margin-left: 39px;top: 16px;
+}
+
+
+// --------------------------------------------------------
+
 .tag-input-wrap .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: rgba(0, 0, 0, 0.87) !important;
 }
