@@ -790,7 +790,20 @@
         "AutomaticUnavailableStatus": "Аутоматски статус недоступан",
         "SetAnAgentStatusToUnavailable": "Подесите статус агента на недоступан ако има узастопни предодељен број ћаскања",
         "ItSetAnAgentStatusToUnavailable": "Поставља статус агента на недоступан ако има узастопни број ћаскања поново додељен",
-        "NumberOfChatsReassignedBefore": "Број предодељених ћаскања пре промене статуса агента"
+        "NumberOfChatsReassignedBefore": "Број предодељених ћаскања пре промене статуса агента",
+        "Security": {
+            "Security": "Security",
+            "SecurityDescription": "You can restrict access to {{ BRAND_NAME }} to only those users within a range of IP addresses. For example, to restrict access to users in your company, add the IP addresses of your company. You can also allow your customers to bypass the restriction",
+            "EnableIPRestriction": "Enable IP restrictions",
+            "ThisWillAffects": "This will affects",
+            "SignInForAllTiledeskProducts": "Sign in for all {{ BRAND_NAME }} products",
+            "AllowedIpRanges": "Allowed IP ranges",
+            "AddIpRanges": " Add the IP ranges that need {{ BRAND_NAME }} access. Separate multiple IP with comma.",
+            "Use": "Use",
+            "SyntaxWhereN": "syntax where n is a number",
+            "RangesPlaceholder": "example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "Enabling IP-based access restrictions can break third-party integrations. Allow all external IPs that need to access your account via {{ BRAND_NAME }} API."
+        }
     },
     "HomePage": {
         "Widget": "За почетак конфигуришите свој виџет!",
