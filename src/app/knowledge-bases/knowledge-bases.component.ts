@@ -219,6 +219,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
+    this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
 
 
@@ -237,7 +238,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       // this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
       // this.getListOfKb(this.paramsDefault);
-
+      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
     } else {
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
       const storedNamespaceObjct = JSON.parse(storedNamespace)
@@ -256,6 +257,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       
         this.selectedNamespaceIsDefault =  selectedNameSpaceObjct[0]['default'];
         console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceIsDefault (FROM NAMESPACES)', this.selectedNamespaceIsDefault)
+        this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
       } else {
         console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct IS EMPTY fallback to default')
         let selectedNameSpaceObjct = namespaces.filter((el) => {
@@ -266,6 +268,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
         console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespaceID', this.selectedNamespaceID)
         this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
+        this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
       }
 
 
@@ -273,8 +276,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM STORAGE)', this.selectedNamespaceName)
       
 
-      this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
-      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
+      // this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
+      // this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
     }
   }
 
