@@ -47,13 +47,18 @@ export class AddContentMenuComponent implements OnInit {
         // console.log('ADD CONTENT MENU this.items ', this.items) 
     });
 
+
+    // let item = {"label": 'PDF', "type":"file-upload"};
+    // this.items.push(item);
+
+
     //this.items = [{"label": "Single URL", "type":"url-page"},{"label": "URL(s)", "type":"urls"}, {"label": "Plain Text", "type":"text-file"}];
 
 
   }
 
   onOpenAddKnowledgeBaseModal(event){
-    // console.log('onOpenAddKnowledgeBaseModal:', event);
+    console.log('onOpenAddKnowledgeBaseModal:', event);
     this.openAddKnowledgeBaseModal.emit(event);
   }
 }

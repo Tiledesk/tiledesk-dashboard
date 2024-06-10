@@ -1,4 +1,4 @@
-<h1 mat-dialog-title> Start by entering the namespace name </h1>
+<h1 mat-dialog-title> Start by entering uploading </h1>
 <!-- <div mat-dialog-content>
         <mat-form-field appearance="fill" class="cc-mat-form-field">
             <mat-label> Chatbot name</mat-label>
@@ -9,10 +9,12 @@
 
 <div mat-dialog-content>
 
-    <mat-form-field appearance="fill" class="cc-mat-form-field">
+    
+
+    <!-- <mat-form-field appearance="fill" class="cc-mat-form-field">
         <mat-label>Namespace name</mat-label>
         <input matInput [(ngModel)]="namespaceName">
-    </mat-form-field>
+    </mat-form-field> -->
 </div>
 
 <div mat-dialog-actions style="justify-content: center;">
@@ -21,8 +23,8 @@
         Cancel
     </button>
     <!-- [mat-dialog-close]="newKb.url" -->
-    <button [disabled]="namespaceName?.length < 2" class="mat-dialog-ok-btn" mat-button
+    <!-- <button [disabled]="namespaceName?.length < 2" class="mat-dialog-ok-btn" mat-button
         (click)="onOkPresssed(namespaceName)" cdkFocusInitial>
         Create namespace
-    </button>
+    </button> -->
 </div>

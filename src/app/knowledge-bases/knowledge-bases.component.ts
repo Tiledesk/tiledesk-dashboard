@@ -23,6 +23,7 @@ import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -1548,9 +1549,34 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   openAddKnowledgeBaseModal(type?) {
-    this.logger.log('openAddKnowledgeBaseModal type', type)
+    console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
     this.typeKnowledgeBaseModal = type;
     this.addKnowledgeBaseModal = 'block';
+    // if(type === 'file-upload') {
+    //   console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type 2 ', type)
+    //   this.presentModalUploadFile() 
+    // }
+  }
+
+  
+
+  presentModalUploadFile() {
+    console.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
+    const dialogRef = this.dialog.open(ModalUploadFileComponent, {
+      width: '600px',
+      // data: {
+      //   calledBy: 'step1'
+      // },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
+
+      // if (result && result.namespaceName) {
+      //   const namespaceName = result.namespaceName
+      //   this.createNewNamespace(namespaceName)
+      // }
+    });
+
   }
 
   // openPreviewKnowledgeBaseModal(kb) {

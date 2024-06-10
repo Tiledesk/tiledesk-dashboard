@@ -97,39 +97,6 @@
               </div>
               <!-- --------- ./ MAT-MENU ---------- -->
 
-              <!-- ------- test sat-popover ------------ -->
-              <!-- <div class="selected-namespace-content">
-    <div class="selected-namespace-name"> {{selectedNamespace}} </div>
-    <div class="open-dropdown-namespace-btn-wpr" [satPopoverAnchor]="namespaceslist" (click)="namespaceslist.toggle()">
-      <button class="open-dropdown-namespace-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-        class="arrow-down-svg-icon" style="min-width: 20px; min-height: 20px;">
-        <path fill-rule="evenodd" d="M10 18h4v-2h-4zM3 6v2h18V6zm3 7h12v-2H6z" clip-rule="evenodd"></path>
-      </svg>
-    </button>
-    </div>
-  </div>
-
-  <sat-popover #namespaceslist horizontalAlign="center" verticalAlign="below">
-    <div class="popover-wrapper">
-      <div class="sat-popover-namespace-list" *ngFor="let namespace of namespaces">
-       <div class="sat-popover-namespace-name"> 
-        {{namespace.name}}
-       </div>
-        <button class="btn btn-danger btn-simple" (click)="removeNamespace(namespace)">
-          <i class="material-icons">delete_forever</i>
-        </button>
-        <button class="btn btn-primary btn-simple btn-xs" (click)="editNamespaceName()">
-          <i class="material-icons">edit</i>
-        </button>
-      </div>
-    
-    </div>
-  </sat-popover> -->
-
-              <!-- ------- ./ test sat-popover ------------ -->
-
-
 
 
 
@@ -152,7 +119,7 @@
                 <button class="custom-button preview" aria-label="Preview"
                   (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
                   <span class="material-icons-round">play_arrow</span>
-                  <span class=""> Preview </span>
+                  <span class=""> {{'Preview' | translate}} </span>
                 </button>
 
                 <div class="add-kb-div">
@@ -163,7 +130,8 @@
                     <span class=""> {{ 'KbPage.Add' | translate }} </span>
                   </button>
                   <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">
-                    <add-content-menu class="mat-menu" (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
+                    <add-content-menu class="mat-menu" 
+                      (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
                     </add-content-menu>
                   </mat-menu>
                 </div>
@@ -171,12 +139,15 @@
             </div>
 
             <!-- START TABLE -->
-            <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
+            <knowledge-base-table [kbsList]="kbsList" 
+              [kbsListCount]="kbsListCount" 
+              [refresh]="refreshKbsList"
               (openBaseModalDetail)="onOpenBaseModalDetail($event)"
               (openBaseModalDelete)="onOpenBaseModalDelete($event)"
               (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
               (openBaseModalPreview)="onOpenBaseModalPreview()"
-              (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
+              (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" 
+              (checkStatus)="onCheckStatus($event)"
               (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
               (loadByFilter)="onLoadByFilter($event)">
             </knowledge-base-table>
