@@ -791,12 +791,12 @@
         "SetAnAgentStatusToUnavailable": "Imposta lo stato di un agente su non disponibile se è stato riassegnato un numero consecutivo di chat",
         "ItSetAnAgentStatusToUnavailable": "Imposta lo stato di un agente su non disponibile se è stato riassegnato un numero consecutivo di chat",
         "NumberOfChatsReassignedBefore": "Numero di chat riassegnate prima della modifica dello stato dell'agente",
-        "Secury": {
+        "Security": {
             "Security": "Sicurezza",
             "SecurityDescription": "Puoi limitare l'accesso a {{ BRAND_NAME }} solo agli utenti compresi in un intervallo di indirizzi IP. ",
             "EnableIPRestriction": "Abilita le restrizioni IP",
             "ThisWillAffects": "Ciò influirà",
-            "SignInForAllTiledeskProducts": "Accedi per tutti i prodotti {{ BRAND_NAME }}",
+            "SignInForAllTiledeskProducts": "Accesso per tutti i prodotti {{ BRAND_NAME }}",
             "AllowedIpRanges": "Intervalli IP consentiti",
             "AddIpRanges": " Aggiungi gli intervalli IP che necessitano dell'accesso a {{ BRAND_NAME }}. ",
             "Use": "Utilizzo",
