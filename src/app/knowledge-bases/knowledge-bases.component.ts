@@ -223,6 +223,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
+    this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
 
 
@@ -248,7 +249,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       // this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
       // this.getListOfKb(this.paramsDefault);
-
+      this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
     } else {
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
       const storedNamespaceObjct = JSON.parse(storedNamespace)
@@ -334,7 +335,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
         this.namespaces.push(namespace)
-        console.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  namespaces', this.namespaces)
         
         let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
         this.getListOfKb(paramsDefault, 'createNewNamespace' );
