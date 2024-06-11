@@ -219,7 +219,8 @@
                             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
                                 <button mat-menu-item (click)="onRunIndexing(kb)">
                                     <mat-icon>play_arrow</mat-icon>
-                                    <span>{{'KbPage.RunIndexing' | translate}}</span>
+                                    <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
+                                    <span>{{'KbPage.ReIndex' | translate}}</span>
                                 </button>
                                 <button mat-menu-item [disabled]="kb.deleting == true"
                                     (click)="onOpenBaseModalDelete(kb)">

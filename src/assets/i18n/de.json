@@ -1594,7 +1594,8 @@
 	"KbPage": {
 		"Secrets": "Geheimnisse",
 		"Enter": "Eingeben",
-		"RunIndexing": "Umschulen",
+		"RunIndexing": "Neu indizieren",
+		"ReIndex": "Yenidən indeksləşdirin",
 		"RunCheckStatus": "Status überprüfen",
 		"DeleteKb": "Löschen",
 		"CreationDate": "Erstellungsdatum",
@@ -1681,6 +1682,7 @@
 		"TheNamespaceHasBeenSuccessfullyRenamed":"Der Namespace wurde erfolgreich umbenannt",
 		"NewNamespace": "Neuer Namespace",
 		"NamespaceName": "Namespace-Name",
+		"NewNamespaceCreatedSuccessfully": "Der Namespace {{namespace_name}} wurde erfolgreich erstellt",
 		"------": "------",
         "NoKbAdded": "Kein Inhalt",
 		"NoKbAddedText": "Fügen Sie Ihrem Assistenten Inhalte hinzu, um eine Wissensdatenbank zu erstellen.",

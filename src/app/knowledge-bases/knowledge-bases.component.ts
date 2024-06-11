@@ -345,6 +345,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       console.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
 
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant("KbPage.NewNamespaceCreatedSuccessfully", {namespace_name: this.selectedNamespace.name}) , 2, 'done');
     });
   }
 
