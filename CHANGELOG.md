@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.36-rc7
+- Adds the ability to edit LLM model parameters
+
 ### 2.6.36-rc6
 - Fixes bug: the app crashes if the namespace saved in storage does not exist in the namespaces returned by the GET request
 
