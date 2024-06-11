@@ -259,13 +259,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         return el.id === storedNamespaceObjct['id'];
       });
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
-      this.selectedNamespaceName = this.selectedNamespace.name
+    
+      
+      if (this.selectedNamespace) {
+        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
+        this.selectedNamespaceName = this.selectedNamespace.name
+        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
+      } else {
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.default === true
+        });
+        this.selectedNamespaceName = this.selectedNamespace.name
+      }
 
       // if (selectedNameSpaceObjct.length > 0) {
       //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct', selectedNameSpaceObjct)
       //   this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
+        
       
       //   this.selectedNamespaceIsDefault =  selectedNameSpaceObjct[0]['default'];
       //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceIsDefault (FROM NAMESPACES)', this.selectedNamespaceIsDefault)
