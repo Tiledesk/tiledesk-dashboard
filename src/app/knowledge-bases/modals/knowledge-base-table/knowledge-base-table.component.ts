@@ -19,7 +19,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
   @Input() kbsList: KB[];
   @Input() kbsListCount: number;
-  @Input() hasChangedNameSpace: boolean
+  @Input() selectedNamespaceName: any
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
@@ -43,6 +43,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   SHOW_TABLE: boolean = false;
   searchParams: any;
   numberPage: number = 0;
+  hasFiltered: boolean = false
   // kbsListCount: number = 0;
 
   constructor(
@@ -104,11 +105,26 @@ export class KnowledgeBaseTableComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     console.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ' ,  this.kbsList.length, ' changes ' , changes);
     console.log('[KB TABLE] ngOnChanges kbsList ',this.kbsList);
-    console.log('[KB TABLE] ngOnChanges hasChangedNameSpace ',this.hasChangedNameSpace);
+    console.log('[KB TABLE] ngOnChanges selectedNamespaceName ',this.selectedNamespaceName);
+    if (changes.selectedNamespaceName.firstChange) {
 
-    if (this.hasChangedNameSpace) {
-      this.resetFilter()
     }
+    if (changes.selectedNamespaceName && changes.selectedNamespaceName.currentValue && changes.selectedNamespaceName.previousValue) {
+        let selectedNamespaceNameCurrentValue = changes.selectedNamespaceName.currentValue
+        console.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNameCurrentValue ', selectedNamespaceNameCurrentValue);
+
+        let selectedNamespaceNamePreviousValue = changes.selectedNamespaceName.previousValue
+        console.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNamePreviousValue ', selectedNamespaceNamePreviousValue);
+
+        if (selectedNamespaceNameCurrentValue !== selectedNamespaceNamePreviousValue)  {
+          this.resetFilter()
+        }
+    }
+
+
+    console.log('[KB TABLE] ngOnChanges selectedNamespaceName ',this.selectedNamespaceName);
+      
+   
     
     if (this.kbsList.length > 0) {
       this.SHOW_TABLE = true;
@@ -166,13 +182,16 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onLoadByFilter(filterValue: string, column: string) {
-    console.log('[KB TABLE] filterStatus ', this.filterStatus ) 
-    console.log('[KB TABLE] filterType ', this.filterType ) 
+    this.hasFiltered = true;
+    console.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered ) 
+    console.log('[KB TABLE] >>> filterStatus ', this.filterStatus ) 
+    console.log('[KB TABLE] >>> filterType ', this.filterType ) 
     // let status = '';
     // let search = '';
-    this.logger.log("onLoadByFilter value: ", filterValue)
-    this.logger.log("onLoadByFilter column: ", column)
-    if (column == 'status') {
+   console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+   console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    
+   if (column == 'status') {
       this.searchParams.status = filterValue;
     }
     else if (column == 'type') {
