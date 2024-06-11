@@ -97,14 +97,14 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
-  upadeteNamespaceName(namespacename: string, namespaceid:string) {
+  upadeteNamespace(body: string, namespaceid:string) {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'Authorization': this.TOKEN
         })
       }
-      let body = {name: namespacename}
+      // let body = {name: namespacename}
       const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespaceid;
       this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
       return this.httpClient.put(url, body, httpOptions);

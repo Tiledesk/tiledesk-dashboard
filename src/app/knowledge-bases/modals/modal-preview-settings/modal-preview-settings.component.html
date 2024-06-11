@@ -1,104 +1,120 @@
-<!-- PREVIEW KNOWLEDGE BASE MODAL - START -->
-<div class="modal" tabindex="-1" role="dialog" style="background-color: rgba(90,90,90,0.5); display:block">
-    <div class="modal-dialog" role="document" style="width: 400px;">
-        <div class="modal-content" style="width: 400px;">
+<h1 mat-dialog-title>  AI Settings </h1>
 
-            <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="onCloseBaseModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
 
-                <h4 class="modal-title">
-                    <span style="vertical-align: middle;">
-                        <!-- {{ 'KbPage.PreviewKB' | translate }} -->
-                        AI Settings
-                        <!-- {{ 'Preview' | translate }} -->
-                    </span>
-                </h4>
+<div mat-dialog-content>
+    <div class="row-container"  style="margin-top: 0px;">
+        <label class="setting-label">AI Model</label>
+        <ng-select class="" 
+            appendTo="body" 
+            [items]="models_list"
+            bindLabel="name"
+            bindValue="value"
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
+            [clearable]="false"
+            [(ngModel)]="selectedModel"
+            (change)="onSelectModel(selectedModel)">
+        </ng-select>
+    </div>
+
+    <div class="row-container">
+        <div class="label-wpr">
+            <label class="setting-label">
+                <!-- Max Tokens -->
+            {{ 'KbPage.MaxTokens'| translate}}
+            </label>
+           
+        </div>
+
+        <div class="field-box"> 
+            <div class="action-wait-slider">
+                <div class="action-wait-range">1</div>
+                <mat-slider 
+                    class="wait-slider" 
+                    thumbLabel 
+                    step="1"  min="1" max="512"
+                    [(ngModel)]="max_tokens"
+                    (change)="updateSliderValue($event.value, 'max_tokens')" 
+                    aria-label="units">
+                </mat-slider>
+                <div class="action-wait-range">512</div>
             </div>
-
-            <div class="modal-body">
-
-                <div class="form-container">
-                    <label class="setting-label">AI Model</label>
-                    <ng-select class="" 
-                        [items]="models_list"
-                        bindLabel="name"
-                        bindValue="value"
-                        placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
-                        [clearable]="false"
-                        [(ngModel)]="selectedModel">
-                    </ng-select>
-                </div>
-
-                <div class="form-container" style="margin-top: 20px">
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                        <label class="setting-label">Temperature</label>
-                        <p style="margin-bottom: 0px; font-weight: 500; margin-right: 6px;">{{ max_tokens }}</p>
-                    </div>
-
-                    <div class="action-wait-slider">
-                        <div class="action-wait-range">1</div>
-                        <mat-slider 
-                            class="wait-slider" 
-                            thumbLabel 
-                            step="1"  min="1" max="512"
-                            [(ngModel)]="max_tokens"
-                            (change)="updateSliderValue($event.value, 'max_tokens')" 
-                            aria-label="units">
-                        </mat-slider>
-                        <div class="action-wait-range">512</div>
-                    </div>
-                </div>
-
-                <div class="form-container" style="margin-top: 20px">
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                        <label class="setting-label">Max Tokens</label>
-                        <p style="margin-bottom: 0px;">{{ max_tokens }}</p>
-                    </div>
-
-                    <div class="action-wait-slider">
-                        <div class="action-wait-range">1</div>
-                        <mat-slider 
-                            class="wait-slider" 
-                            thumbLabel 
-                            step="1"  min="1" max="512"
-                            [(ngModel)]="max_tokens"
-                            (change)="updateSliderValue($event.value, 'max_tokens')" 
-                            aria-label="units">
-                        </mat-slider>
-                        <div class="action-wait-range">512</div>
-                    </div>
-                </div>
-
-                <!-- <div class="form-container">
-            <div class="kb-container">
-              <span class="material-icons-round">school</span>
-              <p>{{ namespace }}</p>
-            </div>
-          </div> -->
-
-
-                <!-- <div class="form-container">
-                    <input type="text" placeholder="Placeholder"
-                        [(ngModel)]="question" (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()">
-                    <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
-                </div> -->
-
-
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
-                    {{ "Cancel" | translate }}
-                </button>
-                <button id="addkb-btn" class="btn btn-primary" (click)="onSavePreviewSettings()">
-                    <!-- {{ 'KbPage.Import' | translate }} -->
-                    Save
-                </button>
-            </div>
-
+            <input type="text" class="slider-output" value="{{max_tokens}}" disabled>
         </div>
     </div>
+
+    <div class="row-container">
+        <div class="label-wpr">
+            <label class="setting-label">
+                <!-- Temperature -->
+                {{ 'KbPage.Temperature'| translate}}
+            </label>
+        </div>
+        <div class="field-box"> 
+            <div class="action-wait-slider">
+                <div class="action-wait-range">0</div>
+                <mat-slider 
+                    class="wait-slider" 
+                    thumbLabel 
+                    step="0.05"  min="0" max="1"
+                    [(ngModel)]="temperature"
+                    (change)="updateSliderValue($event.value, 'temperature')" 
+                    aria-label="units">
+                </mat-slider>
+                <div class="action-wait-range">1</div>
+            </div>
+            <input type="text" class="slider-output" value="{{temperature}}" disabled>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="label-wpr">
+            <label class="setting-label">Top-K</label>
+        </div>
+        <div class="field-box"> 
+            <div class="action-wait-slider">
+                <div class="action-wait-range">1</div>
+                <mat-slider 
+                    class="wait-slider" 
+                    thumbLabel 
+                    step="1"  min="0" max="10"
+                    [(ngModel)]="topK"
+                    (change)="updateSliderValue($event.value, 'top_k')" 
+                    aria-label="units">
+                </mat-slider>
+                <div class="action-wait-range">10</div>
+            </div>
+            <input type="text" class="slider-output" value="{{topK}}" disabled>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="label-wpr">
+            <label class="setting-label">
+                <!-- System context -->
+                {{ 'KbPage.SystemContext'| translate}}
+            </label>
+        </div>
+
+        <textarea  class="context-texarea" [(ngModel)]="context" rows="1"
+        placeholder="{{context_placeholder}}"
+        (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+       
+    </div>
+
+  
 </div>
-<!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+   
+    <button class="mat-dialog-ok-btn" mat-button
+        (click)="onSavePreviewSettings()" cdkFocusInitial>
+       
+       Save
+        
+    </button>
+</div>
+

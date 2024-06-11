@@ -40,7 +40,7 @@
       <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB"> </appdashboard-settings-sidebar>
 
       <appdashboard-bots-sidebar *ngIf="ARE_NEW_KB" 
-      [allTemplatesCount]="allTemplatesCount"
+        [allTemplatesCount]="allTemplatesCount"
         [allCommunityTemplatesCount]="allCommunityTemplatesCount"
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
@@ -233,10 +233,10 @@
 </modal-preview-knowledge-base>
 <!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
 
-<modal-preview-settings *ngIf="baseModalPreviewSettings" 
+<!-- <modal-preview-settings *ngIf="baseModalPreviewSettings" 
   [selectedNamespace]="selectedNamespace"
   (closeBaseModal)="onCloseBaseModal()">
-</modal-preview-settings>
+</modal-preview-settings> -->
 
 <!-- ERROR KNOWLEDGE BASE MODAL - START -->
 <modal-error-knowledge-base *ngIf="baseModalError" [errorMessage]="errorMessage" (closeBaseModal)="onCloseBaseModal()">

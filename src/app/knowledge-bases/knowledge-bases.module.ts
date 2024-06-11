@@ -26,6 +26,7 @@ import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/m
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -63,7 +64,8 @@ const routes: Routes = [
     MatButtonModule,
     MatSliderModule,
     MomentModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
     // SatPopoverModule
   ]
 })
