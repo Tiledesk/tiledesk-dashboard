@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.6.36-rc5
+- Fixes bug: filters applied on contents are not reset when changing namespace
+- Fixes bug: infinite scrolling of content does not work
+- Fixes bug: updating namespace name happens even when no changes have been made
+
 ### 2.6.36-rc4
 - Namespace CRUD (in progress)
 
