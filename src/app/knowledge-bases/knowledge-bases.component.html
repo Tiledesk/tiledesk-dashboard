@@ -150,10 +150,11 @@
             </div>
 
             <!-- START TABLE -->
-            <knowledge-base-table [kbsList]="kbsList" 
+            <knowledge-base-table 
+              [kbsList]="kbsList" 
               [kbsListCount]="kbsListCount" 
               [refresh]="refreshKbsList"
-              [hasChangedNameSpace]="hasChangedNameSpace"
+              [selectedNamespaceName]="selectedNamespaceName"
               (openBaseModalDetail)="onOpenBaseModalDetail($event)"
               (openBaseModalDelete)="onOpenBaseModalDelete($event)"
               (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"

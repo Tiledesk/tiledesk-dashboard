@@ -119,7 +119,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   selectedNamespace: any;
   hasChangedNameSpace: boolean = false;
 
-  // selectedNamespaceName: any;
+  selectedNamespaceName: any;
   // selectedNamespaceID: string;
   // selectedNamespaceIsDefault: boolean = false;
 
@@ -238,10 +238,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init selectedNameObjct', selectedNameSpaceObjct)
 
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace)
-      
+      this.selectedNamespaceName = this.selectedNamespace.name
 
       // this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName)
       // this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
       // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID', this.selectedNamespaceID)
       // this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
@@ -260,12 +260,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       });
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
-
+      this.selectedNamespaceName = this.selectedNamespace.name
 
       // if (selectedNameSpaceObjct.length > 0) {
       //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct', selectedNameSpaceObjct)
       //   this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM NAMESPACES)', this.selectedNamespaceName)
+        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
       
       //   this.selectedNamespaceIsDefault =  selectedNameSpaceObjct[0]['default'];
       //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceIsDefault (FROM NAMESPACES)', this.selectedNamespaceIsDefault)
@@ -408,10 +408,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     if (namespace) {
       this.hasChangedNameSpace = true;
       this.selectedNamespace = namespace
+      this.selectedNamespaceName = namespace['name']
       console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
       console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
       // this.selectedNamespaceName = namespace['name']
-      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespaceName)
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
       
       // this.selectedNamespaceID = namespace['id']
       // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
@@ -432,7 +433,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onBlurUpdateNamespaceName(event) {
     console.log('[KNOWLEDGE-BASES-COMP] ON BLUR UPDATE NAMESPACE NAME event ', event)
-    if (this.newNamespaceName !== undefined) { 
+    console.log('[KNOWLEDGE-BASES-COMP] ON BLUR UPDATE NAMESPACE newNamespaceName ', this.newNamespaceName)
+    if (this.newNamespaceName !== undefined && this.namespaceValueOnFocus !== this.newNamespaceName) { 
       this.updateNamespaceName(this.newNamespaceName, 'onBlur')
     }
     this.namespaceIsEditable = false;
@@ -847,7 +849,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   getListOfKb(params?: any, calledby?: any) {
     //this.showSpinner = true
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    this.kbsList = [];
+    if (calledby !== 'onLoadPage') {
+        this.kbsList = [];   
+    }   
     console.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
     this.kbService.getListOfKb(params).subscribe((resp: any) => {
       console.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
