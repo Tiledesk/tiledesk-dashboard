@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.36-rc6
+- Fixes bug: the app crashes if the namespace saved in storage does not exist in the namespaces returned by the GET request
+
 ### 2.6.36-rc5
 - Fixes bug: filters applied on contents are not reset when changing namespace
 - Fixes bug: infinite scrolling of content does not work
