@@ -34,7 +34,7 @@
                     editable="false" 
                     [clearable]='false' 
                     [editable]='false' 
-                    [ngModel]='filterStatus'
+                    [(ngModel)]='filterStatus'
                     dropdownPosition='bottom' 
                     (ngModelChange)="onLoadByFilter($event, 'status')">
                     <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
@@ -49,7 +49,7 @@
 
             <div class="selector type-selector">
                 <ng-select class="custom-input" editable="false" [clearable]='false' [editable]='false' 
-                [ngModel]='filterType'
+                [(ngModel)]='filterType'
                 dropdownPosition='bottom' 
                 (ngModelChange)="onLoadByFilter($event, 'type')">
                     <ng-option value="">
@@ -60,7 +60,9 @@
                         <!-- Text -->
                         {{ 'Text' | translate }}
                     </ng-option>
-                    <ng-option value="url">URL</ng-option>
+                    <ng-option value="url">
+                        URL
+                    </ng-option>
                 </ng-select>
             </div>
             
