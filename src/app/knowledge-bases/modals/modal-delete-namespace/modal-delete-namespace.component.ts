@@ -1,43 +1,74 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'modal-delete-namespace',
   templateUrl: './modal-delete-namespace.component.html',
   styleUrls: ['./modal-delete-namespace.component.scss']
 })
-export class ModalDeleteNamespaceComponent implements OnInit, OnChanges {
+export class ModalDeleteNamespaceComponent implements OnInit {
 
-  @Output() closeModal = new EventEmitter();
-  @Output() deleteNamespace = new EventEmitter<any>();
-  @Input() selectedNamespace: any;
+  // @Output() closeModal = new EventEmitter();
+  // @Output() deleteNamespace = new EventEmitter<any>();
+  // @Input() selectedNamespace: any;
   // @Input() selectedNamespaceIsDefault: boolean
-  @Input() kbsList: KB[];
+  // @Input() kbsList: KB[];
 
-  deleteAlsoNamespace: boolean = false
+  public selectedNamespace: any;
+  namespaces: any;
+  kbsList: KB[];
+  deleteAlsoNamespace: boolean = false;
   namespaceTyped: string;
-  namespacenameMatch: boolean = false
+  namespacenameMatch: boolean = false;
+  nameSpaceIndex: any;
 
 
-  constructor() { }
+
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ModalDeleteNamespaceComponent>,
+  ) { 
+    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] data ', data)
+    if (data && data.selectedNamespace ) {
+        this.selectedNamespace = data.selectedNamespace;
+        console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace ',  this.selectedNamespace)
+    }
+
+    if (data && data.namespaces ) {
+      this.namespaces = data.namespaces;
+      console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaces ',  this.namespaces)
+    }
+
+
+    if (data && data.kbsList ) {
+      this.kbsList = data.kbsList;
+      console.log('[MODAL DELETE NAMESPACE AND CONTENTS] kbsList ',  this.kbsList)
+
+      if( this.kbsList.length === 0) {
+        this.deleteAlsoNamespace = true
+      }
+    }
+
+    this.nameSpaceIndex = this.namespaces.findIndex((e) => e.id === this.selectedNamespace.id);
+    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] nameSpaceIndex ',  this.nameSpaceIndex)
+  }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  // ngOnChanges(changes: SimpleChanges): void {
 
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace', this.selectedNamespace)
-    // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] kbsList', this.kbsList)
-    if( this.kbsList.length === 0) {
-      this.deleteAlsoNamespace = true
-    }
-  }
+  //   console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace', this.selectedNamespace)
+  //   // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
+  //   console.log('[MODAL DELETE NAMESPACE AND CONTENTS] kbsList', this.kbsList)
+  //   if( this.kbsList.length === 0) {
+  //     this.deleteAlsoNamespace = true
+  //   }
+  // }
 
-  onCloseModal() {
-    // console.log("close modal")
-    this.closeModal.emit();
-  }
+ 
 
   hasSelectedDeleteNamespace(event) {
     console.log('[MODAL DELETE NAMESPACE AND CONTENTS] hasSelectedDeleteNamespace', event.target.checked)
@@ -53,8 +84,14 @@ export class ModalDeleteNamespaceComponent implements OnInit, OnChanges {
     }
   }
 
+  onCloseModal() {
+    // this.closeModal.emit();
+    this.dialogRef.close();
+  }
+
   onDeleteNamespace() {
-    this.deleteNamespace.emit(this.deleteAlsoNamespace );
+    this.dialogRef.close({deleteAlsoNamespace: this.deleteAlsoNamespace, nameSpaceIdex: this.nameSpaceIndex});
+    // this.deleteNamespace.emit(this.deleteAlsoNamespace );
   }
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'modal-urls-knowledge-base',
@@ -19,7 +20,10 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   countSitemap: number;
   errorLimit: boolean = false;
 
-  constructor() { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
+  ) { }
 
   /** */
   ngOnInit(): void {
@@ -62,12 +66,14 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     let body = {
       'list': arrayURLS
     }
-    this.saveKnowledgeBase.emit(body);
+    this.dialogRef.close(body);
+    // this.saveKnowledgeBase.emit(body);
   }
 
   /** */
   onCloseBaseModal() {
     this.countSitemap = 0;
-    this.closeBaseModal.emit();
+    this.dialogRef.close();
+    // this.closeBaseModal.emit();
   }
 }

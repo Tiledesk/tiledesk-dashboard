@@ -25,6 +25,13 @@ import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-a
 import { MatDialog } from '@angular/material/dialog';
 import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
+import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
+import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
+import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
+import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
+import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
+import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -133,9 +140,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   namespaceNameOutputElWidth: any;
   namespaceValueOnFocus: string;
   newNamespaceNameIndex: number;
-  msgNamespaceHasBeenSuccessfullyRenamed: string;
-
-
+  msgNamespaceHasBeenSuccessfullyUpdated: string;
+  hasRemovedKb: boolean = false
+  hasUpdatedKb: boolean = false
+  getKbCompleted: boolean = false
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
@@ -183,10 +191,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getFaqKbByProjectId();
     this.getOSCODE();
     this.getProjectPlan();
-    this.getProjectUserRole()
+    this.getProjectUserRole();
+    this.listenToOnSenSitemapEvent()
     console.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
 
 
+  }
+  listenToOnSenSitemapEvent() {
+    document.addEventListener(
+      "on-send-sitemap", (e: CustomEvent) => {
+        console.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap :", e);
+       
+        console.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap sitemap:", e.detail.sitemap);
+        if (e.detail && e.detail) {
+          let sitemap =  e.detail.sitemap
+          let body = { 'sitemap': sitemap}
+          this.onSendSitemap(body)
+        } 
+      }
+    );
   }
 
 
@@ -224,31 +247,41 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
-    const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
+    
 
+    const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
 
     if (!storedNamespace) {
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
 
+      const currentUrl = this.router.url;
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
 
-      this.selectedNamespace = namespaces.find((el) => {
-        return el.default === true
-      });
+      const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', nameSpaceId)
 
+      if (nameSpaceId === '0')  {
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.default === true
+        });
+        
+        this.selectedNamespaceName = this.selectedNamespace.name
 
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init selectedNameObjct', selectedNameSpaceObjct)
+        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
+        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
+       
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+      
+      } else {
+        this.selectedNamespace = namespaces.find((el) => {
+          return el.id === nameSpaceId;
+        });
 
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace)
-      this.selectedNamespaceName = this.selectedNamespace.name
-
-      // this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName)
-      // this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceID', this.selectedNamespaceID)
-      // this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
-
-      // this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespaceID;
-      // this.getListOfKb(this.paramsDefault);
+        this.selectedNamespaceName = this.selectedNamespace.name
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+      }
 
     } else {
       console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init EXIST storedNamespace')
@@ -266,69 +299,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE) ID', this.selectedNamespace.id)
         this.selectedNamespaceName = this.selectedNamespace.name
         console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+
       } else {
         console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (NOT EXIST BETWEEN THE NASPACES A NASPACE  WITH THE ID GET FROM STORED NAMESPACE)', this.selectedNamespaceName)
         this.selectedNamespace = namespaces.find((el) => {
           return el.default === true
         });
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
         if (this.selectedNamespaceName) {
           this.selectedNamespaceName = this.selectedNamespace.name
         }
       }
-
-      // if (selectedNameSpaceObjct.length > 0) {
-      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct', selectedNameSpaceObjct)
-      //   this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-
-
-      //   this.selectedNamespaceIsDefault =  selectedNameSpaceObjct[0]['default'];
-      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespaceIsDefault (FROM NAMESPACES)', this.selectedNamespaceIsDefault)
-      // } else {
-      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNameSpaceObjct IS EMPTY fallback to default')
-      //   let selectedNameSpaceObjct = namespaces.filter((el) => {
-      //     return el.default === true
-      //   });
-      //   this.selectedNamespaceName = selectedNameSpaceObjct[0]['name']
-      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespace', this.selectedNamespaceName)
-      //   this.selectedNamespaceID = selectedNameSpaceObjct[0]['id'];
-      //   console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init (fallback to default) selectedNamespaceID', this.selectedNamespaceID)
-      //   this.selectedNamespaceIsDefault = selectedNameSpaceObjct[0]['default'];
-      // }
-
-
-      // this.selectedNamespaceName = storedNamespaceObjct['name']
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FROM STORAGE)', this.selectedNamespaceName)
-
-
-
     }
     this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
+  onSelectNamespace(namespace) {
+    console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
 
-  presentModalAddNewNamespace() {
-    this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
+    if (namespace) {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + namespace.id]);
+      this.hasChangedNameSpace = true;
+      this.selectedNamespace = namespace
+      this.selectedNamespaceName = namespace['name']
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
+      // this.selectedNamespaceName = namespace['name']
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
 
-    const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
-      width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
+      // this.selectedNamespaceID = namespace['id']
+      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
 
-      if (result && result.namespaceName) {
+      // this.selectedNamespaceIsDefault = namespace['default']
+      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
 
-        const namespaceName = result.namespaceName
+      this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'onSelectNamespace');
 
-        this.createNewNamespace(namespaceName)
-
-
-      }
-    });
+    }
   }
+
+
+ 
 
   createNewNamespace(namespaceName: string) {
     this.kbService.createNamespace(namespaceName).subscribe((namespace: any) => {
@@ -412,62 +427,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     }, () => {
       console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification(this.msgNamespaceHasBeenSuccessfullyRenamed, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.msgNamespaceHasBeenSuccessfullyUpdated, 2, 'done');
 
 
     });
   }
 
-  onOpenBaseModalPreviewSettings() {
-    // this.baseModalPreviewSettings = true;
-    const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        selectedNaspace: this.selectedNamespace,
-      },
-    });
-    dialogRef.afterClosed().subscribe(updatedNamespace => {
-      console.log('[ModalPreviewSettings] Dialog updatedNamespace: ', updatedNamespace);
-      if ( updatedNamespace) {
-        let body = { preview_settings: updatedNamespace.preview_settings }
-        this.updateNamespace(body, 'modal-update-settings')
-      }
-    });
-  }
 
-
-
-
-
-  onSelectNamespace(namespace) {
-    console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
-
-    if (namespace) {
-      this.hasChangedNameSpace = true;
-      this.selectedNamespace = namespace
-      this.selectedNamespaceName = namespace['name']
-      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
-      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
-      // this.selectedNamespaceName = namespace['name']
-      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
-
-      // this.selectedNamespaceID = namespace['id']
-      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
-
-      // this.selectedNamespaceIsDefault = namespace['default']
-      // console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
-
-      this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onSelectNamespace');
-
-    }
-  }
-
-
-
+ 
 
 
   onBlurUpdateNamespaceName(event) {
@@ -542,6 +509,212 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     //   console.log('[KNOWLEDGE-BASES-COMP] onMouseOut  selectedNamespaceName ', this.selectedNamespaceName, ' namespaceValueOnFocus ', this.namespaceValueOnFocus, ' NOTHING CHANGE')
     // }
 
+  }
+
+    // ------------------------------------------------------------------------
+  // @ Modals Windows
+  // ------------------------------------------------------------------------
+  presentModalAddNewNamespace() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
+
+    const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
+      width: '600px',
+      // data: {
+      //   calledBy: 'step1'
+      // },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
+
+      if (result && result.namespaceName) {
+
+        const namespaceName = result.namespaceName
+
+        this.createNewNamespace(namespaceName)
+      }
+    });
+  }
+
+  onOpenBaseModalPreviewSettings() {
+    // this.baseModalPreviewSettings = true;
+    const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '360px',
+      data: {
+        selectedNaspace: this.selectedNamespace,
+      },
+    });
+    dialogRef.afterClosed().subscribe(updatedNamespace => {
+      console.log('[ModalPreviewSettings] Dialog updatedNamespace: ', updatedNamespace);
+      if ( updatedNamespace) {
+        let body = { preview_settings: updatedNamespace.preview_settings }
+        this.updateNamespace(body, 'modal-update-settings')
+      }
+    });
+  }
+
+  onOpenBaseModalPreview() {
+    // this.baseModalPreview = true;
+    const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNaspace: this.selectedNamespace,
+      },
+    });
+    dialogRef.afterClosed().subscribe(reusult => {
+      console.log('[ModalPreview] Dialog reusult: ', reusult);
+      
+    });
+  }
+
+
+  onOpenDeleteNamespaceModal() {
+    this.logger.log("onOpenDeleteNamespaceModal called....")
+    if (this.selectedNamespace.default && this.kbsList.length === 0) {
+      this.presentModalDefautNamespaceCannotBeDeleted()
+    } else {
+      // this.showDeleteNamespaceModal = true;
+      this.presentDeleteNamespaceModal()
+    }
+  }
+
+  presentDeleteNamespaceModal() {
+    const dialogRef = this.dialog.open(ModalDeleteNamespaceComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        namespaces: this.namespaces,
+        selectedNamespace: this.selectedNamespace,
+        kbsList: this.kbsList,
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('[ModalDeleteNamespace] Dialog result: ', result);
+      if(result)  {
+        
+        this.onDeleteNamespace(result.deleteAlsoNamespace ,result.nameSpaceIdex)
+      }
+    });
+  }
+
+  onOpenBaseModalDetail(kb) {
+    // this.kbid_selected = kb;
+    // this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+    // this.baseModalDetail = true;
+
+    const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        kb: kb
+      },
+    });
+    dialogRef.afterClosed().subscribe(kb => {
+      console.log('[Modal KB DETAILS] Dialog kb: ', kb);
+      if (kb) {
+        this.onUpdateKb(kb)
+      }
+    });
+  }
+
+  onOpenBaseModalDelete(kb) {
+    this.kbid_selected = kb;
+    this.kbid_selected.deleting = true;
+    this.baseModalDelete = true;
+    
+
+    const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        kb: kb
+      },
+    });
+    dialogRef.afterClosed().subscribe(kb => {
+      console.log('[Modal DELETE KB] kb: ', kb);
+      if (kb) {
+        this.onDeleteKnowledgeBase(kb)  
+      }
+    });
+  }
+
+
+
+
+  openAddKnowledgeBaseModal(type?: string) {
+    console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
+    this.typeKnowledgeBaseModal = type;
+    this.addKnowledgeBaseModal = 'block';
+
+    if (type === 'text-file') {
+      this.presentModalAddContent()
+    }
+    if (type === 'urls') {
+      this.presentModalAddURLs()
+    }
+
+    if (type === 'site-map') {
+      this.presentModalImportSitemap()
+    }
+    // if(type === 'file-upload') {
+    //   console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type 2 ', type)
+    //   this.presentModalUploadFile() 
+    // }
+  }
+
+  presentModalAddContent() {
+    const dialogRef = this.dialog.open(ModalTextFileComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+    
+    });
+    dialogRef.afterClosed().subscribe(body => {
+      console.log('[Modal Add content] Dialog body: ', body);
+      if (body) { 
+        this.onAddKb(body)
+      }
+    });
+
+  }
+
+  presentModalAddURLs() {
+    const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+    
+    });
+    dialogRef.afterClosed().subscribe(body => {
+      console.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
+      if (body) { 
+        this.onAddMultiKb(body)
+      }
+    });
+
+  }
+
+  
+  presentModalImportSitemap() {
+    const dialogRef = this.dialog.open(ModalSiteMapComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+    
+    });
+    dialogRef.afterClosed().subscribe(body => {
+      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      if (body) { 
+        this.onAddMultiKb(body)
+      }
+    
+    });
   }
 
   getProjectUserRole() {
@@ -712,7 +885,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.msgErrorIndexingKb = KbPage['msgErrorIndexingKb'];
         this.msgSuccesIndexingKb = KbPage['msgSuccesIndexingKb'];
         this.msgErrorAddUpdateKb = KbPage['msgErrorAddUpdateKb'];
-        this.msgNamespaceHasBeenSuccessfullyRenamed = KbPage['TheNamespaceHasBeenSuccessfullyRenamed'];
+        this.msgNamespaceHasBeenSuccessfullyUpdated = KbPage['TheNamespaceHasBeenSuccessfullyUpdated'];
       });
 
     this.translate.get('Warning')
@@ -890,7 +1063,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   getListOfKb(params?: any, calledby?: any) {
     //this.showSpinner = true
     console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    if (calledby !== 'onLoadPage') {
+    // if (calledby !== 'onLoadPage') {
+    if (calledby === 'onSelectNamespace') {
       this.kbsList = [];
     }
     console.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
@@ -900,13 +1074,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.kbsListCount = resp.count;
       console.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       console.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
-      resp.kbs.forEach(kb => {
+      resp.kbs.forEach((kb: any, i :number) => {
         // this.kbsList.push(kb);
         const index = this.kbsList.findIndex(objA => objA._id === kb._id);
         if (index !== -1) {
           this.kbsList[index] = kb;
         } else {
           this.kbsList.push(kb);
+        }
+        console.log('[KNOWLEDGE BASES COMP] loop i ', i) 
+        console.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount) 
+        if (i === this.kbsListCount - 1) {
+          this.getKbCompleted = true;
+          console.log('[KNOWLEDGE BASES COMP] loop completed ', this.getKbCompleted) 
         }
       });
 
@@ -915,9 +1095,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
       this.showSpinner = false
+      this.getKbCompleted = false
     }, () => {
       console.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
-      this.showSpinner = false
+      this.showSpinner = false;
+     
+     
     })
   }
 
@@ -927,7 +1110,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      this.logger.log("onSendSitemap:", resp);
+      console.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         swal({
           title: this.warningTitle,
@@ -939,6 +1122,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         })
       } else {
         this.listSitesOfSitemap = resp.sites;
+
+        const event = new CustomEvent("on-send-sitemap-site-list", { detail:  this.listSitesOfSitemap });
+        document.dispatchEvent(event);
       }
 
     }, (err) => {
@@ -956,7 +1142,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       })
 
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] send sitemap *COMPLETED*");
+      this.logger.log("[KNOWLEDGE-BASES-COMP] send sitemap * COMPLETED *");
     })
   }
 
@@ -964,12 +1150,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    * onAddKb
    */
   onAddKb(body) {
+    console.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
-    // this.logger.log("body:",body);
-    this.onCloseBaseModal();
+    console.log("onAddKb body:",body);
+    // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addKb(body).subscribe((resp: any) => {
-      this.logger.log("onAddKb:", resp);
+     console.log("onAddKb:", resp);
       let kb = resp.value;
       if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
         //this.logger.log("updatedExisting true:");
@@ -1011,16 +1198,22 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
 
       if (this.payIsVisible === true) {
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.upgrade],
-          dangerMode: false
-        }).then((willUpgradePlan: any) => {
+          // className: "custom-swal",
+          // buttons: [this.cancel, this.upgrade],
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.upgrade,
+          cancelButtonText: this.cancel,
+          confirmButtonColor: "var(--blue-light)",
+          reverseButtons: true,
+          // dangerMode: false
+        }).then((result: any) => {
 
-          if (willUpgradePlan) {
+          if (result.isConfirmed) {
             if (this.USER_ROLE === 'owner') {
               if (this.prjct_profile_type === 'free') {
                 this.router.navigate(['project/' + this.id_project + '/pricing']);
@@ -1035,23 +1228,36 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         })
       } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
         // console.log('here 2 this.kbLimit ', this.kbLimit)
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
+          // className: "custom-swal",
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonText: this.cancel,
+          confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+          reverseButtons: true,
+          // buttons: [null, this.cancel],
+          // dangerMode: false
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
         // console.log('here 1')
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
           icon: "warning",
-          className: "custom-swal",
+          // className: "custom-swal",
           buttons: [this.cancel, this.contactUs],
-          dangerMode: false
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          ccnacelButtonText: this.contactUs,
+          confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+          reverseButtons: true,
+          // dangerMode: false
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -1095,16 +1301,22 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
 
       if (this.payIsVisible === true) {
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.upgrade],
-          dangerMode: false
-        }).then((willUpgradePlan: any) => {
+          // className: "custom-swal",
+          // buttons: [this.cancel, this.upgrade],
+          // dangerMode: false
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.upgrade,
+          cancelButtonText: this.cancel,
+          confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+        }).then((result: any) => {
 
-          if (willUpgradePlan) {
+          if (result.isConfirmed) {
             if (this.USER_ROLE === 'owner') {
               if (this.prjct_profile_type === 'free') {
                 this.router.navigate(['project/' + this.id_project + '/pricing']);
@@ -1117,25 +1329,36 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
+          // className: "custom-swal",
+          // buttons: [null, this.cancel],
+          // dangerMode: false
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonText: this.cancel,
+          confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
         // console.log('here 1')
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [this.cancel, this.contactUs],
-          dangerMode: false
+          // className: "custom-swal",
+          // buttons: [this.cancel, this.contactUs],
+          // dangerMode: false
+          showCloseButton: false,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          confirmButtonColor: "var(--blue-light)",
+          canecelButtonText:this.cancel,
+          focusConfirm: false,
         }).then((result) => {
-          if (result) {
+          if (result.isConfirmed) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
           }
         })
@@ -1154,25 +1377,32 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   onDeleteKb(kb) {
     let data = {
       "id": kb._id,
-      "namespace": kb.id_project
+      "namespace": kb.namespace
     }
     // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
-    this.onCloseBaseModal();
+    // this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
     this.kbService.deleteKb(data).subscribe((response: any) => {
-      //this.logger.log('onDeleteKb:: ', response);
+      console.log('[KNOWLEDGE-BASES-COMP] onDeleteKb response :: ', response);
       kb.deleting = false;
       if (!response || (response.success && response.success === false)) {
         // this.updateStatusOfKb(kb._id, 0);
 
         // this.onOpenErrorModal(error);
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
+          // className: "custom-swal",
+          // buttons: [null, this.cancel],
+          // dangerMode: false
+          showCloseButton: false,
+          showCancelButton: true,
+          showConfirmButton : false,
+          // confirmButtonText: this.translate.instant('ContactUs'),
+          // confirmButtonColor: "var(--blue-light)",
+          cancelButtonText: this.cancel,
+          focusConfirm: false,
         })
 
 
@@ -1184,6 +1414,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.removeKb(kb._id);
         this.kbsListCount = this.kbsListCount - 1;
         this.refreshKbsList = !this.refreshKbsList;
+        this.hasRemovedKb = true;
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
@@ -1213,13 +1444,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
 
-  onDeleteNamespace(removeAlsoNamespace) {
+  onDeleteNamespace(removeAlsoNamespace, namespaceIndex) {
     console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace removeAlsoNamespace " + removeAlsoNamespace);
+    console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaceIndex " + namespaceIndex);
     console.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ID " + this.selectedNamespace.id);
     // let id_namespace = this.id_project;
     // this.logger.log("delete namespace " + id_namespace);
     this.showSpinner = true;
-    this.closeDeleteNamespaceModal();
+    // this.closeDeleteNamespaceModal();
 
     this.kbService.deleteNamespace(this.selectedNamespace.id, removeAlsoNamespace)
       .subscribe((response: any) => {
@@ -1236,6 +1468,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (removeAlsoNamespace) {
           this.localDbService.removeFromStorage(`last_kbnamespace-${this.id_project}`)
 
+         
+          this.namespaces.splice(namespaceIndex, 1);
+          console.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace namespaces after splice', this.namespaces)
+
+
           this.selectedNamespace = this.namespaces.find((el) => {
             return el.default === true
           });
@@ -1248,8 +1485,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   /** */
   onUpdateKb(kb) {
-    this.logger.log('onUpdateKb: ', kb);
-    this.onCloseBaseModal();
+    console.log('onUpdateKb: ', kb);
+    // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
       "id": kb._id,
@@ -1264,8 +1501,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     };
     if (kb.type === 'text') {
       dataAdd.source = kb.name;
-      dataAdd.content = kb.content,
-        dataAdd.type = 'text'
+      dataAdd.content = kb.content, 
+      dataAdd.type = 'text'
     }
     this.logger.log('dataAdd: ', dataAdd);
     kb.deleting = true;
@@ -1292,12 +1529,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             const index = this.kbsList.findIndex(item => item._id === kbNew._id);
             if (index !== -1) {
               this.kbsList[index] = kbNew;
+             
               this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
             }
           } else {
             // this.kbsList.push(kb);
             // this.kbsList.unshift(kbNew);
-            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
+            this.hasUpdatedKb = true;
           }
 
           const index = this.kbsList.findIndex(item => item.id === kb._id);
@@ -1604,15 +1843,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // }
   }
 
-  openAddKnowledgeBaseModal(type?) {
-    console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
-    this.typeKnowledgeBaseModal = type;
-    this.addKnowledgeBaseModal = 'block';
-    // if(type === 'file-upload') {
-    //   console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type 2 ', type)
-    //   this.presentModalUploadFile() 
-    // }
-  }
+
 
 
 
@@ -1634,19 +1865,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
 
   }
-
-  // openPreviewKnowledgeBaseModal(kb) {
-  //   this.kbid_selected = kb;
-  //   this.previewKnowledgeBaseModal = 'block';
-  //   this.baseModalPreview = true;
-  // }
-
-  // openDeleteKnowledgeBaseModal(kb) {
-  //   this.kbid_selected = kb;
-  //   this.deleteKnowledgeBaseModal = 'block';
-  //   this.baseModalDelete = true;
-  // }
-
 
   openSecretsModal() {
     this.missingGptkeyModal = 'none';
@@ -1684,9 +1902,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.baseModalDelete = false;
   }
 
-  closeDeleteNamespaceModal() {
-    this.showDeleteNamespaceModal = false;
-  }
+  // closeDeleteNamespaceModal() {
+  //   this.showDeleteNamespaceModal = false;
+  // }
 
   contactSalesForChatGptKey() {
     this.closeSecretsModal()
@@ -1700,14 +1918,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.baseModalDelete = false;
   }
 
-  onOpenDeleteNamespaceModal() {
-    this.logger.log("onOpenDeleteNamespaceModal called....")
-    if (this.selectedNamespace.default && this.kbsList.length === 0) {
-      this.presentModalDefautNamespaceCannotBeDeleted()
-    } else {
-      this.showDeleteNamespaceModal = true;
-    }
-  }
+ 
 
   presentModalDefautNamespaceCannotBeDeleted() {
     Swal.fire({
@@ -1724,24 +1935,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
 
-  onOpenBaseModalDelete(kb) {
-    this.kbid_selected = kb;
-    this.kbid_selected.deleting = true;
-    this.baseModalDelete = true;
-  }
+  
   // ************** PREVIEW **************** //
 
-  onOpenBaseModalDetail(kb) {
-    this.kbid_selected = kb;
-    this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
-    this.baseModalDetail = true;
-  }
+  
 
-  onOpenBaseModalPreview() {
-    // this.logger.log("onOpenBaseModalPreview:: ")
-    //this.kbid_selected = kb;
-    this.baseModalPreview = true;
-  }
+ 
 
 
 

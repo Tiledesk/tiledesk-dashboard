@@ -68,7 +68,9 @@
 
     <div class="form-container">
         <div class="label-wpr">
-            <label class="setting-label">Top-K</label>
+            <label class="setting-label">
+                {{ 'KbPage.ChunkLimit'| translate}}
+            </label>
         </div>
         <div class="field-box"> 
             <div class="action-wait-slider">
@@ -113,7 +115,8 @@
     <button class="mat-dialog-ok-btn" mat-button
         (click)="onSavePreviewSettings()" cdkFocusInitial>
        
-       Save
+       
+       {{ "Save" | translate }}
         
     </button>
 </div>

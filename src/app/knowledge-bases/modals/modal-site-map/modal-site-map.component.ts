@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'modal-site-map',
@@ -10,11 +11,11 @@ import { KB_LIMIT_CONTENT } from 'app/utils/util';
 })
 export class ModalSiteMapComponent implements OnInit {
   
-  @Input() listSitesOfSitemap: any[];
-  @Output() sendSitemap = new EventEmitter();
-  @Output() saveKnowledgeBase = new EventEmitter();
-  @Output() closeBaseModal = new EventEmitter();
-
+  // @Input() listSitesOfSitemap: any[];
+  // @Output() sendSitemap = new EventEmitter();
+  // @Output() saveKnowledgeBase = new EventEmitter();
+  // @Output() closeBaseModal = new EventEmitter();
+  listSitesOfSitemap: any[];
   KB_LIMIT_CONTENT = KB_LIMIT_CONTENT;
   kbForm: FormGroup;
   buttonDisabled: boolean = true;
@@ -32,26 +33,50 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.kbForm = this.createConditionGroup();
+    this.listenToOnSenSitemapSiteListEvent()
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    // console.log('ModalSiteMapComponent changes: ', changes);
-    if(this.listSitesOfSitemap.length > 0){
-      this.buttonDisabled = false;
-      this.listOfUrls = this.listSitesOfSitemap.join('\n');
-      // console.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
-      this.countSitemap = this.listSitesOfSitemap.length;
-      this.isSitemapLoaded = true;
-    } else {
-      this.buttonDisabled = true;
-      this.isSitemapLoaded = false;
-    }
+  listenToOnSenSitemapSiteListEvent() {
+    document.addEventListener(
+      "on-send-sitemap-site-list", (e: CustomEvent) => {
+        // console.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
+        this.listSitesOfSitemap=e.detail
+       
+        if(this.listSitesOfSitemap.length > 0){
+          this.buttonDisabled = false;
+          this.listOfUrls = this.listSitesOfSitemap.join('\n');
+          // console.log('MODAL-SITE-MAP listOfUrls: ', this.listOfUrls);
+          this.countSitemap = this.listSitesOfSitemap.length;
+          this.isSitemapLoaded = true;
+          console.log('MODAL-SITE-MAP isSitemapLoaded: ', this.isSitemapLoaded);
+        } else {
+          this.buttonDisabled = true;
+          this.isSitemapLoaded = false;
+        } 
+      }
+    );
   }
+
+  // ngOnChanges(changes: SimpleChanges){
+  //   // console.log('ModalSiteMapComponent changes: ', changes);
+  //   if(this.listSitesOfSitemap.length > 0){
+  //     this.buttonDisabled = false;
+  //     this.listOfUrls = this.listSitesOfSitemap.join('\n');
+  //     // console.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
+  //     this.countSitemap = this.listSitesOfSitemap.length;
+  //     this.isSitemapLoaded = true;
+  //   } else {
+  //     this.buttonDisabled = true;
+  //     this.isSitemapLoaded = false;
+  //   }
+  // }
 
 
   createConditionGroup(): FormGroup {
@@ -95,15 +120,21 @@ export class ModalSiteMapComponent implements OnInit {
     this.countSitemap = 0;
     this.isSitemapLoaded = false;
     this.buttonDisabled = false;
-    this.closeBaseModal.emit();
+    // this.closeBaseModal.emit();
+    this.dialogRef.close()
   }
 
   onSendSitemap(){
+   
     let body = {
       'sitemap': this.kb.url
     }
+    console.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
-    this.sendSitemap.emit(body);
+
+    const event = new CustomEvent("on-send-sitemap", { detail:  body  });
+    document.dispatchEvent(event);
+    // this.sendSitemap.emit(body);
   }
 
   onSaveKnowledgeBase(){
@@ -117,7 +148,9 @@ export class ModalSiteMapComponent implements OnInit {
       let body = {
         'list': arrayURLS
       }
-      this.saveKnowledgeBase.emit(body);
+
+      this.dialogRef.close(body)
+      // this.saveKnowledgeBase.emit(body);
     }
     
   }

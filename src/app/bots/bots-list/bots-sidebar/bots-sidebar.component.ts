@@ -6,6 +6,7 @@ import { BrandService } from 'app/services/brand.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 @Component({
@@ -42,6 +43,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   public displayTemplatesCategory: boolean;
   public isVisibleKNB: boolean;
   public_Key: string;
+  kbNameSpaceid : string = '';
 
   constructor(
     private auth: AuthService,
@@ -51,6 +53,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     public brandService: BrandService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
+    public localDbService: LocalDbService,
   ) {
     const brand = brandService.getBrand();
     this.displayChatbotsCommunity = brand['display_chatbots_community']
@@ -74,6 +77,22 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     // this.logger.log('[BOTS-SIDEBAR] - customerSatisfactionTemplatesCount ', this.customerSatisfactionTemplatesCount)
     // this.logger.log('[BOTS-SIDEBAR] - increaseSalesTemplatesCount ', this.increaseSalesTemplatesCount)
     // this.logger.log('[BOTS-SIDEBAR] - myChatbotOtherCount ', this.myChatbotOtherCount)
+  }
+
+  getCurrentProject() {
+    // this.logger.log('[BOTS-SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
+    this.auth.project_bs.subscribe((project) => {
+      if ( project) {
+          this.project = project;
+          const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
+          console.log('[BOTS-SIDEBAR] storedNamespace', storedNamespace);
+          if(storedNamespace) {
+            let storedNamespaceObjct = JSON.parse(storedNamespace)
+            console.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
+            this.kbNameSpaceid= storedNamespaceObjct.id
+          }
+        }
+    })
   }
 
   getDahordBaseUrlThenOSCODE() {
@@ -251,12 +270,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
       })
   }
 
-  getCurrentProject() {
-    // this.logger.log('[BOTS-SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project;
-    })
-  }
+ 
 
 
 
@@ -359,7 +373,11 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   }
 
   goToNewKnowledgeBases() {
-    this.router.navigate(['project/' + this.project._id + '/knowledge-bases']);
+    if (this.kbNameSpaceid !== '') {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
+    }
   }
 
 }

@@ -130,9 +130,11 @@ export class NotifyService {
         showCancelButton: false,
         confirmButtonText: this.translate.instant('ContactUs'),
         confirmButtonColor: "var(--blue-light)",
-        // cancelButtonColor: "var(--red-color)",
         focusConfirm: false,
         // reverseButtons: true,
+        // cancelButtonColor: "var(--red-color)",
+        
+        
       }).then((result) => { 
         if (result.isConfirmed) {
           this.logger.log('[NOTIFY-SERVICE] displaySubscripionHasExpiredModal result.isConfirmed',  result.isConfirmed) 

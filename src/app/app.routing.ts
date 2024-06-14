@@ -904,6 +904,12 @@ const routes: Routes = [
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
     canActivate: [AuthGuard],
   },
+
+  {
+    path: 'project/:projectid/knowledge-bases/:namespaceid',
+    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard],
+  },
   // { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy
 
   {

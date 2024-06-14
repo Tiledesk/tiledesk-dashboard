@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'modal-text-file',
@@ -24,7 +25,9 @@ export class ModalTextFileComponent implements OnInit {
   }
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ModalTextFileComponent>,
   ) { }
 
   ngOnInit(): void {
@@ -56,11 +59,14 @@ export class ModalTextFileComponent implements OnInit {
       'content': this.kb.content,
       'type': 'text'
     }
-    this.saveKnowledgeBase.emit(body);
+    // this.saveKnowledgeBase.emit(body);
+    this.dialogRef.close(body);
+
   }
 
   onCloseBaseModal() {
-    this.closeBaseModal.emit();
+    // this.closeBaseModal.emit();
+    this.dialogRef.close();
   }
 
 }

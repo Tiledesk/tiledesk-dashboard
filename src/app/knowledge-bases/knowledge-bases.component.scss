@@ -39,16 +39,17 @@
     color: white;
     border: none;
     height: 36px;
-    border-radius: 12px;
+    border-radius: 999px;
     font-weight: 400;
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    
 }
 
 .custom-button.add-content {
     // background: #397dff;
     background: var(--blue-light);
+    padding: 0 12px;
 
     &:hover {
         // background: #256ffd;
@@ -58,17 +59,21 @@
 
 .custom-button.delete {
     background: #ff5c48;
+    padding: 0 8px;
 
     span {
         font-size: 20px !important;
     }
 }
 
-.custom-button.preview {
-    background-color: #38414a;    
+
+
+.custom-button.preview-settings {
+    background-color: #38414a;
+    padding: 0 8px; 
 
     span {
-        margin-right: 6px;
+        font-size: 20px !important;
     }
 
     &:hover {
@@ -76,11 +81,12 @@
     }
 }
 
-.custom-button.preview-settings {
-    background-color: #38414a;    
-    
+.custom-button.preview {
+    background-color: #38414a;  
+    padding: 0 12px; 
+
     span {
-        font-size: 20px !important;
+        margin-right: 6px;
     }
 
     &:hover {
@@ -591,13 +597,15 @@ table {
     padding: 8px 6px;
     border-radius: 4px !important;
     border: 1px solid transparent;
+    color: var(--text-color);
 }
 
 .namespace-name-input {
     border-radius: 4px !important;
     padding: 1px 6px;
     // border: 1px solid transparent;
-    border: 1px solid #0b57d0!important
+    border: 1px solid #0b57d0!important;
+    color: var(--text-color);
 }
 
 .namespace-name-input.edit-mode {
@@ -650,14 +658,21 @@ table {
     align-items: center;
     gap: 6px;
   }
+  .mat-menu-custom-btn > .mat-icon {  
+    margin-right: 0;
+    color: var(--blue-light);
+    margin-top: 1px;
+    font-size: 21px;
+    width: 20px;
+  }
 
   .mat-menu-custom-btn > span {
-    background-color: var(--blue-light);
-    border-color: var(--blue-light);
+    // background-color: var(--blue-light);
+    // border-color: var(--blue-light);
     padding: 6px;
-    color: #fff;
+    color: var(--blue-light);
     border-radius: 4px;
-
+    font-weight: 600;
   }
 
   .active--namespace {

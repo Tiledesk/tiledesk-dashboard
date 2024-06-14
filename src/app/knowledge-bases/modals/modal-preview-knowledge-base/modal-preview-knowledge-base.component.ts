@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'modal-preview-knowledge-base',
@@ -9,20 +11,26 @@ import { OpenaiService } from 'app/services/openai.service';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent implements OnInit, OnChanges{
-  @Input() selectedNamespace: any;
+export class ModalPreviewKnowledgeBaseComponent implements OnInit{
+  // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
-
+  
+  selectedNamespace: any;
   namespaceid: string;
+  selectedModel: string;
+  maxTokens: number;
+  temperature: number;
+  topK: number;
+  context: string;
 
-  models_list = [
-    { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
-    { name: "GPT-4 (ChatGPT)", value: "gpt-4" },
-    { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview" }, 
-    { name: "GPT-4o (ChatGPT)", value: "gpt-4o" }
-  ];
-  selectedModel: any = this.models_list[1].value;
+  // models_list = [
+  //   { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
+  //   { name: "GPT-4 (ChatGPT)", value: "gpt-4" },
+  //   { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview" }, 
+  //   { name: "GPT-4o (ChatGPT)", value: "gpt-4o" }
+  // ];
+  // selectedModel: any = this.models_list[1].value;
 
   qa: any;
 
@@ -36,25 +44,47 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit, OnChanges{
   // error_answer: boolean = false;
   translateparam: any;
 
+
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ModalPreviewKnowledgeBaseComponent>,
     private logger: LoggerService,
     private openaiService: OpenaiService
-  ) { }
+  ) { 
+    console.log('[MODAL-PREVIEW-KB] data ', data)
+    if (data && data.selectedNaspace) {
+      this.selectedNamespace = data.selectedNaspace;
+      this.namespaceid = this.selectedNamespace.id;
+      this.selectedModel = this.selectedNamespace.preview_settings.model;
+      this.maxTokens= this.selectedNamespace.preview_settings.max_tokens;
+      this.temperature = this.selectedNamespace.preview_settings.temperature;
+      this.topK = this.selectedNamespace.preview_settings.top_k;
+      this.context = this.selectedNamespace.preview_settings.context
+
+      console.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
+      console.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
+      console.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
+    }
+  }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.selectedNamespace)
-    this.namespaceid = this.selectedNamespace.id;
-    console.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.selectedNamespace)
+  //   this.namespaceid = this.selectedNamespace.id;
+  //   console.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
+  // }
 
   submitQuestion(){
     let data = {
       "question": this.question,
       "namespace": this.namespaceid,
-      "model": this.selectedModel
+      "model": this.selectedModel,
+      "temperature": this.temperature,
+      "max_tokens": this.maxTokens,
+      "top_k": this.topK,
+      "context": this.context
     }
     // this.error_answer = false;
     this.searching = true;
@@ -118,7 +148,8 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit, OnChanges{
     this.show_answer = false;
     let element = document.getElementById('enter-button')
     element.style.display = 'none';
-    this.closeBaseModal.emit();
+    // this.closeBaseModal.emit();
+    this.dialogRef.close();
   }
 
 }

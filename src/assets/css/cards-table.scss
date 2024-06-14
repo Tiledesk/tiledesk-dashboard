@@ -292,10 +292,18 @@
   font-size: 18px;
 }
 
+.mat-icon-button > span >  .mat-icon {
+  color: var(--text-color)
+}
+
+.mat-icon-button:hover > span >  .mat-icon {
+  color: var(--icon-hover-color)
+}
+
 .mat-icon-button:hover {
   background-color: var(--mat-icon-button-hover-background-color);
   border-radius: 50%;
-  color: var(--icon-hover-color)
+  // color: var(--icon-hover-color)
 }
 
 .mat-menu-btn>mat-icon {

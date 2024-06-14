@@ -26,7 +26,7 @@ import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/m
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -68,5 +68,10 @@ const routes: Routes = [
     MatDialogModule,
     // SatPopoverModule
   ]
+  // ,
+  // providers: [
+  //   { provide: MAT_DIALOG_DATA, useValue: {} },
+  //   { provide: MatDialogRef, useValue: {} }
+  // ]
 })
 export class KnowledgeBasesModule { }

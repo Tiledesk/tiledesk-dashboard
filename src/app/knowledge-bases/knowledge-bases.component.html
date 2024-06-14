@@ -92,6 +92,7 @@
                 <mat-menu #namespaceList="matMenu">
                   <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item
                     (click)="presentModalAddNewNamespace()">
+                    <mat-icon>add</mat-icon>
                     <span>{{ 'KbPage.NewNamespace' | translate }}</span>
                   </button>
 
@@ -109,7 +110,12 @@
 
               <div class="buttons-div">
                 <button class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
-                  style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()">
+                  style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
+                   matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{ 'KbPage.DeleteKb' | translate }}" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100">
                   <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
                   <span class="material-icons-round">
                     delete
@@ -154,6 +160,9 @@
               [kbsList]="kbsList" 
               [kbsListCount]="kbsListCount" 
               [refresh]="refreshKbsList"
+              [hasRemovedKb]="hasRemovedKb"
+              [hasUpdatedKb]="hasUpdatedKb"
+              [getKbCompleted]="getKbCompleted"
               [selectedNamespaceName]="selectedNamespaceName"
               (openBaseModalDetail)="onOpenBaseModalDetail($event)"
               (openBaseModalDelete)="onOpenBaseModalDelete($event)"
@@ -182,55 +191,55 @@
   (closeBaseModal)="onCloseBaseModal()">
 </modal-page-url>
 
-<modal-text-file *ngIf="typeKnowledgeBaseModal == 'text-file'" 
+<!-- <modal-text-file *ngIf="typeKnowledgeBaseModal == 'text-file'" 
   (saveKnowledgeBase)="onAddKb($event)"
   (closeBaseModal)="onCloseBaseModal()">
-</modal-text-file>
+</modal-text-file> -->
 
-<modal-site-map *ngIf="typeKnowledgeBaseModal == 'site-map'" 
+<!-- <modal-site-map *ngIf="typeKnowledgeBaseModal == 'site-map'" 
   [listSitesOfSitemap]="listSitesOfSitemap"
   (sendSitemap)="onSendSitemap($event)" 
   (saveKnowledgeBase)="onAddMultiKb($event)"
   (closeBaseModal)="onCloseBaseModal()">
-</modal-site-map>
+</modal-site-map> -->
 
-<modal-urls-knowledge-base *ngIf="typeKnowledgeBaseModal == 'urls'"
+<!-- <modal-urls-knowledge-base *ngIf="typeKnowledgeBaseModal == 'urls'"
  (saveKnowledgeBase)="onAddMultiKb($event)"
   (closeBaseModal)="onCloseBaseModal()">
-</modal-urls-knowledge-base>
+</modal-urls-knowledge-base> -->
 <!-- ADD KNOWLEDGE BASE MODAL - END -->
 
 
 <!-- DETAIL KNOWLEDGE BASE MODAL - START -->
-<modal-detail-knowledge-base *ngIf="baseModalDetail" 
+<!-- <modal-detail-knowledge-base *ngIf="baseModalDetail" 
   [kb]="kbid_selected" 
   (updateKnowledgeBase)="onUpdateKb($event)"
   (closeBaseModal)="onCloseBaseModal()">
-</modal-detail-knowledge-base>
+</modal-detail-knowledge-base> -->
 <!-- DETAIL KNOWLEDGE BASE MODAL - END -->
 
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
-<modal-delete-knowledge-base *ngIf="baseModalDelete" 
+<!-- <modal-delete-knowledge-base *ngIf="baseModalDelete" 
   [kb]="kbid_selected"
   (deleteKnowledgeBase)="onDeleteKnowledgeBase($event)" 
   (closeBaseModal)="onCloseBaseModal()">
-</modal-delete-knowledge-base>
+</modal-delete-knowledge-base> -->
 <!-- DELETE KNOWLEDGE BASE MODAL - END -->
 
 <!-- DELETE NAMESPACE MODAL - START -->
-<modal-delete-namespace *ngIf="showDeleteNamespaceModal" 
+<!-- <modal-delete-namespace *ngIf="showDeleteNamespaceModal" 
   (deleteNamespace)="onDeleteNamespace($event)"
   (closeModal)="closeDeleteNamespaceModal()" 
   [selectedNamespace]="selectedNamespace"
   [kbsList]="kbsList">
-</modal-delete-namespace>
+</modal-delete-namespace> -->
 <!-- DELETE NAMESPACE MODAL - END -->
 
 <!-- PREVIEW KNOWLEDGE BASE MODAL - START -->
-<modal-preview-knowledge-base *ngIf="baseModalPreview" 
+<!-- <modal-preview-knowledge-base *ngIf="baseModalPreview" 
   [selectedNamespace]="selectedNamespace"
   (closeBaseModal)="onCloseBaseModal()">
-</modal-preview-knowledge-base>
+</modal-preview-knowledge-base> -->
 <!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
 
 <!-- <modal-preview-settings *ngIf="baseModalPreviewSettings" 

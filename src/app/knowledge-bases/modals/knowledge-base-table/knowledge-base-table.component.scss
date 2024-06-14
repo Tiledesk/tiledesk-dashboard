@@ -503,3 +503,32 @@ td {
     width: 160px;
     margin-right: 8px;
 }
+
+.add-content-btn-wpr {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.custom-button {
+    text-transform: capitalize;
+    color: white;
+    border: none;
+    height: 36px;
+    border-radius: 999px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 14px;
+}
+
+.custom-button.add-content {
+    // background: #397dff;
+    background: var(--blue-light);
+
+    &:hover {
+        // background: #256ffd;
+        opacity: .8;
+    }
+}

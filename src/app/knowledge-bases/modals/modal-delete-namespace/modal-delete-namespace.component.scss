@@ -238,3 +238,15 @@ input[type=text] {
 input[type=text]:disabled {
     background-color: #f8f9f9;
 }
+
+
+.mat-dialog-close-btn {
+    background-color: #647491;
+    color: #fff;
+  }
+
+  .mat-dialog-ko-btn {
+    background-color: var(--delete-icon-color);
+    color: #fff;
+
+  }
