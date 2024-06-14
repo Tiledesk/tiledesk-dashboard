@@ -428,11 +428,11 @@ export enum KB_MAX_NUM {
 };
 
 export const PLANS_LIST = {
-    FREE_TRIAL: { requests: 3000,   messages: 0,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 50 }, // same as PREMIUM
-    Sandbox:    { requests: 200,    messages: 0,    tokens: 10000,      email: 200,     chatbots: 2,        kbs: 50 },
-    Basic:      { requests: 800,    messages: 0,    tokens: 50000,      email: 200,     chatbots: 5,        kbs: 150},
-    Premium:    { requests: 3000,   messages: 0,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 300},
-    Custom:     { requests: 3000,   messages: 0,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 1000}
+    FREE_TRIAL: { requests: 3000,   messages: 100000,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 50 }, // same as PREMIUM
+    Sandbox:    { requests: 200,    messages: 100000,    tokens: 10000,      email: 200,     chatbots: 2,        kbs: 50 },
+    Basic:      { requests: 800,    messages: 100000,    tokens: 50000,      email: 200,     chatbots: 5,        kbs: 150},
+    Premium:    { requests: 3000,   messages: 100000,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 300},
+    Custom:     { requests: 3000,   messages: 100000,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 1000}
 }
 
 // Basic plan
