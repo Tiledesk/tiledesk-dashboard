@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.36
+- Deploys in production
+- Adds the ability to manage the Extreme measures in Project settings > tab General
+
 ### 2.6.35
 - Deploys in production
 - Fixes translations on Project Settings > Security page
