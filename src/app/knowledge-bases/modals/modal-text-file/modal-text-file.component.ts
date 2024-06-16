@@ -60,6 +60,7 @@ export class ModalTextFileComponent implements OnInit {
       'type': 'text'
     }
     // this.saveKnowledgeBase.emit(body);
+    console.log('MODAL-TEXT-FILE body ', body ) 
     this.dialogRef.close(body);
 
   }

@@ -61,6 +61,15 @@
                     <ng-option value="url">
                         URL
                     </ng-option>
+                    <ng-option value="pdf">
+                        pdf
+                    </ng-option>
+                    <ng-option value="txt">
+                        txt
+                    </ng-option>
+                    <ng-option value="docx">
+                        docx
+                    </ng-option>
                 </ng-select>
             </div>
 
@@ -179,6 +188,25 @@
 
                 <tr *ngFor="let kb of kbsList">
                     <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
+                      
+                        <div *ngIf="kb.type == 'docx'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #346ca2; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">docx</span>
+                        </div>
+                        <div *ngIf="kb.type == 'txt'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">txt</span>
+                        </div>
+                        <div *ngIf="kb.type == 'pdf'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #e55254; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">pdf</span>
+                        </div>
                         <div *ngIf="kb.type == 'text'" class="chip"
                             style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
                             <span id="description" class="material-icons-outlined"
@@ -218,8 +246,10 @@
                     </td>
 
                     <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                        <div class="ellipsis-text" style="max-width: 100%; font-size: 16px;">{{ kb.name }}</div>
-                        <div class="subtitle ellipsis-text" style="max-width: 100%;">{{getSubtitle(kb)}}</div>
+                        <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}" class="ellipsis-text" style="max-width: 100%; font-size: 16px;">{{ kb.name }}</div>
+                        <div *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                            {{getSubtitle(kb)}}
+                        </div>
                     </td>
 
                     <td style="max-width: 40px; text-align: end;">

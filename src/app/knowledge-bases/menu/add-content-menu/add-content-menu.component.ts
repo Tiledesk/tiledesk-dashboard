@@ -33,6 +33,9 @@ export class AddContentMenuComponent implements OnInit {
         // console.log('ADD CONTENT MENU this.items ', this.items) 
     });
 
+    let item = {"label": 'Import file', "type":"file-upload"};
+    this.items.push(item);
+
     this.translate.get('KbPage.AddKbText')
     .subscribe((text: any) => {
         let item = {"label": text, "type":"text-file"};
@@ -48,8 +51,7 @@ export class AddContentMenuComponent implements OnInit {
     });
 
 
-    // let item = {"label": 'PDF', "type":"file-upload"};
-    // this.items.push(item);
+    
 
 
     //this.items = [{"label": "Single URL", "type":"url-page"},{"label": "URL(s)", "type":"urls"}, {"label": "Plain Text", "type":"text-file"}];

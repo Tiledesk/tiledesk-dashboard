@@ -662,10 +662,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     if (type === 'site-map') {
       this.presentModalImportSitemap()
     }
-    // if(type === 'file-upload') {
-    //   console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type 2 ', type)
-    //   this.presentModalUploadFile() 
-    // }
+    if(type === 'file-upload') {
+      console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type 2 ', type)
+      this.presentModalUploadFile() 
+    }
   }
 
   presentModalAddContent() {
@@ -715,6 +715,24 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     
     });
+  }
+
+  presentModalUploadFile() {
+    console.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
+    const dialogRef = this.dialog.open(ModalUploadFileComponent, {
+      width: '360px',
+      // data: {
+      //   calledBy: 'step1'
+      // },
+    })
+    dialogRef.afterClosed().subscribe(body => {
+      console.log(`[KNOWLEDGE-BASES-COMP]  AFTER CLOSED MODAL UPLOAD FILE body:`, body);
+
+      if (body) { 
+        this.onAddKb(body)
+      }
+    });
+
   }
 
   getProjectUserRole() {
@@ -1279,7 +1297,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onAddMultiKb(body) {
-    this.onCloseBaseModal();
+    // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addMultiKb(body, this.selectedNamespace.id).subscribe((kbs: any) => {
@@ -1847,24 +1865,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-  presentModalUploadFile() {
-    console.log('[KNOWLEDGE BASES COMP] PRESENT MODAL UPLOAD FILE ')
-    const dialogRef = this.dialog.open(ModalUploadFileComponent, {
-      width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
-
-      // if (result && result.namespaceName) {
-      //   const namespaceName = result.namespaceName
-      //   this.createNewNamespace(namespaceName)
-      // }
-    });
-
-  }
+ 
 
   openSecretsModal() {
     this.missingGptkeyModal = 'none';
