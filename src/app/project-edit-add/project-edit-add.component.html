@@ -236,7 +236,7 @@
                   <!-- --------------------------- -->
                   <!-- Delete ptoject -->
                   <!-- --------------------------- -->
-                  <div class="row">
+                  <div *ngIf="!hideExtremeMeasures" class="row">
                     <div class="col-md-12">
                       <h3 class="card_title__underlined" style="margin-top: 30px;">
                         <span class="card_title__underline">
@@ -249,7 +249,7 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div *ngIf="!hideExtremeMeasures" class="row">
                     <div class="col-md-12">
                       <button id="delete-project-btn" class="btn btn-danger" style="margin-top:0px"
                         (click)="openDeleteModal()">
