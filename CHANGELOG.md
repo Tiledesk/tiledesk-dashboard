@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.37
+- Deploys in production
+- Adds the ability to manage the Extreme measures in Project settings > tab General (improvements)
+
 ### 2.6.36
 - Deploys in production
 - Adds the ability to manage the Extreme measures in Project settings > tab General
