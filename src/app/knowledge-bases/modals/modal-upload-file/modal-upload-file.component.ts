@@ -27,6 +27,8 @@ export class ModalUploadFileComponent implements OnInit {
   fileSizeExceeds: boolean;
   fileSupported: boolean = true;
   body: any;
+  tparams = { "file_size_limit": "10" }
+ 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUploadFileComponent>,

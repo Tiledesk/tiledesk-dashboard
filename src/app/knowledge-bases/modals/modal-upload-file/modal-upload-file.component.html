@@ -1,4 +1,4 @@
-<h1 mat-dialog-title> Import file </h1>
+<h1 mat-dialog-title> {{ "KbPage.ImportFile" | translate }} </h1>
 
 
 <div mat-dialog-content>
@@ -7,7 +7,10 @@
     <div [class.is-hidden]="hideDropZone === true" class="drop-container dropzone" (drop)="drop($event)"
         (dragover)="allowDrop($event)" (dragleave)="drag($event)" [class.hovering]="isHovering">
 
-        <div class="drag-text"> Drag yor file here or</div>
+        <div class="drag-text"> 
+            <!-- Drag yor file here or -->
+            {{ "DragYuorFileHereOr" | translate }}
+        </div>
         <label class="upload-button">
             <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx, .txt"
                 name="uploadprivatekey" type="file">
@@ -19,13 +22,17 @@
     </div>
     <div [class.is-hidden]="hideDropZone === true" class="supported-file-text"> 
         <span *ngIf="!fileSizeExceeds && fileSupported">
-            Supported file types: pdf, txt, docx - 10 Mb max.
+            <!-- Supported file types: pdf, txt, docx - 10 Mb max. -->
+            {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}}
         </span>
         <span class="file-size-exceeds" *ngIf="fileSizeExceeds">
-            File size exceeds 10 Mb.
+            <!-- File size exceeds 10 Mb. -->
+            {{'FileSizeExceedsFileSizeLimitMb' | translate: tparams}}
+            
         </span>
         <span class="file-type-not-supported" *ngIf="!fileSupported">
-            File types not supported
+            <!-- File types not supported -->
+             {{'FileTypeNotSupported' | translate: tparams}}
         </span>
     </div>
 
@@ -70,7 +77,8 @@
         <div *ngIf="!uploadCompleted" class="uploading">Uploading<span>.</span><span>.</span><span>.</span></div>
         
         <div class="successfully-uploaded" *ngIf="uploadCompleted" >
-            {{file_size_in_mb}} Mb file successfully uploaded.
+            <!-- {{file_size_in_mb}} Mb file successfully uploaded. -->
+            {{'FileSuccessfullyUploaded' | translate: { file_mb: file_size_in_mb   } }}
         </div>
         
     </div>
@@ -79,11 +87,12 @@
 
 <div mat-dialog-actions style="justify-content: center;">
     <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
-        <!-- {{ "Cancel" | translate }} -->
-        Cancel
+        {{ "Cancel" | translate }}
+        <!-- Cancel -->
     </button>
 
     <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()" cdkFocusInitial>
-        Import
+     
+        {{ "Import" | translate }}
     </button>
 </div>
