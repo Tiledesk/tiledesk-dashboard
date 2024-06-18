@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.38-rc2
+- Minor improvements and bug fixing
+
 ### 2.6.38-rc1
 - Adds the ability on the "Manage contents" page to import files
 
