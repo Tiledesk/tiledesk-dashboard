@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.38-rc3
+- Fixes translations
+
 ### 2.6.38-rc2
 - Minor improvements and bug fixing
 
