@@ -107,9 +107,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
   getCurreURL() {
     const currentUrl = this.router.url;
-    console.log('[BOTS-TEMPLATES] - current URL »»» ', currentUrl)
+    this.logger.log('[BOTS-TEMPLATES] - current URL »»» ', currentUrl)
     const currentUrlLastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-    console.log('[BOTS-TEMPLATES] - current URL last segment ',  currentUrlLastSegment);
+    this.logger.log('[BOTS-TEMPLATES] - current URL last segment ',  currentUrlLastSegment);
     if (currentUrlLastSegment === 'all') {
       this.pageTitle = "All templates"
     } else if (currentUrlLastSegment === 'community') {
@@ -349,7 +349,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res

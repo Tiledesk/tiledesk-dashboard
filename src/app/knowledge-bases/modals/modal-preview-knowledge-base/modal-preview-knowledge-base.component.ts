@@ -51,7 +51,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
     private logger: LoggerService,
     private openaiService: OpenaiService
   ) { 
-    console.log('[MODAL-PREVIEW-KB] data ', data)
+    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNaspace) {
       this.selectedNamespace = data.selectedNaspace;
       this.namespaceid = this.selectedNamespace.id;
@@ -61,9 +61,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context
 
-      console.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
-      console.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
-      console.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
+      this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
+      this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
+      this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
   }
 
@@ -71,9 +71,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.selectedNamespace)
+  //    this.logger.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.selectedNamespace)
   //   this.namespaceid = this.selectedNamespace.id;
-  //   console.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
+  //    this.logger.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
   // }
 
   submitQuestion(){

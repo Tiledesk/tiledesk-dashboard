@@ -30,21 +30,21 @@ export class ModalDeleteNamespaceComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalDeleteNamespaceComponent>,
   ) { 
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] data ', data)
+    // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] data ', data)
     if (data && data.selectedNamespace ) {
         this.selectedNamespace = data.selectedNamespace;
-        console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace ',  this.selectedNamespace)
+        // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] selectedNamespace ',  this.selectedNamespace)
     }
 
     if (data && data.namespaces ) {
       this.namespaces = data.namespaces;
-      console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaces ',  this.namespaces)
+      // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaces ',  this.namespaces)
     }
 
 
     if (data && data.kbsList ) {
       this.kbsList = data.kbsList;
-      console.log('[MODAL DELETE NAMESPACE AND CONTENTS] kbsList ',  this.kbsList)
+      // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] kbsList ',  this.kbsList)
 
       if( this.kbsList.length === 0) {
         this.deleteAlsoNamespace = true
@@ -52,7 +52,7 @@ export class ModalDeleteNamespaceComponent implements OnInit {
     }
 
     this.nameSpaceIndex = this.namespaces.findIndex((e) => e.id === this.selectedNamespace.id);
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] nameSpaceIndex ',  this.nameSpaceIndex)
+    // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] nameSpaceIndex ',  this.nameSpaceIndex)
   }
 
   ngOnInit(): void {
@@ -71,12 +71,12 @@ export class ModalDeleteNamespaceComponent implements OnInit {
  
 
   hasSelectedDeleteNamespace(event) {
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] hasSelectedDeleteNamespace', event.target.checked)
+    // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] hasSelectedDeleteNamespace', event.target.checked)
     this.deleteAlsoNamespace = event.target.checked
   }
 
   checkNamespaceTyped() {
-    console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaceTyped ', this.namespaceTyped)
+    // console.log('[MODAL DELETE NAMESPACE AND CONTENTS] namespaceTyped ', this.namespaceTyped)
     if (this.namespaceTyped !== this.selectedNamespace.name) {
       this.namespacenameMatch = false 
     } else {

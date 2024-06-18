@@ -32,10 +32,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewSettingsComponent>,
   ) { 
-    console.log("[MODAL PREVIEW SETTINGS] data ", data)
+    // console.log("[MODAL PREVIEW SETTINGS] data ", data)
     if (data && data.selectedNaspace) {
       this.selectedNamespace = data.selectedNaspace
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
 
       const namespaceAiSettings  = this.selectedNamespace.preview_settings
 
@@ -48,16 +48,16 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       } else if (namespaceAiSettings.model === "gpt-4o" ) {
         this.selectedModel = this.models_list[3].value;
       }
-      console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
       this.max_tokens =  namespaceAiSettings.max_tokens;
-      console.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
+      // console.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
       this.temperature = namespaceAiSettings.temperature
-      console.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
+      // console.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
 
       this.topK = namespaceAiSettings.top_k
-      console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
+      // console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
 
       if (namespaceAiSettings.context !== "You are an awesome AI Assistant.")  {
         this.context = namespaceAiSettings.context
@@ -70,25 +70,25 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log("[MODAL PREVIEW SETTINGS] on init")
+    // console.log("[MODAL PREVIEW SETTINGS] on init")
 
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.selectedNamespace)
+    // console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.selectedNamespace)
     this.namespaceid = this.selectedNamespace.id
   }
 
 
   onSelectModel(selectedModel) {
-    console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    // console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
     this.selectedNamespace.preview_settings.model = selectedModel
 
-    console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedNamespace", this.selectedNamespace)
+    // console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedNamespace", this.selectedNamespace)
   }
 
   updateSliderValue(value, type) {
-    console.log("[MODAL PREVIEW SETTINGS] value: ", value);
-    console.log("[MODAL PREVIEW SETTINGS] type: ", type);
+    // console.log("[MODAL PREVIEW SETTINGS] value: ", value);
+    // console.log("[MODAL PREVIEW SETTINGS] type: ", type);
     if (type === "max_tokens") {
       this.selectedNamespace.preview_settings.max_tokens = value
     }
@@ -101,7 +101,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       this.selectedNamespace.preview_settings.top_k = value
     }
 
-    console.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
+    // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
 
   }
 
@@ -114,7 +114,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   onSavePreviewSettings() {
-    console.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
+    // console.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
     this.dialogRef.close(this.selectedNamespace);
   }
 

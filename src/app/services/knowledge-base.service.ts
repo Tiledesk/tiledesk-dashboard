@@ -147,7 +147,7 @@ export class KnowledgeBaseService {
   }
 
   addKb(body: any) {
-    console.log('addKb body ', body )
+    this.logger.log('addKb body ', body )
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/multi?namespace=" + namespaceid;
-    console.log("[KNOWLEDGE BASE SERVICE] - add new kb URL (/MULTI) ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL (/MULTI) ", url);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
   }
 
@@ -198,8 +198,8 @@ export class KnowledgeBaseService {
 
   
   deleteNamespace(namespace_id: string , removeAlsoNamespace) {
-    console.log('[KNOWLEDGE BASE SERVICE] deleteNamespace removeAlsoNamespace ', removeAlsoNamespace )
-    console.log('[KNOWLEDGE BASE SERVICE] deleteNamespace namespace_id ', namespace_id )
+    this.logger.log('[KNOWLEDGE BASE SERVICE] deleteNamespace removeAlsoNamespace ', removeAlsoNamespace )
+    this.logger.log('[KNOWLEDGE BASE SERVICE] deleteNamespace namespace_id ', namespace_id )
    let queryString = ''
    if (!removeAlsoNamespace) {
     queryString =  "?contents_only=true"
@@ -212,7 +212,7 @@ export class KnowledgeBaseService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id + queryString;
-    console.log("[KNOWLEDGE BASE SERVICE] - delete namsespace url", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - delete namsespace url", url);
     return this.httpClient.delete(url, httpOptions);
   }
 

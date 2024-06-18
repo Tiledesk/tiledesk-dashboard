@@ -55,7 +55,7 @@ export class ModalSiteMapComponent implements OnInit {
           // console.log('MODAL-SITE-MAP listOfUrls: ', this.listOfUrls);
           this.countSitemap = this.listSitesOfSitemap.length;
           this.isSitemapLoaded = true;
-          console.log('MODAL-SITE-MAP isSitemapLoaded: ', this.isSitemapLoaded);
+          // console.log('MODAL-SITE-MAP isSitemapLoaded: ', this.isSitemapLoaded);
         } else {
           this.buttonDisabled = true;
           this.isSitemapLoaded = false;

@@ -19,7 +19,7 @@ export class ModalDeleteKnowledgeBaseComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalDeleteKnowledgeBaseComponent>,
   ) { 
-    console.log('[MODAL-DELETE-KB] data ', data)
+    // console.log('[MODAL-DELETE-KB] data ', data)
     if (data && data.kb) {
       this.kb = data.kb
     }

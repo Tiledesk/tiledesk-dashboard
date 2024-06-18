@@ -23,7 +23,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      // console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
@@ -58,8 +58,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.kb.name = this.name;
     this.kb.source = this.source;
     this.kb.content = this.content;
-    //console.log('onUpdateKnowledgeBase: ', this.kb);
-    console.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
+    
+    // console.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.dialogRef.close(this.kb);
     // this.updateKnowledgeBase.emit(this.kb);
   }

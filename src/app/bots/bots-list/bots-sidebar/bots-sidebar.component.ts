@@ -85,10 +85,10 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
       if ( project) {
           this.project = project;
           const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
-          console.log('[BOTS-SIDEBAR] storedNamespace', storedNamespace);
+          this.logger.log('[BOTS-SIDEBAR] storedNamespace', storedNamespace);
           if(storedNamespace) {
             let storedNamespaceObjct = JSON.parse(storedNamespace)
-            console.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
+            this.logger.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
             this.kbNameSpaceid= storedNamespaceObjct.id
           }
         }

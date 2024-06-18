@@ -56,7 +56,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     private logger: LoggerService,
     public brandService: BrandService
   ) {
-    console.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
+    this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
   }
@@ -67,7 +67,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   resetFilter() {
-    console.log('[KB TABLE] resetFilter')
+    this.logger.log('[KB TABLE] resetFilter')
     this.filterStatus = '';
     this.filterType = '';
     this.filterText = '';
@@ -111,12 +111,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
-    console.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
-    console.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
-    console.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
-    console.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
-    console.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
+    this.logger.log('[KB TABLE] ngOnChanges kbsListCount', this.kbsListCount, '  kbsList.length ', this.kbsList.length, ' changes ', changes);
+    this.logger.log('[KB TABLE] ngOnChanges kbsList ', this.kbsList);
+    this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
+    this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
+    this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
+    this.logger.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
     
     
 
@@ -147,10 +147,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
     if (changes.selectedNamespaceName && changes.selectedNamespaceName.currentValue && changes.selectedNamespaceName.previousValue) {
       let selectedNamespaceNameCurrentValue = changes.selectedNamespaceName.currentValue
-      console.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNameCurrentValue ', selectedNamespaceNameCurrentValue);
+      this.logger.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNameCurrentValue ', selectedNamespaceNameCurrentValue);
 
       let selectedNamespaceNamePreviousValue = changes.selectedNamespaceName.previousValue
-      console.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNamePreviousValue ', selectedNamespaceNamePreviousValue);
+      this.logger.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNamePreviousValue ', selectedNamespaceNamePreviousValue);
 
       if (selectedNamespaceNameCurrentValue !== selectedNamespaceNamePreviousValue) {
         this.resetFilter()
@@ -163,10 +163,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
    
 
-    console.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
-    console.log('[KB TABLE] ngOnChanges filterStatus ', this.filterStatus);
-    console.log('[KB TABLE] ngOnChanges filterType ', this.filterType);
-    console.log('[KB TABLE] ngOnChanges filterText ', this.filterText);
+    this.logger.log('[KB TABLE] ngOnChanges selectedNamespaceName ', this.selectedNamespaceName);
+    this.logger.log('[KB TABLE] ngOnChanges filterStatus ', this.filterStatus);
+    this.logger.log('[KB TABLE] ngOnChanges filterType ', this.filterType);
+    this.logger.log('[KB TABLE] ngOnChanges filterText ', this.filterText);
 
 
 
@@ -183,7 +183,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //   }
     // }
 
-    console.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
+    this.logger.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
     if (changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length) {
       // non è cambiato nulla ho solo rodinato la tab
     } else {
@@ -214,13 +214,13 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   retrieveKbAndSwowTable(calledBy, kbsList, getKbCompleted) {
-    console.log('[KB TABLE] >>> retrieveKbAndSwowTable calledBy', calledBy )
+    this.logger.log('[KB TABLE] >>> retrieveKbAndSwowTable calledBy', calledBy )
     if ((kbsList.length === 0)) {
       this.SHOW_TABLE = false;
-      console.log('[KB TABLE] >>> retrieveKbAndSwowTable calledBy', calledBy , ' kbsList.length ', kbsList.length, ' SHOW_TABLE',  this.SHOW_TABLE , 'getKbCompleted' , getKbCompleted )
+      this.logger.log('[KB TABLE] >>> retrieveKbAndSwowTable calledBy', calledBy , ' kbsList.length ', kbsList.length, ' SHOW_TABLE',  this.SHOW_TABLE , 'getKbCompleted' , getKbCompleted )
     } else {
       this.SHOW_TABLE = true;
-      console.log('[KB TABLE] >>> retrieveKbAndSwowTable calledBy', calledBy , ' kbsList.length ', kbsList.length, ' SHOW_TABLE',  this.SHOW_TABLE , 'getKbCompleted' , getKbCompleted )
+      this.logger.log('[KB TABLE] >>> retrieveKbAndSwowTable calledBy', calledBy , ' kbsList.length ', kbsList.length, ' SHOW_TABLE',  this.SHOW_TABLE , 'getKbCompleted' , getKbCompleted )
     }
   }
 
@@ -246,13 +246,13 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   onLoadByFilter(filterValue: string, column: string) {
     this.hasFiltered = true;
-    console.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
-    console.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
-    console.log('[KB TABLE] >>> filterType ', this.filterType)
+    this.logger.log('[KB TABLE] >>> hasFiltered ', this.hasFiltered)
+    this.logger.log('[KB TABLE] >>> filterStatus ', this.filterStatus)
+    this.logger.log('[KB TABLE] >>> filterType ', this.filterType)
     // let status = '';
     // let search = '';
-    console.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
-    console.log("[KB TABLE] >>> onLoadByFilter column: ", column)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter value: ", filterValue)
+    this.logger.log("[KB TABLE] >>> onLoadByFilter column: ", column)
 
     if (column == 'status') {
       this.searchParams.status = filterValue;
