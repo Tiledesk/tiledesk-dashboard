@@ -399,8 +399,9 @@ import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
-import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
-import { ModalUploadFileComponent } from './knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
+// import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
+// import { ModalUploadFileComponent } from './knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
+// import { ModalChatbotNameComponent } from './knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 
 
 
@@ -707,8 +708,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UserModalComponent,
     MessagesStatsModalComponent,
     KnowledgeBasesAlertComponent,
-    ModalAddNamespaceComponent,
-    ModalUploadFileComponent
+    // ModalAddNamespaceComponent,
+    // ModalUploadFileComponent,
+    // ModalChatbotNameComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

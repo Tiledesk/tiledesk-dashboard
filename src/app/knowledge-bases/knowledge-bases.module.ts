@@ -27,6 +27,11 @@ import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/m
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
+import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
+import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -48,7 +53,10 @@ const routes: Routes = [
     ModalTextFileComponent,
     ModalUrlsKnowledgeBaseComponent,
     ModalDeleteNamespaceComponent,
-    ModalPreviewSettingsComponent
+    ModalPreviewSettingsComponent,
+    ModalAddNamespaceComponent,
+    ModalUploadFileComponent,
+    ModalChatbotNameComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -66,6 +74,8 @@ const routes: Routes = [
     MomentModule,
     MatTooltipModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     // SatPopoverModule
   ]
   // ,

@@ -109,12 +109,14 @@
     cursor: pointer;
     font-size: 13px;
     padding: 10px 20px;
-    margin: 0 5px;
+    // margin: 0 5px;
     border-radius: 2px;
     transition: all 150ms linear;
     &:hover{
-        background-color: #3ea9f5;
-        color: #FFFFFF;
-        box-shadow: 0 12px 20px -10px rgba(62, 169, 245, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(62, 169, 245, 0.2);
+        // background-color: #3ea9f5;
+        // color: #FFFFFF;
+        // box-shadow: 0 12px 20px -10px rgba(62, 169, 245, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(62, 169, 245, 0.2);
+        background-color: rgba(0, 0, 0, .04);
+    
     }
 }

@@ -355,7 +355,18 @@ td {
         text-align: center;
         display: block;
     }
+
+    .upgrade-subtitle-learn-how {
+        color: #0f62ff !important;
+        cursor: pointer;
+    }
+
+    .upgrade-subtitle-learn-how:hover {
+       text-decoration: underline;
+    }
 }
+
+
 
 
 .custom-upgrade-primary-button {

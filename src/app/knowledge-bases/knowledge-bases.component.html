@@ -4,7 +4,7 @@
   
     <div class="chatbot-svg-icon"> 
       <svg   version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-      viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+      viewBox="0 0 30 30" style="enable-background:new 0 0 30 30; width: 29px;height: 29px;" xml:space="preserve">
         <style type="text/css">
           .cb--0{fill:#3C4858;}
         </style>
@@ -104,14 +104,10 @@
               </div>
               <!-- --------- ./ MAT-MENU ---------- -->
 
-
-
-
-
               <div class="buttons-div">
                 <button class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
                   style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
-                   matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltipClass="kb-custom-mat-tooltip"
                     matTooltip="{{ 'KbPage.DeleteKb' | translate }}" 
                     #tooltip="matTooltip" 
                     matTooltipPosition='below'
@@ -154,6 +150,36 @@
                 </div>
               </div>
             </div>
+
+
+            <!-- <div class="chatbot-using-current-namespace-wpr">
+              <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0" class="chatbot-using-current-namespace">
+                {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:
+              </div>
+             
+              <div class="chatbot-list-using-current-namespace" *ngFor="let chatbot of chatbotsUsingNamespace" >
+                <div class="chatbot-name-using-namespace" (click)="goToChabotDetails(chatbot)" 
+                matTooltipClass="kb-custom-mat-tooltip"
+                matTooltip="Visualizza nel design studio" 
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100"> 
+                  
+                  {{chatbot.name }} 
+                </div> 
+              </div> -->
+
+              <!-- <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
+                This namespace is not used by any chatbot
+              </div>
+              <div *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
+
+                <button class="custom-button xs" (click)="createChatbotfromKbOfficialResponderTemplate()">
+                  <span> Create chatbot  </span> 
+                </button>
+              </div> -->
+
+            <!-- </div> -->
 
             <!-- START TABLE -->
             <knowledge-base-table 

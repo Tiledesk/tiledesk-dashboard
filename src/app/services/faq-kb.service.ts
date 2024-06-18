@@ -461,6 +461,25 @@ export class FaqKbService {
     return this._httpClient
       .post(url, JSON.stringify(body), httpOptions)
   }
+
+  // -------------------------------------------------------------------------------------- 
+  // Export chatbot to JSON
+  // --------------------------------------------------------------------------------------
+  public exportChatbotToJSON(id_faq_kb: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      }),
+      // responseType: 'text' as 'json'
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/exportjson/" + id_faq_kb;
+    this.logger.log('[FAQ-SERV] - EXPORT CHATBOT AS JSON - URL', url);
+
+    return this._httpClient.get(url, httpOptions)
+  }
+
   // ------------------------------------------------------------------------------------------------
   // IF THE BOT IS OF TYPE DIALOGFLOW, AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK TO POST THE 
   // dialogfolw bot CREDENTIAL

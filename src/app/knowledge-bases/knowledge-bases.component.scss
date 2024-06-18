@@ -2,14 +2,14 @@
 
 .card-content {
     font-family: 'Poppins';
-    padding-top: 10px; 
+    padding-top: 10px;
     // margin: 0 60px;
 }
 
 .template-content {
-    flex: 1 1 auto; 
-    margin: 0 20px; 
-    display: flex; 
+    flex: 1 1 auto;
+    margin: 0 20px;
+    display: flex;
     justify-content: center;
 }
 
@@ -23,7 +23,7 @@
         font-weight: 400;
         margin-bottom: 0px;
     }
-    
+
     .buttons-div {
         display: flex;
         align-items: center;
@@ -43,7 +43,24 @@
     font-weight: 400;
     display: flex;
     align-items: center;
-    
+}
+
+.custom-button.xs {
+    background: var(--blue-light);
+    height: 24px;
+    font-size: 12px;
+    padding: 1px 8px;
+
+    &:hover {
+        // background: #256ffd;
+        opacity: .8;
+    }
+}
+
+.custom-button.xs>span {
+    text-transform: none;
+    position: relative;
+    top: -1px;
 }
 
 .custom-button.add-content {
@@ -62,6 +79,7 @@
     padding: 0 8px;
     width: 36px;
     height: 36px;
+
     span {
         font-size: 20px !important;
     }
@@ -69,9 +87,10 @@
 
 .custom-button.preview-settings {
     background-color: #38414a;
-    padding: 0 8px; 
+    padding: 0 8px;
     width: 36px;
     height: 36px;
+
     span {
         font-size: 20px !important;
     }
@@ -82,8 +101,8 @@
 }
 
 .custom-button.preview {
-    background-color: #38414a;  
-    padding: 0 12px; 
+    background-color: #38414a;
+    padding: 0 12px;
 
     span {
         margin-right: 6px;
@@ -166,13 +185,16 @@
 .form-container {
     margin-top: 12px;
     margin-bottom: 12px;
+
     .input-container {
         margin-bottom: 14px;
     }
+
     .input-label {
         font-weight: 400;
         // letter-spacing: 0.5px;
     }
+
     .custom-input {
         width: 100%;
         height: 37px;
@@ -182,6 +204,7 @@
         color: #22272d;
         line-height: 35px;
         font-weight: 400;
+
         // letter-spacing: 0.5px;
         &.invalid {
             border: 2px solid red !important;
@@ -189,6 +212,7 @@
             transition: border 0.3s;
         }
     }
+
     .custom-textarea {
         width: 100%;
         border-radius: 6px;
@@ -198,6 +222,7 @@
         line-height: 35px;
         font-weight: 400;
         resize: vertical;
+
         &.invalid {
             border: 2px solid red !important;
             outline: 0px solid red !important;
@@ -248,7 +273,7 @@ td {
         color: #727272;
     }
 
-    .mat-icon-button{
+    .mat-icon-button {
         font-size: x-large;
         font-weight: bolder;
     }
@@ -554,10 +579,10 @@ table {
 //     box-shadow: 0 40px 64px -32px #161a1e1f, 0 32px 40px -32px #161a1e1a, 0 24px 32px -32px #161a1e14, 0 16px 20px -32px #161a1e14, 0 10px 16px -32px #161a1e0f, 0 4px 8px -32px #161a1e0a, 0 1px 1px #161a1e0a, 0 0 0 1px #161a1e0f!important;
 //     border-radius: 10px!important;
 //   }
-  
 
 
-  ::ng-deep.mat-elevation-z4{
+
+::ng-deep.mat-elevation-z4 {
     background: #FFFFFF;
     box-shadow: 0 40px 64px -32px #161a1e1f, 0 32px 40px -32px #161a1e1a, 0 24px 32px -32px #161a1e14, 0 16px 20px -32px #161a1e14, 0 10px 16px -32px #161a1e0f, 0 4px 8px -32px #161a1e0a, 0 1px 1px #161a1e0a, 0 0 0 1px #161a1e0f;
     border-radius: 10px;
@@ -566,7 +591,7 @@ table {
 
 .btn {
     text-transform: none;
-} 
+}
 
 .title-class {
     color: black;
@@ -587,12 +612,13 @@ table {
     align-items: center;
 }
 
-.selected-namespace-content > .selected-namespace-name{
+.selected-namespace-content>.selected-namespace-name {
     font-size: 24px;
     font-family: var(--header-font-family);
     font-weight: 400;
-    
+
 }
+
 .namespace-name-output {
     padding: 8px 6px;
     border-radius: 4px !important;
@@ -604,13 +630,13 @@ table {
     border-radius: 4px !important;
     padding: 1px 6px;
     // border: 1px solid transparent;
-    border: 1px solid #0b57d0!important;
+    border: 1px solid #0b57d0 !important;
     color: var(--text-color);
 }
 
 .namespace-name-input.edit-mode {
     border: 1px solid #d3dbe5;
-} 
+}
 
 .open-dropdown-namespace-btn {
     background: transparent;
@@ -628,15 +654,16 @@ table {
     border: 1px solid rgb(211, 219, 229);
     border-radius: 8px;
 }
-.open-dropdown-namespace-btn > svg {
+
+.open-dropdown-namespace-btn>svg {
     fill: rgb(100, 116, 145);
 }
 
-.open-dropdown-namespace-btn:hover { 
+.open-dropdown-namespace-btn:hover {
     background-color: #dce9ff
 }
 
-.open-dropdown-namespace-btn:hover > svg { 
+.open-dropdown-namespace-btn:hover>svg {
     fill: #0566ff;
 }
 
@@ -650,37 +677,38 @@ table {
     border-radius: 6px;
     padding: 8px;
     text-align: center;
-  }
+}
 
-  .sat-popover-namespace-list {
+.sat-popover-namespace-list {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 6px;
-  }
-  .mat-menu-custom-btn > .mat-icon {  
+}
+
+.mat-menu-custom-btn>.mat-icon {
     margin-right: 0;
     color: var(--blue-light);
     margin-top: 1px;
     font-size: 21px;
     width: 20px;
-  }
+}
 
-  .mat-menu-custom-btn > span {
+.mat-menu-custom-btn>span {
     // background-color: var(--blue-light);
     // border-color: var(--blue-light);
     padding: 6px;
     color: var(--blue-light);
     border-radius: 4px;
     font-weight: 600;
-  }
+}
 
-  .active--namespace {
+.active--namespace {
     background: rgba(0, 0, 0, .04);
     font-weight: 500;
-  }
+}
 
-  ::ng-deep .kb-custom-mat-tooltip {
+::ng-deep .kb-custom-mat-tooltip {
     background-color: #2d323e !important;
     font-size: 12px !important;
     border-radius: 2px !important;
@@ -688,4 +716,31 @@ table {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     color: #fff;
+}
+
+.chatbot-using-current-namespace-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+    margin-top: 6px;
+}
+
+.chatbot-using-current-namespace {
+    font-weight: 400;
+
+}
+
+.chatbot-list-using-current-namespace {
+    cursor: pointer;
+    padding: 0 5px;
+    border-radius: 4px;
+    font-weight: 500;
+    background: #dce9ff;
+    font-size: 12px;
+}
+
+.chatbot-list-using-current-namespace:hover {
+    background: #c3d9ff
 }

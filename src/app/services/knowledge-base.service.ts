@@ -171,6 +171,19 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
   }
 
+  getChatbotsUsingNamespace(namespace_id) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    // /kb/namespace/{namespace_id}/chatbots
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id +"/chatbots";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - get Chatbot using namespace ", url);
+    return this.httpClient.get(url, httpOptions);
+  }
+
   deleteKb(data: any){
     const httpOptions = {
       headers: new HttpHeaders({

@@ -1,9 +1,15 @@
-<h1 mat-dialog-title>  AI Settings </h1>
+<h1 mat-dialog-title> 
+     <!-- AI Settings  -->
+     {{ 'KbPage.AISettings'| translate}}
+</h1>
 
 
 <div mat-dialog-content>
     <div class="row-container"  style="margin-top: 0px;">
-        <label class="setting-label">AI Model</label>
+        <label class="setting-label">
+            <!-- AI Model -->
+            {{ 'KbPage.SelectEngine'| translate}}
+        </label>
         <ng-select class="" 
             appendTo="body" 
             [items]="models_list"
@@ -69,7 +75,8 @@
     <div class="form-container">
         <div class="label-wpr">
             <label class="setting-label">
-                {{ 'KbPage.ChunkLimit'| translate}}
+                <!-- {{ 'KbPage.ChunkLimit'| translate}} -->
+                Chunks
             </label>
         </div>
         <div class="field-box"> 
@@ -97,7 +104,7 @@
             </label>
         </div>
 
-        <textarea  class="context-texarea" [(ngModel)]="context" rows="1"
+        <textarea  class="context-texarea" [(ngModel)]="context" rows="4"
         placeholder="{{context_placeholder}}"
         (ngModelChange)="onChangeTextInContex($event)">  </textarea>
        

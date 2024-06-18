@@ -6,6 +6,7 @@ import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { BrandService } from 'app/services/brand.service';
 
 
 @Component({
@@ -43,17 +44,21 @@ export class KnowledgeBaseTableComponent implements OnInit {
   directionDesc: number = KB_DEFAULT_PARAMS.DIRECTION;
   isLoading: boolean = false;
   SHOW_MORE_BTN: boolean = true;
-  SHOW_TABLE: boolean // = false;
+  SHOW_TABLE: boolean  = false;
   searchParams: any;
   numberPage: number = 0;
-  hasFiltered: boolean = false
+  hasFiltered: boolean = false;
+  hideHelpLink: boolean
   // kbsListCount: number = 0;
 
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public brandService: BrandService
   ) {
     console.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit(): void {
@@ -150,10 +155,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
       if (selectedNamespaceNameCurrentValue !== selectedNamespaceNamePreviousValue) {
         this.resetFilter()
 
-        if (this.getKbCompleted) {
-          this.retrieveKbAndSwowTable('namespace-changed', this.kbsList, this.getKbCompleted)
+        // if (this.getKbCompleted) {
+          // this.retrieveKbAndSwowTable('namespace-changed', this.kbsList, this.getKbCompleted)
          
-        }
+        // }
       }
     }
    
@@ -167,7 +172,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
     if (this.kbsList.length > 0) {
       this.SHOW_TABLE = true;
-    } 
+    }  else {
+      this.SHOW_TABLE = false;
+    }
     
     // else if ((this.kbsList.length === 0)) {
     //   if (this.filterStatus === '' && this.filterType === '' && this.filterText === '') {

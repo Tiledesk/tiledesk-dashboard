@@ -1,12 +1,15 @@
 <div *ngIf="SHOW_TABLE == false" class="card-empty">
-    <div class="menu-container ng-star-inserted">
+    <div class="menu-container">
 
-        <div style="width: 100%;" class="ng-star-inserted">
+        <div style="width: 100%;">
             <div class="lock-container">
                 <!-- <img src="assets/img/int/getstarted.svg" alt=""> -->
                 <div class="no-bot-msg">
-                    <span class="upgrade-title ng-star-inserted">{{'KbPage.NoKbAdded' | translate }}</span>
-                    <span class="upgrade-subtitle ng-star-inserted">{{'KbPage.NoKbAddedText' | translate }}</span>
+                    <span class="upgrade-title">{{'KbPage.NoKbAdded' | translate }}</span>
+                    <span class="upgrade-subtitle">{{'KbPage.NoKbAddedText' | translate }}
+                        <!-- <span *ngIf="hideHelpLink" class="upgrade-subtitle-learn-how" >{{'LearnHow' | translate }} </span> -->
+                    </span>
+                    
                     <div class="add-content-btn-wpr">
                         <button class="btn custom-button add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu"> 
