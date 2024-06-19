@@ -2,11 +2,11 @@
   <h1 mat-dialog-title> {{ 'Preview' | translate }} </h1>
   <div class="m-top-right-icon" >
 
-    <span class="material-icons-outlined" style="margin-right: 12px;" (click)="closePreviewKBAndOpenSettingsModal()">
+    <span id="settings" class="material-icons-outlined"  (click)="closePreviewKBAndOpenSettingsModal()">
       settings
     </span>
 
-    <span class="material-icons-outlined" (click)="onCloseBaseModal()">
+    <span id="close" class="material-icons-outlined" (click)="onCloseBaseModal()">
       close
     </span>
   </div>
@@ -38,7 +38,7 @@
       <span *ngIf="qa && (!qa.answer || qa.answer == '')">{{ 'KbPage.NoAnswerFound' | translate }}</span>
       <hr *ngIf="qa && qa.source">
       <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
-      <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}:
+      <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
         <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
         <span *ngIf="!source_url">{{ qa.source }}</span>
       </span>

@@ -39,7 +39,7 @@
        
     </button>
     
-    <button class="mat-dialog-ko-btn" mat-button (click)="onDeleteNamespace()" cdkFocusInitial>
+    <button [disabled]="!namespacenameMatch" class="mat-dialog-ko-btn" mat-button (click)="onDeleteNamespace()" cdkFocusInitial>
         
         {{ 'Delete' | translate }}
         

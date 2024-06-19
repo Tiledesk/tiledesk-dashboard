@@ -3,6 +3,7 @@ import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -11,11 +12,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent implements OnInit{
+export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
-  
+
   selectedNamespace: any;
   namespaceid: string;
   selectedModel: string;
@@ -49,14 +50,15 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewKnowledgeBaseComponent>,
     private logger: LoggerService,
-    private openaiService: OpenaiService
-  ) { 
+    private openaiService: OpenaiService,
+    private translate: TranslateService,
+  ) {
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNaspace) {
       this.selectedNamespace = data.selectedNaspace;
       this.namespaceid = this.selectedNamespace.id;
       this.selectedModel = this.selectedNamespace.preview_settings.model;
-      this.maxTokens= this.selectedNamespace.preview_settings.max_tokens;
+      this.maxTokens = this.selectedNamespace.preview_settings.max_tokens;
       this.temperature = this.selectedNamespace.preview_settings.temperature;
       this.topK = this.selectedNamespace.preview_settings.top_k;
       this.context = this.selectedNamespace.preview_settings.context
@@ -76,7 +78,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
   //    this.logger.log('[MODAL-PREVIEW-KB] ngOnChanges namespaceid ', this.namespaceid)
   // }
 
-  submitQuestion(){
+  submitQuestion() {
     let data = {
       "question": this.question,
       "namespace": this.namespaceid,
@@ -84,7 +86,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
       "temperature": this.temperature,
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
-      "context": this.context
+      "system_context": this.context
     }
     // this.error_answer = false;
     this.searching = true;
@@ -94,27 +96,40 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
     // console.log("ask gpt preview response: ", data);
     const startTime = performance.now();
     this.openaiService.askGpt(data).subscribe((response: any) => {
+      
+      // console.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       const endTime = performance.now();
-      this.responseTime =  Math.round((endTime - startTime)/1000);
+      this.responseTime = Math.round((endTime - startTime) / 1000);
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
       // console.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
-      if(response.answer)this.answer = response.answer;
-      if(response.source && this.isValidURL(response.source)){
+      if (response.answer) {
+        this.answer = response.answer;
+      }
+
+      if (response && response.source && this.isValidURL(response.source)) {
         this.source_url = response.source;
       }
 
-      if (response.success == false ) {
+      if (response.success == false) {
         // this.error_answer = true;
       } else {
         //this.answer = response.answer;
       }
       this.show_answer = true;
       this.searching = false;
-    }, (error) => {
-      this.logger.log("ask gpt preview response error: ", error.message);
-      this.logger.error("ERROR ask gpt: ", error.message);
-      this.answer = error.message;
+    }, (err) => {
+      // console.log("ask gpt preview response error: ", err);
+      // console.log("ask gpt preview response error message: ", error.message);
+      // console.log("ask gpt preview response error error: ", error.error);
+      if (err && err.error && err.error.error_code === 13001) {
+        this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
+      } else {
+        this.answer = err.error.message;
+      }
+
+      this.logger.error("ERROR ask gpt: ", err.message);
+
       // this.error_answer = true;
       this.show_answer = true;
       this.searching = false;

@@ -58,7 +58,7 @@
         {{ "Cancel" | translate }}
     </button>
 
-    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
+    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0" (click)="onSaveKnowledgeBase()">
         {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
     </button>
 </div>

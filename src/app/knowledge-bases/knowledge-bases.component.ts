@@ -278,15 +278,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespace = namespaces.find((el) => {
           return el.default === true
         });
+        if (this.selectedNamespace) {
+          this.selectedNamespaceName = this.selectedNamespace.name
 
-        this.selectedNamespaceName = this.selectedNamespace.name
+          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
 
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
-
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+          this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+          this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        }
       } else {
         this.selectedNamespace = namespaces.find((el) => {
           return el.id === this.nameSpaceId;
@@ -692,18 +693,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.logger.log('[ModalPreviewSettings] Dialog after closed action 2', result.action)
         this.logger.log('[ModalPreviewSettings] Dialog after closed selectedNamespace ', result.selectedNamespace)
 
-          if (result.action === "update") {
-            let body = { preview_settings: result.selectedNamespace.preview_settings }
-            this.updateNamespace(body, 'modal-update-settings')
-          }
+        if (result.action === "update") {
+          let body = { preview_settings: result.selectedNamespace.preview_settings }
+          this.updateNamespace(body, 'modal-update-settings')
+        }
 
-          if (result.action === "update-and-open-preview") {
-            this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
-            let body = { preview_settings: result.selectedNamespace.preview_settings }
-            this.updateNamespace(body, 'modal-update-settings-and-open-preview')
-          }
+        if (result.action === "update-and-open-preview") {
+          this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
+          let body = { preview_settings: result.selectedNamespace.preview_settings }
+          this.updateNamespace(body, 'modal-update-settings-and-open-preview')
+        }
 
-        
+
 
       } else {
         this.logger.log('[ModalPreviewSettings] Dialog after closed result ', result)

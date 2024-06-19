@@ -29,25 +29,42 @@
     justify-content: space-between;
 }
 
-.m-top-right-icon{
+.m-top-right-icon {
     cursor: pointer;
 }
 
-.m-top-right-icon>span {
+#settings {
     padding: 8px;
     background: #e4e6eb;
     border-radius: 999px;
     position: relative;
-    top: -7px;
-    left: 4px;
+    top: 0px;
+    left: -12px;
     font-size: 18px;
-    color: rgb(91,98, 106);
-    
+    color: rgb(91, 98, 106);
+   
 }
 
-.m-top-right-icon:hover>span {
+#settings:hover {
     background-color: rgb(213, 214, 220);
-    color: rgb(28, 30, 33) 
+    color: rgb(28, 30, 33)
+}
+
+#close {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+
+}
+
+#close:hover {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33)
 }
 
 
