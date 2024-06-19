@@ -97,7 +97,7 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
-  upadeteNamespace(body: string, namespaceid:string) {
+  upadateNamespace(body: string, namespaceid:string) {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

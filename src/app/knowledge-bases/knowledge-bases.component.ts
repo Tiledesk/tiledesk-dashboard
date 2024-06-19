@@ -268,7 +268,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (segment === 'knowledge-bases') {
           this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
         }
-  
+
       });
 
       // const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
@@ -307,7 +307,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespace = namespaces.find((el) => {
           return el.id === storedNamespaceObjct['id'];
         });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespace)
 
 
       if (this.selectedNamespace) {
@@ -388,7 +388,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   createChatbotfromKbOfficialResponderTemplate() {
     if (this.USER_ROLE !== 'agent') {
-      this.exportChatbotToJSON() 
+      this.exportChatbotToJSON()
 
       // if (this.chatBotLimit) {
       //   if (this.myChatbotOtherCount < this.chatBotLimit) {
@@ -443,7 +443,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
     let faqkb = {
       createdAt: new Date(),
-      _id : this.botid
+      _id: this.botid
     }
     goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
@@ -526,11 +526,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE calledBy ', calledBy);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
 
-    this.kbService.upadeteNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
+    this.kbService.upadateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE RES', namespace);
-
+        this.selectedNamespace = namespace
         let updatedNameSpaceName = namespace.name
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
 
@@ -548,7 +548,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAMESPACES EL to update  ', this.namespaces[this.newNamespaceNameIndex])
         // let namespaceItemToUpdate  = this.namespaces[this.newNamespaceNameIndex]
 
-        if (calledBy !== 'modal-update-settings') {
+        if (calledBy !== 'modal-update-settings' && calledBy !== 'modal-update-settings-and-open-preview') {
           this.namespaces[this.newNamespaceNameIndex]['name'] = updatedNameSpaceName
         }
 
@@ -566,7 +566,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.msgNamespaceHasBeenSuccessfullyUpdated, 2, 'done');
-
+      if (calledBy === 'modal-update-settings-and-open-preview') {
+        this.onOpenBaseModalPreview()
+      }
 
     });
   }
@@ -683,11 +685,28 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         selectedNaspace: this.selectedNamespace,
       },
     });
-    dialogRef.afterClosed().subscribe(updatedNamespace => {
-      this.logger.log('[ModalPreviewSettings] Dialog updatedNamespace: ', updatedNamespace);
-      if (updatedNamespace) {
-        let body = { preview_settings: updatedNamespace.preview_settings }
-        this.updateNamespace(body, 'modal-update-settings')
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log('[ModalPreviewSettings] Dialog after closed result: ', result);
+      if (result && result.action) {
+        this.logger.log('[ModalPreviewSettings] Dialog after closed action 1', result.action)
+        this.logger.log('[ModalPreviewSettings] Dialog after closed action 2', result.action)
+        this.logger.log('[ModalPreviewSettings] Dialog after closed selectedNamespace ', result.selectedNamespace)
+
+          if (result.action === "update") {
+            let body = { preview_settings: result.selectedNamespace.preview_settings }
+            this.updateNamespace(body, 'modal-update-settings')
+          }
+
+          if (result.action === "update-and-open-preview") {
+            this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
+            let body = { preview_settings: result.selectedNamespace.preview_settings }
+            this.updateNamespace(body, 'modal-update-settings-and-open-preview')
+          }
+
+        
+
+      } else {
+        this.logger.log('[ModalPreviewSettings] Dialog after closed result ', result)
       }
     });
   }
@@ -702,8 +721,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         selectedNaspace: this.selectedNamespace,
       },
     });
-    dialogRef.afterClosed().subscribe(reusult => {
-      this.logger.log('[ModalPreview] Dialog reusult: ', reusult);
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      if (result === 'open-settings-modal') {
+        this.onOpenBaseModalPreviewSettings()
+      }
 
     });
   }
@@ -1661,11 +1683,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       "namespace": kb.namespace
     };
     if (kb.type === 'text') {
-        dataAdd.source = kb.name;
-        dataAdd.content = kb.content,
+      dataAdd.source = kb.name;
+      dataAdd.content = kb.content,
         dataAdd.type = 'text'
     }
-    if(kb.type === 'txt' || kb.type === 'docx' || kb.type === 'pdf')  {
+    if (kb.type === 'txt' || kb.type === 'docx' || kb.type === 'pdf') {
       dataAdd.type = kb.type
     }
     // console.log('dataAdd: ', dataAdd);

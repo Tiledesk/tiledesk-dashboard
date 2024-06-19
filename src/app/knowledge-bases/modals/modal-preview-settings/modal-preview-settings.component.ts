@@ -142,7 +142,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   onSavePreviewSettings() {
     // console.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
-    this.dialogRef.close(this.selectedNamespace);
+    this.dialogRef.close({action: "update", selectedNamespace: this.selectedNamespace});
+  }
+
+  closeSettingsAndOpenPreviewKBModal () {
+    this.dialogRef.close({action: "update-and-open-preview", selectedNamespace: this.selectedNamespace});
+    
   }
 
   onNoClick(): void {

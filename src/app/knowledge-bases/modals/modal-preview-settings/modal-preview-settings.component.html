@@ -1,7 +1,15 @@
-<h1 mat-dialog-title> 
-     <!-- AI Settings  -->
-     {{ 'KbPage.AISettings'| translate}}
-</h1>
+<div class="m-header">
+    <h1 mat-dialog-title> {{ 'KbPage.AISettings'| translate}} </h1>
+    <div class="m-top-right-icon" >
+  
+      <span class="material-icons-outlined" style="margin-right: 12px;" (click)="closeSettingsAndOpenPreviewKBModal()">
+        play_arrow
+      </span>
+  
+      
+    </div>
+    
+  </div>
 
 
 <div mat-dialog-content>

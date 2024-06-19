@@ -152,4 +152,16 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit{
     this.dialogRef.close();
   }
 
+  closePreviewKBAndOpenSettingsModal() {
+    this.question = "";
+    this.answer = "";
+    this.source_url = null;
+    this.searching = false;
+    // this.error_answer = false;
+    this.show_answer = false;
+    let element = document.getElementById('enter-button')
+    element.style.display = 'none';
+    this.dialogRef.close('open-settings-modal');
+  }
+
 }
