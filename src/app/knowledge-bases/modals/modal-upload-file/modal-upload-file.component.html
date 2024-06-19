@@ -90,9 +90,9 @@
         {{ "Cancel" | translate }}
         <!-- Cancel -->
     </button>
+    <!-- cdkFocusInitial -->
 
-    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()" cdkFocusInitial>
-     
+    <button [disabled]="!uploadCompleted" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()" >
         {{ "Import" | translate }}
     </button>
 </div>

@@ -53,4 +53,10 @@
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
+
+    <button *ngIf="kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx'" class="mat-dialog-ok-btn" 
+        [disabled]="name.length < 3" 
+        mat-button (click)="onUpdateKnowledgeBase()">
+        {{ "Update" | translate }}
+    </button>
 </div>

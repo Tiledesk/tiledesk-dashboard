@@ -65,13 +65,13 @@
                         URL
                     </ng-option>
                     <ng-option value="pdf">
-                        pdf
+                        PDF
                     </ng-option>
                     <ng-option value="txt">
-                        txt
+                        TXT
                     </ng-option>
                     <ng-option value="docx">
-                        docx
+                        DOCX
                     </ng-option>
                 </ng-select>
             </div>
@@ -196,19 +196,19 @@
                             style="display: flex; align-items: center; justify-content: center; background-color: #346ca2; color: white; padding: 2px 6px; border-radius: 10px;">
                             <span id="description" class="material-icons-outlined"
                                 style="font-size: 16px; color: white">description</span>
-                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">docx</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">DOCX</span>
                         </div>
                         <div *ngIf="kb.type == 'txt'" class="chip"
                             style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 10px;">
                             <span id="description" class="material-icons-outlined"
                                 style="font-size: 16px; color: white">description</span>
-                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">txt</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">TXT</span>
                         </div>
                         <div *ngIf="kb.type == 'pdf'" class="chip"
                             style="display: flex; align-items: center; justify-content: center; background-color: #e55254; color: white; padding: 2px 6px; border-radius: 10px;">
                             <span id="description" class="material-icons-outlined"
                                 style="font-size: 16px; color: white">description</span>
-                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">pdf</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">PDF</span>
                         </div>
                         <div *ngIf="kb.type == 'text'" class="chip"
                             style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
@@ -262,7 +262,7 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                                <button mat-menu-item (click)="onRunIndexing(kb)">
+                                <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'" mat-menu-item (click)="onRunIndexing(kb)">
                                     <mat-icon>play_arrow</mat-icon>
                                     <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
                                     <span>{{'KbPage.ReIndex' | translate}}</span>

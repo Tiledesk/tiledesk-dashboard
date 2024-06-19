@@ -1,14 +1,19 @@
-<h1 mat-dialog-title> {{ 'Preview' | translate }} </h1>
-
+<div class="m-header">
+  <h1 mat-dialog-title> {{ 'Preview' | translate }} </h1>
+  <div class="m-top-right-icon" (click)="onCloseBaseModal()">
+    <span class="material-icons-outlined">
+      close
+    </span>
+  </div>
+  
+</div>
 <div mat-dialog-content>
 
   <div class="form-container">
     <div class="fake-input">
       <div class="fake-input-inner">
-        <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" 
-          [(ngModel)]="question"
-          (input)="onInputPreviewChange()" 
-          (keyup.enter)="submitQuestion()"> 
+        <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+          (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()">
         <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
       </div>
     </div>
@@ -28,9 +33,9 @@
       <span *ngIf="qa && (!qa.answer || qa.answer == '')">{{ 'KbPage.NoAnswerFound' | translate }}</span>
       <hr *ngIf="qa && qa.source">
       <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
-      <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: 
-          <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
-          <span *ngIf="!source_url">{{ qa.source }}</span>
+      <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}:
+        <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
+        <span *ngIf="!source_url">{{ qa.source }}</span>
       </span>
 
     </div>
@@ -39,12 +44,11 @@
     </label>
   </div>
 
-  
+
 </div>
 <!-- style="justify-content: center;" -->
-<div mat-dialog-actions style="justify-content: center;">
+<!-- <div mat-dialog-actions style="justify-content: center;">
   <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
-      {{ "Cancel" | translate }}
+    {{ "Cancel" | translate }}
   </button>
-  
-</div>
+</div> -->

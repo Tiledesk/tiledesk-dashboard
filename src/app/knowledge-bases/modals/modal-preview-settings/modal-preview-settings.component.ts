@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AppConfigService } from 'app/services/app-config.service';
+import { TYPE_GPT_MODEL, loadTokenMultiplier } from 'app/utils/util';
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
@@ -12,13 +14,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   selectedNamespace: any;
   namespaceid: string; 
-
-  models_list = [
+  model_list: Array<{ name: string, value: string }>;
+  models__list = [
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
     { name: "GPT-4 (ChatGPT)", value: "gpt-4" },
     { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview" }, 
     { name: "GPT-4o (ChatGPT)", value: "gpt-4o" }
   ];
+
+  
 
   public selectedModel: any // = this.models_list[0].value;
 
@@ -31,38 +35,39 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewSettingsComponent>,
+    public appConfigService: AppConfigService,
   ) { 
     // console.log("[MODAL PREVIEW SETTINGS] data ", data)
     if (data && data.selectedNaspace) {
       this.selectedNamespace = data.selectedNaspace
       // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
 
-      const namespaceAiSettings  = this.selectedNamespace.preview_settings
-
-      if (namespaceAiSettings.model === "gpt-3.5-turbo") {
-        this.selectedModel = this.models_list[0].value;
-      } else if (namespaceAiSettings.model === "gpt-4") {
-        this.selectedModel = this.models_list[1].value;
-      } else if (namespaceAiSettings.model === "gpt-4-turbo-preview" ) {
-        this.selectedModel = this.models_list[2].value;
-      } else if (namespaceAiSettings.model === "gpt-4o" ) {
-        this.selectedModel = this.models_list[3].value;
-      }
+      this.selectedNamespace.preview_settings
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace > selectedNamespace.preview_settings", this.selectedNamespace.preview_settings) 
+      // if (namespaceAiSettings.model === "gpt-3.5-turbo") {
+      //   this.selectedModel = this.models_list[0].value;
+      // } else if (namespaceAiSettings.model === "gpt-4") {
+      //   this.selectedModel = this.models_list[1].value;
+      // } else if (namespaceAiSettings.model === "gpt-4-turbo-preview" ) {
+      //   this.selectedModel = this.models_list[2].value;
+      // } else if (namespaceAiSettings.model === "gpt-4o" ) {
+      //   this.selectedModel = this.models_list[3].value;
+      // }
       // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
-      this.max_tokens =  namespaceAiSettings.max_tokens;
+      this.max_tokens =  this.selectedNamespace.preview_settings.max_tokens;
       // console.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
-      this.temperature = namespaceAiSettings.temperature
+      this.temperature = this.selectedNamespace.preview_settings.temperature
       // console.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
 
-      this.topK = namespaceAiSettings.top_k
+      this.topK = this.selectedNamespace.preview_settings.top_k
       // console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
 
-      if (namespaceAiSettings.context !== "You are an awesome AI Assistant.")  {
-        this.context = namespaceAiSettings.context
+      if (this.selectedNamespace.preview_settings.context !== "You are an awesome AI Assistant.")  {
+        this.context = this.selectedNamespace.preview_settings.context
       } else {
-        this.context_placeholder = namespaceAiSettings.context
+        this.context_placeholder = this.selectedNamespace.preview_settings.context
       }
       
 
@@ -71,7 +76,29 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // console.log("[MODAL PREVIEW SETTINGS] on init")
+    const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
+    // console.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
+    this.model_list = Object.values(TYPE_GPT_MODEL).filter(el=> el.status !== 'inactive').map((el)=> {
+      if(ai_models[el.value])
+        return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
+      else
+        return { ...el, multiplier: null }
+    })
+
+    // console.log("[MODAL PREVIEW SETTINGS] model_list ", this.model_list )
+       if (this.selectedNamespace.preview_settings.model === "gpt-3.5-turbo") {
+        this.selectedModel = this.model_list[0].value;
+      } else if (this.selectedNamespace.preview_settings.model === "gpt-4") {
+        this.selectedModel = this.model_list[1].value;
+      } else if (this.selectedNamespace.preview_settings.model === "gpt-4-turbo-preview" ) {
+        this.selectedModel = this.model_list[2].value;
+      } else if (this.selectedNamespace.preview_settings.model === "gpt-4o" ) {
+        this.selectedModel = this.model_list[3].value;
+      }
+      // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+
+    
   }
   ngOnChanges(changes: SimpleChanges): void {
     // console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.selectedNamespace)

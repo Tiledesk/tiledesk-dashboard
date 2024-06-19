@@ -23,6 +23,35 @@
     float: right;
 }
 
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.m-top-right-icon{
+    cursor: pointer;
+}
+
+.m-top-right-icon>span {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    position: relative;
+    top: -7px;
+    left: 4px;
+    font-size: 18px;
+    color: rgb(91,98, 106);
+    
+}
+
+.m-top-right-icon:hover>span {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33) 
+    
+}
+
+
 .fake-input {
     height: 37px;
     border-radius: 6px;

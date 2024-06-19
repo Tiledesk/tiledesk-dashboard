@@ -131,7 +131,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
     // if (changes.kbsListCount && changes.kbsListCount.currentValue) {
     //   this.kbsListCountCurrentValue = changes.kbsListCount.currentValue
-    //   console.log('[KB TABLE] ngOnChanges -> -> -> kbsListCountCurrentValue ', this.kbsListCountCurrentValue);
+    //    this.logger.log('[KB TABLE] ngOnChanges -> -> -> kbsListCountCurrentValue ', this.kbsListCountCurrentValue);
     // }
 
     if (changes.selectedNamespaceName && changes.selectedNamespaceName.firstChange) {
@@ -153,6 +153,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
       this.logger.log('[KB TABLE] ngOnChanges -> -> -> selectedNamespaceNamePreviousValue ', selectedNamespaceNamePreviousValue);
 
       if (selectedNamespaceNameCurrentValue !== selectedNamespaceNamePreviousValue) {
+        this.logger.log('[KB TABLE] ngOnChanges -> -> -> NAMESPACE CHANGED changes' , changes);
+        if (changes.kbsList && changes.kbsList.currentValue) {
+          this.logger.log('[KB TABLE] ngOnChanges -> -> -> NAMESPACE CHANGED changes kbsList.currentValue' , changes.kbsList.currentValue);
+
+          if (changes.kbsList.currentValue.length === 0) {
+            this.SHOW_TABLE = false;
+          }
+        }
+
         this.resetFilter()
 
         // if (this.getKbCompleted) {
@@ -172,13 +181,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
     if (this.kbsList.length > 0) {
       this.SHOW_TABLE = true;
-    }  else {
-      this.SHOW_TABLE = false;
-    }
+    }  
+    // else {
+    //   this.SHOW_TABLE = false;
+    // }
     
     // else if ((this.kbsList.length === 0)) {
     //   if (this.filterStatus === '' && this.filterType === '' && this.filterText === '') {
-    //     console.log('[KB TABLE] ngOnChanges HERE YES filterStatus ', this.filterStatus);
+    //      this.logger.log('[KB TABLE] ngOnChanges HERE YES filterStatus ', this.filterStatus);
     //     this.SHOW_TABLE = false;
     //   }
     // }

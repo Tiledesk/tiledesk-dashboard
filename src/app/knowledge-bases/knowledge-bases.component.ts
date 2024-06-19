@@ -1639,9 +1639,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
+  // type: this.file_extension,
+  // source: downloadURL,
+  // content: "",
+  // name: this.uploadedFileName,
+
   /** */
   onUpdateKb(kb) {
-    this.logger.log('onUpdateKb: ', kb);
+    // console.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
@@ -1656,11 +1661,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       "namespace": kb.namespace
     };
     if (kb.type === 'text') {
-      dataAdd.source = kb.name;
-      dataAdd.content = kb.content,
+        dataAdd.source = kb.name;
+        dataAdd.content = kb.content,
         dataAdd.type = 'text'
     }
-    this.logger.log('dataAdd: ', dataAdd);
+    if(kb.type === 'txt' || kb.type === 'docx' || kb.type === 'pdf')  {
+      dataAdd.type = kb.type
+    }
+    // console.log('dataAdd: ', dataAdd);
     kb.deleting = true;
     this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
       kb.deleting = false;
@@ -1681,6 +1689,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       } else {
         this.kbService.addKb(dataAdd).subscribe((resp: any) => {
           let kbNew = resp.value;
+          // console.log(' onUpdateKb ') 
           if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
             const index = this.kbsList.findIndex(item => item._id === kbNew._id);
             if (index !== -1) {

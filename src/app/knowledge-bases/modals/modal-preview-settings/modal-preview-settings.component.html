@@ -12,13 +12,34 @@
         </label>
         <ng-select class="" 
             appendTo="body" 
-            [items]="models_list"
+            [items]="model_list"
             bindLabel="name"
             bindValue="value"
             placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
             [clearable]="false"
             [(ngModel)]="selectedModel"
             (change)="onSelectModel(selectedModel)">
+
+            <ng-template ng-label-tmp let-item="item">
+                <div style="display: flex;"> 
+                    <div style="font-weight: 400;">
+                        {{item.name}} 
+                    </div>
+                    <div *ngIf="item.multiplier" style="color: rgba(0, 0, 0, .6);font-weight: 400; position: absolute;right: 25px;"> 
+                       {{item.multiplier }} 
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                <div style="display: flex;flex-direction: row; justify-content: space-between;"> 
+                    <div style="font-weight: 400;"> 
+                        {{item.name}} 
+                    </div>
+                    <div *ngIf="item.multiplier" style="color: rgba(0, 0, 0, .6);font-weight: 400;"> 
+                        {{item.multiplier }} 
+                    </div>
+                </div>
+            </ng-template>
         </ng-select>
     </div>
 

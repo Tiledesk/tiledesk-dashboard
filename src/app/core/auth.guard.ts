@@ -195,7 +195,7 @@ export class AuthGuard implements CanActivate {
           this.auth.projectSelected(project, 'auth-guard');
           localStorage.setItem(this.nav_project_id, JSON.stringify(project))
          }, (error) => {
-          console.error('[AUTH-GUARD] getUserRole ', error);
+          this.logger.error('[AUTH-GUARD] getUserRole ', error);
           this.auth.projectSelected(project, 'auth-guard');
           localStorage.setItem(this.nav_project_id, JSON.stringify(project));
         });
