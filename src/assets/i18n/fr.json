@@ -1697,6 +1697,7 @@
         "ImportFile": "Importer le fichier",
         "ThisKnowledgeBaseisUsedByTheChatbots":"Cette Base de Connaissances est utilisée par les chatbots",
         "UploadFile": "Téléverser un fichier",
+        "AiQuotaExceeded":"Oops! Quota de jetons dépassé. Veuillez mettre à niveau votre projet",
         "------": "------",
         "NoKbAdded": "Pas de contenu",
         "NoKbAddedText": "Ajoutez du contenu à votre base de connaissances pour répondre automatiquement à vos utilisateurs grâce à l'intelligence artificielle.",

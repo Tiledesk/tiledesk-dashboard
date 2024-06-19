@@ -1697,6 +1697,7 @@
 		"ImportFile": "Datei importieren",
 		"ThisKnowledgeBaseisUsedByTheChatbots":"Diese Wissensdatenbank wird von den Chatbots verwendet",
 		"UploadFile": "Datei hochladen",
+		"AiQuotaExceeded":"Hoppla! Token-Kontingent überschritten. Bitte upgraden Sie Ihr Projekt",
 		"------": "------",
         "NoKbAdded": "Kein Inhalt",
 		"NoKbAddedText": "Fügen Sie Ihrer Wissensdatenbank Inhalte hinzu, um Ihren Benutzern mithilfe künstlicher Intelligenz automatisch zu antworten.",

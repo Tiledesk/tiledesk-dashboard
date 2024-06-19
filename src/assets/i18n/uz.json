@@ -1697,6 +1697,7 @@
         "ImportFile": "Import fayl",
         "ThisKnowledgeBaseisUsedByTheChatbots":"Ushbu ma'lumot bazasi chatbotlar tomonidan qo'llaniladi",
         "UploadFile": "Faylni yuklash",
+        "AiQuotaExceeded":"Voy! Token kvotasi oshib ketdi. Iltimos, loyihangizni yangilang",
         "------": "------",
         "NoKbAdded": "Kontent yo'q",
         "NoKbAddedText": "Sun'iy intellekt yordamida foydalanuvchilarga avtomatik javob berish uchun bilimlar bazasiga kontent qo'shing.",

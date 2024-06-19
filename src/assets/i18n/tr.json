@@ -1698,6 +1698,7 @@
         "ImportFile": "Dosyayı içe aktar",
         "ThisKnowledgeBaseisUsedByTheChatbots":"Bu Bilgi Bankası sohbet robotları tarafından kullanılıyor",
         "UploadFile": "Dosya yükle",
+        "AiQuotaExceeded":"Hata! Jeton kotası aşıldı. Lütfen projenizi yükseltin",
         "------": "------",
         "NoKbAdded": "İçerik yok",
         "NoKbAddedText": "Yapay zekayı kullanarak kullanıcılarınıza otomatik olarak yanıt vermek için Bilgi Tabanınıza içerik ekleyin.",

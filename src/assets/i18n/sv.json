@@ -1698,6 +1698,7 @@
         "ImportFile": "Importera fil",
         "ThisKnowledgeBaseisUsedByTheChatbots":"Denna kunskapsbas används av chatbotarna",
         "UploadFile": "Ladda upp fil",
+        "AiQuotaExceeded":"Oj! Tokenkvoten har överskridits. Uppgradera ditt projekt",
         "------": "------",
         "NoKbAdded": "Inget innehåll",
         "NoKbAddedText": "Lägg till innehåll i din kunskapsbas för att automatiskt svara dina användare med hjälp av artificiell intelligens.",

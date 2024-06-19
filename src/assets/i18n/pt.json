@@ -1697,6 +1697,7 @@
         "ImportFile": "Importar arquivo",
         "ThisKnowledgeBaseisUsedByTheChatbots":"Esta Base de Conhecimento é usada pelos chatbots",
         "UploadFile": "Subir arquivo",
+        "AiQuotaExceeded":"Ops! Cota de token excedida. Atualize seu projeto",
         "------": "------",
         "NoKbAdded": "Sem conteúdo",
         "NoKbAddedText": "Adicione conteúdo à sua base de conhecimento para responder automaticamente aos seus usuários usando inteligência artificial.",

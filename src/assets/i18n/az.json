@@ -1698,6 +1698,7 @@
         "ImportFile": "Import faylı",
         "ThisKnowledgeBaseisUsedByTheChatbots":"Bu Bilik Bazasından chatbotlar istifadə edir",
         "UploadFile": "Fayl yükləyin",
+        "AiQuotaExceeded":"Vay! Token kvotası keçildi. Zəhmət olmasa layihənizi təkmilləşdirin",
         "------": "------",
         "NoKbAdded": "Məzmun yoxdur",
         "NoKbAddedText": "Süni intellektdən istifadə edərək istifadəçilərinizə avtomatik cavab vermək üçün Bilik Bazanıza məzmun əlavə edin.",
