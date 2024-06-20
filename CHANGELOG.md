@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.38-rc6
+- Bug fixing
+
 ### 2.6.38-rc5
 - Improvements and bug fixing
 
