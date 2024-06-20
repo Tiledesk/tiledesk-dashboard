@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.38-rc7
+- Disables loading of txt files
+
 ### 2.6.38-rc6
 - Bug fixing
 
