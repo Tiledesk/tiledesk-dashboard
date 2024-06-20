@@ -798,7 +798,20 @@
         "AutomaticUnavailableStatus": "Автоматический статус недоступности",
         "SetAnAgentStatusToUnavailable": "Установить статус агента как недоступный, если ему переназначено последовательное количество чатов",
         "ItSetAnAgentStatusToUnavailable": "Он устанавливает статус агента как недоступный, если ему переназначено последовательное количество чатов",
-        "NumberOfChatsReassignedBefore": "Количество переназначенных чатов до изменения статуса агента"
+        "NumberOfChatsReassignedBefore": "Количество переназначенных чатов до изменения статуса агента",
+        "Security": {
+            "Security": "Segurança",
+            "SecurityDescription": "Você pode restringir o acesso ao {{ BRAND_NAME }} apenas aos usuários dentro de um intervalo de endereços IP. ",
+            "EnableIPRestriction": "Habilitar restrições de IP",
+            "ThisWillAffects": "Isto afetará",
+            "SignInForAllTiledeskProducts": "Faça login para todos os produtos {{ BRAND_NAME }}",
+            "AllowedIpRanges": "Intervalos de IP permitidos",
+            "AddIpRanges": " Adicione os intervalos de IP que precisam de acesso ao {{ BRAND_NAME }}. ",
+            "Use": "Usar",
+            "SyntaxWhereN": "sintaxe onde n é um número",
+            "RangesPlaceholder": "exemplo: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "Habilitar restrições de acesso baseadas em IP pode quebrar integrações de terceiros. Permita que todos os IPs externos que precisam acessar sua conta por meio da API {{ BRAND_NAME }}."
+        }
     },
     "HomePage": {
         "Widget": "Чтобы начать настройку виджета!",

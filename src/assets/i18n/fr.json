@@ -797,7 +797,20 @@
         "AutomaticUnavailableStatus": "Statut d'indisponibilité automatique",
         "SetAnAgentStatusToUnavailable": "Définir le statut d'un agent sur indisponible s'il a un nombre consécutif de chats réaffectés",
         "ItSetAnAgentStatusToUnavailable": "Il définit le statut d'un agent sur indisponible s'il a un nombre consécutif de chats réaffectés",
-        "NumberOfChatsReassignedBefore": "Nombre de chats réaffectés avant que le statut de l'agent ne soit modifié"
+        "NumberOfChatsReassignedBefore": "Nombre de chats réaffectés avant que le statut de l'agent ne soit modifié",
+        "Security":{
+            "Security": "Sécurité",
+            "SecurityDescription": "Vous pouvez restreindre l'accès à {{ BRAND_NAME }} uniquement aux utilisateurs appartenant à une plage d'adresses IP. ",
+            "EnableIPRestriction": "Activer les restrictions IP",
+            "ThisWillAffects": "Cela affectera",
+            "SignInForAllTiledeskProducts": "Connectez-vous pour tous les produits {{ BRAND_NAME }}",
+            "AllowedIpRanges": "Plages d'adresses IP autorisées",
+            "AddIpRanges": " Ajoutez les plages IP qui nécessitent un accès à {{ BRAND_NAME }}. ",
+            "Use": "Utiliser",
+            "SyntaxWhereN": "syntaxe où n est un nombre",
+            "RangesPlaceholder": "exemple : xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "L'activation des restrictions d'accès basées sur les adresses IP peut interrompre les intégrations tierces. Autorisez toutes les adresses IP externes qui doivent accéder à votre compte via l'API {{ BRAND_NAME }}."
+        }
     },
     "HomePage": {
         "Widget": "Pour commencer configurez votre Widget !",

@@ -797,7 +797,20 @@
         "AutomaticUnavailableStatus": "Автоматты түрде қолжетімді емес күйі",
         "SetAnAgentStatusToUnavailable": "Агенттің күйін оларда чаттардың қатарынан саны қайта тағайындалған болса, оны қолжетімсіз етіп орнатыңыз",
         "ItSetAnAgentStatusToUnavailable": "Ол агент мәртебесін оларда чаттардың қатарынан саны қайта тағайындалған болса, ол қолжетімді емес етіп орнатады",
-        "NumberOfChatsReassignedBefore": "Агент күйі өзгертілмей тұрып қайта тағайындалған чаттар саны"
+        "NumberOfChatsReassignedBefore": "Агент күйі өзгертілмей тұрып қайта тағайындалған чаттар саны",
+        "Security": {
+            "Security": "Қауіпсіздік",
+            "SecurityDescription": "{{ BRAND_NAME }} қолданбасына кіруді тек IP мекенжайларының ауқымындағы пайдаланушыларға ғана шектей аласыз. ",
+            "EnableIPRestriction": "IP шектеулерін қосыңыз",
+            "ThisWillAffects": "Бұл әсер етеді",
+            "SignInForAllTiledeskProducts": "Барлық {{ BRAND_NAME }} өнімдеріне кіріңіз",
+            "AllowedIpRanges": "Рұқсат етілген IP ауқымдары",
+            "AddIpRanges": " {{ BRAND_NAME }} қатынасын қажет ететін IP ауқымдарын қосыңыз. ",
+            "Use": "Қолдану",
+            "SyntaxWhereN": "синтаксис мұндағы n - сан",
+            "RangesPlaceholder": "мысал: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "IP негізіндегі кіру шектеулерін қосу үшінші тарап интеграциясын бұзуы мүмкін. {{ BRAND_NAME }} API арқылы тіркелгіңізге кіруге қажет барлық сыртқы IP мекенжайларына рұқсат беріңіз."
+        }
     },
     "HomePage": {
         "Widget": "Виджетті конфигурациялауды бастау үшін!",

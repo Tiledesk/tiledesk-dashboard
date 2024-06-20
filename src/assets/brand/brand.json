@@ -18,6 +18,7 @@
     "display_chatbots_community": false,
     "display_templates_category": false,
     "display_change_pwd": false,
+    "EXTREME_MEASURES": false,
     "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": false,

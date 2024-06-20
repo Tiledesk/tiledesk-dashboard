@@ -797,7 +797,20 @@
         "AutomaticUnavailableStatus": "Automatic unavailable status",
         "SetAnAgentStatusToUnavailable": "Set an agent's status to unavailable if they have a consecutive number of chats reassigned",
         "ItSetAnAgentStatusToUnavailable": "It set an agent's status to unavailable if they have a consecutive number of chats reassigned",
-        "NumberOfChatsReassignedBefore": "Number of chats reassigned before the agent's status is changed"
+        "NumberOfChatsReassignedBefore": "Number of chats reassigned before the agent's status is changed",
+        "Security":{
+            "Security": "Security",
+            "SecurityDescription": "You can restrict access to {{ BRAND_NAME }} to only those users within a range of IP addresses. For example, to restrict access to users in your company, add the IP addresses of your company. You can also allow your customers to bypass the restriction",
+            "EnableIPRestriction": "Enable IP restrictions",
+            "ThisWillAffects": "This will affects",
+            "SignInForAllTiledeskProducts":"Sign in for all {{ BRAND_NAME }} products",
+            "AllowedIpRanges":"Allowed IP ranges",
+            "AddIpRanges":" Add the IP ranges that need {{ BRAND_NAME }} access. Separate multiple IP with comma.",
+            "Use":"Use",
+            "SyntaxWhereN":"syntax where n is a number",
+            "RangesPlaceholder":"example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions":"Enabling IP-based access restrictions can break third-party integrations. Allow all external IPs that need to access your account via {{ BRAND_NAME }} API."
+        }
     },
     "HomePage": {
         "Widget": "To start configure your Widget !",
