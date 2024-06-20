@@ -49,7 +49,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   learnMoreAboutDefaultRoles: string;
   areNewKb: boolean;
 
-  kbNameSpaceid : string = '';
+  kbNameSpaceid: string = '';
 
   constructor(
     public dialog: MatDialog,
@@ -79,21 +79,14 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   getCurrentProject() {
     this.logger.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ', this.project)
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
-      if (project) {
-      this.project = project;
-      const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
-      this.logger.log('[HOME-KB] storedNamespace', storedNamespace);
-      if(storedNamespace) {
-        let storedNamespaceObjct = JSON.parse(storedNamespace)
-        this.logger.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
-        this.kbNameSpaceid= storedNamespaceObjct.id
-      }
-      }
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project;
+        }
+      })
   }
 
   getKnowledgeBaseSettings() {
@@ -126,7 +119,14 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   // }
 
   goToKnowledgeBases() {
-   
+    const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
+    this.logger.log('[HOME-KB] storedNamespace', storedNamespace);
+    if (storedNamespace) {
+      let storedNamespaceObjct = JSON.parse(storedNamespace)
+      this.logger.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
+      this.kbNameSpaceid = storedNamespaceObjct.id
+    }
+
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     if (this.areNewKb) {
       if (this.kbNameSpaceid !== '') {
@@ -136,7 +136,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       }
 
       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
-    
+
     } else if (!this.areNewKb) {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
     }

@@ -272,7 +272,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       const currentUrl = this.router.url;
 
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
+      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
       let currentUrlSegment = currentUrl.split('/');
 
       // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
@@ -512,6 +512,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespace = namespace
 
         this.selectedNamespaceName = namespace['name']
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
         // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
         // this.selectedNamespaceID = namespace['id'];
@@ -1263,7 +1264,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     //this.showSpinner = true
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     // if (calledby !== 'onLoadPage') {
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace') {
+    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
@@ -1675,6 +1676,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.selectedNamespace = this.namespaces.find((el) => {
             return el.default === true
           });
+          // this.hasRemovednNamespace
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+
+          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+         
+          this.getListOfKb(paramsDefault, 'deleteNamespace');
+
           this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace)
         }
       })
