@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.6.38
+- Deploys in production
+- Adds the ability to create multiple Knowledge base on the "Manage your contents" page
+- Adds the ability to add file to a Knowledge base
+- Refactors the UI of the "Manage your contents" page
+- Adds environment variable "aiModels"
+
 ### 2.6.37
 - Deploys in production
 - Adds the ability to manage the Extreme measures in Project settings > tab General (improvements)
