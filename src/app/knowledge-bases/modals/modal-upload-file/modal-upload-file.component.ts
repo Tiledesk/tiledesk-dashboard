@@ -90,7 +90,8 @@ export class ModalUploadFileComponent implements OnInit {
       var mimeType = fileList[0].type;
       // console.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
       // || mimeType === "application/json"
-      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || mimeType === "text/plain") {
+      // || mimeType === "text/plain"
+      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
 
         this.fileSupported = true;
 
@@ -111,7 +112,8 @@ export class ModalUploadFileComponent implements OnInit {
           // console.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
         }
         // this.doFormData(file)
-      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType !==  "text/plain") {
+        // && mimeType !==  "text/plain"
+      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         // console.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
         
         this.fileSupported = false;

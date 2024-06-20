@@ -11,8 +11,9 @@
             <!-- Drag yor file here or -->
             {{ "DragYuorFileHereOr" | translate }}
         </div>
+        <!-- , .txt -->
         <label class="upload-button">
-            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx, .txt"
+            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx"
                 name="uploadprivatekey" type="file">
 
             <div role="button" class="browse--btn">{{ 'Browse' | translate }}</div>
