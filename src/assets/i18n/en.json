@@ -458,6 +458,7 @@
     "DragYuorFileHereOr": "Drag your file here or",
     "Browse": "browse",
     "SupportedFileTypesPdfTxtDocx":"Supported file types: pdf, txt, docx - {{file_size_limit}} Mb max.",
+    "SupportedFileTypesPdfDocx":"Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb":"File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported":"File type not supported",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",

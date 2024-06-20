@@ -459,6 +459,7 @@
     "DragYuorFileHereOr": "Faylınızı bura sürükləyin və ya",
     "Browse": "gözdən keçirin",
     "SupportedFileTypesPdfTxtDocx":"Dəstəklənən fayl növləri: pdf, txt, docx - {{file_size_limit}} Mb maks.",
+    "SupportedFileTypesPdfDocx":"Dəstəklənən fayl növləri: pdf və docx - {{file_size_limit}} Mb maks.",
     "FileSizeExceedsFileSizeLimitMb":"Faylın ölçüsü {{file_size_limit}} Mb-i keçir.",
     "FileTypeNotSupported":"Fayl növü dəstəklənmir",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb fayl uğurla yükləndi.",

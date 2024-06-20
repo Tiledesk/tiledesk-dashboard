@@ -458,6 +458,7 @@
     "DragYuorFileHereOr": "Файлыңызды осында сүйреңіз немесе",
     "Browse": "шолу",
     "SupportedFileTypesPdfTxtDocx":"Қолдау көрсетілетін файл түрлері: pdf, txt, docx - {{file_size_limit}} Мб макс.",
+    "SupportedFileTypesPdfDocx":"Қолдау көрсетілетін файл түрлері: pdf және docx - {{file_size_limit}} Мб макс.",
     "FileSizeExceedsFileSizeLimitMb":"Файл өлшемі {{file_size_limit}} Мб-тан асады.",
     "FileTypeNotSupported":"Файл түріне қолдау көрсетілмейді",
     "FileSuccessfullyUploaded": "{{file_mb}} Мб файл сәтті жүктеп салынды.",

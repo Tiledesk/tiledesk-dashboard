@@ -459,6 +459,7 @@
     "DragYuorFileHereOr": "Перетащите файл сюда или",
     "Browse": "просматривать",
     "SupportedFileTypesPdfTxtDocx":"Поддерживаемые типы файлов: pdf, txt, docx — {{file_size_limit}} МБ макс.",
+    "SupportedFileTypesPdfDocx":"Поддерживаемые типы файлов: pdf и docx — максимум {{file_size_limit}} МБ.",
     "FileSizeExceedsFileSizeLimitMb":"Размер файла превышает {{file_size_limit}} МБ.",
     "FileTypeNotSupported":"Тип файла не поддерживается",
     "FileSuccessfullyUploaded": "{{file_mb}} Файл в Мб успешно загружен.",

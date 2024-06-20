@@ -459,6 +459,7 @@
     "DragYuorFileHereOr": "Превуците своју датотеку овде или",
     "Browse": "прегледати",
     "SupportedFileTypesPdfTxtDocx":"Подржани типови датотека: pdf, txt, docx - {{file_size_limit}} Мб мак.",
+    "SupportedFileTypesPdfDocx":"Подржани типови датотека: пдф и доцк - {{file_size_limit}} Мб мак.",
     "FileSizeExceedsFileSizeLimitMb":"Величина датотеке премашује {{file_size_limit}} Мб.",
     "FileTypeNotSupported":"Тип датотеке није подржан",
     "FileSuccessfullyUploaded": "{{file_mb}} Мб датотека је успешно отпремљена.",

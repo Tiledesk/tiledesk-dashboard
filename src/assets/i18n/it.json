@@ -458,6 +458,7 @@
     "DragYuorFileHereOr": "Trascina il tuo file qui o",
     "Browse": "sfoglia",
     "SupportedFileTypesPdfTxtDocx":"Tipi di file supportati: pdf, txt, docx - {{file_size_limit}} Mb max.",
+    "SupportedFileTypesPdfDocx":"Tipi di file supportati: pdf e docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb":"La dimensione del file supera {{file_size_limit}} Mb.",
     "FileTypeNotSupported":"Tipo di file non supportato",
     "FileSuccessfullyUploaded":"File da {{file_mb}} Mb caricato con successo.",

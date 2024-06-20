@@ -459,6 +459,7 @@
     "DragYuorFileHereOr": "Dra din fil hit eller",
     "Browse": "bläddra",
     "SupportedFileTypesPdfTxtDocx":"Filtyper som stöds: pdf, txt, docx - {{file_size_limit}} Mb max.",
+    "SupportedFileTypesPdfDocx":"Filtyper som stöds: pdf och docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb":"Filstorleken överstiger {{file_size_limit}} Mb.",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb-fil har laddats upp.",
     "FileTypeNotSupported":"Filtyp stöds inte",

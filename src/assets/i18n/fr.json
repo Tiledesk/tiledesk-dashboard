@@ -458,6 +458,7 @@
     "DragYuorFileHereOr": "Faites glisser votre fichier ici ou",
     "Browse": "feuilleter",
     "SupportedFileTypesPdfTxtDocx":"Types de fichiers pris en charge: pdf, txt, docx - {{file_size_limit}} Mo max.",
+    "SupportedFileTypesPdfDocx":"Types de fichiers pris en charge: pdf et docx - {{file_size_limit}} Mo max.",
     "FileSizeExceedsFileSizeLimitMb":"La taille du fichier dépasse {{file_size_limit}} Mo.",
     "FileTypeNotSupported":"Type de fichier non pris en charge",
     "FileSuccessfullyUploaded": "{{file_mb}} Fichier Mo téléchargé avec succès.",

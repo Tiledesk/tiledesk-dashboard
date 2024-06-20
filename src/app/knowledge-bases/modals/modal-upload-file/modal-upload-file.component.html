@@ -23,8 +23,10 @@
     </div>
     <div [class.is-hidden]="hideDropZone === true" class="supported-file-text"> 
         <span *ngIf="!fileSizeExceeds && fileSupported">
-            <!-- Supported file types: pdf, txt, docx - 10 Mb max. -->
-            {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}}
+            
+            <!-- {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}} -->
+            {{'SupportedFileTypesPdfDocx' | translate: tparams}}
+            
         </span>
         <span class="file-size-exceeds" *ngIf="fileSizeExceeds">
             <!-- File size exceeds 10 Mb. -->

@@ -458,6 +458,7 @@
     "DragYuorFileHereOr": "اسحب ملفك هنا أو",
     "Browse": "تصفح",
     "SupportedFileTypesPdfTxtDocx":"أنواع الملفات المدعومة: pdf، txt، docx - {{file_size_limit}} ميجابايت كحد أقصى.",
+    "SupportedFileTypesPdfDocx":"أنواع الملفات المدعومة: pdf وdocx - {{file_size_limit}} ميجابايت كحد أقصى.",
     "FileSizeExceedsFileSizeLimitMb":"حجم الملف يتجاوز {{file_size_limit}} ميغابايت.",
     "FileTypeNotSupported":"صيغة الملف غير مدعومةr",
     "FileSuccessfullyUploaded": "تم تحميل الملف {{file_mb}} ميغابايت بنجاح.",

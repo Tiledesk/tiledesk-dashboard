@@ -459,6 +459,7 @@
     "DragYuorFileHereOr": "Faylingizni shu yerga torting yoki",
     "Browse": "ko'rib chiqish",
     "SupportedFileTypesPdfTxtDocx":"Qo'llab-quvvatlanadigan fayl turlari: pdf, txt, docx - {{file_size_limit}} Mb maks.",
+    "SupportedFileTypesPdfDocx":"Qo'llab-quvvatlanadigan fayl turlari: pdf va docx - {{file_size_limit}} Mb maks.",
     "FileSizeExceedsFileSizeLimitMb":"Fayl hajmi {{file_size_limit}} Mb dan oshadi.",
     "FileTypeNotSupported":"Fayl turi qo'llab-quvvatlanmaydi",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb fayl muvaffaqiyatli yuklandi.",
