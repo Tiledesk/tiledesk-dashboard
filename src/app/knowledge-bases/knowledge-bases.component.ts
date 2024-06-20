@@ -250,9 +250,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
+  isAlphaNumeric(str) {
+    var code, i, len;
+  
+    for (i = 0, len = str.length; i < len; i++) {
+      code = str.charCodeAt(i);
+      if (!(code > 47 && code < 58) && // numeric (0-9)
+          !(code > 64 && code < 91) && // upper alpha (A-Z)
+          !(code > 96 && code < 123)) { // lower alpha (a-z)
+        return false;
+      }
+    }
+    return true;
+  };
+
   selectLastUsedNamespaceAndGetKbList(namespaces) {
-
-
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
 
     if (!storedNamespace) {
@@ -263,16 +275,24 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
       let currentUrlSegment = currentUrl.split('/');
 
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
       currentUrlSegment.forEach(segment => {
         if (segment === 'knowledge-bases') {
           this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
+          // console.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
+          let nameSpaceIdisAlphaNumeric = this.isAlphaNumeric(this.nameSpaceId)
+          // console.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
+          if(nameSpaceIdisAlphaNumeric === false) {
+            this.nameSpaceId = '0'
+          }
         }
 
       });
 
+      
+
       // const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
-      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
+      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
 
       if (this.nameSpaceId === '0') {
         this.selectedNamespace = namespaces.find((el) => {
@@ -286,7 +306,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
           this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-          this.getChatbotUsingNamespace(this.selectedNamespace.id)
+          // this.getChatbotUsingNamespace(this.selectedNamespace.id)
         }
       } else {
         this.selectedNamespace = namespaces.find((el) => {
@@ -296,7 +316,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespaceName = this.selectedNamespace.name
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        // this.getChatbotUsingNamespace(this.selectedNamespace.id)
       }
 
     } else {
@@ -316,14 +336,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespaceName = this.selectedNamespace.name
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        // this.getChatbotUsingNamespace(this.selectedNamespace.id)
       } else {
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (NOT EXIST BETWEEN THE NASPACES A NASPACE  WITH THE ID GET FROM STORED NAMESPACE)', this.selectedNamespaceName)
         this.selectedNamespace = namespaces.find((el) => {
           return el.default === true
         });
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        // this.getChatbotUsingNamespace(this.selectedNamespace.id)
         if (this.selectedNamespaceName) {
           this.selectedNamespaceName = this.selectedNamespace.name
         }
@@ -345,7 +365,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
       // this.selectedNamespaceName = namespace['name']
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
-      this.getChatbotUsingNamespace(this.selectedNamespace.id)
+      // this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
       // this.selectedNamespaceID = namespace['id']
       // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)

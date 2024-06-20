@@ -15,6 +15,7 @@ import { PLAN_NAME } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-home-kb',
@@ -47,6 +48,9 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   areNewKb: boolean;
+
+  kbNameSpaceid : string = '';
+
   constructor(
     public dialog: MatDialog,
     private kbService: KnowledgeBaseService,
@@ -58,6 +62,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     public notify: NotifyService,
     public usersService: UsersService,
     private translate: TranslateService,
+    public localDbService: LocalDbService,
 
   ) {
     super(prjctPlanService, notify);
@@ -78,8 +83,16 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       takeUntil(this.unsubscribe$)
     )
     .subscribe((project) => {
-      this.project = project
-      
+      if (project) {
+      this.project = project;
+      const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
+      this.logger.log('[HOME-KB] storedNamespace', storedNamespace);
+      if(storedNamespace) {
+        let storedNamespaceObjct = JSON.parse(storedNamespace)
+        this.logger.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
+        this.kbNameSpaceid= storedNamespaceObjct.id
+      }
+      }
     })
   }
 
@@ -116,7 +129,14 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
    
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     if (this.areNewKb) {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
+      if (this.kbNameSpaceid !== '') {
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
+      } else {
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
+      }
+
+      // this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
+    
     } else if (!this.areNewKb) {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
     }
