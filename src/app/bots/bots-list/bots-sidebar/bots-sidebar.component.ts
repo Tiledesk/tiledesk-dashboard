@@ -22,6 +22,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   @Input() customerSatisfactionBotsCount: number;
   @Input() increaseSalesBotsCount: number;
   @Input() allCommunityTemplatesCount: number;
+  @Input() kbCount : number;
 
   USER_ROLE: any;
   project: any;

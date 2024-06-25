@@ -33,6 +33,11 @@ import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-b
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { ModalKbListComponent } from './modals/modal-kb-list/modal-kb-list.component';
+import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
+import { FaqService } from 'app/services/faq.service';
+import { DepartmentService } from 'app/services/department.service';
+import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -110,6 +115,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   customerSatisfactionBotsCount: number;
   myChatbotOtherCount: number;
   increaseSalesBotsCount: number;
+  kbCount: number;
   listSitesOfSitemap: any = [];
 
   payIsVisible: boolean = false;
@@ -149,6 +155,47 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   botid: string;
   nameSpaceId: string;
 
+  // Hook bot to dept
+  dept_id: string;
+  depts_length: any
+  depts_without_bot_array = [];
+  kbOfficialResponderTag = "kb-official-responder"
+
+  depts_Without_BotArray = [ {    "id": "667943683e380b002d5aad41",     "name": "DEPT-7" },
+    {
+        "id": "6679458c3e380b002d5ab126",
+        "name": "DEPT-8"
+    },
+    {
+        "id": "6679459c3e380b002d5ab161",
+        "name": "DEPT-9"
+    }
+]
+
+chat_bot = {
+  "webhook_enabled": false,
+  "type": "tilebot",
+  "language": "en",
+  "public": false,
+  "certified": false,
+  "intentsEngine": "none",
+  "tags": [],
+  "score": 0,
+  "trained": true,
+  "certifiedTags": [],
+  "_id": "667953953e380b002d5acd3f",
+  "name": "CB29",
+  "id_project": "6672ac57d0b855002d9c1f21",
+  "trashed": false,
+  "createdBy": "6464e1d7068dcf00312ee5b5",
+  "createdAt": "2024-06-24T11:08:05.273Z",
+  "updatedAt": "2024-06-24T11:08:05.305Z",
+  "__v": 0,
+  "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/667953953e380b002d5acd3f",
+  "attributes": null
+}
+
+
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     private auth: AuthService,
@@ -169,6 +216,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public brandService: BrandService,
     public localDbService: LocalDbService,
     public dialog: MatDialog,
+    public faqService: FaqService,
+    private departmentService: DepartmentService
+
+    
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -196,11 +247,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getOSCODE();
     this.getProjectPlan();
     this.getProjectUserRole();
-    this.listenToOnSenSitemapEvent()
+    this.listenToOnSenSitemapEvent();
+   
+    // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
-
-
+    
+    // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
+    
   }
+
+ 
+
   listenToOnSenSitemapEvent() {
     document.addEventListener(
       "on-send-sitemap", (e: CustomEvent) => {
@@ -215,7 +272,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     );
   }
-
 
 
   getCurrentProject() {
@@ -237,7 +293,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   getAllNamespaces() {
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
-
+        this.kbCount = res.length
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
@@ -252,12 +308,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   isAlphaNumeric(str) {
     var code, i, len;
-  
+
     for (i = 0, len = str.length; i < len; i++) {
       code = str.charCodeAt(i);
       if (!(code > 47 && code < 58) && // numeric (0-9)
-          !(code > 64 && code < 91) && // upper alpha (A-Z)
-          !(code > 96 && code < 123)) { // lower alpha (a-z)
+        !(code > 64 && code < 91) && // upper alpha (A-Z)
+        !(code > 96 && code < 123)) { // lower alpha (a-z)
         return false;
       }
     }
@@ -282,14 +338,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           // console.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
           let nameSpaceIdisAlphaNumeric = this.isAlphaNumeric(this.nameSpaceId)
           // console.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
-          if(nameSpaceIdisAlphaNumeric === false) {
+          if (nameSpaceIdisAlphaNumeric === false) {
             this.nameSpaceId = '0'
           }
         }
 
       });
 
-      
+
 
       // const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
       // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
@@ -306,7 +362,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
           this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-          // this.getChatbotUsingNamespace(this.selectedNamespace.id)
+          this.getChatbotUsingNamespace(this.selectedNamespace.id)
         }
       } else {
         this.selectedNamespace = namespaces.find((el) => {
@@ -316,7 +372,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespaceName = this.selectedNamespace.name
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-        // this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
       }
 
     } else {
@@ -336,14 +392,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespaceName = this.selectedNamespace.name
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (FIND WITH ID GET FROM STORAGE)', this.selectedNamespaceName)
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        // this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
       } else {
         this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace (NOT EXIST BETWEEN THE NASPACES A NASPACE  WITH THE ID GET FROM STORED NAMESPACE)', this.selectedNamespaceName)
         this.selectedNamespace = namespaces.find((el) => {
           return el.default === true
         });
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        // this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
         if (this.selectedNamespaceName) {
           this.selectedNamespaceName = this.selectedNamespace.name
         }
@@ -353,163 +409,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
-  onSelectNamespace(namespace) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
-
-    if (namespace) {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + namespace.id]);
-      this.hasChangedNameSpace = true;
-      this.selectedNamespace = namespace
-      this.selectedNamespaceName = namespace['name']
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
-      // this.selectedNamespaceName = namespace['name']
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
-      // this.getChatbotUsingNamespace(this.selectedNamespace.id)
-
-      // this.selectedNamespaceID = namespace['id']
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
-
-      // this.selectedNamespaceIsDefault = namespace['default']
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
-
-      this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
-      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onSelectNamespace');
-
-    }
-  }
-
-  getChatbotUsingNamespace(selectedNamespaceid: string) {
-    this.chatbotsUsingNamespace = []
-    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
-
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
-      let isArray = this.isArray(chatbots)
-      if (isArray) {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots isArray', isArray)
-        if (chatbots) {
-          this.chatbotsUsingNamespace = chatbots
-        }
-      } else {
-        this.chatbotsUsingNamespace = undefined
-      }
-
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE ', error);
-
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
-    });
-  }
-
-  isArray(what) {
-    return Object.prototype.toString.call(what) === '[object Array]';
-  }
-
-  createChatbotfromKbOfficialResponderTemplate() {
-    if (this.USER_ROLE !== 'agent') {
-      this.exportChatbotToJSON()
-
-      // if (this.chatBotLimit) {
-      //   if (this.myChatbotOtherCount < this.chatBotLimit) {
-      //     this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
-      //     this.forkTemplate()
-      //   } else if (this.myChatbotOtherCount >= this.chatBotLimit) {
-      //     this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
-      //     this.presentDialogReachedChatbotLimit()
-      //   }
-      // } else if (!this.chatBotLimit) {
-      //   this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  NO chatBotLimit: RUN FORK')
-      //   this.forkTemplate()
-      // }
-    } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageChatbot()
-    }
-  }
-
-  exportChatbotToJSON() {
-    // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
-    // exportFaqToJsonBtnEl.blur();
-    this.faqKbService.exportChatbotToJSON("667079885c1188002db84159").subscribe((faq: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - FAQS', faq)
-      // this.logger.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
-      if (faq) {
-        // downloadObjectAsJson(faq, faq.name);
-      }
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - COMPLETE');
-
-
-    });
-  }
-
-  // forkTemplate() {
-  //   this.faqKbService.installTemplate('63c9943b4f857c003505557d', this.id_project, true, this.id_project).subscribe((res: any) => {
-  //     this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - FORK TEMPLATE RES', res);
-  //     this.botid = res.bot_id
-
-  //   }, (error) => {
-  //     this.logger.error('[COMMUNITY-TEMPLATE-DTLS] FORK TEMPLATE - ERROR ', error);
-
-  //   }, () => {
-  //     this.logger.log('[COMMUNITY-TEMPLATE-DTLS] FORK TEMPLATE COMPLETE');
-  //     this.goToBotDetails()
-  //   });
-  // }
-
-  goToBotDetails() {
-    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
-    let faqkb = {
-      createdAt: new Date(),
-      _id: this.botid
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-  }
-
-  presentDialogReachedChatbotLimit() {
-    this.logger.log('[COMMUNITY-TEMPLATE-DTLS] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
-    const dialogRef = this.dialog.open(ChatbotModalComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      data: {
-        projectProfile: this.prjct_profile_name,
-        subscriptionIsActive: this.subscription_is_active,
-        prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired,
-        chatBotLimit: this.chatBotLimit
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[COMMUNITY-TEMPLATE-DTLS] Dialog result: ${result}`);
-    });
-  }
-
-  presentModalOnlyOwnerCanManageChatbot() {
-    this.notify.presentModalAgentCannotManageChatbot(this.translate.instant('AgentsCannotManageChatbots'), this.learnMoreAboutDefaultRoles)
-  }
-
-  goToChabotDetails(chatbot) {
-    this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
-    let faqkb = {
-      createdAt: new Date(),
-      _id: chatbot._id
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-  }
-
-
-
-
   createNewNamespace(namespaceName: string) {
     this.kbService.createNamespace(namespaceName).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
-        this.selectedNamespace = namespace
+        this.selectedNamespace = namespace;
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.selectedNamespaceName = namespace['name']
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
@@ -543,10 +449,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.newNamespaceName = event
   }
 
-
-  updateNamespace(body, calledBy) {
+  updateNamespace(body, calledBy, previedata?: any) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE calledBy ', calledBy);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
+    console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
     this.kbService.upadateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
@@ -589,14 +495,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE NAME * COMPLETE *');
       this.notify.showWidgetStyleUpdateNotification(this.msgNamespaceHasBeenSuccessfullyUpdated, 2, 'done');
       if (calledBy === 'modal-update-settings-and-open-preview') {
-        this.onOpenBaseModalPreview()
+        this.onOpenBaseModalPreview(previedata)
       }
 
     });
   }
-
-
-
 
 
   onBlurUpdateNamespaceName(event) {
@@ -643,7 +546,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onMouseOver() {
-
     // this.namespaceIsEditable = true
     this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOver namespace name namespaceIsEditable', this.namespaceIsEditable)
 
@@ -658,7 +560,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onMouseOut() {
     let namespaceNameOutputEl = document.getElementById("namespace-name-output");
-
     if (namespaceNameOutputEl) {
       this.logger.log('[KNOWLEDGE-BASES-COMP] onMouseOut namespaceNameOutputEl', namespaceNameOutputEl)
       namespaceNameOutputEl.style.border = '1px solid transparent'
@@ -673,9 +574,378 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   }
 
+  onSelectNamespace(namespace) {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace namespace', namespace)
+
+    if (namespace) {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + namespace.id]);
+      // this.getDeptsByProjectId()
+      this.hasChangedNameSpace = true;
+      this.selectedNamespace = namespace
+      this.selectedNamespaceName = namespace['name']
+      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
+      // this.selectedNamespaceName = namespace['name']
+      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
+      this.getChatbotUsingNamespace(this.selectedNamespace.id)
+
+      // this.selectedNamespaceID = namespace['id']
+      // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceID', this.selectedNamespaceID)
+
+      // this.selectedNamespaceIsDefault = namespace['default']
+      // this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespaceIsDefault', this.selectedNamespaceIsDefault)
+
+      this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'onSelectNamespace');
+
+    }
+  }
+
+  getChatbotUsingNamespace(selectedNamespaceid: string) {
+    this.chatbotsUsingNamespace = []
+    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
+
+      console.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
+      // let isArray = this.isArray(chatbots)
+      // if (isArray) {
+      if (chatbots.length > 0) {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
+        this.chatbotsUsingNamespace = chatbots
+        // if (chatbots) {
+
+        // }
+      } else {
+        this.chatbotsUsingNamespace = undefined
+      }
+
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE ', error);
+
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
+    });
+  }
+
+  // isArray(what) {
+  //   return Object.prototype.toString.call(what) === '[object Array]';
+  // }
+
+  createChatbotfromKbOfficialResponderTemplate() {
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.myChatbotOtherCount < this.chatBotLimit) {
+          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.findKbOfficialResponderAndThenExportToJSON()
+        } else if (this.myChatbotOtherCount >= this.chatBotLimit) {
+          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  NO chatBotLimit: RUN FORK')
+        this.findKbOfficialResponderAndThenExportToJSON()
+      }
+
+      
+
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageChatbot()
+    }
+  }
+
+  findKbOfficialResponderAndThenExportToJSON() {
+    this.faqKbService.getTemplates().subscribe((certifiedTemplates: any) => {
+
+      if (certifiedTemplates) {
+
+        let kbOfficialResponderTemplate = certifiedTemplates.find(c => {
+          if (c.certifiedTags) {
+            let officialResponder = c.certifiedTags.find(t => t.name === this.kbOfficialResponderTag)
+            return officialResponder
+          }
+        });
+        console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+
+        if(kbOfficialResponderTemplate) {
+          this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id) 
+        }
+      }
+    })
+  }
+    // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
+    // exportFaqToJsonBtnEl.blur();
+  exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
+    this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
+      console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
+      console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
+      chatbot.intents.forEach((intent, index) => {
+        console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
+        const askGPT_Action = intent.actions.find(o => o._tdActionType === "askgptv2")
+
+        if (askGPT_Action) {
+          askGPT_Action.namespace = this.selectedNamespace.id
+          console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
+          this.presentDialogChatbotname(chatbot)
+        }
+      });
+      // if (intents) {
+      //   // downloadObjectAsJson(faq, faq.name);
+      //   intents.forEach(intent => {
+      //     console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - intent', intent)
+      //   });
+      // }
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - COMPLETE');
+
+
+    });
+  }
+
+  presentDialogChatbotname(chatbot) {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogChatbotname chatbot ', chatbot)
+    const dialogRef = this.dialog.open(ModalChatbotNameComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        chatbot: chatbot,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(editedChatbot => {
+      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
+
+      this.importChatbotFromJSON(editedChatbot)
+    });
+  }
+
+  importChatbotFromJSON(editedChatbot) {
+    console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
+    this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
+      console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      if (faqkb) {
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+
+        this.getDeptsByProjectId(faqkb)
+        // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+
+      }
+
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
+
+    });
+  }
+
+
+  getDeptsByProjectId(faqkb?: string) {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+
+      console.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS RES ', departments);
+
+      if (departments) {
+        const depts_length = departments.length
+        console.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT ', depts_length);
+
+        if (depts_length === 1) {
+          // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
+          this.dept_id = departments[0]['_id']
+
+          console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+          console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
+          if (departments[0].hasBot === true) {
+
+            console.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT ');
+            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
+            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
+
+            // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
+            // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+          } else {
+            console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
+            console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
+            this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept')
+
+            // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
+            // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT botType selected ', this.botType);
+            // if (this.botType !== 'identity') {
+            // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+          }
+
+          // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+        } else if (depts_length > 1) {
+          console.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
+
+          // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
+          departments.forEach(dept => {
+
+            if (dept.hasBot === true) {
+              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT HAS BOT ');
+
+              // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            } else {
+              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
+              // this.logger.log('[BOT-CREATE] --->  DEPT botType selected ', this.botType);
+              // if (this.botType !== 'identity') {
+              //   this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
+              // }
+              // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+
+              this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
+              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+
+             
+            }
+          });
+          this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+          this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+        }
+      }
+    }, error => {
+
+      this.logger.error('[KNOWLEDGE-BASES-COMP] --->  DEPTS RES - ERROR', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS RES - COMPLETE')
+
+    });
+
+  }
+
+
+
+  openDialogHookBot(deptsWithoutBotArray, faqkb) {
+    console.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!'  )
+    const dialogRef = this.dialog.open(ModalHookBotComponent, {
+      width: '700px',
+      data: {
+        deptsWithoutBotArray: deptsWithoutBotArray,
+        chatbot: faqkb
+      },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
+      // console.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed getState:`,  dialogRef.getState());
+      // dialogRef.getState()
+      if (result && result.deptId && result.botId) {
+        this.hookBotToDept(result.deptId, result.botId)
+      }
+    });
+  }
+
+
+  hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
+    console.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
+    console.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
+    this.departmentService.updateExistingDeptWithSelectedBot(deptId, botId).subscribe((res) => {
+      console.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
+
+      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR = true;
+
+      // this.logger.error('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
+      if (hookToDefaultDept === undefined) {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('BotSuccessfullyActivated'), 2, 'done');
+      }
+      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
+      // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
+      // this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
+    });
+  }
+
+
+  // forkTemplate() {
+  //   this.faqKbService.installTemplate('63c9943b4f857c003505557d', this.id_project, true, this.id_project).subscribe((res: any) => {
+  //     this.logger.log('[KNOWLEDGE-BASES-COMP] - FORK TEMPLATE RES', res);
+  //     this.botid = res.bot_id
+
+  //   }, (error) => {
+  //     this.logger.error('[KNOWLEDGE-BASES-COMP] FORK TEMPLATE - ERROR ', error);
+
+  //   }, () => {
+  //     this.logger.log('[KNOWLEDGE-BASES-COMP] FORK TEMPLATE COMPLETE');
+  //     this.goToBotDetails()
+  //   });
+  // }
+
+  goToBotDetails() {
+    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
+    let faqkb = {
+      createdAt: new Date(),
+      _id: this.botid
+    }
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+  }
+
+  presentDialogReachedChatbotLimit() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalOnlyOwnerCanManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot(this.translate.instant('AgentsCannotManageChatbots'), this.learnMoreAboutDefaultRoles)
+  }
+
+  goToChabotDetails(chatbot) {
+    this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
+    let faqkb = {
+      createdAt: new Date(),
+      _id: chatbot._id
+    }
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+  }
+
+
+
+
+
+
   // ------------------------------------------------------------------------
   // @ Modals Windows
   // ------------------------------------------------------------------------
+
+  openDialogKbList() {
+    const dialogRef = this.dialog.open(ModalKbListComponent, {
+      // width: '600px',
+      // data: {
+      //   calledBy: 'step1'
+      // },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG KB LIST after closed result:`, result);
+
+      // if (result && result.namespaceName) {
+
+      //   const namespaceName = result.namespaceName
+
+      //   this.createNewNamespace(namespaceName)
+      // }
+    });
+  }
+
+
   presentModalAddNewNamespace() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
 
@@ -697,7 +967,31 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
-  onOpenBaseModalPreviewSettings() {
+  onOpenBaseModalPreview(previedata?: any) {
+    // this.baseModalPreview = true;
+    const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNaspace: this.selectedNamespace,
+        askBody: previedata
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      if (result) {
+        if (result.action === 'open-settings-modal' && result.data) {
+          this.onOpenBaseModalPreviewSettings(result.data)
+        } else if (result.action === 'open-settings-modal' && !result.data) {
+          this.onOpenBaseModalPreviewSettings()
+        }
+      }
+
+    });
+  }
+
+  onOpenBaseModalPreviewSettings(previedata?: any) {
     // this.baseModalPreviewSettings = true;
     const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -722,7 +1016,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (result.action === "update-and-open-preview") {
           this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
           let body = { preview_settings: result.selectedNamespace.preview_settings }
-          this.updateNamespace(body, 'modal-update-settings-and-open-preview')
+          if (previedata) {
+            this.updateNamespace(body, 'modal-update-settings-and-open-preview', previedata)
+          } else {
+            this.updateNamespace(body, 'modal-update-settings-and-open-preview')
+          }
         }
 
 
@@ -733,24 +1031,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
-  onOpenBaseModalPreview() {
-    // this.baseModalPreview = true;
-    const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        selectedNaspace: this.selectedNamespace,
-      },
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
-      if (result === 'open-settings-modal') {
-        this.onOpenBaseModalPreviewSettings()
-      }
 
-    });
-  }
 
 
   onOpenDeleteNamespaceModal() {
@@ -1680,7 +1961,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
           let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
-         
+
           this.getListOfKb(paramsDefault, 'deleteNamespace');
 
           this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace)

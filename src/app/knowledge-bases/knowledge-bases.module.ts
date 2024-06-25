@@ -32,6 +32,9 @@ import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-uploa
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ModalKbListComponent } from './modals/modal-kb-list/modal-kb-list.component';
+import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -56,7 +59,10 @@ const routes: Routes = [
     ModalPreviewSettingsComponent,
     ModalAddNamespaceComponent,
     ModalUploadFileComponent,
-    ModalChatbotNameComponent
+    ModalChatbotNameComponent,
+    ModalKbListComponent,
+    ModalHookBotComponent,
+   
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -76,6 +82,7 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatExpansionModule
     // SatPopoverModule
   ]
   // ,

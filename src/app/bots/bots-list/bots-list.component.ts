@@ -26,8 +26,10 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 @Component({
   selector: 'bots-list',
   templateUrl: './bots-list.component.html',
@@ -98,6 +100,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   customerSatisfactionBotsCount: number;
   myChatbotOtherCount: number;
   increaseSalesBotsCount: number;
+  kbCount: number;
 
   customerSatisfactionBots: any;
   increaseSalesBots: any;
@@ -158,7 +161,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
     private clipboard: Clipboard,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -182,6 +186,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getTranslations();
     this.getTemplates()
     this.getCommunityTemplates()
+    this.getAllNamespaces()
     this.getNavigationBaseUrl()
     this.getProjectPlan();
     this.getUserRole();
@@ -233,6 +238,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //   this.logger.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
+  }
+  getAllNamespaces() {
+    this.kbService.getAllNamespaces().subscribe((res: any) => {
+      if (res) {
+        this.kbCount = res.length
+        this.logger.log('[BOTS-LIST] - GET ALL NAMESPACES', res);
+        
+      }
+    }, (error) => {
+      this.logger.error('[BOTS-LIST]  GET GET ALL NAMESPACES ERROR ', error);
+
+    }, () => {
+      this.logger.log('[BOTS-LIST]  GET ALL NAMESPACES * COMPLETE *');
+      
+    });
   }
 
   getCommunityTemplates() {
@@ -971,22 +991,31 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         // this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
         // this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
         if (foundDeptsArray.length === 1) {
-          swal({
+          Swal.fire({
             title: this.warning,
             text: this.botIsAssociatedWithTheDepartment + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
             icon: "warning",
-            button: true,
-            dangerMode: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok') ,
+            confirmButtonColor: "var(--blue-light)",
+            focusConfirm: false,
+            // reverseButtons: true
+            // button: true,
+            // dangerMode: false,
           })
         }
 
         if (foundDeptsArray.length > 1) {
-          swal({
+          Swal.fire({
             title: this.warning,
             text: this.botIsAssociatedWithDepartments + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
             icon: "warning",
-            button: true,
-            dangerMode: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok') ,
+            confirmButtonColor: "var(--blue-light)",
+            focusConfirm: false,
+            // button: true,
+            // dangerMode: false,
           })
 
         }

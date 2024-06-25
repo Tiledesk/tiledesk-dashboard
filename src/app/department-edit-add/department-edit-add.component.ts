@@ -219,7 +219,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           icon: "warning",
           showCloseButton: false,
           showCancelButton: true,
-          confirmButtonText: "Yes I'm sure",
+          confirmButtonText: this.translate.instant('YesImSure') ,
           confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true
