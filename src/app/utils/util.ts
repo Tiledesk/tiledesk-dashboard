@@ -647,6 +647,17 @@ export const TYPE_GPT_MODEL = {
 }
 
 
+export const CHANNELS = [
+    { id: 'chat21', name: 'Chat' },
+    { id: 'email', name: 'Email' },
+    { id: 'form', name: 'Ticket' },
+    { id: 'telegram', name: 'Telegram' },
+    { id: 'messenger', name: 'Facebook Messenger' },
+    { id: 'whatsapp', name: 'WhatsApp' },
+    { id: 'voice', name: 'Voice' }
+]
+
+
 
 
 // Links to documentation
@@ -684,5 +695,4 @@ export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/arti
 export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
 export const URL_install_tiledesk_on_wix ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
 export const URL_install_tiledesk_on_magento ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
-
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';

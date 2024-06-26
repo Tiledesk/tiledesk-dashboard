@@ -9,6 +9,7 @@ import moment from "moment"
 import { Subscription, zip } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { CHANNELS } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-messages',
@@ -28,12 +29,17 @@ export class MessagesComponent implements OnInit {
 
   selectedDaysId: number;   // lastdays filter
   selectedAgentId: string;  // agent filter
+  selectedChannelId: string;  // channel filter 
 
   projectUserAndBotsArray = []
   projectUsersList: any;
   projectBotsList: any;
   bots: any;
   messageCountLastMonth: any;
+  conversationType = [
+    { id: '', name: 'All' },
+    ... CHANNELS
+  ];
 
   constructor(
     private translate: TranslateService,
@@ -55,12 +61,13 @@ export class MessagesComponent implements OnInit {
     this.selected = 'day';
     this.selectedDaysId = 7;
     this.selectedAgentId = '';
+    this.selectedChannelId = '';
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     this.logger.log("[ANALYTICS - MSGS] INIT", this.initDay, "END", this.endDay);
 
-    this.getMessagesByLastNDays(this.selectedDaysId, this.selectedAgentId);
+    this.getMessagesByLastNDays(this.selectedDaysId, this.selectedAgentId, this.selectedChannelId);
   }
 
   switchMonthName() {
@@ -154,15 +161,23 @@ export class MessagesComponent implements OnInit {
       this.lastdays = 1;
     }
     this.lineChart.destroy();
-    this.getMessagesByLastNDays(value, this.selectedAgentId);
+    this.getMessagesByLastNDays(value, this.selectedAgentId, this.selectedChannelId);
   }
 
   agentSelected(selectedAgentId) {
     this.logger.log("[ANALYTICS - MSGS] Selected agent: ", selectedAgentId);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
-    this.getMessagesByLastNDays(this.selectedDaysId, selectedAgentId)
+    this.getMessagesByLastNDays(this.selectedDaysId, selectedAgentId, this.selectedChannelId)
     this.logger.log('[ANALYTICS - MSGS] REQUEST:', this.selectedDaysId, selectedAgentId)
+  }
+
+  conversationTypeSelected(selectedChannelId){
+    this.logger.log("[ANALYTICS - CONVS]  Selected channel: ", selectedChannelId);
+    this.lineChart.destroy();
+    this.subscription.unsubscribe();
+    this.getMessagesByLastNDays(this.selectedDaysId, '', selectedChannelId)
+    this.logger.log('[ANALYTICS - MSGS] REQUEST:', this.selectedDaysId, selectedChannelId)
   }
 
   getAggregateValue() {
@@ -181,10 +196,10 @@ export class MessagesComponent implements OnInit {
     })
   }
 
-  getMessagesByLastNDays(lastdays, senderID) {
+  getMessagesByLastNDays(lastdays, senderID, channelID) {
     this.logger.log("[ANALYTICS - MSGS] Lastdays: ", lastdays);
     
-    this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID).subscribe((messagesByDay) => {
+    this.subscription = this.analyticsService.getMessagesByDay(lastdays, senderID, channelID).subscribe((messagesByDay) => {
       this.logger.log("[ANALYTICS - MSGS] »» MESSAGES BY DAY RESULT: ", messagesByDay)
 
       const lastdays_initarray = [];

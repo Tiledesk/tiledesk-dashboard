@@ -44,27 +44,24 @@
 
         <div class="row" style="padding-left: 23px; padding-right: 12px;">
           <!-- ------last n days filter--------- -->
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="section-select-dept">
               <div class="row">
                 <label class="col-sm-12" style="text-align: left; color:black">
                   {{ 'Analytics.FilterReport' | translate }}
                 </label>
                 <div class="col-sm-12" style="margin-bottom: 6px; text-align: left">
-                  <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
+                  <ng-select class="custom" 
+                    name="days" 
+                    [(ngModel)]="selectedDaysId" 
+                    [clearable]="false"
                     (change)="daysSelect(selectedDaysId)">
-                    <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}
-                    </ng-option>
-                    <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}
-                    </ng-option>
-                    <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}
-                    </ng-option>
-                    <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}
-                    </ng-option>
-                    <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}
-                    </ng-option>
-                    <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}
-                    </ng-option>
+                    <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
+                    <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}</ng-option>
+                    <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}</ng-option>
+                    <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}</ng-option>
+                    <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}</ng-option>
+                    <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}</ng-option>
                   </ng-select>
                 </div>
               </div>
@@ -86,7 +83,7 @@
           </div> -->
 
           <!-- ------ department filter--------- -->
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="section-select-dept">
               <div class="row">
                 <!-- color: rgba(0, 0, 0, 0.54); -->
@@ -94,12 +91,13 @@
                   {{ 'HistoryPage.FilterByDepartment' | translate }}
                 </label>
                 <div class="col-sm-12" style="margin-bottom: 6px; text-align: left">
-                  <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false"
+                  <ng-select class="custom" 
+                    name="dept" 
+                    [(ngModel)]="selectedDeptId" 
+                    [clearable]="false"
                     (change)="depSelected(selectedDeptId)">
                     <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
-                    <ng-option *ngFor="let dept of departments" [value]="dept._id">
-                      {{dept.name}}
-                    </ng-option>
+                    <ng-option *ngFor="let dept of departments" [value]="dept._id">{{dept.name}}</ng-option>
                   </ng-select>
                 </div>
               </div>
@@ -107,20 +105,40 @@
           </div>
 
           <!------- agent filter -------->
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="section-select-dept">
               <div class="row">
                 <label class="col-sm-12" style="text-align: left; color:black">
                   {{ "Agent" | translate }}
                 </label>
                 <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
-                  <ng-select class="custom" name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
+                  <ng-select class="custom" 
+                    name="agent" 
+                    [(ngModel)]="selectedAgentId" 
+                    [clearable]="false"
                     (change)="agentSelected(selectedAgentId)">
                     <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
-                    <ng-option *ngFor="let agent of projectUserAndBotsArray" value="{{ agent.id }}">
-                      {{ agent.name }}
-                    </ng-option>
+                    <ng-option *ngFor="let agent of projectUserAndBotsArray" value="{{ agent.id }}">{{ agent.name }}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <!-- ----- conversation type filter ------ -->
+          <div class="col-sm-3">
+            <div class="section-select-dept">
+              <div class="row">
+                <label class="col-sm-12" style="text-align: left; color:black;">
+                  {{ "MessageChannel" | translate }}
+                </label>
+                <div class="col-sm-12" style="margin-bottom: 6px; text-align: left;">
+                  <ng-select class="custom ng-select-conversation-type" 
+                      name="conversation-type" 
+                      [(ngModel)]="selectedChannelId" 
+                      [clearable]="false"
+                      (change)="conversationTypeSelected(selectedChannelId)">
+                    <ng-option *ngFor="let channel of conversationType" value="{{ channel.id }}">{{ channel.name}}</ng-option>
                   </ng-select>
                 </div>
               </div>

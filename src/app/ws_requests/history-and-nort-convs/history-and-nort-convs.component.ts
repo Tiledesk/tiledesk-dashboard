@@ -9,7 +9,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, CHANNELS, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
 import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -234,13 +234,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   conversationType = [
     { id: 'all', name: 'All' },
-    { id: 'chat21', name: 'Chat' },
-    { id: 'telegram', name: 'Telegram' },
-    { id: 'messenger', name: 'Facebook Messenger' },
-    { id: 'email', name: 'Email' },
-    { id: 'form', name: 'ticket' },
-    { id: 'whatsapp', name: 'WhatsApp' }
-  ]
+    ... CHANNELS
+  ];
 
 
 

@@ -222,6 +222,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isSripeSub: boolean;
   salesEmail: string;
   public hideHelpLink: boolean;
+  public displayExtremeMeasures: boolean;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -283,6 +284,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (brand) {
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
       this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+      this.displayExtremeMeasures = brand['EXTREME_MEASURES']
+      // console.log('[PRJCT-EDIT-ADD] displayExtremeMeasures ',  this.displayExtremeMeasures)
     }
     // this.translationParams = { plan_name: PLAN_NAME.B } // Scale
     this.translationParams = { plan_name: PLAN_NAME.E } // Premium

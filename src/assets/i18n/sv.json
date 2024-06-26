@@ -800,7 +800,20 @@
         "AutomaticUnavailableStatus": "Automatisk otillgänglig status",
         "SetAnAgentStatusToUnavailable": "Ställ in en agents status på otillgänglig om de har ett antal chattar i följd omtilldelade",
         "ItSetAnAgentStatusToUnavailable": "Den ställer in en agents status till otillgänglig om de har ett antal chattar i följd omfördelade",
-        "NumberOfChatsReassignedBefore": "Antal chattar omtilldelade innan agentens status ändrades"
+        "NumberOfChatsReassignedBefore": "Antal chattar omtilldelade innan agentens status ändrades",
+        "Security": {
+            "Security": "säkerhet",
+            "SecurityDescription": "Du kan begränsa åtkomsten till {{ BRAND_NAME }} till endast de användare inom ett antal IP-adresser. ",
+            "EnableIPRestriction": "Aktivera IP-begränsningar",
+            "ThisWillAffects": "Detta kommer att påverka",
+            "SignInForAllTiledeskProducts": "Logga in för alla {{ BRAND_NAME }}-produkter",
+            "AllowedIpRanges": "Tillåtna IP-intervall",
+            "AddIpRanges": " Lägg till de IP-intervall som behöver {{ BRAND_NAME }}-åtkomst. ",
+            "Use": "Använda sig av",
+            "SyntaxWhereN": "syntax där n är ett tal",
+            "RangesPlaceholder": "exempel: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "Att aktivera IP-baserade åtkomstbegränsningar kan bryta tredjepartsintegrationer. Tillåt alla externa IP-adresser som behöver komma åt ditt konto via {{ BRAND_NAME }} API."
+        }
     },
     "HomePage": {
         "Widget": "För att börja konfigurera din widget!",

@@ -9,6 +9,7 @@ import { Subscription, zip } from 'rxjs';
 import { UsersService } from 'app/services/users.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { CHANNELS } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-requests',
@@ -29,6 +30,7 @@ export class RequestsComponent implements OnInit {
   selectedDaysId: number;   // lastdays filter
   selectedDeptId: string;   // department filter
   selectedAgentId: string;  // agent filter 
+  selectedChannelId: string;  // channel filter 
 
   selected: string;
   departments: any;
@@ -41,6 +43,10 @@ export class RequestsComponent implements OnInit {
   projectBotsList: any;
   bots: any;
   conversationsCountLastMonth: any;
+  conversationType = [
+    { id: '', name: 'All' },
+    ... CHANNELS
+  ];
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -62,13 +68,14 @@ export class RequestsComponent implements OnInit {
     this.selectedDeptId = '';
     this.selectedDaysId = 7;
     this.selectedAgentId = '';
+    this.selectedChannelId = '';
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     this.logger.log("[ANALYTICS - CONVS] INIT", this.initDay, "END", this.endDay);
 
     this.getAggregateValue();
-    this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId);
+    this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId, this.selectedChannelId);
     this.getDepartments();
     this.getProjectUsersAndBots();
 
@@ -88,15 +95,20 @@ export class RequestsComponent implements OnInit {
 
     const elemInputOfNgSelectDept = <HTMLElement>document.querySelector('.ng-select-dept > .ng-select-container > .ng-value-container > .ng-input > input');
     this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectDept ', elemInputOfNgSelectDept);
-
     if (elemInputOfNgSelectDept) {
       elemInputOfNgSelectDept.setAttribute("id", "select-dept");
     }
+
     const elemInputOfNgSelectAgent = <HTMLElement>document.querySelector('.ng-select-agent > .ng-select-container > .ng-value-container > .ng-input > input');
     this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectAgent ', elemInputOfNgSelectAgent);
-
     if (elemInputOfNgSelectAgent) {
       elemInputOfNgSelectAgent.setAttribute("id", "select-agent");
+    }
+
+    const elemInputOfNgSelectConversation = <HTMLElement>document.querySelector('.ng-select-ng-select-conversation-type > .ng-select-container > .ng-value-container > .ng-input > input');
+    this.logger.log('[ANALYTICS - CONVS] EL-INPUT Of NgSelectConversation ', elemInputOfNgSelectConversation);
+    if (elemInputOfNgSelectConversation) {
+      elemInputOfNgSelectConversation.setAttribute("id", "select-conversation");
     }
   }
 
@@ -115,11 +127,11 @@ export class RequestsComponent implements OnInit {
     this.subscription.unsubscribe();
     this.logger.log("[ANALYTICS - CONVS] ++++++++++ SELECTED AGENT: ", this.selectedAgentId);
     if (!this.selectedAgentId) {
-      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId, this.selectedChannelId)
       this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
-      this.getRequestByLastNDay(value, this.selectedDeptId, this.selectedAgentId)
-      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDay REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
+      this.getRequestByLastNDay(value, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId)
+      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDay REQUEST:', value, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId)
     }
   }
 
@@ -128,11 +140,11 @@ export class RequestsComponent implements OnInit {
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     if (!this.selectedAgentId) {
-      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId, this.selectedChannelId)
       this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
-      this.getRequestByLastNDay(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
-      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDay:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+      this.getRequestByLastNDay(this.selectedDaysId, selectedDeptId, this.selectedAgentId, this.selectedChannelId)
+      this.logger.log('[ANALYTICS - CONVS] getRequestByLastNDay:', this.selectedDaysId, selectedDeptId, this.selectedAgentId, this.selectedChannelId)
     }
 
   }
@@ -142,11 +154,24 @@ export class RequestsComponent implements OnInit {
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     if (!this.selectedAgentId) {
-      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId,)
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId, this.selectedChannelId)
       this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
-      this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
-      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDay REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+      this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId, selectedAgentId, this.selectedChannelId)
+      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDay REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId, this.selectedChannelId)
+    }
+  }
+
+  conversationTypeSelected(selectedChannelId){
+    this.logger.log("[ANALYTICS - CONVS]  Selected channel: ", selectedChannelId);
+    this.lineChart.destroy();
+    this.subscription.unsubscribe();
+    if (!this.selectedAgentId) {
+      this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId, selectedChannelId)
+      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
+    } else {
+      this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
+      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDay REQUEST:', this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
     }
   }
 
@@ -271,14 +296,14 @@ export class RequestsComponent implements OnInit {
     })
   }
 
-  getRequestByLastNDay(lastdays, depID, participantID) {
+  getRequestByLastNDay(lastdays, depID, participantID, channelID) {
 
     if (participantID.includes("bot")) {
       this.logger.log("[ANALYTICS - CONVS] Selected Agent is a BOT");
       // try to change chart's colors
     }
     this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: For Agent/Bot")
-    this.subscription = this.analyticsService.requestsByDay(lastdays, depID, participantID).subscribe((requestsByDay: any) => {
+    this.subscription = this.analyticsService.requestsByDay(lastdays, depID, participantID, channelID).subscribe((requestsByDay: any) => {
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
 
       const last7days_initarray = []
@@ -499,13 +524,13 @@ export class RequestsComponent implements OnInit {
 
 
   //-----------LAST n DAYS GRAPH-----------------------
-  getRequestByLastNDayMerge(lastdays, depID) {
+  getRequestByLastNDayMerge(lastdays, depID, channelID) {
 
     this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged")
-    this.subscription = this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
+    this.subscription = this.analyticsService.requestsByDay(lastdays, depID, '', channelID).subscribe((requestsByDay: any) => {
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
 
-      this.analyticsService.requestsByDayBotServed(lastdays, depID).subscribe((requestsByDayBotServed: any) => {
+      this.analyticsService.requestsByDayBotServed(lastdays, depID, '', channelID).subscribe((requestsByDayBotServed: any) => {
         this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
