@@ -297,6 +297,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     // }
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
+    console.log('fileChangeUploadChatbotFromJSON',file) 
+
     const formData: FormData = new FormData();
     formData.set('id_faq_kb', this.id_faq_kb);
     formData.append('uploadFile', file, file.name);
@@ -321,6 +323,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   importChatbotFromJSON(formData) {
+    console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON formData ',formData)
     this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
@@ -329,8 +332,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
         this.trackChatbotImported(faqkb)
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
-        // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0'])
+
+        // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {

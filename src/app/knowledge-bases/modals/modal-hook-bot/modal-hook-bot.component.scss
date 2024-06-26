@@ -1,0 +1,99 @@
+.mat-dialog-close-btn {
+    background-color: #647491;
+    color: #fff;
+}
+
+.mat-dialog-ok-btn {
+    background-color: var(--blue-light);
+    color: #fff;
+
+}
+
+.widget--script {
+    font-family: monospace;
+    background-color: rgb(15, 15, 16);
+    ;
+    border: none;
+    // border-radius: 0.25em 0.25em 0px 0px;
+    box-shadow: unset !important;
+    line-height: 0;
+    counter-reset: line;
+    padding-left: 0px;
+    margin-bottom: 0px;
+    font-family: monospace !important;
+    color: #fafafa;
+    border-radius: 0px !important;
+    font-size: 12px;
+    // height: 155px;
+
+    span {
+        display: block;
+        line-height: 2.1rem;
+
+        &:before {
+            counter-increment: line;
+            content: counter(line);
+            display: inline-block;
+            border-right: 1px solid #ddd;
+            padding: 0 0.5em;
+            margin-right: 0.5em;
+            color: #039be5;
+            // background: #f2feef;
+            background: rgba(3, 155, 229, 0.1);
+            width: 30px;
+            text-align: end;
+        }
+    }
+}
+
+.mat-accordion-wpr {
+    position: relative;
+}
+
+.widget--script-copy-instructions {
+    padding-left: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.widget-content-copy {
+    position: absolute;
+    top: 100px;
+    color: #fafafa;
+    right: 16px;
+    cursor: pointer;
+}
+
+.widget-content-copy:hover {
+    opacity: .6;
+}
+
+.copied--to--clipboard--tooltip {
+    opacity: 0;
+    text-align: center;
+    position: absolute;
+    max-width: 360px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background: antiquewhite;
+    width: 260px;
+    top: 97px;
+    font-weight: 400;
+}
+
+.has--copied--text {
+    background-color: #3ecf8e; //#555;
+    color: white;
+    -moz-animation: fadeinout 2s linear forwards;
+    -webkit-animation: fadeinout 2s linear forwards;
+    animation: fadeinout 2s linear forwards;
+
+    // transition: opacity 5s ease-in-out;
+    opacity: 1;
+}
+
+.accordion-instructions {
+    padding-bottom: 5px;
+    font-weight: 400;
+}

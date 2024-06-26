@@ -193,7 +193,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //   }
     // }
 
-    this.logger.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
+    console.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
     if (changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length) {
       // non è cambiato nulla ho solo rodinato la tab
     } else {

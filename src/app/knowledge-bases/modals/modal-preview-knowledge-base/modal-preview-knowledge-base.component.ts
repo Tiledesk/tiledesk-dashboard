@@ -44,6 +44,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   show_answer: boolean = false;
   // error_answer: boolean = false;
   translateparam: any;
+  body: any;
 
 
   constructor(
@@ -53,7 +54,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     private openaiService: OpenaiService,
     private translate: TranslateService,
   ) {
-    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
+    console.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNaspace) {
       this.selectedNamespace = data.selectedNaspace;
       this.namespaceid = this.selectedNamespace.id;
@@ -67,6 +68,11 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
+    if (data && data.askBody) {
+      console.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
+      this.question = data.askBody.question
+      this.submitQuestion()
+    }
   }
 
   ngOnInit(): void {
@@ -79,7 +85,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   // }
 
   submitQuestion() {
-    let data = {
+    this.body = {
       "question": this.question,
       "namespace": this.namespaceid,
       "model": this.selectedModel,
@@ -93,9 +99,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     this.show_answer = false;
     this.answer = '';
     this.source_url = '';
-    // console.log("ask gpt preview response: ", data);
+    console.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
-    this.openaiService.askGpt(data).subscribe((response: any) => {
+    this.openaiService.askGpt(this.body).subscribe((response: any) => {
       
       // console.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       const endTime = performance.now();
@@ -168,15 +174,15 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   }
 
   closePreviewKBAndOpenSettingsModal() {
-    this.question = "";
-    this.answer = "";
-    this.source_url = null;
-    this.searching = false;
-    // this.error_answer = false;
-    this.show_answer = false;
-    let element = document.getElementById('enter-button')
-    element.style.display = 'none';
-    this.dialogRef.close('open-settings-modal');
+    // this.question = "";
+    // this.answer = "";
+    // this.source_url = null;
+    // this.searching = false;
+    // // this.error_answer = false;
+    // this.show_answer = false;
+    // let element = document.getElementById('enter-button')
+    // element.style.display = 'none';
+    this.dialogRef.close({action: 'open-settings-modal', data: this.body});
   }
 
 }
