@@ -647,6 +647,17 @@ export const TYPE_GPT_MODEL = {
 }
 
 
+export const CHANNELS = [
+    { id: 'chat21', name: 'Chat' },
+    { id: 'email', name: 'Email' },
+    { id: 'form', name: 'Ticket' },
+    { id: 'telegram', name: 'Telegram' },
+    { id: 'messenger', name: 'Facebook Messenger' },
+    { id: 'whatsapp', name: 'WhatsApp' },
+    { id: 'voice', name: 'Voice' }
+]
+
+
 
 
 // Links to documentation

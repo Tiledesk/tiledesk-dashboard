@@ -15,6 +15,7 @@ import { AuthService } from 'app/core/auth.service';
 
 import { map } from 'rxjs/operators';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { CHANNELS } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-convsduration',
@@ -46,6 +47,7 @@ export class ConvsDurationComponent implements OnInit {
   selectedDaysId: number;   // lastdays filter
   selectedDeptId: string;   // department filter
   selectedAgentId: string;  // agent filter
+  selectedChannelId: string;  // channel filter 
 
   subscription: Subscription;
 
@@ -57,6 +59,10 @@ export class ConvsDurationComponent implements OnInit {
   projectBotsList: any;
   bots: any;
   durationConversationTime: any;
+  conversationType = [
+    { id: '', name: 'All' },
+    ... CHANNELS
+  ];
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -77,8 +83,9 @@ export class ConvsDurationComponent implements OnInit {
     this.selectedDeptId = '';
     this.selectedDaysId = 7;
     this.selectedAgentId = '';
+    this.selectedChannelId = '';
     this.durationConvTimeCLOCK();
-    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
+    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
     this.getDepartments();
     this.getProjectUsersAndBots();
   }
@@ -156,7 +163,7 @@ export class ConvsDurationComponent implements OnInit {
     }
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.durationConversationTimeCHART(value, this.selectedDeptId, this.selectedAgentId);
+    this.durationConversationTimeCHART(value, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
     this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
   }
 
@@ -164,7 +171,7 @@ export class ConvsDurationComponent implements OnInit {
     this.logger.log('dep', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.durationConversationTimeCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    this.durationConversationTimeCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId, this.selectedChannelId)
     this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
   }
 
@@ -172,9 +179,19 @@ export class ConvsDurationComponent implements OnInit {
     this.logger.log("[ANALYTICS - DURATACONV] Selected agent: ", selectedAgentId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId, this.selectedChannelId)
     this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
   }
+
+  conversationTypeSelected(selectedChannelId){
+    this.logger.log("[ANALYTICS - CONVS]  Selected channel: ", selectedChannelId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.durationConversationTimeCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
+    this.logger.log('[ANALYTICS - DURATACONV] REQUEST:', this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
+  }
+
+
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
@@ -397,8 +414,8 @@ export class ConvsDurationComponent implements OnInit {
 
     }
 
-    durationConversationTimeCHART(lastdays, depID, participantId) {
-      this.subscription = this.analyticsService.getDurationConversationTimeDataCHART(lastdays, depID, participantId).subscribe((resp: any) => {
+    durationConversationTimeCHART(lastdays, depID, participantId, channelID) {
+      this.subscription = this.analyticsService.getDurationConversationTimeDataCHART(lastdays, depID, participantId, channelID).subscribe((resp: any) => {
 
         if (resp) {
           this.durationConversationTime = resp

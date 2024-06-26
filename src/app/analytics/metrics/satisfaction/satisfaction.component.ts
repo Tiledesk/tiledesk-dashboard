@@ -10,6 +10,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { AnalyticsService } from 'app/services/analytics.service';
+import { CHANNELS } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-satisfaction',
@@ -24,6 +25,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
   selectedDaysId: number;   // lastdays filter
   selectedDeptId: string;   // department filter
   selectedAgentId: string;  // agent filter 
+  selectedChannelId: string;  // channel filter 
 
   avgSatisfaction: any;
   selected: string;
@@ -42,6 +44,10 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
   projectUsersList: any;
   projectBotsList: any;
   bots: any;
+  conversationType = [
+    { id: '', name: 'All' },
+    ... CHANNELS
+  ];
 
   constructor(
     private translate: TranslateService,
@@ -66,6 +72,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     this.selectedDeptId = '';
     this.selected = 'day';
     this.selectedAgentId = '';
+    this.selectedChannelId = '';
 
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY');
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY');
@@ -74,7 +81,7 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     this.getDepartments();
     this.getProjectUsersAndBots();
     this.getAvgSatisfaction();
-    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
+    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
   }
 
   ngOnDestroy() {
@@ -123,22 +130,30 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     }
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.getSatisfactionByLastNDays(value, this.selectedDeptId, this.selectedAgentId);
+    this.getSatisfactionByLastNDays(value, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
   }
 
   depSelected(selectedDeptId: string) {
     this.logger.log('[ANALYTICS - SATISFACTION] Department selected: ', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.getSatisfactionByLastNDays(this.selectedDaysId, selectedDeptId, this.selectedAgentId);
+    this.getSatisfactionByLastNDays(this.selectedDaysId, selectedDeptId, this.selectedAgentId, this.selectedChannelId);
   }
 
   agentSelected(selectedAgentId) {
     this.logger.log("[ANALYTICS - SATISFACTION] Selected agent: ", selectedAgentId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, selectedAgentId, this.selectedChannelId)
     this.logger.log('[ANALYTICS - SATISFACTION] agentSelected REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+  }
+
+  conversationTypeSelected(selectedChannelId){
+    this.logger.log("[ANALYTICS - CONVS]  Selected channel: ", selectedChannelId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.getSatisfactionByLastNDays(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
+    this.logger.log('[ANALYTICS - SATISFACTION] selectedChannelId REQUEST:', this.selectedDaysId, this.selectedDeptId, this.selectedAgentId)
   }
 
   getDepartments() {
@@ -211,8 +226,8 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
     })
   }
 
-  getSatisfactionByLastNDays(lastdays, depId, participantId) {
-    this.subscription = this.analyticsService.getSatisfactionByDay(lastdays, depId, participantId).subscribe((satisfactionByDay: any) => {
+  getSatisfactionByLastNDays(lastdays, depId, participantId, channelId) {
+    this.subscription = this.analyticsService.getSatisfactionByDay(lastdays, depId, participantId, channelId).subscribe((satisfactionByDay: any) => {
       this.logger.log("[ANALYTICS - SATISFACTION] »» SATISFACTION BY DAY RESULT: ", satisfactionByDay);
 
       const requestSatisfactionByDays_series_array = [];
