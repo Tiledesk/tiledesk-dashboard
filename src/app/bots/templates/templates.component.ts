@@ -369,7 +369,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-       console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res

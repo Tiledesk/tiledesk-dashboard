@@ -297,7 +297,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     // }
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
-    console.log('fileChangeUploadChatbotFromJSON',file) 
+    this.logger.log('fileChangeUploadChatbotFromJSON',file) 
 
     const formData: FormData = new FormData();
     formData.set('id_faq_kb', this.id_faq_kb);
@@ -323,7 +323,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   importChatbotFromJSON(formData) {
-    console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON formData ',formData)
+    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON formData ',formData)
     this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
