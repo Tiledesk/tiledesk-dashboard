@@ -22,7 +22,7 @@ import { UsersService } from 'app/services/users.service';
 import { BrandService } from 'app/services/brand.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
@@ -162,6 +162,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   kbOfficialResponderTag = "kb-official-responder"
 
   private unsubscribe$: Subject<any> = new Subject<any>();
+
+  private dialogRefHookBoot: MatDialogRef<any>;
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -758,14 +760,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
               this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
-
-
+              if (!this.dialogRefHookBoot) {
+                this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+              }
             }
           });
-          if (this.depts_without_bot_array.length > 1) {
-            this.openDialogHookBot(this.depts_without_bot_array, faqkb)
-            this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
-          }
         }
       }
     }, error => {
@@ -782,14 +781,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   openDialogHookBot(deptsWithoutBotArray, faqkb) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!')
-    const dialogRef = this.dialog.open(ModalHookBotComponent, {
+    this.dialogRefHookBoot = this.dialog.open(ModalHookBotComponent, {
       width: '700px',
       data: {
         deptsWithoutBotArray: deptsWithoutBotArray,
         chatbot: faqkb
       },
     })
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialogRefHookBoot.afterClosed().subscribe(result => {
+      this.dialogRefHookBoot = null;
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
       // this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed getState:`,  dialogRef.getState());
       // dialogRef.getState()
