@@ -161,41 +161,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   depts_without_bot_array = [];
   kbOfficialResponderTag = "kb-official-responder"
 
-  depts_Without_BotArray = [ {    "id": "667943683e380b002d5aad41",     "name": "DEPT-7" },
-    {
-        "id": "6679458c3e380b002d5ab126",
-        "name": "DEPT-8"
-    },
-    {
-        "id": "6679459c3e380b002d5ab161",
-        "name": "DEPT-9"
-    }
-]
-
-chat_bot = {
-  "webhook_enabled": false,
-  "type": "tilebot",
-  "language": "en",
-  "public": false,
-  "certified": false,
-  "intentsEngine": "none",
-  "tags": [],
-  "score": 0,
-  "trained": true,
-  "certifiedTags": [],
-  "_id": "667953953e380b002d5acd3f",
-  "name": "CB29",
-  "id_project": "6672ac57d0b855002d9c1f21",
-  "trashed": false,
-  "createdBy": "6464e1d7068dcf00312ee5b5",
-  "createdAt": "2024-06-24T11:08:05.273Z",
-  "updatedAt": "2024-06-24T11:08:05.305Z",
-  "__v": 0,
-  "url": "https://tiledesk-server-pre.herokuapp.com/modules/tilebot/ext/667953953e380b002d5acd3f",
-  "attributes": null
-}
-
-
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     private auth: AuthService,
@@ -219,7 +184,7 @@ chat_bot = {
     public faqService: FaqService,
     private departmentService: DepartmentService
 
-    
+
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -248,15 +213,15 @@ chat_bot = {
     this.getProjectPlan();
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
-   
+
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
-    
+
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-    
+
   }
 
- 
+
 
   listenToOnSenSitemapEvent() {
     document.addEventListener(
@@ -646,7 +611,7 @@ chat_bot = {
         this.findKbOfficialResponderAndThenExportToJSON()
       }
 
-      
+
 
     } if (this.USER_ROLE === 'agent') {
       this.presentModalOnlyOwnerCanManageChatbot()
@@ -666,14 +631,14 @@ chat_bot = {
         });
         console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
-        if(kbOfficialResponderTemplate) {
-          this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id) 
+        if (kbOfficialResponderTemplate) {
+          this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
         }
       }
     })
   }
-    // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
-    // exportFaqToJsonBtnEl.blur();
+  // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
+  // exportFaqToJsonBtnEl.blur();
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
       console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
@@ -715,9 +680,10 @@ chat_bot = {
     });
 
     dialogRef.afterClosed().subscribe(editedChatbot => {
-      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
-
-      this.importChatbotFromJSON(editedChatbot)
+      if (editedChatbot) {
+        console.log(`[KNOWLEDGE-BASES-COMP] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
+        this.importChatbotFromJSON(editedChatbot)
+      }
     });
   }
 
@@ -798,11 +764,13 @@ chat_bot = {
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
               console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
 
-             
+
             }
           });
-          this.openDialogHookBot(this.depts_without_bot_array, faqkb)
-          this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+          if (this.depts_without_bot_array.length > 1) {
+            this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+            this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPT ARRAY OF DEPT WITHOUT BOT ', this.depts_without_bot_array);
+          }
         }
       }
     }, error => {
@@ -818,7 +786,7 @@ chat_bot = {
 
 
   openDialogHookBot(deptsWithoutBotArray, faqkb) {
-    console.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!'  )
+    console.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!')
     const dialogRef = this.dialog.open(ModalHookBotComponent, {
       width: '700px',
       data: {
@@ -1500,34 +1468,46 @@ chat_bot = {
 
 
   onLoadPage(searchParams?: any) {
-    // this.logger.log('onLoadNextPage:',searchParams);
+    console.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    this.logger.log('onLoadPage:', searchParams);
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     this.numberPage++;
-    if (this.numberPage > limitPage) this.numberPage = limitPage;
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
+    if (this.numberPage > limitPage) {
+      this.numberPage = limitPage;
+    }
     params += "&page=" + this.numberPage;
+    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
     // } else {
     //   +"&page=0";
     // }
+    console.log('onLoadNextPage searchParams > search (2):', searchParams.search);
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage status:', params);
     }
     if (searchParams?.type) {
       params += "&type=" + searchParams.type;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage type:', params);
     }
     if (searchParams?.search) {
       params += "&search=" + searchParams.search;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage search:', params);
     }
     if (searchParams?.sortField) {
       params += "&sortField=" + searchParams.sortField;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage sortField:', params);
     } else {
       params += "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage sortField (else):', params);
     }
     if (searchParams?.direction) {
       params += "&direction=" + searchParams.direction;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage direction :', params);
     } else {
       params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
+      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage direction (else):', params);
     }
     this.getListOfKb(params, 'onLoadPage');
   }
@@ -1543,8 +1523,9 @@ chat_bot = {
 
   getListOfKb(params?: any, calledby?: any) {
     //this.showSpinner = true
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    // if (calledby !== 'onLoadPage') {
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
       this.kbsList = [];
     }
@@ -1574,11 +1555,11 @@ chat_bot = {
       this.refreshKbsList = !this.refreshKbsList;
 
     }, (error) => {
-      this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
       this.showSpinner = false
       this.getKbCompleted = false
     }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+      this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
 
 
@@ -1939,7 +1920,8 @@ chat_bot = {
         this.logger.log("[KNOWLEDGE-BASES-COMP] onDeleteNamespace response: ", response)
         this.showSpinner = false;
 
-        this.onLoadByFilter(this.paramsDefault);
+        // this.onLoadByFilter(this.paramsDefault);
+
       }, (error) => {
         this.logger.error("[KNOWLEDGE-BASES-COMP] onDeleteNamespace ERROR ", error);
         this.showSpinner = false;
@@ -1965,6 +1947,10 @@ chat_bot = {
           this.getListOfKb(paramsDefault, 'deleteNamespace');
 
           this.logger.log('[KNOWLEDGE-BASES-COMP] onDeleteNamespace this.selectedNamespace', this.selectedNamespace)
+        } else {
+          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+
+          this.getListOfKb(paramsDefault, 'deleteNamespace');
         }
       })
 
