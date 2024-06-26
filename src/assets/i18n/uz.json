@@ -800,7 +800,20 @@
         "AutomaticUnavailableStatus": "Avtomatik mavjud emas holati",
         "SetAnAgentStatusToUnavailable": "Agar agentga ketma-ket chatlar qayta tayinlangan bo‘lsa, uning holatini mavjud emas qilib belgilang",
         "ItSetAnAgentStatusToUnavailable": "Bu agentning maqomini, agar ular ketma-ket chatlar soni qayta tayinlangan bo'lsa, mavjud emas qilib qo'ydi",
-        "NumberOfChatsReassignedBefore": "Agent maqomi o'zgarishidan oldin qayta tayinlangan chatlar soni"
+        "NumberOfChatsReassignedBefore": "Agent maqomi o'zgarishidan oldin qayta tayinlangan chatlar soni",
+        "Security": {
+            "Security": "Xavfsizlik",
+            "SecurityDescription": "{{ BRAND_NAME }}-ga kirishni faqat IP-manzillar oralig'idagi foydalanuvchilarga cheklashingiz mumkin. ",
+            "EnableIPRestriction": "IP cheklovlarini yoqing",
+            "ThisWillAffects": "Bu ta'sir qiladi",
+            "SignInForAllTiledeskProducts": "{{ BRAND_NAME }}ning barcha mahsulotlari uchun tizimga kiring",
+            "AllowedIpRanges": "Ruxsat etilgan IP diapazonlari",
+            "AddIpRanges": " {{ BRAND_NAME }} kirishiga muhtoj bo'lgan IP diapazonlarini qo'shing. ",
+            "Use": "Foydalanish",
+            "SyntaxWhereN": "sintaksis bu erda n - son",
+            "RangesPlaceholder": "misol: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "IP-ga asoslangan kirish cheklovlarini yoqish uchinchi tomon integratsiyalarini buzishi mumkin. {{ BRAND_NAME }} API orqali hisobingizga kirishi kerak bo'lgan barcha tashqi IP-larga ruxsat bering."
+        }
     },
     "HomePage": {
         "Widget": "Vidjetingizni sozlashni boshlash uchun!",

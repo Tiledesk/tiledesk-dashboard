@@ -102,7 +102,7 @@
 
               <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-                <a> Security </a>
+                <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
 
 
               </li>
@@ -236,7 +236,7 @@
                   <!-- --------------------------- -->
                   <!-- Delete ptoject -->
                   <!-- --------------------------- -->
-                  <div class="row">
+                  <div *ngIf="displayExtremeMeasures" class="row">
                     <div class="col-md-12">
                       <h3 class="card_title__underlined" style="margin-top: 30px;">
                         <span class="card_title__underline">
@@ -249,7 +249,7 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div *ngIf="displayExtremeMeasures" class="row">
                     <div class="col-md-12">
                       <button id="delete-project-btn" class="btn btn-danger" style="margin-top:0px"
                         (click)="openDeleteModal()">
@@ -1576,9 +1576,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="security-section-title" style="width: calc((100% / 3) + 372px); margin-bottom: 16px;">
-                        You can restrict access to Tiledesk to only those users within a range of IP addresses.
-                        For example, to restrict access to users in your company, add the IP addresses of your company.
-                        You can also allow your customers to bypass the restriction
+                        {{'ProjectEditPage.Security.SecurityDescription' | translate:tparams }}
                       </div>
 
                     </div>
@@ -1588,7 +1586,7 @@
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          Enable IP restrictions
+                          {{'ProjectEditPage.Security.EnableIPRestriction' | translate }}
                         </span>
                       </h3>
                     </div>
@@ -1613,11 +1611,11 @@
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
                       <p style="margin-top: -10px;margin-bottom: 2px;">
-                        This will affects:
+                        {{'ProjectEditPage.Security.ThisWillAffects' | translate }}
                       </p>
                       <ul>
                         <li>
-                          Sign in for all Tiledesk products
+                          {{'ProjectEditPage.Security.SignInForAllTiledeskProducts' | translate:tparams }}
                         </li>
                         <!-- <li>
                             Access to functionality within Support, Guide, Talk and Explore
@@ -1636,19 +1634,19 @@
                           font-family: 'Poppins','Roboto', 'Arial', sans-serif;
                           margin-left: 15px;
                           margin-bottom: 0px; margin-bottom: 3px;">
-                          Allowed IP ranges
+                           {{'ProjectEditPage.Security.AllowedIpRanges' | translate }}
                         </h3>
 
                         <!-- style="width: calc((100% / 3) + 372px); -->
                         <div class="security-section-title" style="margin-bottom: 16px; margin-left: 15px;">
-                          Add the IP ranges that need Tildesk access. Separate multiple IP with comma.
-                          Use <span style="font-weight: 500;"> n.n.n.n </span> or<span style="font-weight: 500;">
-                            n.n.n/n </span> syntax where n is a number
+                          {{'ProjectEditPage.Security.AddIpRanges' | translate:tparams }}
+                          {{'ProjectEditPage.Security.Use' | translate }} <span style="font-weight: 500;"> n.n.n.n </span> {{ 'Or' | translate }}<span style="font-weight: 500;">
+                            n.n.n/n </span> {{'ProjectEditPage.Security.AllowedIpRanges'  | translate }}
 
                           <!--[disabled]="!ip_restrictions_on" -->
                           <input style="margin-top: 6px;" [(ngModel)]="allowedIPs"
                             (ngModelChange)="allowedIPsChanged($event)" type="text"
-                            placeholder="example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on">
+                            placeholder="{{'ProjectEditPage.Security.RangesPlaceholder' | translate }}" [disabled]="!ip_restrictions_on">
                         </div>
                       </div>
                     </div>
@@ -1667,8 +1665,7 @@
                               style="vertical-align: middle; display: inline-flex;  color:rgb(161, 99, 0); margin-right: 3px;font-size: 20px;">report_problem
                             </i>
                             <span style="vertical-align: middle; display: inline-flex;">
-                              Enabling IP-based access restrictions can break third-party integrations. Allow all
-                              external IPs that need to access your account via Tiledesk API.
+                              {{'ProjectEditPage.Security.EnableIpBasedAccessRestrictions' | translate:tparams }}
                             </span>
                           </span>
                         </div>

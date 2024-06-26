@@ -800,7 +800,20 @@
         "AutomaticUnavailableStatus": "Avtomatik əlçatmaz status",
         "SetAnAgentStatusToUnavailable": "Ardıcıl sayda söhbətlər yenidən təyin olunduqda, agent statusunu əlçatmaz olaraq təyin edin",
         "ItSetAnAgentStatusToUnavailable": "Ardıcıl sayda söhbətlər yenidən təyin olunduqda, o, agent statusunu əlçatmaz olaraq təyin edir",
-        "NumberOfChatsReassignedBefore": "Agentin statusu dəyişdirilmədən əvvəl yenidən təyin edilmiş söhbətlərin sayı"
+        "NumberOfChatsReassignedBefore": "Agentin statusu dəyişdirilmədən əvvəl yenidən təyin edilmiş söhbətlərin sayı",
+        "Security":{
+            "Security": "Təhlükəsizlik",
+            "SecurityDescription": "Siz {{ BRAND_NAME }}-ə girişi yalnız bir sıra IP ünvanları daxilində olan istifadəçilərlə məhdudlaşdıra bilərsiniz. ",
+            "EnableIPRestriction": "IP məhdudiyyətlərini aktivləşdirin",
+            "ThisWillAffects": "Bu təsir edəcək",
+            "SignInForAllTiledeskProducts": "Bütün {{ BRAND_NAME }} məhsulları üçün daxil olun",
+            "AllowedIpRanges": "İcazə verilən IP diapazonları",
+            "AddIpRanges": " {{ BRAND_NAME }} girişinə ehtiyacı olan IP diapazonlarını əlavə edin. ",
+            "Use": "istifadə edin",
+            "SyntaxWhereN": "sintaksis burada n ədəddir",
+            "RangesPlaceholder": "misal: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
+            "EnableIpBasedAccessRestrictions": "IP-əsaslı giriş məhdudiyyətlərinin aktivləşdirilməsi üçüncü tərəf inteqrasiyasını poza bilər. {{ BRAND_NAME }} API vasitəsilə hesabınıza daxil olmaq üçün lazım olan bütün xarici IP-lərə icazə verin."
+        }
     },
     "HomePage": {
         "Widget": "Vidcetinizi konfiqurasiya etməyə başlamaq üçün!",
