@@ -2,7 +2,7 @@
 
 ### 2.6.39
 - Deploys in production
-- Add the ability to create a chatbot connected to a Knowledge base on the Manage your Knowledge bases page
+- Adds the ability to create a chatbot connected to a Knowledge base on the Manage your Knowledge bases page
 - Adds the ability to filter charts by channel on the Analytics page
 - Adds the ability on the History page and on the Non-Real Time Conversations page to filter conversations by channel
 
