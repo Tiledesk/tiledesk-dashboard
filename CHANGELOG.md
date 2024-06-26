@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.39-rc2
+- Improvements and bug fixing
+
 ### 2.6.39-rc1
 - Add the ability to create a chatbot connected to a Knowledge base on the Manage your Knowledge bases page
 
