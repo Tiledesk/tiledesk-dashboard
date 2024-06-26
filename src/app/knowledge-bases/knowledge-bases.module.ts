@@ -32,9 +32,9 @@ import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-uploa
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ModalKbListComponent } from './modals/modal-kb-list/modal-kb-list.component';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -60,9 +60,8 @@ const routes: Routes = [
     ModalAddNamespaceComponent,
     ModalUploadFileComponent,
     ModalChatbotNameComponent,
-    ModalKbListComponent,
     ModalHookBotComponent,
-   
+    ModalNsLimitReachedComponent
   ],
   imports: [
     RouterModule.forChild(routes),

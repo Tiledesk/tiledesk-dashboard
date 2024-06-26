@@ -33,11 +33,11 @@ import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-b
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
-import { ModalKbListComponent } from './modals/modal-kb-list/modal-kb-list.component';
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
 import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
+import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -315,7 +315,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
       // const nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
+      //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl > nameSpaceId ', this.nameSpaceId)
 
       if (this.nameSpaceId === '0') {
         this.selectedNamespace = namespaces.find((el) => {
@@ -402,7 +402,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.getListOfKb(paramsDefault, 'createNewNamespace');
       }
     }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ', error);
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ERROR', error);
+      this.logger.log("[KNOWLEDGE-BASES-COMP] error.error.error", error.error.error)
+      this.logger.log("[KNOWLEDGE-BASES-COMP] error.error.plan_limit", error.error.plan_limit)
+      this.logger.log("[KNOWLEDGE-BASES-COMP] prjct_profile_name ", this.prjct_profile_name)
+      this.logger.log("[KNOWLEDGE-BASES-COMP] projectProfileData ", this.projectProfileData)
+      this.logger.log("[KNOWLEDGE-BASES-COMP] projectProfileData type ", this.projectProfileData.profile_type)
+      
+      if(error.error.error === "Maximum number of resources reached for the current plan") {
+        this.presentDialogNsLimitReached(this.prjct_profile_name,  error.error.plan_limit, this.projectProfileData.profile_type )
+      }
+      
+      
 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
@@ -410,6 +421,29 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant("KbPage.NewNamespaceCreatedSuccessfully", { namespace_name: this.selectedNamespace.name }), 2, 'done');
     });
   }
+
+
+  presentDialogNsLimitReached(planName, planLimit, planType) {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName , ' planLimit ', planLimit, ' planType ', planType)
+    const dialogRef = this.dialog.open(ModalNsLimitReachedComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '400px',
+      data: {
+        planName: planName,
+        planLimit: planLimit,
+        planType: planType,
+        id_project: this.id_project
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG NS LIMIT REACHED (AFTER CLOSED):`, res);
+     
+    });
+  }
+
+  
 
   onChangeNamespaceName(event) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] ON CHANGE NAMESPACE NAME  event ', event)
@@ -889,24 +923,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // @ Modals Windows
   // ------------------------------------------------------------------------
 
-  openDialogKbList() {
-    const dialogRef = this.dialog.open(ModalKbListComponent, {
-      // width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG KB LIST after closed result:`, result);
-
-      // if (result && result.namespaceName) {
-
-      //   const namespaceName = result.namespaceName
-
-      //   this.createNewNamespace(namespaceName)
-      // }
-    });
-  }
+  
 
 
   presentModalAddNewNamespace() {
@@ -1953,7 +1970,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   /** */
   onUpdateKb(kb) {
-    // console.log('onUpdateKb: ', kb);
+    //  this.logger.log('onUpdateKb: ', kb);
     // this.onCloseBaseModal();
     let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
@@ -1975,7 +1992,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     if (kb.type === 'txt' || kb.type === 'docx' || kb.type === 'pdf') {
       dataAdd.type = kb.type
     }
-    // console.log('dataAdd: ', dataAdd);
+    //  this.logger.log('dataAdd: ', dataAdd);
     kb.deleting = true;
     this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
       kb.deleting = false;
@@ -1996,7 +2013,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       } else {
         this.kbService.addKb(dataAdd).subscribe((resp: any) => {
           let kbNew = resp.value;
-          // console.log(' onUpdateKb ') 
+          //  this.logger.log(' onUpdateKb ') 
           if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
             const index = this.kbsList.findIndex(item => item._id === kbNew._id);
             if (index !== -1) {
