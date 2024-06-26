@@ -30,23 +30,23 @@ export class ModalHookBotComponent implements OnInit {
     private auth: AuthService,
     private ngZone: NgZone
   ) { 
-    console.log('MODAL-HOOK-BOT data ', data) 
+    // console.log('MODAL-HOOK-BOT data ', data) 
 
     if (data && data.deptsWithoutBotArray)  {
       this.depts_without_bot_array = data.deptsWithoutBotArray
-      console.log('[MODAL-HOOK-BOT] data > depts_without_bot_array',  this.depts_without_bot_array) 
+      // console.log('[MODAL-HOOK-BOT] data > depts_without_bot_array',  this.depts_without_bot_array) 
     } 
     if (data && data.chatbot)  {
       this.chatbot = data.chatbot
-      console.log('[MODAL-HOOK-BOT] data > chatbot',  this.chatbot) 
+      // console.log('[MODAL-HOOK-BOT] data > chatbot',  this.chatbot) 
 
       this.chatbotName = this.chatbot.name
-      console.log('[MODAL-HOOK-BOT] data > chatbotName',  this.chatbotName) 
+      // console.log('[MODAL-HOOK-BOT] data > chatbotName',  this.chatbotName) 
     } 
   }
 
   onSelectDeptId() {
-    console.log('[MODAL-HOOK-BOT] onSelectDeptId > selectedDeptId',  this.selectedDeptId) 
+    // console.log('[MODAL-HOOK-BOT] onSelectDeptId > selectedDeptId',  this.selectedDeptId) 
   }
 
   ngOnInit(): void {

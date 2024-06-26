@@ -101,7 +101,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.isLoading = true;
     this.numberPage++;
     this.searchParams.page = this.numberPage;//Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
-    console.log('[KB TABLE] emit loadPage searchParams', this.searchParams) 
+    // console.log('[KB TABLE] emit loadPage searchParams', this.searchParams) 
     this.loadPage.emit(this.searchParams);
   }
 
@@ -185,7 +185,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //   }
     // }
 
-    console.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
+    // console.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
     if (changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length) {
       // non è cambiato nulla ho solo rodinato la tab
     } else {
@@ -245,7 +245,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.searchParams.direction = this.directionDesc;
     this.isLoading = true;
     this.loadByFilter.next(this.searchParams);
-    console.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
+    // console.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
   }
 
   onLoadByFilter(filterValue: string, column: string) {
@@ -274,7 +274,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.timeoutId = setTimeout(() => {
       this.isLoading = true;
       this.loadByFilter.next(this.searchParams);
-      console.log('[KB TABLE] onOrderBy onLoadByFilter searchParams ', this.searchParams)
+      // console.log('[KB TABLE] onOrderBy onLoadByFilter searchParams ', this.searchParams)
     }, 1000);
   }
 

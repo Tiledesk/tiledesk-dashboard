@@ -13,7 +13,7 @@ export class ModalChatbotNameComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalChatbotNameComponent>,
   ) {
-    console.log('[MODAL-CHATBOT-NAME] data ', data)
+    // console.log('[MODAL-CHATBOT-NAME] data ', data)
     if (data && data.chatbot) {
       this.chatbot = data.chatbot
     }
@@ -28,7 +28,7 @@ export class ModalChatbotNameComponent implements OnInit {
   }
 
   onOkPresssed(chatbot){
-    console.log('[MODAL-CHATBOT-NAME] chatbot ', this.chatbot)
+    // console.log('[MODAL-CHATBOT-NAME] chatbot ', this.chatbot)
     this.dialogRef.close(this.chatbot);
   }
 

@@ -54,7 +54,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     private openaiService: OpenaiService,
     private translate: TranslateService,
   ) {
-    console.log('[MODAL-PREVIEW-KB] data ', data)
+    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNaspace) {
       this.selectedNamespace = data.selectedNaspace;
       this.namespaceid = this.selectedNamespace.id;
@@ -69,7 +69,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
     if (data && data.askBody) {
-      console.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
+      this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
       this.question = data.askBody.question
       this.submitQuestion()
     }
@@ -99,16 +99,16 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     this.show_answer = false;
     this.answer = '';
     this.source_url = '';
-    console.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
+    this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     this.openaiService.askGpt(this.body).subscribe((response: any) => {
       
-      // console.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
+      // this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       const endTime = performance.now();
       this.responseTime = Math.round((endTime - startTime) / 1000);
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
-      // console.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
+      // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
         this.answer = response.answer;
       }
@@ -125,9 +125,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       this.show_answer = true;
       this.searching = false;
     }, (err) => {
-      // console.log("ask gpt preview response error: ", err);
-      // console.log("ask gpt preview response error message: ", error.message);
-      // console.log("ask gpt preview response error error: ", error.error);
+      // this.logger.log("ask gpt preview response error: ", err);
+      // this.logger.log("ask gpt preview response error message: ", error.message);
+      // this.logger.log("ask gpt preview response error error: ", error.error);
       if (err && err.error && err.error.error_code === 13001) {
         this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
       } else {

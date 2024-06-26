@@ -293,16 +293,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       const currentUrl = this.router.url;
 
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
+      // this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
       let currentUrlSegment = currentUrl.split('/');
 
-      // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
+      // this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
       currentUrlSegment.forEach(segment => {
         if (segment === 'knowledge-bases') {
           this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
-          // console.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
+          // this.logger.log('[KNOWLEDGE-BASES-COMP] this.nameSpaceId' , this.nameSpaceId)
           let nameSpaceIdisAlphaNumeric = this.isAlphaNumeric(this.nameSpaceId)
-          // console.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
+          // this.logger.log('[KNOWLEDGE-BASES-COMP] nameSpaceIdisAlphaNumeric' , nameSpaceIdisAlphaNumeric)
           if (nameSpaceIdisAlphaNumeric === false) {
             this.nameSpaceId = '0'
           }
@@ -417,7 +417,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   updateNamespace(body, calledBy, previedata?: any) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE calledBy ', calledBy);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
-    console.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
     this.kbService.upadateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
@@ -571,7 +571,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
 
-      console.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
       // let isArray = this.isArray(chatbots)
       // if (isArray) {
       if (chatbots.length > 0) {
@@ -629,7 +629,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             return officialResponder
           }
         });
-        console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
@@ -641,24 +641,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // exportFaqToJsonBtnEl.blur();
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
-      console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
-      console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
       chatbot.intents.forEach((intent, index) => {
-        console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
         const askGPT_Action = intent.actions.find(o => o._tdActionType === "askgptv2")
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.selectedNamespace.id
-          console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
           this.presentDialogChatbotname(chatbot)
         }
       });
-      // if (intents) {
-      //   // downloadObjectAsJson(faq, faq.name);
-      //   intents.forEach(intent => {
-      //     console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - intent', intent)
-      //   });
-      // }
+      
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
     }, () => {
@@ -681,16 +676,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     dialogRef.afterClosed().subscribe(editedChatbot => {
       if (editedChatbot) {
-        console.log(`[KNOWLEDGE-BASES-COMP] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
+        this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
         this.importChatbotFromJSON(editedChatbot)
       }
     });
   }
 
   importChatbotFromJSON(editedChatbot) {
-    console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
+    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
@@ -711,29 +706,29 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   getDeptsByProjectId(faqkb?: string) {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS RES ', departments);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS RES ', departments);
 
       if (departments) {
         const depts_length = departments.length
-        console.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT ', depts_length);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT ', depts_length);
 
         if (depts_length === 1) {
           // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
           this.dept_id = departments[0]['_id']
 
-          console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
-          console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
           if (departments[0].hasBot === true) {
 
-            console.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT ');
+            this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT ');
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
             // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
 
             // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
             // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           } else {
-            console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
-            console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
             this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept')
 
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
@@ -744,17 +739,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
         } else if (depts_length > 1) {
-          console.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
 
           // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
           departments.forEach(dept => {
 
             if (dept.hasBot === true) {
-              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT HAS BOT ');
+              this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT HAS BOT ');
 
               // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
             } else {
-              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
+              this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
               // this.logger.log('[BOT-CREATE] --->  DEPT botType selected ', this.botType);
               // if (this.botType !== 'identity') {
               //   this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
@@ -762,7 +757,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
               // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
-              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+              this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
 
 
             }
@@ -786,7 +781,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   openDialogHookBot(deptsWithoutBotArray, faqkb) {
-    console.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!')
+    this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG HOOK BOT !!!!')
     const dialogRef = this.dialog.open(ModalHookBotComponent, {
       width: '700px',
       data: {
@@ -795,8 +790,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
-      // console.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed getState:`,  dialogRef.getState());
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed result:`, result);
+      // this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed getState:`,  dialogRef.getState());
       // dialogRef.getState()
       if (result && result.deptId && result.botId) {
         this.hookBotToDept(result.deptId, result.botId)
@@ -806,10 +801,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
-    console.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
-    console.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
     this.departmentService.updateExistingDeptWithSelectedBot(deptId, botId).subscribe((res) => {
-      console.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
 
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
@@ -947,7 +942,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result) {
         if (result.action === 'open-settings-modal' && result.data) {
           this.onOpenBaseModalPreviewSettings(result.data)
@@ -1468,46 +1463,40 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   onLoadPage(searchParams?: any) {
-    console.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP]onLoadNextPage searchParams:', searchParams);
     let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + '&namespace=' + this.selectedNamespace.id
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage init params:', params);
     let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
     this.numberPage++;
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadNextPage searchParams > search:', searchParams.search);
     if (this.numberPage > limitPage) {
       this.numberPage = limitPage;
     }
     params += "&page=" + this.numberPage;
-    console.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
     // } else {
     //   +"&page=0";
     // }
-    console.log('onLoadNextPage searchParams > search (2):', searchParams.search);
+    this.logger.log('onLoadNextPage searchParams > search (2):', searchParams.search);
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage status:', params);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage status:', params);
     }
     if (searchParams?.type) {
       params += "&type=" + searchParams.type;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage type:', params);
     }
     if (searchParams?.search) {
       params += "&search=" + searchParams.search;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage search:', params);
     }
     if (searchParams?.sortField) {
       params += "&sortField=" + searchParams.sortField;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage sortField:', params);
     } else {
       params += "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage sortField (else):', params);
     }
     if (searchParams?.direction) {
       params += "&direction=" + searchParams.direction;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage direction :', params);
     } else {
       params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-      console.log('[KNOWLEDGE-BASES-COMP] onLoadPage direction (else):', params);
     }
     this.getListOfKb(params, 'onLoadPage');
   }
@@ -1523,8 +1512,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getListOfKb(params?: any, calledby?: any) {
     //this.showSpinner = true
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
       this.kbsList = [];
