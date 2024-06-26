@@ -2551,6 +2551,7 @@
     "NumberOfTeammatesExceedsThePlan": "عدد أعضاء الفريق المسموح به هو {{free_plan_allowed_seats_num}}. تحديث الخطة أو إزالة أعضاء الفريق يدويًا الذين يتجاوزون الحد (سيقوم النظام بذلك تلقائيًا في غضون شهر)",
     "NumberOfTeammatesExceedsThePlan_2": "عدد أعضاء الفريق المسموح به للخطة {{plan_name}} هو {{allowed_seats_num}}. قم بتحديث الخطة أو إزالة الزملاء الزائدين يدويًا (سيقوم النظام بذلك تلقائيًا في غضون شهر)",
     "NumberOfChatbotExceedsThePlan": "The number of chatbots allowed for the {{plan_name}} is {{allowed_cb_num}}. Upgrade plan or manually remove excess chatbot (the system will do this automatically within a month)",
+    "NumberOfKBExceedsThePlan": "The number of Knowledge Bases allowed for the {{plan_name}} is {{allowed_ns_num}}",
     "NumberOfChatbotCreated": "created of {{allowed_cb_num}} available for {{plan_name}}",
     "OnlyWithPlan": "فقط {{plan_name}} خطة",
     "CreateNewContactProperty": "قم بإنشاء خاصية جهة اتصال جديدة",
