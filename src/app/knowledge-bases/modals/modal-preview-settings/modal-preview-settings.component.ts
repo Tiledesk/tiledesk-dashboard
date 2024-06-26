@@ -63,12 +63,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       this.topK = this.selectedNamespace.preview_settings.top_k
       // console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
-
-      if (this.selectedNamespace.preview_settings.context !== "You are an awesome AI Assistant.")  {
-        this.context = this.selectedNamespace.preview_settings.context
-      } else {
-        this.context_placeholder = this.selectedNamespace.preview_settings.context
-      }
+      this.context = this.selectedNamespace.preview_settings.context
+      // if (this.selectedNamespace.preview_settings.context !== "You are an awesome AI Assistant.")  {
+      //   this.context = this.selectedNamespace.preview_settings.context
+      // } else {
+      //   this.context_placeholder = this.selectedNamespace.preview_settings.context
+      // }
       
 
     }

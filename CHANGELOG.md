@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.39
+- Deploys in production
+- Add the ability to create a chatbot connected to a Knowledge base on the Manage your Knowledge bases page
+
 ### 2.6.38
 - Deploys in production
 - Adds the ability to create multiple Knowledge base on the "Manage your contents" page

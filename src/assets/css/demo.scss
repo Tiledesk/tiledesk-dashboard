@@ -2780,6 +2780,12 @@ li.active-item a i.settings-sidebar-icons {
   background: var(--settings-sidebar-toggle-icon-hover-background-color);
 }
 
+
+
+
+mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
+  padding: 0 !important;
+}
 /*
  * Sweet Alert 2 
 /* ********************************** */

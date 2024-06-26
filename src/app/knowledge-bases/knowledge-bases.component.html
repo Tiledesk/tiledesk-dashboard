@@ -31,7 +31,7 @@
 
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-     Manage your Contents
+     Manage your Knowledge Bases
   </div>
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
@@ -46,7 +46,8 @@
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
         [myChatbotOtherCount]="myChatbotOtherCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
-        [increaseSalesBotsCount]="increaseSalesBotsCount">
+        [increaseSalesBotsCount]="increaseSalesBotsCount"
+        [kbCount]="kbCount">
       </appdashboard-bots-sidebar>
 
 
@@ -82,12 +83,16 @@
                     (blur)="onBlurUpdateNamespaceName($event)">
                 </div>
 
-
+                <!-- <button mat-icon-button (click)="openDialogKbList()">
+                  <mat-icon>view_list</mat-icon>
+                </button> -->
 
                 <!-- ----------- MAT-MENU ----------- -->
                 <button mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList">
                   <mat-icon>unfold_more</mat-icon>
                 </button>
+
+              
 
                 <mat-menu #namespaceList="matMenu">
                   <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item
@@ -151,8 +156,10 @@
               </div>
             </div>
 
-
-            <!-- <div class="chatbot-using-current-namespace-wpr">
+            <!-- --------------------------------------- -->
+            <!-- Chatbots that used current KB -->
+            <!-- --------------------------------------- -->
+            <div class="chatbot-using-current-namespace-wpr">
               <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0" class="chatbot-using-current-namespace">
                 {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:
               </div>
@@ -167,19 +174,27 @@
                   
                   {{chatbot.name }} 
                 </div> 
-              </div> -->
+              </div>
 
-              <!-- <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
-                This namespace is not used by any chatbot
+              <!-- --------------------------------------- -->
+              <!-- Create a Chatbot that use current KB -->
+              <!-- --------------------------------------- -->
+              <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
+                <!-- This namespace is not used by any chatbot -->
+                {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
+                
               </div>
               <div *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
 
                 <button class="custom-button xs" (click)="createChatbotfromKbOfficialResponderTemplate()">
-                  <span> Create chatbot  </span> 
+                  <span> 
+                    <!-- Create chatbot  -->
+                    {{ 'CreateChatbot' | translate }}
+                  </span> 
                 </button>
-              </div> -->
+              </div>
 
-            <!-- </div> -->
+            </div>
 
             <!-- START TABLE -->
             <knowledge-base-table 
