@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.40
+- Deploys in production
+- Displays a dialog box that allows to update the plan when the knowledge bases limit is reached
+
 ### 2.6.39
 - Deploys in production
 - Adds the ability to create a chatbot connected to a Knowledge base on the Manage your Knowledge bases page
