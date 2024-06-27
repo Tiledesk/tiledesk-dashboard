@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.41
+- Deploys in production
+- Displays information about the Voice channel
+
 ### 2.6.40
 - Deploys in production
 - Displays a dialog box that allows to update the plan when the knowledge bases limit is reached
