@@ -138,7 +138,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
 
 
-    if (changes.current_selected_prjct || changes.ws_requests_length && changes.ws_requests_length.previousValue === 0 || changes.ws_requests_length.previousValue === undefined) {
+    if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
       this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)

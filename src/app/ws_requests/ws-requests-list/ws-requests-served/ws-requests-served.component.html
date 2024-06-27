@@ -86,7 +86,7 @@
 
 
           <!-- ----------------------------------------------- -->
-          <!-- PRIORITY & CHANNNE -->
+          <!-- PRIORITY & CHANNNEL -->
           <!-- ----------------------------------------------- -->
           <th> </th>
 
@@ -298,6 +298,7 @@
                   <span *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
                   <span *ngIf="request?.channel?.name === 'email'"> Email </span>
                   <span *ngIf="request?.channel?.name === 'form'"> Form </span>
+                  <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'"> Voice </span>
 
                 </span>
               </div>
@@ -500,6 +501,21 @@
                 </span>
 
                 <!-- ---------------------------------------- -->
+                <!-- Channel - Voice -->
+                <!-- ---------------------------------------- -->
+                <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'" class="tool_tip">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">Voice </span>
+                    <i></i>
+                  </span>
+                </span>
+
+                <!-- ---------------------------------------- -->
                 <!-- Channel - WhatsApp -->
                 <!-- ---------------------------------------- -->
                 <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
@@ -589,7 +605,7 @@
               </span>
               <!-- [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname , 'verified-icon-requester-internal-ticket': request?.subject}" -->
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                <svg class="requester-verified-icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                <svg class="requester-verified-icon" [ngClass]="{'requester-verified-icon-voice-channel': request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'}" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                   height="17" xml:space="preserve">
                   <style type="text/css">
