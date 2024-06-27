@@ -15,6 +15,7 @@ export enum INTEGRATIONS_KEYS {
     SALESFORCE = 'salesforce',
     TELEGRAM = 'telegram',
     TWILIO = 'twilio',
+    VOICE = 'voice',
     WHATSAPP = 'whatsapp',
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',
@@ -24,7 +25,8 @@ export enum INTEGRATIONS_KEYS {
 export enum APPS_TITLE {
     WHATSAPP = "WhatsApp Business",
     MESSENGER = "Facebook Messenger",
-    TELEGRAM = "Telegram"
+    TELEGRAM = "Telegram",
+    VOICE = "Voice Channel"
 }
 
 export enum INTEGRATIONS_CATEGORIES {
@@ -97,8 +99,9 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Messenger",        category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.MESSENGER,       src_icon: "assets/img/int/messenger-icon.png",              src_logo: "assets/img/int/messenger-logo.jpeg",         pro: true,  plan: 'Premium' },
     //{ name: "Pipedrive",        category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.PIPEDRIVE,       src_icon: "assets/img/int/pipedrive-icon.png",            src_logo: "assets/img/int/pipedrive-logo.png",          pro: true,  plan: 'Premium' },
     //{ name: "Salesforce",       category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.SALESFORCE,      src_icon: "assets/img/int/salesforce-icon.png",           src_logo: "assets/img/int/salesforce-logo.png",         pro: true,  plan: 'Premium' },
-    { name: "Telegram",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TELEGRAM,        src_icon: "assets/img/int/telegram-icon.png",               src_logo: "assets/img/int/telegram-logo.png",           pro: false,  plan: 'Sandbox' },
-    { name: "WhatsApp",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,        src_icon: "assets/img/int/whatsapp-icon.png",               src_logo: "assets/img/int/whatsapp-logo.png",           pro: true,  plan: 'Premium' },
+    { name: "Telegram",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TELEGRAM,        src_icon: "assets/img/int/telegram-icon.png",               src_logo: "assets/img/int/telegram-logo.png",           pro: false, plan: 'Sandbox' },
+    { name: "Voice Channel",    category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.VOICE,           src_icon: "assets/img/int/vxml-icon.png",                   src_logo: "assets/img/int/vxml-icon.png",               pro: true,  plan: 'Premium' },
+    { name: "WhatsApp",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,        src_icon: "assets/img/int/whatsapp-icon.png",               src_logo: "assets/img/int/whatsapp-logo.png",           pro: true,  plan: 'Custom' },
     //{ name: "Zapier",           category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",               src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
     //{ name: "Zendesk",          category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,         src_icon: "assets/img/int/zendesk-icon.png",              src_logo: "assets/img/int/zendesk-logo.png",            pro: true,  plan: 'Premium' },
     //{ name: "Zoho",             category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.ZOHO,            src_icon: "assets/img/int/zoho-icon.png",                 src_logo: "assets/img/int/zoho-logo.png",               pro: true,  plan: 'Premium' }

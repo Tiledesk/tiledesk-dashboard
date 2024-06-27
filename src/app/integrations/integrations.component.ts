@@ -275,6 +275,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
         this.availableApps.push(telegramApp);
 
+        let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VOICE && a.version === "v2"));
+        if (environment['voiceConfigUrl']) {
+          if (voiceApp) {
+            voiceApp.runURL = environment['voiceConfigUrl'];
+            voiceApp.channel = "voice";
+          } else {
+            voiceApp = {
+              voiceApp: environment['voiceConfigUrl'],
+              channel: "voice"
+            }
+          }
+        }
+        else {
+          if (voiceApp) {
+            voiceApp.channel = "voice";
+          }
+        }
+        this.availableApps.push(voiceApp);
+
         resolve(true);
 
       }, (error) => {
@@ -655,6 +674,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
+      if (!projectProfileData.customization[this.INT_KEYS.VOICE] || projectProfileData.customization[this.INT_KEYS.VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
         let idx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.CHANNEL);
@@ -663,6 +687,13 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
       }
     }
+
+    if (projectProfileData && !projectProfileData.customization) {
+      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VOICE);
+      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+    }
+
+
     this.integrationListReady = true;
   }
 
