@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.6.41
+### 2.6.41-rc1
 - Deploys in production
 - Displays information about the Voice channel
 
