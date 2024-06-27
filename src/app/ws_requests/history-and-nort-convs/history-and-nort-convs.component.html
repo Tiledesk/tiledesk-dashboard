@@ -1170,6 +1170,7 @@
                         <span *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
                         <span *ngIf="request?.channel?.name === 'email'"> Email </span>
                         <span *ngIf="request?.channel?.name === 'form'"> Form </span>
+                        <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'"> Voice </span>
 
                       </span>
                     </div>
@@ -1350,6 +1351,22 @@
                             {{'MessageChannel' | translate}}:
                           </span>
                           <span style="font-weight: 400;">Telegram </span>
+                          <i></i>
+                        </span>
+                      </span>
+
+                      <!-- ---------------------------------------- -->
+                      <!-- Channel - Voice -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'" class="tool_tip">
+
+                        <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">Voice </span>
                           <i></i>
                         </span>
                       </span>
