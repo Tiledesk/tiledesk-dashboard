@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.42
+- Deploys in production
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
 ### 2.6.41
 - Deploys in production
 - Displays information about the Voice channel
