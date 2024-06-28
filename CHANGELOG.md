@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.6.42-rc1
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
 ### 2.6.41-rc2
-- Added Voice Channel integration
+- Adds the Voice Channel integration 
 
 ### 2.6.41-rc1
 - Deploys in production
