@@ -124,9 +124,9 @@
     }
 }
 
-.form-container {
-    margin-top: 12px;
-    margin-bottom: 12px;
+.kb-details-form-container {
+    // margin-top: 12px;
+    // margin-bottom: 12px;
     display: inline-block;
     width: 100%;
 
@@ -252,4 +252,30 @@
 .mat-dialog-ok-btn {
     background-color: var(--blue-light);
     color: #fff;
+}
+
+.chunk-id {
+    font-size: 10px;
+    font-weight: 400;
+    font-family: monospace;
+    color: #787f86;
+}
+
+.chunk-title-and-count {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-weight: 400;
+}
+
+.chunk {
+    border: 1px solid #ccc;;
+    cursor: not-allowed;
+    color: #787f86;
+    padding: 8px 15px 6px;
+    border-radius: 4px;
+}
+
+.chunk:hover {
+    color: #2b3239;
 }

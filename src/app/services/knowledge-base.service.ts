@@ -13,7 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class KnowledgeBaseService {
   public newKb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
-  
+
   SERVER_BASE_PATH: string;
   TOKEN: string;
   user: any;
@@ -24,7 +24,7 @@ export class KnowledgeBaseService {
     private auth: AuthService,
     private httpClient: HttpClient,
     private logger: LoggerService
-  ) { 
+  ) {
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
       this.checkIfUserExistAndGetToken()
@@ -65,7 +65,7 @@ export class KnowledgeBaseService {
   // ********** INITIALIZING SERVICE **********
   // ***************** END ********************
 
-  
+
   areNewwKb(areNewKb: boolean) {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - areNew ", areNewKb);
     this.newKb.next(areNewKb)
@@ -91,23 +91,23 @@ export class KnowledgeBaseService {
         'Authorization': this.TOKEN
       })
     }
-    let body  = {name: namespacename}
+    let body = { name: namespacename }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/"
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add NAMESPACES URL ", url);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
-  upadateNamespace(body: string, namespaceid:string) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': this.TOKEN
-        })
-      }
-      // let body = {name: namespacename}
-      const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespaceid;
-      this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
-      return this.httpClient.put(url, body, httpOptions);
+  upadateNamespace(body: string, namespaceid: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    // let body = {name: namespacename}
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespaceid;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
+    return this.httpClient.put(url, body, httpOptions);
   }
 
   getListOfKb(params?) {
@@ -133,7 +133,7 @@ export class KnowledgeBaseService {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
-  
+
   addSitemap(body: any) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -143,11 +143,11 @@ export class KnowledgeBaseService {
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
   addKb(body: any) {
-    this.logger.log('addKb body ', body )
+    this.logger.log('addKb body ', body)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export class KnowledgeBaseService {
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL (/KB) ", url);
-    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
   addMultiKb(body: any, namespaceid: string) {
@@ -168,7 +168,7 @@ export class KnowledgeBaseService {
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/multi?namespace=" + namespaceid;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL (/MULTI) ", url);
-    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
   getChatbotsUsingNamespace(namespace_id) {
@@ -179,31 +179,44 @@ export class KnowledgeBaseService {
       })
     }
     // /kb/namespace/{namespace_id}/chatbots
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id +"/chatbots";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id + "/chatbots";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get Chatbot using namespace ", url);
     return this.httpClient.get(url, httpOptions);
   }
 
-  deleteKb(data: any){
+  getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
-      }), 
+      })
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/"+data.id;
+    
+    const url = this.SERVER_BASE_PATH + id_project + "/kb/namespace/" + namespaceid + "/chunks/" + contentid;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - get content chunks URL ", url);
+    return this.httpClient.get(url, httpOptions);
+  }
+
+  deleteKb(data: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + data.id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
     return this.httpClient.delete(url, httpOptions);
   }
 
-  
-  deleteNamespace(namespace_id: string , removeAlsoNamespace) {
-    this.logger.log('[KNOWLEDGE BASE SERVICE] deleteNamespace removeAlsoNamespace ', removeAlsoNamespace )
-    this.logger.log('[KNOWLEDGE BASE SERVICE] deleteNamespace namespace_id ', namespace_id )
-   let queryString = ''
-   if (!removeAlsoNamespace) {
-    queryString =  "?contents_only=true"
-   }
+
+  deleteNamespace(namespace_id: string, removeAlsoNamespace) {
+    this.logger.log('[KNOWLEDGE BASE SERVICE] deleteNamespace removeAlsoNamespace ', removeAlsoNamespace)
+    this.logger.log('[KNOWLEDGE BASE SERVICE] deleteNamespace namespace_id ', namespace_id)
+    let queryString = ''
+    if (!removeAlsoNamespace) {
+      queryString = "?contents_only=true"
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -242,20 +255,20 @@ export class KnowledgeBaseService {
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
     //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
-  deleteKbPrev(settings_id: string, id: any){
+  deleteKbPrev(settings_id: string, id: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
-      }), 
+      }),
       //body: JSON.stringify(data)
     }
     // https://api.tiledesk.com/v3/649007cf2b0ceb0013adb39a/kbsettings/6581af98e677a60013cdccbe/65c4abc25fc7b7001300069a
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/"+settings_id+"/"+id;
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id + "/" + id;
     // const url = this.SERVER_BASE_PATH + this.project_id + "/kb/"+data.id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
     return this.httpClient.delete(url, httpOptions);
@@ -276,7 +289,7 @@ export class KnowledgeBaseService {
 
   // DEPRECATED FUNCTIONS - END
 
-  
+
   // COMMENTED FUNCTIONS - START
 
   // getKbSettings() {

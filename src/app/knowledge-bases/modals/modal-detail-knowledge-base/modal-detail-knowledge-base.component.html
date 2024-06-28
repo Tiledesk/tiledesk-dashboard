@@ -3,7 +3,7 @@
 <div mat-dialog-content>
 
 
-    <div class="form-container">
+    <div class="kb-details-form-container">
 
         <div class="input-container">
             <span class="input-label">{{ 'Name' | translate }}</span>
@@ -20,7 +20,7 @@
                     </span>
                 </a>
                 <input [(ngModel)]="source" type="url" name="url" class="custom-input">
-                
+
             </div>
             <!-- ------------------------------------ -->
             <!-- Use cese text -->
@@ -30,8 +30,30 @@
                 <textarea [(ngModel)]="content" type="text" name="content" class="custom-textarea" rows="4"></textarea>
             </div>
 
+            <!-- style="max-height: calc(100vh - 223.5px); overflow-y: scroll;" -->
         </div>
 
+    </div>
+    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+    <div *ngIf="!showSpinner" class="content-chunks-wpr">
+        <div class="chunk-title-and-count">
+            <div class="chunk-title">
+                Chunks
+            </div>
+            <div class="chunk-count">
+                {{chunksCount}}
+            </div>
+        </div>
+        <div class="content-chunks" style="display: flex;     flex-wrap: nowrap;    flex-direction: column; gap: 12px">
+            
+            <div class="chunk-wpr" *ngFor="let chunk of chunks">
+                <div class="chunk-id"> chunk-id: {{chunk.id}} </div>
+                <article class="chunk" >
+                    {{ chunk.text}}
+                </article>
+            </div>
+
+        </div>
     </div>
 
 
@@ -41,22 +63,19 @@
     <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
         {{ "Cancel" | translate }}
     </button>
-   
-    <button *ngIf="kb.type === 'text'" class="mat-dialog-ok-btn" 
-        [disabled]="name.length < 3 || content.length === 0" 
+
+    <button *ngIf="kb.type === 'text'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
 
-    <button *ngIf="kb.type === 'url'" class="mat-dialog-ok-btn" 
-        [disabled]="name.length < 3 || source.length === 0" 
+    <button *ngIf="kb.type === 'url'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || source.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
 
-    <button *ngIf="kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx'" class="mat-dialog-ok-btn" 
-        [disabled]="name.length < 3" 
-        mat-button (click)="onUpdateKnowledgeBase()">
+    <button *ngIf="kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx'" class="mat-dialog-ok-btn"
+        [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
 </div>

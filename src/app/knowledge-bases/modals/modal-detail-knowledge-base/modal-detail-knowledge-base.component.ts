@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, Inject } from '@angular/core';
 import { KB } from 'app/models/kbsettings-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 @Component({
   selector: 'modal-detail-knowledge-base',
@@ -16,24 +18,59 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   name: string;
   source: string;
   content: string;
+  chunks: Array<any> = [];
+  chunksCount: number;
+  showSpinner: boolean = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalDetailKnowledgeBaseComponent>,
+    private logger: LoggerService,
+    private kbService: KnowledgeBaseService,
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      // console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
       this.content = this.kb.content;
+
+      this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
+  }
+
+  getContentChuncks(id_project: string, namespaceid: string, contentid: string) {
+    this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
+      if (chunks) {
+        
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - RES', chunks);
+        chunks.matches.forEach(el => {
+
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - element', el) 
+
+          this.chunks.push({ id: el.id, text: el.text })
+        });
+        
+
+      }
+    }, (error) => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS * COMPLETE *');
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS  Array', this.chunks) 
+      this.chunksCount = this.chunks.length;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS  Array', this.chunks) 
+      this.showSpinner = false;
+    });
+
   }
 
   ngOnInit(): void {
     // this.name = this.kb.name;
     // this.source = this.kb.source;
     // this.content = this.kb.content;
+    
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
