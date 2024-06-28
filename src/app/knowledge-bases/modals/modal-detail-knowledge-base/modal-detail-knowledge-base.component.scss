@@ -279,3 +279,15 @@
 .chunk:hover {
     color: #2b3239;
 }
+
+
+.chunk-error {
+    margin: 12px 0px;
+    text-align: center;
+    color: var(--red-color);
+    font-weight: 400;
+}
+
+.chunk-error > span {
+    vertical-align: middle;
+}

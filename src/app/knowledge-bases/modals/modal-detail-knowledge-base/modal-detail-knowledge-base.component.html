@@ -44,6 +44,14 @@
                 {{chunksCount}}
             </div>
         </div>
+
+        <div class="chunk-error" *ngIf="getChunksError"> 
+            <span class="material-icons-outlined">
+                error
+            </span>
+            {{ 'AnErrorHasOccurred' | translate }}
+        </div>
+        
         <div class="content-chunks" style="display: flex;     flex-wrap: nowrap;    flex-direction: column; gap: 12px">
             
             <div class="chunk-wpr" *ngFor="let chunk of chunks">

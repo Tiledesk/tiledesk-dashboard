@@ -21,6 +21,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   chunks: Array<any> = [];
   chunksCount: number;
   showSpinner: boolean = true;
+  getChunksError: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -56,6 +57,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - ERROR ', error);
       this.showSpinner = false;
+      this.chunksCount = 0;
+      this.getChunksError = true;
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS * COMPLETE *');
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS  Array', this.chunks) 
