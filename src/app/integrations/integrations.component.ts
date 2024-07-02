@@ -294,6 +294,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
         this.availableApps.push(voiceApp);
 
+        let smsApp = response.apps.find(a => (a.title === APPS_TITLE.SMS && a.version === "v2"));
+        if (environment['smsConfigUrl']) {
+          if (smsApp) {
+            smsApp.runURL = environment['smsConfigUrl'];
+            smsApp.channel = "sms";
+          } else {
+            voiceApp = {
+              voiceApp: environment['smsConfigUrl'],
+              channel: "sms"
+            }
+          }
+        }
+        else {
+          if (smsApp) {
+            smsApp.channel = "sms";
+          }
+        }
+        this.availableApps.push(smsApp);
+
         resolve(true);
 
       }, (error) => {
