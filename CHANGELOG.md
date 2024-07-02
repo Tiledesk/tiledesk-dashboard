@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.43-rc2
+- Improves Knowledge Bases page
+
 ### 2.6.43-rc1
 - Improves quotes widget
 - Added voice-vxml and sms-twilio channel in analytics
