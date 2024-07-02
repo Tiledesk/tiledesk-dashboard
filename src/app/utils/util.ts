@@ -656,7 +656,9 @@ export const CHANNELS = [
     { id: 'telegram', name: 'Telegram' },
     { id: 'messenger', name: 'Facebook Messenger' },
     { id: 'whatsapp', name: 'WhatsApp' },
-    { id: 'voice', name: 'Voice' }
+    { id: 'voice-vxml', name: 'Voice' },
+    { id: 'sms-twilio', name: 'SMS' },
+
 ]
 
 
