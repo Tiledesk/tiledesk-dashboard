@@ -3,6 +3,7 @@ import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from './logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
+import { PLANS_LIST, PLAN_NAME } from 'app/utils/util';
 
 @Injectable({
   providedIn: 'root'
@@ -76,4 +77,74 @@ export class QuotesService {
     return this.http
       .post(url, data, httpOptions)
   }
+
+  getProjectQuotes(project_id: string) {
+
+    return new Promise((resolve, reject) => {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': this.TOKEN
+        })  
+      }
+
+      const url = this.SERVER_BASE_PATH + "projects/" + project_id;
+      this.logger.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
+
+      this.http.get(url, httpOptions)
+          .toPromise().then( async (project: any) => {
+            let limits = await this.getQuoteLimits(project);
+            resolve(limits)
+          }).catch((err) => {
+            reject(false);
+          })
+    })
+
+  }
+
+  async getQuoteLimits(project) {
+    let limits;
+
+    if (project.profile.type === 'payment') {
+
+      if (project.isActiveSubscription === false) {
+        limits = PLANS_LIST.Sandbox;
+        return limits;
+      }
+
+      let plan = project.profile.name;
+
+      switch(plan) {
+        case PLAN_NAME.A:
+          plan = PLAN_NAME.D;
+          break;
+        case PLAN_NAME.B:
+          plan = PLAN_NAME.E
+          break;
+        case PLAN_NAME.C:
+          plan = PLAN_NAME.F
+          break;
+      }
+
+      limits = PLANS_LIST[plan];
+
+      if (project.profile.quotes) {
+        let profile_quotes = project?.profile?.quotes;
+        const merged_quotes = Object.assign({}, limits, profile_quotes);
+        return merged_quotes;
+      } else {
+          return limits;
+      }
+    } else {
+
+      if (project.trialExpired === true) {
+        limits = PLANS_LIST.Sandbox;
+        return limits;
+      } else {
+        limits = PLANS_LIST.FREE_TRIAL;
+        return limits;
+      }
+    }
+  }
+  
 }
