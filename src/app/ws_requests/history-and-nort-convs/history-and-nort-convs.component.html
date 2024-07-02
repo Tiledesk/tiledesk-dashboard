@@ -480,39 +480,37 @@
 
     <!-- || conversation_type  === 'chat21'  && conversation_type !== 'all'-->
     <div id="conversation-type" *ngIf="
-          conversationTypeValue  === 'chat21' ||
-          conversationTypeValue  === 'form' ||
-          conversationTypeValue  === 'messenger' ||
-          conversationTypeValue  === 'telegram' || 
-          conversationTypeValue  === 'whatsapp' || 
-          conversationTypeValue  === 'email'" class="applied-filter">
-      <span *ngIf="conversationTypeValue === 'chat21' ">
+          conversationTypeValue  === CHANNELS_NAME.CHAT21 ||
+          conversationTypeValue  === CHANNELS_NAME.FORM ||
+          conversationTypeValue  === CHANNELS_NAME.MESSANGER ||
+          conversationTypeValue  === CHANNELS_NAME.TELEGRAM || 
+          conversationTypeValue  === CHANNELS_NAME.WHATSAPP || 
+          conversationTypeValue  === CHANNELS_NAME.EMAIL " class="applied-filter">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.CHAT21 ">
         Chat
       </span>
       <!-- || conversation_type  === 'form' -->
-      <span *ngIf="conversationTypeValue === 'form' ">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.FORM ">
         Ticket
       </span>
       <!-- || conversation_type  === 'messenger' -->
-      <span *ngIf="conversationTypeValue === 'messenger'">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.MESSANGER">
         Facebook messenger
       </span>
 
       <!-- || conversation_type  === 'telegram' -->
-      <span *ngIf="conversationTypeValue === 'telegram'">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.TELEGRAM">
         Telegram
       </span>
       <!-- || conversation_type  === 'whatsapp' -->
-      <span *ngIf="conversationTypeValue === 'whatsapp'">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.WHATSAPP">
         WhatsApp
       </span>
 
       <!-- || conversation_type  === 'email' -->
-      <span *ngIf="conversationTypeValue === 'email' ">
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.EMAIL">
         Email
       </span>
-
-
     </div>
 
 
@@ -1164,14 +1162,14 @@
                       </span>
                       <span class="ng2-tooltip-channel">
                         <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>
-                        <span *ngIf="request?.channel?.name === 'chat21'"> Chat </span>
-                        <span *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
-                        <span *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>
-                        <span *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
-                        <span *ngIf="request?.channel?.name === 'email'"> Email </span>
-                        <span *ngIf="request?.channel?.name === 'form'"> Form </span>
-                        <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'"> Voice </span>
-
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21"> Chat </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL"> Email </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.FORM"> Form </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM"> Telegram </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER">Facebook Messenger </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP"> WhatsApp </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML"> Voice </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO"> SMS </span>
                       </span>
                     </div>
                     <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
@@ -1336,13 +1334,13 @@
                     <!-- ---------------------------------------- -->
                     <!-- Channel WRAPPER -->
                     <!-- ---------------------------------------- -->
-                    <div *ngIf="request?.channel?.name !== 'chat21'" class="channel_wpr"
+                    <div *ngIf="request?.channel?.name !== CHANNELS_NAME.CHAT21" class="channel_wpr"
                       style="flex: 1; text-align: right;"
                       [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Telegram -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM" class="tool_tip">
 
                         <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
                           class="img-fluid">
@@ -1358,7 +1356,7 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Voice -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'" class="tool_tip">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML" class="tool_tip">
 
                         <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
                           class="img-fluid">
@@ -1373,7 +1371,7 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - WhatsApp -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP" class="tool_tip">
 
                         <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
                           class="img-fluid">
@@ -1389,7 +1387,7 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Messenger -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER" class="tool_tip">
 
                         <img style="width: 24px;height: 24px;"
                           src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg" class="img-fluid">
@@ -1407,7 +1405,7 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Email -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL" class="tool_tip email-wpr">
 
                         <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
                           class="img-fluid channel-img-in-conversations">
@@ -1425,7 +1423,7 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Form -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.FORM" class="tool_tip form-wpr">
                         <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
                           class="img-fluid channel-img-in-conversations">
 

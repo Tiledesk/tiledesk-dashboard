@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import scrollToWithAnimation from 'scrollto-with-animation'
+import { CHANNELS_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -62,7 +63,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   scrollEl: any;
   scrollYposition: any;
   storedRequestId: string
-
+  CHANNELS_NAME = CHANNELS_NAME;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -432,7 +433,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          // console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - requestid ', requestid);
@@ -454,6 +455,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
+        
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
           // this.ngOnInit();
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
           count = count + 1;
@@ -462,6 +465,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           const index = this.requests_selected.indexOf(requestid);
           if (index > -1) {
             this.requests_selected.splice(index, 1);
+           
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
@@ -601,8 +605,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
         //  NOTIFY ERROR 
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-
-        // this.usersLocalDbService.removeFromStorage('last-selection-id')
+        this.usersLocalDbService.removeFromStorage('last-selection-id')
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS

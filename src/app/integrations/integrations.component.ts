@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, N8nIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -275,6 +275,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
         this.availableApps.push(telegramApp);
 
+        let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VOICE && a.version === "v2"));
+        if (environment['voiceConfigUrl']) {
+          if (voiceApp) {
+            voiceApp.runURL = environment['voiceConfigUrl'];
+            voiceApp.channel = "voice";
+          } else {
+            voiceApp = {
+              voiceApp: environment['voiceConfigUrl'],
+              channel: "voice"
+            }
+          }
+        }
+        else {
+          if (voiceApp) {
+            voiceApp.channel = "voice";
+          }
+        }
+        this.availableApps.push(voiceApp);
+
         resolve(true);
 
       }, (error) => {
@@ -467,6 +486,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.BREVO) {
       return new BrevoIntegration();
     }
+    if (key === INTEGRATIONS_KEYS.N8N) {
+      return new N8nIntegration();
+    }
   }
 
 
@@ -655,6 +677,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
+      if (!projectProfileData.customization[this.INT_KEYS.VOICE] || projectProfileData.customization[this.INT_KEYS.VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
         let idx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.CHANNEL);
@@ -663,6 +690,13 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
       }
     }
+
+    if (projectProfileData && !projectProfileData.customization) {
+      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VOICE);
+      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+    }
+
+
     this.integrationListReady = true;
   }
 
