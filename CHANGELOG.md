@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.43-rc1
+- Improves quotes widget
+- Added voice-vxml and sms-twilio channel in analytics
+
 ### 2.6.42
 - Deploys in production
 - Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
