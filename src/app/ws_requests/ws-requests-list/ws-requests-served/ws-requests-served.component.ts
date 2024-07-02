@@ -19,7 +19,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { BrandService } from 'app/services/brand.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { CHANNELS_NAME, goToCDSVersion } from 'app/utils/util';
 import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
@@ -84,6 +84,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   scrollEl: any;
   scrollYposition: any;
   storedRequestId: string
+  CHANNELS_NAME = CHANNELS_NAME;
+  
   /**
    * Constructor
    * @param botLocalDbService 

@@ -648,16 +648,26 @@ export const TYPE_GPT_MODEL = {
     'GPT-4o': { name: "GPT-4o (ChatGPT)", value: "gpt-4o", status: "active"}
 }
 
+export const CHANNELS_NAME = {
+    CHAT21: 'chat21',
+    EMAIL: 'email',
+    FORM: 'form',
+    TELEGRAM: 'telegram',
+    MESSANGER: 'messenger',
+    WHATSAPP: 'whatsapp',
+    VOICE_VXML: 'voice-vxml',
+    SMS_TWILIO: 'sms-twilio',
+}
 
 export const CHANNELS = [
-    { id: 'chat21', name: 'Chat' },
-    { id: 'email', name: 'Email' },
-    { id: 'form', name: 'Ticket' },
-    { id: 'telegram', name: 'Telegram' },
-    { id: 'messenger', name: 'Facebook Messenger' },
-    { id: 'whatsapp', name: 'WhatsApp' },
-    { id: 'voice-vxml', name: 'Voice' },
-    { id: 'sms-twilio', name: 'SMS' },
+    { id: CHANNELS_NAME.CHAT21,         name: 'Chat'                },
+    { id: CHANNELS_NAME.EMAIL,          name: 'Email'               },
+    { id: CHANNELS_NAME.FORM,           name: 'Ticket'              },
+    { id: CHANNELS_NAME.TELEGRAM,       name: 'Telegram'            },
+    { id: CHANNELS_NAME.MESSANGER,      name: 'Facebook Messenger'  },
+    { id: CHANNELS_NAME.WHATSAPP,       name: 'WhatsApp'            },
+    { id: CHANNELS_NAME.VOICE_VXML,     name: 'Voice'               },
+    { id: CHANNELS_NAME.SMS_TWILIO,     name: 'SMS'                 },
 
 ]
 

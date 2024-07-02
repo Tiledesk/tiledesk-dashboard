@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import scrollToWithAnimation from 'scrollto-with-animation'
+import { CHANNELS_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -62,7 +63,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   scrollEl: any;
   scrollYposition: any;
   storedRequestId: string
-
+  CHANNELS_NAME = CHANNELS_NAME;
   /**
    * Constructor
    * @param botLocalDbService 
