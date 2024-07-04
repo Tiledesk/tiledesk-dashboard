@@ -293,7 +293,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      console.log("getProjectQuotes: ", response);
+      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -304,8 +304,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
 
-      console.log("project_limits: ", this.project_limits)
-      console.log("resp.quotes: ", resp.quotes)
+      this.logger.log("project_limits: ", this.project_limits)
+      this.logger.log("resp.quotes: ", resp.quotes)
 
       this.messages_limit = this.project_limits.messages;
       this.requests_limit = this.project_limits.requests;
