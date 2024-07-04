@@ -28,6 +28,7 @@ export enum TYPE_STEP {
   CUSTOM_STEP = "customStep",
   WELCOME_MESSAGE = "welcomeMessage",
   WIDGET_INSTALLATION = "widgetInstallation",
+  SELECT_TEMPLATE_OR_KB = 'selectTemplateOrKb',
   TEMPLATES_INSTALLATION = "templateInstallation"
 
 }
@@ -91,6 +92,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   public_Key: string;
   isMTT: boolean;
   USER_ROLE: string;
+  hasSelectChatBotOrKb: string
 
   constructor(
     private auth: AuthService,
@@ -228,8 +230,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.projects = projects;
       }
       if (projects.length > 0) {
-        this.isFirstProject = false; // the good one
-        // this.isFirstProject = true; // for test onbording without sign up
+        // this.isFirstProject = false; // the good one
+        this.isFirstProject = true; // for test onbording without sign up
         this.logger.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
       }
       this.logger.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
@@ -293,7 +295,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           }
           this.setFirstStep();
 
-          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+         console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
           this.isMTT = this.getMTTValue()
           this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
@@ -362,8 +364,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
       // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
+
+      // this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
+      this.arrayOfSteps.push(TYPE_STEP.SELECT_TEMPLATE_OR_KB);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
     });
   }
@@ -509,7 +514,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (!this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT)) {
       this.createNewProject('createProjectFromTemplates')
     }
-    
+  }
+
+  userSelection(event) {
+   console.log('[ONBOARDING-CONTENT] userSelection event: ', event)
+   this.hasSelectChatBotOrKb = event
   }
 
   goToTemplatesInstallation($event) {

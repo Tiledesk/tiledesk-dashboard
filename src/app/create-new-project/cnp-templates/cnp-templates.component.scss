@@ -351,7 +351,24 @@ $color-pro-plan: #3ea9f5;
     margin-right: 0px;
 }
 
+// --------------
+.custom-button {
+    text-transform: capitalize;
+    color: white;
+    border: none;
+    height: 36px;
+    border-radius: 999px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    background: var(--blue-light);
+    padding: 0 12px;
 
+    &:hover {
+        // background: #256ffd;
+        opacity: .8;
+    }
+}
 
 // @media (max-width: 668px) {
 

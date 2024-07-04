@@ -1,4 +1,30 @@
-<div class="main-content onboarding-templt-page">
+<div *ngIf="hasSelectChatBotOrKb === 'kb'" class="main-content onboarding-templt-page">
+    <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
+    <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
+
+    <div class="scrollable-list">
+        <div class="scrollable-list-content-container">
+            <div class="scrollable-list-wpr" no-prevent-default="true">
+
+                <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
+                   Content Assistant Set-up
+                </h2>
+                <h4 class="onboarding-templt-page-description"
+                [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
+                    Create a chatbot to automatically answer questions about your content (e.g. URL, pdf, text etc.)
+                </h4>
+
+
+                <button class="custom-button"
+                (click)="createChatbotfromKbOfficialResponderTemplate()">
+                 Create chatbot
+              </button>
+
+        </div>
+    </div>
+</div>
+
+<div *ngIf="hasSelectChatBotOrKb === 'templates'" class="main-content onboarding-templt-page">
 
     <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
     <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />

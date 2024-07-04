@@ -719,9 +719,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   importChatbotFromJSON(editedChatbot) {
-    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
