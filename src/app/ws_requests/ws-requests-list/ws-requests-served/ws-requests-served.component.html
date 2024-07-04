@@ -292,14 +292,14 @@
                 </span>
                 <span class="ng2-tooltip-channel">
                   <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>
-                  <span *ngIf="request?.channel?.name === 'chat21'"> Chat </span>
-                  <span *ngIf="request?.channel?.name === 'telegram'"> Telegram </span>
-                  <span *ngIf="request?.channel?.name === 'whatsapp'"> WhatsApp </span>
-                  <span *ngIf="request?.channel?.name === 'messenger'">Facebook Messenger </span>
-                  <span *ngIf="request?.channel?.name === 'email'"> Email </span>
-                  <span *ngIf="request?.channel?.name === 'form'"> Form </span>
-                  <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'"> Voice </span>
-
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21"> Chat </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL"> Email </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.FORM"> Form </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM"> Telegram </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER">Facebook Messenger </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP"> WhatsApp </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML"> Voice </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO"> SMS </span>
                 </span>
               </div>
               <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
@@ -482,13 +482,13 @@
               <!-- ---------------------------------------- -->
               <!-- Channel WRAPPER -->
               <!-- ---------------------------------------- -->
-              <div *ngIf="request?.channel?.name !== 'chat21'" class="channel_wpr" style="flex: 1; text-align: right;"
+              <div *ngIf="request?.channel?.name !== CHANNELS_NAME.CHAT21" class="channel_wpr" style="flex: 1; text-align: right;"
                 [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
 
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Telegram -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === 'telegram'" class="tool_tip">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM" class="tool_tip">
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
                     class="img-fluid">
                   <span class="bottom tool-tip-bottom--custom">
@@ -503,7 +503,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Voice -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'" class="tool_tip">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML" class="tool_tip">
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
                     class="img-fluid">
                   <span class="bottom tool-tip-bottom--custom">
@@ -518,7 +518,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Channel - WhatsApp -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === 'whatsapp'" class="tool_tip">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP" class="tool_tip">
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/whatsapp-logo_green.svg"
                     class="img-fluid">
                   <span class="bottom tool-tip-bottom--custom">
@@ -533,7 +533,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Messenger -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === 'messenger'" class="tool_tip">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER" class="tool_tip">
 
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Facebook_Messenger_logo_2020.svg"
                     class="img-fluid">
@@ -551,7 +551,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Email -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === 'email'" class="tool_tip email-wpr">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL" class="tool_tip email-wpr">
 
                   <img style="padding:5px !important" src="assets/img/channel_icons/email-logo_white.svg"
                     class="img-fluid channel-img-in-conversations">
@@ -569,7 +569,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Form -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === 'form'" class="tool_tip form-wpr">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.FORM" class="tool_tip form-wpr">
                   <img style="padding:4px !important" src="assets/img/channel_icons/form-logo_v2_white.svg"
                     class="img-fluid channel-img-in-conversations">
 
@@ -605,7 +605,7 @@
               </span>
               <!-- [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname , 'verified-icon-requester-internal-ticket': request?.subject}" -->
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                <svg class="requester-verified-icon" [ngClass]="{'requester-verified-icon-voice-channel': request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'}" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                <svg class="requester-verified-icon" [ngClass]="{'requester-verified-icon-voice-channel': request?.channel?.name === CHANNELS_NAME.VOICE_VXML }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                   height="17" xml:space="preserve">
                   <style type="text/css">

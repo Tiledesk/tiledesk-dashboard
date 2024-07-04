@@ -640,23 +640,43 @@ export const botDefaultLanguages = [
     return models
 }
 
+// export const TYPE_GPT_MODEL = {
+//     'GPT-3': { name: "GPT-3 (DaVinci)", value: "text-davinci-003", status: "inactive"},
+//     'GPT-3.5' : { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo", status: "active"},
+//     'GPT-4' : { name: "GPT-4 (ChatGPT)", value: "gpt-4", status: "active"},
+//     'GPT-4-turbo-preview': { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview", status: "active"},
+//     'GPT-4o': { name: "GPT-4o (ChatGPT)", value: "gpt-4o", status: "active"}
+// }
+
 export const TYPE_GPT_MODEL = {
     'GPT-3': { name: "GPT-3 (DaVinci)", value: "text-davinci-003", status: "inactive"},
-    'GPT-3.5' : { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo", status: "active"},
-    'GPT-4' : { name: "GPT-4 (ChatGPT)", value: "gpt-4", status: "active"},
-    'GPT-4-turbo-preview': { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview", status: "active"},
-    'GPT-4o': { name: "GPT-4o (ChatGPT)", value: "gpt-4o", status: "active"}
+    'GPT-3.5' : { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", status: "active"},
+    'GPT-4' : { name: "GPT-4", value: "gpt-4", status: "active"},
+    'GPT-4-turbo-preview': { name: "GPT-4 Turbo", value: "gpt-4-turbo-preview", status: "active"},
+    'GPT-4o': { name: "GPT-4o", value: "gpt-4o", status: "active"}
 }
 
+export const CHANNELS_NAME = {
+    CHAT21: 'chat21',
+    EMAIL: 'email',
+    FORM: 'form',
+    TELEGRAM: 'telegram',
+    MESSANGER: 'messenger',
+    WHATSAPP: 'whatsapp',
+    VOICE_VXML: 'voice-vxml',
+    SMS_TWILIO: 'sms-twilio',
+}
 
 export const CHANNELS = [
-    { id: 'chat21', name: 'Chat' },
-    { id: 'email', name: 'Email' },
-    { id: 'form', name: 'Ticket' },
-    { id: 'telegram', name: 'Telegram' },
-    { id: 'messenger', name: 'Facebook Messenger' },
-    { id: 'whatsapp', name: 'WhatsApp' },
-    { id: 'voice', name: 'Voice' }
+    { id: CHANNELS_NAME.CHAT21,         name: 'Chat'                },
+    { id: CHANNELS_NAME.EMAIL,          name: 'Email'               },
+    { id: CHANNELS_NAME.FORM,           name: 'Ticket'              },
+    { id: CHANNELS_NAME.TELEGRAM,       name: 'Telegram'            },
+    { id: CHANNELS_NAME.MESSANGER,      name: 'Facebook Messenger'  },
+    { id: CHANNELS_NAME.WHATSAPP,       name: 'WhatsApp'            },
+    { id: CHANNELS_NAME.VOICE_VXML,     name: 'Voice'               },
+    { id: CHANNELS_NAME.SMS_TWILIO,     name: 'SMS'                 },
+
 ]
 
 
@@ -697,5 +717,4 @@ export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/arti
 export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
 export const URL_install_tiledesk_on_wix ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
 export const URL_install_tiledesk_on_magento ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
-
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';
