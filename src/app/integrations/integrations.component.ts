@@ -152,6 +152,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
           this.logger.log("[INTEGRATION-COMP] app retrieved")
+          console.log("calling manageAppVisibility...")
           this.manageAppVisibility(projectProfileData)
           this.getIntegrations();
         }
@@ -696,10 +697,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
-      if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
+      if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
+
+      console.log("INTEGRATIONS: ", this.INTEGRATIONS);
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
@@ -708,7 +711,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.CATEGORIES.splice(idx, 1);
         }
       }
+
+    } else {
+
+      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      
     }
+
     this.integrationListReady = true;
   }
 
