@@ -1,82 +1,203 @@
-<div class="box-step-1">
-    <div class="">
+<div class="select-templates-or-kb">
+    <div class="select-templates-or-kb-content">
 
-        
+        <h2 class="select-templates-or-kb-title">
+            {{'OnboardPage.WhereWouldYouLikeToStart' | translate}}
+        </h2>
+        <h4 class="select-templates-or-kb-description">
+            We want to make your experience just right
+        </h4>
 
-            <div class="routing-rules">
 
-                <!-- Assigned -->
-                <div class="routing-rule" [ngClass]="{'rule-active': selectedOption === 'kb'  }"
-                  (click)="has_clicked_kb()">
-                  <div class="routing-rule-content">
-                    <div class="routing-rule-icon">
+        <!-- <div style="display: grid;
+        min-width: min(-40px + 100vw, 1000px);
+        padding: 0px;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;">
 
-                      <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px">
-                        <path d="M0 0h24v24H0V0z" fill="none" />
-                        <path
-                          d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
-                      </svg>
+            <div style="display: flex;
+                    flex-direction: column;
+                    -webkit-box-pack: start;
+                    justify-content: flex-start;
+                    align-items: normal;">
 
-                    </div>
-                    <div class="routing-rule-text">
-                        Risponditore automatico sui tuoi contenuti
-                    </div>
+                <div style="    position: relative;
+                    background-color: rgb(255, 255, 255);
+                    border-radius: 8px;
+                    border: 1px solid rgb(226, 232, 239);
+                    outline: none;
+                    cursor: pointer;
+                    pointer-events: auto;
+                    padding: 20px;
+                    min-height: 0px;
+                    width: 490px;
+                    max-width: calc(-32px + 100vw);">
 
-                    <div class="routing-rule-sub-text">
-                     
-                      {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
-                    </div>
+                    <p style="    margin-top: 0px;
+                    margin-bottom: 0px;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: -0.01em;">
+                        Increase sales
+                    </p>
+                    <span style="display: block;
+                    width: 8px;
+                    min-width: 8px;
+                    height: 8px;
+                    min-height: 8px;"> </span>
 
-                  </div>
+                    <p style="   margin-top: 0px;
+                    margin-bottom: 0px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 18px;
+                    letter-spacing: -0.01em;
+                    color: rgb(100, 116, 145);">
+                        Boost your sales with Flows - automated conversion paths that trigger at specific moments.
+                        Engage customers with email campaigns.
+                    </p>
 
                 </div>
 
-                <!-- Pooled -->
-                <div class="routing-rule"  [ngClass]="{'rule-active': selectedOption === 'templates'  }"
-                  (click)="has_clicked_templates()">
-                  <div class="routing-rule-content">
-                    <div class="routing-rule-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
-                        height="34px" viewBox="0 0 24 24" width="34px">
-                        <g>
-                          <rect fill="none" height="24" width="24" />
-                        </g>
-                        <g>
-                          <g>
+
+                <div style="position: relative;
+                        background-color: rgb(255, 255, 255);
+                        border-radius: 8px;
+                        border: 1px solid rgb(5, 102, 255);
+                        outline: rgb(5, 102, 255) solid 1px;
+                        cursor: pointer;
+                        pointer-events: auto;
+                        padding: 20px;
+                        min-height: 0px;
+                        width: 490px;
+                        max-width: calc(-32px + 100vw);">
+
+                    <p style="    margin-top: 0px;
+                    margin-bottom: 0px;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: -0.01em;">
+                    Offer customer support                    
+                    </p>
+                    <span style="display: block;
+                    width: 8px;
+                    min-width: 8px;
+                    height: 8px;
+                    min-height: 8px;"> </span>
+
+                    <p style="   margin-top: 0px;
+                    margin-bottom: 0px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 18px;
+                    letter-spacing: -0.01em;
+                    color: rgb(100, 116, 145);">
+                       Drive customer satisfaction with live chat, ticketing, video calls, and multichannel communication.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <img src="https://www.tidio.com/panel/dist/928b18617b7206df09e2.png" class="css-1jz5wv7 e1e0nat1">
+
+
+
+        </div> -->
+
+        <div class="cards-selection">
+
+            <!-- Assigned -->
+            <div class="cards-content-and-image-wpr">
+
+                <div class="cards-wpr"> 
+                
+                <div class="card-selection" [ngClass]="{'active-selection': selectedOption === 'kb'  }"
+                    (click)="has_clicked_kb()">
+                    <div class="selection-card-content-wpr">
+                        <div class="selection-card-content">
+                            <!-- <div class="routing-rule-icon">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
-                              d="M18.19,12.44l-3.24-1.62c1.29-1,2.12-2.56,2.12-4.32c0-3.03-2.47-5.5-5.5-5.5s-5.5,2.47-5.5,5.5c0,2.13,1.22,3.98,3,4.89 v3.26c-2.15-0.46-2.02-0.44-2.26-0.44c-0.53,0-1.03,0.21-1.41,0.59L4,16.22l5.09,5.09C9.52,21.75,10.12,22,10.74,22h6.3 c0.98,0,1.81-0.7,1.97-1.67l0.8-4.71C20.03,14.32,19.38,13.04,18.19,12.44z M17.84,15.29L17.04,20h-6.3 c-0.09,0-0.17-0.04-0.24-0.1l-3.68-3.68l4.25,0.89V6.5c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5v6h1.76l3.46,1.73 C17.69,14.43,17.91,14.86,17.84,15.29z M8.07,6.5c0-1.93,1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5c0,0.95-0.38,1.81-1,2.44V6.5 c0-1.38-1.12-2.5-2.5-2.5c-1.38,0-2.5,1.12-2.5,2.5v2.44C8.45,8.31,8.07,7.45,8.07,6.5z" />
-                          </g>
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="routing-rule-text">
-                      Chatbot templates
-                    </div>
+                                d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
+                        </svg>
 
-                    <div class="routing-rule-sub-text">
-                      
-                      {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
-                    </div>
+                        </div> -->
+                            <p class="selection-card-title">
+                                Knowledge Base Assistant
+                            </p>
 
-                  </div>
+                            <p class="selection-card-title-subtitle">
+                                Effortlessly create a chatbot that automatically answers questions based on your
+                                content,
+                                including URLs, PDFs, and other document formats.
+                            </p>
+                        </div>
+
+
+
+                    </div>
 
                 </div>
 
-              </div>
+            
+                <div class="card-selection" [ngClass]="{'active-selection': selectedOption === 'templates'  }"
+                    (click)="has_clicked_templates()">
+                    <div class="selection-card-content-wpr">
+                        <div class="selection-card-content">
+                            <!-- <div class="routing-rule-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="34px"
+                            viewBox="0 0 24 24" width="34px">
+                            <g>
+                                <rect fill="none" height="24" width="24" />
+                            </g>
+                            <g>
+                                <g>
+                                    <path
+                                        d="M18.19,12.44l-3.24-1.62c1.29-1,2.12-2.56,2.12-4.32c0-3.03-2.47-5.5-5.5-5.5s-5.5,2.47-5.5,5.5c0,2.13,1.22,3.98,3,4.89 v3.26c-2.15-0.46-2.02-0.44-2.26-0.44c-0.53,0-1.03,0.21-1.41,0.59L4,16.22l5.09,5.09C9.52,21.75,10.12,22,10.74,22h6.3 c0.98,0,1.81-0.7,1.97-1.67l0.8-4.71C20.03,14.32,19.38,13.04,18.19,12.44z M17.84,15.29L17.04,20h-6.3 c-0.09,0-0.17-0.04-0.24-0.1l-3.68-3.68l4.25,0.89V6.5c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5v6h1.76l3.46,1.73 C17.69,14.43,17.91,14.86,17.84,15.29z M8.07,6.5c0-1.93,1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5c0,0.95-0.38,1.81-1,2.44V6.5 c0-1.38-1.12-2.5-2.5-2.5c-1.38,0-2.5,1.12-2.5,2.5v2.44C8.45,8.31,8.07,7.45,8.07,6.5z" />
+                                </g>
+                            </g>
+                        </svg>
+                    </div> -->
+                            <p class="selection-card-title">
+                                Chatbot templates
+                            </p>
 
-        <p>Vuoi un risponditore automatico sui tuoi contenuti?</p>
+                            <p class="selection-card-title-subtitle">
+                                Select from our diverse range of chatbot templates, ready for immediate deployment
+                                across
+                                your preferred channels.
+                            </p>
 
-        <button>
-            Vai a setup Assistente
-        </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            
+
+            <div class="images-wpr"  style="min-width: 490px; min-height: 375px;">
+
+                <div *ngIf="selectedOption === 'kb'" class="selection-img"> 
+                    <!-- <img style="max-width: 490px;" src="https://www.tidio.com/panel/dist/928b18617b7206df09e2.png" class="css-1jz5wv7 e1e0nat1"> -->
+                    <img style="max-width: 490px;" src="assets/img/KB_ASSISTANT.svg">
+                   
+                </div>
+                <div *ngIf="selectedOption === 'templates'" class="selection-img"> 
+                    <img style="max-width: 490px;" src="https://www.tidio.com/panel/dist/0aedd4963458950f3832.png" class="css-1jz5wv7 e1e0nat1">
+                </div>
+            </div>
+            
+
+        </div>
 
 
-        <p>Vuoi scegliere tra un template di automazione tra quelli disponibili?</p>
-
-
-        <button>
-            Vai ai templates
-        </button>
 
 
         <div class="row--navigation">

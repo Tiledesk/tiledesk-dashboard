@@ -175,7 +175,7 @@
               </div>
              
               <div class="chatbot-list-using-current-namespace" *ngFor="let chatbot of chatbotsUsingNamespace" >
-                <div class="chatbot-name-using-namespace" (click)="goToChabotDetails(chatbot)" 
+                <div class="chatbot-name-using-namespace" (click)="presentDialogGoToCDS(chatbot)" 
                 matTooltipClass="kb-custom-mat-tooltip"
                 matTooltip="Visualizza nel design studio" 
                 #tooltip="matTooltip" 

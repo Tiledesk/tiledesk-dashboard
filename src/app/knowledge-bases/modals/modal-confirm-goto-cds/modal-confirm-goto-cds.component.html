@@ -1,6 +1,7 @@
 <h1 mat-dialog-title> 
-    {{ 'HookTheBot' | translate }} 
 
+    <!-- Edit the chatbot {{ chatbotName }} -->
+    {{ 'EditChatbot' | translate: {chat_bot_name: chatbotName} }}
 </h1>
 
 <div mat-dialog-content>
@@ -75,20 +76,12 @@
       </textarea>
 
 
-    <h4 [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: {bot_name: chatbotName} "> </h4>
+    <!-- <h4 [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: {bot_name: chatbotName} "> </h4> -->
+    <h4 style="text-align: center;font-weight: 400;"> 
+        <!-- Are you sure you want to edit the chatbot {{ chatbotName }}?  -->
 
-  
-
-
-    <ng-select [items]="depts_without_bot_array" 
-        appendTo="body"
-        bindValue="id"
-        bindLabel="name"
-        placeholder="{{'SelectDepartment'|translate}}" 
-        [(ngModel)]="selectedDeptId"
-        (change)="onSelectDeptId()">
-    </ng-select>
-
+        {{'AreYouSureYouWantToEditTheChatbot' | translate:{chat_bot_name: chatbotName} }}
+    </h4>
    
 </div>
 
@@ -98,10 +91,13 @@
        
     </button>
     <!-- [disabled]="!selectedDeptId" -->
+
     <button  class="mat-dialog-ok-btn" mat-button 
-        (click)="onActivateBotPresssed()">
+        (click)="onOkPresssed()">
         
-        {{ "ActivateBot" | translate }}
+        {{ "YesImSure" | translate }}
+
+        <!-- I'm sure -->
         
     </button>
 </div>

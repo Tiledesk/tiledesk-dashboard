@@ -35,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
+import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
@@ -61,7 +62,8 @@ const routes: Routes = [
     ModalUploadFileComponent,
     ModalChatbotNameComponent,
     ModalHookBotComponent,
-    ModalNsLimitReachedComponent
+    ModalNsLimitReachedComponent,
+    ModalConfirmGotoCdsComponent
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -7,23 +7,30 @@
             <div class="scrollable-list-wpr" no-prevent-default="true">
 
                 <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
-                   Content Assistant Set-up
+                
+                   Knowledge Base Assistant
                 </h2>
-                <h4 class="onboarding-templt-page-description"
-                [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
-                    Create a chatbot to automatically answer questions about your content (e.g. URL, pdf, text etc.)
+                <h4 class="create-new-kb-assistant-description_one"
+                        [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
+                
+                        This advanced chatbot solution allows you to integrate multiple content types, ensuring that users receive timely and precise answers to their questions. 
+
                 </h4>
+                
 
+                <div class="create-new-kb-assistant-wpr"> 
+                    
 
-                <button class="custom-button"
-                (click)="createChatbotfromKbOfficialResponderTemplate()">
-                 Create chatbot
-              </button>
-
+                    <button class="create-kb-assistant-btn"
+                        (click)="createChatbotfromKbOfficialResponderTemplate()">
+                        Create chatbot
+                    </button>
+                </div> 
+            </div> 
         </div>
     </div>
 </div>
-
+<!--  -->
 <div *ngIf="hasSelectChatBotOrKb === 'templates'" class="main-content onboarding-templt-page">
 
     <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
@@ -34,15 +41,19 @@
 
             <div class="scrollable-list-wpr" no-prevent-default="true">
                 <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
-                    {{'OnboardPage.WhereWouldYouLikeToStart' | translate}}
+                    <!-- {{'OnboardPage.WhereWouldYouLikeToStart' | translate}} -->
+                    Select a pre-built chatbot automation template.
                 </h2>
                 <h4 class="onboarding-templt-page-description"
                     [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
-                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === false">
+                    <!-- <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === false">
                         {{'OnboardPage.ChooseATemplateFor' | translate: t_paramsUserRole }}
                     </span>
                     <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === true">
                         {{'OnboardPage.ChooseYourChatbotFromOurTemplates' | translate }}
+                    </span> -->
+                    <span>
+                        These templates are designed to cater to different use cases, providing a solid foundation that can be tailored to meet your unique requirements, ensuring a seamless and efficient user experience.
                     </span>
                 </h4>
                 <div class="tmplt-btns-container">
@@ -184,3 +195,5 @@
         </div>
 
     </div>
+
+</div>

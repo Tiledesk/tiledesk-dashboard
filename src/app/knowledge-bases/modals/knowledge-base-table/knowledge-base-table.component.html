@@ -5,11 +5,6 @@
             <div class="lock-container">
                 <!-- <img src="assets/img/int/getstarted.svg" alt=""> -->
                 <div class="no-bot-msg">
-                    <span class="upgrade-title">{{'KbPage.NoKbAdded' | translate }}</span>
-                    <span class="upgrade-subtitle">{{'KbPage.NoKbAddedText' | translate }}
-                        <!-- <span *ngIf="hideHelpLink" class="upgrade-subtitle-learn-how" >{{'LearnHow' | translate }} </span> -->
-                    </span>
-                    
                     <div class="add-content-btn-wpr">
                         <button class="btn custom-button add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu"> 
@@ -17,6 +12,18 @@
                             {{ 'KbPage.Add' | translate }} 
                         </button>
                     </div>
+                    <!-- <span class="upgrade-title">{{'KbPage.NoKbAdded' | translate }}</span> -->
+                    <span class="upgrade-subtitle">{{'KbPage.NoKbAddedText' | translate }}
+                        <!-- <span *ngIf="hideHelpLink" class="upgrade-subtitle-learn-how" >{{'LearnHow' | translate }} </span> -->
+                    </span>
+                    
+                    <!-- <div class="add-content-btn-wpr">
+                        <button class="btn custom-button add-content center" style="box-shadow: unset;"
+                            [matMenuTriggerFor]="menu"> 
+                           
+                            {{ 'KbPage.Add' | translate }} 
+                        </button>
+                    </div> -->
                 </div>
                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
                     <add-content-menu class="mat-menu"

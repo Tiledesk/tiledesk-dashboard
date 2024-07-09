@@ -213,7 +213,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   areVisibleChatbot: boolean;
-
+  displayKbHeroSection: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -339,7 +339,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+     console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
       if (project) {
         this.project = project
         if (project.attributes && project.attributes.dashlets) {
@@ -825,11 +825,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    // this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+   console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
     //   this.current_prjct.id_project.attributes.userPreferences) {
+    if (project_attributes && project_attributes.userPreferences.onboarding_type) {
+      if (project_attributes.userPreferences.onboarding_type === "kb") {
+        this.displayKbHeroSection = true
+      } else {
+        this.displayKbHeroSection = false
+      }
+      console.log('[HOME] - getOnbordingPreferences PREFERENCES  displayKbHeroSection', this.displayKbHeroSection);
+    }
 
     if (project_attributes && project_attributes.userHasReMovedWA) {
       if (project_attributes.userHasReMovedWA === true) {

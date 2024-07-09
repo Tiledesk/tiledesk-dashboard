@@ -731,7 +731,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      // this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      console.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -742,11 +742,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // for new home
   saveUserPreferences(segmentIdentifyAttributes) {
-    this.logger.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
+    console.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 
-        // this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
         this.updatedProject = res
 
       }, error => {
@@ -756,6 +756,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // this.goToExitOnboarding();
         // this.goToOnbordingTemplates()
         if (this.arrayOfSteps.length === 1) {
+          console.log('[ONBOARDING-D] - this.arrayOfSteps ', this.arrayOfSteps);
           this.goToHome()
         }
 

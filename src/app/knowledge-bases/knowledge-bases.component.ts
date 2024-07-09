@@ -38,6 +38,7 @@ import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
+import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -185,8 +186,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService
-
-
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -408,12 +407,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE-BASES-COMP] prjct_profile_name ", this.prjct_profile_name)
       this.logger.log("[KNOWLEDGE-BASES-COMP] projectProfileData ", this.projectProfileData)
       this.logger.log("[KNOWLEDGE-BASES-COMP] projectProfileData type ", this.projectProfileData.profile_type)
-      
-      if(error.error.error === "Maximum number of resources reached for the current plan") {
-        this.presentDialogNsLimitReached(this.prjct_profile_name,  error.error.plan_limit, this.projectProfileData.profile_type )
+
+      if (error.error.error === "Maximum number of resources reached for the current plan") {
+        this.presentDialogNsLimitReached(this.prjct_profile_name, error.error.plan_limit, this.projectProfileData.profile_type)
       }
-      
-      
+
+
 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
@@ -424,7 +423,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   presentDialogNsLimitReached(planName, planLimit, planType) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName , ' planLimit ', planLimit, ' planType ', planType)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName, ' planLimit ', planLimit, ' planType ', planType)
     const dialogRef = this.dialog.open(ModalNsLimitReachedComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -439,11 +438,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     dialogRef.afterClosed().subscribe(res => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG NS LIMIT REACHED (AFTER CLOSED):`, res);
-     
+
     });
   }
 
-  
+
 
   onChangeNamespaceName(event) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] ON CHANGE NAMESPACE NAME  event ', event)
@@ -689,7 +688,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.presentDialogChatbotname(chatbot)
         }
       });
-      
+
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
     }, () => {
@@ -721,7 +720,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   importChatbotFromJSON(editedChatbot) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      console.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
@@ -733,10 +732,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] -  IMPORT CHATBOT FROM JSON- ERROR', error);
     }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      console.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
+
+      // this.presentDialogChatbotSuccessfullyCreated()
 
     });
   }
+
+
 
 
   getDeptsByProjectId(faqkb?: string) {
@@ -755,6 +758,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
           this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
           if (departments[0].hasBot === true) {
+            this.presentDialogChatbotSuccessfullyCreated()
 
             this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT ');
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
@@ -765,7 +769,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           } else {
             this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
             this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
-            this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept')
+            this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept');
+            this.presentDialogChatbotSuccessfullyCreated()
+
 
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
             // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT botType selected ', this.botType);
@@ -793,9 +799,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
               // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
-              this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+
               if (!this.dialogRefHookBoot) {
-                this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+                // this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+                this.presentDialogChatbotSuccessfullyCreatedTheHookBot(this.depts_without_bot_array, faqkb)
               }
             }
           });
@@ -809,6 +817,57 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
 
+  }
+
+
+  presentDialogChatbotSuccessfullyCreated() {
+    console.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+
+    Swal.fire({
+      // title: this.translate.instant('Success'),
+      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
+      icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      // reverseButtons: true,
+      // buttons: [null, this.cancel],
+      // dangerMode: false
+    })
+    // }
+
+  }
+
+
+  presentDialogChatbotSuccessfullyCreatedTheHookBot(depts_without_bot_array, faqkb) {
+    console.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+
+    Swal.fire({
+      // title: this.translate.instant('Success'),
+      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
+      icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
+      // cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      reverseButtons: true,
+      // dangerMode: false
+    }).then((result: any) => {
+
+      if (result.isConfirmed) {
+
+        console.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED result ', result);
+
+        this.openDialogHookBot(depts_without_bot_array, faqkb)
+      }
+    })
   }
 
 
@@ -859,20 +918,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
-  // forkTemplate() {
-  //   this.faqKbService.installTemplate('63c9943b4f857c003505557d', this.id_project, true, this.id_project).subscribe((res: any) => {
-  //     this.logger.log('[KNOWLEDGE-BASES-COMP] - FORK TEMPLATE RES', res);
-  //     this.botid = res.bot_id
-
-  //   }, (error) => {
-  //     this.logger.error('[KNOWLEDGE-BASES-COMP] FORK TEMPLATE - ERROR ', error);
-
-  //   }, () => {
-  //     this.logger.log('[KNOWLEDGE-BASES-COMP] FORK TEMPLATE COMPLETE');
-  //     this.goToBotDetails()
-  //   });
-  // }
-
   goToBotDetails() {
     // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
     let faqkb = {
@@ -905,18 +950,38 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.notify.presentModalAgentCannotManageChatbot(this.translate.instant('AgentsCannotManageChatbots'), this.learnMoreAboutDefaultRoles)
   }
 
-  goToChabotDetails(chatbot) {
-    this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
-    let faqkb = {
-      createdAt: new Date(),
-      _id: chatbot._id
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+  presentDialogGoToCDS(chatbot) {
+
+    this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
+    const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {
+      width: '700px',
+      data: {
+        chatbot: chatbot
+      },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+
+      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
+      if (result && result.chatbot) {
+
+        let faqkb = {
+          createdAt: new Date(),
+          _id: chatbot._id
+        }
+        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      }
+
+
+    });
+
+    // ModalConfirmGotoCdsComponent
+    // this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
+    // let faqkb = {
+    //   createdAt: new Date(),
+    //   _id: chatbot._id
+    // }
+    // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
-
-
-
-
 
 
   // ------------------------------------------------------------------------
@@ -1012,9 +1077,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
-
-
-
   onOpenDeleteNamespaceModal() {
     this.logger.log("onOpenDeleteNamespaceModal called....")
     if (this.selectedNamespace.default && this.kbsList.length === 0) {
@@ -1087,8 +1149,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     });
   }
-
-
 
 
   openAddKnowledgeBaseModal(type?: string) {

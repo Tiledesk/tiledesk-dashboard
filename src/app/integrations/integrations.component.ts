@@ -479,7 +479,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
         if (integration.plan === 'Sandbox') {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-          integration['displayBadge'] = true
+          integration['displayBadge'] = false
         }
         if (integration.plan === PLAN_NAME.D) {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')

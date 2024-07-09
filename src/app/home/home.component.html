@@ -366,7 +366,8 @@
               <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
               <home-cds *ngIf="areVisibleChatbot"
                 (goToCreateChatbot)="goToCreateChatbot()" 
-                [chatbots] = "chatbots"> </home-cds>
+                [chatbots] = "chatbots"
+                [displayKbHeroSection]="displayKbHeroSection" > </home-cds>
 
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
@@ -442,7 +443,7 @@
                 <!-- ----------------------- -->
                 <!-- Child 7 KB -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child7' && isVisibleKNB">
+                <ng-container *ngIf="item.type === 'child7' && isVisibleKNB && !displayKbHeroSection">
                   <appdashboard-home-kb *ngIf="displayKnowledgeBase" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-kb>
                 </ng-container>

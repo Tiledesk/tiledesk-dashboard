@@ -10,7 +10,7 @@ $color-pro-plan: #3ea9f5;
 //---------------------//
 // STRUCTURE
 //---------------------//
-.box-step-1 {
+.select-templates-or-kb {
     padding: 0;
     margin: 0;
     font-family: 'Poppins',Arial,sans-serif;
@@ -327,37 +327,105 @@ $color-pro-plan: #3ea9f5;
      }
 
 }
-
-
-.routing-rules {
+.cards-content-and-image-wpr {
     display: flex;
     flex-direction: row;
+    align-items: center;
+}
+
+.cards-wpr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+}
+
+.cards-selection {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 24px;
     margin-bottom: 16px;
   }
   
-  .routing-rule {
+  .card-selection-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .card-selection {
     position: relative;
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
     border: 1px solid #d9d9d9;
     outline: none;
     cursor: pointer;
-    min-height: 162px;
-    width: 250px;
+    // min-height: 162px;
+    width: 445px;
     pointer-events: auto;
   }
   
-  .routing-rule.rule-active {
+  .card-selection.active-selection {
     border: 2px solid var(--icon-hover-color);
   }
   
-  .routing-rule-content {
-    padding: 15px 12px;
+  
+
+  .select-templates-or-kb-title {
+    line-height: 1.2em;
     text-align: center;
+    font-weight: 500;
+    font-family: var(--header-font-family);
+    font-size: 32px;
+  }
+
+
+  .select-templates-or-kb-description {
+    text-align: center;
+    margin-bottom: 32px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+}
+
+
+.selection-card-content {
+    padding: 15px 12px;
+    text-align: left;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    align-items: center;
+    align-items: start;
   }
+
+.selection-card-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+}
+
+.selection-card-title-subtitle {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+    color: rgb(100, 116, 145);
+}
+
+
+// position: relative;
+//     background-color: rgb(255, 255, 255);
+//     border-radius: 8px;
+//     border: 1px solid rgb(5, 102, 255);
+//     outline: rgb(5, 102, 255) solid 1px;
+//     cursor: pointer;
+//     pointer-events: auto;
+//     padding: 20px;
+//     min-height: 0px;
+//     width: 490px;
+//     max-width: calc(-32px + 100vw);
