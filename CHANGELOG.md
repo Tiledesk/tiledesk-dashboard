@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.44-rc1
+- Added vxml voice integration
+- Added twilio sms integration
+
 ### 2.6.43
 - Deploys in production
 - Improves the quota usage widget
