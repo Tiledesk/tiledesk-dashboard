@@ -97,8 +97,16 @@
 .mat-dialog-ok-btn {
     background-color: var(--blue-light);
     color: #fff;
+}
+
+.mat-dialog-reset-btn {
+    // color: #fff;
+    // background-color: var(--red-color);
+    color: #30373F;
+    background-color: #191D2214;
 
 }
+
 
 .m-header {
     display: flex;
@@ -106,7 +114,7 @@
     justify-content: space-between;
 }
 
-.m-top-right-icon{
+.m-top-right-icon {
     cursor: pointer;
 }
 
@@ -118,14 +126,36 @@
     top: 0px;
     left: 0px;
     font-size: 18px;
-    color: rgb(91,98, 106);
-    
+    color: rgb(91, 98, 106);
+
 }
 
 .m-top-right-icon:hover>span {
     background-color: rgb(213, 214, 220);
-    color: rgb(28, 30, 33) 
+    color: rgb(28, 30, 33)
 }
+
+.reset-overrides-wpr {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.no-overrides {
+    color: var(--text-color)
+}
+
+.reset-overrides {
+    color: var(--blue-light);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.reset-overrides:hover {
+    text-decoration: underline;
+}
+
+
 
 // .action-wait-content {
 //     display: flex;

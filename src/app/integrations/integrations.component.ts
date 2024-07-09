@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, N8nIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -506,6 +506,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.BREVO) {
       return new BrevoIntegration();
     }
+    if (key === INTEGRATIONS_KEYS.N8N) {
+      return new N8nIntegration();
+    }
   }
 
 
@@ -701,8 +704,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
-
-      console.log("INTEGRATIONS: ", this.INTEGRATIONS);
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
