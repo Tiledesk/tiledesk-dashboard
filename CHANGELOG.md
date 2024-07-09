@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.44-rc2
+- Fix vxml voice integration visibility
+
 ### 2.6.44-rc1
 - Added vxml voice integration
 - Added twilio sms integration
