@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, N8nIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -152,6 +152,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
           this.logger.log("[INTEGRATION-COMP] app retrieved")
+          console.log("calling manageAppVisibility...")
           this.manageAppVisibility(projectProfileData)
           this.getIntegrations();
         }
@@ -274,6 +275,44 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           }
         }
         this.availableApps.push(telegramApp);
+
+        let smsApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_SMS && a.version === "v2"));
+        if (environment['smsConfigUrl']) {
+          if (smsApp) {
+            smsApp.runURL = environment['smsConfigUrl'];
+            smsApp.channel = "sms";
+          } else {
+            telegramApp = {
+              runURL: environment['smsConfigUrl'],
+              channel: "sms"
+            }
+          }
+        }
+        else {
+          if (smsApp) {
+            smsApp.channel = "sms";
+          }
+        }
+        this.availableApps.push(smsApp);
+
+        let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VXML_VOICE && a.version === "v2"));
+        if (environment['voiceConfigUrl']) {
+          if (voiceApp) {
+            voiceApp.runURL = environment['voiceConfigUrl'];
+            voiceApp.channel = "voice";
+          } else {
+            voiceApp = {
+              voiceApp: environment['voiceConfigUrl'],
+              channel: "voice"
+            }
+          }
+        }
+        else {
+          if (voiceApp) {
+            voiceApp.channel = "voice";
+          }
+        }
+        this.availableApps.push(voiceApp);
 
         resolve(true);
 
@@ -467,6 +506,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.BREVO) {
       return new BrevoIntegration();
     }
+    if (key === INTEGRATIONS_KEYS.N8N) {
+      return new N8nIntegration();
+    }
   }
 
 
@@ -479,7 +521,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
         if (integration.plan === 'Sandbox') {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-          integration['displayBadge'] = true
+          integration['displayBadge'] = false
         }
         if (integration.plan === PLAN_NAME.D) {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
@@ -654,6 +696,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.MESSENGER);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
+      if (projectProfileData.customization[this.INT_KEYS.TWILIO_SMS] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
@@ -662,7 +712,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.CATEGORIES.splice(idx, 1);
         }
       }
+
+    } else {
+
+      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      
     }
+
     this.integrationListReady = true;
   }
 
