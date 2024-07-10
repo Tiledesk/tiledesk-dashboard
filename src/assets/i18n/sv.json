@@ -755,6 +755,8 @@
         "Subscription": "Prenumeration",
         "SeePayments": "Se Betalningar",
         "Advanced": "Avancerad",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Lagkamrater kan bara se sina egna konversationer",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Om du aktiverar det här alternativet kan lagkamrater bara se sina egna konversationer på fliken \"Dina konversationer\" på sidan Övervaka",
         "ChatLimit": "Chattgräns",
         "AutomaticAssignment": "Automatisk tilldelning",
         "IfYouActivateTheAutomaticAssignmentOption": "Om du aktiverar alternativet Automatisk tilldelning {{ BRAND_NAME }} automatiskt köade (Otilldelade) konversationer baserat på agentens tillgänglighet och öppettider.",

@@ -754,6 +754,8 @@
         "Subscription": "Sottoscrizione",
         "SeePayments": "Vedi Pagamenti",
         "Advanced": "Avanzate",
+        "TeammatesCanOnlySeeTheirOwnConvs":"I compagni di squadra possono vedere solo le proprie conversazioni",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"L'attivazione di questa opzione consente ai membri del team di vedere solo le proprie conversazioni nella scheda \"Le tue conversazioni\" della pagina Monitor",
         "ChatLimit": "Limite di chat",
         "AutomaticAssignment": "Assegnazione automatica",
         "IfYouActivateTheAutomaticAssignmentOption": "Se attivi l'opzione Assegnazione automatica, {{ BRAND_NAME }} assegna automaticamente le conversazioni in coda (non assegnate) in base alla disponibilità dell'agente e agli orari di apertura.",

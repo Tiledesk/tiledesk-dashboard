@@ -754,6 +754,8 @@
         "Subscription": "الاشتراك",
         "SeePayments": "انظر المدفوعات",
         "Advanced": "متقدم",
+        "TeammatesCanOnlySeeTheirOwnConvs":"يمكن لزملاء الفريق رؤية المحادثات الخاصة بهم فقط",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"يتيح تمكين هذا الخيار لأعضاء الفريق رؤية محادثاتهم الخاصة فقط في علامة التبويب \"محادثاتك\" في صفحة المراقبة",
         "ChatLimit": "حد الدردشة",
         "AutomaticAssignment": "التخصيص التلقائي",
         "IfYouActivateTheAutomaticAssignmentOption": "إذا قمت بتنشيط خيار التعيين التلقائي ، يقوم {{ BRAND_NAME }} تلقائيًا بتعيين المحادثات في قائمة الانتظار (غير المعينة) بناءً على توفر الوكيل وساعات العمل.",

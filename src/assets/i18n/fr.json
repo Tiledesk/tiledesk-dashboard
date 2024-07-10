@@ -754,6 +754,8 @@
         "Subscription": "Abonnement",
         "SeePayments": "Voir Paiements",
         "Advanced": "Avancée",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Les coéquipiers ne peuvent voir que leurs propres conversations",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"L'activation de cette option permet aux coéquipiers de voir uniquement leurs propres conversations dans l'onglet «Vos conversations» de la page Surveiller.",
         "ChatLimit": "Limite de chat",
         "AutomaticAssignment": "Affectation automatique",
         "IfYouActivateTheAutomaticAssignmentOption": "Si vous activez l'option Attribution automatique, {{ BRAND_NAME }} attribue automatiquement les conversations en file d'attente (non attribuées) en fonction de la disponibilité des agents et des heures d'ouverture.",
