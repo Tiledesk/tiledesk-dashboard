@@ -1164,10 +1164,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
           this.OLD_KB_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          // console.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         } else {
           this.OLD_KB_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          // console.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         }
 
 
@@ -1175,18 +1175,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
         if (event.url.indexOf('/knowledge-bases') !== -1) {
           this.KB_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          // console.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         } else {
           this.KB_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          // console.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/bots/create/tilebot/blank') !== -1) {
           this.CREATE_BOT_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+          // console.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
         } else {
           this.CREATE_BOT_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+          // console.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
         }
 
 
