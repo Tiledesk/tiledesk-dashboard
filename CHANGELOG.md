@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.6.44
+- Deploys in production
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+- Improvements and bug fixing
+
 ### 2.6.43
 - Deploys in production
 - Improves the quota usage widget
