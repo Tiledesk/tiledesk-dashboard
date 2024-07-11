@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.44-rc4
+- Improvements and bug fixing
+
 ### 2.6.44-rc3
 - Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
 
