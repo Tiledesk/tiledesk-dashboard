@@ -361,19 +361,23 @@
               <!-- -------------------------------------------------------- -->
               <!-- @ Angent filter -->
               <!-- -------------------------------------------------------- -->
-              <div *ngIf="!AGENTS_CAN_SEE_ONLY_OWN_CONVS" class="col-sm-4 select-agent-wpr">
+              <!-- AGENTS_CAN_SEE_ONLY_OWN_CONVS > {{AGENTS_CAN_SEE_ONLY_OWN_CONVS}} ONLY_MY_REQUESTS > {{ ONLY_MY_REQUESTS }}
+              displayAgentsSelect >  {{displayAgentsSelect}} -->
+              
+                <div *ngIf="displayAgentsSelect" class="col-sm-4 select-agent-wpr">
 
-                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
-                  name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
-                  (clear)="clearAgentFilter()" (change)="onChangeAgent()">
+                  <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
+                    name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                    (clear)="clearAgentFilter()" (change)="onChangeAgent()">
 
-                  <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
-                  <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
-                  <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
-                    {{ agent.firstname }} {{ agent.lastname }}
-                  </ng-option>
-                </ng-select>
-              </div>
+                    <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
+                    <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
+                    <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
+                      {{ agent.firstname }} {{ agent.lastname }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+            
 
               <!-- -------------------------------------------------------- -->
               <!-- @ Conversation type filter -->

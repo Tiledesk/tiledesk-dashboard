@@ -65,6 +65,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   firebase_token: any;
   currentUserID: string;
   ONLY_MY_REQUESTS: boolean = false;
+  displayAgentsSelect: boolean = true;
   ROLE_IS_AGENT: boolean;
   displayBtnLabelSeeYourRequets = false;
 
@@ -243,7 +244,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getCurrentProject();
     this.getProjectPlan();
     this.getLoggedUser();
-    this.getProjectUserRole();
+    // this.getProjectUserRole();
     this.detectBrowserRefresh();
     this.getChatUrl();
     this.getTestSiteUrl();
@@ -530,19 +531,31 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   getProjectUserRole() {
+    // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE ', user_role);
+        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE user_role ', user_role);
         if (user_role) {
           this.CURRENT_USER_ROLE = user_role;
           if (user_role === 'agent') {
             this.ROLE_IS_AGENT = true
             this.displayBtnLabelSeeYourRequets = true
 
-            this.ONLY_MY_REQUESTS = true
+            this.ONLY_MY_REQUESTS = true;
+            // if (this.ONLY_MY_REQUESTS === false && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
+            //   this.displayAgentsSelect = true
+            //   this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
+            // } else 
+            // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE  AGENTS_CAN_SEE_ONLY_OWN_CONVS', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
+            if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
+             
+              this.displayAgentsSelect = false
+              this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
+            }
+
             this.getWsRequests$();
           } else {
             this.ROLE_IS_AGENT = false
@@ -873,7 +886,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   getProjectById(projectid) {
     this.projectService.getProjectById(projectid).subscribe((project: any) => {
       this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - project: ', project);
-      this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - project > settings: ', project.settings);
+      // console.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - project > settings: ', project.settings);
 
 
       if (project && project.activeOperatingHours === true) {
@@ -924,7 +937,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.logger.error('[WS-REQUESTS-LIST] - GET PROJECT BY ID - ERROR', error);
     }, () => {
       this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - * COMPLETE *');
-
+      this.getProjectUserRole();
     });
   }
 
@@ -1055,6 +1068,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   seeIamAgentRequests(seeIamAgentReq) {
     this.ONLY_MY_REQUESTS = seeIamAgentReq
+    if (this.ONLY_MY_REQUESTS === false && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
+      this.displayAgentsSelect = true
+      this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
+    } else if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
+     
+      this.displayAgentsSelect = false
+      this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
+    }
     this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
     if (seeIamAgentReq === false) {
       this.displayBtnLabelSeeYourRequets = false;
@@ -1254,6 +1275,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
+            
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
               if (wsrequest !== null && wsrequest !== undefined) {
@@ -1272,6 +1294,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
+           
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
               if (wsrequest !== null && wsrequest !== undefined) {
