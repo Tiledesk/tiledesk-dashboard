@@ -752,7 +752,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       }, error => {
         this.logger.error('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES - ERROR ', error)
       }, () => {
-        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
+        console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
         // this.goToExitOnboarding();
         // this.goToOnbordingTemplates()
         if (this.arrayOfSteps.length === 1) {

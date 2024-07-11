@@ -16,6 +16,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -44,7 +45,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   botid: string;
   botName: string;
   projectid: string;
-
+  project_Id:  string;
   botDefaultSelectedLang: string = 'English - en';
   botDefaultSelectedLangCode: string = 'en'
   language: string;
@@ -57,14 +58,14 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   DISPLAY_INCREASE_TMPLT: boolean
   videoURL: any;
   DIPLAY_CUSTOM_SUBTITLE: boolean;
-  isLoading= true;
+  isLoading = true;
 
-   // Hook bot to dept
-   dept_id: string;
+  // Hook bot to dept
+  dept_id: string;
   kbOfficialResponderTag = "kb-official-responder";
   selectedNamespace: any;
   welcomeMsg: string
-  
+
   templtId = ['651a87648cb2c70013d80d8b', '651e66be6717f500135f41b9', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651fc9ef8c10e70013b6e240', '651ad6c1bfdf310013ca90d7']
   videoSource = [
     { _id: '651a87648cb2c70013d80d8b', source: 'https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4' },
@@ -89,7 +90,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     private translate: TranslateService,
     private kbService: KnowledgeBaseService,
     public faqService: FaqService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    public localDbService: LocalDbService,
   ) {
 
     const brand = brandService.getBrand();
@@ -113,7 +115,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    
+
 
     console.log('[CNP-TEMPLATES] hasSelectChatBotOrKb ', this.hasSelectChatBotOrKb)
 
@@ -124,7 +126,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       this.projectid = this.updatedProject._id
       // console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
 
-      if (userPreferences.user_role === 'business_owner'|| userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
+      if (userPreferences.user_role === 'business_owner' || userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
         this.DIPLAY_CUSTOM_SUBTITLE = false;
         const userRole = this.translate.instant(userPreferences.user_role)
 
@@ -149,11 +151,11 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
-        // this.projectId = project._id
+        this.project_Id = project._id
         console.log('[CNP-TEMPLATES] - project ', project)
 
         this.welcomeMsg = 'Hi, I\'m the virtual assistant of ' + this.capitalize(project.name) + 'how can I help you?\r\n'
-        this.getAllNamespaces()
+        this.getAllNamespaces(this.project_Id)
       }
     });
   }
@@ -216,72 +218,72 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     // this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
-      
-        // this.certfifiedTemplates = res
-        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
-        if (res) {
-          // this.templates = res.slice(0, 5);
 
-          // this.templates = res.filter((tmplt: any) => {
-          //  tmplt._id ==='651a87648cb2c70013d80d8b' || 
-          //     tmplt._id === '651e66be6717f500135f41b9' ||
-          //     tmplt._id === '6529582c23034f0013ee1af6' ||
-          //     tmplt._id === '651ecc5749598e0013305876' ||
-          //     tmplt._id === '651fc9ef8c10e70013b6e240' ||
-          //     tmplt._id === '651ad6c1bfdf310013ca90d7' 
-          // });
+      // this.certfifiedTemplates = res
+      // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
+      if (res) {
+        // this.templates = res.slice(0, 5);
 
-          const filterdres = res.filter((item) => {
-            return this.templtId.includes(item._id)
-          });
+        // this.templates = res.filter((tmplt: any) => {
+        //  tmplt._id ==='651a87648cb2c70013d80d8b' || 
+        //     tmplt._id === '651e66be6717f500135f41b9' ||
+        //     tmplt._id === '6529582c23034f0013ee1af6' ||
+        //     tmplt._id === '651ecc5749598e0013305876' ||
+        //     tmplt._id === '651fc9ef8c10e70013b6e240' ||
+        //     tmplt._id === '651ad6c1bfdf310013ca90d7' 
+        // });
 
-          // console.log('[CNP-TEMPLATES] - filterdres ', filterdres);
+        const filterdres = res.filter((item) => {
+          return this.templtId.includes(item._id)
+        });
 
-          this.templates = filterdres.filter((obj) => {
-            return obj.mainCategory === selectedUseCase
-          });
+        // console.log('[CNP-TEMPLATES] - filterdres ', filterdres);
 
-          // console.log('[CNP-TEMPLATES] - FILTERED TEMPLATES CATEGORY: ', selectedUseCase, 'TEMPLATES:  ', this.templates);
+        this.templates = filterdres.filter((obj) => {
+          return obj.mainCategory === selectedUseCase
+        });
 
-          // for (let i = 0; i < this.templates.length; i++) {
-          //   for (let j = 0; j < this.videoSource.length; j++) { 
-          //     if (this.templates[i]['_id'] === this.videoSource[j]['_id']) {
-          //       this.templates[i]['videoURL'] = this.videoSource[j]['source']
-          //     }
-          //   }
-          //  }
+        // console.log('[CNP-TEMPLATES] - FILTERED TEMPLATES CATEGORY: ', selectedUseCase, 'TEMPLATES:  ', this.templates);
 
-          // this.customerSatisfactionTemplates = this.templates.filter((obj) => {
-          //   return obj.mainCategory === "Customer Satisfaction"
-          // });
-          // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES customerSatisfactionTemplates ', this.customerSatisfactionTemplates);
+        // for (let i = 0; i < this.templates.length; i++) {
+        //   for (let j = 0; j < this.videoSource.length; j++) { 
+        //     if (this.templates[i]['_id'] === this.videoSource[j]['_id']) {
+        //       this.templates[i]['videoURL'] = this.videoSource[j]['source']
+        //     }
+        //   }
+        //  }
 
-          // this.increaseSalesTemplates = this.templates.filter((obj) => {
-          //   return obj.mainCategory === "Increase Sales"
-          // });
-          // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES increaseSalesTemplates ', this.increaseSalesTemplates);
+        // this.customerSatisfactionTemplates = this.templates.filter((obj) => {
+        //   return obj.mainCategory === "Customer Satisfaction"
+        // });
+        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES customerSatisfactionTemplates ', this.customerSatisfactionTemplates);
 
-          this.template = this.templates[0];
-          this.templatename = this.template.name
-          this.templateid = this.template._id
-          // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
+        // this.increaseSalesTemplates = this.templates.filter((obj) => {
+        //   return obj.mainCategory === "Increase Sales"
+        // });
+        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES increaseSalesTemplates ', this.increaseSalesTemplates);
 
-          // console.log('[CNP-TEMPLATES] first tempaltes videoURL ', this.videoURL)
-          // console.log('[CNP-TEMPLATES] first tempaltes selected ', this.template)
-          // console.log('[CNP-TEMPLATES] first tempaltes selected templateid', this.template._id)
-        }
-        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
+        this.template = this.templates[0];
+        this.templatename = this.template.name
+        this.templateid = this.template._id
+        // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
 
-     
+        // console.log('[CNP-TEMPLATES] first tempaltes videoURL ', this.videoURL)
+        // console.log('[CNP-TEMPLATES] first tempaltes selected ', this.template)
+        // console.log('[CNP-TEMPLATES] first tempaltes selected templateid', this.template._id)
+      }
+      // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
+
+
 
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES] GET TEMPLATES ERROR ', error);
-    
+
       this.isLoading = false
     }, () => {
       this.logger.log('[CNP-TEMPLATES] GET TEMPLATES COMPLETE');
       this.isLoading = false
-   
+
       // this.generateTagsBackground(this.templates)
     });
   }
@@ -428,13 +430,14 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   // Kb responder 
   // ------------------------------------
 
-  getAllNamespaces() {
+  getAllNamespaces(project_id) {
 
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
-        
+
         console.log('[CNP-TEMPLATES] - GET ALL NAMESPACES', res);
         this.selectedNamespace = res[0];
+        this.localDbService.setInStorage(`last_kbnamespace-${project_id}`, JSON.stringify(this.selectedNamespace))
 
         console.log('[CNP-TEMPLATES] - GET ALL NAMESPACES selectedNamespace', this.selectedNamespace);
       }
@@ -443,7 +446,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     }, () => {
       this.logger.log('[CNP-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
-      
+
     });
   }
 
@@ -491,46 +494,46 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         if (askGPT_Action) {
           askGPT_Action.namespace = this.selectedNamespace.id
           console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
-         
+
         }
         // ----------------------------------------------------------------------------
         // Find a solution! This no more working affter that the template was changed
         // ----------------------------------------------------------------------------
         // const replyActionWithWelcomeMsg = intent.actions.find(x => x.text !== undefined);
-          // if(replyActionWithWelcomeMsg) {
-          //   console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg', replyActionWithWelcomeMsg)
-          //   replyActionWithWelcomeMsg.text = this.welcomeMsg
+        // if(replyActionWithWelcomeMsg) {
+        //   console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg', replyActionWithWelcomeMsg)
+        //   replyActionWithWelcomeMsg.text = this.welcomeMsg
 
-          //   if (replyActionWithWelcomeMsg && replyActionWithWelcomeMsg.attributes && replyActionWithWelcomeMsg.attributes.commands) {
-          //     const actionCommands = replyActionWithWelcomeMsg.attributes.commands
-          //     console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands', actionCommands)
-          //     actionCommands.forEach(command => {
-          //       if (command.type === "message" ) {
+        //   if (replyActionWithWelcomeMsg && replyActionWithWelcomeMsg.attributes && replyActionWithWelcomeMsg.attributes.commands) {
+        //     const actionCommands = replyActionWithWelcomeMsg.attributes.commands
+        //     console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands', actionCommands)
+        //     actionCommands.forEach(command => {
+        //       if (command.type === "message" ) {
 
-          //         console.log("[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands command ", command.message.text) 
-          //         command.message.text = this.welcomeMsg
+        //         console.log("[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands command ", command.message.text) 
+        //         command.message.text = this.welcomeMsg
 
-          //       }
-                
-          //     });
-          //   }
+        //       }
 
-          // }
+        //     });
+        //   }
 
-          // if (askGPT_Action &&  replyActionWithWelcomeMsg) {
-            
-          // }
+        // }
 
-          if (index === intentArray.length -1)  {
-            // console.log('[CNP-TEMPLATES] - askGPT_Action' , askGPT_Action)
-            // console.log('[CNP-TEMPLATES] - replyActionWithWelcomeMsg' , replyActionWithWelcomeMsg)
-            console.log('[CNP-TEMPLATES] - actionsArray' , actionsArray)
+        // if (askGPT_Action &&  replyActionWithWelcomeMsg) {
 
-            this.presentDialogChatbotname(chatbot)
-            
-          }
+        // }
+
+        if (index === intentArray.length - 1) {
+          // console.log('[CNP-TEMPLATES] - askGPT_Action' , askGPT_Action)
+          // console.log('[CNP-TEMPLATES] - replyActionWithWelcomeMsg' , replyActionWithWelcomeMsg)
+          console.log('[CNP-TEMPLATES] - actionsArray', actionsArray)
+
+          this.presentDialogChatbotname(chatbot)
+
+        }
       });
-      
+
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES] - EXPORT BOT TO JSON - ERROR', error);
     }, () => {
@@ -554,10 +557,32 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     dialogRef.afterClosed().subscribe(editedChatbot => {
       if (editedChatbot) {
-        console.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
+        console.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME AFTER CLOSED editedChatbot:`, editedChatbot);
         this.importChatbotFromJSON(editedChatbot)
+
+        console.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME  AFTER CLOSE selectedNamespace:`, this.selectedNamespace);
+        // this.selectedNamespace['name'] = editedChatbot['name']
+        let body = { name: editedChatbot['name'] }
+        this.updateNamespace(body)
       }
     });
+  }
+
+  updateNamespace(body) {
+
+    this.kbService.updateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
+      if (namespace) {
+        console.log(`[CNP-TEMPLATES] updateNamespace RES:`, namespace);
+        this.localDbService.setInStorage(`last_kbnamespace-${this.project_Id}`, JSON.stringify(namespace))
+      }
+    }
+    ), (error) => {
+      this.logger.error('[CNP-TEMPLATES] - UPDATE NAME SPACE NAME ERROR', error);
+
+    }, () => {
+      this.logger.log('[CNP-TEMPLATES] - UPDATE NAME SPACE NAME * COMPLETE *');
+
+    };
   }
 
   importChatbotFromJSON(editedChatbot) {
@@ -566,9 +591,9 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       console.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         console.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON faqkb certifiedTags  ', faqkb.certifiedTags)
-      
+
         this.getDeptsByProjectId(faqkb)
-      
+
       }
 
     }, (error) => {
@@ -614,12 +639,12 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
           }
 
           // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
-        } 
-        
+        }
+
         // else if (depts_length > 1) {
         //   this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
 
-         
+
         //   departments.forEach(dept => {
 
         //     if (dept.hasBot === true) {
@@ -627,7 +652,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
         //     } else {
         //       this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
-              
+
         //       this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
         //       this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
         //       if (!this.dialogRefHookBoot) {
@@ -649,7 +674,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
     console.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
-    this.logger.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
+    console.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
     this.departmentService.updateExistingDeptWithSelectedBot(deptId, botId).subscribe((res) => {
       console.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECTED BOT - RES ', res);
 
@@ -662,10 +687,10 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       // this.logger.error('[KNOWLEDGE-BASES-COMP] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
     }, () => {
       this.logger.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
-     
-        // this.notify.showWidgetStyleUpdateNotification(this.translate.instant('BotSuccessfullyActivated'), 2, 'done');
-        this.presentModalBotCreate()
-      
+
+      // this.notify.showWidgetStyleUpdateNotification(this.translate.instant('BotSuccessfullyActivated'), 2, 'done');
+      this.presentModalBotCreate()
+
       // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
       // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
       // this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE - HAS_COMPLETED_HOOK_BOOT_TO_DEPT', this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT);
@@ -673,17 +698,19 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   presentModalBotCreate() {
+    console.log('[CNP-TEMPLATES] presentModalBotCreate') 
     Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       title: 'Success',
       text: "You\'ve created your first chatbot to answer your users\' questions. Now it's time to deliver the content!",
       icon: "success",
       showCancelButton: false,
-      confirmButtonText: "Let\'s go!" ,
+      confirmButtonText: "Let\'s go!",
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
     }).then((result) => {
-      if (result.isConfirmed) { 
+      if (result.isConfirmed) {
+        console.log('[CNP-TEMPLATES] presentModalBotCreate result ', result)
         this.router.navigate(['project/' + this.projectid + '/knowledge-bases/' + this.selectedNamespace.id]);
       }
     })

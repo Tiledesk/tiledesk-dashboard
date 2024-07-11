@@ -189,6 +189,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
+  showskeletonForKbHero: boolean = true;
   showsNewsFeedSkeleton: boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
@@ -642,6 +643,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  dismissKbSkeleton(event) {
+   console.log('[HOME] - dismissKbSkeleton event', event);
+    // if (event === true ) {
+    // if(this.displayKbHeroSection) { 
+    //   this.showskeleton = false
+    // }
+  }
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
@@ -650,13 +658,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
-      this.showskeleton = false;
+      // if(!this.displayKbHeroSection) {
+        this.showskeleton = false;
+      // } else {
+      //   setTimeout(() => {
+      //     this.showskeleton = false;
+      //     console.log('[HOME] - GET FAQKB - showskeleton ', this.showskeleton);
+      //   }, 500);
+      // }
+     
       this.delayNewsFeedSkeleton()
 
 
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
-      this.showskeleton = false;
+      // if(!this.displayKbHeroSection) {
+        this.showskeleton = false;
+      // } else {
+      //   setTimeout(() => {
+          
+      //     this.showskeleton = false;
+      //     console.log('[HOME] - GET FAQKB COMPLETE - showskeleton ', this.showskeleton);
+      //   }, 3000);
+      // }
       this.delayNewsFeedSkeleton()
 
     });

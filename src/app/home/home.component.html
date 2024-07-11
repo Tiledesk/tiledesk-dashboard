@@ -250,7 +250,8 @@
 
           <!-- // Skeleton START   -->
           <div *ngIf="showskeleton" class="skeleton">
-            <!-- *ngIf="areVisibleChatbot" -->
+            
+            
             <div  class="first-card is-loading">
               <div class="fake--circle"></div>
               <div class="fake--box"></div>
@@ -366,6 +367,7 @@
               <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
               <home-cds *ngIf="areVisibleChatbot"
                 (goToCreateChatbot)="goToCreateChatbot()" 
+                (dismissKbSkeleton)="dismissKbSkeleton($event)"
                 [chatbots] = "chatbots"
                 [displayKbHeroSection]="displayKbHeroSection" > </home-cds>
 

@@ -260,7 +260,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
     }, (error) => {
@@ -268,7 +268,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
-      this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+      if (this.namespaces) {
+        this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+      }
     });
   }
 
@@ -454,7 +456,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
-    this.kbService.upadateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
+    this.kbService.updateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE RES', namespace);

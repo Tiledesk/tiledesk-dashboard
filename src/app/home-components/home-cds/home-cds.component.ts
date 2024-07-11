@@ -31,6 +31,7 @@ const Swal = require('sweetalert2')
 
 export class HomeCdsComponent extends PricingBaseComponent implements OnInit, OnChanges {
   @Output() goToCreateChatbot = new EventEmitter();
+  @Output() dismissKbSkeleton = new EventEmitter();
   // @Output() hasFinishedGetProjectBots = new EventEmitter();
   @Input() chatbots: Array<Chatbot> = [];
   @Input() displayKbHeroSection: boolean
@@ -55,6 +56,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   depts_without_bot_array = [];
   chatbotCount: number;
   depts: any;
+  
 
   constructor(
     public appConfigService: AppConfigService,
@@ -165,6 +167,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
     }, () => {
       console.log('[HOME-CDS] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
+      this.dismissKbSkeleton.emit(true)
 
     });
   }
