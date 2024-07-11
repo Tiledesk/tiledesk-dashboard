@@ -754,6 +754,8 @@
         "Subscription": "الاشتراك",
         "SeePayments": "انظر المدفوعات",
         "Advanced": "متقدم",
+        "TeammatesCanOnlySeeTheirOwnConvs": "Teammates can only see their own conversations",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs": "Enabling this option allows teammates to only see their own conversations in the \"Your Conversations\" tab of the Monitor page",
         "ChatLimit": "حد الدردشة",
         "AutomaticAssignment": "التخصيص التلقائي",
         "IfYouActivateTheAutomaticAssignmentOption": "If you activate the Automatic assignment option, {{ BRAND_NAME }} automatically assigns queued (Unassigned) conversations based on agent availability and opening hours.",
