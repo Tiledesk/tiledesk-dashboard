@@ -361,6 +361,19 @@ export class ProjectService {
       .post(url, body, httpOptions)
   }
 
+  public updateProject(id: string, project: Object) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.PROJECTS_URL + id;
+    return this._httpclient.put(url, project, httpOptions);
+  }
+
   // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch
   // -----------------------------------------------------------------

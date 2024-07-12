@@ -1,3 +1,5 @@
+@import "../../assets/sass/md/_variables.scss";
+
 // input[type="text"] {
 //   /* min-width: 307px !important; */
 //   height: 36px;
@@ -41,6 +43,7 @@
   -ms-user-select: none;
   user-select: none;
   padding-top: 3px;
+  font-family: 'Poppins';
 }
 
 /* Hide the browser's default checkbox */
@@ -452,7 +455,7 @@ button.close {
 // WHEN IS > 
 @media (min-width: 768px) {
   .custom_col {
-    border-right: 1px solid #e0e0e0;
+    //border-right: 1px solid #e0e0e0;
   }
 }
 
@@ -688,3 +691,150 @@ button.close {
   background-color: #4CAF50; 
 }
 // ./end SWITCH BTN
+
+
+// New CSS
+.header-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.custom-button {
+  cursor: pointer;
+  text-transform: capitalize;
+  color: white;
+  border: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  margin-left: 8px;
+  
+  //height: 36px;
+  height: 40px;
+  
+  //border-radius: 14px;
+  border-radius: 10px;
+
+  padding: 11px 20px 9px;
+}
+
+.custom-button.save {
+  // background: #397dff;
+  //background: var(--blue-light);
+  //background-color: #273be2;
+  cursor: pointer;
+  background-color: #397dff;
+  padding: 0 12px;
+  width: 80px;
+
+  &:hover {
+      // background: #256ffd;
+      background-color: #2f68db;
+      //opacity: .8;
+  }
+}
+
+.custom-button.delete {
+  // background: #397dff;
+  //background: var(--blue-light);
+  //background-color: #273be2;
+  cursor: pointer;
+  background-color: #c62445;
+  padding: 0 12px;
+  width: 80px;
+
+  &:hover {
+      // background: #256ffd;
+      background-color: #a01c37;
+      //opacity: .8;
+  }
+}
+
+.template-content {
+  flex: 1 1 auto; 
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 20;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  padding-top: 24px;
+
+}
+
+.selector-bar {
+  font-family: 'Poppins';
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.mat-menu-custom-btn>.mat-icon {
+  margin-right: 0;
+  color: var(--blue-light);
+  margin-top: 1px;
+  font-size: 21px;
+  width: 20px;
+}
+
+.mat-menu-custom-btn>span {
+  // background-color: var(--blue-light);
+  // border-color: var(--blue-light);
+  padding: 6px;
+  color: var(--blue-light);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.slot-add-selector {
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  .slot-name {
+    font-size: 24px;
+    font-weight: 400;
+  }
+}
+
+.mat-menu-panel {
+  min-width: 200px !important;
+}
+
+.reset-timezone {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+
+  .link {
+    display: flex;
+    align-items: center;
+    color: #758edf;
+    font-weight: 400;
+    margin-right: 4px;
+    cursor: pointer;
+
+    &:hover {
+      color: #3a5fd7;
+    }
+  }
+
+  .material-icons-outlined {
+    font-size: 20px;
+    margin-right: 2px;
+  }
+}
+
+.time-input{
+  padding: 4px;
+  border-radius: 8px;
+  border: solid 1px #62666d3b;
+}
