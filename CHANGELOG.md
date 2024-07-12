@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.45-rc1
+- Added time slots in Operating Hours
+
 ### 2.6.44-rc4
 - Improvements and bug fixing
 
