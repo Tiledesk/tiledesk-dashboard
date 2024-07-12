@@ -311,7 +311,7 @@ td {
         // box-shadow: rgb(212, 217, 230) 0px 1px 0px;
 
 
-        
+
         // background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(98, 119, 140) 100%), rgb(98, 119, 140);
         // box-shadow: rgb(98, 119, 140) 0px 1px 0px;
 
@@ -342,9 +342,12 @@ td {
     }
 
     .upgrade-title {
-        font-size: 28px;
-        font-weight: 500;
-        margin-bottom: 20px;
+        // font-size: 28px;
+        // font-weight: 500;
+        // margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 6px;
         display: block;
     }
 
@@ -363,7 +366,7 @@ td {
     }
 
     .upgrade-subtitle-learn-how:hover {
-       text-decoration: underline;
+        text-decoration: underline;
     }
 }
 
@@ -546,5 +549,5 @@ td {
 }
 
 .imported-file {
-    margin-top: 8px ;
+    margin-top: 8px;
 }
