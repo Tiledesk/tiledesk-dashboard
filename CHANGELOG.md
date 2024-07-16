@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.0
+- Deploys in production
+- Adds the ability to edit the "Quota checkpoint notification" email template
+- Adds Twilio SMS channel integration  
+
 ### 2.6.44
 - Deploys in production
 - Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
