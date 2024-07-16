@@ -2218,6 +2218,7 @@
     "sendTranscript": "Söhbət transkriptini göndərin",
     "emailDirect": "Direct email (sent when visitor is offline)",
     "newMessageFollower": "Email sent to ticket follower",
+    "checkpointReachedEmail": "Quota checkpoint notification",
     "ResetToDefaults": "Defoltlara sıfırlayın",
     "ThisActionIsNotReversible": "Bu hərəkət geri qaytarılmır. O, edilən hər hansı dəyişikliyi silməklə tətiyi orijinal parametrlərinə qaytaracaq.",
     "SendTo": "Göndər",
