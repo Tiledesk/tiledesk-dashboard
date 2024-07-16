@@ -152,7 +152,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
           this.logger.log("[INTEGRATION-COMP] app retrieved")
-          console.log("calling manageAppVisibility...")
           this.manageAppVisibility(projectProfileData)
           this.getIntegrations();
         }
@@ -702,7 +701,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
-      console.log("INTEGRATIONS: ", this.INTEGRATIONS);
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
