@@ -506,40 +506,16 @@ export class WsSharedComponent implements OnInit {
     this.conversationTypeInRequests = [];
     ws_requests.forEach(request => {
     // console.log('[WS-SHARED] getConversationTypeInRequests request ', request)
-      let channelObjct = {}
-      // (request.channel.name !== '' || request.channel.name !== '' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21')
-    
-  
-      if (request.channel.name === CHANNELS_NAME.CHAT21) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.CHAT21 ))
-      }
-      if (request.channel.name === CHANNELS_NAME.WHATSAPP) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.WHATSAPP ))
-      }
-      if (request.channel.name === CHANNELS_NAME.MESSANGER) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.MESSANGER ))
-      }
-      if (request.channel.name === CHANNELS_NAME.TELEGRAM) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.TELEGRAM ))
-      }
-      if (request.channel.name === CHANNELS_NAME.EMAIL) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.EMAIL ))
-      }
-      if (request.channel.name === CHANNELS_NAME.FORM) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.FORM ))
-      }
-      if (request.channel.name === CHANNELS_NAME.VOICE_VXML) {
-        channelObjct = CHANNELS.find((el => el.id === CHANNELS_NAME.VOICE_VXML ))
+
+      let channelObjct = CHANNELS.find((el => el.id === request.channel.name ))
+      if(channelObjct){
+        const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
+        if (index === -1) {
+          this.conversationTypeInRequests.push(channelObjct)
+        }
       }
 
-      const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
-      // if (this.conversationTypeInRequests.indexOf(request.channel.name) === -1) {
-        if (index === -1) {
-        this.conversationTypeInRequests.push(channelObjct)
-      } else {
-      //  console.log('[WS-SHARED] the element already exist')
-      }
-    })
+    });
     // console.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
   }
 
