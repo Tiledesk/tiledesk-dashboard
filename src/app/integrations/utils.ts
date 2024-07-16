@@ -27,7 +27,7 @@ export enum APPS_TITLE {
     WHATSAPP = "WhatsApp Business",
     MESSENGER = "Facebook Messenger",
     TELEGRAM = "Telegram",
-    VXML_VOICE = "VWML Voice",
+    VXML_VOICE = "VXML Voice",
     TWILIO_SMS = "Twilio SMS"
 }
 
