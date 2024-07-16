@@ -2218,6 +2218,7 @@
     "sendTranscript": "Enviar transcripción del chat",
     "emailDirect": "Direct email (sent when visitor is offline)",
     "newMessageFollower": "Email sent to ticket follower",
+    "checkpointReachedEmail": "Quota checkpoint notification",
     "ResetToDefaults": "Restablecer valores por defecto",
     "ThisActionIsNotReversible": "This action is not reversible. It will restore the trigger to its original settings by removing any changes made.",
     "SendTo": "Enviar a",
