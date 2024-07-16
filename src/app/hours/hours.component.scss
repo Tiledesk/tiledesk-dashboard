@@ -406,11 +406,36 @@ button.close {
 /*  MODAL END */
 
 .opened_label {
-  background-color: #4caf50; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1px; font-size: 0.8em;
+  //background-color: #4caf50; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1px; font-size: 0.8em;
+  display: flex;
+  justify-content: center;
+  background-color: #4caf50;
+  //border: solid 1px #4caf50;
+  border-radius: 8px;
+  //color: #4caf50;
+  color: white;
+  font-weight: 500;
+  padding: 4px 6px;
+  letter-spacing: 1px;
+  font-size: 11px;
+  width: 60px;
+  height: 24px;
 }
 
 .closed_label {
-  background-color: #f44336; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1.3px; font-size: 0.8em; 
+  //background-color: #f44336; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1.3px; font-size: 0.8em; 
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border: solid 1px #f44336;
+  border-radius: 8px;
+  color: #f44336;
+  font-weight: 500;
+  padding: 4px 6px;
+  letter-spacing: 1px;
+  font-size: 11px;
+  width: 60px;
+  height: 24px;
 }
 
 
@@ -758,6 +783,12 @@ button.close {
   margin-right: 40px;
   margin-top: 20;
 }
+
+.title-attribute {
+  display: flex;
+  align-items: center;
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;

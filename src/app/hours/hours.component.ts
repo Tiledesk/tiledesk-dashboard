@@ -1,174 +1,41 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../core/auth.service';
-
 import { ProjectService } from '../services/project.service';
 import { UsersService } from '../services/users.service';
-
-// import { AmazingTimePickerService } from 'amazing-time-picker';
+// import { AmazingTimePickerService } from 'amazing-time-picker'
 import { TranslateService } from '@ngx-translate/core';
-
 // import * as moment from 'moment';
 import * as moment from 'moment-timezone'
 import { NotifyService } from '../core/notify.service';
-
 import { Router } from '@angular/router';
-import { Project } from '../models/project-model';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { FormControl } from "@angular/forms";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
 import { v4 as uuidv4 } from 'uuid';
 import { DeleteSlotModalComponent } from './modals/delete-slot-modal/delete-slot-modal.component';
 import { DAYS } from './utils';
-import { assert } from 'console';
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
-  styleUrls: ['./hours.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./hours.component.scss']
 })
 
 
 export class HoursComponent implements OnInit, OnDestroy {
 
   public days = [];
-  // public days = [
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '0',
-  //     weekday: 'Sunday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   },
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '1',
-  //     weekday: 'Monday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   },
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '2',
-  //     weekday: 'Tuesday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   },
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '3',
-  //     weekday: 'Wednesday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   },
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '4',
-  //     weekday: 'Thursday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   },
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '5',
-  //     weekday: 'Friday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   },
-  //   // tslint:disable-next-line:max-line-length
-  //   {
-  //     _id: '6',
-  //     weekday: 'Saturday',
-  //     isOpen: false,
-  //     isOpenPm: true,
-  //     operatingHours: '',
-  //     operatingHoursAmStart: '',
-  //     operatingHoursAmEnd: '',
-  //     operatingHoursPmStart: '',
-  //     operatingHoursPmEnd: ''
-  //   }
-  // ];
-
-  // // time picker
-  // formControlItem: FormControl = new FormControl("");
-  // required: boolean = !1;
-  // @ViewChild("timepicker") timepicker: any;
-  
-  // activeOperatingHours: boolean;
-  // operatingHours: any;
-
-  // // daysList: any;
-  // IS_OPEN = false;
-
-  // projectid: string;
-  // projectname: string;
-  // project_operatingHours: any;
-  // project_timeSlots: any;
-  // public selectedTime: any;
-  // projectOffsetfromUtcZero: any;
-  // offsetDirectionFromUtcZero: any;
-  // isActiveOperatingHours: boolean;
-  // browser_lang: string;
-  // IS_CLOSED_IN_PM: boolean;
-  // timezone_name: string;
-  // current_prjct_timezone_name: string;
-  // current_prjct_UTC: any;
-  // timezone_NamesAndUTC_list: any;
-  // timezoneNameForTooltip: any;
-  // timezoneUTCOffsetForTooltip: any;
-  // displayModalUpdatingOperatingHours = 'none'
-  // SHOW_CIRCULAR_SPINNER = false;
-  // UPDATE_HOURS_ERROR = false;
-  // TIMEZONE_NAME_IS_NULL = false;
-  // timeZoneSelectedIsUnlikeCurrentTimezone: boolean;
-
-  // showSpinner = true;
-  // public_Key: string;
-  // IS_OPEN_SETTINGS_SIDEBAR: boolean;
-  // // hasSaved: boolean
-  // isChromeVerGreaterThan100: boolean;
-  // USER_ROLE: string;
-
-  // timeSlotsArray: Array<any> = [];
 
   // View Variables
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   showSpinner: boolean = true;
+  displayModalUpdatingOperatingHours = 'none'
+  SHOW_CIRCULAR_SPINNER = false;
 
-
+  // Operative Variables
   projectid: string;
   timeSlots: Object = {};
   selectedSlot: any;
@@ -178,11 +45,13 @@ export class HoursComponent implements OnInit, OnDestroy {
   currentUTCOffset: string;
   currentUTCName: string;
 
+  // System Variables
+  USER_ROLE: string;
+
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
     private usersService: UsersService,
-    // private atp: AmazingTimePickerService,
     private translate: TranslateService,
     public notify: NotifyService,
     private router: Router,
@@ -193,6 +62,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getCurrentProject();
+    this.getUserRole();
     this.getOSCODE();
     this.listenSidebarIsOpened();
     this.getBrowserVersion();
@@ -219,6 +89,14 @@ export class HoursComponent implements OnInit, OnDestroy {
     });
   }
 
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((userRole) => {
+        this.logger.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
+
   getOSCODE() {
     let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     let keys = public_Key.split("-");
@@ -240,12 +118,10 @@ export class HoursComponent implements OnInit, OnDestroy {
   // View Functions - END
 
 
-
-
-
   getCurrentProject() {
     this.auth.project_bs.subscribe(project => {
 
+      console.log("bs fired")
       if (project) {
         this.projectid = project._id;
         if (this.projectid) {
@@ -257,7 +133,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   getProjectById() {
     this.projectService.getProjectById(this.projectid).subscribe((project: any) => {
-      console.log("project.operatingHours: ", project.operatingHours);
+      console.log("***** project: ", project);
 
       this.selectedSlot = {
         id: 0,
@@ -265,10 +141,8 @@ export class HoursComponent implements OnInit, OnDestroy {
         active: project.activeOperatingHours || false,
         hours: null
       }
-      console.log("this.selectedSlot: ", this.selectedSlot);
       if (project.operatingHours) {
         this.selectedSlot.hours = JSON.parse(project.operatingHours);
-        console.log("(inside if) this.selectedSlot.hours: ", this.selectedSlot.hours);
       } else {
         this.selectedSlot.hours = {
           tzname: moment.tz.guess()
@@ -278,21 +152,18 @@ export class HoursComponent implements OnInit, OnDestroy {
       this.initializeDaysObject(this.selectedSlot.hours);
 
       if (project.timeSlots) {
-        console.log("project.timeSlots: ", project.timeSlots)
         this.timeSlots = project.timeSlots;
         this.timeSlotsArray = Object.keys(project.timeSlots).map(key => ({
           id: key,
           ...project.timeSlots[key]
         }));
-        console.log("this.timeSlotsArray: ", this.timeSlotsArray)
-      } 
-      
-      console.log("this.selectedSlot: ", this.selectedSlot);
-
-
+      } else {
+        this.timeSlots = {};
+        this.timeSlotsArray = [];
+      }
       this.showSpinner = false;
     }, (error) => {
-      console.error("error getting projet: ", error)
+      this.logger.error("error getting projet: ", error)
       this.showSpinner = false;
     }, () => {
       this.showSpinner = false;
@@ -317,7 +188,6 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   initializeDaysObject(operatingHours) {
 
-    console.log("operatingHours: ", operatingHours);
     if (operatingHours) {
       for (let i = 0; i < 7; i++) {
         // this.logger.log('CICLO I =  ', i)
@@ -369,62 +239,34 @@ export class HoursComponent implements OnInit, OnDestroy {
       this.days[weekdayid].operatingHoursPmStart = '';
       this.days[weekdayid].operatingHoursPmEnd = '';
     }
-
-    console.log("days: ", this.days)
-  }
-
-  close_Pm(dayid) {
-    this.logger.log('[HOURS] - CLOSE PM FOR THE DAY ID  ', dayid);
-    this.days[dayid].operatingHoursPmStart = '';
-    this.days[dayid].operatingHoursPmEnd = '';
-    this.days[dayid].isOpenPm = false;
-  }
-
-  open_Pm(dayid) {
-    this.logger.log('[HOURS] - OPEN PM FOR THE DAY ID  ', dayid);
-    this.days[dayid].isOpenPm = true;
-    this.days[dayid].operatingHoursPmStart = '14:00';
-    this.days[dayid].operatingHoursPmEnd = '18:00';
   }
 
   save() {
-    this.showSpinner = true;
+    //this.showSpinner = true;
     for (let j=0; j<7; j++) {
       if (this.days[j].isOpen === true) {
-        console.log("this.days[j] is open")
         this.selectedSlot.hours[j] = [
           { start: this.days[j].operatingHoursAmStart, end: this.days[j].operatingHoursAmEnd },
           { start: this.days[j].operatingHoursPmStart, end: this.days[j].operatingHoursPmEnd }
         ]
       }
     }
-    console.log("this.selectedSlot.hours", this.selectedSlot.hours)
 
     if (this.selectedSlot.id === 0) {
       this.updateProjectOperatingHours()
     } else {
+      console.log("1: update time slot")
       this.updateProjectTimeSlot();
     }
 
   }
 
   updateProjectOperatingHours() {
-
-    console.log("this.selectedSlot.hours: ", this.selectedSlot.hours);
     let data = {
       activeOperatingHours: this.selectedSlot.active,
       operatingHours: JSON.stringify(this.selectedSlot.hours)
     }
-
-    console.log("data: ", data);
-
-    this.projectService.updateProject(this.projectid, data).subscribe((updatedProject) => {
-      console.log("updatedProject: ", updatedProject);
-      this.showSpinner = false;
-    }, (error) => {
-      console.error("update project error: ", error);
-      this.showSpinner = false;
-    })
+    this.updateProject(data);
   }
 
   updateProjectTimeSlot() {
@@ -433,36 +275,83 @@ export class HoursComponent implements OnInit, OnDestroy {
     let data = {
       timeSlots: this.timeSlots
     }
-    console.log("data: ", data);
+    console.log("2: call update project");
+    this.updateProject(data);
+  }
 
-    this.projectService.updateProject(this.projectid, data).subscribe((updatedProject) => {
-      console.log("updatedProject: ", updatedProject);
-      this.showSpinner = false;
-    }, (error) => {
-      console.error("update project error: ", error);
-      this.showSpinner = false;
+  updateProject(data) {
+    console.log("3: update project called")
+    Swal.fire({
+      text: this.translate.instant("HoursPage.UpdateHours"),
+      confirmButtonColor: "var(--blue-light)",
+      didOpen: () => {
+        console.log("4: show loading")
+        Swal.showLoading();
+        if (this.selectedSlot.active === false && !this.selectedSlot.hours.tzname) {
+          console.log("4a: slot inactive")
+          setTimeout(() => {
+            Swal.hideLoading();
+            Swal.update({ title: this.translate.instant("Error"), text: this.translate.instant("HoursPage.ErrorSelectTheProjectTimezone"), icon: 'error' })
+          }, 500);
+        } else {
+          console.log("5. recall project service")
+          this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
+            updatedProject['role'] = this.USER_ROLE;
+            localStorage.setItem(updatedProject['_id'], JSON.stringify(updatedProject));
+            this.auth.projectSelected(updatedProject, 'hours')
+            console.log("6. saved on storage")
+            setTimeout(() => {
+              console.log("7. hide loading")
+              Swal.hideLoading();
+              Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.OperatingHoursSuccessfullyUpdated"), icon: 'success' })
+              setTimeout(() => {
+                console.log("8. close")
+                Swal.close();
+              }, 2000);
+            }, 500);
+          }, (error) => {
+            this.logger.error("update project error: ", error);
+            setTimeout(() => {
+              Swal.hideLoading();
+              Swal.update({ title: this.translate.instant("Error"), text: this.translate.instant("HoursPage.AnErrorHasOccurred"), icon: 'error' })
+            }, 500);
+          })
+        }
+
+      }
     })
   }
 
+  // _updateProject(data) {
+  //   this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
+  //     console.log("updatedProject: ", updatedProject);
+  //     localStorage.setItem(updatedProject['_id'], JSON.stringify(updatedProject));
+  //     this.auth.projectSelected(updatedProject, 'hours')
+  //     //this.showSpinner = false;
+  //   }, (error) => {
+  //     console.error("update project error: ", error);
+  //     this.showSpinner = false;
+  //   })
+  // }
 
   // Slot - START
-
   refreshSlotsList() {
+    console.log("**** refresh called")
     this.projectService.getProjectById(this.projectid).subscribe((project: any) => {
       if (project.timeSlots) {
-        console.log("project.timeSlots: ", project.timeSlots)
         this.timeSlots = project.timeSlots;
         this.timeSlotsArray = Object.keys(project.timeSlots).map(key => ({
           id: key,
           ...project.timeSlots[key]
         }));
-        console.log("this.timeSlotsArray: ", this.timeSlotsArray)
+      } else {
+        this.timeSlots = {};
+        this.timeSlotsArray = [];
       }
     }, (error) => {
-      console.error("Unable to refresh slots list");
+      this.logger.error("Unable to refresh slots list");
     })
   }
-
 
   presentModalNewSlot() {
     const dialogRef = this.dialog.open(NewSlotModalComponent, {
@@ -474,9 +363,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
       if (body) {
-        console.log("body after close: ", body)
         this.addSlot(body.slotName);
-        //this.onAddKb(body)
       }
     });
 
@@ -490,54 +377,42 @@ export class HoursComponent implements OnInit, OnDestroy {
     }
 
     let uuid = uuidv4();
-    console.log("uuid: ", uuid)
     let short_uuid = uuid.substring(uuid.lastIndexOf('-') + 1)
-    console.log("short_uuid: ", short_uuid)
-
-    console.log("new_slot: ", new_slot);
-
-    console.log("timeSlots: ", typeof this.timeSlots)
-    console.log("timeSlots: ", this.timeSlots)
-    console.log("timeSlots: ", typeof this.timeSlots)
     this.timeSlots[short_uuid] = new_slot;
-    console.log("timeSlots: ", this.timeSlots)
-    console.log("timeSlots: ", typeof this.timeSlots)
     this.saveSlots(short_uuid);
 
-    // this.project_timeSlots[short_uuid] = new_slot;
-    // console.log("project timeSlots: ", this.project_timeSlots);
   }
 
   saveSlots(slot_id) {
-    this.showSpinner = true;
-    let data = {
-      timeSlots: this.timeSlots
-    }
-    console.log("data: ", data);
-    this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
-      console.log("updatedProject: ", updatedProject);
 
-      if (slot_id) {
-        let slot = updatedProject.timeSlots[slot_id]
-        console.log("slot: ", slot);
-        this.refreshSlotsList();
-        this.onSelectSlot(slot);
-      } else {
-        this.getProjectById();
+    return new Promise((resolve, reject) => {
+      this.showSpinner = true;
+      let data = {
+        timeSlots: this.timeSlots
       }
-
-    }, (error) => {
-      console.log("error updating project: ", error);
+      this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
+        if (slot_id) {
+          let slot = updatedProject.timeSlots[slot_id]
+          slot.id = slot_id;
+          console.log("**** slot: ", slot)
+          this.refreshSlotsList();
+          this.onSelectSlot(slot);
+        } else {
+          //this.refreshSlotsList();
+          this.getProjectById();
+        }
+        resolve(true)
+  
+      }, (error) => {
+        this.logger.error("error updating project: ", error);
+        reject(error);
+      })
     })
   }
 
   onSelectSlot(slot) {
     this.showSpinner = true;
-    console.log("1 days: ", this.days)
-    console.log("2 DAYS: ", DAYS)
     this.days = JSON.parse(JSON.stringify(DAYS));
-    console.log("3 days: ", this.days)
-    console.log("onSelectSlot slot: ", slot)
     if (!slot) {
       this.getProjectById();
     } else {
@@ -553,10 +428,93 @@ export class HoursComponent implements OnInit, OnDestroy {
         this.showSpinner = false
       }, 200);
     }
-    // this.isActiveOperatingHours = slot.active;
   }
 
-  presentModalDeleteSlot() {
+  close_Pm(dayid) {
+    this.logger.log('[HOURS] - CLOSE PM FOR THE DAY ID  ', dayid);
+    this.days[dayid].operatingHoursPmStart = '';
+    this.days[dayid].operatingHoursPmEnd = '';
+    this.days[dayid].isOpenPm = false;
+  }
+
+  open_Pm(dayid) {
+    this.logger.log('[HOURS] - OPEN PM FOR THE DAY ID  ', dayid);
+    this.days[dayid].isOpenPm = true;
+    this.days[dayid].operatingHoursPmStart = '14:00';
+    this.days[dayid].operatingHoursPmEnd = '18:00';
+  }
+  
+  onChangeAmStartFromArrow(time, weekdayid) {
+    this.logger.log('[HOURS] - ON CHANGE AM START FROM  UP/DOWN ARROW - DAY ID', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursAmStart = time;
+  }
+
+  onChangeAmEndFromArrow(time, weekdayid) {
+    this.logger.log('[HOURS] - ON CHANGE AM END FROM  UP/DOWN ARROW - DAY ID', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursAmEnd = time;
+  }
+
+  onChangePmStartFromArrow(time, weekdayid) {
+    this.logger.log('[HOURS] - ON CHANGE PM START FROM  UP/DOWN ARROW - DAY ID:', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursPmStart = time;
+
+    // IF THE PM START TIME IS EMPTY SET TO EMPTY ALSO THE PM END TIME
+    if (this.days[weekdayid].operatingHoursPmStart === '') {
+      this.days[weekdayid].operatingHoursPmEnd = '';
+
+      // used to set the 'disabled class' to the buttons and input when the pm start time and pm end time are empty
+      this.days[weekdayid].isOpenPm = false;
+    } else {
+      this.days[weekdayid].isOpenPm = true;
+    }
+  }
+
+  onChangePmEndFromArrow(time, weekdayid) {
+    this.logger.log('[HOURS] - ON CHANGE PM END FROM  UP/DOWN ARROW - DAY ID: ', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursPmEnd = time;
+  }
+
+  presentModalDeleteSlot(data) {
+    console.log("delete the slot with id: ", this.selectedSlot.id);
+    Swal.fire({
+      title: "Delete time slot",
+      html: `Are you sure you want to delete the time slot <b>${this.selectedSlot.name}</b>`,
+      showDenyButton: true,
+      confirmButtonText: "Yes, delete.",
+      confirmButtonColor: "#c62455",
+      denyButtonColor: "#ccc",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed === true) {
+        Swal.fire({
+          text: this.translate.instant("HoursPage.UpdateHours"),
+          confirmButtonColor: "var(--blue-light)",
+          didOpen: () => {
+            Swal.showLoading();
+            delete this.timeSlots[this.selectedSlot.id];
+            this.saveSlots(null).then((respose) => {
+              setTimeout(() => {
+                Swal.hideLoading();
+                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: "Slot deleted Succesfully", icon: 'success' })
+  
+                setTimeout(() => {
+                  Swal.close();
+                }, 2000);
+              }, 500);
+            }).catch((err) => {
+              console.error("err: ", err);
+              setTimeout(() => {
+                Swal.hideLoading();
+                Swal.update({ title: this.translate.instant("Error"), text: "An error occurred", icon: 'error' })
+              }, 500);
+            })
+          }
+        })
+      }
+    })
+  }
+
+  _presentModalDeleteSlot() {
     const dialogRef = this.dialog.open(DeleteSlotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -567,9 +525,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Delete content] Dialog body: ', body);
-      console.log("body: ", body);
       if (body) {
-        console.log("body after close: ", body)
         this.deleteSlot();
       }
     });
@@ -577,12 +533,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   deleteSlot() {
     this.showSpinner = true;
-    console.log("delete slot ", this.selectedSlot.id);
-    console.log("this.timeSlots: ", this.timeSlots)
-
     delete this.timeSlots[this.selectedSlot.id];
-    console.log("this.timeSlot afters: ", this.timeSlots)
-
     this.saveSlots(null);
   }
   // Slot - END

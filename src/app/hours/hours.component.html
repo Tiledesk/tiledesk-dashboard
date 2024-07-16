@@ -88,9 +88,12 @@
           </div>
 
 
-          <div class="oaerror info" style="margin-bottom: 16px;">
-            <p style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
+          <div  class="oaerror info" style="margin-bottom: 16px;">
+            <p *ngIf="selectedSlot.id === 0" style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
               {{ "HoursPage.ActivateTimetables" | translate }}
+            </p>
+            <p *ngIf="selectedSlot.id !== 0" style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
+              {{ "HoursPage.ActivateSlotTimetables" | translate }}
             </p>
 
             <div class="checkbox">
@@ -98,9 +101,15 @@
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="selectedSlot.active">
                 <!-- (change)="onChange($event)"
                 [checked]="selectedSlot.active" -->
-                <span style="font-size: 14px; color: #7695a5;">
+                <span *ngIf="selectedSlot.id === 0" style="font-size: 14px; color: #7695a5;">
                   {{ "HoursPage.OpeningHoursActivated" | translate }}
                 </span>
+
+                <span *ngIf="selectedSlot.id !== 0" style="font-size: 14px; color: #7695a5;">
+                  <!-- {{ "HoursPage.OpeningHoursActivated" | translate }} -->
+                  asasd
+                </span>
+
               </label>
             </div>
           </div>
@@ -127,8 +136,9 @@
 
                 <!-- // note: with ngModel is set the previously selected value on the select option dropdown -->
                 <!-- [(ngModel)]="this.selectedSlot.hours.tzname" -->
+                <!-- (change)="setSelectedTimeZone()" -->
                 <ng-select #selectElem class="custom" [(ngModel)]="selectedSlot.hours.tzname"
-                  (change)="setSelectedTimeZone()" style="margin-bottom: 6px;"
+                  style="margin-bottom: 6px;"
                   [disabled]="!selectedSlot.active">
                   <ng-option *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value"
                     style="height: 16px !important" [disabled]="!selectedSlot.active">
@@ -137,7 +147,7 @@
                 </ng-select>
 
                 <div class="reset-timezone">
-                  <span class="link">
+                  <span class="link" (click)="resetToCurrentTimezone()">
                     <span class="material-icons-outlined">restore</span>
                     <span>Reset to (UTC {{currentUTCOffset}}) {{currentUTCName}}</span>
                   </span>
