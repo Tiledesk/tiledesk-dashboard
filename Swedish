@@ -2218,6 +2218,7 @@
     "sendTranscript": "Skicka chattutskrift",
     "emailDirect": "Direct email (sent when visitor is offline)",
     "newMessageFollower": "Email sent to ticket follower",
+    "checkpointReachedEmail": "Quota checkpoint notification",
     "ResetToDefaults": "Återställ till standardinställningar",
     "ThisActionIsNotReversible": "Denna åtgärd är inte reversibel. Det kommer att återställa utlösaren till dess ursprungliga inställningar genom att ta bort alla ändringar som gjorts.",
     "SendTo": "Skicka till",
