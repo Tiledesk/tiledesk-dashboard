@@ -755,6 +755,8 @@
         "Subscription": "Obuna",
         "SeePayments": "Toʻlovlarni koʻring",
         "Advanced": "Murakkab",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Jamoadoshlar faqat o'zlarining suhbatlarini ko'rishlari mumkin",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Ushbu parametr yoqilsa, jamoadoshlar faqat oʻzlarining suhbatlarini Monitor sahifasining “Suhbatlaringiz” yorligʻida koʻrishlari mumkin.",
         "ChatLimit": "Chat chegarasi",
         "AutomaticAssignment": "Avtomatik tayinlash",
         "IfYouActivateTheAutomaticAssignmentOption": "Agar siz Avtomatik belgilash opsiyasini faollashtirsangiz, {{ BRAND_NAME }} avtomatik ravishda agent mavjudligi va ish soatlari asosida navbatdagi (Tayinlanmagan) suhbatlarni tayinlaydi.",

@@ -755,6 +755,8 @@
         "Subscription": "Abonelik",
         "SeePayments": "Ödemeleri Gör",
         "Advanced": "Gelişmiş",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Takım arkadaşları yalnızca kendi konuşmalarını görebilir",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Bu seçeneğin etkinleştirilmesi, ekip arkadaşlarının İzleme sayfasının \"Konuşmalarınız\" sekmesinde yalnızca kendi konuşmalarını görmesine olanak tanır",
         "ChatLimit": "Sohbet sınırı",
         "AutomaticAssignment": "Otomatik Atama",
         "IfYouActivateTheAutomaticAssignmentOption": "Otomatik atama seçeneğini etkinleştirirseniz, {{ BRAND_NAME }} , sıradaki (Atanmamış) konuşmaları aracı müsaitliği ve açılış saatlerine göre otomatik olarak atar.",

@@ -753,6 +753,8 @@
 		"Account": "Konto",
 		"Subscription": "Abonnement",
 		"SeePayments": "Zahlungen anzeigen",
+		"TeammatesCanOnlySeeTheirOwnConvs":"Teamkollegen können nur ihre eigenen Gespräche sehen",
+		"EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Wenn Sie diese Option aktivieren, können Teammitglieder nur ihre eigenen Unterhaltungen auf der Registerkarte „Ihre Unterhaltungen“ der Monitorseite sehen.",
 		"Advanced": "Erweitert",
 		"ChatLimit": "Chat Limit",
 		"AutomaticAssignment": "Automatische Zuordnung",

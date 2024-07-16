@@ -815,6 +815,27 @@ export class ProjectService {
     return promise;
   }
 
+  // --------------------------------------------------------------------------------------
+  // ENABLE/DISABLE Agents can only see their own conversations
+  // --------------------------------------------------------------------------------------
+  agentViewOnlyOwnConv(status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV]  ENABLE/DISABLE Agents can only see their own conversations status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.current_agent_my_chats_only": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
   // -------------------------------------
   // New home service
   // -------------------------------------

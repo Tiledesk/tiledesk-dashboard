@@ -755,6 +755,8 @@
         "Subscription": "Претплата",
         "SeePayments": "Погледајте Плаћања",
         "Advanced": "Напредно",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Саиграчи могу да виде само своје разговоре",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Омогућавање ове опције омогућава саиграчима да виде само своје разговоре на картици „Ваши разговори“ на страници Монитор",
         "ChatLimit": "Ограничење за ћаскање",
         "AutomaticAssignment": "Аутоматско додељивање",
         "IfYouActivateTheAutomaticAssignmentOption": "Ако активирате опцију Аутоматско додељивање, {{ BRAND_NAME }} аутоматски додељује разговоре у реду (недодељене) на основу доступности агента и радног времена.",

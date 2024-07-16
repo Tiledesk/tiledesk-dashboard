@@ -755,6 +755,8 @@
         "Subscription": "Abunəlik",
         "SeePayments": "Ödənişlərə baxın",
         "Advanced": "Qabaqcıl",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Komanda yoldaşları yalnız öz söhbətlərini görə bilər",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Bu seçimi aktivləşdirmək komanda yoldaşlarına Monitor səhifəsinin “Söhbətləriniz” sekmesinde yalnız öz söhbətlərini görməyə imkan verir.",
         "ChatLimit": "Söhbət limiti",
         "AutomaticAssignment": "Avtomatik təyinat",
         "IfYouActivateTheAutomaticAssignmentOption": "Avtomatik təyin seçimini aktivləşdirsəniz, {{ BRAND_NAME }} agentin mövcudluğuna və iş saatlarına əsasən növbəyə alınmış (Təyin olunmamış) söhbətləri avtomatik təyin edir.",

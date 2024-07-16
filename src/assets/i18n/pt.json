@@ -754,6 +754,8 @@
         "Subscription": "Inscrição",
         "SeePayments": "Ver Pagamentos",
         "Advanced": "Avançado",
+        "TeammatesCanOnlySeeTheirOwnConvs":"Os colegas de equipe só podem ver suas próprias conversas",
+        "EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs":"Ativar esta opção permite que os colegas de equipe vejam apenas suas próprias conversas na guia \"Suas Conversas\" da página Monitorar",
         "ChatLimit": "Limite de bate-papo",
         "AutomaticAssignment": "Atribuição automática",
         "IfYouActivateTheAutomaticAssignmentOption": "Se você ativar a opção de atribuição automática, {{ BRAND_NAME }} atribuirá automaticamente as conversas enfileiradas (não atribuídas) com base na disponibilidade do agente e no horário de funcionamento.",
