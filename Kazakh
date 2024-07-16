@@ -2218,6 +2218,7 @@
     "sendTranscript": "Сөйлесу транскрипциясын жіберу",
     "emailDirect": "Direct email (sent when visitor is offline)",
     "newMessageFollower": "Email sent to ticket follower",
+    "checkpointReachedEmail": "Quota checkpoint notification",
     "ResetToDefaults": "Әдепкі мәндерге қайта орнату",
     "ThisActionIsNotReversible": "Бұл әрекет кері қайтарылмайды. Ол енгізілген өзгерістерді жою арқылы триггерді бастапқы параметрлеріне қайтарады.",
     "SendTo": "Жөнелту",
