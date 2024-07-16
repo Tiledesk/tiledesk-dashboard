@@ -2216,6 +2216,7 @@
 	"sendTranscript": "Chat-Transkript senden",
 	"emailDirect": "Direkte E-Mail (wird gesendet, wenn der Besucher offline ist)",
 	"newMessageFollower":"E-Mail an TICKET-Follower gesendet",
+	"checkpointReachedEmail": "Kontingentprüfpunktbenachrichtigung",
 	"ResetToDefaults": "Voreinstellung",
 	"ThisActionIsNotReversible": "Diese Aktion ist nicht umkehrbar. Der Trigger wird auf seine ursprünglichen Einstellungen zurückgesetzt, indem alle vorgenommenen Änderungen entfernt werden.",
 	"SendTo": "Senden an",

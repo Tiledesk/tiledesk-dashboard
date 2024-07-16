@@ -2217,6 +2217,7 @@
     "sendTranscript": "Suhbat transkriptini yuboring",
     "emailDirect": "To'g'ridan-to'g'ri elektron pochta (tashrifchi oflayn bo'lganda yuboriladi)",
     "newMessageFollower":"TICKET obunachisiga elektron pochta xabari yuborildi",
+    "checkpointReachedEmail": "Kvota nazorat punkti haqida bildirishnoma",
     "ResetToDefaults": "Standart sozlamalarni tiklash",
     "ThisActionIsNotReversible": "Bu harakatni qaytarib bo'lmaydi. U kiritilgan o'zgarishlarni olib tashlash orqali triggerni asl sozlamalariga qaytaradi.",
     "SendTo": "Kimga yuboring",

@@ -2217,6 +2217,7 @@
     "sendTranscript": "Enviar transcrição do bate-papo",
     "emailDirect": "E-mail direto (enviado quando o visitante está offline)",
     "newMessageFollower":"E-mail enviado ao seguidor do TICKET",
+    "checkpointReachedEmail": "Notificação de ponto de verificação de cota",
     "ResetToDefaults": "Redefinir para os padrões",
     "ThisActionIsNotReversible": "Esta ação não é reversível. Ele irá restaurar o gatilho para suas configurações originais, removendo todas as alterações feitas.",
     "SendTo": "Enviar para",

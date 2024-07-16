@@ -2218,6 +2218,7 @@
     "sendTranscript": "Sohbet dökümü gönder",
     "emailDirect": "Doğrudan e-posta (ziyaretçi çevrimdışıyken gönderilir)",
     "newMessageFollower":"TICKET takipçisine gönderilen e-posta",
+    "checkpointReachedEmail": "Kota kontrol noktası bildirimi",
     "ResetToDefaults": "Varsayılanlara dön",
     "ThisActionIsNotReversible": "Bu eylem geri alınamaz. Yapılan değişiklikleri kaldırarak tetikleyiciyi orijinal ayarlarına geri yükleyecektir.",
     "SendTo": "Gönderildi",

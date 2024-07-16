@@ -2217,6 +2217,7 @@
     "sendTranscript": "Envoyer la transcription du chat",
     "emailDirect": "E-mail direct (envoyé lorsque le visiteur est hors ligne)",
     "newMessageFollower":"E-mail envoyé à l'abonné TICKET",
+    "checkpointReachedEmail": "Notification du point de contrôle des quotas",
     "ResetToDefaults": "Réinitialiser les paramètres par défaut",
     "ThisActionIsNotReversible": "Cette action n'est pas réversible. Il restaurera le déclencheur à ses paramètres d'origine en supprimant toutes les modifications apportées.",
     "SendTo": "Envoyer à",

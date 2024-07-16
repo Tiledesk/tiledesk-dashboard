@@ -2218,6 +2218,7 @@
     "sendTranscript": "Skicka chattutskrift",
     "emailDirect": "Direkt e-post (skickas när besökaren är offline)",
     "newMessageFollower": "E-post skickat till TICKET-följare",
+    "checkpointReachedEmail": "Avisering om kvotkontrollpunkt",
     "ResetToDefaults": "Återställ till standardinställningar",
     "ThisActionIsNotReversible": "Denna åtgärd är inte reversibel. Det kommer att återställa utlösaren till dess ursprungliga inställningar genom att ta bort alla ändringar som gjorts.",
     "SendTo": "Skicka till",

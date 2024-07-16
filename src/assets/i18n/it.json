@@ -2213,6 +2213,7 @@
     "sendTranscript": "Invia chat transcript",
     "emailDirect": "Email diretta (inviata quando il visitatore è offline)",
     "newMessageFollower":"Email inviata al follower di un TICKET",
+    "checkpointReachedEmail":"Notifica del checkpoint della quota",
     "ResetToDefaults": "Ripristina predefiniti",
     "ThisActionIsNotReversible": "Questa azione non è reversibile. Ripristinerà il trigger alle impostazioni originali rimuovendo le modifiche apportate.",
     "SendTo": "Invia a",
