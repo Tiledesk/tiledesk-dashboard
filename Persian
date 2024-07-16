@@ -2218,6 +2218,7 @@
     "sendTranscript": "Send chat transcript",
     "emailDirect": "Direct email (sent when visitor is offline)",
     "newMessageFollower": "Email sent to ticket follower",
+    "checkpointReachedEmail": "Quota checkpoint notification",
     "ResetToDefaults": "Reset to defaults",
     "ThisActionIsNotReversible": "این عمل برگشت‌ناپذیر است. با حذف هرگونه تغییرات ایجاد شده ماشه را به تنظیمات اصلی خود باز می گرداند.",
     "SendTo": "Send to",
