@@ -273,7 +273,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
       // 'Help Center'
-      let paidApps = ['WhatsApp Business', 'Facebook Messenger', 'Telegram']
+      let paidApps = ['WhatsApp Business', 'Facebook Messenger', 'Telegram', 'VXML Voice', 'Twilio SMS']
       this.apps = this.apps.filter(x => !paidApps.includes(x.title));
       this.logger.log('APP-STORE - getApps APPS ', this.apps)
 
