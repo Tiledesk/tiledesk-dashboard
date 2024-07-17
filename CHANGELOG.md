@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.1
+- Deploys in production
+- Removes Twilio SMS and VXML Voice apps from App-store
+
 ### 2.7.0
 - Deploys in production
 - Adds the ability to edit the "Quota checkpoint notification" email template
