@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.2
+- Deploys in production
+- Adds GPT-4o mini language model
+
 ### 2.7.1
 - Deploys in production
 - Removes Twilio SMS and VXML Voice apps from App-store
