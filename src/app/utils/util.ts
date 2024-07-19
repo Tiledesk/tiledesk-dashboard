@@ -653,7 +653,9 @@ export const TYPE_GPT_MODEL = {
     'GPT-3.5' : { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", status: "active"},
     'GPT-4' : { name: "GPT-4", value: "gpt-4", status: "active"},
     'GPT-4-turbo-preview': { name: "GPT-4 Turbo", value: "gpt-4-turbo-preview", status: "active"},
-    'GPT-4o': { name: "GPT-4o", value: "gpt-4o", status: "active"}
+    'GPT-4o': { name: "GPT-4o", value: "gpt-4o", status: "active"},
+    'GPT-4o-mini':{ name: "GPT-4o mini",value: "gpt-4o-mini", status: "active"}
+
 }
 
 export const CHANNELS_NAME = {
