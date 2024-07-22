@@ -15,8 +15,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DeleteSlotModalComponent } from './modals/delete-slot-modal/delete-slot-modal.component';
-
 
 const routes: Routes = [
   { path: "", component: HoursComponent},
@@ -26,8 +24,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     HoursComponent,
-    NewSlotModalComponent,
-    DeleteSlotModalComponent
+    NewSlotModalComponent
   ],
   imports: [
     RouterModule.forChild(routes),

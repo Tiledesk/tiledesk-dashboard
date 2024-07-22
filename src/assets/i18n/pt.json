@@ -1585,7 +1585,6 @@
         "OopsYoudontBelongToTheProject": "Ops! Parece que você não pertence a este projeto."
     },
     "HoursPage": {
-        "ActivateTimetables": "Ativar horário de funcionamento",
         "TheProject": "O projeto ",
         "IsSettedTo": "está definido para:",
         "YouAreCurrentlyAt": "Você está atualmente em:",
@@ -1609,7 +1608,22 @@
         "AnErrorHasOccurred": "Ocorreu um erro ao atualizar o horário de funcionamento",
         "ErrorSelectTheProjectTimezone": "Selecione o fuso horário do projeto",
         "Continue": "Continuar",
-        "UpgradeYourAccountToSetTeamOfficeHours": "Atualize sua conta para definir o horário de expediente da equipe e informar aos visitantes quando seus agentes estão trabalhando!"
+        "UpgradeYourAccountToSetTeamOfficeHours": "Atualize sua conta para definir o horário de expediente da equipe e informar aos visitantes quando seus agentes estão trabalhando!",
+        "NewSlot": "Novo Slot",
+        "ActivateTimetables": "Ativar horário geral de funcionamento",
+        "ActivateTimeSlot": "Ativar intervalo de tempo",
+        "GeneralOperatingHoursDescription": "As conversas serão atribuídas aos agentes com base no seu estado de disponibilidade avaliado no intervalo de horário de funcionamento. O <b>horário de funcionamento “Geral”</b> refere-se a todo o seu projeto. Os seus clientes/utilizadores não poderão solicitar um agente durante o “horário offline” e os seus pedidos serão automaticamente colocados na fila de <b>“Conversas não atribuídas”</b>. Também pode utilizar o horário de funcionamento numa automação através da ação <b>“If operating hours”</b>.",
+        "TimeSlotDescription": "Um <b>“Intervalo de Horário Operacional”</b> define um intervalo de horas que pode ser utilizado numa automatização para passar para o bloco seguinte com base numa correspondência entre a hora atual e a hora do intervalo definido.",
+        "ResetToTz": "Redefinir para ",
+        "YourCurrentTz": "O seu fuso horário atual",
+        "CreateNewSlot": "Criar novo slot",
+        "SlotName": "Nome do slot",
+        "DeleteSlot": "Excluir intervalo de tempo",
+        "SureDeleteSlot": "Tem certeza de que deseja excluir o slot <b>{{slotName}}</b>?",
+        "YesDelete": "Sim, excluir",
+        "NoDelete": "Não",
+        "SlotDeleteSuccess": "Slot excluído com sucesso",
+        "ErrorOccurred": "Um erro ocorreu"
     },
     "KbPage": {
         "Secrets": "Segredos",

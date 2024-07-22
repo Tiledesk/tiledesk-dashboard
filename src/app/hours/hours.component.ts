@@ -13,7 +13,6 @@ import { LoggerService } from '../services/logger/logger.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
 import { v4 as uuidv4 } from 'uuid';
-import { DeleteSlotModalComponent } from './modals/delete-slot-modal/delete-slot-modal.component';
 import { DAYS } from './utils';
 const Swal = require('sweetalert2')
 
@@ -120,8 +119,6 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe(project => {
-
-      console.log("bs fired")
       if (project) {
         this.projectid = project._id;
         if (this.projectid) {
@@ -133,11 +130,10 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   getProjectById() {
     this.projectService.getProjectById(this.projectid).subscribe((project: any) => {
-      console.log("***** project: ", project);
 
       this.selectedSlot = {
         id: 0,
-        name: "General", // to be translated,
+        name:  this.translate.instant("General"), // to be translated,
         active: project.activeOperatingHours || false,
         hours: null
       }
@@ -255,7 +251,6 @@ export class HoursComponent implements OnInit, OnDestroy {
     if (this.selectedSlot.id === 0) {
       this.updateProjectOperatingHours()
     } else {
-      console.log("1: update time slot")
       this.updateProjectTimeSlot();
     }
 
@@ -275,37 +270,29 @@ export class HoursComponent implements OnInit, OnDestroy {
     let data = {
       timeSlots: this.timeSlots
     }
-    console.log("2: call update project");
     this.updateProject(data);
   }
 
   updateProject(data) {
-    console.log("3: update project called")
     Swal.fire({
       text: this.translate.instant("HoursPage.UpdateHours"),
       confirmButtonColor: "var(--blue-light)",
       didOpen: () => {
-        console.log("4: show loading")
         Swal.showLoading();
         if (this.selectedSlot.active === false && !this.selectedSlot.hours.tzname) {
-          console.log("4a: slot inactive")
           setTimeout(() => {
             Swal.hideLoading();
             Swal.update({ title: this.translate.instant("Error"), text: this.translate.instant("HoursPage.ErrorSelectTheProjectTimezone"), icon: 'error' })
           }, 500);
         } else {
-          console.log("5. recall project service")
           this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
             updatedProject['role'] = this.USER_ROLE;
             localStorage.setItem(updatedProject['_id'], JSON.stringify(updatedProject));
             this.auth.projectSelected(updatedProject, 'hours')
-            console.log("6. saved on storage")
             setTimeout(() => {
-              console.log("7. hide loading")
               Swal.hideLoading();
               Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.OperatingHoursSuccessfullyUpdated"), icon: 'success' })
               setTimeout(() => {
-                console.log("8. close")
                 Swal.close();
               }, 2000);
             }, 500);
@@ -322,21 +309,9 @@ export class HoursComponent implements OnInit, OnDestroy {
     })
   }
 
-  // _updateProject(data) {
-  //   this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
-  //     console.log("updatedProject: ", updatedProject);
-  //     localStorage.setItem(updatedProject['_id'], JSON.stringify(updatedProject));
-  //     this.auth.projectSelected(updatedProject, 'hours')
-  //     //this.showSpinner = false;
-  //   }, (error) => {
-  //     console.error("update project error: ", error);
-  //     this.showSpinner = false;
-  //   })
-  // }
 
   // Slot - START
   refreshSlotsList() {
-    console.log("**** refresh called")
     this.projectService.getProjectById(this.projectid).subscribe((project: any) => {
       if (project.timeSlots) {
         this.timeSlots = project.timeSlots;
@@ -394,7 +369,6 @@ export class HoursComponent implements OnInit, OnDestroy {
         if (slot_id) {
           let slot = updatedProject.timeSlots[slot_id]
           slot.id = slot_id;
-          console.log("**** slot: ", slot)
           this.refreshSlotsList();
           this.onSelectSlot(slot);
         } else {
@@ -416,8 +390,11 @@ export class HoursComponent implements OnInit, OnDestroy {
     if (!slot) {
       this.getProjectById();
     } else {
+      if (typeof slot.hours === 'string') {
+        slot.hours = JSON.parse(slot.hours);
+      }
       this.selectedSlot = slot;
-      this.selectedSlot.hours = JSON.parse(slot.hours);
+
       if (!this.selectedSlot.hours) {
         this.selectedSlot.hours = {
           tzname: moment.tz.guess()
@@ -475,13 +452,13 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   presentModalDeleteSlot(data) {
-    console.log("delete the slot with id: ", this.selectedSlot.id);
     Swal.fire({
-      title: "Delete time slot",
-      html: `Are you sure you want to delete the time slot <b>${this.selectedSlot.name}</b>`,
+      title: this.translate.instant("HoursPage.DeleteSlot"),
+      html: this.translate.instant("HoursPage.SureDeleteSlot", { slotName: this.selectedSlot.name }),
       showDenyButton: true,
-      confirmButtonText: "Yes, delete.",
-      confirmButtonColor: "#c62455",
+      denyButtonText: this.translate.instant("HoursPage.NoDelete"),
+      confirmButtonText: this.translate.instant("HoursPage.YesDelete"),
+      confirmButtonColor: "#ff5c48",
       denyButtonColor: "#ccc",
       reverseButtons: true
     }).then((result) => {
@@ -492,10 +469,10 @@ export class HoursComponent implements OnInit, OnDestroy {
           didOpen: () => {
             Swal.showLoading();
             delete this.timeSlots[this.selectedSlot.id];
-            this.saveSlots(null).then((respose) => {
+            this.saveSlots(null).then((response) => {
               setTimeout(() => {
                 Swal.hideLoading();
-                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: "Slot deleted Succesfully", icon: 'success' })
+                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.SlotDeletedSuccess"), icon: 'success' })
   
                 setTimeout(() => {
                   Swal.close();
@@ -505,30 +482,13 @@ export class HoursComponent implements OnInit, OnDestroy {
               console.error("err: ", err);
               setTimeout(() => {
                 Swal.hideLoading();
-                Swal.update({ title: this.translate.instant("Error"), text: "An error occurred", icon: 'error' })
+                Swal.update({ title: this.translate.instant("Error"), text: this.translate.instant("HoursPage.ErrorOccurred"), icon: 'error' })
               }, 500);
             })
           }
         })
       }
     })
-  }
-
-  _presentModalDeleteSlot() {
-    const dialogRef = this.dialog.open(DeleteSlotModalComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      width: '600px',
-      data: {
-        slotName: this.selectedSlot.name,
-      },
-    });
-    dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal Delete content] Dialog body: ', body);
-      if (body) {
-        this.deleteSlot();
-      }
-    });
   }
 
   deleteSlot() {

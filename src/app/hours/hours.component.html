@@ -52,13 +52,13 @@
                 <!-- Add slot option -->
                 <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item (click)="presentModalNewSlot()">
                   <mat-icon>add</mat-icon>
-                  <span>New Slot</span>
+                  <span>{{ 'HoursPage.NewSlot' | translate }}</span>
                 </button>
 
                 <!-- General Operating Hours option -->
                 <button *ngIf="timeSlotsArray.length > 0" mat-menu-item (click)="onSelectSlot(null)">
                   <!-- // to be translated -->
-                  <span> General</span>
+                  <span>{{ 'General' | translate }}</span>
                 </button>
               
                 <!-- (click)="onSelectNamespace(namespace)" -->
@@ -87,8 +87,34 @@
             </div>
           </div>
 
+          <div class="oaerror info" style="margin-bottom: 16px;">
+            <p *ngIf="selectedSlot.id === 0" class="slot-description">
+              <span [innerHTML]="'HoursPage.GeneralOperatingHoursDescription' | translate"></span>
+              <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a>
+            </p>
+            <p *ngIf="selectedSlot.id !== 0" class="slot-description">
+              <span [innerHTML]="'HoursPage.TimeSlotDescription' | translate"></span>
+              <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a>
+            </p>
+          
+            <div class="checkbox">
+              <label class="title-attribute">
+                <!-- (change)="onChange($event)"
+                [checked]="selectedSlot.active" -->
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="selectedSlot.active">
+                <span *ngIf="selectedSlot.id === 0" style="font-size: 14px; color: #3c4858;">
+                  {{ "HoursPage.ActivateTimetables" | translate }}
+                  <!-- {{ "HoursPage.OpeningHoursActivated" | translate }} -->
+                </span>
+                <span *ngIf="selectedSlot.id !== 0" style="font-size: 14px; color: #3c4858;">
+                  {{ "HoursPage.ActivateTimeSlot" | translate }}
+                </span>
+              </label>
+            </div>
+          </div>
 
-          <div  class="oaerror info" style="margin-bottom: 16px;">
+
+          <!-- <div  class="oaerror info" style="margin-bottom: 16px;">
             <p *ngIf="selectedSlot.id === 0" style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
               {{ "HoursPage.ActivateTimetables" | translate }}
             </p>
@@ -99,34 +125,33 @@
             <div class="checkbox">
               <label class="title-attribute">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="selectedSlot.active">
-                <!-- (change)="onChange($event)"
-                [checked]="selectedSlot.active" -->
                 <span *ngIf="selectedSlot.id === 0" style="font-size: 14px; color: #7695a5;">
                   {{ "HoursPage.OpeningHoursActivated" | translate }}
                 </span>
 
                 <span *ngIf="selectedSlot.id !== 0" style="font-size: 14px; color: #7695a5;">
-                  <!-- {{ "HoursPage.OpeningHoursActivated" | translate }} -->
                   asasd
                 </span>
 
               </label>
             </div>
-          </div>
+          </div> -->
 
           <div class="oaerror info" [ngClass]="{'oaerror_info_disabled' : !selectedSlot.active}">
             <div class="row">
-
+              
               <div class="col-sm-12">
-                <p style=" font-size: 16px; font-family: 'Poppins', sans-serif !important; color: #394f5a;"
+                <!-- style=" font-size: 16px; font-family: 'Poppins', sans-serif !important; color: #394f5a;" -->
+                <p style="font-size: 14px; color: #3c4858; font-weight: 400;"
                   [ngClass]="{'day_label_disabled' : !selectedSlot.active}">
                   Time zone
                 </p>
               </div>
 
               <!-- /* THE PROJECT TIME ZONE IS SETTED TO */ -->
+              <!-- style="color: #7695a5; font-size: 14px; margin-bottom: 8px" -->
               <div class="col-sm-6 custom_col">
-                <p style="color: #7695a5; font-size: 14px; margin-bottom: 8px"
+                <p class="slot-description"
                   [ngClass]="{'day_label_disabled' : !selectedSlot.active}">
                   <!-- The project timezone is setted to: -->
                   {{ "HoursPage.TheProject" | translate }} time zone {{ "HoursPage.IsSettedTo" | translate }}
@@ -149,9 +174,11 @@
                 <div class="reset-timezone">
                   <span class="link" (click)="resetToCurrentTimezone()">
                     <span class="material-icons-outlined">restore</span>
-                    <span>Reset to (UTC {{currentUTCOffset}}) {{currentUTCName}}</span>
+                    <!-- <span>Reset to (UTC {{currentUTCOffset}}) {{currentUTCName}}</span> -->
+                    <span>{{ 'HoursPage.ResetToTz' | translate }} (UTC {{currentUTCOffset}}) {{currentUTCName}}</span>
                   </span>
-                  <span>(Your current Timezone)</span>
+                  <!-- <span>(Your current Timezone)</span> -->
+                  <span>({{ 'HoursPage.YourCurrentTz' | translate }})</span>
                 </div>
               </div>
 
