@@ -117,7 +117,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
 
 
-    console.log('[CNP-TEMPLATES] hasSelectChatBotOrKb ', this.hasSelectChatBotOrKb)
+    this.logger.log('[CNP-TEMPLATES] hasSelectChatBotOrKb ', this.hasSelectChatBotOrKb)
 
     // console.log('[CNP-TEMPLATES] - updatedProject ', this.updatedProject)
     if (this.updatedProject && this.updatedProject.attributes && this.updatedProject.attributes.userPreferences) {
@@ -152,7 +152,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.project_Id = project._id
-        console.log('[CNP-TEMPLATES] - project ', project)
+        this.logger.log('[CNP-TEMPLATES] - project ', project)
 
         this.welcomeMsg = 'Hi, I\'m the virtual assistant of ' + this.capitalize(project.name) + 'how can I help you?\r\n'
         this.getAllNamespaces(this.project_Id)
@@ -161,8 +161,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   capitalize(string) {
-    console.log('[CNP-TEMPLATES] - capitalize project name ', string)
-    console.log('[CNP-TEMPLATES] - capitalize project welcomeMsg', this.welcomeMsg)
+    this.logger.log('[CNP-TEMPLATES] - capitalize project name ', string)
+    this.logger.log('[CNP-TEMPLATES] - capitalize project welcomeMsg', this.welcomeMsg)
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
@@ -435,11 +435,11 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
 
-        console.log('[CNP-TEMPLATES] - GET ALL NAMESPACES', res);
+        this.logger.log('[CNP-TEMPLATES] - GET ALL NAMESPACES', res);
         this.selectedNamespace = res[0];
         this.localDbService.setInStorage(`last_kbnamespace-${project_id}`, JSON.stringify(this.selectedNamespace))
 
-        console.log('[CNP-TEMPLATES] - GET ALL NAMESPACES selectedNamespace', this.selectedNamespace);
+        this.logger.log('[CNP-TEMPLATES] - GET ALL NAMESPACES selectedNamespace', this.selectedNamespace);
       }
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
@@ -465,7 +465,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
             return officialResponder
           }
         });
-        console.log('[CNP-TEMPLATES] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+        this.logger.log('[CNP-TEMPLATES] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
 
 
@@ -478,13 +478,13 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
-      console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
-      console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
+      this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
+      this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
       const intentArray = chatbot.intents
       const actionsArray = []
       chatbot.intents.forEach((intent, index, intentArray) => {
         // console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
-        console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions > intent', intent)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions > intent', intent)
 
         actionsArray.push(intent.actions)
 
@@ -493,7 +493,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.selectedNamespace.id
-          console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
+          this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
 
         }
         // ----------------------------------------------------------------------------
@@ -525,9 +525,9 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         // }
 
         if (index === intentArray.length - 1) {
-          // console.log('[CNP-TEMPLATES] - askGPT_Action' , askGPT_Action)
-          // console.log('[CNP-TEMPLATES] - replyActionWithWelcomeMsg' , replyActionWithWelcomeMsg)
-          console.log('[CNP-TEMPLATES] - actionsArray', actionsArray)
+          // this.logger.log('[CNP-TEMPLATES] - askGPT_Action' , askGPT_Action)
+          // this.logger.log('[CNP-TEMPLATES] - replyActionWithWelcomeMsg' , replyActionWithWelcomeMsg)
+          this.logger.log('[CNP-TEMPLATES] - actionsArray', actionsArray)
 
           this.presentDialogChatbotname(chatbot)
 
@@ -557,10 +557,10 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     dialogRef.afterClosed().subscribe(editedChatbot => {
       if (editedChatbot) {
-        console.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME AFTER CLOSED editedChatbot:`, editedChatbot);
+        this.logger.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME AFTER CLOSED editedChatbot:`, editedChatbot);
         this.importChatbotFromJSON(editedChatbot)
 
-        console.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME  AFTER CLOSE selectedNamespace:`, this.selectedNamespace);
+        this.logger.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME  AFTER CLOSE selectedNamespace:`, this.selectedNamespace);
         // this.selectedNamespace['name'] = editedChatbot['name']
         let body = { name: editedChatbot['name'] }
         this.updateNamespace(body)
@@ -572,7 +572,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.kbService.updateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
-        console.log(`[CNP-TEMPLATES] updateNamespace RES:`, namespace);
+        this.logger.log(`[CNP-TEMPLATES] updateNamespace RES:`, namespace);
         this.localDbService.setInStorage(`last_kbnamespace-${this.project_Id}`, JSON.stringify(namespace))
       }
     }
@@ -588,26 +588,40 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   importChatbotFromJSON(editedChatbot) {
     this.logger.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      console.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
-        console.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON faqkb certifiedTags  ', faqkb.certifiedTags)
+        this.logger.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON faqkb certifiedTags  ', faqkb.certifiedTags)
 
         this.getDeptsByProjectId(faqkb)
+        this.publish(faqkb)
 
       }
 
     }, (error) => {
-      console.error('[CNP-TEMPLATES] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      this.logger.error('[CNP-TEMPLATES] -  IMPORT CHATBOT FROM JSON- ERROR', error);
     }, () => {
-      console.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.logger.log('[CNP-TEMPLATES] - IMPORT CHATBOT FROM JSON - COMPLETE');
 
+    });
+  }
+
+  publish(faqkb) {
+    this.logger.log('[CNP-TEMPLATES] publish  - selectedChatbot ', faqkb)
+    this.faqKbService.publish(faqkb).subscribe((data) => {
+      this.logger.log('[CNP-TEMPLATES] publish  - RES ', data)
+    }, (error) => {
+     
+      this.logger.error('[CNP-TEMPLATES] publish ERROR ', error);
+    }, () => {
+  
+      this.logger.log('[CNP-TEMPLATES] publish * COMPLETE *');
     });
   }
 
   getDeptsByProjectId(faqkb?: string) {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[CNP-TEMPLATES] --->  DEPTS RES ', departments);
+      this.logger.log('[CNP-TEMPLATES] --->  DEPTS RES ', departments);
 
       if (departments) {
         const depts_length = departments.length
@@ -673,10 +687,10 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
-    console.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
-    console.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
+    this.logger.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
+    this.logger.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
     this.departmentService.updateExistingDeptWithSelectedBot(deptId, botId).subscribe((res) => {
-      console.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECTED BOT - RES ', res);
+      this.logger.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECTED BOT - RES ', res);
 
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
@@ -689,7 +703,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       this.logger.log('[CNP-TEMPLATES] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - COMPLETE ');
 
       // this.notify.showWidgetStyleUpdateNotification(this.translate.instant('BotSuccessfullyActivated'), 2, 'done');
-      this.presentModalBotCreate()
+      this.presentModalBotCreated()
 
       // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT = true
       // this.HAS_COMPLETED_HOOK_BOOT_TO_DEPT_SUCCESS = true;
@@ -697,23 +711,34 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  presentModalBotCreate() {
-    console.log('[CNP-TEMPLATES] presentModalBotCreate') 
+  presentModalBotCreated() {
+    this.logger.log('[CNP-TEMPLATES] presentModalBotCreate') 
     Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      title: 'Success',
-      text: "You\'ve created your first chatbot to answer your users\' questions. Now it's time to deliver the content!",
+      title: this.translate.instant('Success'),
+      text: this.translate.instant('YouHaveCreatedYourFirstChatbot'), //"You\'ve created your first chatbot to answer your users\' questions. Now it's time to add contents!",
       icon: "success",
       showCancelButton: false,
-      confirmButtonText: "Let\'s go!",
+      confirmButtonText: this.translate.instant('LetsGo'), //"Let\'s go!",
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('[CNP-TEMPLATES] presentModalBotCreate result ', result)
-        this.router.navigate(['project/' + this.projectid + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.logger.log('[CNP-TEMPLATES] presentModalBotCreate result ', result)
+       
+
+        this.goToExitOnboardingKB()
       }
     })
+  }
+
+
+  goToExitOnboardingKB() {
+    if (this.isMobile === false) {
+      this.router.navigate(['project/' + this.projectid + '/knowledge-bases/' + this.selectedNamespace.id]);
+    } else {
+      this.router.navigate(['project/' + this.projectid + '/desktop--access/' +  this.selectedNamespace.id])
+    }
   }
 
 

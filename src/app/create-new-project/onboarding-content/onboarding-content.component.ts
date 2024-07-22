@@ -295,7 +295,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           }
           this.setFirstStep();
 
-         console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
           this.isMTT = this.getMTTValue()
           this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
@@ -368,7 +368,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
       this.arrayOfSteps.push(TYPE_STEP.SELECT_TEMPLATE_OR_KB);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
     });
   }
@@ -517,7 +517,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   userSelection(event) {
-   console.log('[ONBOARDING-CONTENT] userSelection event: ', event)
+    this.logger.log('[ONBOARDING-CONTENT] userSelection event: ', event)
    this.hasSelectChatBotOrKb = event
   }
 
@@ -731,7 +731,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      console.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -742,21 +742,21 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // for new home
   saveUserPreferences(segmentIdentifyAttributes) {
-    console.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
+    this.logger.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 
-        console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
         this.updatedProject = res
 
       }, error => {
         this.logger.error('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES - ERROR ', error)
       }, () => {
-        console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
         // this.goToExitOnboarding();
         // this.goToOnbordingTemplates()
         if (this.arrayOfSteps.length === 1) {
-          console.log('[ONBOARDING-D] - this.arrayOfSteps ', this.arrayOfSteps);
+          this.logger.log('[ONBOARDING-D] - this.arrayOfSteps ', this.arrayOfSteps);
           this.goToHome()
         }
 

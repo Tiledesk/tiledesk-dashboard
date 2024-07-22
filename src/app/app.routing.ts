@@ -1017,6 +1017,7 @@ const routes: Routes = [
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'project/:projectid/desktop--access/:namespaceid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-templates', component: CnpTemplatesComponent, canActivate: [AuthGuard] }, // wizard 
 
 

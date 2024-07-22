@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cnp-select-templates-or-kb',
@@ -15,17 +16,24 @@ export class CnpSelectTemplatesOrKbComponent implements OnInit, OnChanges {
   @Input() segmentAttributes: any;
   @Input() updatedProject: any;
   selectedOption: string
-  // dept_routing: string
-  constructor() { }
+  isMobile: boolean = true;
+  constructor(
+    private logger: LoggerService,
+  ) { }
 
   ngOnInit(): void {
     this.has_clicked_kb()
+    this.detectMobile()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[CNP-SELECT-TEMPLATE-OR-KB] ngOnChanges segmentAttributes ', this.segmentAttributes) 
+    this.logger.log('[CNP-SELECT-TEMPLATE-OR-KB] ngOnChanges segmentAttributes ', this.segmentAttributes) 
   }
 
+  detectMobile() {
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    this.logger.log('[CNP-SELECT-TEMPLATE-OR-KB] - IS MOBILE ', this.isMobile);
+  }
 
   goToPrevPage() {
     let event = { step: 'step3' }
@@ -46,13 +54,13 @@ export class CnpSelectTemplatesOrKbComponent implements OnInit, OnChanges {
 
   has_clicked_kb() {
     this.selectedOption = 'kb'
-    console.log('[CNP-SELECT-TEMPLATE-OR-KB] selectedOption', this.selectedOption) 
+    this.logger.log('[CNP-SELECT-TEMPLATE-OR-KB] selectedOption', this.selectedOption) 
     this.userSelection.emit(this.selectedOption)
   }
 
   has_clicked_templates() {
     this.selectedOption = 'templates'
-    console.log('[CNP-SELECT-TEMPLATE-OR-KB] selectedOption', this.selectedOption) 
+    this.logger.log('[CNP-SELECT-TEMPLATE-OR-KB] selectedOption', this.selectedOption) 
     this.userSelection.emit(this.selectedOption)
   }
 

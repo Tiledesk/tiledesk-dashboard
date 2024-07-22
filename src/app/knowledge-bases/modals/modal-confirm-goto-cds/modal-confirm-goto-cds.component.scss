@@ -9,8 +9,35 @@
 
 }
 
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+}
+
+.m-top-right-icon>span {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+
+}
+
+.m-top-right-icon:hover>span {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33)
+}
+
 .widget--script {
-    font-family: monospace;
+
     background-color: rgb(15, 15, 16);
     border: none;
     // border-radius: 0.25em 0.25em 0px 0px;
@@ -21,9 +48,9 @@
     margin-bottom: 0px;
     font-family: monospace !important;
     color: #fafafa;
-    border-radius: 0px !important;
+    border-radius: 12px !important;
     font-size: 12px;
-    // height: 155px;
+
 
     span {
         display: block;
@@ -57,7 +84,8 @@
 
 .widget-content-copy {
     position: absolute;
-    top: 100px;
+    // top: 100px;
+    top: 88px;
     color: #fafafa;
     right: 16px;
     cursor: pointer;
@@ -79,6 +107,10 @@
     width: 260px;
     top: 97px;
     font-weight: 400;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+
 }
 
 .has--copied--text {
@@ -95,4 +127,116 @@
 .accordion-instructions {
     padding-bottom: 5px;
     font-weight: 400;
+}
+
+.heading-row {
+    text-align: center;
+    margin-bottom: 28px;
+    font-size: 18px;
+    font-family: var(--header-font-family);
+    font-weight: 400;
+}
+
+
+.mat-dialog-content-row {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+}
+
+.mat-dialog-content-item {
+    border: 2px solid #e7e7e7;
+    padding: 20px;
+    border-radius: 12px;
+    flex-grow: 1;
+    flex-basis: calc(100% / 2);
+    cursor: pointer;
+    transition: width 3s;
+}
+
+.mat-dialog-content-item-first-state:hover {
+    background-color: #f1f3fd;
+    border-color: #3ea9f5;
+ }
+// .mat-dialog-content-item:hover {
+//     background-color: #f1f3fd;
+//     border-color: #3ea9f5;
+//  }
+
+
+
+.expand-install-column {
+    flex-grow: 2 !important;
+    flex-basis: 100% !important;
+    transition: width 3s;
+    border: unset !important;
+    padding: 0px !important;
+    cursor: default !important;
+}
+
+.collapse-edit-column {
+    // flex-grow: 0 !important;
+    // flex-basis: 0% !important;
+    display: none;
+}
+
+.mat-dialog-content-item-title {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    font-family: var(--header-font-family);
+    font-weight: 400;
+}
+
+
+
+.mat-dialog-content-item-desc {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+    // text-align: center;
+}
+
+.mat-dialog-content-item-desc-center-text {
+    text-align: center;
+}
+
+.copied--to--clipboard--tooltip {
+    font-size: 18px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+    // margin-bottom: 12px;
+}
+
+.copy-script-title {
+    font-size: 18px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+    margin-bottom: 12px;
+}
+
+.link-to-installations {
+    font-family: var(--header-font-family);
+    font-weight: 400;
+    font-size: 14px;
+    color: #3ea9f5;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.link-to-installations:hover {
+    text-decoration: underline;
+}
+
+.back-to-btns  {
+    cursor: pointer;
+}
+
+.back-to-btns > span {
+    vertical-align: middle;
 }

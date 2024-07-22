@@ -100,7 +100,7 @@ export class KnowledgeBaseService {
   }
 
   updateNamespace(body: string, namespaceid: string) {
-    console.log('[KNOWLEDGE BASE SERVICE] upadateNamespace body', body)
+    // console.log('[KNOWLEDGE BASE SERVICE] upadateNamespace body', body)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

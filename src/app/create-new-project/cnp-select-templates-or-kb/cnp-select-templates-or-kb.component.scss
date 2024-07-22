@@ -331,6 +331,7 @@ $color-pro-plan: #3ea9f5;
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap:12px
 }
 
 .cards-wpr {
@@ -357,17 +358,26 @@ $color-pro-plan: #3ea9f5;
   .card-selection {
     position: relative;
     background-color: rgb(255, 255, 255);
-    border-radius: 8px;
-    border: 1px solid #d9d9d9;
+    border-radius: 16px;
+    border: 2px solid #e7e7e7;
     outline: none;
     cursor: pointer;
     // min-height: 162px;
     width: 445px;
     pointer-events: auto;
   }
+
+  .cards-selection-mobile {
+    width: unset !important;
+    margin: auto;
+    // left: 15px;
+    margin-left: -4px;
+  }
   
   .card-selection.active-selection {
-    border: 2px solid var(--icon-hover-color);
+    border: 2px solid var(--blue-light);
+    background: #f1f3fd;
+    border-radius: 16px;
   }
   
   
@@ -395,7 +405,7 @@ $color-pro-plan: #3ea9f5;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    align-items: start;
+    align-items: flex-start;
   }
 
 .selection-card-title {
@@ -405,16 +415,33 @@ $color-pro-plan: #3ea9f5;
     font-size: 16px;
     line-height: 20px;
     letter-spacing: -0.01em;
+    color: #000
 }
 
 .selection-card-title-subtitle {
     margin-top: 0px;
     margin-bottom: 0px;
-    font-weight: 400;
+    // font-weight: 400;
     font-size: 14px;
     line-height: 18px;
     letter-spacing: -0.01em;
     color: rgb(100, 116, 145);
+}
+
+.onboarding-templt-page-title-mobile {
+    font-size: 20px;
+    max-width: 270px;
+    margin: auto;
+}
+
+.onboarding-templt-page-description-mobile {
+    font-size: 14px;
+    max-width: 270px;
+    margin: auto;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #647491;
 }
 
 

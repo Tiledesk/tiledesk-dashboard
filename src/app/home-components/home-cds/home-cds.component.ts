@@ -35,6 +35,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   // @Output() hasFinishedGetProjectBots = new EventEmitter();
   @Input() chatbots: Array<Chatbot> = [];
   @Input() displayKbHeroSection: boolean
+  @Input() isVisibleKNB: boolean
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
   projectId: string;
@@ -56,7 +57,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   depts_without_bot_array = [];
   chatbotCount: number;
   depts: any;
-  
+
 
   constructor(
     public appConfigService: AppConfigService,
@@ -84,8 +85,8 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
-    console.log('[HOME-CDS] - displayKbHeroSection ngOnChanges', this.displayKbHeroSection);
+    this.logger.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
+    this.logger.log('[HOME-CDS] - displayKbHeroSection ngOnChanges', this.displayKbHeroSection);
     this.sortChatbots();
   }
 
@@ -97,16 +98,16 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[HOME-CDS] - GET BOTS BY PROJECT ID', faqKb);
+      this.logger.log('[HOME-CDS] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
         this.chatbotCount = faqKb.length;
-        console.log('[HOME-CDS] - GET BOTS BY PROJECT ID chatbotCount', this.chatbotCount);
+        this.logger.log('[HOME-CDS] - GET BOTS BY PROJECT ID chatbotCount', this.chatbotCount);
       }
     }, (error) => {
-      console.error('[HOME-CDS] GET BOTS ERROR ', error);
+      this.logger.error('[HOME-CDS] GET BOTS ERROR ', error);
 
     }, () => {
-      console.log('[HOME-CDS] GET BOTS COMPLETE');
+      this.logger.log('[HOME-CDS] GET BOTS COMPLETE');
     });
   }
 
@@ -122,13 +123,15 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
           this.projectId = project._id
 
           const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
-          console.log('[HOME-CDS] storedNamespace', storedNamespace);
+          this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
           if (storedNamespace) {
             let storedNamespaceObjct = JSON.parse(storedNamespace)
-            console.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
+            this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
             this.kbNameSpaceid = storedNamespaceObjct.id;
             this.kbNameSpaceName = storedNamespaceObjct.name
             this.getChatbotUsingNamespace(this.kbNameSpaceid)
+          } else {
+            this.getAllNamespaces()
           }
         }
       }, (error) => {
@@ -139,11 +142,44 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
+  getAllNamespaces() {
+    this.kbService.getAllNamespaces().subscribe((namespaces: any) => {
+      if (namespaces) {
+
+        this.logger.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
+        namespaces.sort(function compare(a, b) {
+          if (a['updatedAt'] > b['updatedAt']) {
+            return -1;
+          }
+          if (a['updatedAt'] < b['updatedAt']) {
+            return 1;
+          }
+          return 0;
+        });
+
+        this.logger.log('[HOME-CDS] - GET ALL NAMESPACES ', namespaces);
+        this.kbNameSpaceid = namespaces[0].id;
+        this.kbNameSpaceName = namespaces[0].name
+        this.getChatbotUsingNamespace(this.kbNameSpaceid)
+
+      }
+    }, (error) => {
+      this.logger.error('[HOME-CDS]  GET GET ALL NAMESPACES ERROR ', error);
+
+    }, () => {
+      this.logger.log('[HOME-CDS]  GET ALL NAMESPACES * COMPLETE *');
+      // if (this.namespaces) {
+      //   this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+      // }
+    });
+  }
+
+
   getChatbotUsingNamespace(selectedNamespaceid: string) {
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((kbAssistants: any) => {
 
-      console.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
+      this.logger.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
       this.chatbotsUsingNamespace = kbAssistants
 
       if (this.chatbotsUsingNamespace.length > 0) {
@@ -155,7 +191,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       // let isArray = this.isArray(chatbots)
       // if (isArray) {
       // if (kbAssistants.length > 0) {
-      //   console.log('[HOME-CDS] - GET CHATBOTS USING NAMESPACE kbAssistants ', kbAssistants)
+      //   this.logger.log('[HOME-CDS] - GET CHATBOTS USING NAMESPACE kbAssistants ', kbAssistants)
       //   this.chatbotsUsingNamespace = kbAssistants
 
       // } else {
@@ -166,7 +202,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       this.logger.error('[HOME-CDS] - GET CHATBOTS USING NAMESPACE ', error);
 
     }, () => {
-      console.log('[HOME-CDS] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
+      this.logger.log('[HOME-CDS] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
       this.dismissKbSkeleton.emit(true)
 
     });
@@ -174,11 +210,11 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
   getDeptsByProjectIdOnInit(chatbotsUsingNamespace) {
 
-    console.log('[HOME-CDS] ---> GET DEPTS oninit chatbotsUsingNamespace ', chatbotsUsingNamespace);
+    this.logger.log('[HOME-CDS] ---> GET DEPTS oninit chatbotsUsingNamespace ', chatbotsUsingNamespace);
 
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[HOME-CDS] ---> GET DEPTS oninit RES ', departments);
+      this.logger.log('[HOME-CDS] ---> GET DEPTS oninit RES ', departments);
 
       if (departments) {
         this.depts = departments;
@@ -248,7 +284,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   //     this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
   //     this.showSpinner = false
   //   }, () => {
-  //     console.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+  //     this.logger.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
   //     this.showSpinner = false
   //     this.hasFinishedGetProjectBots.emit()
   //   });
@@ -282,7 +318,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     //   this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
     //   this.showSpinner = false
     // }, () => {
-    //   console.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+    //   this.logger.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
     //   this.showSpinner = false
     //   this.hasFinishedGetProjectBots.emit()
     // });
@@ -333,7 +369,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   goToKBPage() {
-    console.log('[HOME-CDS] goToKBPage')
+    this.logger.log('[HOME-CDS] goToKBPage')
     this.router.navigate(['project/' + this.projectId + '/knowledge-bases/' + this.kbNameSpaceid]);
   }
 
@@ -384,9 +420,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
             return officialResponder
           }
         });
-        console.log('[HOME-CDS] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
-
-
+        this.logger.log('[HOME-CDS] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
@@ -398,13 +432,13 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
-      console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
-      console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
+      this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
+      this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
       const intentArray = chatbot.intents
       const actionsArray = []
       chatbot.intents.forEach((intent, index, intentArray) => {
-        // console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
-        console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions > intent', intent)
+        // this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
+        this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions > intent', intent)
 
         actionsArray.push(intent.actions)
 
@@ -413,7 +447,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
         if (askGPT_Action) {
           askGPT_Action.namespace = this.kbNameSpaceid
-          console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
+          this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
 
         }
         // ----------------------------------------------------------------------------
@@ -421,16 +455,16 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
         // ----------------------------------------------------------------------------
         // const replyActionWithWelcomeMsg = intent.actions.find(x => x.text !== undefined);
         // if(replyActionWithWelcomeMsg) {
-        //   console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg', replyActionWithWelcomeMsg)
+        //   this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg', replyActionWithWelcomeMsg)
         //   replyActionWithWelcomeMsg.text = this.welcomeMsg
 
         //   if (replyActionWithWelcomeMsg && replyActionWithWelcomeMsg.attributes && replyActionWithWelcomeMsg.attributes.commands) {
         //     const actionCommands = replyActionWithWelcomeMsg.attributes.commands
-        //     console.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands', actionCommands)
+        //     this.logger.log('[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands', actionCommands)
         //     actionCommands.forEach(command => {
         //       if (command.type === "message" ) {
 
-        //         console.log("[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands command ", command.message.text) 
+        //         this.logger.log("[HOME-CDS] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands command ", command.message.text) 
         //         command.message.text = this.welcomeMsg
 
         //       }
@@ -445,9 +479,9 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
         // }
 
         if (index === intentArray.length - 1) {
-          // console.log('[HOME-CDS] - askGPT_Action' , askGPT_Action)
-          // console.log('[HOME-CDS] - replyActionWithWelcomeMsg' , replyActionWithWelcomeMsg)
-          console.log('[HOME-CDS] - actionsArray', actionsArray)
+          // this.logger.log('[HOME-CDS] - askGPT_Action' , askGPT_Action)
+          // this.logger.log('[HOME-CDS] - replyActionWithWelcomeMsg' , replyActionWithWelcomeMsg)
+          this.logger.log('[HOME-CDS] - actionsArray', actionsArray)
           if (!this.dialogRefCreateCb) {
             this.presentDialogChatbotname(chatbot)
           }
@@ -468,7 +502,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[HOME-CDS] openDialog presentDialogChatbotname chatbot ', chatbot)
     // const dialogRef = this.dialog.open(ModalChatbotNameComponent, {
     this.dialogRefCreateCb = this.dialog.open(ModalChatbotNameComponent, {
-      
+
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
@@ -479,7 +513,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
     this.dialogRefCreateCb.afterClosed().subscribe(editedChatbot => {
       if (editedChatbot) {
-        console.log(`[HOME-CDS] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
+        this.logger.log(`[HOME-CDS] DIALOG CHATBOT NAME editedChatbot:`, editedChatbot);
         this.importChatbotFromJSON(editedChatbot)
       }
     });
@@ -489,9 +523,9 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   importChatbotFromJSON(editedChatbot) {
     this.logger.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      console.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
-        console.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON faqkb certifiedTags  ', faqkb.certifiedTags)
+        this.logger.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON faqkb certifiedTags  ', faqkb.certifiedTags)
         faqkb.certifiedTags
 
         this.getDeptsByProjectId(faqkb)
@@ -499,9 +533,9 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       }
 
     }, (error) => {
-      console.error('[HOME-CDS] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      this.logger.error('[HOME-CDS] -  IMPORT CHATBOT FROM JSON- ERROR', error);
     }, () => {
-      console.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.logger.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON - COMPLETE');
 
     });
   }
@@ -510,18 +544,18 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   getDeptsByProjectId(faqkb?: string) {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[HOME-CDS] --->  DEPTS RES ', departments);
+      this.logger.log('[HOME-CDS] --->  DEPTS RES ', departments);
 
       if (departments) {
         const depts_length = departments.length
-        console.log('[HOME-CDS] --->  DEPTS LENGHT ', depts_length);
+        this.logger.log('[HOME-CDS] --->  DEPTS LENGHT ', depts_length);
 
         if (depts_length === 1) {
           // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
           this.dept_id = departments[0]['_id']
 
-          console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
-          console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
+          this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
+          this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
 
           if (departments[0].hasBot === true) {
             this.presentDialogChatbotSuccessfullyCreated('1')
@@ -534,8 +568,8 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
             // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
             // this.logger.log('[HOME-CDS] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           } else {
-            console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
-            console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
+            this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
+            this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
             this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept');
             this.presentDialogChatbotSuccessfullyCreated('2')
 
@@ -548,18 +582,17 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
           // this.logger.log('[HOME-CDS] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
         } else if (depts_length > 1) {
-          console.log('[HOME-CDS] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
+          this.logger.log('[HOME-CDS] --->  DEPTS LENGHT  USECASE DEPTS LENGHT > 1', depts_length);
 
           // this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = true;
           departments.forEach((dept, index, departments) => {
 
             if (dept.hasBot === true) {
-              console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT > 1  DEPT HAS BOT ');
-
+              this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT > 1  DEPT HAS BOT ');
 
               // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
             } else {
-              console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
+              this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT ');
               // this.logger.log('[BOT-CREATE] --->  DEPT botType selected ', this.botType);
               // if (this.botType !== 'identity') {
               //   this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
@@ -567,7 +600,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
               // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
-              console.log('[HOME-CDS] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+              this.logger.log('[HOME-CDS] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
 
               if (!this.dialogRefHookBoot) {
                 // this.openDialogHookBot(this.depts_without_bot_array, faqkb)
@@ -576,28 +609,26 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
             }
 
             if (index === departments.length - 1) {
-              console.log('[HOME-CDS] ---> FOREACH FINISHED depts_without_bot_array ', this.depts_without_bot_array)
+              this.logger.log('[HOME-CDS] ---> FOREACH FINISHED depts_without_bot_array ', this.depts_without_bot_array)
             }
           });
-
-
         }
       }
     }, error => {
 
       this.logger.error('[HOME-CDS] --->  DEPTS RES - ERROR', error);
     }, () => {
-      console.log('[HOME-CDS] --->  DEPTS RES - COMPLETE')
+      this.logger.log('[HOME-CDS] --->  DEPTS RES - COMPLETE')
     });
   }
 
 
 
   hookBotToDept(deptId, botId, hookToDefaultDept?: string) {
-    console.log('[HOME-CDS] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
+    this.logger.log('[HOME-CDS] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > hookToDefaultDept ', hookToDefaultDept);
     this.logger.log('[HOME-CDS] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT > deptId ', deptId, 'botId', botId);
     this.departmentService.updateExistingDeptWithSelectedBot(deptId, botId).subscribe((res) => {
-      console.log('[HOME-CDS] Bot Create - UPDATE EXISTING DEPT WITH SELECTED BOT - RES ', res);
+      this.logger.log('[HOME-CDS] Bot Create - UPDATE EXISTING DEPT WITH SELECTED BOT - RES ', res);
 
     }, (error) => {
       this.logger.error('[HOME-CDS] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
@@ -619,8 +650,8 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   }
 
   presentDialogChatbotSuccessfullyCreated(calledBy) {
-    console.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED calledBy ', calledBy);
-    console.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+    this.logger.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED calledBy ', calledBy);
+    this.logger.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
 
     Swal.fire({
       // title: this.translate.instant('Success'),
@@ -640,7 +671,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
       if (result.isConfirmed) {
 
-        console.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED result ', result);
+        this.logger.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED result ', result);
 
         this.router.navigate(['project/' + this.projectId + '/knowledge-bases/' + this.kbNameSpaceid]);
       }
@@ -650,7 +681,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   }
 
   presentDialogChatbotSuccessfullyCreatedTheHookBot(depts_without_bot_array, faqkb) {
-    console.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+    this.logger.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
 
     Swal.fire({
       // title: this.translate.instant('Success'),
@@ -669,7 +700,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
       if (result.isConfirmed) {
 
-        console.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED result ', result);
+        this.logger.log('[HOME-CDS] --->  DIALOG CHATBOT CREATED result ', result);
 
         this.openDialogHookBot(depts_without_bot_array, faqkb)
       }

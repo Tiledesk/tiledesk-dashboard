@@ -24,6 +24,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() hasRemovedKb: boolean;
   @Input() hasUpdatedKb: boolean;
   @Input() getKbCompleted: boolean;
+  @Input() hasAlreadyVisitedKb: string;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
@@ -48,7 +49,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   searchParams: any;
   numberPage: number = 0;
   hasFiltered: boolean = false;
-  hideHelpLink: boolean
+  hideHelpLink: boolean;
+  companyName: string;
   // kbsListCount: number = 0;
 
   constructor(
@@ -59,6 +61,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
+    this.companyName = brand["BRAND_NAME"] 
   }
 
   ngOnInit(): void {
@@ -117,6 +120,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.logger.log('[KB TABLE] ngOnChanges hasRemovedKb ', this.hasRemovedKb);
     this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
     this.logger.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
+    this.logger.log('[KB TABLE] ngOnChanges hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb);
+    
     
     
 

@@ -83,7 +83,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
       this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
-      console.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
+      this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
     if (data && data.askBody) {
       this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
@@ -98,26 +98,26 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
       this.hasStoredQuestion = true;
-      console.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      console.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
       this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
       
     } else {
       this.hasStoredQuestion = false;
-      console.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
     }
   }
 
   presentDialogAiSettings(isopenasetting) {
 
-    console.log('[MODAL-PREVIEW-KB] window.innerWidth', window.innerWidth);
-    console.log(`[MODAL-PREVIEW-KB] presentDialogAiSettings isopenasetting:`, isopenasetting);
+    this.logger.log('[MODAL-PREVIEW-KB] window.innerWidth', window.innerWidth);
+    this.logger.log(`[MODAL-PREVIEW-KB] presentDialogAiSettings isopenasetting:`, isopenasetting);
 
-    console.log('[MODAL-PREVIEW-KB] presentDialogAiSettings selectedModel to use for test', this.selectedModel)
-    console.log('[MODAL-PREVIEW-KB] presentDialogAiSettings maxTokens to use for test', this.maxTokens)
-    console.log('[MODAL-PREVIEW-KB] presentDialogAiSettings temperature to use for test', this.temperature)
-    console.log('[MODAL-PREVIEW-KB] presentDialogAiSettings topK to use for test', this.topK)
-    console.log('[MODAL-PREVIEW-KB] presentDialogAiSettings context to use for test', this.context)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings selectedModel to use for test', this.selectedModel)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings maxTokens to use for test', this.maxTokens)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings temperature to use for test', this.temperature)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings topK to use for test', this.topK)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings context to use for test', this.context)
 
 
 
@@ -148,7 +148,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
   closeDialogAiSettings(isopenasetting) {
-    console.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
+    this.logger.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
     this.dialogRefAiSettings.close()
   }
 
@@ -156,13 +156,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
     if (storedQuestion) {
       this.hasStoredQuestion = true;
-      console.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-      console.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
       this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
       
     } else {
       this.hasStoredQuestion = false;
-      console.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
     }
     this.question = this.storedQuestionNoDoubleQuote;
     // this.submitQuestion()
@@ -174,9 +174,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   listenPreviewKbHasBeenCloseBackdropClicking() {
     this.kbService.previewKbClosed$.subscribe((previeKbHasBeenClosed: boolean) => {
       if (previeKbHasBeenClosed) {
-        console.log('[MODAL-PREVIEW-KB] listenPreviewKbHasBeenCloseBackdropClicking previeKbHasBeenClosed ', previeKbHasBeenClosed)
+        this.logger.log('[MODAL-PREVIEW-KB] listenPreviewKbHasBeenCloseBackdropClicking previeKbHasBeenClosed ', previeKbHasBeenClosed)
         if (previeKbHasBeenClosed) {
-          console.log('[MODAL-PREVIEW-KB] dialogRefAiSettings', this.dialogRefAiSettings)
+          this.logger.log('[MODAL-PREVIEW-KB] dialogRefAiSettings', this.dialogRefAiSettings)
           if (this.dialogRefAiSettings) {
             this.dialogRefAiSettings.close()
           }
@@ -190,35 +190,35 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.kbService.editedAiSettings$.subscribe((editedAiSettings: any) => {
 
       if (editedAiSettings && editedAiSettings.length > 0) {
-        console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
+        this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
 
-        console.log('[MODAL-PREVIEW-KB] editedAiSettings ', editedAiSettings)
+        this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings ', editedAiSettings)
 
 
         if (editedAiSettings && editedAiSettings[0]['model']) {
           this.selectedModel = editedAiSettings[0]['model']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test', this.selectedModel)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test', this.selectedModel)
         }
         if (editedAiSettings && editedAiSettings[0]['maxTokens']) {
           this.maxTokens = editedAiSettings[0]['maxTokens']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test', this.maxTokens)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test', this.maxTokens)
         }
         if (editedAiSettings && editedAiSettings[0]['temperature']) {
           this.temperature = editedAiSettings[0]['temperature']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test', this.temperature)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test', this.temperature)
         }
         if (editedAiSettings && editedAiSettings[0]['top_k']) {
           this.topK = editedAiSettings[0]['top_k']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test', this.topK)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test', this.topK)
         }
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test', this.context)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test', this.context)
         }
       }
     })
 
-    // console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
+    // this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
   }
 
 
@@ -295,13 +295,13 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
       if (storedQuestion) {
         this.hasStoredQuestion = true;
-        console.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
-        console.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
         this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
         
       } else {
         this.hasStoredQuestion = false;
-        console.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
       }
     })
   }

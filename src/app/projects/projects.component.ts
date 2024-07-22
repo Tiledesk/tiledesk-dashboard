@@ -876,6 +876,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
   goToCreateProject() {
+    console.log('[PROJECTS] - GO TO CREATE  PROJECT')
     this.router.navigate(['/create-new-project']);
   }
 

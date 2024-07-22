@@ -39,6 +39,13 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+
+// import {
+//   // provideHighlightOptions,
+//   Highlight,
+//   // HighlightAuto,
+// } from 'ngx-highlightjs';
+// // import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -71,6 +78,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+
 
 
 
@@ -156,13 +164,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   botid: string;
   nameSpaceId: string;
 
+
+  storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   // Hook bot to dept
   dept_id: string;
   depts_length: any
   depts_without_bot_array = [];
   kbOfficialResponderTag = "kb-official-responder"
 
+  public hoveredChatbot: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  hasAlreadyVisitedKb: string = 'false'
 
   private dialogRefHookBoot: MatDialogRef<any>;
   constructor(
@@ -215,6 +230,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
 
+  
+    // this.getAllNamespaces()
+
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
 
@@ -222,14 +240,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   }
 
-
-
   listenToOnSenSitemapEvent() {
     document.addEventListener(
       "on-send-sitemap", (e: CustomEvent) => {
-        // console.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap :", e);
+        // this.logger.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap :", e);
 
-        // console.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap sitemap:", e.detail.sitemap);
+        // this.logger.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap sitemap:", e.detail.sitemap);
         if (e.detail && e.detail) {
           let sitemap = e.detail.sitemap
           let body = { 'sitemap': sitemap }
@@ -248,7 +264,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
-        this.getAllNamespaces()
+
+        const currentUrl = this.router.url;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
+        if (currentUrl.indexOf('/knowledge-bases') !== -1 ){
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
+          const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
+          if (storedHasAlreadyVisitedKb) {
+            this.hasAlreadyVisitedKb = 'true'
+          }
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ',  this.hasAlreadyVisitedKb)
+          this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
+          this.getAllNamespaces()
+        } 
+        // 
+        
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -260,7 +290,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
-        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
     }, (error) => {
@@ -605,6 +635,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getChatbotUsingNamespace(selectedNamespaceid: string) {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+    } else {
+    this.UPLOAD_ENGINE_IS_FIREBASE = false;
+    this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+    }
+
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
 
@@ -613,10 +653,43 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // if (isArray) {
       if (chatbots.length > 0) {
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
-        this.chatbotsUsingNamespace = chatbots
-        // if (chatbots) {
+        
 
-        // }
+        chatbots.forEach(bot => {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET FAQKB forEach bot: ', bot)
+
+      
+          let imgUrl = ''
+          if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+
+            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Firebase 
+            // ------------------------------------------------------------------------------
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
+
+          } else {
+           
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Native 
+            // ------------------------------------------------------------------------------
+            imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          }
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              this.logger.log('[KNOWLEDGE-BASES-COMP] - IMAGE EXIST X bot', bot);
+              bot.hasImage = true;
+            }
+            else {
+              this.logger.log('[KNOWLEDGE-BASES-COMP] - IMAGE NOT EXIST X bot', bot);
+              bot.hasImage = false;
+            }
+          });
+        });
+
+        this.chatbotsUsingNamespace = chatbots;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbotsUsingNamespace', this.chatbotsUsingNamespace);
+       
       } else {
         this.chatbotsUsingNamespace = undefined
       }
@@ -627,6 +700,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
     });
+  }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
   }
 
   // isArray(what) {
@@ -722,7 +806,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   importChatbotFromJSON(editedChatbot) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      console.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
@@ -734,7 +818,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] -  IMPORT CHATBOT FROM JSON- ERROR', error);
     }, () => {
-      console.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
 
       // this.presentDialogChatbotSuccessfullyCreated()
 
@@ -801,7 +885,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
               // this.logger.log('[BOT-CREATE] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
-              console.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+              this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
 
               if (!this.dialogRefHookBoot) {
                 // this.openDialogHookBot(this.depts_without_bot_array, faqkb)
@@ -823,7 +907,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   presentDialogChatbotSuccessfullyCreated() {
-    console.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
 
     Swal.fire({
       // title: this.translate.instant('Success'),
@@ -846,7 +930,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   presentDialogChatbotSuccessfullyCreatedTheHookBot(depts_without_bot_array, faqkb) {
-    console.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
 
     Swal.fire({
       // title: this.translate.instant('Success'),
@@ -865,7 +949,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       if (result.isConfirmed) {
 
-        console.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED result ', result);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED result ', result);
 
         this.openDialogHookBot(depts_without_bot_array, faqkb)
       }
@@ -963,7 +1047,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
       if (result && result.chatbot) {
 
         let faqkb = {
@@ -1023,7 +1107,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
         this.kbService.modalPreviewKbHasBeenClosed()
       }
@@ -1603,7 +1687,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
-      console.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
+      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
       resp.kbs.forEach((kb: any, i: number) => {
         // this.kbsList.push(kb);

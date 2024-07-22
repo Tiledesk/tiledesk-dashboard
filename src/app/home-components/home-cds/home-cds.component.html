@@ -71,7 +71,7 @@
 </div>
 
 <!-- KB HERO section  -->
-<!-- <ng-container *ngIf="!showSkeleton"> -->
+<ng-container *ngIf="isVisibleKNB">
     <div *ngIf="displayKbHeroSection" class="home-cds-main-content">
 
         <div class="home-cds-container">
@@ -103,14 +103,15 @@
             <div class="title-container" >
                 <div *ngIf="chatbotsUsingNamespace?.length > 0" class="home-cds-section-title">
                 <!-- +  YOUR CURRENT CHATBOT DESIGN -->
-                {{ kbNameSpaceName }} KNOWLEDGE BASE ASSISTANT 
+                <!-- {{ kbNameSpaceName }}  -->
+                YOUR CURRENT KNOWLEDGE BASE  
                 </div>
                 <div *ngIf="chatbotsUsingNamespace?.length === 0" class="home-cds-section-title">
                     No assistant has been created yet for {{ kbNameSpaceName }}  knowledge base
                 </div>
                 <!-- *ngIf="chatbots?.length > 0"  -->
                 <div *ngIf="chatbotsUsingNamespace?.length > 0" class="home-cds-section-subtitle">
-                    Open in the Knowledge Base page to manage its contents
+                    Open <b> {{ kbNameSpaceName }}</b> in the Knowledge Base page to manage its contents
                 </div>
             </div>
 
@@ -120,7 +121,8 @@
 
             <button *ngIf="chatbotsUsingNamespace?.length > 0" id="home-cds-btn" class="btn btn-size-xl btn-p  btn-p-ripple" 
                 (click)="goToKBPage()">
-                Manage <b> {{ kbAssistantName }} </b>  contents
+                <!-- Manage <b> {{ kbAssistantName }} </b>  contents -->
+                Manage contents
             </button>
 
             <button *ngIf="chatbotsUsingNamespace?.length === 0" id="home-cds-btn" class="btn btn-size-xl btn-p  btn-p-ripple" 
@@ -130,7 +132,7 @@
         </div>
 
     </div>
-<!-- </ng-container> -->
+</ng-container>
 
 <!-- <div *ngIf="showSkeleton" class="first-card is-loading">
     <div class="fake--circle"></div>

@@ -63,16 +63,16 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     public appConfigService: AppConfigService,
     private kbService: KnowledgeBaseService,
   ) { 
-    console.log("[MODAL PREVIEW SETTINGS] data ", data)
+    // console.log("[MODAL PREVIEW SETTINGS] data ", data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone=JSON.parse(JSON.stringify(this.selectedNamespace))
 
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
 
 
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
       // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace > selectedNamespace.preview_settings", this.selectedNamespace.preview_settings) 
@@ -88,13 +88,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
       this.max_tokens =  this.selectedNamespace.preview_settings.max_tokens;
-      console.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
+      // console.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
       this.temperature = this.selectedNamespace.preview_settings.temperature
-      console.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
+      // console.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
 
       this.topK = this.selectedNamespace.preview_settings.top_k
-      console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
+      // console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
       
       
       this.context = this.selectedNamespace.preview_settings.context
@@ -200,7 +200,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   updateSliderValue(value, type) {
     //console.log("[MODAL PREVIEW SETTINGS] value: ", value);
     // console.log("[MODAL PREVIEW SETTINGS] type: ", type);
-    console.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
+    // console.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.max_tokens = value
@@ -218,7 +218,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       
       // Comunicate to the subscriber "modal-preview-k-b" the change of the max_tokens
       this.aiSettingsObject[0].maxTokens = value
-      console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject )
     }
 
@@ -239,7 +239,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
        
       // Comunicate to the subscriber "modal-preview-k-b" the change of the temperature
       this.aiSettingsObject[0].temperature = value
-      console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject )
     }
 
@@ -260,7 +260,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
       this.aiSettingsObject[0].top_k = value
-      console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject )
     }
 
@@ -290,7 +290,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   
     // Comunicate to the subscriber "modal-preview-k-b" the change of the context
     this.aiSettingsObject[0].context = event
-    console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+    // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject )
 }
 
@@ -320,7 +320,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
-    console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
+    // console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens =  this.selectedNamespaceClone.preview_settings.max_tokens;
     // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
@@ -348,7 +348,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.model_list[0].value;
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
-    console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
+    // console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens =  this.maxTokensDefaultValue;
     this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 

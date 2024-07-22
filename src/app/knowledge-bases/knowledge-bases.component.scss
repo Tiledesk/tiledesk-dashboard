@@ -34,6 +34,17 @@
     }
 }
 
+.header-first-column{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.selected-namespace-label {
+    color: #647491;
+    font-size: 24px;
+}
+
 .custom-button {
     text-transform: capitalize;
     color: white;
@@ -55,7 +66,7 @@
     font-size: 14px;
     background: transparent;
     position: relative;
-    top: 1px;
+    top: -1px;
     left: -5px;
 
     &:hover {
@@ -732,13 +743,14 @@ table {
     flex-direction: row;
     align-items: center;
     gap: 6px;
-    margin-left: 8px;
+    // margin-left: 8px;
     margin-top: 6px;
-    height: 24px;
+    margin-left: -6px;
 }
 
 .chatbot-using-current-namespace {
     font-weight: 400;
+    height: 24px;
 
 }
 
@@ -754,3 +766,18 @@ table {
 .chatbot-list-using-current-namespace:hover {
     background: #c3d9ff
 }
+
+
+::ng-deep .cb-details-popover {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding: 8px !important;
+    color: #fff !important;
+    text-align: center;
+
+    .cbPopover-cbname {
+        font-weight: 600;
+    }
+  }
