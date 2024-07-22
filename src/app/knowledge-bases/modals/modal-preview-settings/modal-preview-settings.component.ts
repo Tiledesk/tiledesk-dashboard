@@ -35,10 +35,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   wasOpenedFromThePreviewKBModal: boolean
 
   private modelDefaultValue = "gpt-3.5-turbo";
-  private maxTokensDefaultValue = 128;
+  private maxTokensDefaultValue = 256;
   private temperatureDefaultValue = 0.7
   private topkDefaultValue = 4
-  private contextDefaultValue = "You are an awesome AI Assistant."
+  private contextDefaultValue = null
 
   public countOfOverrides = 0
 
@@ -184,7 +184,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
     // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].model = selectedModel
-    console.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
+    // console.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject )
 
     if(selectedModel !== this.modelDefaultValue) {

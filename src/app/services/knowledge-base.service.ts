@@ -233,12 +233,12 @@ export class KnowledgeBaseService {
   }
 
   hasChagedAiSettings(aisetting){
-    console.log("[KNOWLEDGE BASE SERVICE] - hasChagedAiSettings", aisetting);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - hasChagedAiSettings", aisetting);
     this.editedAiSettings$.next(aisetting)
   }
 
   modalPreviewKbHasBeenClosed() {
-    console.log("[KNOWLEDGE BASE SERVICE] - modalPreviewKbHasBeenClosed (clicking backdrop)");
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - modalPreviewKbHasBeenClosed (clicking backdrop)");
     this.previewKbClosed$.next(true)
   }
 
