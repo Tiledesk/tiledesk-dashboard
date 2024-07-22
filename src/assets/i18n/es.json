@@ -470,6 +470,10 @@
     "Success": "Éxito",
     "ChatbotSuccessfullyCreated":"Chatbot creado exitosamente",
     "EditChatbot": "Editar chatbot {{ chat_bot_name }}",
+    "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
+    "Back": "Atrás",
+    "WhatDoYouWantToDo":"¿Qué es lo que quieres hacer?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Modifique su chatbot con el potente Chatbot Design Studio si desea agregar funciones como botones, transferencia humana, IA avanzada, etc.",
     "AreYouSureYouWantToEditTheChatbot": "¿Estás segura de que quieres editar el chatbot {{chat_bot_name}}?",
     "NowItIsTimeToAddContent": "Ahora es el momento de agregar contenido",
     "Subject": "Asunto",
@@ -1617,6 +1621,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "¡Actualice su cuenta para establecer las horas de oficina del equipo e informe a los visitantes cuando sus agentes están trabajando!"
     },
     "KbPage": {
+        "WelcomeToKB": "Bienvenido a la base de conocimientos de {{company_name}}",
+        "GetStartedByAddingContents": "Comience agregando contenidos",
         "Secrets": "Misterios",
         "Enter": "Ingresar",
         "RunIndexing": "Volver a entrenar",
@@ -1746,6 +1752,7 @@
         "AllContents": "Todos los contenidos",
         "DeleteNamespace": "Eliminar todo el contenido"
     },
+    "ViewInTheDesignStudio": "Ver en el Design Studio",
     "LearnHow": "Aprender cómo",
     "AutomationsLog": "Registro de automatización",
     "AutomationsDemoPageDescription":"Con nuestras “automatizaciones APIs” podrás gestionar mensajes de difusión masiva en Whatsapp utilizando las automatizaciones del diseñador combinadas con la facilidad de nuestras APIs, enviar mensajes a todos los contactos de tu CRM favorito, recibir el estado de los mensajes enviados (recibidos, leídos, etc.) ) ¡y mucho más!",
@@ -2346,6 +2353,7 @@
     "CreateNewApp": "Crear una nueva aplicación",
     "LearnMore": "Aprende más",
     "Install": "Instalar",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Otras integraciones están disponibles en la página de Instalaciones",
     "Manage": "Administrar",
     "Uninstall": "Desinstalar",
     "Start": "Start",
@@ -2426,6 +2434,11 @@
     "WhereWouldYouLikeToStart":"¿Por dónde te gustaría empezar?",
     "AutomateConversationsFromPrototyping":"Automatiza conversaciones desde la creación de prototipos hasta todos tus canales en minutos",
     "Or":"o",
+    "CreateYourChatbot": "Crea tu chatbot",
+    "YouHaveCreatedYourFirstChatbot": "Has creado tu primer chatbot",
+    "LetsGo":"¡Vamos!",
+    "ChooseNameForYourChatbot": "Elige un nombre para tu chatbot",
+    "MyAssistantName": "nombre de mi asistente",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Elige tu chatbot entre nuestras plantillas, listo para ser implementado en tus canales",
         "ChatbotTitle": "Crea un chatbot para tu sitio web y/o apps de mensajería favoridas (WhatsApp, Messenger, etc.)",
@@ -2458,7 +2471,14 @@
         "NoDontWantAnAgent": "No, gracias. Prefiero que el chatbot haga todo el trabajo por mí",
         "YesAddButtonAgent": "Sí, quiero un botón para incluir mi equipo en las conversaciones",
         "WhereWouldYouLikeToStart": "¿Por dónde te gustaría empezar?",
-        "ChooseATemplateFor":"Elija una plantilla para {{selected_role}}. Encuentre todas las plantillas en nuestra Comunidad más tarde."
+        "WeWantToMakeYourExperienceJustRight": "Queremos que tu experiencia sea perfecta",
+        "ChooseATemplateFor":"Elija una plantilla para {{selected_role}}. Encuentre todas las plantillas en nuestra Comunidad más tarde.",
+        "GetAIToRespondUsingYourKB":"Haga que la IA responda utilizando su base de conocimientos",
+        "CreateYourAdvancedAIChatbot":"Cree su chatbot de IA avanzado y conéctelo a sus contenidos para garantizar que sus usuarios reciban respuestas oportunas y precisas a sus preguntas.",
+        "EffortlesslyCreateChatbot":"Cree sin esfuerzo un chatbot que responda automáticamente preguntas basadas en sus contenidos (URL, PDF, etc.)",
+        "StartFromOurChatbotTemplates": "Comience desde nuestras plantillas de chatbot",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Seleccione entre nuestra amplia gama de plantillas de chatbot, listas para su implementación inmediata en sus canales preferidos.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Seleccione una plantilla de automatización de chatbot prediseñada"
     },
     "AreYouHavingProblems": "¿Tienes problemas?",
     "IntegrationOnMorePlatforms": "Tiledesk se puede integrar en muchas plataformas, obtenga más información.",

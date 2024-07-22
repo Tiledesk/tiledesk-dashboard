@@ -471,6 +471,10 @@
     "Success": "Успіх",
     "ChatbotSuccessfullyCreated":"Чат-бот успішно створено",
     "EditChatbot": "Редагувати чат-бота {{ chat_bot_name }}",
+    "ChatbotAndChatbotName": "Чат-бот {{ chat_bot_name }}",
+    "Back": "Назад",
+    "WhatDoYouWantToDo":"Що ти хочеш робити?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Змініть свій чат-бот за допомогою потужної Chatbot Design Studio, якщо ви хочете додати такі функції, як кнопки, ручна передача людей, розширений штучний інтелект тощо",
     "AreYouSureYouWantToEditTheChatbot": "Ви впевнені, що бажаєте відредагувати чат-бота {{ chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Тепер настав час додати вміст",
     "Subject": "Тема",
@@ -1618,6 +1622,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Оновіть свій обліковий запис, щоб установити робочі години команди та повідомляти відвідувачам, коли ваші агенти працюють!"
     },
     "KbPage": {
+        "WelcomeToKB": "Вітаємо в базі знань {{company_name}}",
+        "GetStartedByAddingContents": "Почніть із додавання вмісту",
         "Secrets": "Секрети",
         "Enter": "Введіть",
         "RunIndexing": "Перетренуватися",
@@ -1747,6 +1753,7 @@
         "AllContents": "Весь вміст",
         "DeleteNamespace": "Видалити весь вміст"
     },
+    "ViewInTheDesignStudio": "Переглянути в студії дизайну",
     "LearnHow": "Дізнайтесь як",
     "AutomationsLog": "Журнал автоматизації",
     "AutomationsDemoPageDescription": "Завдяки нашій «автоматизації API» ви можете керувати масовими широкомовними повідомленнями в Whatsapp за допомогою автоматизації дизайнера в поєднанні з простотою наших API, надсилати повідомлення всім контактам вашої улюбленої CRM, отримувати статус надісланих повідомлень (отримано, прочитано тощо). ) і багато іншого!",
@@ -2346,6 +2353,7 @@
     "CreateNewApp": "Створіть новий додаток",
     "LearnMore": "Вивчайте більше",
     "Install": "Встановіть",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Інші інтеграції доступні на сторінці встановлення",
     "Manage": "Керувати",
     "Uninstall": "Деінсталювати",
     "Start": "старт",
@@ -2426,6 +2434,11 @@
     "WhereWouldYouLikeToStart": "З чого б ви хотіли почати?",
     "AutomateConversationsFromPrototyping": "Автоматизуйте розмови від створення прототипу до всіх ваших каналів за лічені хвилини",
     "Or": "або",
+    "CreateYourChatbot": "Створіть свій чат-бот",
+    "YouHaveCreatedYourFirstChatbot": "Ви створили свій перший чат-бот",
+    "LetsGo":"Ходімо!",
+    "ChooseNameForYourChatbot": "Виберіть назву для свого чат-бота",
+    "MyAssistantName": "Мого помічника ім'я",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Виберіть свого чат-бота з наших шаблонів, готових до розгортання на ваших каналах",
         "ChatbotTitle": "Налаштуйте чат для свого веб -сайту - або ваш канал (WhatsApp, Facebook тощо)",
@@ -2458,7 +2471,14 @@
         "NoDontWantAnAgent": "Ні, дякую. Я вважаю за краще чат, щоб виконати всю роботу для мене",
         "YesAddButtonAgent": "Так, я хочу, щоб кнопка зв’язалася з агентом",
         "WhereWouldYouLikeToStart": "З чого б ви хотіли почати?",
-        "ChooseATemplateFor": "Виберіть шаблон для {{selected_role}}. Пізніше знайдіть усі шаблони в нашій спільноті."
+        "WeWantToMakeYourExperienceJustRight": "Ми хочемо зробити ваш досвід якнайкраще",
+        "ChooseATemplateFor": "Виберіть шаблон для {{selected_role}}. Пізніше знайдіть усі шаблони в нашій спільноті.",
+        "GetAIToRespondUsingYourKB":"Зробіть штучний інтелект відповідним за допомогою вашої бази знань",
+        "CreateYourAdvancedAIChatbot":"Створіть свій розширений чат-бот зі штучним інтелектом і підключіть його до свого вмісту, щоб ваші користувачі отримували своєчасні та точні відповіді на свої запитання.",
+        "EffortlesslyCreateChatbot":"Легко створіть чат-бота, який автоматично відповідає на запитання на основі вашого вмісту (URL-адреси, PDF-файли тощо)",
+        "StartFromOurChatbotTemplates": "Почніть із наших шаблонів чат-ботів",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Виберіть із нашого різноманітного асортименту шаблонів чат-ботів, готових до негайного розгортання у ваших улюблених каналах.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Виберіть попередньо створений шаблон автоматизації чат-бота"
     },
     "AreYouHavingProblems": "Y вас проблеми?",
     "IntegrationOnMorePlatforms": "Tiledesk можна інтегрувати на багатьох платформах, дізнайтеся більше.",

@@ -470,6 +470,10 @@
     "Success": "Success",
     "ChatbotSuccessfullyCreated":"Chatbot successfully created",
     "EditChatbot": "Edit chatbot {{ chat_bot_name }}",
+    "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
+    "Back": "Back",
+    "WhatDoYouWantToDo":"What do you want to do?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Edit your chatbot with the powerful Chatbot Design Studio if you want to add features as buttons, human handoff, advanced AI etc.",
     "AreYouSureYouWantToEditTheChatbot": "Are you sure you want to edit the chatbot {{ chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Now it's time to add content",
     "Subject": "Subject",
@@ -1617,6 +1621,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Upgrade your account to set team office hours and let visitors know when your agents are working!"
     },
     "KbPage": {
+        "WelcomeToKB": "Welcome to {{company_name}} Knowledge Base",
+        "GetStartedByAddingContents": "Get started by adding contents",
         "Secrets": "Secrets",
         "Enter": "Enter",
         "RunIndexing": "Re-train",
@@ -1745,6 +1751,7 @@
         "AllContents": "All contents",
         "DeleteNamespace": "Delete all contents"
     },
+    "ViewInTheDesignStudio": "View in the Design Studio",
     "LearnHow": "Learn how",
     "AutomationsLog": "Automations Log",
     "AutomationsDemoPageDescription": "With our “APIs automations” you can manage mass broadcast messages on Whatsapp using the designer's automations combined with the ease of our APIs, send messages to all the contacts of your favorite CRM, receive the status of sent messages (received, read, etc.) and much more!",
@@ -2344,6 +2351,7 @@
     "HereHowIntegratingRasaWithTiledesk": "Here how integrating Rasa with Tiledesk",
     "CreateNewApp": "Create a new app",
     "LearnMore": "Learn more",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Other integrations are available on Installations page",
     "Install": "Install",
     "Manage": "Manage",
     "Uninstall": "Uninstall",
@@ -2425,6 +2433,11 @@
     "WhereWouldYouLikeToStart":"Where would you like to start?",
     "AutomateConversationsFromPrototyping": "Automate conversations from prototyping to all your channels in minutes",
     "Or":"or",
+    "CreateYourChatbot": "Create your chatbot",
+    "YouHaveCreatedYourFirstChatbot": "You have created your first chatbot",
+    "LetsGo":"Let's go",
+    "ChooseNameForYourChatbot": "Choose a name for your chatbot",
+    "MyAssistantName": "My assistant name",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Choose your chatbot from our templates, ready to be deployed on your channels",
         "ChatbotTitle": "Set up a chatbot for your website - or your channel (Whatsapp, Facebook etc.)",
@@ -2457,7 +2470,14 @@
         "NoDontWantAnAgent": "No, thanks. I prefer only having the chatbot to do all the work for me",
         "YesAddButtonAgent": "Yes, I'd like a button that can connect customers to an agent",
         "WhereWouldYouLikeToStart": "Where would you like to start?",
-        "ChooseATemplateFor":"Choose a template for {{selected_role}}. Find all templates in our Community later."
+        "WeWantToMakeYourExperienceJustRight": "We want to make your experience just right",
+        "ChooseATemplateFor":"Choose a template for {{selected_role}}. Find all templates in our Community later.",
+        "GetAIToRespondUsingYourKB":"Get AI to respond using your Knowledge Base",
+        "CreateYourAdvancedAIChatbot": "Create your advanced AI chatbot and connect it to your contents to ensure your users receive timely and precise answers to their questions.",
+        "EffortlesslyCreateChatbot":"Effortlessly create a chatbot that automatically answers questions based on your contents (URLs, PDFs, etc.)",
+        "StartFromOurChatbotTemplates": "Start from our chatbot templates",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Choose from our diverse range of chatbot templates, ready for immediate deployment across your preferred channels.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Select a pre-built chatbot automation template"
     },
     "AreYouHavingProblems": "Are you having problems?",
     "IntegrationOnMorePlatforms": "Tiledesk integrates with many platforms, learn more.",

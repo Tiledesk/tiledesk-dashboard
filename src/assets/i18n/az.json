@@ -471,6 +471,10 @@
     "Success": "Müvəffəqiyyət",
     "ChatbotSuccessfullyCreated":"Chatbot uğurla yaradıldı",
     "EditChatbot": "{{ chat_bot_name }} chatbotunu redaktə edin",
+    "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
+    "Back": "Geri",
+    "WhatDoYouWantToDo":"Nə etmək istəyirsən?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Düymələr, insan ötürülməsi, qabaqcıl AI və s. kimi xüsusiyyətlər əlavə etmək istəyirsinizsə, chatbotunuzu güclü Chatbot Design Studio ilə dəyişdirin.",
     "AreYouSureYouWantToEditTheChatbot": "{{ chat_bot_name }} chatbotunu redaktə etmək istədiyinizə əminsiniz?",
     "NowItIsTimeToAddContent":"İndi məzmun əlavə etmək vaxtıdır",
     "Subject": "Mövzu",
@@ -1618,6 +1622,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Komandanın iş saatlarını təyin etmək və agentlərinizin nə vaxt işlədiyini ziyarətçilərə bildirmək üçün hesabınızı təkmilləşdirin!"
     },
     "KbPage": {
+        "WelcomeToKB": "{{company_name}} Bilik Bazasına xoş gəlmisiniz",
+        "GetStartedByAddingContents": "Məzmun əlavə etməklə başlayın",
         "Secrets": "Sirlər",
         "Enter": "Daxil edin",
         "RunIndexing": "Yenidən məşq edin",
@@ -1747,6 +1753,7 @@
         "AllContents": "Bütün məzmunlar",
         "DeleteNamespace": "Bütün məzmunu silin"
     },
+    "ViewInTheDesignStudio": "Dizayn Studiyasında görüntüləyin",
     "LearnHow": "Necə öyrən",
     "AutomationsLog": "Avtomatlaşdırma qeydləri",
     "AutomationsDemoPageDescription":"Bizim “API avtomatlaşdırmalarımız” ilə siz API-lərimizin asanlığı ilə birləşdirilən dizayner avtomatlaşdırmalarından istifadə edərək Whatsapp-da kütləvi yayım mesajlarını idarə edə, sevimli CRM-nin bütün kontaktlarına mesaj göndərə, göndərilən mesajların statusunu (qəbul edildi, oxundu və s.) ala bilərsiniz. ) və daha çox!",
@@ -2346,6 +2353,7 @@
     "CreateNewApp": "Yeni proqram yaradın",
     "LearnMore": "Daha ətraflı",
     "Install": "Yüklemek",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Digər inteqrasiyaları Quraşdırmalar səhifəsində əldə etmək olar",
     "Manage": "İdarə et",
     "Uninstall": "Silin",
     "Start": "Başlamaq",
@@ -2426,6 +2434,11 @@
     "WhereWouldYouLikeToStart":"Hardan başlamaq istərdiniz?",
     "AutomateConversationsFromPrototyping": "Söhbətləri bir neçə dəqiqə ərzində prototipdən bütün kanallarınıza qədər avtomatlaşdırın",
     "Or":"və ya",
+    "CreateYourChatbot": "Çat robotunuzu yaradın",
+    "YouHaveCreatedYourFirstChatbot": "Siz ilk chatbotunuzu yaratdınız",
+    "LetsGo":"Gedək!",
+    "ChooseNameForYourChatbot": "Çatbotunuz üçün ad seçin",
+    "MyAssistantName": "Välj ett namn för din chatbot",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Kanallarınızda yerləşdirilməyə hazır olan chatbotunuzu şablonlarımızdan seçin",
         "ChatbotTitle": "Veb saytınız üçün bir ChatBot qurun - və ya kanalınız (WhatsApp, Facebook və s.)",
@@ -2458,7 +2471,14 @@
         "NoDontWantAnAgent": "Xeyr, təşəkkürlər. Mənim üçün bütün işləri görmək üçün Chatbot-a üstünlük verirəm",
         "YesAddButtonAgent": "Bəli, bir agentlə əlaqə qurmaq üçün bir düymə istəyirəm",
         "WhereWouldYouLikeToStart": "Hardan başlamaq istərdiniz?",
-        "ChooseATemplateFor":"{{selected_role}} üçün şablon seçin. İcmamızda bütün şablonları daha sonra tapın."
+        "WeWantToMakeYourExperienceJustRight": "Təcrübənizi düzgün etmək istəyirik",
+        "ChooseATemplateFor":"{{selected_role}} üçün şablon seçin. İcmamızda bütün şablonları daha sonra tapın.",
+        "GetAIToRespondUsingYourKB":"Bilik bazanızdan istifadə edərək cavab vermək üçün AI əldə edin",
+        "CreateYourAdvancedAIChatbot":"Qabaqcıl AI chatbotunuzu yaradın və istifadəçilərinizin suallarına vaxtında və dəqiq cavablar almasını təmin etmək üçün onu məzmununuza qoşun.",
+        "EffortlesslyCreateChatbot":"Məzmununuza (URL-lər, PDF-lər və s.) əsasən suallara avtomatik cavab verən chatbot yaradın.",
+        "StartFromOurChatbotTemplates": "Bizim chatbot şablonlarımızdan başlayın",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Tercih etdiyiniz kanallarda dərhal yerləşdirməyə hazır olan müxtəlif çeşidli chatbot şablonlarımızdan seçin.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Əvvəlcədən qurulmuş chatbot avtomatlaşdırma şablonunu seçin"
     },
     "AreYouHavingProblems": "Problemləriniz var?",
     "IntegrationOnMorePlatforms": "Tiledesk bir çox platformaya inteqrasiya oluna bilər, daha çox məlumat əldə edin.",

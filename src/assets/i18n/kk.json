@@ -470,6 +470,10 @@
     "Success": "Жетістік",
     "ChatbotSuccessfullyCreated":"Чатбот сәтті жасалды",
     "EditChatbot": "{{ chat_bot_name }} чатботын өңдеу",
+    "ChatbotAndChatbotName": "Чатбот {{ chat_bot_name }}",
+    "Back": "Артқа",
+    "WhatDoYouWantToDo":"Сіз не істегіңіз келеді?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Түймешіктер, адамның ауысуы, кеңейтілген AI және т.б. мүмкіндіктерді қосқыңыз келсе, чатботыңызды қуатты Chatbot Design Studio көмегімен өзгертіңіз.",
     "AreYouSureYouWantToEditTheChatbot": "{{ chat_bot_name }} чат роботын шынымен өңдегіңіз келе ме?",
     "NowItIsTimeToAddContent": "Енді мазмұнды қосу уақыты келді",
     "Subject": "Тақырып",
@@ -1617,6 +1621,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Топтың жұмыс уақытын орнату және келушілерге агенттеріңіз жұмыс істеген кезде хабарлау үшін тіркелгіңізді жаңартыңыз!"
     },
     "KbPage": {
+        "WelcomeToKB": "{{company_name}} білім қорына қош келдіңіз",
+        "GetStartedByAddingContents": "Мазмұнды қосу арқылы бастаңыз",
         "Secrets": "Құпиялар",
         "Enter": "Енгізіңіз",
         "RunIndexing": "Қайта жаттықтыру",
@@ -1746,6 +1752,7 @@
         "AllContents": "Барлық мазмұн",
         "DeleteNamespace": "Барлық мазмұнды жойыңыз"
     },
+    "ViewInTheDesignStudio": "Дизайн студиясында көру",
     "LearnHow": "Қалай білу",
     "AutomationsLog": "Автоматтандыру журналы",
     "AutomationsDemoPageDescription":"Біздің «API автоматикасының» көмегімен сіз WhatsApp желісіндегі жаппай хабарларды біздің API интерфейстеріміздің қарапайымдылығымен біріктірілген дизайнерлік автоматтандыруды пайдаланып басқара аласыз, сүйікті CRM-тің барлық контактілеріне хабарламалар жібере аласыз, жіберілген хабарламалардың күйін ала аласыз (қабылданған, оқылған және т. ) және тағы басқалар!",
@@ -2346,6 +2353,7 @@
     "CreateNewApp": "Жаңа қолданба жасаңыз",
     "LearnMore": "Көбірек білу үшін",
     "Install": "Орнату",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Басқа интеграциялар Орнатулар бетінде қол жетімді",
     "Manage": "Басқару",
     "Uninstall": "Жою",
     "Start": "Бастау",
@@ -2426,6 +2434,11 @@
     "WhereWouldYouLikeToStart":"Сіз неден бастағыңыз келеді?",
     "AutomateConversationsFromPrototyping":"Прототиптеуден бастап барлық арналарыңызға бірнеше минут ішінде сөйлесулерді автоматтандырыңыз",
     "Or":"немесе",
+    "CreateYourChatbot": "Чат-ботыңызды жасаңыз",
+    "YouHaveCreatedYourFirstChatbot": "Сіз бірінші чат-ботты жасадыңыз",
+    "LetsGo":"Барайық!",
+    "ChooseNameForYourChatbot": "Чат-бот үшін атау таңдаңыз",
+    "MyAssistantName": "Менің көмекшімнің аты",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Арналарыңызда орналастыруға дайын чатботты үлгілерімізден таңдаңыз",
         "ChatbotTitle": "Веб-сайтыңызға арналған чатбелтті орнатыңыз - немесе сіздің арнаңыз (Whatsapp, Facebook және т.б.)",
@@ -2458,7 +2471,13 @@
         "NoDontWantAnAgent": "Жоқ рақмет. Мен чатбелтті мен үшін барлық жұмысты ұнататынды қалаймын",
         "YesAddButtonAgent": "Ия, мен агентпен байланысқанды қалаймын",
         "WhereWouldYouLikeToStart": "Сіз неден бастағыңыз келеді?",
-        "ChooseATemplateFor":"{{selected_role}} үшін үлгі таңдаңыз. Қауымдастықтағы барлық үлгілерді кейінірек табыңыз."
+        "WeWantToMakeYourExperienceJustRight": "Біз сіздің тәжірибеңізді дұрыс жасағымыз келеді",
+        "ChooseATemplateFor":"{{selected_role}} үшін үлгі таңдаңыз. Қауымдастықтағы барлық үлгілерді кейінірек табыңыз.",
+        "GetAIToRespondUsingYourKB":"Білім қорын пайдаланып жауап беру үшін AI алыңыз",
+        "CreateYourAdvancedAIChatbot":"Жетілдірілген AI чат-ботын жасаңыз және пайдаланушылардың сұрақтарына уақтылы және нақты жауап алуын қамтамасыз ету үшін оны мазмұнға қосыңыз.",
+        "StartFromOurChatbotTemplates": "Біздің чатбот үлгілерінен бастаңыз",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Таңдаулы арналарыңызда дереу қолдануға дайын чатбот үлгілерінің алуан түрін таңдаңыз.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Алдын ала құрастырылған чатбот автоматтандыру үлгісін таңдаңыз"
     },
     "AreYouHavingProblems": "Сізде қиындықтар бар ма?",
     "IntegrationOnMorePlatforms": "Tiledesk көптеген платформаларда біріктірілуі мүмкін, көбірек біліңіз.",

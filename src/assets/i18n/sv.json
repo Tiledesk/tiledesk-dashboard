@@ -471,6 +471,10 @@
     "Success": "Framgång",
     "ChatbotSuccessfullyCreated":"Chatbot skapades framgångsrikt",
     "EditChatbot": "Redigera chatbot {{ chat_bot_name }}",
+    "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
+    "Back": "Tillbaka",
+    "WhatDoYouWantToDo":"Vad vill du göra?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Ändra din chatbot med den kraftfulla Chatbot Design Studio om du vill lägga till funktioner som knappar, mänsklig handoff, avancerad AI, etc.",
     "AreYouSureYouWantToEditTheChatbot": "Är du säker på att du vill redigera chatboten {{ chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Nu är det dags att lägga till innehåll",
     "Subject": "Ämne",
@@ -1618,6 +1622,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Uppgradera ditt konto för att ställa in teamets kontorstid och låt besökarna veta när dina agenter arbetar!"
     },
     "KbPage": {
+        "WelcomeToKB": "Välkommen till {{company_name}} kunskapsbas",
+        "GetStartedByAddingContents": "Kom igång genom att lägga till innehåll",
         "Secrets": "Hemligheter",
         "Enter": "Stiga på",
         "RunIndexing": "Träna om",
@@ -1747,6 +1753,7 @@
         "AllContents": "Allt innehåll",
         "DeleteNamespace": "Ta bort allt innehåll"
     },
+    "ViewInTheDesignStudio": "Utsikt i designstudion",
     "LearnHow": "Lära sig hur",
     "AutomationsLog": "Automationslogg",
     "AutomationsDemoPageDescription": "Med våra “API-automatiseringar” kan du hantera massutsändningsmeddelanden på Whatsapp med hjälp av designerns automatiseringar kombinerat med enkelheten hos våra API: er, skicka meddelanden till alla kontakter i din favorit-CRM, ta emot status för skickade meddelanden (mottagna, lästa, etc. ) och mycket mer!",
@@ -2346,6 +2353,7 @@
     "CreateNewApp": "Skapa en ny app",
     "LearnMore": "Läs mer",
     "Install": "Installera",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Andra integrationer är tillgängliga på installationssidan",
     "Manage": "Klara av",
     "Uninstall": "Avinstallera",
     "Start": "Start",
@@ -2426,6 +2434,11 @@
     "WhereWouldYouLikeToStart": "Var skulle du vilja börj?",
     "AutomateConversationsFromPrototyping": "Automatisera konversationer från prototyper till alla dina kanaler på några minuter",
     "Or": "eller",
+    "CreateYourChatbot": "Skapa din chatbot",
+    "YouHaveCreatedYourFirstChatbot": "Du har skapat din första chatbot",
+    "LetsGo":"Nu går vi!",
+    "ChooseNameForYourChatbot": "Изаберите име за свог цхат бота",
+    "MyAssistantName": "Mitt assistentnamn",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Välj din chatbot från våra mallar, redo att distribueras på dina kanaler",
         "ChatbotTitle": "Ställ in en chatbot för din webbplats - eller din kanal (WhatsApp, Facebook etc.)",
@@ -2458,7 +2471,14 @@
         "NoDontWantAnAgent": "Nej tack. Jag föredrar att chatboten gör allt arbete för mig",
         "YesAddButtonAgent": "Ja, jag vill att en knapp ska komma i kontakt med en agent",
         "WhereWouldYouLikeToStart": "Var vill du börja?",
-        "ChooseATemplateFor": "Изаберите шаблон за {{selected_role}}. Пронађи све шаблоне у нашој заједници касније."
+        "WeWantToMakeYourExperienceJustRight": "Vi vill göra din upplevelse helt rätt",
+        "ChooseATemplateFor": "Välj en mall för {{selected_role}}. Hitta alla mallar i vår community senare.",
+        "GetAIToRespondUsingYourKB":"Få AI att svara med hjälp av din kunskapsbas",
+        "CreateYourAdvancedAIChatbot":"Skapa din avancerade AI-chatbot och anslut den till ditt innehåll för att säkerställa att dina användare får snabba och exakta svar på sina frågor.",
+        "EffortlesslyCreateChatbot":"Skapa enkelt en chatbot som automatiskt svarar på frågor baserat på ditt innehåll (URL:er, PDF-filer, etc.)",
+        "StartFromOurChatbotTemplates": "Börja från våra chatbotmallar",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Välj från vårt mångsidiga utbud av chatbotmallar, redo för omedelbar distribution över dina föredragna kanaler.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Välj en förbyggd chatbot-automatiseringsmall"
     },
     "AreYouHavingProblems": "Har du problem?",
     "IntegrationOnMorePlatforms": "Visa alla plattformar.",

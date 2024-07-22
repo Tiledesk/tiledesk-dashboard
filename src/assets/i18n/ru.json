@@ -471,6 +471,10 @@
     "Success": "Успех",
     "ChatbotSuccessfullyCreated":"Чат-бот успешно создан",
     "EditChatbot": "Изменить чат-бота {{chat_bot_name }}",
+    "ChatbotAndChatbotName": "Чат-бот {{chat_bot_name }}",
+    "Back": "Назад",
+    "WhatDoYouWantToDo":"Что ты хочешь делать?",
+    "ModifyYourChatbotWithThePowerfulCDS": "Измените своего чат-бота с помощью мощной студии Chatbot Design Studio, если вы хотите добавить такие функции, как кнопки, передачу управления человеком, расширенный искусственный интеллект и т. д.",
     "AreYouSureYouWantToEditTheChatbot": "Вы уверены, что хотите изменить чат-бота {{chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Теперь пришло время добавить контент",
     "Subject": "Предмет",
@@ -1618,6 +1622,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Обновите свою учетную запись, чтобы установить часы работы команды и сообщать посетителям, когда работают ваши агенты!"
     },
     "KbPage": {
+        "WelcomeToKB": "Добро пожаловать в базу знаний {{company_name}}",
+        "GetStartedByAddingContents": "Начните с добавления содержимого",
         "Secrets": "Секреты",
         "Enter": "Входить",
         "RunIndexing": "Переобучение",
@@ -1746,6 +1752,7 @@
         "AllContents": "Все содержимое",
         "DeleteNamespace": "Удалить все содержимое"
     },
+    "ViewInTheDesignStudio": "Посмотреть в студии дизайна",
     "LearnHow": "Узнать, как",
     "AutomationsLog": "Журнал автоматизации",
     "AutomationsDemoPageDescription":"С помощью нашей «автоматизации API» вы можете управлять массовыми рассылками сообщений в Whatsapp, используя дизайнерскую автоматизацию в сочетании с простотой наших API, отправлять сообщения всем контактам вашей любимой CRM, получать статус отправленных сообщений (получено, прочитано и т. д.). ) и многое другое!",
@@ -2343,6 +2350,7 @@
     "IntegratingRasaWithTiledesk": "Интеграция Rasa с Tiledesk дает много преимуществ, прежде всего возможность направить текущие разговоры RASA на людей.",
     "HereHowIntegratingRasaWithTiledesk": "Вот как интегрировать Rasa с Tiledesk",
     "CreateNewApp": "Создать новое приложение",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "Другие интеграции доступны на странице «Установки».",
     "LearnMore": "Учить больше",
     "Install": "Установить",
     "Manage": "Управление",
@@ -2425,6 +2433,11 @@
     "WhereWouldYouLikeToStart":"С чего бы вы хотели начать?",
     "AutomateConversationsFromPrototyping":"Автоматизируйте разговоры от прототипирования по всем вашим каналам за считанные минуты.",
     "Or":"или",
+    "CreateYourChatbot": "Создайте своего чат-бота",
+    "YouHaveCreatedYourFirstChatbot": "Вы создали своего первого чат-бота",
+    "LetsGo":"Пойдем!",
+    "ChooseNameForYourChatbot": "Выберите имя для своего чат-бота",
+    "MyAssistantName": "Имя моего помощника",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Выберите своего чат-бота из наших шаблонов, готового к использованию на ваших каналах.",
         "ChatbotTitle": "Установите чат -бот для вашего веб -сайта - или ваш канал (WhatsApp, Facebook и т. Д.)",
@@ -2457,7 +2470,14 @@
         "NoDontWantAnAgent": "Спасибо, не надо. Я предпочитаю чат -бот, чтобы сделать всю работу для меня",
         "YesAddButtonAgent": "Да, я хочу, чтобы кнопка связалась с агентом",
         "WhereWouldYouLikeToStart": "С чего бы вы хотели начать?",
-        "ChooseATemplateFor":"Выберите шаблон для {{selected_role}}. Все шаблоны вы найдете в нашем сообществе позже."
+        "WeWantToMakeYourExperienceJustRight": "Мы хотим, чтобы ваш опыт был правильным",
+        "ChooseATemplateFor":"Выберите шаблон для {{selected_role}}. Все шаблоны вы найдете в нашем сообществе позже.",
+        "GetAIToRespondUsingYourKB":"Заставьте ИИ реагировать, используя вашу базу знаний",
+        "CreateYourAdvancedAIChatbot":"Создайте своего продвинутого чат-бота с искусственным интеллектом и подключите его к своему контенту, чтобы ваши пользователи получали своевременные и точные ответы на свои вопросы.",
+        "EffortlesslyCreateChatbot":"Легко создайте чат-бота, который автоматически отвечает на вопросы на основе вашего контента (URL-адреса, PDF-файлы и т. д.).",
+        "StartFromOurChatbotTemplates": "Начните с наших шаблонов чат-ботов",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "Выбирайте из нашего разнообразного ассортимента шаблонов чат-ботов, готовых к немедленному развертыванию по выбранным вами каналам.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "Выберите готовый шаблон автоматизации чат-бота"
     },
     "AreYouHavingProblems": "У вас проблемы?",
     "IntegrationOnMorePlatforms": "Tiledesk можно интегрировать на многие платформы, узнайте больше.",

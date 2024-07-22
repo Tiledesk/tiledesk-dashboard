@@ -470,6 +470,10 @@
     "Success": "نجاح",
     "ChatbotSuccessfullyCreated":"تم إنشاء Chatbot بنجاح",
     "EditChatbot": "تحرير chatbot {{ chat_bot_name }}",
+    "ChatbotAndChatbotName": "روبوت الدردشة {{ chat_bot_name }}",
+    "Back": "عودة",
+    "WhatDoYouWantToDo":"ماذا تريد أن تفعل؟",
+    "ModifyYourChatbotWithThePowerfulCDS": "قم بتعديل chatbot الخاص بك باستخدام Chatbot Design Studio القوي إذا كنت تريد إضافة ميزات مثل الأزرار، والتسليم البشري، والذكاء الاصطناعي المتقدم، وما إلى ذلك",
     "AreYouSureYouWantToEditTheChatbot": "هل أنت متأكد أنك تريد تعديل chatbot {{ chat_bot_name }}؟",
     "NowItIsTimeToAddContent": "الآن حان الوقت لإضافة المحتوى",
     "Subject": "موضوع",
@@ -1617,6 +1621,8 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "قم بترقية حسابك لتعيين ساعات عمل الفريق وإعلام الزائرين عندما يعمل وكلاؤك!"
     },
     "KbPage": {
+        "WelcomeToKB": "مرحبًا بك في قاعدة معارف {{company_name}}",
+        "GetStartedByAddingContents": "ابدأ بإضافة محتويات",
         "Secrets": "أسرار",
         "Enter": "يدخل",
         "RunIndexing": "إعادة التدريب",
@@ -1746,6 +1752,7 @@
         "AllContents": "جميع المحتويات",
         "DeleteNamespace": "احذف كافة المحتويات"
     },
+    "ViewInTheDesignStudio": "عرض في استوديو التصميم",
     "LearnHow": "تعلم كيف",
     "AutomationsLog": "سجل الأتمتة",
     "AutomationsDemoPageDescription":"من خلال أتمتة واجهات برمجة التطبيقات لدينا، يمكنك إدارة رسائل البث الجماعية على Whatsapp باستخدام أتمتة المصمم جنبًا إلى جنب مع سهولة واجهات برمجة التطبيقات لدينا، وإرسال رسائل إلى جميع جهات الاتصال الخاصة بإدارة علاقات العملاء (CRM) المفضلة لديك، وتلقي حالة الرسائل المرسلة (المستلمة، المقروءة، وما إلى ذلك) و أكثر بكثير!",
@@ -2346,6 +2353,7 @@
     "CreateNewApp": "أنشئ تطبيقًا جديدًا",
     "LearnMore": "يتعلم أكثر",
     "Install": "تثشبيت",
+    "OtherIntegrationsAreAvailableOnInstallationsPage": "تتوفر عمليات التكامل الأخرى على صفحة التثبيتات",
     "Manage": "يدير",
     "Uninstall": "الغاء التثبيت",
     "Start": "البدء",
@@ -2426,6 +2434,11 @@
     "WhereWouldYouLikeToStart":"أين تريد أن تبدأ؟",
     "AutomateConversationsFromPrototyping": "قم بأتمتة المحادثات بدءًا من النماذج الأولية وحتى جميع قنواتك في دقائق",
     "Or":"أو",
+    "CreateYourChatbot": "قم بإنشاء روبوت الدردشة الخاص بك",
+    "YouHaveCreatedYourFirstChatbot": "لقد قمت بإنشاء أول chatbot الخاص بك",
+    "LetsGo":"دعنا نذهب!",
+    "ChooseNameForYourChatbot": "اختر اسمًا لروبوت الدردشة الخاص بك",
+    "MyAssistantName": "اسم مساعدي",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"اختر برنامج الدردشة الآلي الخاص بك من قوالبنا، الجاهزة للنشر على قنواتك",
         "ChatbotTitle": "قم بإعداد chatbot لموقع الويب الخاص بك - أو قناتك (WhatsApp ، Facebook وما إلى ذلك)",
@@ -2458,7 +2471,14 @@
         "NoDontWantAnAgent": "لا شكرا. أنا أفضل chatbot للقيام بكل العمل من أجلي",
         "YesAddButtonAgent": "نعم ، أريد زرًا للاتصال بعامل",
         "WhereWouldYouLikeToStart": "أين تريد أن تبدأ؟",
-        "ChooseATemplateFor":"اختر نموذجًا لـ {{selected_role}}. ابحث عن جميع القوالب في مجتمعنا لاحقًا."
+        "WeWantToMakeYourExperienceJustRight": "نريد أن نجعل تجربتك صحيحة",
+        "ChooseATemplateFor":"اختر نموذجًا لـ {{selected_role}}. ابحث عن جميع القوالب في مجتمعنا لاحقًا.",
+        "GetAIToRespondUsingYourKB":"احصل على الذكاء الاصطناعي للرد باستخدام قاعدة المعرفة الخاصة بك",
+        "CreateYourAdvancedAIChatbot":"أنشئ برنامج الدردشة الآلي المتقدم الخاص بك والذي يعمل بتقنية الذكاء الاصطناعي واربطه بمحتوياتك لضمان حصول المستخدمين على إجابات دقيقة وفي الوقت المناسب لأسئلتهم.",
+        "EffortlesslyCreateChatbot":"قم بإنشاء برنامج دردشة يجيب تلقائيًا على الأسئلة بناءً على محتوياتك (عناوين URL وملفات PDF وما إلى ذلك) دون عناء.",
+        "StartFromOurChatbotTemplates": "ابدأ من قوالب chatbot الخاصة بنا",
+        "SelectFromOurDiverseRangeOfChatbotTemplates": "اختر من بين مجموعتنا المتنوعة من قوالب chatbot، الجاهزة للنشر الفوري عبر قنواتك المفضلة.",
+        "SelectAPreBuiltChatbotAutomationTemplate": "حدد قالب أتمتة chatbot مُعد مسبقًا"
     },
     "AreYouHavingProblems": "هل لديك مشاكل؟",
     "IntegrationOnMorePlatforms": "يمكن دمج Tiledesk في العديد من الأنظمة الأساسية ، اكتشف المزيد.",
