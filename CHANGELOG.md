@@ -1,10 +1,52 @@
 # tiledesk-dashboard
 
+### 2.6.45-rc2
+- Improves time slots UI
+- Added translations for time slots
+
+### 2.6.45-rc1
+- Added time slots in Operating Hours
+
+### 2.6.44-rc4
+- Improvements and bug fixing
+
+### 2.6.44-rc3
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+
+### 2.6.44-rc2
+- Fix vxml voice integration visibility
+
+### 2.6.44-rc1
+- Added vxml voice integration
+- Added twilio sms integration
+
+### 2.6.43
+- Deploys in production
+- Improves the quota usage widget
+- Minor improvements
+
+### 2.6.43-rc2
+- Improves Knowledge Bases page
+
+### 2.6.43-rc1
+- Improves quotes widget
+- Added voice-vxml and sms-twilio channel in analytics
+
 ### 2.6.42
 - Deploys in production
 - Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
 
+### 2.6.42-rc1
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
 ### 2.6.41
+- Deploys in production
+- Displays information about the Voice channel
+
+### 2.6.41-rc2
+- Adds the Voice Channel integration 
+
+### 2.6.41-rc1
 - Deploys in production
 - Displays information about the Voice channel
 

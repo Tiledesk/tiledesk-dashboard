@@ -7,7 +7,14 @@ import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: "", component: HoursComponent},
@@ -16,7 +23,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    HoursComponent
+    HoursComponent,
+    NewSlotModalComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -25,7 +33,14 @@ const routes: Routes = [
     SettingsSidebarModule,
     SharedModule,
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule
   ]
 })
 export class HoursModule { }

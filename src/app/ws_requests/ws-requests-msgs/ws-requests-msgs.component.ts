@@ -1,3 +1,4 @@
+import { CHANNELS_NAME } from './../../utils/util';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -410,6 +411,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   storedRequestId: string;
   requestDuration: any;
   dialedNumberIdentificationService : string;
+
+  CHANNELS_NAME = CHANNELS_NAME;
 
   /**
    * Constructor
