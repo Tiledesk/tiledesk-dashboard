@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.2-rc1
+- Kb onboarding
+
 ### 2.6.45-rc2
 - Improves time slots UI
 - Added translations for time slots
