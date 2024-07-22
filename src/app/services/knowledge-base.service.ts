@@ -13,6 +13,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class KnowledgeBaseService {
   public newKb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public editedAiSettings$: BehaviorSubject<[]> = new BehaviorSubject<[]>([])
+  public previewKbClosed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
 
   SERVER_BASE_PATH: string;
   TOKEN: string;
@@ -227,6 +229,16 @@ export class KnowledgeBaseService {
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id + queryString;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - delete namsespace url", url);
     return this.httpClient.delete(url, httpOptions);
+  }
+
+  hasChagedAiSettings(aisetting){
+    console.log("[KNOWLEDGE BASE SERVICE] - hasChagedAiSettings", aisetting);
+    this.editedAiSettings$.next(aisetting)
+  }
+
+  modalPreviewKbHasBeenClosed() {
+    console.log("[KNOWLEDGE BASE SERVICE] - modalPreviewKbHasBeenClosed (clicking backdrop)");
+    this.previewKbClosed$.next(true)
   }
 
 
