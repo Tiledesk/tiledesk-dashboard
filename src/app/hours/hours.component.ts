@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 // import * as moment from 'moment';
 import * as moment from 'moment-timezone'
 import { NotifyService } from '../core/notify.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -36,6 +36,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   // Operative Variables
   projectid: string;
+  project:any;
   timeSlots: Object = {};
   selectedSlot: any;
   timeSlotsArray: Array<any> = [];
@@ -54,6 +55,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     public notify: NotifyService,
     private router: Router,
+    private route: ActivatedRoute,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
@@ -114,6 +116,18 @@ export class HoursComponent implements OnInit, OnDestroy {
       this.router.navigate([`project/${this.projectid}/unauthorized`]);
     }
   }
+
+  getQueryParamSlot() {
+    return new Promise((resolve) => {
+      this.route.queryParams.subscribe((params) => {
+        if (params && params['slot']) {
+          resolve(params['slot']);
+        } else {
+          resolve(null);
+        }
+      })
+    })
+  }
   // View Functions - END
 
 
@@ -128,24 +142,12 @@ export class HoursComponent implements OnInit, OnDestroy {
     });
   }
 
-  getProjectById() {
+  async getProjectById() {
+    let slot_id = await this.getQueryParamSlot();
+    
     this.projectService.getProjectById(this.projectid).subscribe((project: any) => {
 
-      this.selectedSlot = {
-        id: 0,
-        name:  this.translate.instant("General"), // to be translated,
-        active: project.activeOperatingHours || false,
-        hours: null
-      }
-      if (project.operatingHours) {
-        this.selectedSlot.hours = JSON.parse(project.operatingHours);
-      } else {
-        this.selectedSlot.hours = {
-          tzname: moment.tz.guess()
-        }
-      }
-
-      this.initializeDaysObject(this.selectedSlot.hours);
+      this.project = project;
 
       if (project.timeSlots) {
         this.timeSlots = project.timeSlots;
@@ -157,7 +159,15 @@ export class HoursComponent implements OnInit, OnDestroy {
         this.timeSlots = {};
         this.timeSlotsArray = [];
       }
-      this.showSpinner = false;
+
+      let slot = this.timeSlotsArray.find(s => s.id === slot_id );
+
+      if (slot) {
+        this.onSelectSlot(slot);
+      } else {
+        this.onGeneralSelected();
+      }
+
     }, (error) => {
       this.logger.error("error getting projet: ", error)
       this.showSpinner = false;
@@ -288,7 +298,9 @@ export class HoursComponent implements OnInit, OnDestroy {
           this.projectService.updateProject(this.projectid, data).subscribe((updatedProject: any) => {
             updatedProject['role'] = this.USER_ROLE;
             localStorage.setItem(updatedProject['_id'], JSON.stringify(updatedProject));
-            this.auth.projectSelected(updatedProject, 'hours')
+            if (this.selectedSlot.id === 0) {
+              this.auth.projectSelected(updatedProject, 'hours')
+            }
             setTimeout(() => {
               Swal.hideLoading();
               Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.OperatingHoursSuccessfullyUpdated"), icon: 'success' })
@@ -388,7 +400,9 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.days = JSON.parse(JSON.stringify(DAYS));
     if (!slot) {
-      this.getProjectById();
+      this.onGeneralSelected();
+      // this.changeRoute(null);
+      // this.getProjectById();
     } else {
       if (typeof slot.hours === 'string') {
         slot.hours = JSON.parse(slot.hours);
@@ -401,10 +415,33 @@ export class HoursComponent implements OnInit, OnDestroy {
         }
       }
       this.initializeDaysObject(this.selectedSlot.hours);
+      this.changeRoute(slot.id);
       setTimeout(() => {
         this.showSpinner = false
       }, 200);
     }
+  }
+
+  onGeneralSelected() {
+    this.selectedSlot = {
+      id: 0,
+      name:  this.translate.instant("General"), // to be translated,
+      active: this.project.activeOperatingHours || false,
+      hours: null
+    }
+    if (this.project.operatingHours) {
+      this.selectedSlot.hours = JSON.parse(this.project.operatingHours);
+    } else {
+      this.selectedSlot.hours = {
+        tzname: moment.tz.guess()
+      }
+    }
+    this.initializeDaysObject(this.selectedSlot.hours);
+    this.changeRoute(null);
+    setTimeout(() => {
+      this.showSpinner = false
+    }, 200);
+
   }
 
   close_Pm(dayid) {
@@ -451,7 +488,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.days[weekdayid].operatingHoursPmEnd = time;
   }
 
-  presentModalDeleteSlot(data) {
+  presentModalDeleteSlot() {
     Swal.fire({
       title: this.translate.instant("HoursPage.DeleteSlot"),
       html: this.translate.instant("HoursPage.SureDeleteSlot", { slotName: this.selectedSlot.name }),
@@ -479,7 +516,7 @@ export class HoursComponent implements OnInit, OnDestroy {
                 }, 2000);
               }, 500);
             }).catch((err) => {
-              console.error("err: ", err);
+              this.logger.log("Error saving slot: ", err)
               setTimeout(() => {
                 Swal.hideLoading();
                 Swal.update({ title: this.translate.instant("Error"), text: this.translate.instant("HoursPage.ErrorOccurred"), icon: 'error' })
@@ -489,6 +526,15 @@ export class HoursComponent implements OnInit, OnDestroy {
         })
       }
     })
+  }
+
+  changeRoute(key) {
+    this.logger.log("[HOURS-COMP] change route in ", key);
+    if (key) {
+      this.router.navigate(['project/' + this.projectid + '/hours/'], { queryParams: { slot: key } })
+    } else {
+      this.router.navigate(['project/' + this.projectid + '/hours/'])
+    }
   }
 
   deleteSlot() {
