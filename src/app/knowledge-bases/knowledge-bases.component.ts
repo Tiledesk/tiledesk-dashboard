@@ -922,10 +922,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // ------------------------------------------------------------------------
   // @ Modals Windows
   // ------------------------------------------------------------------------
-
-  
-
-
   presentModalAddNewNamespace() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
 
@@ -952,14 +948,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '400px',
+      id: 'kb-test',
       data: {
-        selectedNaspace: this.selectedNamespace,
+        selectedNamespace: this.selectedNamespace,
         askBody: previedata
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      console.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      if (result === undefined) {
+        this.kbService.modalPreviewKbHasBeenClosed()
+      }
+
       if (result) {
         if (result.action === 'open-settings-modal' && result.data) {
           this.onOpenBaseModalPreviewSettings(result.data)
@@ -978,7 +979,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       hasBackdrop: true,
       width: '360px',
       data: {
-        selectedNaspace: this.selectedNamespace,
+        selectedNamespace: this.selectedNamespace,
       },
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -1540,7 +1541,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
-      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
+      console.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
       resp.kbs.forEach((kb: any, i: number) => {
         // this.kbsList.push(kb);
@@ -2199,7 +2200,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       "content": kb.content ? kb.content : '',
       "namespace": this.id_project
     }
+
     this.updateStatusOfKb(kb._id, 100);
+
     this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.error) {

@@ -278,8 +278,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
 
- 
-
   } // OnInit
 
 
@@ -293,7 +291,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -303,9 +300,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
-
-      this.logger.log("project_limits: ", this.project_limits)
-      this.logger.log("resp.quotes: ", resp.quotes)
 
       this.messages_limit = this.project_limits.messages;
       this.requests_limit = this.project_limits.requests;
@@ -895,8 +889,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           
           this.projectId = project._id;
           this.projectName = project.name;
-          // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           this.getProjectQuotes();
+          // this.getQuotes();
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     

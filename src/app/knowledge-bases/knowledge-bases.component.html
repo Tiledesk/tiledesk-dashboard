@@ -51,10 +51,10 @@
       </appdashboard-bots-sidebar>
 
 
-      <div class="template-content">
+      <div class="kb-content">
         <!-- <appdashboard-knowledge-bases-alert [kbsListCount]="kbsListCount" *ngIf="kbsListCount && kbsListCount > kbLimit"> </appdashboard-knowledge-bases-alert> -->
 
-        <div class="template-content-container">
+        <div class="kb-content-container">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <div class="card-content" *ngIf="!showSpinner">
@@ -88,7 +88,12 @@
                 </button> -->
 
                 <!-- ----------- MAT-MENU ----------- -->
-                <button mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList">
+                <button mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
+                  matTooltipClass="kb-custom-mat-tooltip"
+                  matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}" 
+                  #tooltip="matTooltip" 
+                  matTooltipPosition='below'
+                  matTooltipHideDelay="100">
                   <mat-icon>unfold_more</mat-icon>
                 </button>
 
@@ -135,7 +140,12 @@
                 </button>
 
                 <button class="custom-button preview" aria-label="Preview"
-                  (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+                  (click)="$event.stopPropagation(); onOpenBaseModalPreview()" [disabled]="kbsListCount === 0" [ngClass]="{'preview-btn-disabled': kbsListCount === 0}"
+                  matTooltipClass="kb-custom-mat-tooltip"
+                  [matTooltip]="kbsListCount === 0 ? ( 'KbPage.AddContentsToUseTheKBPreview' | translate ) : ( 'KbPage.KBpreview' | translate ) "
+                  #tooltip="matTooltip" 
+                  matTooltipPosition='below'
+                  matTooltipHideDelay="100">
                   <span class="material-icons-round">play_arrow</span>
                   <span class=""> {{'Preview' | translate}} </span>
                 </button>
@@ -144,7 +154,7 @@
                   <!-- width: 150px; -->
                   <button class="custom-button add-content" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu"
                     aria-label="Actions">
-                    <span class="material-icons-round">add</span>
+                    <!-- <span class="material-icons-round">add</span> -->
                     <span class=""> {{ 'KbPage.Add' | translate }} </span>
                   </button>
                   <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">

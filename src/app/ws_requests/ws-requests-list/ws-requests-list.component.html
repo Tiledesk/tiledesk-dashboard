@@ -361,19 +361,23 @@
               <!-- -------------------------------------------------------- -->
               <!-- @ Angent filter -->
               <!-- -------------------------------------------------------- -->
-              <div class="col-sm-4 select-agent-wpr">
+              <!-- AGENTS_CAN_SEE_ONLY_OWN_CONVS > {{AGENTS_CAN_SEE_ONLY_OWN_CONVS}} ONLY_MY_REQUESTS > {{ ONLY_MY_REQUESTS }}
+              displayAgentsSelect >  {{displayAgentsSelect}} -->
+              
+                <div *ngIf="displayAgentsSelect" class="col-sm-4 select-agent-wpr">
 
-                <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
-                  name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
-                  (clear)="clearAgentFilter()" (change)="onChangeAgent()">
+                  <ng-select attr.aria-label="{{ 'FilterBy' | translate }} {{ 'HistoryPage.Agent' | translate }}"
+                    name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
+                    (clear)="clearAgentFilter()" (change)="onChangeAgent()">
 
-                  <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
-                  <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
-                  <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
-                    {{ agent.firstname }} {{ agent.lastname }}
-                  </ng-option>
-                </ng-select>
-              </div>
+                    <ng-option [value]="1">{{ 'HumanAgentsOnly' | translate }}</ng-option>
+                    <ng-option [value]="2">{{ 'BotsOnly' | translate }}</ng-option>
+                    <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
+                      {{ agent.firstname }} {{ agent.lastname }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+            
 
               <!-- -------------------------------------------------------- -->
               <!-- @ Conversation type filter -->
@@ -686,7 +690,7 @@
           <!-- Chat Limit -->
           <!-- --------------------------------------------------- -->
           <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
-            [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }" (click)="goToProjectSettings_Advanced()">
+            [ngClass]="{'btn-primary-no-active': !CHAT_LIMIT_IS_ENABLED }" (click)="goToProjectSettings_Smartassignment()">
             <span class="material-icons conv-option-icon tool_tip"
               [ngClass]="{'conv-option-icon-active': CHAT_LIMIT_IS_ENABLED}">
               sms_failed
@@ -726,7 +730,7 @@
           <!-- --------------------------------------------------- -->
           <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
             [ngClass]="{'btn-primary-no-active': !CHAT_REASSIGNMENT_IS_ENABLED }"
-            (click)="goToProjectSettings_Advanced()">
+            (click)="goToProjectSettings_Smartassignment()">
             <span class="material-icons conv-option-icon tool_tip"
               [ngClass]="{'conv-option-icon-active': CHAT_REASSIGNMENT_IS_ENABLED}">
               shuffle_on
@@ -769,7 +773,7 @@
           <!-- --------------------------------------------------- -->
           <button *ngIf="isVisibleSmartAssignOption" class="btn btn-primary-active"
             [ngClass]="{'btn-primary-no-active': !AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED }"
-            (click)="goToProjectSettings_Advanced()">
+            (click)="goToProjectSettings_Smartassignment()">
             <span class="material-icons conv-option-icon tool_tip"
               [ngClass]="{'conv-option-icon-active': AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED}">
               person_off
