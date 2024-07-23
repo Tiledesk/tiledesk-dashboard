@@ -255,9 +255,10 @@ export class HoursComponent implements OnInit, OnDestroy {
           { start: this.days[j].operatingHoursAmStart, end: this.days[j].operatingHoursAmEnd },
           { start: this.days[j].operatingHoursPmStart, end: this.days[j].operatingHoursPmEnd }
         ]
+      } else {
+        delete this.selectedSlot.hours[j];
       }
     }
-
     if (this.selectedSlot.id === 0) {
       this.updateProjectOperatingHours()
     } else {
