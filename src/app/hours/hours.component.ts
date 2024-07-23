@@ -14,6 +14,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewSlotModalComponent } from './modals/new-slot-modal/new-slot-modal.component';
 import { v4 as uuidv4 } from 'uuid';
 import { DAYS } from './utils';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -24,8 +26,9 @@ const Swal = require('sweetalert2')
 
 
 export class HoursComponent implements OnInit, OnDestroy {
-
+  
   public days = [];
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   // View Variables
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -73,7 +76,9 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    
+    console.log("unsubscribed")
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   // View Functions - START
@@ -130,17 +135,32 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
   // View Functions - END
 
-
   getCurrentProject() {
-    this.auth.project_bs.subscribe(project => {
-      if (project) {
-        this.projectid = project._id;
-        if (this.projectid) {
-          this.getProjectById();
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.projectid = project._id;
+          if (this.projectid) {
+            this.getProjectById();
+          }
         }
-      }
-    });
+
+      })
   }
+
+  // getCurrentProject() {
+  //   this.auth.project_bs.subscribe(project => {
+  //     if (project) {
+  //       this.projectid = project._id;
+  //       if (this.projectid) {
+  //         this.getProjectById();
+  //       }
+  //     }
+  //   });
+  // }
 
   async getProjectById() {
     let slot_id = await this.getQueryParamSlot();
