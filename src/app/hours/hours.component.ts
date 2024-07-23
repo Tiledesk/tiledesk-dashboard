@@ -76,7 +76,6 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("unsubscribed")
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -150,17 +149,6 @@ export class HoursComponent implements OnInit, OnDestroy {
 
       })
   }
-
-  // getCurrentProject() {
-  //   this.auth.project_bs.subscribe(project => {
-  //     if (project) {
-  //       this.projectid = project._id;
-  //       if (this.projectid) {
-  //         this.getProjectById();
-  //       }
-  //     }
-  //   });
-  // }
 
   async getProjectById() {
     let slot_id = await this.getQueryParamSlot();
