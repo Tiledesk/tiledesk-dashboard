@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.3-rc2
+- Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
+- Improves the knowledge base page 
+- Improves time slots UI
+
 ### 2.7.3-rc1
 - Kb onboarding
 
