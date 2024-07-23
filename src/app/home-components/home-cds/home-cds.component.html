@@ -101,16 +101,16 @@
             
             
             <div class="title-container" >
-                <div *ngIf="chatbotsUsingNamespace?.length > 0" class="home-cds-section-title">
-                <!-- +  YOUR CURRENT CHATBOT DESIGN -->
-                <!-- {{ kbNameSpaceName }}  -->
+                <!-- *ngIf="chatbotsUsingNamespace?.length > 0"  -->
+                <div class="home-cds-section-title">
+                
                 YOUR CURRENT KNOWLEDGE BASE  
                 </div>
-                <div *ngIf="chatbotsUsingNamespace?.length === 0" class="home-cds-section-title">
+                <!-- <div *ngIf="namespaces?.length === 0" class="home-cds-section-title">
                     No assistant has been created yet for {{ kbNameSpaceName }}  knowledge base
-                </div>
-                <!-- *ngIf="chatbots?.length > 0"  -->
-                <div *ngIf="chatbotsUsingNamespace?.length > 0" class="home-cds-section-subtitle">
+                </div> -->
+                <!-- *ngIf="namespaces?.length > 0" -->
+                <div  class="home-cds-section-subtitle">
                     Open <b> {{ kbNameSpaceName }}</b> in the Knowledge Base page to manage its contents
                 </div>
             </div>

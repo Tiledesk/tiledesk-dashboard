@@ -57,7 +57,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   depts_without_bot_array = [];
   chatbotCount: number;
   depts: any;
-
+  namespaces: any
 
   constructor(
     public appConfigService: AppConfigService,
@@ -147,6 +147,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       if (namespaces) {
 
         this.logger.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
+        this.namespaces = namespaces
         namespaces.sort(function compare(a, b) {
           if (a['updatedAt'] > b['updatedAt']) {
             return -1;
