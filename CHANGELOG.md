@@ -1,5 +1,28 @@
 # tiledesk-dashboard
 
+### 2.7.2
+- Deploys in production
+- Adds GPT-4o mini language model
+
+### 2.7.1
+- Deploys in production
+- Removes Twilio SMS and VXML Voice apps from App-store
+
+### 2.7.0
+- Deploys in production
+- Adds the ability to edit the "Quota checkpoint notification" email template
+- Adds Twilio SMS channel integration  
+
+### 2.6.44
+- Deploys in production
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+- Improvements and bug fixing
+
+### 2.6.43
+- Deploys in production
+- Improves the quota usage widget
+- Minor improvements
+
 ### 2.6.42
 - Deploys in production
 - Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page

@@ -1,3 +1,4 @@
+import { CHANNELS_NAME } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -236,6 +237,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: 'all', name: 'All' },
     ... CHANNELS
   ];
+  CHANNELS_NAME = CHANNELS_NAME;
 
 
 

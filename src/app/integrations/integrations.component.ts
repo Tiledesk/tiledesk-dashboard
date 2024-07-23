@@ -275,6 +275,44 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
         this.availableApps.push(telegramApp);
 
+        let smsApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_SMS && a.version === "v2"));
+        if (environment['smsConfigUrl']) {
+          if (smsApp) {
+            smsApp.runURL = environment['smsConfigUrl'];
+            smsApp.channel = "sms";
+          } else {
+            telegramApp = {
+              runURL: environment['smsConfigUrl'],
+              channel: "sms"
+            }
+          }
+        }
+        else {
+          if (smsApp) {
+            smsApp.channel = "sms";
+          }
+        }
+        this.availableApps.push(smsApp);
+
+        let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VXML_VOICE && a.version === "v2"));
+        if (environment['voiceConfigUrl']) {
+          if (voiceApp) {
+            voiceApp.runURL = environment['voiceConfigUrl'];
+            voiceApp.channel = "voice";
+          } else {
+            voiceApp = {
+              voiceApp: environment['voiceConfigUrl'],
+              channel: "voice"
+            }
+          }
+        }
+        else {
+          if (voiceApp) {
+            voiceApp.channel = "voice";
+          }
+        }
+        this.availableApps.push(voiceApp);
+
         resolve(true);
 
       }, (error) => {
@@ -654,6 +692,15 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.MESSENGER);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
+      if (projectProfileData.customization[this.INT_KEYS.TWILIO_SMS] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
@@ -662,7 +709,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.CATEGORIES.splice(idx, 1);
         }
       }
+
+    } else {
+
+      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      
     }
+
     this.integrationListReady = true;
   }
 

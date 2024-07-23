@@ -1642,7 +1642,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Browser & Operating sistem -->
                     <!-- ------------------------------------- -->
-                    <li class="browser" *ngIf="request?.channel?.name !== 'voice' && request?.channel?.name !== 'vxml'">
+                    <li class="browser" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
@@ -1674,8 +1674,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Ip Address -->
                     <!-- ------------------------------------- -->
-                    <li class="ip-address"
-                      *ngIf="request?.channel?.name !== 'voice' && request?.channel?.name !== 'vxml'">
+                    <li class="ip-address" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1699,7 +1698,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Channel VOICE - Called Number -->
                     <!-- ------------------------------------- -->
-                    <li class="dnis" *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'">
+                    <li class="dnis" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1723,8 +1722,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Channel VOICE - Duration -->
                     <!-- ------------------------------------- -->
-                    <li class="duration"
-                      *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml' && requestDuration">
+                    <li class="duration" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && requestDuration">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
@@ -1874,7 +1872,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel telegram  -->
                     <!-- ---------------------------------------- -->
-                    <li class="telegram-channel" *ngIf="request?.channel?.name === 'telegram'">
+                    <li class="telegram-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM">
                       <div id="contact-row-telegram-channel" class="contact-row">
                         <span>
 
@@ -1899,8 +1897,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel voice  -->
                     <!-- ---------------------------------------- -->
-                    <li class="telegram-channel"
-                      *ngIf="request?.channel?.name === 'voice' || request?.channel?.name === 'vxml'">
+                    <li class="telegram-channel"  *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
                       <div id="contact-row-voice-channel" class="contact-row">
                         <span>
 
@@ -1933,7 +1930,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel whatsapp   -->
                     <!-- ---------------------------------------- -->
-                    <li class="whatsapp-channel" *ngIf="request?.channel?.name === 'whatsapp'">
+                    <li class="whatsapp-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP">
                       <div id="contact-row-whatsapp-channel" class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="22px" width="22px"
@@ -1957,7 +1954,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel messenger  -->
                     <!-- ---------------------------------------- -->
-                    <li class="messenger-channel" *ngIf="request?.channel?.name === 'messenger'">
+                    <li class="messenger-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER">
                       <div id="contact-row-messenger-channel" class="contact-row">
                         <span>
 
@@ -1983,7 +1980,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel email    -->
                     <!-- ---------------------------------------- -->
-                    <li class="email-channel" *ngIf="request?.channel?.name === 'email'">
+                    <li class="email-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL">
                       <div id="contact-row-email-channel" class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="18px" width="18px"
@@ -2007,7 +2004,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel Form -->
                     <!-- ---------------------------------------- -->
-                    <li class="form-channel" *ngIf="request?.channel?.name === 'form'">
+                    <li class="form-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.FORM">
                       <div id="contact-row-form-channel" class="contact-row">
                         <span>
 
@@ -2449,7 +2446,7 @@
                           (clear)="removeAllFollowers($event)">
                         </ng-select>
 
-                        <div *ngIf="request?.channel?.name === 'chat21'" class="convert-to-offline-btn-wpr"
+                        <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21" class="convert-to-offline-btn-wpr"
                           style="margin-top:14px">
 
                           <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn"

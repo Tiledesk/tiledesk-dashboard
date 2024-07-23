@@ -132,6 +132,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         this.selectedModel = this.model_list[2].value;
       } else if (this.selectedNamespace.preview_settings.model === "gpt-4o" ) {
         this.selectedModel = this.model_list[3].value;
+      } else if (this.selectedNamespace.preview_settings.model === "gpt-4o-mini" ) {
+        this.selectedModel = this.model_list[4].value;
       }
       // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 

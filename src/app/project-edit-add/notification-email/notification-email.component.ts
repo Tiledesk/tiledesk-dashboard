@@ -21,7 +21,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
 
   textToSearch: string;
 
-  EMAIL_TEMPLATE_NAME = ["assignedRequest", "assignedEmailMessage", "pooledRequest", "pooledEmailMessage", "newMessage", "ticket", "sendTranscript", "emailDirect", "newMessageFollower"]
+  EMAIL_TEMPLATE_NAME = ["assignedRequest", "assignedEmailMessage", "pooledRequest", "pooledEmailMessage", "newMessage", "ticket", "sendTranscript", "emailDirect", "newMessageFollower", "checkpointReachedEmail"]
   iframePlaceholderText: string;
   active_template: string = "assignedRequest"
   iFrame_placeholder: string

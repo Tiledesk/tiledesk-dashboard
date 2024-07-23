@@ -72,8 +72,8 @@
                   <div class="quote-container">
 
                     <div>
-                      <p class="quote-title">{{'Requests' | translate}}</p>
-                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                      <p class="quote-title">Conversations</p>
+                      <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                     </div>
 
                     <div class="quote">
@@ -89,9 +89,10 @@
 
                   <div class="quote-container">
 
+                    <!-- // number:'1.0-1' to diplay minimun 0 and manximum 1 digit after the comma -->
                     <div>
                       <p class="quote-title">AI Tokens</p>
-                      <div class="quote-count">{{tokens_count}} / {{tokens_limit}}</div>
+                      <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
                     </div>
 
                     <div class="quote">
@@ -109,7 +110,7 @@
 
                     <div>
                       <p class="quote-title">Email</p>
-                      <div class="quote-count">{{email_count}} / {{email_limit}}</div>
+                      <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
                     </div>
 
                     <div class="quote">

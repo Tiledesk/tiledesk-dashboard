@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { CHANNELS, CHANNELS_NAME, avatarPlaceholder, getColorBck } from '../../utils/util';
 import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -506,45 +506,16 @@ export class WsSharedComponent implements OnInit {
     this.conversationTypeInRequests = [];
     ws_requests.forEach(request => {
     // console.log('[WS-SHARED] getConversationTypeInRequests request ', request)
-      let channelObjct = {}
-      // (request.channel.name !== '' || request.channel.name !== '' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21')
-    
-  
-      if (request.channel.name === 'chat21') {
-        channelObjct['id'] =  "chat21";
-        channelObjct['name'] =  "Chat";
-      }
-      if (request.channel.name === 'whatsapp') {
-        channelObjct['id'] =  "whatsapp";
-        channelObjct['name'] =  "WhatsApp";
-      }
-      if (request.channel.name === 'messenger') {
-        channelObjct['id'] =  "messenger";
-        channelObjct['name'] =  "Messenger";
-      }
-      if (request.channel.name === 'telegram') {
-        channelObjct['id'] =  "telegram";
-        channelObjct['name'] =  "Telegram";
-      }
 
-      if (request.channel.name === 'email') {
-        channelObjct['id'] =  "email";
-        channelObjct['name'] =  "Email";
-      }
-
-      if (request.channel.name === 'form') {
-        channelObjct['id'] =  "form";
-        channelObjct['name'] =  "Ticket";
-      }
-
-      const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
-      // if (this.conversationTypeInRequests.indexOf(request.channel.name) === -1) {
+      let channelObjct = CHANNELS.find((el => el.id === request.channel.name ))
+      if(channelObjct){
+        const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
         if (index === -1) {
-        this.conversationTypeInRequests.push(channelObjct)
-      } else {
-      //  console.log('[WS-SHARED] the element already exist')
+          this.conversationTypeInRequests.push(channelObjct)
+        }
       }
-    })
+
+    });
     // console.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
   }
 
@@ -565,6 +536,7 @@ export class WsSharedComponent implements OnInit {
         // I CREATE AN ARRAY OF IDS OF PARTICIPANTS:  participantsId
         // IF THE ID OF THE PARTICIPANT DOES NOT EXISTS IN THE "ARRAY participantsId" THE FOR CYCLE PROCEEDS BUILDING 
         // THE ARRAY participantsInRequests
+       
 
         if (participantsId.indexOf(participant) === -1) {
 
