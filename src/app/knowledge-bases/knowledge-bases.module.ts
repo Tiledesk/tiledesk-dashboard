@@ -35,7 +35,9 @@ import { MatInputModule } from '@angular/material/input';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
-// import { SatPopoverModule } from '@ncstate/sat-popover';
+import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -61,9 +63,11 @@ const routes: Routes = [
     ModalUploadFileComponent,
     ModalChatbotNameComponent,
     ModalHookBotComponent,
-    ModalNsLimitReachedComponent
+    ModalNsLimitReachedComponent,
+    ModalConfirmGotoCdsComponent
   ],
   imports: [
+    ClipboardModule,
     RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
@@ -81,13 +85,20 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatExpansionModule
-    // SatPopoverModule
+    MatExpansionModule,
+    SatPopoverModule
   ]
   // ,
   // providers: [
-  //   { provide: MAT_DIALOG_DATA, useValue: {} },
-  //   { provide: MatDialogRef, useValue: {} }
+  //   {
+  //     provide: HIGHLIGHT_OPTIONS,
+  //     useValue: {
+  //       fullLibraryLoader: () => import('highlight.js'),
+  //       themePath: 'assets/styles/solarized-dark.css'
+  //     }
+  //   }
+    // { provide: MAT_DIALOG_DATA, useValue: {} },
+    // { provide: MatDialogRef, useValue: {} }
   // ]
 })
 export class KnowledgeBasesModule { }

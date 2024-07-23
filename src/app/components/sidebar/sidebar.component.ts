@@ -207,6 +207,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
+  CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
 
 
 
@@ -1163,21 +1164,33 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
           this.OLD_KB_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          //  this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         } else {
           this.OLD_KB_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          //  this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         }
 
 
         // if (event.url.match('/knowledge-bases')) {
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
+        // if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
+        if (event.url.indexOf('/knowledge-bases') !== -1) {
           this.KB_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          //  this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         } else {
           this.KB_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/bots/create/tilebot/blank') !== -1) {
+          this.CREATE_BOT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+        } else {
+          this.CREATE_BOT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+        }
+
+
+        
 
 
 

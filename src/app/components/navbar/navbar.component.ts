@@ -786,6 +786,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/projects-for-panel') !== -1) ||
           (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
           (this.route.indexOf('/desktop-access') !== -1) ||
+          (this.route.indexOf('/desktop--access') !== -1) ||
           (this.route.indexOf('/onboarding-templates') !== -1) ||
           (this.route.indexOf('/onboarding') !== -1)
           

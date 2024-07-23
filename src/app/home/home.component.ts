@@ -189,6 +189,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
+  showskeletonForKbHero: boolean = true;
   showsNewsFeedSkeleton: boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
@@ -213,7 +214,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   areVisibleChatbot: boolean;
-
+  displayKbHeroSection: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -642,6 +643,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  dismissKbSkeleton(event) {
+    this.logger.log('[HOME] - dismissKbSkeleton event', event);
+    // if (event === true ) {
+    // if(this.displayKbHeroSection) { 
+    //   this.showskeleton = false
+    // }
+  }
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
@@ -650,13 +658,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
-      this.showskeleton = false;
+      // if(!this.displayKbHeroSection) {
+        this.showskeleton = false;
+      // } else {
+      //   setTimeout(() => {
+      //     this.showskeleton = false;
+      //     this.logger.log('[HOME] - GET FAQKB - showskeleton ', this.showskeleton);
+      //   }, 500);
+      // }
+     
       this.delayNewsFeedSkeleton()
 
 
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
-      this.showskeleton = false;
+      // if(!this.displayKbHeroSection) {
+        this.showskeleton = false;
+      // } else {
+      //   setTimeout(() => {
+          
+      //     this.showskeleton = false;
+      //     this.logger.log('[HOME] - GET FAQKB COMPLETE - showskeleton ', this.showskeleton);
+      //   }, 3000);
+      // }
       this.delayNewsFeedSkeleton()
 
     });
@@ -825,11 +849,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    // this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
     //   this.current_prjct.id_project.attributes.userPreferences) {
+    if (project_attributes && project_attributes.userPreferences.onboarding_type) {
+      if (project_attributes.userPreferences.onboarding_type === "kb") {
+        this.displayKbHeroSection = true
+      } else {
+        this.displayKbHeroSection = false
+      }
+      this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  displayKbHeroSection', this.displayKbHeroSection);
+    }
 
     if (project_attributes && project_attributes.userHasReMovedWA) {
       if (project_attributes.userHasReMovedWA === true) {
@@ -2762,6 +2794,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.isVisibleKNB = false;
         } else {
           this.isVisibleKNB = true;
+          this.getProjectPlan()
         }
       }
 
@@ -2802,6 +2835,83 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isVisibleKNB = false
     }
   }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
+
+          this.manageknowledgeBasesVisibility(projectProfileData)
+
+        }
+      })
+  }
+
+  manageknowledgeBasesVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE EXIST customization > knowledgeBases (1)', projectProfileData['customization']['knowledgeBases'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] !== undefined) {
+      this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE A EXIST customization ', projectProfileData['customization'], ' & knowledgeBases', projectProfileData['customization']['knowledgeBases'])
+
+      if (projectProfileData['customization']['knowledgeBases'] === true) {
+        this.isVisibleKNB = true;
+        this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE A isVisibleKNB', this.isVisibleKNB)
+      } else if (projectProfileData['customization']['knowledgeBases'] === false) {
+
+        this.isVisibleKNB = false;
+        this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE A isVisibleKNB', this.isVisibleKNB)
+      }
+
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] === undefined) {
+      this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT knowledgeBases IS', projectProfileData['customization']['knowledgeBases'])
+
+      // if (this.public_Key.includes("KNB")) {
+      this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+
+      this.isVisibleKNB = this.getKnbValue()
+      this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+     
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE C customization is  ', projectProfileData['customization'], 'get value from FT')
+        this.isVisibleKNB = this.getKnbValue()
+        this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+    }
+  }
+
+  getKnbValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[HOME] getAppConfig  public_Key', this.public_Key);
+    // this.logger.log('[HOME] getAppConfig  public_Key type of', typeof this.public_Key);
+    // this.logger.log('[HOME] getAppConfig  this.public_Key.includes("KNB") ', this.public_Key.includes("KNB"));
+    // let substring = this.public_Key.substring(this.public_Key.indexOf('KNB'));
+    let parts = this.public_Key.split('-');
+    // this.logger.log('[HOME] getAppConfig  parts ', parts);
+
+    let kbn = parts.find((part) => part.startsWith('KNB'));
+    this.logger.log('[HOME] manageknowledgeBasesVisibility  kbn ', kbn);
+    let kbnParts = kbn.split(':');
+    this.logger.log('[HOME] manageknowledgeBasesVisibility  kbnParts ', kbnParts);
+    let kbnValue = kbnParts[1]
+    this.logger.log('[HOME] manageknowledgeBasesVisibility  kbnValue ', kbnValue);
+    if (kbnValue === 'T') {
+      return true
+    } else if (kbnValue === 'F') {
+      return false
+    }
+
+  }
+
+
+
 
   checkPromoURL() {
     const hasKeyPromoBannerUrl = this.appConfigService.getConfig().hasOwnProperty('promoBannerUrl');

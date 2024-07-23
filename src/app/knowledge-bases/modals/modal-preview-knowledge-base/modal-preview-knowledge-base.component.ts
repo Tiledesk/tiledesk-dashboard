@@ -2,8 +2,14 @@ import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChange
 import { KB } from 'app/models/kbsettings-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { LocalDbService } from 'app/services/users-local-db.service';
+import { ModalPreviewSettingsComponent } from '../modal-preview-settings/modal-preview-settings.component';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { NotifyService } from 'app/core/notify.service';
 
 
 @Component({
@@ -12,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 
-export class ModalPreviewKnowledgeBaseComponent implements OnInit {
+export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit {
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
@@ -24,6 +30,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   temperature: number;
   topK: number;
   context: string;
+  isopenasetting: boolean;
+  hasStoredQuestion: boolean;
+  private dialogRefAiSettings: MatDialogRef<any>;
 
   // models_list = [
   //   { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
@@ -45,6 +54,8 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   // error_answer: boolean = false;
   translateparam: any;
   body: any;
+  storedQuestionNoDoubleQuote: string;
+  aiQuotaExceeded: boolean = false
 
 
   constructor(
@@ -53,10 +64,16 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     private logger: LoggerService,
     private openaiService: OpenaiService,
     private translate: TranslateService,
+    public localDbService: LocalDbService,
+    public dialog: MatDialog,
+    private kbService: KnowledgeBaseService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
   ) {
+    super(prjctPlanService, notify);
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
-    if (data && data.selectedNaspace) {
-      this.selectedNamespace = data.selectedNaspace;
+    if (data && data.selectedNamespace) {
+      this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
       this.selectedModel = this.selectedNamespace.preview_settings.model;
       this.maxTokens = this.selectedNamespace.preview_settings.max_tokens;
@@ -70,13 +87,141 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     }
     if (data && data.askBody) {
       this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
-      this.question = data.askBody.question
-      this.submitQuestion()
+      // this.question = data.askBody.question
+      // this.submitQuestion()
     }
   }
 
   ngOnInit(): void {
+    this.listenPreviewKbHasBeenCloseBackdropClicking()
+    this.listenToAiSettingsChanges()
+    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+    if (storedQuestion) {
+      this.hasStoredQuestion = true;
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
+      
+    } else {
+      this.hasStoredQuestion = false;
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    }
   }
+
+  presentDialogAiSettings(isopenasetting) {
+
+    this.logger.log('[MODAL-PREVIEW-KB] window.innerWidth', window.innerWidth);
+    this.logger.log(`[MODAL-PREVIEW-KB] presentDialogAiSettings isopenasetting:`, isopenasetting);
+
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings selectedModel to use for test', this.selectedModel)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings maxTokens to use for test', this.maxTokens)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings temperature to use for test', this.temperature)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings topK to use for test', this.topK)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings context to use for test', this.context)
+
+
+
+    this.isopenasetting = isopenasetting
+    this.dialogRefAiSettings = this.dialog.open(ModalPreviewSettingsComponent, {
+      width: '300px',
+      position: { left: 'calc(50% + 215px)', top: '192px' },
+      hasBackdrop: false,
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        calledBy: "modal-preview-kb"
+
+      },
+    })
+    this.dialogRefAiSettings.afterClosed().subscribe(result => {
+
+      // this.dialogRefAiSettings = null;
+      this.logger.log(`[MODAL-PREVIEW-KB] DIALOG AI SETTINGS after closed result:`, result);
+
+      // this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG HOOK BOT after closed getState:`,  dialogRef.getState());
+      // dialogRef.getState()
+      // if (result && result.deptId && result.botId) {
+      // this.hookBotToDept(result.deptId, result.botId)
+      // }
+    });
+
+  }
+
+
+  closeDialogAiSettings(isopenasetting) {
+    this.logger.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
+    this.dialogRefAiSettings.close()
+  }
+
+  reuseLastQuestion() {
+    const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+    if (storedQuestion) {
+      this.hasStoredQuestion = true;
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+      this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
+      
+    } else {
+      this.hasStoredQuestion = false;
+      this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    }
+    this.question = this.storedQuestionNoDoubleQuote;
+    // this.submitQuestion()
+    this.onInputPreviewChange()
+  }
+
+
+
+  listenPreviewKbHasBeenCloseBackdropClicking() {
+    this.kbService.previewKbClosed$.subscribe((previeKbHasBeenClosed: boolean) => {
+      if (previeKbHasBeenClosed) {
+        this.logger.log('[MODAL-PREVIEW-KB] listenPreviewKbHasBeenCloseBackdropClicking previeKbHasBeenClosed ', previeKbHasBeenClosed)
+        if (previeKbHasBeenClosed) {
+          this.logger.log('[MODAL-PREVIEW-KB] dialogRefAiSettings', this.dialogRefAiSettings)
+          if (this.dialogRefAiSettings) {
+            this.dialogRefAiSettings.close()
+          }
+        }
+      }
+    })
+  }
+
+
+  listenToAiSettingsChanges() {
+    this.kbService.editedAiSettings$.subscribe((editedAiSettings: any) => {
+
+      if (editedAiSettings && editedAiSettings.length > 0) {
+        this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
+
+        this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings ', editedAiSettings)
+
+
+        if (editedAiSettings && editedAiSettings[0]['model']) {
+          this.selectedModel = editedAiSettings[0]['model']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test', this.selectedModel)
+        }
+        if (editedAiSettings && editedAiSettings[0]['maxTokens']) {
+          this.maxTokens = editedAiSettings[0]['maxTokens']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test', this.maxTokens)
+        }
+        if (editedAiSettings && editedAiSettings[0]['temperature']) {
+          this.temperature = editedAiSettings[0]['temperature']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test', this.temperature)
+        }
+        if (editedAiSettings && editedAiSettings[0]['top_k']) {
+          this.topK = editedAiSettings[0]['top_k']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test', this.topK)
+        }
+        if (editedAiSettings && editedAiSettings[0]['context']) {
+          this.context = editedAiSettings[0]['context']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test', this.context)
+        }
+      }
+    })
+
+    // this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
+  }
+
+
 
   // ngOnChanges(changes: SimpleChanges): void {
   //    this.logger.log('[MODAL-PREVIEW-KB] ngOnChanges namespace ', this.selectedNamespace)
@@ -95,6 +240,8 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       "system_context": this.context
     }
     // this.error_answer = false;
+
+    this.localDbService.setInStorage(`last_question-${this.namespaceid}`, JSON.stringify(this.question))
     this.searching = true;
     this.show_answer = false;
     this.answer = '';
@@ -102,7 +249,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
     this.openaiService.askGpt(this.body).subscribe((response: any) => {
-      
+
       // this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       const endTime = performance.now();
       this.responseTime = Math.round((endTime - startTime) / 1000);
@@ -130,6 +277,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       // this.logger.log("ask gpt preview response error error: ", error.error);
       if (err && err.error && err.error.error_code === 13001) {
         this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
+        this.aiQuotaExceeded = true
       } else {
         this.answer = err.error.message;
       }
@@ -142,6 +290,19 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     }, () => {
       this.logger.log("ask gpt *COMPLETE*")
       this.searching = false;
+      this.aiQuotaExceeded = false
+
+      const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+      if (storedQuestion) {
+        this.hasStoredQuestion = true;
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+        this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
+        
+      } else {
+        this.hasStoredQuestion = false;
+        this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+      }
     })
   }
 
@@ -171,6 +332,9 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     element.style.display = 'none';
     // this.closeBaseModal.emit();
     this.dialogRef.close();
+    if (this.dialogRefAiSettings) { 
+      this.dialogRefAiSettings.close()
+    }
   }
 
   closePreviewKBAndOpenSettingsModal() {
@@ -182,7 +346,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     // this.show_answer = false;
     // let element = document.getElementById('enter-button')
     // element.style.display = 'none';
-    this.dialogRef.close({action: 'open-settings-modal', data: this.body});
+    this.dialogRef.close({ action: 'open-settings-modal', data: this.body });
   }
 
 }

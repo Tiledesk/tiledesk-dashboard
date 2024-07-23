@@ -273,12 +273,15 @@
 
     <div *ngIf="!showSpinner" class="projects-cards">
       <div class="row">
-        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer">
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer"
+        (click)='goToCreateProject()'>
 
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
           <!-- openCreateModal()  style="height:207px;" -->
-          <div id="create-prjct-card" class="card prjct-card" (click)='goToCreateProject()'>
+
+          <!-- (click)='goToCreateProject()' -->
+          <div id="create-prjct-card" class="card prjct-card" >
             <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '207px' }">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon"

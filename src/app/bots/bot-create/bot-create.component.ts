@@ -334,7 +334,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0'])
 
-        // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {

@@ -34,7 +34,7 @@ export class EmailTicketingComponent implements OnInit {
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
-    this.companyName = this.companyName = brand["BRAND_NAME"] 
+    this.companyName = brand["BRAND_NAME"] 
   }
 
   ngOnInit() {

@@ -816,11 +816,11 @@ my-app .main-panel .main-content .card {
   }
 }
 
-/*
-// ---------------------------------------------------------------------------
-// inline avatars (used in conversation - history - no real-time conversation)
-// --------------------------------------------------------------------------- 
-*/
+
+/* ---------------------------------------------------------------------------
+/* inline avatars (used in conversation - history - no real-time conversation)
+/* ---------------------------------------------------------------------------  */
+
 .served-by-desktop-a {
   display: flex;
   -webkit-box-align: center;
@@ -905,6 +905,110 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: -3px;
 }
+
+/* ---------------------------------------------------------------------------
+/* inline bot used in kb component 
+/* ---------------------------------------------------------------------------  */
+.served-by-cb-a {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  /* // margin-top: 12px; */
+}
+
+.served-by-cb-b {
+  /* // margin-right: 6px; */
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.served-by-cb-c {
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  // margin-left: 5px;
+  cursor: pointer;
+}
+
+.disable-link-if-is-agent {
+  cursor: not-allowed !important;
+}
+
+.first-served-by {
+  margin-left: 0px !important;
+}
+
+.served-by-cb-d {
+  position: relative;
+  text-align: center
+}
+
+.served-by-cb-e {
+  margin: 0px auto;
+  // border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 28px;
+}
+
+.served-by-cb-e img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+
+.served-by-cb-name {
+  // font-size: 12px;
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // width: 40px;
+  width: 60px;
+  font-weight: 500;
+}
+
+.served-by-cb-e .altenative-avatar-wrap {
+  width: 32px;
+  height: 32px;
+  // border-radius: 50%;
+  border: 2px solid #eee;
+  /* // margin-top: 2px; */
+  position: relative;
+  top: 2px;
+}
+
+.altenative-avatar {
+  color: #ffffff;
+  line-height: 30px;
+  margin: auto;
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  /* // padding-left: 10px; */
+  text-align: center;
+}
+
+.current-user-member-border {
+  /* // border-color: #4caf50 !important; */
+  box-shadow: 0 0 0 2px #1877f2;
+}
+
+.served-by-cb-e:hover {
+  position: relative;
+  top: -3px;
+}
+
+
+/* ---------------------------------------------------------------------------  */
+
 
 .bot---avatar {
   cursor: pointer;
@@ -2771,6 +2875,17 @@ li.active-item a i.settings-sidebar-icons {
 mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
   padding: 0 !important;
 }
+
+
+.mat-menu-panel.ai-settings-menu {
+  margin-top: -65px;
+  left: 138px;
+  width: 300px;
+}
+
+.mat-menu-panel.second-add-contents-menu {
+  left: 27px;
+}
 /*
  * Sweet Alert 2 
 /* ********************************** */
@@ -2809,3 +2924,4 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
 //   width: 100%;
 //   bottom: 0;
 // }
+

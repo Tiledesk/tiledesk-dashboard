@@ -1,5 +1,7 @@
 <h1 mat-dialog-title> 
-    {{ 'CreateChatbot' | translate }}
+    <!-- {{ 'CreateChatbot' | translate }} -->
+    <!-- Choose a name for your chatbot -->
+    {{ 'ChooseNameForYourChatbot' | translate }}
 </h1>
 
 <div mat-dialog-content>
@@ -7,9 +9,12 @@
     <mat-form-field appearance="fill" class="cc-mat-form-field">
         <mat-label>
             <!-- Chatbot name -->
-            {{ "ChatbotName" | translate }}
+            <!-- {{ "ChatbotName" | translate }} -->
+            <!-- My assistant name -->
+            {{'MyAssistantName' | translate}}
+
         </mat-label>
-        <input matInput [(ngModel)]="chatbotName" (ngModelChange)="onChangeChatbotName($event)">
+        <input placeholder="My assistant name" matInput [(ngModel)]="chatbotName" (ngModelChange)="onChangeChatbotName($event)">
     </mat-form-field>
 </div>
 

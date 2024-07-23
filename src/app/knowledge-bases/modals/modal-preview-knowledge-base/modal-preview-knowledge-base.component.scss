@@ -154,10 +154,10 @@
 
 .answer {
     min-height: 37px;
-    max-height: auto;
+    // max-height: auto;
     border-radius: 6px;
     border: solid 1px #ccc;
-    padding: 6px 12px 20px;
+    padding: 6px 12px 6px;
     cursor: text;
     overflow: hidden;
     transition: max-height 0.5s ease-out;
@@ -283,4 +283,16 @@
     background-color: var(--blue-light);
     color: #fff;
 
+}
+
+.mat-dialog-reuse-last-question-btn {
+    // background-color: #647491;
+    // color: #fff;
+    color: #30373f;
+    background-color: #191d2214;
+}
+
+
+.close-ai-settings {
+    color:   var(--blue-light) !important; 
 }
