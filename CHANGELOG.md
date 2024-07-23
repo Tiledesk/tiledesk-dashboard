@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.2-rc1
+### 2.7.3-rc1
 - Kb onboarding
 
 ### 2.6.45-rc2
