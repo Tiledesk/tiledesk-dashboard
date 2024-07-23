@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.3
+- Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
+- Improves the knowledge base page
+
 ### 2.7.2
 - Deploys in production
 - Adds GPT-4o mini language model
