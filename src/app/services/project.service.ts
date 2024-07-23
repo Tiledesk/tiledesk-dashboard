@@ -361,6 +361,19 @@ export class ProjectService {
       .post(url, body, httpOptions)
   }
 
+  public updateProject(id: string, project: Object) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.PROJECTS_URL + id;
+    return this._httpclient.put(url, project, httpOptions);
+  }
+
   // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch
   // -----------------------------------------------------------------
@@ -806,6 +819,27 @@ export class ProjectService {
       })
 
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.pooled": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+  // --------------------------------------------------------------------------------------
+  // ENABLE/DISABLE Agents can only see their own conversations
+  // --------------------------------------------------------------------------------------
+  agentViewOnlyOwnConv(status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV]  ENABLE/DISABLE Agents can only see their own conversations status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.current_agent_my_chats_only": status }, { headers: headers })
         .toPromise().then((res) => {
           resolve(res)
         }).catch((err) => {

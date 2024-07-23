@@ -816,7 +816,14 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Smart assign
+ // Project edit / add - Smart Assignment
+ {
+  path: 'project/:projectid/project-settings/smartassignment',
+  loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  canActivate: [AuthGuard],
+},
+
+  // Project edit / add - Advanced
   {
     path: 'project/:projectid/project-settings/advanced',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),

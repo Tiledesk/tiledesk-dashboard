@@ -19,7 +19,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { BrandService } from 'app/services/brand.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { CHANNELS_NAME, goToCDSVersion } from 'app/utils/util';
 import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
@@ -84,6 +84,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   scrollEl: any;
   scrollYposition: any;
   storedRequestId: string
+  CHANNELS_NAME = CHANNELS_NAME;
+  
   /**
    * Constructor
    * @param botLocalDbService 
@@ -656,8 +658,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         //  NOTIFY ERROR 
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        
-        
+        this.usersLocalDbService.removeFromStorage('last-selection-id')
+        // this.ngOnInit();
         this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
         //  NOTIFY SUCCESS
@@ -980,7 +982,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          // console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          
 
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
 
@@ -1003,6 +1006,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
+          // console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
           // this.ngOnInit();
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
           count = count + 1;
@@ -1011,6 +1016,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           const index = this.requests_selected.indexOf(requestid);
           if (index > -1) {
             this.requests_selected.splice(index, 1);
+            
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
