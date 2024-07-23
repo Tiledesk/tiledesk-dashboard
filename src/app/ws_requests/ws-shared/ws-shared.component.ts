@@ -560,6 +560,7 @@ export class WsSharedComponent implements OnInit {
         // I CREATE AN ARRAY OF IDS OF PARTICIPANTS:  participantsId
         // IF THE ID OF THE PARTICIPANT DOES NOT EXISTS IN THE "ARRAY participantsId" THE FOR CYCLE PROCEEDS BUILDING 
         // THE ARRAY participantsInRequests
+       
 
         if (participantsId.indexOf(participant) === -1) {
 

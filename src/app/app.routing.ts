@@ -816,7 +816,14 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Project edit / add - Smart assign
+ // Project edit / add - Smart Assignment
+ {
+  path: 'project/:projectid/project-settings/smartassignment',
+  loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+  canActivate: [AuthGuard],
+},
+
+  // Project edit / add - Advanced
   {
     path: 'project/:projectid/project-settings/advanced',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
@@ -1017,6 +1024,7 @@ const routes: Routes = [
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'project/:projectid/desktop--access/:namespaceid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-templates', component: CnpTemplatesComponent, canActivate: [AuthGuard] }, // wizard 
 
 

@@ -28,6 +28,7 @@ export enum TYPE_STEP {
   CUSTOM_STEP = "customStep",
   WELCOME_MESSAGE = "welcomeMessage",
   WIDGET_INSTALLATION = "widgetInstallation",
+  SELECT_TEMPLATE_OR_KB = 'selectTemplateOrKb',
   TEMPLATES_INSTALLATION = "templateInstallation"
 
 }
@@ -91,6 +92,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   public_Key: string;
   isMTT: boolean;
   USER_ROLE: string;
+  hasSelectChatBotOrKb: string
 
   constructor(
     private auth: AuthService,
@@ -362,6 +364,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
       // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
+
+      // this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
+      this.arrayOfSteps.push(TYPE_STEP.SELECT_TEMPLATE_OR_KB);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
       this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
@@ -509,7 +514,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (!this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT)) {
       this.createNewProject('createProjectFromTemplates')
     }
-    
+  }
+
+  userSelection(event) {
+    this.logger.log('[ONBOARDING-CONTENT] userSelection event: ', event)
+   this.hasSelectChatBotOrKb = event
   }
 
   goToTemplatesInstallation($event) {
@@ -722,7 +731,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      // this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -737,7 +746,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 
-        // this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
         this.updatedProject = res
 
       }, error => {
@@ -747,6 +756,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // this.goToExitOnboarding();
         // this.goToOnbordingTemplates()
         if (this.arrayOfSteps.length === 1) {
+          this.logger.log('[ONBOARDING-D] - this.arrayOfSteps ', this.arrayOfSteps);
           this.goToHome()
         }
 

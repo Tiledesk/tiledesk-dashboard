@@ -250,14 +250,27 @@
 
           <!-- // Skeleton START   -->
           <div *ngIf="showskeleton" class="skeleton">
-            <!-- *ngIf="areVisibleChatbot" -->
-            <div  class="first-card is-loading">
-              <div class="fake--circle"></div>
-              <div class="fake--box"></div>
-              <div class="sm--fake--box"></div>
-              <div class="fake--btn"></div>
+            
+            <!-- Skeleton for chatbot hero section -->
+            <!-- *ngIf="areVisibleChatbot"  -->
+            <!-- <ng-container *ngIf="!displayKbHeroSection"> -->
+              <div style="min-height: 286px;" class="first-card is-loading">
+                <div class="fake--circle"></div>
+                <div class="fake--box"></div>
+                <div class="sm--fake--box"></div>
+                <div class="fake--btn"></div>
+              </div>
+            <!-- </ng-container> -->
 
-            </div>
+            <!-- Skeleton for kb hero section -->
+            <!-- <ng-container *ngIf="displayKbHeroSection">
+              <div style="min-height: 286px;" *ngIf="isVisibleKNB" class="first-card is-loading">
+                <div class="fake--circle"></div>
+                <div class="fake--box"></div>
+                <div class="sm--fake--box"></div>
+                <div class="fake--btn"></div>
+              </div>
+            </ng-container> -->
 
             <!-- // CARD 1 -->
             <mat-card class="card mat-elevation-z3 is-loading">
@@ -364,9 +377,25 @@
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
               <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
-              <home-cds *ngIf="areVisibleChatbot"
-                (goToCreateChatbot)="goToCreateChatbot()" 
-                [chatbots] = "chatbots"> </home-cds>
+              <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
+              <!-- for chatbot hero section -->
+              <ng-container *ngIf="areVisibleChatbot">
+                <home-cds 
+                  (goToCreateChatbot)="goToCreateChatbot()" 
+                  (dismissKbSkeleton)="dismissKbSkeleton($event)"
+                  [chatbots] = "chatbots"
+                  [displayKbHeroSection]="displayKbHeroSection" 
+                  [isVisibleKNB]="isVisibleKNB"> </home-cds>
+              </ng-container>
+
+              <!-- for kb hero section -->
+              <!-- <ng-container *ngIf="displayKbHeroSection">
+                <home-cds *ngIf="isVisibleKNB"
+                  (goToCreateChatbot)="goToCreateChatbot()" 
+                  (dismissKbSkeleton)="dismissKbSkeleton($event)"
+                  [chatbots] = "chatbots"
+                  [displayKbHeroSection]="displayKbHeroSection" > </home-cds>
+              </ng-container> -->
 
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
@@ -375,8 +404,10 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child1'">
                   <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" 
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
                 </ng-container>
 
@@ -384,8 +415,10 @@
                 <!-- Child 2 Analytics Indicator-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
-                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" 
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 
@@ -394,13 +427,20 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
-                    style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                    style="margin-bottom: 18px;" 
+                    (goToConnectWA)="goToConnectWA()"
+                    (goToCreateChatbot)="goToCreateChatbot()" 
+                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" 
+                    [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
+                    [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" 
+                    [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" 
+                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -412,8 +452,10 @@
                     #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected"
-                    [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
+                    [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" 
+                    [solution_for_child]="solution_for_child"
                     [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>
@@ -423,28 +465,44 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" 
+                    [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
                     (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
                     (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-create-chatbot>
                 </ng-container>
 
+             
+
+                <!-- ----------------------- -->
+                <!-- Child 7 KB --> 
+                <!-- ----------------------- -->
+                <!-- *ngIf="displayKnowledgeBase" -->
+                <ng-container  *ngIf="areVisibleChatbot">
+                  <ng-container *ngIf="item.type === 'child7' && isVisibleKNB && !displayKbHeroSection">
+                    <appdashboard-home-kb  (trackUserAction)="trackUserAction($event)">
+                    </appdashboard-home-kb>
+                  </ng-container>
+                </ng-container>
+
+                <!-- <ng-container  *ngIf="areVisibleChatbot">
+                  <ng-container *ngIf="item.type === 'child6' && isVisibleKNB">
+                    <appdashboard-home-kb (trackUserAction)="trackUserAction($event)">
+                    </appdashboard-home-kb>
+                  </ng-container>
+                </ng-container> -->
+
+
+                   
                 <!-- ----------------------- -->
                 <!-- Child 6 Create Teammate -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child6'">
+                <ng-container *ngIf="item.type === 'child7'">
                   <appdashboard-home-create-teammate *ngIf="displayInviteTeammate">
                   </appdashboard-home-create-teammate>
-                </ng-container>
-
-                <!-- ----------------------- -->
-                <!-- Child 7 KB -->
-                <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child7' && isVisibleKNB">
-                  <appdashboard-home-kb *ngIf="displayKnowledgeBase" (trackUserAction)="trackUserAction($event)">
-                  </appdashboard-home-kb>
                 </ng-container>
 
                 <!-- ----------------------- -->
