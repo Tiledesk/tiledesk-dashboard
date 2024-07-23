@@ -179,63 +179,61 @@
 
 
               <!-- -------------------------------- -->
+              <div class="served-by-cb-wpr"> 
+                <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
+                  <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
+                    class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)">
 
-              <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
-                <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                  class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)">
+                    <!-- UPLOAD_ENGINE_IS_FIREBASE - {{ UPLOAD_ENGINE_IS_FIREBASE }}  (click)="cbPopover.toggle() (mouseenter)="cbPopover.toggle()"  "
+                    -->
+                    
+                    <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover" (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot"  (mouseleave)="cbPopover.toggle()">
+                      <div size="32" class="served-by-cb-e">
 
-                  <!-- UPLOAD_ENGINE_IS_FIREBASE - {{ UPLOAD_ENGINE_IS_FIREBASE }}  (click)="cbPopover.toggle() (mouseenter)="cbPopover.toggle()"  "
-                   -->
-                   
-                  <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover" (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot"  (mouseleave)="cbPopover.toggle()">
-                    <div size="32" class="served-by-cb-e">
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------- -->
 
-                      <!-- --------------------------------------------------- -->
-                      <!-- USECASE uploadEngine Firebase -->
-                      <!-- --------------------------------------------------- -->
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                          [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{chatbot?._id}}%2Fphoto.jpg?alt=media"
+                          alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
 
-                      <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                        [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{chatbot?._id}}%2Fphoto.jpg?alt=media"
-                        alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                          [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
+                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                          alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
 
-                      <!-- --------------------------------------------------- -->
-                      <!-- USECASE uploadEngine Native -->
-                      <!-- --------------------------------------------------- -->
-                      <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                        [ngClass]="{'bot-img-gray-bckgrnd': chatbot.hasImage === false}"
-                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{chatbot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                        alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                      </div>
+                      <div class="served-by-cb-name">
+                        {{chatbot.name }}
+                      </div>
 
+                      <!-- <div *ngIf="chatbot.type === 'internal'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                          src="assets/img/tiledesk_logo_no_text.png" />
+                      </div>
+                      <div *ngIf="chatbot.type === 'external'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                          src="assets/img/external_bot_logo.png" />
+                      </div>
+                      <div *ngIf="chatbot.type === 'dialogflow'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                          src="assets/img/Dialogflow_logo_no_text.png" />
+                      </div>
+                      <div *ngIf="chatbot.type === 'rasa'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                          src="assets/img/rasa_bot_logo.png" />
+                      </div>
+
+                      <div *ngIf="chatbot.type === 'tilebot'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                          src="assets/img/tilebot_logo_small.png" />
+                      </div>   -->
                     </div>
-                    <div class="served-by-cb-name">
-                      {{chatbot.name }}
-                    </div>
-
-                    <div *ngIf="chatbot.type === 'internal'">
-                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                        src="assets/img/tiledesk_logo_no_text.png" />
-                    </div>
-                    <div *ngIf="chatbot.type === 'external'">
-                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                        src="assets/img/external_bot_logo.png" />
-                    </div>
-                    <div *ngIf="chatbot.type === 'dialogflow'">
-                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                        src="assets/img/Dialogflow_logo_no_text.png" />
-                    </div>
-                    <div *ngIf="chatbot.type === 'rasa'">
-                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                        src="assets/img/rasa_bot_logo.png" />
-                    </div>
-
-                    <div *ngIf="chatbot.type === 'tilebot'">
-                      <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                        src="assets/img/tilebot_logo_small.png" />
-                    </div>
-
-
-                 
                   </div>
                 </div>
               </div>
@@ -266,11 +264,9 @@
               <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                 <!-- This namespace is not used by any chatbot -->
                 {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
-
               </div>
-
+              
               <div *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
-
                 <button class="custom-button xs" (click)="createChatbotfromKbOfficialResponderTemplate()">
                   <span>
                     <!-- Create chatbot  -->

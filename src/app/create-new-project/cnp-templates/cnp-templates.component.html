@@ -1,3 +1,6 @@
+
+
+
 <div *ngIf="hasSelectChatBotOrKb === 'kb'" class="main-content onboarding-templt-page">
     <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
     <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
@@ -24,10 +27,18 @@
                 <div class="create-new-kb-assistant-wpr"> 
                     
 
-                    <button class="create-kb-assistant-btn"
-                        (click)="createChatbotfromKbOfficialResponderTemplate()">
+                    <button [ngStyle]="{ 'min-width': createChatbotBtnWidth }" id="create-kb-assistant-btn" class="create-kb-assistant-btn"
+                        (click)="createChatbotfromKbOfficialResponderTemplate()" [disabled]="spinnerInBtn">
                         <!-- Create your chatbot -->
-                        {{ 'CreateYourChatbot' | translate}}
+                        <span *ngIf="!spinnerInBtn"> 
+                            {{ 'CreateYourChatbot' | translate}}
+                        </span>
+                        
+
+                        <span *ngIf="spinnerInBtn"> 
+                            
+                             <i class="fa fa-spinner fa-spin"></i> &nbsp; {{'ProcessingNoDot' | translate}}
+                        </span>
                     </button>
                 </div> 
             </div> 
@@ -202,4 +213,26 @@
 
     </div>
 
+</div>
+
+
+<div class="row--navigation" style="padding-bottom: 61px;">
+    <div class="navigation--btn">
+
+        <button type="button" class="btn-back" (click)="goToPrevPage()" style="width: unset; max-width: unset; ">
+            <svg viewBox="0 0 24 24" focusable="false" class="chakra-icon css-abioxt" role="presentation"
+                aria-hidden="true">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
+            </svg>
+
+            <span class="onbording-btn-back-text"> 
+                {{'Back' | translate }}
+            </span>
+        </button>
+
+        <!-- <button class="btn btn-lg btn-primary" (click)="goToNextPage()">
+            {{'OnboardPage.Next' | translate}}
+        </button> -->
+
+    </div>
 </div>

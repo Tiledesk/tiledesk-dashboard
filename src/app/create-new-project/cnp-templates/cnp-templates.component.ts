@@ -64,7 +64,9 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   dept_id: string;
   kbOfficialResponderTag = "kb-official-responder";
   selectedNamespace: any;
-  welcomeMsg: string
+  welcomeMsg: string;
+  spinnerInBtn: boolean = false;
+  createChatbotBtnWidth: any;
 
   templtId = ['651a87648cb2c70013d80d8b', '651e66be6717f500135f41b9', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651fc9ef8c10e70013b6e240', '651ad6c1bfdf310013ca90d7']
   videoSource = [
@@ -109,9 +111,16 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    // console.log('[CNP-TEMPLATES] HELLO !!! ');
+   this.logger.log('[CNP-TEMPLATES] HELLO !!! ');
     this.createProjectFromTemplates.emit()
 
+    this.getCreateChatbotBtnWidth()
+
+  }
+
+  getCreateChatbotBtnWidth() {
+    this.createChatbotBtnWidth  =  document.getElementById("create-kb-assistant-btn").offsetWidth + 'px';
+    this.logger.log('[CNP-TEMPLATES] createChatbotBtnWidth ', this.createChatbotBtnWidth)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -119,24 +128,24 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.logger.log('[CNP-TEMPLATES] hasSelectChatBotOrKb ', this.hasSelectChatBotOrKb)
 
-    // console.log('[CNP-TEMPLATES] - updatedProject ', this.updatedProject)
+    // this.logger.log('[CNP-TEMPLATES] - updatedProject ', this.updatedProject)
     if (this.updatedProject && this.updatedProject.attributes && this.updatedProject.attributes.userPreferences) {
-      // console.log('[CNP-TEMPLATES] - updatedProject > attributes > userPreferences', this.updatedProject.attributes.userPreferences)
+      // this.logger.log('[CNP-TEMPLATES] - updatedProject > attributes > userPreferences', this.updatedProject.attributes.userPreferences)
       const userPreferences = this.updatedProject.attributes.userPreferences
       this.projectid = this.updatedProject._id
-      // console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
+      // this.logger.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
 
       if (userPreferences.user_role === 'business_owner' || userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
         this.DIPLAY_CUSTOM_SUBTITLE = false;
         const userRole = this.translate.instant(userPreferences.user_role)
 
-        // console.log('[CNP-TEMPLATES] - userRole', userRole)
-        // console.log('[CNP-TEMPLATES] - DIPLAY_CUSTOM_SUBTITLE ', this.DIPLAY_CUSTOM_SUBTITLE)
+        // this.logger.log('[CNP-TEMPLATES] - userRole', userRole)
+        // this.logger.log('[CNP-TEMPLATES] - DIPLAY_CUSTOM_SUBTITLE ', this.DIPLAY_CUSTOM_SUBTITLE)
 
         this.t_paramsUserRole = { selected_role: userRole }
       } else if (userPreferences.user_role === 'other') {
         this.DIPLAY_CUSTOM_SUBTITLE = true;
-        // console.log('[CNP-TEMPLATES] - DIPLAY_CUSTOM_SUBTITLE ', this.DIPLAY_CUSTOM_SUBTITLE)
+        // this.logger.log('[CNP-TEMPLATES] - DIPLAY_CUSTOM_SUBTITLE ', this.DIPLAY_CUSTOM_SUBTITLE)
       }
       if (userPreferences && userPreferences.use_case && userPreferences.use_case === "solve_customer_problems") {
         this.DISPLAY_INCREASE_TMPLT = false
@@ -168,7 +177,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   // getProjectById(projectId) {
   //   this.projectService.getProjectById(projectId).subscribe((project: any) => {
-  //     console.log('[CNP-TEMPLATES] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+  //     this.logger.log('[CNP-TEMPLATES] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
   //    }, (error) => {
   //     this.logger.error('[CNP-TEMPLATES] - GET PROJECT BY ID - ERROR ', error);
@@ -220,7 +229,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
 
       // this.certfifiedTemplates = res
-      // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
+      // this.logger.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
       if (res) {
         // this.templates = res.slice(0, 5);
 
@@ -237,13 +246,13 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
           return this.templtId.includes(item._id)
         });
 
-        // console.log('[CNP-TEMPLATES] - filterdres ', filterdres);
+        // this.logger.log('[CNP-TEMPLATES] - filterdres ', filterdres);
 
         this.templates = filterdres.filter((obj) => {
           return obj.mainCategory === selectedUseCase
         });
 
-        // console.log('[CNP-TEMPLATES] - FILTERED TEMPLATES CATEGORY: ', selectedUseCase, 'TEMPLATES:  ', this.templates);
+        // this.logger.log('[CNP-TEMPLATES] - FILTERED TEMPLATES CATEGORY: ', selectedUseCase, 'TEMPLATES:  ', this.templates);
 
         // for (let i = 0; i < this.templates.length; i++) {
         //   for (let j = 0; j < this.videoSource.length; j++) { 
@@ -256,23 +265,23 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         // this.customerSatisfactionTemplates = this.templates.filter((obj) => {
         //   return obj.mainCategory === "Customer Satisfaction"
         // });
-        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES customerSatisfactionTemplates ', this.customerSatisfactionTemplates);
+        // this.logger.log('[CNP-TEMPLATES] - GET ALL TEMPLATES customerSatisfactionTemplates ', this.customerSatisfactionTemplates);
 
         // this.increaseSalesTemplates = this.templates.filter((obj) => {
         //   return obj.mainCategory === "Increase Sales"
         // });
-        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES increaseSalesTemplates ', this.increaseSalesTemplates);
+        // this.logger.log('[CNP-TEMPLATES] - GET ALL TEMPLATES increaseSalesTemplates ', this.increaseSalesTemplates);
 
         this.template = this.templates[0];
         this.templatename = this.template.name
         this.templateid = this.template._id
         // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
 
-        // console.log('[CNP-TEMPLATES] first tempaltes videoURL ', this.videoURL)
-        // console.log('[CNP-TEMPLATES] first tempaltes selected ', this.template)
-        // console.log('[CNP-TEMPLATES] first tempaltes selected templateid', this.template._id)
+        // this.logger.log('[CNP-TEMPLATES] first tempaltes videoURL ', this.videoURL)
+        // this.logger.log('[CNP-TEMPLATES] first tempaltes selected ', this.template)
+        // this.logger.log('[CNP-TEMPLATES] first tempaltes selected templateid', this.template._id)
       }
-      // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
+      // this.logger.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
 
 
 
@@ -290,10 +299,10 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   selectedTemplate(i, templateid) {
     this.selectedIndex = i;
-    // console.log('[CNP-TEMPLATES] selectedTemplate selectedIndex ', this.selectedIndex);
+    // this.logger.log('[CNP-TEMPLATES] selectedTemplate selectedIndex ', this.selectedIndex);
 
     this.templateid = templateid
-    // console.log('[CNP-TEMPLATES] selectedTemplate templateid ', this.templateid);
+    // this.logger.log('[CNP-TEMPLATES] selectedTemplate templateid ', this.templateid);
 
     const template = this.templates.filter((el: any) => {
       return el._id === templateid
@@ -301,8 +310,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     this.template = template[0]
     this.templatename = this.template.name
     // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
-    // console.log('[CNP-TEMPLATES] selectedTemplate template ', this.template);
-    // console.log('[CNP-TEMPLATES] selectedTemplate videoURL ', this.videoURL);
+    // this.logger.log('[CNP-TEMPLATES] selectedTemplate template ', this.template);
+    // this.logger.log('[CNP-TEMPLATES] selectedTemplate videoURL ', this.videoURL);
   }
 
   forkTemplate() {
@@ -344,7 +353,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   presentModalAddBotFromScratch() {
-    // console.log('[TEMPLATE DETAIL] - presentModalAddBotFromScratch ');
+    // this.logger.log('[TEMPLATE DETAIL] - presentModalAddBotFromScratch ');
     const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
       width: '600px',
       // data: {
@@ -374,8 +383,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
           this.botid = faqKb['_id'];
           this.botName = faqKb['name'];
-          // console.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botid ', this.botid);
-          // console.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botName ', this.botName);
+          // this.logger.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botid ', this.botid);
+          // this.logger.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botName ', this.botName);
           // this.translateparamBotName = { bot_name: this.newBot_name }
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
@@ -396,7 +405,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         this.segmentAttributes['chatbotName'] = this.botName
         this.segmentAttributes['chatbotId'] = this.botid;
         this.segmentAttributes['method'] = "from scratch";
-        // console.log('[TEMPLATE DETAIL] segmentAttributes', this.segmentAttributes)
+        // this.logger.log('[TEMPLATE DETAIL] segmentAttributes', this.segmentAttributes)
         this.goToExitOnboarding()
       })
   }
@@ -452,9 +461,14 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   createChatbotfromKbOfficialResponderTemplate() {
     this.findKbOfficialResponderAndThenExportToJSON()
+
+    
   }
 
   findKbOfficialResponderAndThenExportToJSON() {
+    this.spinnerInBtn = true;
+
+    this.logger.log('[CNP-TEMPLATES] spinnerInBtn', this.spinnerInBtn)
     this.faqKbService.getTemplates().subscribe((certifiedTemplates: any) => {
 
       if (certifiedTemplates) {
@@ -477,13 +491,14 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   exportKbOfficialResponderToJSON(kbOfficialResponderTemplate_id) {
+    
     this.faqKbService.exportChatbotToJSON(kbOfficialResponderTemplate_id).subscribe((chatbot: any) => {
       this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT', chatbot)
       this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENTS', chatbot.intents)
       const intentArray = chatbot.intents
       const actionsArray = []
       chatbot.intents.forEach((intent, index, intentArray) => {
-        // console.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
+        // this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions', intent.actions)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions > intent', intent)
 
         actionsArray.push(intent.actions)
@@ -501,16 +516,16 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         // ----------------------------------------------------------------------------
         // const replyActionWithWelcomeMsg = intent.actions.find(x => x.text !== undefined);
         // if(replyActionWithWelcomeMsg) {
-        //   console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg', replyActionWithWelcomeMsg)
+        //   this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg', replyActionWithWelcomeMsg)
         //   replyActionWithWelcomeMsg.text = this.welcomeMsg
 
         //   if (replyActionWithWelcomeMsg && replyActionWithWelcomeMsg.attributes && replyActionWithWelcomeMsg.attributes.commands) {
         //     const actionCommands = replyActionWithWelcomeMsg.attributes.commands
-        //     console.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands', actionCommands)
+        //     this.logger.log('[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands', actionCommands)
         //     actionCommands.forEach(command => {
         //       if (command.type === "message" ) {
 
-        //         console.log("[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands command ", command.message.text) 
+        //         this.logger.log("[CNP-TEMPLATES] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions replyActionWithWelcomeMsg actionCommands command ", command.message.text) 
         //         command.message.text = this.welcomeMsg
 
         //       }
@@ -536,6 +551,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES] - EXPORT BOT TO JSON - ERROR', error);
+      this.spinnerInBtn = false;
     }, () => {
       this.logger.log('[CNP-TEMPLATES] - EXPORT BOT TO JSON - COMPLETE');
 
@@ -545,6 +561,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   presentDialogChatbotname(chatbot) {
+    this.spinnerInBtn = false;
+    this.logger.log('[CNP-TEMPLATES] spinnerInBtn ',  this.spinnerInBtn)
     this.logger.log('[CNP-TEMPLATES] openDialog presentDialogChatbotname chatbot ', chatbot)
     const dialogRef = this.dialog.open(ModalChatbotNameComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -744,7 +762,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   goToPrevPage() {
-    let event = { step: 'step2' }
+    let event = { step: 'step4' }
     this.prevPage.emit(event);
   }
 

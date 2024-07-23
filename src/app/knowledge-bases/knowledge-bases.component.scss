@@ -740,12 +740,13 @@ table {
 
 .chatbot-using-current-namespace-wpr {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    // flex-direction: row;
+    // align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 6px;
-    // margin-left: 8px;
     margin-top: 6px;
-    margin-left: -6px;
+    // margin-left: -6px;
 }
 
 .chatbot-using-current-namespace {
@@ -765,6 +766,12 @@ table {
 
 .chatbot-list-using-current-namespace:hover {
     background: #c3d9ff
+}
+
+.served-by-cb-wpr {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 

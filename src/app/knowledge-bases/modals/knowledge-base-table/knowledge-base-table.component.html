@@ -25,23 +25,22 @@
                     </span>
                     
                     <div class="add-content-btn-wpr">
-                        <button *ngIf="hasAlreadyVisitedKb === 'true'" class="btn custom-button-l add-content center" style="box-shadow: unset;"
+                        <!-- <button *ngIf="hasAlreadyVisitedKb === 'true'" class="btn custom-button-l add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu"> 
-                            <!-- <span class="material-icons-round">add</span> -->
                             {{ 'KbPage.Add' | translate }} 
-                        </button>
+                        </button> -->
 
-                        <div *ngIf="hasAlreadyVisitedKb === 'false'" class="getting-started-add-content">
+                        <!-- *ngIf="hasAlreadyVisitedKb === 'false'" -->
+                        <div  class="getting-started-add-content">
                             {{ 'KbPage.GetStartedByAddingContents' | translate }} 
                             <button class="btn custom-button-round add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu"> 
                             <span class="material-icons-round">add</span>
-                            <!-- {{ 'KbPage.Add' | translate }}  -->
                         </button>
                         </div>
                     </div>
                 </div>
-                <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
+                <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
                     <add-content-menu class="mat-menu"
                         (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
                     </add-content-menu>

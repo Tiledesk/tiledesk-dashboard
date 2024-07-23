@@ -965,12 +965,14 @@ my-app .main-panel .main-content .card {
 }
 
 .served-by-cb-name {
-  font-size: 12px;
+  // font-size: 12px;
+  font-size: 9px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 40px;
-  font-weight: 400;
+  // width: 40px;
+  width: 60px;
+  font-weight: 500;
 }
 
 .served-by-cb-e .altenative-avatar-wrap {
@@ -2879,6 +2881,10 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
   margin-top: -65px;
   left: 138px;
   width: 300px;
+}
+
+.mat-menu-panel.second-add-contents-menu {
+  left: 27px;
 }
 /*
  * Sweet Alert 2 
