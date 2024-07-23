@@ -2,16 +2,34 @@
     <div class="home-block-header-wpr">
         <div class="home-block-header">
             <div class="home-block-title">
-                Connect a Knowledge Base
+                <!-- Connect a Knowledge Base -->
+                Your Knowledge Bases
             </div>
         </div>
     </div>
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
 
     <div class="home-block-description-and-action-btn-wpr">
-        <div class="home-block-description" style="padding-right:55px">
-            Upload URLs to streamline content creation and seamlessly integrate your knowledge base content for a
-            Chat-GPT-like experience
+        <div class="home-block-description" style="padding-right:55px;margin-bottom: 16px;">
+            <!-- Upload URLs to streamline content creation and seamlessly integrate your knowledge base content for a
+            Chat-GPT-like experience -->
+
+            The  Knowledge Base is a powerful tool that allows users to manage and access organizational knowledge in one central location.
+            It has been designed to replace the traditional Q&A system and enable users to upload various sources of information, including PDFs, Text Document, and website URLs
+        </div>
+
+        <div class="hc-chatbot-count-btn-wpr">
+            <button id="hc-chatbot-count-btn" class="btn btn-size-xl btn-p-outline btn-p-ripple"
+              (click)="goToKnowledgeBases()">
+              <div class="btn-content">
+                <div class="btn--text">
+                  Your Knowledge Bases
+                </div>
+                <div class="btn--bot-count">
+                  {{namespaceCount}}
+                </div>
+              </div>
+            </button>
         </div>
 
         <!-- <div class="kb-counter">
@@ -55,13 +73,13 @@
         </div> -->
 
         <div class="actions--btn-wpr">
-            <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
+            <!-- <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
                 (click)="goToKnowledgeBases()">
                 <span class="mat-button-wrapper">
 
                     <span class="ml-2" style="font-size: 15px;">
                         Add  
-                        <!-- Knowledge Base -->
+                    
                     </span>
 
                 </span>
@@ -69,7 +87,7 @@
                     ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
                 </span>
                 <span class="mat-button-focus-overlay"> </span>
-            </button>
+            </button> -->
 
             <!-- <button id="home-material-btn" [ngClass]="{'add-kb-disabled': kbSettings?.kbs?.length === 3}"
                 class="mat-focus-indicator mat-flat-button mat-button-base"

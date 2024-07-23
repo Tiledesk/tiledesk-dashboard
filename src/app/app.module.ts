@@ -397,8 +397,12 @@ import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
+import { N8nIntegrationComponent } from './integrations/list/n8n-integration/n8n-integration.component';
+
+
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
+import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
 // import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
 // import { ModalUploadFileComponent } from './knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
 // import { ModalChatbotNameComponent } from './knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
@@ -708,6 +712,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UserModalComponent,
     MessagesStatsModalComponent,
     KnowledgeBasesAlertComponent,
+    CnpSelectTemplatesOrKbComponent,
+   
     // ModalAddNamespaceComponent,
     // ModalUploadFileComponent,
     // ModalChatbotNameComponent

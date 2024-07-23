@@ -5,16 +5,19 @@ width: 610px;
 background: aliceblue;
 min-width: 610px;
 z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps}} </div>  -->
+
+
+<!-- [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
 <div class="main-content css-create-project">
     <div *ngIf="showSpinner" class="on-bording-spinner"
-        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB}">
         <div class="dot-spinner">
             <div class="dot1"></div>
             <div class="dot2"></div>
         </div>
     </div>
-    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
-
+    <!-- <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
+    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB ||  arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
         <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
         <div class="close-wizard-page">
@@ -43,7 +46,8 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 
 
    
-    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+    <!-- <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
+    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <div *ngFor="let nameStep of arrayOfSteps; index as i" 
             class="step-page"
             [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
@@ -122,7 +126,21 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 
             </div>
 
-
+            <!-- SELECT TEMPLATES / KB -->
+            <div *ngIf="nameStep === typeStep.SELECT_TEMPLATE_OR_KB" 
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB}">
+                <cnp-select-templates-or-kb *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB"
+                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
+                    [segmentAttributes]="segmentIdentifyAttributes"
+                    [updatedProject] = "updatedProject"
+                    (nextPage)="goToTemplatesInstallation($event)"
+                    (createProjectFromTemplates)="createProjectFromTemplates() "
+                    (goToNext)="goToNextQuestion($event)"
+                    (prevPage)="goToPrevStep()"
+                    (userSelection)="userSelection($event)">
+                </cnp-select-templates-or-kb>
+            </div>
 
             <!-- CHATBOT TEMPLATES INSTALLATION -->
             <!-- typeStep  {{ typeStep.TEMPLATES_INSTALLATION }} nameStep {{ nameStep }} -->
@@ -131,6 +149,7 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION}">
                 <cnp-templates *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION"
                     [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
+                    [hasSelectChatBotOrKb] = "hasSelectChatBotOrKb"
                     [segmentAttributes]="segmentIdentifyAttributes"
                     [updatedProject] = "updatedProject"
                     (nextPage)="goToTemplatesInstallation($event)"
@@ -139,6 +158,9 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
                     (prevPage)="goToPrevStep()">
                 </cnp-templates>
             </div>
+
+
+        
 
                  <!-- !! Not used -- CHATBOT WELCOME MESSAGE -->
                  <div *ngIf="nameStep === typeStep.WELCOME_MESSAGE" 
@@ -198,7 +220,8 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
     </div>
 
 
-    <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
+    <!-- <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"> -->
+    <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.SELECT_TEMPLATE_OR_KB && arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
         <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
     </div>
 

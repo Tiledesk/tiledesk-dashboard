@@ -13,6 +13,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class KnowledgeBaseService {
   public newKb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public editedAiSettings$: BehaviorSubject<[]> = new BehaviorSubject<[]>([])
+  public previewKbClosed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
 
   SERVER_BASE_PATH: string;
   TOKEN: string;
@@ -97,7 +99,8 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
-  upadateNamespace(body: string, namespaceid: string) {
+  updateNamespace(body: string, namespaceid: string) {
+    // console.log('[KNOWLEDGE BASE SERVICE] upadateNamespace body', body)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -106,7 +109,7 @@ export class KnowledgeBaseService {
     }
     // let body = {name: namespacename}
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespaceid;
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - upadateNamespace URL ", url);
     return this.httpClient.put(url, body, httpOptions);
   }
 
@@ -227,6 +230,16 @@ export class KnowledgeBaseService {
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespace_id + queryString;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - delete namsespace url", url);
     return this.httpClient.delete(url, httpOptions);
+  }
+
+  hasChagedAiSettings(aisetting){
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - hasChagedAiSettings", aisetting);
+    this.editedAiSettings$.next(aisetting)
+  }
+
+  modalPreviewKbHasBeenClosed() {
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - modalPreviewKbHasBeenClosed (clicking backdrop)");
+    this.previewKbClosed$.next(true)
   }
 
 

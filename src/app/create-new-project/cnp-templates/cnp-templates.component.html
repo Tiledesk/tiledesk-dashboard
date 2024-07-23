@@ -1,4 +1,41 @@
-<div class="main-content onboarding-templt-page">
+<div *ngIf="hasSelectChatBotOrKb === 'kb'" class="main-content onboarding-templt-page">
+    <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
+    <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
+
+    <div class="scrollable-list">
+        <div class="scrollable-list-content-container">
+            <div class="scrollable-list-wpr" no-prevent-default="true">
+
+                <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
+                
+                  
+                   <!-- Get AI to respond using your Knowledge Base -->
+                   {{'OnboardPage.GetAIToRespondUsingYourKB' | translate}}
+                </h2>
+                <h4 class="create-new-kb-assistant-description_one"
+                        [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
+                
+                        <!-- This advanced chatbot solution allows you to integrate multiple content types, ensuring that users receive timely and precise answers to their questions.  -->
+                        <!-- Create your advanced AI chatbot and connect it to your contents to ensure your users receive timely and precice answers to their questions. -->
+                        {{'OnboardPage.CreateYourAdvancedAIChatbot' | translate}}
+                </h4>
+                
+
+                <div class="create-new-kb-assistant-wpr"> 
+                    
+
+                    <button class="create-kb-assistant-btn"
+                        (click)="createChatbotfromKbOfficialResponderTemplate()">
+                        <!-- Create your chatbot -->
+                        {{ 'CreateYourChatbot' | translate}}
+                    </button>
+                </div> 
+            </div> 
+        </div>
+    </div>
+</div>
+<!--  -->
+<div *ngIf="hasSelectChatBotOrKb === 'templates'" class="main-content onboarding-templt-page">
 
     <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
     <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
@@ -8,7 +45,10 @@
 
             <div class="scrollable-list-wpr" no-prevent-default="true">
                 <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
-                    {{'OnboardPage.WhereWouldYouLikeToStart' | translate}}
+                    
+                    <!-- Select a pre-built chatbot automation template. -->
+                    {{'OnboardPage.SelectAPreBuiltChatbotAutomationTemplate' | translate}}
+
                 </h2>
                 <h4 class="onboarding-templt-page-description"
                     [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
@@ -18,6 +58,9 @@
                     <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === true">
                         {{'OnboardPage.ChooseYourChatbotFromOurTemplates' | translate }}
                     </span>
+                    <!-- <span [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
+                        These templates are designed to cater to different use cases, providing a solid foundation that can be tailored to meet your unique requirements, ensuring a seamless and efficient user experience.
+                    </span> -->
                 </h4>
                 <div class="tmplt-btns-container">
                     <div *ngIf="isLoading" class="tmplt-list-wpr" [ngClass]="{'tmplt-list-wpr-mobile': isMobile}">
@@ -158,3 +201,5 @@
         </div>
 
     </div>
+
+</div>

@@ -38,6 +38,14 @@ import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
+import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
+
+// import {
+//   // provideHighlightOptions,
+//   Highlight,
+//   // HighlightAuto,
+// } from 'ngx-highlightjs';
+// // import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -70,6 +78,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+
 
 
 
@@ -155,13 +164,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   botid: string;
   nameSpaceId: string;
 
+
+  storageBucket: string;
+  baseUrl: string;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   // Hook bot to dept
   dept_id: string;
   depts_length: any
   depts_without_bot_array = [];
   kbOfficialResponderTag = "kb-official-responder"
 
+  public hoveredChatbot: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  hasAlreadyVisitedKb: string = 'false'
 
   private dialogRefHookBoot: MatDialogRef<any>;
   constructor(
@@ -185,8 +201,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService
-
-
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -216,6 +230,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
 
+  
+    // this.getAllNamespaces()
+
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
 
@@ -223,14 +240,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   }
 
-
-
   listenToOnSenSitemapEvent() {
     document.addEventListener(
       "on-send-sitemap", (e: CustomEvent) => {
-        // console.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap :", e);
+        // this.logger.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap :", e);
 
-        // console.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap sitemap:", e.detail.sitemap);
+        // this.logger.log("[KNOWLEDGE-BASES-COMP] on-send-sitemap sitemap:", e.detail.sitemap);
         if (e.detail && e.detail) {
           let sitemap = e.detail.sitemap
           let body = { 'sitemap': sitemap }
@@ -249,7 +264,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
-        this.getAllNamespaces()
+
+        const currentUrl = this.router.url;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
+        if (currentUrl.indexOf('/knowledge-bases') !== -1 ){
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
+          const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
+          if (storedHasAlreadyVisitedKb) {
+            this.hasAlreadyVisitedKb = 'true'
+          }
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ',  this.hasAlreadyVisitedKb)
+          this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
+          this.getAllNamespaces()
+        } 
+        // 
+        
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -269,7 +298,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
-      this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+      if (this.namespaces) {
+        this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+      }
     });
   }
 
@@ -408,12 +439,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE-BASES-COMP] prjct_profile_name ", this.prjct_profile_name)
       this.logger.log("[KNOWLEDGE-BASES-COMP] projectProfileData ", this.projectProfileData)
       this.logger.log("[KNOWLEDGE-BASES-COMP] projectProfileData type ", this.projectProfileData.profile_type)
-      
-      if(error.error.error === "Maximum number of resources reached for the current plan") {
-        this.presentDialogNsLimitReached(this.prjct_profile_name,  error.error.plan_limit, this.projectProfileData.profile_type )
+
+      if (error.error.error === "Maximum number of resources reached for the current plan") {
+        this.presentDialogNsLimitReached(this.prjct_profile_name, error.error.plan_limit, this.projectProfileData.profile_type)
       }
-      
-      
+
+
 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE * COMPLETE *');
@@ -424,7 +455,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   presentDialogNsLimitReached(planName, planLimit, planType) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName , ' planLimit ', planLimit, ' planType ', planType)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogNsLimitReached planName', planName, ' planLimit ', planLimit, ' planType ', planType)
     const dialogRef = this.dialog.open(ModalNsLimitReachedComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -439,11 +470,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     dialogRef.afterClosed().subscribe(res => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG NS LIMIT REACHED (AFTER CLOSED):`, res);
-     
+
     });
   }
 
-  
+
 
   onChangeNamespaceName(event) {
     this.logger.log('[KNOWLEDGE-BASES-COMP] ON CHANGE NAMESPACE NAME  event ', event)
@@ -455,7 +486,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE body ', body);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE previedata ', previedata);
 
-    this.kbService.upadateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
+    this.kbService.updateNamespace(body, this.selectedNamespace.id).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - UPDATE NAME SPACE RES', namespace);
@@ -604,6 +635,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getChatbotUsingNamespace(selectedNamespaceid: string) {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+    } else {
+    this.UPLOAD_ENGINE_IS_FIREBASE = false;
+    this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+    }
+
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
 
@@ -612,10 +653,43 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // if (isArray) {
       if (chatbots.length > 0) {
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
-        this.chatbotsUsingNamespace = chatbots
-        // if (chatbots) {
+        
 
-        // }
+        chatbots.forEach(bot => {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET FAQKB forEach bot: ', bot)
+
+      
+          let imgUrl = ''
+          if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+
+            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Firebase 
+            // ------------------------------------------------------------------------------
+            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
+
+          } else {
+           
+            // ------------------------------------------------------------------------------
+            // Usecase uploadEngine Native 
+            // ------------------------------------------------------------------------------
+            imgUrl = this.baseUrl + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+          }
+          this.checkImageExists(imgUrl, (existsImage) => {
+            if (existsImage == true) {
+              this.logger.log('[KNOWLEDGE-BASES-COMP] - IMAGE EXIST X bot', bot);
+              bot.hasImage = true;
+            }
+            else {
+              this.logger.log('[KNOWLEDGE-BASES-COMP] - IMAGE NOT EXIST X bot', bot);
+              bot.hasImage = false;
+            }
+          });
+        });
+
+        this.chatbotsUsingNamespace = chatbots;
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbotsUsingNamespace', this.chatbotsUsingNamespace);
+       
       } else {
         this.chatbotsUsingNamespace = undefined
       }
@@ -626,6 +700,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
     });
+  }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
   }
 
   // isArray(what) {
@@ -689,7 +774,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.presentDialogChatbotname(chatbot)
         }
       });
-      
+
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
     }, () => {
@@ -719,9 +804,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   importChatbotFromJSON(editedChatbot) {
-    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
-      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
@@ -735,8 +820,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - IMPORT CHATBOT FROM JSON - COMPLETE');
 
+      // this.presentDialogChatbotSuccessfullyCreated()
+
     });
   }
+
+
 
 
   getDeptsByProjectId(faqkb?: string) {
@@ -755,6 +844,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0].hasBot);
           this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 - DEFAULT DEPT HAS BOT ', departments[0]);
           if (departments[0].hasBot === true) {
+            this.presentDialogChatbotSuccessfullyCreated()
 
             this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT HAS BOT ');
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
@@ -765,7 +855,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           } else {
             this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0]);
             this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT = 1 DEFAULT DEPT NOT HAS BOT ', departments[0].hasBot);
-            this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept')
+            this.hookBotToDept(departments[0]._id, faqkb, 'hookToDefaultDept');
+            this.presentDialogChatbotSuccessfullyCreated()
+
 
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = true;
             // this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DEFAULT DEPT botType selected ', this.botType);
@@ -794,8 +886,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
               this.logger.log('[KNOWLEDGE-BASES-COMP] ---> USECASE DEPTS LENGHT > 1  DEPT NOT HAS BOT  depts_without_bot_array ', this.depts_without_bot_array);
+
               if (!this.dialogRefHookBoot) {
-                this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+                // this.openDialogHookBot(this.depts_without_bot_array, faqkb)
+                this.presentDialogChatbotSuccessfullyCreatedTheHookBot(this.depts_without_bot_array, faqkb)
               }
             }
           });
@@ -809,6 +903,57 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
 
+  }
+
+
+  presentDialogChatbotSuccessfullyCreated() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+
+    Swal.fire({
+      // title: this.translate.instant('Success'),
+      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
+      icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      // reverseButtons: true,
+      // buttons: [null, this.cancel],
+      // dangerMode: false
+    })
+    // }
+
+  }
+
+
+  presentDialogChatbotSuccessfullyCreatedTheHookBot(depts_without_bot_array, faqkb) {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
+
+    Swal.fire({
+      // title: this.translate.instant('Success'),
+      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
+      icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
+      // cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      reverseButtons: true,
+      // dangerMode: false
+    }).then((result: any) => {
+
+      if (result.isConfirmed) {
+
+        this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED result ', result);
+
+        this.openDialogHookBot(depts_without_bot_array, faqkb)
+      }
+    })
   }
 
 
@@ -859,20 +1004,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
-  // forkTemplate() {
-  //   this.faqKbService.installTemplate('63c9943b4f857c003505557d', this.id_project, true, this.id_project).subscribe((res: any) => {
-  //     this.logger.log('[KNOWLEDGE-BASES-COMP] - FORK TEMPLATE RES', res);
-  //     this.botid = res.bot_id
-
-  //   }, (error) => {
-  //     this.logger.error('[KNOWLEDGE-BASES-COMP] FORK TEMPLATE - ERROR ', error);
-
-  //   }, () => {
-  //     this.logger.log('[KNOWLEDGE-BASES-COMP] FORK TEMPLATE COMPLETE');
-  //     this.goToBotDetails()
-  //   });
-  // }
-
   goToBotDetails() {
     // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
     let faqkb = {
@@ -905,27 +1036,43 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.notify.presentModalAgentCannotManageChatbot(this.translate.instant('AgentsCannotManageChatbots'), this.learnMoreAboutDefaultRoles)
   }
 
-  goToChabotDetails(chatbot) {
-    this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
-    let faqkb = {
-      createdAt: new Date(),
-      _id: chatbot._id
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+  presentDialogGoToCDS(chatbot) {
+
+    this.logger.log('[KNOWLEDGE-BASES-COMP] -------> OPEN DIALOG GO TO CDS !!!!')
+    const dialogRef = this.dialog.open(ModalConfirmGotoCdsComponent, {
+      width: '700px',
+      data: {
+        chatbot: chatbot
+      },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
+      if (result && result.chatbot) {
+
+        let faqkb = {
+          createdAt: new Date(),
+          _id: chatbot._id
+        }
+        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      }
+
+
+    });
+
+    // ModalConfirmGotoCdsComponent
+    // this.logger.error('[KNOWLEDGE-BASES-COMP] - GO TO CHATBOT DETAILS > chatbot', chatbot);
+    // let faqkb = {
+    //   createdAt: new Date(),
+    //   _id: chatbot._id
+    // }
+    // goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
-
-
-
-
 
 
   // ------------------------------------------------------------------------
   // @ Modals Windows
   // ------------------------------------------------------------------------
-
-  
-
-
   presentModalAddNewNamespace() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] - presentModalAddNewNamespace ');
 
@@ -952,14 +1099,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '400px',
+      id: 'kb-test',
       data: {
-        selectedNaspace: this.selectedNamespace,
+        selectedNamespace: this.selectedNamespace,
         askBody: previedata
       },
     });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
+      if (result === undefined) {
+        this.kbService.modalPreviewKbHasBeenClosed()
+      }
+
       if (result) {
         if (result.action === 'open-settings-modal' && result.data) {
           this.onOpenBaseModalPreviewSettings(result.data)
@@ -978,7 +1130,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       hasBackdrop: true,
       width: '360px',
       data: {
-        selectedNaspace: this.selectedNamespace,
+        selectedNamespace: this.selectedNamespace,
       },
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -1010,9 +1162,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     });
   }
-
-
-
 
   onOpenDeleteNamespaceModal() {
     this.logger.log("onOpenDeleteNamespaceModal called....")
@@ -1086,8 +1235,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     });
   }
-
-
 
 
   openAddKnowledgeBaseModal(type?: string) {
@@ -2199,7 +2346,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       "content": kb.content ? kb.content : '',
       "namespace": this.id_project
     }
+
     this.updateStatusOfKb(kb._id, 100);
+
     this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.error) {
