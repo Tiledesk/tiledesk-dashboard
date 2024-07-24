@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.4
+- Added Time Slots in Operating Hours page
+
 ### 2.7.3
 - Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
 - Improves the knowledge base page
