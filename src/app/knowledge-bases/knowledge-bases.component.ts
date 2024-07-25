@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -39,7 +39,9 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
-
+import { ShepherdService } from 'angular-shepherd';
+import { getSteps as defaultSteps, defaultStepOptions} from './knowledge-bases.tour.config';
+import Step from 'shepherd.js/src/types/step';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -57,7 +59,7 @@ const Swal = require('sweetalert2')
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -200,7 +202,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public localDbService: LocalDbService,
     public dialog: MatDialog,
     public faqService: FaqService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private shepherdService: ShepherdService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -229,14 +232,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getProjectPlan();
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
-
-  
     // this.getAllNamespaces()
-
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
-
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
+   
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.shepherdService.defaultStepOptions = defaultStepOptions;
+      this.shepherdService.modal = true;
+      this.shepherdService.confirmCancel = false;
+      const steps = defaultSteps(this.router, this.shepherdService);
+      this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+      this.shepherdService.start();
+      
+    }, 2000);
 
   }
 
@@ -267,18 +279,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         const currentUrl = this.router.url;
         this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
-        if (currentUrl.indexOf('/knowledge-bases') !== -1 ){
+        if (currentUrl.indexOf('/knowledge-bases') !== -1) {
           this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
           const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
           if (storedHasAlreadyVisitedKb) {
             this.hasAlreadyVisitedKb = 'true'
           }
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ',  this.hasAlreadyVisitedKb)
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
           this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
           this.getAllNamespaces()
-        } 
+        }
         // 
-        
+
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -641,8 +653,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
     } else {
-    this.UPLOAD_ENGINE_IS_FIREBASE = false;
-    this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
     }
 
     this.chatbotsUsingNamespace = []
@@ -653,12 +665,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // if (isArray) {
       if (chatbots.length > 0) {
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
-        
+
 
         chatbots.forEach(bot => {
           this.logger.log('[KNOWLEDGE-BASES-COMP] - GET FAQKB forEach bot: ', bot)
 
-      
+
           let imgUrl = ''
           if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
 
@@ -669,7 +681,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
 
           } else {
-           
+
             // ------------------------------------------------------------------------------
             // Usecase uploadEngine Native 
             // ------------------------------------------------------------------------------
@@ -689,7 +701,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         this.chatbotsUsingNamespace = chatbots;
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbotsUsingNamespace', this.chatbotsUsingNamespace);
-       
+
       } else {
         this.chatbotsUsingNamespace = undefined
       }

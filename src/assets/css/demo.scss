@@ -2886,6 +2886,74 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
 .mat-menu-panel.second-add-contents-menu {
   left: 27px;
 }
+
+
+
+/*
+ * Shepherd
+/* ********************************** */
+
+.shepherd-element{
+  padding: 8px;
+}
+
+.shepherd-arrow:before {
+  background-color: #fff !important;
+}
+
+.shepherd-header { 
+  background: #fff !important;
+  padding: 8px !important;;
+}
+
+.shepherd-title  {
+  font-size: 16px !important;
+  font-family: var(--header-font-family) !important;
+  color: #000 !important;
+
+}
+
+.shepherd-text {
+  font-size: 14px !important;
+  padding: 8px 8px 21px 8px !important;
+  font-weight: 400 !important;
+  color: #000 !important;
+}
+
+.shepherd-footer {
+  border-top: unset !important;
+}
+
+
+.shepherd-button {
+  font-weight: 400;
+}
+
+.next-button {
+  color: #fff !important;
+}
+
+.shepherd-progress {
+    position: absolute;
+    left: 15px;
+    bottom: 20px;
+    color: #727272;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+
+
+.custom-class-shepherd-bottom {
+  margin-top: 12px !important;
+  max-width: 300px !important;
+
+}
+
+
+
+/* ********************************** */
+
 /*
  * Sweet Alert 2 
 /* ********************************** */

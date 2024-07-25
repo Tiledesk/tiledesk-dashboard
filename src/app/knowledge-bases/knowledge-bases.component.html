@@ -69,9 +69,9 @@
                   Knowledge base:
                 </div>
                 <div class="selected-namespace-content">
-                  <div class="selected-namespace-name" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()">
+                  <div  class="selected-namespace-name" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()">
 
-                    <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+                    <div id="selected-namespace-name" *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
                       (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
                       matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
                       matTooltipHideDelay="100">
@@ -85,9 +85,9 @@
                       (ngModelChange)="onChangeNamespaceName($event)" (blur)="onBlurUpdateNamespaceName($event)">
                   </div>
 
-                  <!-- <button mat-icon-button (click)="openDialogKbList()">
-                  <mat-icon>view_list</mat-icon>
-                </button> -->
+                    <!-- <button mat-icon-button (click)="openDialogKbList()">
+                    <mat-icon>view_list</mat-icon>
+                  </button> -->
 
                   <!-- ----------- MAT-MENU ----------- -->
                   <button mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
@@ -187,7 +187,8 @@
                     <!-- UPLOAD_ENGINE_IS_FIREBASE - {{ UPLOAD_ENGINE_IS_FIREBASE }}  (click)="cbPopover.toggle() (mouseenter)="cbPopover.toggle()"  "
                     -->
                     
-                    <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover" (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot"  (mouseleave)="cbPopover.toggle()">
+                    <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover" (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot"  
+                    (mouseleave)="cbPopover.toggle()">
                       <div size="32" class="served-by-cb-e">
 
                         <!-- --------------------------------------------------- -->

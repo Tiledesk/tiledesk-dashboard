@@ -44,6 +44,7 @@
     "@sweetalert2/ngx-sweetalert2": "^12.3.0",
     "@types/grecaptcha": "^3.0.7",
     "angular-cc-library": "^3.0.0",
+    "angular-shepherd": "^14.0.0",
     "apexcharts": "^3.36.0",
     "arrive": "2.4.1",
     "bootstrap": "3.3.7",
