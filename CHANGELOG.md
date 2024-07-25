@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.5
+- Deploys in production
+- Fixes the bug: Indicators in the quota usage popup do not update for trial plans
+
 ### 2.7.4
 - Added Time Slots in Operating Hours page
 
