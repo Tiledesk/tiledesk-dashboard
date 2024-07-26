@@ -1303,7 +1303,7 @@ span.navbar-brand-title {
   margin-left: 4px;
 }
 
-.page-title--sidebar-settings{
+.page-title--sidebar-settings {
   position: absolute;
   top: 21px;
   z-index: 1050;
@@ -1322,12 +1322,16 @@ span.navbar-brand-title {
 // For chatbot sidebar 
 // ---------------------------------------------
 
-.navbar-brand-sidebar-settings > .chatbot-svg-icon {
-  width: 29px; position: relative; top: -5px;
+.navbar-brand-sidebar-settings>.chatbot-svg-icon {
+  width: 29px;
+  position: relative;
+  top: -5px;
 }
 
-.navbar-brand-sidebar-settings > .chatbot-sidebar-title {
-  position: absolute; margin-left: 39px;top: 16px;
+.navbar-brand-sidebar-settings>.chatbot-sidebar-title {
+  position: absolute;
+  margin-left: 39px;
+  top: 16px;
 }
 
 
@@ -2629,7 +2633,7 @@ appdashboard-settings-sidebar {
   min-height: calc(100vh - 160px);
 }
 
-appdashboard-bots-sidebar  {
+appdashboard-bots-sidebar {
   border-right: 1px solid #e5effe !important;
   min-height: calc(100vh - 160px);
 }
@@ -2872,7 +2876,7 @@ li.active-item a i.settings-sidebar-icons {
 
 
 
-mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
+mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   padding: 0 !important;
 }
 
@@ -2893,7 +2897,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
  * Shepherd
 /* ********************************** */
 
-.shepherd-element{
+.shepherd-element {
   padding: 8px;
 }
 
@@ -2901,21 +2905,27 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
   background-color: #fff !important;
 }
 
-.shepherd-header { 
+.shepherd-header {
   background: #fff !important;
-  padding: 8px !important;;
+  padding: 8px !important;
 }
 
-.shepherd-title  {
+.shepherd-header>button {
+  position: absolute;
+  top: 1px;
+  right: 8px;
+}
+
+.shepherd-title {
   font-size: 16px !important;
   font-family: var(--header-font-family) !important;
   color: #000 !important;
-
+  margin-top: 12px !important;
 }
 
 .shepherd-text {
   font-size: 14px !important;
-  padding: 8px 8px 21px 8px !important;
+  padding: 0px 8px 24px !important;
   font-weight: 400 !important;
   color: #000 !important;
 }
@@ -2934,12 +2944,12 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
 }
 
 .shepherd-progress {
-    position: absolute;
-    left: 15px;
-    bottom: 20px;
-    color: #727272;
-    font-size: 12px;
-    font-weight: 400;
+  position: absolute;
+  left: 15px;
+  bottom: 20px;
+  color: #727272;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 
@@ -2966,6 +2976,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
   font-family: var(--header-font-family) !important;
   font-weight: 500 !important;
 }
+
 .swal2-close:focus {
   box-shadow: unset !important;
 }
@@ -2992,4 +3003,3 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body{
 //   width: 100%;
 //   bottom: 0;
 // }
-

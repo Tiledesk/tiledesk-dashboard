@@ -26,7 +26,7 @@ export const defaultStepOptions = {
   classes: 'shepherd-theme-arrows custom-default-class',
   scrollTo: true,
   cancelIcon: {
-    enabled: false,
+    enabled: true,
   },
   when: {
     show() {
@@ -42,14 +42,14 @@ export const defaultStepOptions = {
  
 };
 
-export function getSteps(router: Router, service: ShepherdService) {
+export function getStepsYesCb(router: Router, service: ShepherdService) {
   return [
     {
       attachTo: {
         element: '#selected-namespace-name',
         on: 'bottom',
       },
-      buttons: [STEPS_BUTTONS.cancel, STEPS_BUTTONS.next],
+      buttons: [STEPS_BUTTONS.next],
       classes: 'custom-class-shepherd-bottom custom-class-name-2',
       id: 'kb-tour-step-1',
       title: 'Current knowledge base name',
@@ -57,70 +57,247 @@ export function getSteps(router: Router, service: ShepherdService) {
     },
     {
       attachTo: {
-        element: '.main-content h2',
+        // element: '.main-content h2',
+        element: '#select-namespace',
         on: 'bottom',
       },
-      buttons: [STEPS_BUTTONS.cancel, STEPS_BUTTONS.back, STEPS_BUTTONS.next],
-      classes: 'orange',
-      id: 'choose-adventure',
-      title: 'Choose Your First Adventure',
-      text: '',
+      // STEPS_BUTTONS.cancel,
+      buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom',
+      id: 'kb-tour-step-2',
+      title: 'Create or select',
+      text: 'By clicking this button you have the possibility to switch knowledge base or create a new one',
     },
     {
       attachTo: {
-        element: '.tour-card:nth-child(1) h2',
+        // .tour-card:nth-child(1) h2
+        element: '.buttons-div #delete-kb',
+        on: 'bottom',
+        
+      },
+      // STEPS_BUTTONS.cancel, 
+      buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-3',
+      title: 'Remove',
+      text: 'Remove the selected knowledge base',
+    },
+    {
+      // .tour-card:nth-child(2) h2
+      attachTo: {
+        element: '.buttons-div #ai-settings',
         on: 'bottom',
       },
-      buttons: [STEPS_BUTTONS.cancel, STEPS_BUTTONS.back, STEPS_BUTTONS.next],
-      classes: 'custom-class-name-1 custom-class-name-2',
-      id: 'tour1',
-      title: 'Tour 1: Mountain Expedition',
-      text: 'Explore breathtaking mountain landscapes and challenge yourself with thrilling hikes.',
+      buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-3',
+      title: 'AI settings',
+      text: 'Select an AI model and manage its parameters. Parameters (such as Max Tokens, Temperature, and Chunks) essentially define the behavior of an AI model.' //One intriguing parameter is the \"temperature.\" Temperature is a parameter that controls the randomness of the output; a higher temperature results in more diverse and less predictable responses, while a lower temperature produces more focused and deterministic answers.',
     },
     {
       attachTo: {
-        element: '.tour-card:nth-child(2) h2',
+        // .tour-card:nth-child(3) h2
+        element: '.buttons-div #kb-preview' ,
         on: 'bottom',
       },
-      buttons: [STEPS_BUTTONS.cancel, STEPS_BUTTONS.next],
-      classes: 'custom-class-name-1 custom-class-name-2',
-      id: 'tour2',
-      title: 'Tour 2: Beach Paradise',
-      text: 'Relax on pristine beaches, snorkel in crystal-clear waters, and enjoy the tropical sun.',
+      // STEPS_BUTTONS.cancel,
+      buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-4',
+      title: 'Knowledge Base Preview',
+      text: 'Preview knowledge base responses based on your contents and AI parameters so you can find the best setup for your needs',
     },
     {
       attachTo: {
-        element: '.tour-card:nth-child(3) h2',
+        // .tour-card:nth-child(3) h2
+        element: '.buttons-div #kb-add-content' ,
         on: 'bottom',
       },
-      buttons: [STEPS_BUTTONS.cancel, STEPS_BUTTONS.back, STEPS_BUTTONS.next],
-      classes: 'custom-class-name-1 custom-class-name-2',
-      id: 'tour3',
-      title: 'Tour 3: Cultural Experience',
-      text: 'Immerse yourself in the rich culture and history of the destinations we offer.',
+      // STEPS_BUTTONS.cancel,
+      buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-5',
+      title: 'Add contents',
+      text: 'Add contents (URLs, PDFs, etc.) to your Knowledge Base. The contents of a knowledge base are structured to assist users in finding solutions to their queries quickly and efficiently',
     },
     {
       attachTo: {
-        element: 'footer',
-        on: 'top',
+        // .tour-card:nth-child(3) h2
+        element: '#kb-chatbot' ,
+        on: 'bottom',
       },
-      buttons: [
-        STEPS_BUTTONS.cancel,
-        {
-          text: 'Next',
-          classes: 'dx-button-mode-contained dx-button-default dx-state-hover',
-          action: function () {
-            router.navigateByUrl(
-              '/promotion?showGuide=true'
-            );
-            service.complete();
-          },
-        },
-      ],
-      classes: 'custom-class-name-1 custom-class-name-2',
-      id: 'footer',
-      title: 'Adventure Tours',
-      text: '© 2023 Adventure Tours. All rights reserved.',
+      // STEPS_BUTTONS.cancel, ,STEPS_BUTTONS.next
+      buttons: [ STEPS_BUTTONS.cancel],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-6-A',
+      title: 'AI chatbot',
+      text: 'Your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
     },
+    {
+      attachTo: {
+        // .tour-card:nth-child(3) h2
+        element: '#kb-no-chatbot' ,
+        on: 'bottom',
+      },
+      // STEPS_BUTTONS.cancel,
+      buttons: [ STEPS_BUTTONS.cancel],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-6-B',
+      title: 'AI chatbot',
+      text: 'Create your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
+    },
+    // {
+    //   attachTo: {
+    //     element: 'footer',
+    //     on: 'top',
+    //   },
+    //   buttons: [ STEPS_BUTTONS.cancel,
+    //     {
+    //       text: 'Next',
+    //       classes: 'dx-button-mode-contained dx-button-default dx-state-hover',
+    //       action: function () {
+    //         router.navigateByUrl(
+    //           '/promotion?showGuide=true'
+    //         );
+    //         service.complete();
+    //       },
+    //     },
+    //   ],
+    //   classes: 'custom-class-name-1 custom-class-name-2',
+    //   id: 'footer',
+    //   title: 'Adventure Tours',
+    //   text: '© 2023 Adventure Tours. All rights reserved.',
+    // },
+  ];
+}
+
+
+export function getStepsNoCb(router: Router, service: ShepherdService) {
+  return [
+    {
+      attachTo: {
+        element: '#selected-namespace-name',
+        on: 'bottom',
+      },
+      buttons: [STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-1',
+      title: 'Current knowledge base name',
+      text: 'Click anywhere in this paragraph to edit the knowledge base name',
+    },
+    {
+      attachTo: {
+        // element: '.main-content h2',
+        element: '#select-namespace',
+        on: 'bottom',
+      },
+      // STEPS_BUTTONS.cancel,
+      buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom',
+      id: 'kb-tour-step-2',
+      title: 'Create or select',
+      text: 'By clicking this button you have the possibility to switch knowledge base or create a new one',
+    },
+    {
+      attachTo: {
+        // .tour-card:nth-child(1) h2
+        element: '.buttons-div #delete-kb',
+        on: 'bottom',
+        
+      },
+      // STEPS_BUTTONS.cancel, 
+      buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-3',
+      title: 'Remove',
+      text: 'Remove the selected knowledge base',
+    },
+    {
+      // .tour-card:nth-child(2) h2
+      attachTo: {
+        element: '.buttons-div #ai-settings',
+        on: 'bottom',
+      },
+      buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-3',
+      title: 'AI settings',
+      text: 'Select an AI model and manage its parameters. Parameters (such as Max Tokens, Temperature, and Chunks) essentially define the behavior of an AI model.' //One intriguing parameter is the \"temperature.\" Temperature is a parameter that controls the randomness of the output; a higher temperature results in more diverse and less predictable responses, while a lower temperature produces more focused and deterministic answers.',
+    },
+    {
+      attachTo: {
+        // .tour-card:nth-child(3) h2
+        element: '.buttons-div #kb-preview' ,
+        on: 'bottom',
+      },
+      // STEPS_BUTTONS.cancel,
+      buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-4',
+      title: 'Knowledge Base Preview',
+      text: 'Preview knowledge base responses based on your contents and AI parameters so you can find the best setup for your needs',
+    },
+    {
+      attachTo: {
+        // .tour-card:nth-child(3) h2
+        element: '.buttons-div #kb-add-content' ,
+        on: 'bottom',
+      },
+      // STEPS_BUTTONS.cancel,
+      buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.next],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-5',
+      title: 'Add contents',
+      text: 'Add contents (URLs, PDFs, etc.) to your Knowledge Base. The contents of a knowledge base are structured to assist users in finding solutions to their queries quickly and efficiently',
+    },
+    // {
+    //   attachTo: {
+    //     // .tour-card:nth-child(3) h2
+    //     element: '#kb-chatbot' ,
+    //     on: 'bottom',
+    //   },
+    //   // STEPS_BUTTONS.cancel,
+    //   buttons: [ STEPS_BUTTONS.cancel],
+    //   classes: 'custom-class-shepherd-bottom custom-class-name-2',
+    //   id: 'kb-tour-step-6-A',
+    //   title: 'AI chatbot',
+    //   text: 'Your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
+    // },
+
+    {
+      attachTo: {
+        // .tour-card:nth-child(3) h2
+        element: '#kb-no-chatbot' ,
+        on: 'bottom',
+      },
+      // STEPS_BUTTONS.cancel,
+      buttons: [ STEPS_BUTTONS.cancel],
+      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      id: 'kb-tour-step-6-B',
+      title: 'AI chatbot',
+      text: 'Create your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
+    },
+    // {
+    //   attachTo: {
+    //     element: 'footer',
+    //     on: 'top',
+    //   },
+    //   buttons: [ STEPS_BUTTONS.cancel,
+    //     {
+    //       text: 'Next',
+    //       classes: 'dx-button-mode-contained dx-button-default dx-state-hover',
+    //       action: function () {
+    //         router.navigateByUrl(
+    //           '/promotion?showGuide=true'
+    //         );
+    //         service.complete();
+    //       },
+    //     },
+    //   ],
+    //   classes: 'custom-class-name-1 custom-class-name-2',
+    //   id: 'footer',
+    //   title: 'Adventure Tours',
+    //   text: '© 2023 Adventure Tours. All rights reserved.',
+    // },
   ];
 }

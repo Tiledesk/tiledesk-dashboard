@@ -69,9 +69,9 @@
                   Knowledge base:
                 </div>
                 <div class="selected-namespace-content">
-                  <div  class="selected-namespace-name" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()">
+                  <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()">
 
-                    <div id="selected-namespace-name" *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+                    <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
                       (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
                       matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
                       matTooltipHideDelay="100">
@@ -90,7 +90,7 @@
                   </button> -->
 
                   <!-- ----------- MAT-MENU ----------- -->
-                  <button mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
+                  <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
                     matTooltipClass="kb-custom-mat-tooltip"
                     matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='below' matTooltipHideDelay="100">
@@ -117,7 +117,7 @@
               <!-- --------- ./ MAT-MENU ---------- -->
 
               <div class="buttons-div">
-                <button class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
+                <button id="delete-kb" class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
                   style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
                   matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
                   #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -128,14 +128,14 @@
                   <!-- {{ 'KbPage.DeleteNamespace' | translate }} -->
                 </button>
 
-                <button class="custom-button preview-settings"
+                <button id="ai-settings" class="custom-button preview-settings"
                   (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                   matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                   matTooltipPosition='below' matTooltipHideDelay="100">
                   <span class="material-icons-round">settings</span>
                 </button>
 
-                <button class="custom-button preview" aria-label="Preview"
+                <button id="kb-preview" class="custom-button preview" aria-label="Preview"
                   (click)="$event.stopPropagation(); onOpenBaseModalPreview()" [disabled]="kbsListCount === 0"
                   [ngClass]="{'preview-btn-disabled': kbsListCount === 0}" matTooltipClass="kb-custom-mat-tooltip"
                   [matTooltip]="kbsListCount === 0 ? ( 'KbPage.AddContentsToUseTheKBPreview' | translate ) : ( 'KbPage.KBpreview' | translate ) "
@@ -144,7 +144,7 @@
                   <span class=""> {{'Preview' | translate}} </span>
                 </button>
 
-                <div class="add-kb-div">
+                <div id="kb-add-content" class="add-kb-div">
                   <!-- width: 150px; -->
                   <button class="custom-button add-content" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu"
                     aria-label="Actions">
@@ -179,7 +179,7 @@
 
 
               <!-- -------------------------------- -->
-              <div class="served-by-cb-wpr"> 
+              <div id="kb-chatbot" class="served-by-cb-wpr"> 
                 <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
                   <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
                     class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)">
@@ -187,8 +187,7 @@
                     <!-- UPLOAD_ENGINE_IS_FIREBASE - {{ UPLOAD_ENGINE_IS_FIREBASE }}  (click)="cbPopover.toggle() (mouseenter)="cbPopover.toggle()"  "
                     -->
                     
-                    <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover" (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot"  
-                    (mouseleave)="cbPopover.toggle()">
+                    <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover" (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot"  (mouseleave)="cbPopover.toggle()">
                       <div size="32" class="served-by-cb-e">
 
                         <!-- --------------------------------------------------- -->
@@ -262,12 +261,12 @@
               <!-- --------------------------------------- -->
               <!-- Create a Chatbot that use current KB -->
               <!-- --------------------------------------- -->
-              <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
+              <div  *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                 <!-- This namespace is not used by any chatbot -->
                 {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
               </div>
               
-              <div *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
+              <div id="kb-no-chatbot" *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
                 <button class="custom-button xs" (click)="createChatbotfromKbOfficialResponderTemplate()">
                   <span>
                     <!-- Create chatbot  -->

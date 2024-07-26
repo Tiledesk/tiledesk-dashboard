@@ -40,7 +40,8 @@ import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.co
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { ShepherdService } from 'angular-shepherd';
-import { getSteps as defaultSteps, defaultStepOptions} from './knowledge-bases.tour.config';
+import { getStepsYesCb as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
+
 import Step from 'shepherd.js/src/types/step';
 // import {
 //   // provideHighlightOptions,
@@ -236,20 +237,32 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-   
+
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.shepherdService.defaultStepOptions = defaultStepOptions;
-      this.shepherdService.modal = true;
-      this.shepherdService.confirmCancel = false;
-      const steps = defaultSteps(this.router, this.shepherdService);
-      this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-      this.shepherdService.start();
-      
-    }, 2000);
+    const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
+    // console.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
+    if (!tourShowed) {
+      setTimeout(() => {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        const steps = defaultSteps(this.router, this.shepherdService);
+        if (!this.chatbotsUsingNamespace) {
+          // steps.filter(obj => obj.id !== "kb-tour-step-6-A")
+          steps.splice(6, 1);
+        } else {
+          steps.splice(7, 1);
+        }
+        // console.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
+        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+        this.shepherdService.start();
 
+        this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
+
+      }, 2000);
+    }
   }
 
   listenToOnSenSitemapEvent() {
