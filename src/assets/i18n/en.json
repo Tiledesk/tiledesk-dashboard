@@ -1752,7 +1752,8 @@
         "AddKbInfoTextContent": "Please enter valid content.",
         "KBLimitReached": "Content limit reached for {{plan_name}}",
         "AllContents": "All contents",
-        "DeleteNamespace": "Delete all contents"
+        "DeleteNamespace": "Delete all contents",
+        "CurrentKnowledgeBaseName": "Current knowledge base name"
     },
     "ViewInTheDesignStudio": "View in the Design Studio",
     "LearnHow": "Learn how",

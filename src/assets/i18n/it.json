@@ -1751,7 +1751,8 @@
         "AddKbInfoTextContent": "Inserisci un contenuto valido.",
         "KBLimitReached": "Limite contenuti raggiunto per il {{plan_name}}",
         "AllContents": "Tutti i contenuti",
-        "DeleteNamespace": "Elimina tutti i contenuti"
+        "DeleteNamespace": "Elimina tutti i contenuti",
+        "CurrentKnowledgeBaseName": "Nome della knowledge base corrente"
     },
     "ViewInTheDesignStudio": "Visualizza nel Design Studio",
     "LearnHow": "Impara come",

@@ -156,6 +156,19 @@
                     </add-content-menu>
                   </mat-menu>
                 </div>
+
+                <div id="other-actions" class="other-actions">
+                  <button mat-icon-button [matMenuTriggerFor]="otherActions" aria-label="other-actions">
+                    <mat-icon>more_horiz</mat-icon>
+                  </button>
+
+                  <mat-menu #otherActions="matMenu">
+                    <button mat-menu-item (click)="restartTour()">
+                      <mat-icon>restart_alt</mat-icon>
+                      <span>Restart tour</span>
+                    </button>
+                  </mat-menu>
+                </div>
               </div>
             </div>
 

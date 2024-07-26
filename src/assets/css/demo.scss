@@ -2921,6 +2921,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   font-family: var(--header-font-family) !important;
   color: #000 !important;
   margin-top: 12px !important;
+  flex: auto !important;
 }
 
 .shepherd-text {
@@ -2957,7 +2958,20 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 .custom-class-shepherd-bottom {
   margin-top: 12px !important;
   max-width: 300px !important;
+}
 
+.step-with-image .shepherd-content .shepherd-header {
+  flex-direction: column!important;
+  justify-content: center!important;
+}
+
+.step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container {
+  height: 197px;
+  text-align: center;
+}
+
+.step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container img{
+   max-width: 345px !important;
 }
 
 

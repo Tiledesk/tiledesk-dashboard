@@ -170,7 +170,7 @@
 
 </div>
 
-<div mat-dialog-actions style="justify-content: center;">
+<div *ngIf="!wasOpenedFromThePreviewKBModal" mat-dialog-actions style="justify-content: center;">
     <!-- <button *ngIf="!wasOpenedFromThePreviewKBModal" class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
         {{ "Cancel" | translate }}
     </button> -->

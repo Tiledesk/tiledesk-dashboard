@@ -40,7 +40,7 @@ import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.co
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { ShepherdService } from 'angular-shepherd';
-import { getStepsYesCb as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
+import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
 
 import Step from 'shepherd.js/src/types/step';
 // import {
@@ -183,6 +183,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasAlreadyVisitedKb: string = 'false'
 
   private dialogRefHookBoot: MatDialogRef<any>;
+  timer: number = 2000
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -204,7 +206,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService,
-    private shepherdService: ShepherdService
+    private shepherdService: ShepherdService,
+  
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -248,21 +251,28 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.shepherdService.defaultStepOptions = defaultStepOptions;
         this.shepherdService.modal = true;
         this.shepherdService.confirmCancel = false;
-        const steps = defaultSteps(this.router, this.shepherdService);
+        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
         if (!this.chatbotsUsingNamespace) {
           // steps.filter(obj => obj.id !== "kb-tour-step-6-A")
-          steps.splice(6, 1);
+          steps.splice(3, 1);
         } else {
-          steps.splice(7, 1);
+          steps.splice(4, 1);
         }
-        // console.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
+        console.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
         this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
         this.shepherdService.start();
 
         this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
 
-      }, 2000);
+      }, this.timer);
     }
+  }
+
+  restartTour() {
+    this.timer = 0
+    this.localDbService.removeFromStorage(`tour-shown-${this.id_project}`)
+    this.ngAfterViewInit()
+    // this.shepherdService.start();
   }
 
   listenToOnSenSitemapEvent() {
