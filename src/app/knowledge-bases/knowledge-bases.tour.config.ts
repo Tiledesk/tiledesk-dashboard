@@ -77,7 +77,19 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       classes: 'custom-class-shepherd-bottom custom-class-name-2',
       id: 'kb-tour-step-2',
       title: 'Knowledge Base Preview',
-      text: 'Preview knowledge base responses based on your contents and AI parameters so you can find the best setup for your needs',
+      text: `Preview knowledge base responses based on your contents and AI parameters so you can find the best setup for your needs
+      
+      <div class="image-container">
+            <img 
+                src="assets/img/igor-bastidas-1.gif"
+                class="image-style"
+                frameBorder="0" 
+                allowFullScreen>
+            </img>
+        </div>
+      
+      `,
+      // igor-bastidas-1.gif
     },
 
     {
