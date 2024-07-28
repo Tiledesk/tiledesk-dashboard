@@ -245,6 +245,93 @@
           </div>
         </div> <!-- ./ bg-card -->
 
+           <!-- QUOTA Banner -->
+           <div class="home-quota-banner">
+            displayQuotaSkeleton > {{ displayQuotaSkeleton }}
+
+            <!-- <div style="width: 100%; display: flex; flex-direction: row; justify-content: flex-start;">
+              <div class="fake-box"></div>
+              <div class="fake-box"></div>
+              <div class="fake-box"></div>
+            </div> -->
+                        
+            <div class="home-quota-wpr">
+              <!-- -------------------------- -->
+              <!-- Conversations  -->
+              <!-- -------------------------- -->
+              <div class="home-quote-container" [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
+
+                <div class="home-quote-title-count-wpr">
+                  <p class="quote-title">Conversations</p>
+                  <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
+                  <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
+                    You run out of converations
+                  </div>
+                </div>
+
+                <div class="quote">
+                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                    [mode]="'determinate'" [value]="requests_perc" [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                  </mat-progress-spinner>
+
+                  <div class="percentage" [ngClass]="{'percentage-conversations-runned-out': conversationsRunnedOut}">
+                    {{ requests_perc }}
+                    <span
+                      style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                    </div>
+                </div>
+              </div>
+              <!-- -------------------------- -->
+              <!-- AI Tokens -->
+              <!-- -------------------------- -->
+              <div class="home-quote-container">
+                <div class="home-quote-title-count-wpr">
+                  <p class="quote-title">AI Tokens</p>
+                  <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
+                  <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
+                    You run out of AI Tokens
+                  </div>
+                </div>
+
+                <div class="quote">
+                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                    [mode]="'determinate'" [value]="tokens_perc" [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
+                  </mat-progress-spinner>
+
+                  <div class="percentage" [ngClass]="{'percentage-token-runned-out': tokensRunnedOut}">
+                    {{ tokens_perc }}
+                    <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                </div>
+
+              </div>
+
+              <!-- -------------------------- -->
+              <!-- Email -->
+              <!-- -------------------------- -->
+              <div class="home-quote-container">
+
+                <div class="home-quote-title-count-wpr">
+                  <p class="quote-title">Email</p>
+                  <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
+                  <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
+                    You run out of Email
+                  </div>
+                </div>
+
+                <div class="quote">
+                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                    [mode]="'determinate'" [value]="email_perc"  [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}" >
+                  </mat-progress-spinner>
+
+                  <div class="percentage"  [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
+                    {{ email_perc }}
+                    <span  style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- .\ QUOTA Banner  -->
+
         <div class="home-blocks-wpr">
 
 
@@ -375,8 +462,13 @@
 
 
           <ng-container *ngIf="!showskeleton ">
+
+         
+
             <span *ngIf="USER_ROLE !== 'agent'">
-              <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
+
+              
+
               <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
               <!-- for chatbot hero section -->
               <ng-container *ngIf="areVisibleChatbot">

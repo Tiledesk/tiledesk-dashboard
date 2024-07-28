@@ -89,7 +89,7 @@ export class QuotesService {
       }
 
       const url = this.SERVER_BASE_PATH + "projects/" + project_id;
-      this.logger.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
+      console.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
 
       this.http.get(url, httpOptions)
           .toPromise().then( async (project: any) => {

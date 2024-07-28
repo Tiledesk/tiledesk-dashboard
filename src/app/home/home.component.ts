@@ -38,6 +38,9 @@ import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { QuotesService } from 'app/services/quotes.service';
 
 
 const swal = require('sweetalert');
@@ -215,6 +218,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   areVisibleChatbot: boolean;
   displayKbHeroSection: boolean;
+
+  // QUOTES
+  isVisibleQuoteBtn: boolean;
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'determinate';
+  requests_count = 0;
+  requests_perc = 0;
+  requests_limit = 0;
+  
+  messages_count = 0;
+  messages_perc = 0;
+  messages_limit = 0;
+  
+  email_count = 0;
+  email_perc = 0;
+  email_limit = 0;
+
+  tokens_count = 0;
+  tokens_perc = 0;
+  tokens_limit = 0;
+
+  project_limits: any;
+
+  conversationsRunnedOut: boolean = false;
+  emailsRunnedOut: boolean = false;
+  tokensRunnedOut: boolean = false;
+  displayQuotaSkeleton: boolean = true
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -233,7 +264,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     private departmentService: DepartmentService,
-    public localDbService: LocalDbService
+    public localDbService: LocalDbService,
+    private quotesService: QuotesService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -286,6 +318,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
+
+    
   }
 
   ngAfterViewInit() {
@@ -315,8 +349,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
+
+          
           this.project = project
           this.projectId = this.project._id
+
+          if (this.projectId) {
+            this.getProjectQuotes();
+          }
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
@@ -336,6 +376,103 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
+  }
+
+
+
+  getProjectQuotes() {
+    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
+      console.log("[HOME] getProjectQuotes response: ", response);
+      console.log("[HOME] getProjectQuotes: ", response);
+      this.project_limits = response;
+      if (this.project_limits) {
+        this.getQuotes()
+      }
+    }).catch((err) => {
+      this.logger.error("[HOME] getProjectQuotes error: ", err);
+      this.displayQuotaSkeleton = false
+    })
+  }
+
+  getQuotes() {
+    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
+      console.log("[HOME] getAllQuotes response: ", resp)
+
+      console.log("[HOME] project_limits: ", this.project_limits)
+      console.log("[HOME] resp.quotes: ", resp.quotes)
+
+      this.messages_limit = this.project_limits.messages;
+      this.requests_limit = this.project_limits.requests;
+      this.email_limit = this.project_limits.email;
+      this.tokens_limit = this.project_limits.tokens;
+
+      this.requests_limit = 1;
+      this.email_limit = 1;
+      this.tokens_limit = 1;
+
+      if (resp.quotes.requests.quote === null) {
+        resp.quotes.requests.quote = 0;
+      }
+      if (resp.quotes.messages.quote === null) {
+        resp.quotes.messages.quote = 0;
+      }
+      if (resp.quotes.email.quote === null) {
+        resp.quotes.email.quote = 0;
+      }
+      if (resp.quotes.tokens.quote === null) {
+        resp.quotes.tokens.quote = 0;
+      }
+
+      console.log('[HOME] used requests', resp.quotes.requests.quote) 
+      console.log('[HOME] requests_limit', this.requests_limit) 
+
+      console.log('[HOME] used email', resp.quotes.email.quote) 
+      console.log('[HOME] email_limit', this.email_limit) 
+
+
+      console.log('[HOME] used tokens', resp.quotes.tokens.quote) 
+      console.log('[HOME] tokens_limit', this.tokens_limit) 
+      if(resp.quotes.requests.quote >= this.requests_limit) {
+        this.conversationsRunnedOut = true;
+        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+      } else {
+        this.conversationsRunnedOut = false;
+        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+      }
+
+      if(resp.quotes.email.quote >= this.email_limit) {
+        this.emailsRunnedOut = true;
+        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+      } else {
+        this.emailsRunnedOut = false;
+        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+      }
+ 
+      if(resp.quotes.tokens.quote >= this.tokens_limit) {
+        this.tokensRunnedOut = true;
+        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+      } else {
+        this.tokensRunnedOut = false;
+        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+      }
+      
+      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
+      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
+      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
+      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+
+      this.requests_count = resp.quotes.requests.quote;
+      this.messages_count = resp.quotes.messages.quote;
+      this.email_count = resp.quotes.email.quote;
+      this.tokens_count = resp.quotes.tokens.quote;
+
+    }, (error) => {
+      this.logger.error("[HOME] get all quotes error: ", error)
+      this.displayQuotaSkeleton = false
+    }, () => {
+      this.logger.log("[HOME] get all quotes *COMPLETE*");
+      this.displayQuotaSkeleton = false
+    })
   }
 
   getProjectById(projectId) {
