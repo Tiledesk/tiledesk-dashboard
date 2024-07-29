@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.6
+- Deploys in production
+- Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
+
 ### 2.7.5
 - Deploys in production
 - Fixes the bug: Indicators in the quota usage popup do not update for trial plans
