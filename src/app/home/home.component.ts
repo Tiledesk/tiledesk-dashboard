@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   project: Project;
   projects: any;
   projectId: string;
+  projectName: string;
   // user_is_available: boolean;
 
   USER_ROLE: string;
@@ -246,6 +247,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   tokensRunnedOut: boolean = false;
   displayQuotaSkeleton: boolean = true
 
+  salesEmail: string
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -275,6 +278,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.logger.log('[HOME] custom_company_home_logo ', this.custom_company_home_logo)
     this.tparams = brand;
     this.selectedDaysId = 7;
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   ngOnInit() {
@@ -352,7 +356,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           
           this.project = project
-          this.projectId = this.project._id
+          this.projectId = this.project._id;
+          this.projectName = this.project.name
 
           if (this.projectId) {
             this.getProjectQuotes();
@@ -382,8 +387,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-      console.log("[HOME] getProjectQuotes response: ", response);
-      console.log("[HOME] getProjectQuotes: ", response);
+      this.logger.log("[HOME] getProjectQuotes response: ", response);
+      this.logger.log("[HOME] getProjectQuotes: ", response);
       this.project_limits = response;
       if (this.project_limits) {
         this.getQuotes()
@@ -396,19 +401,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("[HOME] getAllQuotes response: ", resp)
+      this.logger.log("[HOME] getAllQuotes response: ", resp)
 
-      console.log("[HOME] project_limits: ", this.project_limits)
-      console.log("[HOME] resp.quotes: ", resp.quotes)
+      this.logger.log("[HOME] project_limits: ", this.project_limits)
+      this.logger.log("[HOME] resp.quotes: ", resp.quotes)
 
       this.messages_limit = this.project_limits.messages;
       this.requests_limit = this.project_limits.requests;
       this.email_limit = this.project_limits.email;
       this.tokens_limit = this.project_limits.tokens;
 
-      this.requests_limit = 1;
-      this.email_limit = 1;
-      this.tokens_limit = 1;
+      // -----------------------------
+      // For test
+      // -----------------------------
+      // this.requests_limit = 1;
+      // this.email_limit = 1;
+      // this.tokens_limit = 1;
 
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;
@@ -423,37 +431,37 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         resp.quotes.tokens.quote = 0;
       }
 
-      console.log('[HOME] used requests', resp.quotes.requests.quote) 
-      console.log('[HOME] requests_limit', this.requests_limit) 
+      this.logger.log('[HOME] used requests', resp.quotes.requests.quote) 
+      this.logger.log('[HOME] requests_limit', this.requests_limit) 
 
-      console.log('[HOME] used email', resp.quotes.email.quote) 
-      console.log('[HOME] email_limit', this.email_limit) 
+      this.logger.log('[HOME] used email', resp.quotes.email.quote) 
+      this.logger.log('[HOME] email_limit', this.email_limit) 
 
 
-      console.log('[HOME] used tokens', resp.quotes.tokens.quote) 
-      console.log('[HOME] tokens_limit', this.tokens_limit) 
+      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote) 
+      this.logger.log('[HOME] tokens_limit', this.tokens_limit) 
       if(resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
-        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
       } else {
         this.conversationsRunnedOut = false;
-        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
       }
 
       if(resp.quotes.email.quote >= this.email_limit) {
         this.emailsRunnedOut = true;
-        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
       } else {
         this.emailsRunnedOut = false;
-        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
       }
  
       if(resp.quotes.tokens.quote >= this.tokens_limit) {
         this.tokensRunnedOut = true;
-        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
       } else {
         this.tokensRunnedOut = false;
-        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
       }
       
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
@@ -473,6 +481,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] get all quotes *COMPLETE*");
       this.displayQuotaSkeleton = false
     })
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
   }
 
   getProjectById(projectId) {
@@ -3437,6 +3449,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
+
+ 
 
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {

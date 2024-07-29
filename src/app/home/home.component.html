@@ -19,7 +19,7 @@
             <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
               <div class="flex flex-auto items-center min-w-0">
                 <div class="flex-0 w-16 h-16  overflow-hidden">
-               
+
                   <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
@@ -39,7 +39,7 @@
 		                    C58,24.9,57.1,25.7,56.1,25.7" />
                     </g>
                   </svg>
-                 
+
                   <div *ngIf="!isVisiblePay && !custom_company_home_logo" class="logo-no--text">
                     <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
                   </div>
@@ -66,17 +66,13 @@
                 <div class="flex flex-col min-w-0 ml-4">
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
-                    <span style="font-family: 'Poppins', Arial, sans-serif;"> 
-                      {{ prjct_name }} 
+                    <span style="font-family: 'Poppins', Arial, sans-serif;">
+                      {{ prjct_name }}
                     </span>
-                    <span class="material-icons home-edit-project-name-icon" 
-                      (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" 
-                      matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" 
-                      matTooltipPosition='below'
-                      matTooltipHideDelay="100">
-                        mode_edit
+                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      mode_edit
                     </span>
                   </div>
                   <!-- (click)="goToSubscriptionOrOpenModalSubsExpired()" -->
@@ -89,8 +85,8 @@
                       'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
                       'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
                       }">
-                      <span style="border-bottom: 1px dotted #3ea9f5;"> 
-                        {{ prjct_profile_name }} 
+                      <span style="border-bottom: 1px dotted #3ea9f5;">
+                        {{ prjct_profile_name }}
                       </span>
                     </div>
                   </div>
@@ -245,108 +241,140 @@
           </div>
         </div> <!-- ./ bg-card -->
 
-           <!-- QUOTA Banner -->
-           <div class="home-quota-banner">
-            displayQuotaSkeleton > {{ displayQuotaSkeleton }}
+        <!-- QUOTA Banner -->
+        <div class="home-quota-banner" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut" >
+          <div class="home-quota-banner-title-wpr">
+            <div class="home-quota-banner-icon">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                  d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+              </svg>
 
-            <!-- <div style="width: 100%; display: flex; flex-direction: row; justify-content: flex-start;">
-              <div class="fake-box"></div>
-              <div class="fake-box"></div>
-              <div class="fake-box"></div>
-            </div> -->
-                        
-            <div class="home-quota-wpr">
-              <!-- -------------------------- -->
-              <!-- Conversations  -->
-              <!-- -------------------------- -->
-              <div class="home-quote-container" [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
+            </div>
+            <div class="home-quota-banner-title">
+              ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources quotas, 
+              <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+            </div>
+          </div>
+          <!-- displayQuotaSkeleton > {{ displayQuotaSkeleton }} -->
+          <div class="first-card is-loading" *ngIf="displayQuotaSkeleton">
+            <div class="quota-skeleton-container">
+              <div class="quota-skeleton-wpr">
+                <div class="quota--fake--box"></div>
+                <div class="quota--fake--circle"></div>
+              </div>
+              <div class="quota-skeleton-wpr">
+                <div class="quota--fake--box"></div>
+                <div class="quota--fake--circle"></div>
+              </div>
+              <div class="quota-skeleton-wpr">
+                <div class="quota--fake--box"></div>
+                <div class="quota--fake--circle"></div>
+              </div>
+            </div>
+          </div>
 
-                <div class="home-quote-title-count-wpr">
-                  <p class="quote-title">Conversations</p>
-                  <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
-                  <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
-                    You run out of converations
-                  </div>
-                </div>
 
-                <div class="quote">
-                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                    [mode]="'determinate'" [value]="requests_perc" [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
-                  </mat-progress-spinner>
+          <div class="home-quota-wpr" *ngIf="!displayQuotaSkeleton">
+            <!-- -------------------------- -->
+            <!-- Conversations  -->
+            <!-- -------------------------- -->
+            <div class="home-quote-container"
+              [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
 
-                  <div class="percentage" [ngClass]="{'percentage-conversations-runned-out': conversationsRunnedOut}">
-                    {{ requests_perc }}
-                    <span
-                      style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                    </div>
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title">Conversations</p>
+                <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
+                  You run out of converations
                 </div>
               </div>
-              <!-- -------------------------- -->
-              <!-- AI Tokens -->
-              <!-- -------------------------- -->
-              <div class="home-quote-container">
-                <div class="home-quote-title-count-wpr">
-                  <p class="quote-title">AI Tokens</p>
-                  <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
-                  <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
-                    You run out of AI Tokens
-                  </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="requests_perc"
+                  [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-conversations-runned-out': conversationsRunnedOut}">
+                  {{ requests_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
                 </div>
-
-                <div class="quote">
-                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                    [mode]="'determinate'" [value]="tokens_perc" [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
-                  </mat-progress-spinner>
-
-                  <div class="percentage" [ngClass]="{'percentage-token-runned-out': tokensRunnedOut}">
-                    {{ tokens_perc }}
-                    <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+              </div>
+            </div>
+            <!-- -------------------------- -->
+            <!-- AI Tokens -->
+            <!-- -------------------------- -->
+            <div class="home-quote-container"
+              [ngClass]="{'home-quote-container-tokens-runned-out': tokensRunnedOut}">
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title">AI Tokens</p>
+                <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
+                  You run out of AI Tokens
                 </div>
-
               </div>
 
-              <!-- -------------------------- -->
-              <!-- Email -->
-              <!-- -------------------------- -->
-              <div class="home-quote-container">
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="tokens_perc"
+                  [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
+                </mat-progress-spinner>
 
-                <div class="home-quote-title-count-wpr">
-                  <p class="quote-title">Email</p>
-                  <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
-                  <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
-                    You run out of Email
-                  </div>
+                <div class="percentage" [ngClass]="{'percentage-token-runned-out': tokensRunnedOut}">
+                  {{ tokens_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
                 </div>
+              </div>
 
-                <div class="quote">
-                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                    [mode]="'determinate'" [value]="email_perc"  [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}" >
-                  </mat-progress-spinner>
+            </div>
 
-                  <div class="percentage"  [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
-                    {{ email_perc }}
-                    <span  style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+            <!-- -------------------------- -->
+            <!-- Email -->
+            <!-- -------------------------- -->
+            <div class="home-quote-container"
+            [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
+
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title">Email</p>
+                <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
+                  You run out of Email
+                </div>
+              </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="email_perc"
+                  [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
+                  {{ email_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
                 </div>
               </div>
             </div>
           </div>
-          <!-- .\ QUOTA Banner  -->
+        </div>
+        <!-- .\ QUOTA Banner  -->
 
         <div class="home-blocks-wpr">
 
 
           <!-- // Skeleton START   -->
           <div *ngIf="showskeleton" class="skeleton">
-            
+
             <!-- Skeleton for chatbot hero section -->
             <!-- *ngIf="areVisibleChatbot"  -->
             <!-- <ng-container *ngIf="!displayKbHeroSection"> -->
-              <div style="min-height: 286px;" class="first-card is-loading">
-                <div class="fake--circle"></div>
-                <div class="fake--box"></div>
-                <div class="sm--fake--box"></div>
-                <div class="fake--btn"></div>
-              </div>
+            <div style="min-height: 286px;" class="first-card is-loading">
+              <div class="fake--circle"></div>
+              <div class="fake--box"></div>
+              <div class="sm--fake--box"></div>
+              <div class="fake--btn"></div>
+            </div>
             <!-- </ng-container> -->
 
             <!-- Skeleton for kb hero section -->
@@ -463,21 +491,18 @@
 
           <ng-container *ngIf="!showskeleton ">
 
-         
+
 
             <span *ngIf="USER_ROLE !== 'agent'">
 
-              
+
 
               <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
               <!-- for chatbot hero section -->
               <ng-container *ngIf="areVisibleChatbot">
-                <home-cds 
-                  (goToCreateChatbot)="goToCreateChatbot()" 
-                  (dismissKbSkeleton)="dismissKbSkeleton($event)"
-                  [chatbots] = "chatbots"
-                  [displayKbHeroSection]="displayKbHeroSection" 
-                  [isVisibleKNB]="isVisibleKNB"> </home-cds>
+                <home-cds (goToCreateChatbot)="goToCreateChatbot()" (dismissKbSkeleton)="dismissKbSkeleton($event)"
+                  [chatbots]="chatbots" [displayKbHeroSection]="displayKbHeroSection" [isVisibleKNB]="isVisibleKNB">
+                </home-cds>
               </ng-container>
 
               <!-- for kb hero section -->
@@ -496,10 +521,8 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child1'">
                   <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
-                    [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" 
-                    (trackUserAction)="trackUserAction($event)">
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
                 </ng-container>
 
@@ -507,10 +530,8 @@
                 <!-- Child 2 Analytics Indicator-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
-                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" 
-                    [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" 
-                    (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 
@@ -519,20 +540,13 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
-                    style="margin-bottom: 18px;" 
-                    (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()" 
-                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" 
-                    [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
-                    [waBotId]="waBotId"
-                    [use_case_for_child]="use_case_for_child" 
-                    [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" 
-                    [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" 
-                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                    style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
+                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -544,10 +558,8 @@
                     #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
-                    [whatsAppIsConnected]="whatsAppIsConnected"
-                    [solution_channel_for_child]="solution_channel_for_child" 
-                    [solution_for_child]="solution_for_child"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
                     [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>
@@ -557,25 +569,23 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" 
-                    [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" 
-                    [wadepartmentName]="wadepartmentName"
+                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
                     (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
                     (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-create-chatbot>
                 </ng-container>
 
-             
+
 
                 <!-- ----------------------- -->
-                <!-- Child 7 KB --> 
+                <!-- Child 7 KB -->
                 <!-- ----------------------- -->
                 <!-- *ngIf="displayKnowledgeBase" -->
-                <ng-container  *ngIf="areVisibleChatbot">
+                <ng-container *ngIf="areVisibleChatbot">
                   <ng-container *ngIf="item.type === 'child7' && isVisibleKNB && !displayKbHeroSection">
-                    <appdashboard-home-kb  (trackUserAction)="trackUserAction($event)">
+                    <appdashboard-home-kb (trackUserAction)="trackUserAction($event)">
                     </appdashboard-home-kb>
                   </ng-container>
                 </ng-container>
@@ -588,7 +598,7 @@
                 </ng-container> -->
 
 
-                   
+
                 <!-- ----------------------- -->
                 <!-- Child 6 Create Teammate -->
                 <!-- ----------------------- -->
@@ -611,18 +621,18 @@
             <span *ngIf="USER_ROLE === 'agent'">
               <div class="home--blocks">
 
-               
+
                 <!-- <appdashboard-home-convs-graph *ngIf="isVisibleANA"
                   [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
                   [USER_ROLE]="USER_ROLE">
                 </appdashboard-home-convs-graph> -->
 
-               
+
                 <!-- <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
                   [USER_ROLE]="USER_ROLE">
                 </appdashboard-home-analytics-indicator> -->
 
-                
+
                 <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
 
                 <appdashboard-home-go-to-chat></appdashboard-home-go-to-chat>
@@ -633,7 +643,7 @@
           </ng-container>
         </div>
 
-        <ng-container *ngIf="displayNewsAndDocumentation && USER_ROLE !== 'agent'"> 
+        <ng-container *ngIf="displayNewsAndDocumentation && USER_ROLE !== 'agent'">
           <div *ngIf="!showsNewsFeedSkeleton" class="news-feed-wpr">
             <!-- [showskeleton]="showskeleton" -->
             <appdashboard-home-news-feed *ngIf="displayNewsFeed"></appdashboard-home-news-feed>

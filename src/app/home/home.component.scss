@@ -2993,6 +2993,43 @@ img {
     margin-bottom: 60px;
   }
 
+
+  .quota-skeleton-container {
+    display: flex;
+    gap: 52px;
+    margin-top: 18px;
+  }
+
+  .quota-skeleton-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 19px;
+  }
+
+  .quota--fake--box {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+    width: 142px;
+    height: 23px;
+    // margin-top: -1px;
+  }
+
+  .quota--fake--circle {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 999px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+    width: 53px;
+    height: 53px;
+    border: solid 2px white;
+    // margin-left: -1px;
+  }
+
 }
 
 
@@ -3170,8 +3207,51 @@ img {
 .home-quota-banner {
   width: 100%;
   // margin-top: 24px;
-  height: 86px;
+  // height: 152px;
+  background: #fefae6;
+  border: 6px solid #f55a4e;
+  padding: 6px;
+}
 
+.home-quota-banner-title-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.home-quota-banner-icon {
+  width: 30px;
+  min-width: 30px;
+}
+
+.home-quota-banner-icon svg {
+  fill: #fbce33;
+}
+
+
+
+.home-quota-banner-title {
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: center;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.home-quota-banner-title .sales-mail-to {
+  color: #3ea9f5;
+  font-weight: 500;
+  cursor: pointer;
+  // margin-left: 6px;
+}
+
+.home-quota-banner-title .sales-mail-to:hover {
+  text-decoration: underline;
 }
 
 .home-quota-wpr {
@@ -3192,6 +3272,14 @@ img {
 }
 
 .home-quote-container-conversations-runned-out {
+  margin-top: 18px;
+}
+
+.home-quote-container-tokens-runned-out{
+  margin-top: 18px;
+}
+
+.home-quote-container-email-runned-out{
   margin-top: 18px;
 }
 
@@ -3266,6 +3354,7 @@ img {
 .mat-progress-spinner-conversations-runned-out {
   // margin-top: 9px;
 }
+
 .mat-progress-spinner-conversations-runned-out::ng-deep circle {
   stroke: #f55a4e !important;
   // margin-top: 7px;
@@ -3307,10 +3396,10 @@ img {
 }
 
 .quota-runned-out-msg {
-    color: #f55a4e;
-    font-weight: 400;
-    font-size: 12px;
-    margin-top: 3px;
+  color: #f55a4e;
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 3px;
 }
 
 // .quote-container {
