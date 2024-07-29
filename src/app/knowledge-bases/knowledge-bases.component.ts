@@ -258,7 +258,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         } else {
           steps.splice(4, 1);
         }
-        console.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
+        // console.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
         this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
         this.shepherdService.start();
 
