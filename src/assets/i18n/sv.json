@@ -1754,7 +1754,8 @@
         "AddKbInfoTextContent": "Vänligen ange giltigt innehåll.",
         "KBLimitReached": "Innehållsgränsen nådd för {{plan_name}}",
         "AllContents": "Allt innehåll",
-        "DeleteNamespace": "Ta bort allt innehåll"
+        "DeleteNamespace": "Ta bort allt innehåll",
+        "RestartTour": "Starta om turnén"
     },
     "ViewInTheDesignStudio": "Utsikt i designstudion",
     "LearnHow": "Lära sig hur",

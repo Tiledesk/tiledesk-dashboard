@@ -1753,7 +1753,8 @@
         "AddKbInfoTextContent": "Жарамды мазмұнды енгізіңіз.",
         "KBLimitReached": "{{plan_name}} үшін мазмұн шегіне жетті",
         "AllContents": "Барлық мазмұн",
-        "DeleteNamespace": "Барлық мазмұнды жойыңыз"
+        "DeleteNamespace": "Барлық мазмұнды жойыңыз",
+        "RestartTour": "Турды қайта бастау"
     },
     "ViewInTheDesignStudio": "Дизайн студиясында көру",
     "LearnHow": "Қалай білу",

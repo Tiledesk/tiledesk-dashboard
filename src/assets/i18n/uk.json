@@ -1754,7 +1754,8 @@
         "AddKbInfoTextContent": "Введіть дійсний вміст.",
         "KBLimitReached": "Досягнуто ліміту вмісту для {{plan_name}}",
         "AllContents": "Весь вміст",
-        "DeleteNamespace": "Видалити весь вміст"
+        "DeleteNamespace": "Видалити весь вміст",
+        "RestartTour": "Перезапустити тур"
     },
     "ViewInTheDesignStudio": "Переглянути в студії дизайну",
     "LearnHow": "Дізнайтесь як",

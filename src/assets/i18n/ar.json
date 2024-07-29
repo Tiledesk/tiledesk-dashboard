@@ -1753,7 +1753,8 @@
         "AddKbInfoTextContent": "الرجاء إدخال محتوى صالح.",
         "KBLimitReached": "تم الوصول إلى حد المحتوى لـ {{plan_name}}",
         "AllContents": "جميع المحتويات",
-        "DeleteNamespace": "احذف كافة المحتويات"
+        "DeleteNamespace": "احذف كافة المحتويات",
+        "RestartTour": "إعادة تشغيل الجولة"
     },
     "ViewInTheDesignStudio": "عرض في استوديو التصميم",
     "LearnHow": "تعلم كيف",

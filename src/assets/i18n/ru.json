@@ -1753,7 +1753,8 @@
         "AddKbInfoTextContent": "Пожалуйста, введите действительный контент.",
         "KBLimitReached": "Для {{plan_name}} достигнут лимит контента",
         "AllContents": "Все содержимое",
-        "DeleteNamespace": "Удалить все содержимое"
+        "DeleteNamespace": "Удалить все содержимое",
+        "RestartTour": "Перезапустить тур"
     },
     "ViewInTheDesignStudio": "Посмотреть в студии дизайна",
     "LearnHow": "Узнать, как",

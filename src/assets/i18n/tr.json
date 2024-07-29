@@ -1754,7 +1754,8 @@
         "AddKbInfoTextContent": "Lütfen geçerli içerik girin.",
         "KBLimitReached": "{{plan_name}} için içerik sınırına ulaşıldı",
         "AllContents": "Tüm içerikler",
-        "DeleteNamespace": "Tüm içeriği sil"
+        "DeleteNamespace": "Tüm içeriği sil",
+        "RestartTour": "Turu yeniden başlat"
     },
     "ViewInTheDesignStudio": "Tasarım Stüdyosu'nda görüntüle",
     "LearnHow": "Nasıl yapılacağını öğrenin",

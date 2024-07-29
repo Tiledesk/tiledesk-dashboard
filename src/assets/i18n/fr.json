@@ -1753,7 +1753,8 @@
         "AddKbInfoTextContent": "Veuillez saisir un contenu valide.",
         "KBLimitReached": "Limite de contenu atteinte pour {{plan_name}}",
         "AllContents": "Tout le contenu",
-        "DeleteNamespace": "Supprimer tout le contenu"
+        "DeleteNamespace": "Supprimer tout le contenu",
+        "RestartTour": "Redémarrer la tournée"
     },
     "ViewInTheDesignStudio": "Afficher dans le Design Studio",
     "LearnHow": "Apprenez comment",

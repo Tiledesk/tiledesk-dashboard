@@ -1753,7 +1753,8 @@
         "AddKbInfoTextContent": "Iltimos, yaroqli tarkibni kiriting.",
         "KBLimitReached": "Досягнуто ліміту вмісту для {{plan_name}}",
         "AllContents": "Barcha tarkib",
-        "DeleteNamespace": "Barcha tarkibni o'chirib tashlang"
+        "DeleteNamespace": "Barcha tarkibni o'chirib tashlang",
+        "RestartTour": "Turni qayta boshlash"
     },
     "ViewInTheDesignStudio": "Dizayn studiyasida ko'rish",
     "LearnHow": "Qanday qilib",

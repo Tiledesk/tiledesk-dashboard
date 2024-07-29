@@ -1754,7 +1754,8 @@
         "AddKbInfoTextContent": "Etibarlı məzmun daxil edin.",
         "KBLimitReached": "{{plan_name}} üçün məzmun limitinə çatdı",
         "AllContents": "Bütün məzmunlar",
-        "DeleteNamespace": "Bütün məzmunu silin"
+        "DeleteNamespace": "Bütün məzmunu silin",
+        "RestartTour": "Turu yenidən başladın"
     },
     "ViewInTheDesignStudio": "Dizayn Studiyasında görüntüləyin",
     "LearnHow": "Necə öyrən",

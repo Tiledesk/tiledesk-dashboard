@@ -1754,7 +1754,8 @@
         "AddKbInfoTextContent": "Унесите важећи садржај.",
         "KBLimitReached": "Достигнуто је ограничење садржаја за {{plan_name}}",
         "AllContents": "Сви садржаји",
-        "DeleteNamespace": "Избришите сав садржај"
+        "DeleteNamespace": "Избришите сав садржај",
+        "RestartTour": "Поново покрените обилазак"
     },
     "ViewInTheDesignStudio": "Погледајте у Студију дизајна",
     "LearnHow": "Научите како",
