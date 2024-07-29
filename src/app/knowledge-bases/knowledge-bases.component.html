@@ -144,9 +144,9 @@
                   <span class=""> {{'Preview' | translate}} </span>
                 </button>
 
-                <div id="kb-add-content" class="add-kb-div">
+                <div  class="add-kb-div">
                   <!-- width: 150px; -->
-                  <button class="custom-button add-content" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu"
+                  <button id="kb-add-content" class="custom-button add-content" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu"
                     aria-label="Actions">
                     <!-- <span class="material-icons-round">add</span> -->
                     <span class=""> {{ 'KbPage.Add' | translate }} </span>
@@ -165,7 +165,7 @@
                   <mat-menu #otherActions="matMenu">
                     <button mat-menu-item (click)="restartTour()">
                       <mat-icon>restart_alt</mat-icon>
-                      <span>Restart tour</span>
+                      <span>{{ 'KbPage.RestartTour' | translate }}</span>
                     </button>
                   </mat-menu>
                 </div>

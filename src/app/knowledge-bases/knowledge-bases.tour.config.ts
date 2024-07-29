@@ -4,28 +4,25 @@ import Shepherd from 'shepherd.js';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
 
-
-
-
-export const STEPS_BUTTONS = {
-  back: {
-    classes: 'back-button',
-    secondary: true,
-    text: 'Back',
-    type: 'back',
-  },
-  cancel: {
-    classes: 'cancel-button',
-    secondary: true,
-    text: 'Exit',
-    type: 'cancel',
-  },
-  next: {
-    classes: 'next-button',
-    text: 'Next',
-    type: 'next',
-  },
-};
+// export const STEPS_BUTTONS = {
+//   back: {
+//     classes: 'back-button',
+//     secondary: true,
+//     text: 'Back',
+//     type: 'back',
+//   },
+//   cancel: {
+//     classes: 'cancel-button',
+//     secondary: true,
+//     text: 'Exit',
+//     type: 'cancel',
+//   },
+//   next: {
+//     classes: 'next-button',
+//     text: 'Next',
+//     type: 'next',
+//   },
+// };
 
 export const defaultStepOptions = {
   classes: 'shepherd-theme-arrows custom-default-class',
@@ -50,20 +47,50 @@ export const defaultStepOptions = {
 export function getSteps(router: Router, service: ShepherdService, translation: TranslateService, brandService: BrandService) {
 
   const brand = brandService.getBrand();
+  let self = this
+  const STEPS_BUTTONS = {
+    back: {
+      classes: 'back-button',
+      secondary: true,
+      text: translation.instant('KbPage.Back'), // 'Back',
+      type: 'back',
+    },
+    cancel: {
+      classes: 'cancel-button',
+      secondary: true,
+      text: translation.instant('KbPage.ThatsIsAll'), //'Exit',
+      type: 'cancel',
+    },
+    next: {
+      classes: 'next-button',
+      text: translation.instant('KbPage.Next'), // 'Next',
+      type: 'next',
+    },
+  };
+  
   return [
 
     {
       attachTo: {
         // .tour-card:nth-child(3) h2
-        element: '.buttons-div #kb-add-content' ,
+        element: '.buttons-div .add-kb-div #kb-add-content' ,
         on: 'bottom',
       },
       // STEPS_BUTTONS.cancel,STEPS_BUTTONS.back,
       buttons: [STEPS_BUTTONS.next],
-      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      classes: 'custom-class-shepherd-bottom-l step-with-gif',
       id: 'kb-tour-step-1',
-      title: 'Add contents',
-      text: 'Add contents (URLs, PDFs, etc.) to your Knowledge Base. The contents of a knowledge base are structured to assist users in finding solutions to their queries quickly and efficiently',
+      title: translation.instant('KbPage.AddContentsTourTitle'), //'Add contents',
+      text: `${translation.instant('KbPage.AddContentsTourText')}
+      
+      <div class="image-container">
+            <img 
+                src="assets/img/preview-kb.gif"
+                class="image-style"
+                frameBorder="0" 
+                allowFullScreen>
+            </img>
+        </div>`
     },
 
     {
@@ -74,22 +101,11 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       },
       // STEPS_BUTTONS.cancel,
       buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.next],
-      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      classes: 'custom-class-shepherd-bottom',
       id: 'kb-tour-step-2',
-      title: 'Knowledge Base Preview',
-      text: `Preview knowledge base responses based on your contents and AI parameters so you can find the best setup for your needs
+      title: translation.instant('KbPage.KnowledgeBasePreview'), //'Knowledge Base Preview',
+      text: translation.instant('KbPage.PreviewKbTourText') // `Preview and fine-tune AI responses based on your contents so you can find the best setup for your needs`,
       
-      <div class="image-container">
-            <img 
-                src="assets/img/igor-bastidas-1.gif"
-                class="image-style"
-                frameBorder="0" 
-                allowFullScreen>
-            </img>
-        </div>
-      
-      `,
-      // igor-bastidas-1.gif
     },
 
     {
@@ -101,8 +117,8 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
       classes: 'custom-class-shepherd-bottom custom-class-name-2',
       id: 'kb-tour-step-3',
-      title: 'AI settings',
-      text: 'Select an AI model and manage its parameters. Parameters (such as Max Tokens, Temperature, and Chunks) essentially define the behavior of an AI model.' //One intriguing parameter is the \"temperature.\" Temperature is a parameter that controls the randomness of the output; a higher temperature results in more diverse and less predictable responses, while a lower temperature produces more focused and deterministic answers.',
+      title:  translation.instant('KbPage.AISettingsTourTitle'), //'AI settings',
+      text:  translation.instant('KbPage.AISettingsTourText') // 'Select the best AI model and manage its parameters. Parameters (such as Max Tokens, Temperature, and Chunks) essentially define the behavior of an AI model.',
     },
 
     {
@@ -115,8 +131,8 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       buttons: [STEPS_BUTTONS.back,STEPS_BUTTONS.next],
       classes: 'custom-class-shepherd-bottom custom-class-name-2',
       id: 'kb-tour-step-4-A',
-      title: 'AI chatbot',
-      text: 'Your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
+      title: translation.instant('KbPage.AIChatbotTourTitle'), //' AI chatbot',
+      text: translation.instant('KbPage.AIChatbotTourText'), // 'This is your AI chatbot connected to your contents. It\'s ready to reply timely and precise to your users\' questions',
     },
     {
       attachTo: {
@@ -128,8 +144,8 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       buttons: [STEPS_BUTTONS.back,STEPS_BUTTONS.next],
       classes: 'custom-class-shepherd-bottom custom-class-name-2',
       id: 'kb-tour-step-4-B',
-      title: 'AI chatbot',
-      text: 'Create your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
+      title: translation.instant('KbPage.AIChatbotTourTitle'), //'AI chatbot',
+      text: translation.instant('KbPage.NoAIChatbotTourText')  // 'Create your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
     },
     {
       attachTo: {
@@ -141,7 +157,7 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       buttons: [ STEPS_BUTTONS.cancel],
       classes: 'step-with-image custom-class-name-2',
       id: 'kb-tour-step-5',
-      title: 'That\'s it!',
+      // title: 'That\'s it!',
       text:`
       <div class="tour-text-container">
         <div class="image-container">
@@ -154,7 +170,7 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
         </div>
       </div>
       <div class="step-image-text"> 
-        You're ready to start on your own work. If you need more guidance, <a href='mailto:${brand['CONTACT_US_EMAIL']}?subject=Knowledge Base tour support'>CONTACT US</a>
+       ${translation.instant('KbPage.LastStepText')} <a href='mailto:${brand['CONTACT_US_EMAIL']}?subject=Knowledge Base tour support'>${translation.instant('KbPage.LastStepContactUs')}</a>
        </div>
       `
     },

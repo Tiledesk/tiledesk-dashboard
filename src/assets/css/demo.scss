@@ -2960,6 +2960,10 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   max-width: 300px !important;
 }
 
+.custom-class-shepherd-bottom-l {
+  margin-top: 12px !important;
+}
+
 .step-with-image .shepherd-content .shepherd-header {
   flex-direction: column!important;
   justify-content: center!important;
@@ -2972,6 +2976,12 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 .step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container img{
    max-width: 345px !important;
+}
+
+
+.step-with-gif .shepherd-content .shepherd-text .image-container img {
+  max-width: 369px !important;
+  margin-top: 6px;
 }
 
 
