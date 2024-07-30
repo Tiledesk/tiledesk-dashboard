@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.7
+- Deploys in production
+- Adds the knowledge base walkthrough on the knowledge base page
+
 ### 2.7.6
 - Deploys in production
 - Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
