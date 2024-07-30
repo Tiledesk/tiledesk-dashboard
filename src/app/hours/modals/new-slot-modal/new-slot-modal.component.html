@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{ 'HoursPage.CreateNewSlot' | translate }}</h1>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="outline" class="cc-mat-form-field">
+        <mat-label>{{ 'HoursPage.SlotName' | translate }}</mat-label>
+        <input matInput [(ngModel)]="slotName">
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button [disabled]="slotName?.length < 2" class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPressed(slotName)" cdkFocusInitial>
+        <!-- Create namespace -->
+        {{ "Create" | translate }}
+        
+    </button>
+</div>
