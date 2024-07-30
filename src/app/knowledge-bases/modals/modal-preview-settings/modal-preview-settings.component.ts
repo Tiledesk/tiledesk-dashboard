@@ -21,7 +21,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
     { name: "GPT-4 (ChatGPT)", value: "gpt-4" },
     { name: "GPT-4 Turbo Preview (ChatGPT)", value: "gpt-4-turbo-preview" }, 
-    { name: "GPT-4o (ChatGPT)", value: "gpt-4o" }
+    { name: "GPT-4o (ChatGPT)", value: "gpt-4o" },
+    { name: "GPT-4o-mini (ChatGPT)", value: "gpt-4o-mini" }
   ];
 
   
@@ -34,7 +35,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public context_placeholder: string
   wasOpenedFromThePreviewKBModal: boolean
 
-  private modelDefaultValue = "gpt-3.5-turbo";
+  private modelDefaultValue = "gpt-4o-mini";
   private maxTokensDefaultValue = 256;
   private temperatureDefaultValue = 0.7
   private topkDefaultValue = 4
@@ -347,10 +348,10 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   resetToDefault() {
 
 
-    this.selectedModel = this.model_list[0].value;
+    this.selectedModel = this.model_list[4].value;
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
-    // console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
+    console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens =  this.maxTokensDefaultValue;
     this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
