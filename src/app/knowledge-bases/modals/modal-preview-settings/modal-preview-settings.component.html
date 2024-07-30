@@ -25,7 +25,7 @@
 
 <div mat-dialog-content>
     <div class="row-container" style="margin-top: 0px;">
-        <label class="setting-label">
+        <label class="setting-label" [satPopoverAnchor]="aiModel" (mouseenter)="aiModel.open()" (click)="aiModel.toggle()">
             <!-- AI Model -->
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
@@ -76,9 +76,6 @@
 
                     </div>
                     <!-- <div style="display: flex;flex-direction: row; justify-content: space-between;"> -->
-
-
-
                     <div *ngIf="item.multiplier" style="color: rgb(101, 109, 117) ;font-weight: 400; font-size: 12px;">
                         {{item.multiplier }}
                     </div>
@@ -86,6 +83,21 @@
             </ng-template>
         </ng-select>
     </div>
+
+    <sat-popover  #aiModel horizontalAlign="before" verticalAlign="center" 
+    panelClass="cb-details-popover">
+
+   <div class="cbPopover-cbname">
+    The large language model (LLM) your agent will use to fetch and compile data.
+    </div>
+
+    <div class="cbPopover-cbtext">
+        <!-- View in the design studio -->
+        {{'ViewInTheDesignStudio' | translate}}
+   </div>
+</sat-popover>
+
+
 
     <div class="row-container">
         <div class="label-wpr">
