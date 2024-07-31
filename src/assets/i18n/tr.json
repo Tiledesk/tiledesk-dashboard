@@ -2596,6 +2596,7 @@
     "CRMImprovesCustomerRelationship":"CRM veya Müşteri İlişkileri Yönetimi, müşterinin 360 derecelik bir görünümünü oluşturarak müşteri ilişkileri yönetimini geliştirir.",
     "CRMRecordsCustomerContactInformation":"CRM, şirketinizin etkileşim ağının gelişimini daha iyi anlayabilmeniz için e-posta adresi, telefon numarası ve çok daha fazlası gibi müşteri iletişim bilgilerini kaydeder.",
     "AvailableFromThePlan":"{{plan_name}} planından edinilebilir",
+    "AvailableFromThePlans": "{{ plan_name_1 }} ve {{ plan_name_2 }} planlarından mevcuttur",
     "AvailableWithThePlan":"Tillgänglig med planen {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Özellik yalnızca ücretli planlarda mevcuttur",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Ekibinizde olan bitenden her zaman haberdar olun. İzleme (Ekip Gelen Kutusu), akıllı işbirliği için ihtiyaç duyduğunuz her şeyi tek bir yerde sunar.",

@@ -2595,6 +2595,7 @@
     "CRMImprovesCustomerRelationship":"CRM və ya Müştəri Münasibətlərinin İdarə Edilməsi müştərinin 360 dərəcə görünüşünü yaradaraq müştəri münasibətlərinin idarə edilməsini təkmilləşdirir",
     "CRMRecordsCustomerContactInformation":"CRM e-poçt ünvanı, telefon nömrəsi və daha çox kimi müştəri ilə əlaqə məlumatlarını qeyd edir ki, siz şirkətinizin qarşılıqlı əlaqələr şəbəkəsinin təkamülünü daha yaxşı başa düşəsiniz.",
     "AvailableFromThePlan":"{{plan_name}} planından əlçatandır",
+    "AvailableFromThePlans": "{{ plan_name_1 }} və {{ plan_name_2 }} planlarından əlçatandır",
     "AvailableWithThePlan":"{{plan_name}} planı ilə əlçatandır",
     "FeatureAvailableOnlyWithPaidPlans":"Funksiya yalnız ödənişli planlarla mövcuddur",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration":"Komandanızda hər zaman baş verənlərdən xəbərdar olun. Monitor (Komanda Gələnlər Qutusu) sizə ağıllı əməkdaşlıq üçün lazım olanı bir yerdə verir.",

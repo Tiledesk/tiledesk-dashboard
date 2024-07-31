@@ -2595,6 +2595,7 @@
     "CRMImprovesCustomerRelationship":"Le CRM ou Customer Relationship Management améliore la gestion de la relation client en créant une vue à 360 degrés du client",
     "CRMRecordsCustomerContactInformation":"Le CRM enregistre les coordonnées des clients, telles que l'adresse e-mail, le numéro de téléphone et bien plus encore, afin que vous puissiez mieux comprendre l'évolution du réseau d'interactions de votre entreprise.",
     "AvailableFromThePlan":"Disponible à partir du forfait {{plan_name}}",
+    "AvailableFromThePlans": "Disponible à partir des plans {{ plan_name_1 }} et {{ plan_name_2 }}",
     "AvailableWithThePlan":"Disponible avec le forfait {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"Fonctionnalité disponible uniquement avec les forfaits payants",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Restez informé de ce qui se passe dans votre équipe à tout moment. Monitor (Team Inbox) vous donne tout ce dont vous avez besoin pour une collaboration intelligente, le tout en un seul endroit.",

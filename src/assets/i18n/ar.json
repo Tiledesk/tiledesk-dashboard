@@ -2595,6 +2595,7 @@
     "CRMImprovesCustomerRelationship": "يعمل CRM أو إدارة علاقات العملاء على تحسين إدارة علاقات العملاء من خلال إنشاء عرض 360 درجة للعميل",
     "CRMRecordsCustomerContactInformation": "يسجل CRM معلومات الاتصال بالعميل ، مثل عنوان البريد الإلكتروني ورقم الهاتف وغير ذلك الكثير حتى تتمكن من فهم تطور شبكة تفاعلات شركتك بشكل أفضل.",
     "AvailableFromThePlan": "متاح من خطة {{plan_name}}",
+    "AvailableFromThePlans": "متوفر من خطتي {{plan_name_1 }} و{{plan_name_2 }}",
     "AvailableWithThePlan":"متوفر مع خطة {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"الميزة متاحة فقط مع الخطط المدفوعة",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "ابق على اطلاع بما يحدث في فريقك طوال الوقت. تمنحك أداة المراقبة (صندوق وارد الفريق) ما تحتاجه للتعاون الذكي ، كل ذلك في مكان واحد",

@@ -2595,6 +2595,7 @@
     "CRMImprovesCustomerRelationship": "CRM або Customer Relationship Management покращує управління взаємовідносинами з клієнтами, створюючи 360-градусний огляд клієнта",
     "CRMRecordsCustomerContactInformation": "CRM записує контактну інформацію клієнтів, таку як адреса електронної пошти, номер телефону та багато іншого, щоб ви могли краще зрозуміти еволюцію мережі взаємодії вашої компанії.",
     "AvailableFromThePlan": "Доступно з тарифного плану {{plan_name}}",
+    "AvailableFromThePlans": "Доступно в планах {{ plan_name_1 }} і {{ plan_name_2 }}",
     "AvailableWithThePlan": "Доступно з планом {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans": "Функція доступна лише з платними планами",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Завжди будьте в курсі подій у вашій команді. Monitor (Team Inbox) надає все, що вам потрібно для розумної співпраці, в одному місці.",
