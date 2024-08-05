@@ -226,7 +226,8 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   getCurrentProjectAndCurrentUser() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
-        this.id_project = project._id
+        this.id_project = project._id;
+        this.updateProject( this.id_project , project.name) 
         this.logger.log('[PRICING - PAYMENT-SUCCESS] - CurrentProject ID ', this.id_project)
         this.prjctPlanService.planUpdated(this.id_project)
       }
@@ -271,6 +272,26 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
       }
     });
 
+  }
+
+  updateProject(projectid, projectname) {
+    this.logger.log('[PRICING - PAYMENT-SUCCESS] - PROJECT ID ', projectid);
+    this.logger.log('[PRICING - PAYMENT-SUCCESS] - PROJECT NAME  ', projectname);
+
+    this.projectService.updateProjectName(this.id_project, projectname)
+      .subscribe((prjct: Project) => {
+        this.logger.log('[PRJCT-EDIT-ADD] - UPDATED PROJECT - RES ', prjct);
+
+
+      }, (error) => {
+        this.logger.error('[PRJCT-EDIT-ADD] UPDATE PROJECT - ERROR ', error);
+
+
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] UPDATE PROJECT * COMPLETE *');
+      
+
+      });
   }
 
 

@@ -164,7 +164,8 @@ export class ProjectProfileGuard implements CanActivate {
         // }
 
         // PLAN B and PLAN C  AUTHORIZED TO  email ticketing
-        if ((planName === PLAN_NAME.B && url.indexOf('/email') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/email') !== -1)) {
+        // (planName === PLAN_NAME.B && url.indexOf('/email') !== -1) ||
+        if ( (planName === PLAN_NAME.C && url.indexOf('/email') !== -1)) {
           this.userIsAuthorized = true;
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
@@ -174,10 +175,10 @@ export class ProjectProfileGuard implements CanActivate {
         //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
         // }
 
-        // PLAN D (Basic) + PLAN E (Premium) UNAUTHORIZED TO email ticketing
-        if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1)) {
+        // PLAN D (Basic) + PLAN E (Premium) + PLAN EE (Team) UNAUTHORIZED TO email ticketing
+        if (( planName === PLAN_NAME.A && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.B && url.indexOf('/email') !== -1)  || (planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.EE && url.indexOf('/email') !== -1)) {
           this.userIsAuthorized = false;
-          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
         }
 
         // PLAN B and PLAN C  AUTHORIZED TO OPERATING CANNED RESPONSES
@@ -246,7 +247,7 @@ export class ProjectProfileGuard implements CanActivate {
         // console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
         this.userIsAuthorized = false;
 
-        if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.F && url.indexOf('/email') !== -1)) {
+        if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.EE && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.F && url.indexOf('/email') !== -1)) {
           this.userIsAuthorized = false;
           this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
         }

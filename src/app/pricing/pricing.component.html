@@ -9,7 +9,7 @@ background-size: 475px 449px, 188px 100%, 179px 100%;
 background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
 
   <div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
-    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.D, 'b-plan-bckgrnd' : planName === PLAN_NAME.E, 'c-plan-bckgrnd' : planName === PLAN_NAME.F}">
+    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.D, 'b-plan-bckgrnd' : planName === PLAN_NAME.E, 'bb-plan-bckgrnd' : planName === PLAN_NAME.EE, 'c-plan-bckgrnd' : planName === PLAN_NAME.F}">
     <!-- <div class="row">
       <div class="col-md-12"> -->
     <div class="close-pricing-page" *ngIf=displayClosePricingPageBtn>
@@ -71,6 +71,10 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.E}"
                   (click)="selected_Plan(PLAN_NAME.E)">
                   Premium
+                </button>
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.EE}"
+                  (click)="selected_Plan(PLAN_NAME.EE)">
+                  Team
                 </button>
                 <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.F}"
                   (click)="selected_Plan(PLAN_NAME.F)">
@@ -323,6 +327,39 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- Plan E when already exist a  payment type Plan -->
             <!-- ----------------------------------------------- -->
             <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.E && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-b-contact-us" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan EE Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.EE && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanEE()">
+              <button id="monthly-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan EE Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.EE && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanEE()">
+              <button id="annually-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan EE when already exist a  payment type Plan -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.EE && profileType !== 'free'"
               (click)="contactUs(planName)">
               <button id="plan-b-contact-us" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">

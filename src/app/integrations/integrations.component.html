@@ -65,7 +65,8 @@
                         <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
                             <integration-header *ngIf="!showInIframe" 
-                                [integrationModel]="selectedIntegrationModel"></integration-header>
+                                [integrationModel]="selectedIntegrationModel">
+                            </integration-header>
 
                             <div *ngIf="integrationLocked === false" class="integration-outer-container">
 
@@ -121,28 +122,27 @@
                             </div>
 
                             <div *ngIf="integrationLocked === true" style="width: 100%;">
-                                <div class="lock-container">
+                                <div class="int-lock-container">
                                     <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
 
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">{{
-                                        'Integration.UpgradePlan' | translate }}</p>
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">{{
-                                        'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
-                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">{{
-                                        'Integration.OpenaiSubtitle2' | translate }}</p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">
+                                        {{ 'Integration.UpgradePlan' | translate }}</p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">
+                                        {{'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">
+                                        {{'Integration.OpenaiSubtitle2' | translate }}</p>
                                     <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle"
                                         [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
                                     </p>
 
-                                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-title">{{
-                                        'Integration.UpgradePlan' | translate }}</p>
+                                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-title">
+                                        {{'Integration.UpgradePlan' | translate }}</p>
                                     <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-subtitle"
                                         [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
                                     </p>
 
-                                    <button class="custom-upgrade-primary-button" (click)="goToPricing()">{{
-                                        'Integration.UpgradeNow' |
-                                        translate }}</button>
+                                    <button class="custom-upgrade-primary-button" (click)="goToPricing()">
+                                        {{'Integration.UpgradeNow' |  translate }}</button>
                                 </div>
                             </div>
 

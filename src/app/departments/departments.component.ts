@@ -354,6 +354,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
       (this.profile_name === 'free' && this.trial_expired === true) ||  
       (this.profile_name === PLAN_NAME.D) ||
       (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
       (this.profile_name === 'Sandbox' && this.trial_expired === true)
       ) {

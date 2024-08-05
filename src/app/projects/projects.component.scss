@@ -992,6 +992,11 @@ input[type="text"] {
   color: #00a1c2;
 }
 
+.bb--plan-badge {
+  // background-color: #00a1c2;
+  color: #0040c2;
+}
+
 .c--plan-badge {
   // background-color: #9966ff;
   color: #9966ff;
@@ -1140,6 +1145,10 @@ input[type="text"] {
 
 .loading-bar.tier2 {
   background: linear-gradient(#00a1c2 0 0) 0/0% no-repeat rgba(0, 161, 194, .6);
+}
+
+.loading-bar.tier2A {
+  background: linear-gradient(#0040c2 0 0) 0/0% no-repeat rgba(0, 64, 194, .6);
 }
 
 .loading-bar.tier3 {

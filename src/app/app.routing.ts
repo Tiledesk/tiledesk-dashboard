@@ -775,7 +775,8 @@ const routes: Routes = [
   // Automations demo page
   {
     path: 'project/:projectid/automations-demo',
-    loadChildren: () => import('app/automations/automations.module').then(m => m.AutomationsModule),
+    // app/static-pages/trigger-static/trigger-static.module
+    loadChildren: () => import('app/static-pages/automation-static/automation-static.module').then(m => m.AutomationStaticModule),
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] }, // now lazy

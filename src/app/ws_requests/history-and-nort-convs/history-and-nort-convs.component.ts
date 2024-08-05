@@ -49,6 +49,7 @@ export const MY_DATE_FORMATS = {
 
 // https://www.npmjs.com/package/sweetalert
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-requests-list-history-new',
@@ -690,7 +691,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -2329,7 +2330,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
       (this.profile_name === 'free' && this.trial_expired === true)) {
       if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -2337,6 +2339,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       }
     } else if ((this.profile_name === PLAN_NAME.D) ||
       (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
       (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
 
@@ -2348,23 +2351,32 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName //this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
       dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.payIsVisible) {
           this.logger.log('[HISTORY & NORT-CONVS] HERE 1')
           if (this.USER_ROLE === 'owner') {
@@ -2423,23 +2435,31 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      title: this.upgradePlan,
+      text: 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+     
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {

@@ -42,8 +42,9 @@ import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 
-
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -685,6 +686,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.auth.projectProfile(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'b_plan_badge'
 
+      } else if (this.prjct_profile_name === PLAN_NAME.EE) {
+        this.prjct_profile_name = PLAN_NAME.EE + ' plan'
+        this.profile_name_for_segment = this.prjct_profile_name
+        this.auth.projectProfile(this.profile_name_for_segment)
+        this.project['plan_badge_background_type'] = 'bb_plan_badge'
+
         // Custom plan
       } else if (this.prjct_profile_name === PLAN_NAME.F) {
         this.prjct_profile_name = PLAN_NAME.F + ' plan'
@@ -698,6 +705,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.prjct_profile_name !== PLAN_NAME.C &&
         this.prjct_profile_name !== PLAN_NAME.D &&
         this.prjct_profile_name !== PLAN_NAME.E &&
+        this.prjct_profile_name !== PLAN_NAME.EE &&
         this.prjct_profile_name !== PLAN_NAME.F
       ) {
         this.prjct_profile_name = this.prjct_profile_name + ' plan (UNSUPPORTED)'
@@ -1441,11 +1449,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      // this.displayAnalyticsConvsGraph = false;
-      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
@@ -1643,7 +1646,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
+        (this.profile_name === 'free' && this.prjct_trial_expired === true))
+      ) {
 
       if (!this.appSumoProfile) {
 
@@ -1656,8 +1660,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.D) ||
         (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-        (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))) {
+        (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))
+      ) {
       if (!this.appSumoProfile) {
         // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
@@ -1826,6 +1832,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   checkPlanAndPresentModal(appTitle) {
+    console.log('[HOME] checkPlanAndPresentModal appTitle', appTitle , 'appSumoProfile ', this.appSumoProfile)
     if (
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
@@ -1834,8 +1841,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        // this.presentModalFeautureAvailableFromBPlan()
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -1845,6 +1852,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.D) ||
         (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
         (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))) {
       if (!this.appSumoProfile) {
@@ -2213,23 +2221,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName //this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName //this.featureAvailableFromBPlan
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+     
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
 
         if (this.isVisiblePay) {
           // this.logger.log('[APP-STORE] HERE 1')
@@ -2309,23 +2325,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      // content: el,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.upgradePlan,
+      text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
@@ -4009,7 +4033,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -4155,29 +4179,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-  // async _updatesDashletsPreferences() {
-  //   // conast dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-  //   this.logger.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
-  //   this.projectService.updateDashletsPreferences(
-  //     this.displayAnalyticsConvsGraph,
-  //     this.displayAnalyticsIndicators,
-  //     this.displayConnectWhatsApp,
-  //     this.displayCreateChatbot,
-  //     this.displayKnowledgeBase,
-  //     this.displayInviteTeammate,
-  //     this.displayCustomizeWidget,
-  //     this.displayNewsFeed)
-  //     .subscribe((res: any) => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
-
-  //     }, error => {
-  //       this.logger.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
-  //     }, () => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
-  //       return
-  //     });
-  // }
 
   async updatesDashletsPreferences(calledBy) {
     // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
