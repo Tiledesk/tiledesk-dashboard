@@ -903,6 +903,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   onOpenQuoteMenu() {
     this.logger.log('[NAVBAR] - on open quotes menu' )
+    this.getProjectQuotes();
     this.getQuotes();
   }
 
