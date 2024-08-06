@@ -1172,6 +1172,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         selectedNamespace: this.selectedNamespace,
       },
     });
+    dialogRef.backdropClick().subscribe((event) => {  
+      console.log('AI model Backdrop clicked', event);  
+      
+    }); 
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreviewSettings] Dialog after closed result: ', result);
       if (result && result.action) {

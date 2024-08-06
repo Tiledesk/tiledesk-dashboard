@@ -24,18 +24,18 @@
 
 
 <div mat-dialog-content>
+    <!-- ----------------------------------------------- -->
+    <!-- AI Model -->
+    <!-- ----------------------------------------------- -->
     <div class="row-container" style="margin-top: 0px;">
         <!-- (click)="aiModel.toggle()(mouseleave)="aiModel.toggle()  -->
-        <label class="setting-label" [satPopoverAnchor]="aiModel" (mouseenter)="aiModel.open()" (click)="aiModel.toggle()">
+        <label class="setting-label" [satPopoverAnchor]="aiModel" (mouseenter)="aiModel.open(); maxTokens.close();" (click)="aiModel.close()">
             <!-- AI Model -->
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
         <ng-select class="" appendTo="body" [items]="model_list" bindLabel="name" bindValue="value"
-            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
-            [clearable]="false"
-            [searchable]="false"
-            [(ngModel)]="selectedModel" 
-            (change)="onSelectModel(selectedModel)">
+            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" [clearable]="false" [searchable]="false"
+            [(ngModel)]="selectedModel" (change)="onSelectModel(selectedModel)">
 
             <ng-template ng-label-tmp let-item="item">
                 <div style="display: flex; flex-direction: row; align-items: center;">
@@ -61,7 +61,8 @@
                 <div class="model-wpr" style="display: flex;flex-direction: row; justify-content: space-between;">
                     <div class="model-icon-and-name" style="display: flex;flex-direction: row; align-items: center;">
                         <div class="model-icon">
-                            <svg width="18" height="18" fill="none" style="position: relative;top: 3px;margin-right: 3px;"
+                            <svg width="18" height="18" fill="none"
+                                style="position: relative;top: 3px;margin-right: 3px;"
                                 xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" class="h-6 w-6"
                                 viewBox="-0.17090198558635983 0.482230148717937 41.14235318283891 40.0339509076386"><text
                                     x="-9999" y="-9999">ChatGPT</text>
@@ -85,40 +86,34 @@
         </ng-select>
     </div>
 
-    <sat-popover  #aiModel horizontalAlign="before" verticalAlign="center" 
-    hasBackdrop panelClass="cb-details-popover">
+    <sat-popover #aiModel horizontalAlign="before" verticalAlign="center"  panelClass="cb-details-popover">
 
-   <div class="cbPopover-cbname">
-    The large language model (LLM) your agent will use to fetch and compile data.
-    </div>
+        <div class="cbPopover-cbname">
+            The large language model (LLM) your agent will use to fetch and compile data.
+        </div>
 
-    <div class="cbPopover-cbtext">
-        <!-- View in the design studio -->
-        {{'ViewInTheDesignStudio' | translate}}
-   </div>
-</sat-popover>
+        <div class="cbPopover-cbtext">
+            Learn more
+        </div>
+    </sat-popover>
 
-
-
+    <!-- ----------------------------------------------- -->
+    <!-- Max Tokens -->
+    <!-- ----------------------------------------------- -->
     <div class="row-container">
         <div class="label-wpr">
-            <label class="setting-label">
+            <label class="setting-label" [satPopoverAnchor]="maxTokens" (mouseenter)="maxTokens.open(); aiModel.close()"
+                (click)="maxTokens.toggle()">
                 <!-- Max Tokens -->
                 {{ 'KbPage.MaxTokens'| translate}}
             </label>
-
         </div>
 
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">10</div>
-                <mat-slider 
-                    class="wait-slider" 
-                    thumbLabel 
-                    step="1"  min="10" max="2048"
-                    [(ngModel)]="max_tokens"
-                    (change)="updateSliderValue($event.value, 'max_tokens')" 
-                    aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="1" min="10" max="2048" [(ngModel)]="max_tokens"
+                    (change)="updateSliderValue($event.value, 'max_tokens')" aria-label="units">
                 </mat-slider>
                 <div class="action-wait-range">2048</div>
             </div>
@@ -126,6 +121,21 @@
         </div>
     </div>
 
+    <sat-popover #maxTokens horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover">
+
+        <div class="cbPopover-cbname">
+            The maximum number of tokens that can be used to generate a single response
+        </div>
+
+        <div class="cbPopover-cbtext">
+           Learn more
+        </div>
+    </sat-popover>
+
+
+    <!-- ----------------------------------------------- -->
+    <!-- Temperature -->
+    <!-- ----------------------------------------------- -->
     <div class="row-container">
         <div class="label-wpr">
             <label class="setting-label">
@@ -174,10 +184,9 @@
             </label>
         </div>
 
-        <textarea  class="context-texarea" [(ngModel)]="context" rows="4"
-        placeholder="You are an awesome assistant"
-        (ngModelChange)="onChangeTextInContex($event)">  </textarea>
-       
+        <textarea class="context-texarea" [(ngModel)]="context" rows="4" placeholder="You are an awesome assistant"
+            (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+
     </div>
 
 
@@ -189,7 +198,7 @@
     </button> -->
 
     <button *ngIf="!wasOpenedFromThePreviewKBModal" class="mat-dialog-reset-btn" mat-button (click)="resetToDefault()">
-        {{'KbPage.ResetToDefault'  | translate}}
+        {{'KbPage.ResetToDefault' | translate}}
 
     </button>
 

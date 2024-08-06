@@ -377,4 +377,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   //   this.closeBaseModal.emit();
   // }
 
+  maxTokensIsopen() {
+    console.log('[MODAL PREVIEW SETTINGS] maxTokensIsopen')
+  }
 }
