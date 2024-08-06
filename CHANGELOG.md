@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.8
+- Deploys in production
+- Adds the "Team" plan
+
 ### 2.7.7
 - Deploys in production
 - Adds the knowledge base walkthrough on the knowledge base page
