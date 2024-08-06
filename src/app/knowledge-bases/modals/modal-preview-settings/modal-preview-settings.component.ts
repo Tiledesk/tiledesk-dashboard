@@ -1,17 +1,18 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { TYPE_GPT_MODEL, loadTokenMultiplier } from 'app/utils/util';
+import { SatPopover } from '@ncstate/sat-popover';
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
   styleUrls: ['./modal-preview-settings.component.scss']
 })
 export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
-
+  @ViewChild('popover') popover: SatPopover;
   // @Output() closeBaseModal = new EventEmitter();
-  // @Input() selectedNamespace: any;
+  // @Input() hasCickedAiSettingsModalBackdrop: boolean;
 
   selectedNamespace: any;
   selectedNamespaceClone: any;
@@ -113,7 +114,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    // console.log("[MODAL PREVIEW SETTINGS] on init")
+    console.log("[MODAL PREVIEW SETTINGS] on init popover", this.popover)
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // console.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
@@ -171,10 +172,30 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       //   this.hasAlreadyOverridedContex = true
       //   console.log("[MODAL PREVIEW SETTINGS] onInit hasAlreadyOverridedContex", this.hasAlreadyOverridedContex)
       // }
-
+      this.listenToOnClickedBackdrop()
   }
+
+  listenToOnClickedBackdrop() {
+    document.addEventListener(
+      "on-backdrop-clicked", (e: CustomEvent) => {
+        console.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e:", e);
+
+       console.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e.detail:", e.detail);
+       if (e.detail && e.detail === true) {
+        // this.popover.close();
+        // if (e.detail && e.detail) {
+        //   let sitemap = e.detail.sitemap
+        //   let body = { 'sitemap': sitemap }
+        //   this.onSendSitemap(body)
+        }
+      }
+    );
+  }
+
+
+
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log("[MODAL PREVIEW SETTINGS] namespaceid ", this.selectedNamespace)
+    
     this.namespaceid = this.selectedNamespace.id
   }
 

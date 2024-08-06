@@ -184,6 +184,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   private dialogRefHookBoot: MatDialogRef<any>;
   timer: number = 2000
+  hasCickedAiSettingsModalBackdrop: boolean = false
 
   constructor(
     private auth: AuthService,
@@ -245,7 +246,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   ngAfterViewInit() {
     const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
-    // console.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
+    console.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
     if (!tourShowed) {
       setTimeout(() => {
         this.shepherdService.defaultStepOptions = defaultStepOptions;
@@ -1174,7 +1175,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
     dialogRef.backdropClick().subscribe((event) => {  
       console.log('AI model Backdrop clicked', event);  
-      
+      this.hasCickedAiSettingsModalBackdrop = true
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail:  this.hasCickedAiSettingsModalBackdrop  });
+      document.dispatchEvent(customevent);
     }); 
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreviewSettings] Dialog after closed result: ', result);

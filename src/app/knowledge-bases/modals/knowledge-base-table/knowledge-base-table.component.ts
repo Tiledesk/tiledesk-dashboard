@@ -135,6 +135,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       if (this.getKbCompleted) { 
         this.retrieveKbAndSwowTable('firstChange', this.kbsList, this.getKbCompleted)
       }
+
       // if ((this.kbsList.length === 0)) {
       //   this.SHOW_TABLE = false;
       // } else {
@@ -313,15 +314,16 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   getSubtitle(kb) {
+    console.log('getSubtitle')
     let subtitle = kb.source;
     if (kb.type !== 'url') {
-      subtitle = kb.content;
-      // const maxLength = 100;
-      // if (kb.content.length > maxLength) {
-      //   subtitle = kb.content.substring(0, maxLength) + '...';
-      // } else {
-      //   subtitle = kb.content;
-      // }
+      // subtitle = kb.content;
+      const maxLength = 100;
+      if (kb.content.length > maxLength) {
+        subtitle = kb.content.substring(0, maxLength) + '...';
+      } else {
+        subtitle = kb.content;
+      }
     }
     return subtitle;
   }
