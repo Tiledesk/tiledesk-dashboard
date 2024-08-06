@@ -1134,6 +1134,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
+      disableClose: true,
       width: '400px',
       id: 'kb-test',
       data: {
@@ -1160,9 +1161,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onOpenBaseModalPreviewSettings(previedata?: any) {
     // this.baseModalPreviewSettings = true;
+    // #191d2285;
     const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
+      // backdropClass: 'cdk-overlay-transparent-backdrop',
+      backdropClass: 'overlay-backdrop',
       hasBackdrop: true,
+      disableClose: true,
       width: '360px',
       data: {
         selectedNamespace: this.selectedNamespace,

@@ -164,11 +164,15 @@
     padding: 8px !important;
     color: #fff !important;
     text-align: center;
+    max-width: 200px;
+    box-shadow: 0 11px 15px -7px #0003, 0 24px 38px 3px #00000024, 0 9px 46px 8px #0000001f;
+
 
     .cbPopover-cbname {
         font-weight: 600;
     }
   }
+
 
 
 

@@ -113,9 +113,11 @@
                   </mat-menu>
                 </div>
               </div>
-
               <!-- --------- ./ MAT-MENU ---------- -->
 
+              <!-- ---------------------------------------- -->
+              <!-- Delete -->
+              <!-- ---------------------------------------- -->
               <div class="buttons-div">
                 <button id="delete-kb" class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
                   style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
@@ -128,6 +130,9 @@
                   <!-- {{ 'KbPage.DeleteNamespace' | translate }} -->
                 </button>
 
+                <!-- ---------------------------------------- -->
+                <!-- AI Settings -->
+                <!-- ---------------------------------------- -->
                 <button id="ai-settings" class="custom-button preview-settings"
                   (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                   matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
@@ -135,6 +140,9 @@
                   <span class="material-icons-round">settings</span>
                 </button>
 
+                <!-- ---------------------------------------- -->
+                <!-- KB preview -->
+                <!-- ---------------------------------------- -->
                 <button id="kb-preview" class="custom-button preview" aria-label="Preview"
                   (click)="$event.stopPropagation(); onOpenBaseModalPreview()" [disabled]="kbsListCount === 0"
                   [ngClass]="{'preview-btn-disabled': kbsListCount === 0}" matTooltipClass="kb-custom-mat-tooltip"
@@ -143,12 +151,13 @@
                   <span class="material-icons-round">play_arrow</span>
                   <span class=""> {{'Preview' | translate}} </span>
                 </button>
-
-                <div  class="add-kb-div">
-                  <!-- width: 150px; -->
+                
+                <!-- ---------------------------------------- -->
+                <!-- Add Content -->
+                <!-- ---------------------------------------- -->
+                <div class="add-kb-div">
                   <button id="kb-add-content" class="custom-button add-content" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu"
                     aria-label="Actions">
-                    <!-- <span class="material-icons-round">add</span> -->
                     <span class=""> {{ 'KbPage.Add' | translate }} </span>
                   </button>
                   <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">

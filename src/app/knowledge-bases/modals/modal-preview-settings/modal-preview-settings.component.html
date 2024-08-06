@@ -25,6 +25,7 @@
 
 <div mat-dialog-content>
     <div class="row-container" style="margin-top: 0px;">
+        <!-- (click)="aiModel.toggle()(mouseleave)="aiModel.toggle()  -->
         <label class="setting-label" [satPopoverAnchor]="aiModel" (mouseenter)="aiModel.open()" (click)="aiModel.toggle()">
             <!-- AI Model -->
             {{ 'KbPage.SelectEngine'| translate}}
@@ -85,7 +86,7 @@
     </div>
 
     <sat-popover  #aiModel horizontalAlign="before" verticalAlign="center" 
-    panelClass="cb-details-popover">
+    hasBackdrop panelClass="cb-details-popover">
 
    <div class="cbPopover-cbname">
     The large language model (LLM) your agent will use to fetch and compile data.
