@@ -2609,6 +2609,7 @@
     "CRMImprovesCustomerRelationship": "CRM or Customer Relationship Management improves customer relationship management by creating a 360-degree view of the customer",
     "CRMRecordsCustomerContactInformation": "The CRM records customer contact information, such as email address, phone number and much more so that you can better understand the evolution of your company's network of interactions.",
     "AvailableFromThePlan": "Available from the {{plan_name}} plan",
+    "AvailableFromThePlans": "Available from {{plan_name_1 }} and {{plan_name_2 }} plans",
     "AvailableWithThePlan": "Available with the {{plan_name}} plan",
     "FeatureAvailableOnlyWithPaidPlans": "Feature available only with paid plans",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "Stay informed on what's happening in your team all the time. Monitor (Team Inbox) gives you what you need for smart collaboration, all in one place",
