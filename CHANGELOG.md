@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.9
+- Deploys in production
+- Fixes the bug: Knowledge Base page crashes if a content description is too long
+
 ### 2.7.8
 - Deploys in production
 - Adds the "Team" plan
