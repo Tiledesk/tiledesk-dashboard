@@ -121,7 +121,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = true;
+  public TEST_PAYMENT_LINKS = false;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -330,7 +330,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
       this.PAYMENT_LINK_MONTLY_PLAN_E =  "https://buy.stripe.com/00g6ow0pM5oSdGw8wQ"; // "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
       this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
-     
+      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/14kfZ6a0mcRk31S3cK';
+      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/9AQ28gfkG7x0eKA3cL';
     }
   }
 
