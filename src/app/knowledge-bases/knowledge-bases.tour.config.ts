@@ -85,7 +85,7 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       
       <div class="image-container">
             <img 
-                src="assets/img/preview-kb.gif"
+                src="assets/img/add-content.gif"
                 class="image-style"
                 frameBorder="0" 
                 allowFullScreen>
@@ -99,26 +99,47 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
         element: '.buttons-div #kb-preview' ,
         on: 'bottom',
       },
-      // STEPS_BUTTONS.cancel,
+      // STEPS_BUTTONS.cancel custom-class-shepherd-bottom,
       buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.next],
-      classes: 'custom-class-shepherd-bottom',
+      classes: 'custom-class-shepherd-bottom-l step-with-gif',
       id: 'kb-tour-step-2',
       title: translation.instant('KbPage.KnowledgeBasePreview'), //'Knowledge Base Preview',
-      text: translation.instant('KbPage.PreviewKbTourText') // `Preview and fine-tune AI responses based on your contents so you can find the best setup for your needs`,
+      text: `${translation.instant('KbPage.PreviewKbTourText')} 
+      
+       <div class="image-container">
+            <img 
+                src="assets/img/kb_preview.gif"
+                class="image-style"
+                frameBorder="0" 
+                allowFullScreen>
+            </img>
+        </div>`
+      
+      
       
     },
 
     {
       // .tour-card:nth-child(2) h2
+      // custom-class-shepherd-bottom
       attachTo: {
         element: '.buttons-div #ai-settings',
         on: 'bottom',
       },
       buttons: [STEPS_BUTTONS.back, STEPS_BUTTONS.next],
-      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      classes: 'custom-class-shepherd-bottom-l step-with-gif',
       id: 'kb-tour-step-3',
       title:  translation.instant('KbPage.AISettingsTourTitle'), //'AI settings',
-      text:  translation.instant('KbPage.AISettingsTourText') // 'Select the best AI model and manage its parameters. Parameters (such as Max Tokens, Temperature, and Chunks) essentially define the behavior of an AI model.',
+      text:  `${translation.instant('KbPage.AISettingsTourText')} 
+
+      <div class="image-container">
+            <img 
+                src="assets/img/kb_settings_step.gif"
+                class="image-style"
+                frameBorder="0" 
+                allowFullScreen>
+            </img>
+        </div>`
     },
 
     {
@@ -127,12 +148,20 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
         element: '#kb-chatbot' ,
         on: 'bottom',
       },
-      // STEPS_BUTTONS.cancel, ,STEPS_BUTTONS.next
+      // STEPS_BUTTONS.cancel, ,STEPS_BUTTONS.next, custom-class-shepherd-bottom
       buttons: [STEPS_BUTTONS.back,STEPS_BUTTONS.next],
-      classes: 'custom-class-shepherd-bottom custom-class-name-2',
+      classes: 'custom-class-shepherd-bottom-l step-with-gif',
       id: 'kb-tour-step-4-A',
       title: translation.instant('KbPage.AIChatbotTourTitle'), //' AI chatbot',
-      text: translation.instant('KbPage.AIChatbotTourText'), // 'This is your AI chatbot connected to your contents. It\'s ready to reply timely and precise to your users\' questions',
+      text: `${translation.instant('KbPage.AIChatbotTourText')}
+      <div class="image-container">
+        <img 
+            src="assets/img/kb_step_chatbot.gif"
+            class="image-style"
+            frameBorder="0" 
+            allowFullScreen>
+        </img>
+      </div>` 
     },
     {
       attachTo: {

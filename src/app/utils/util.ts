@@ -720,3 +720,10 @@ export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com
 export const URL_install_tiledesk_on_wix ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
 export const URL_install_tiledesk_on_magento ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';
+
+export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#1-ai-models';
+export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#2-maximum-number-of-tokens';
+export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
+export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
+export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
+export const URL_kb ='https://gethelp.tiledesk.com/categories/knowledge-base/'

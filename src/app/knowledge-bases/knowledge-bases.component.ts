@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, URL_kb, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -2630,7 +2630,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.typeKnowledgeBaseModal = '';
   }
 
-
+  goToKbDoc() {
+    const url = URL_kb;
+    window.open(url, '_blank');
+  }
 
 
 }

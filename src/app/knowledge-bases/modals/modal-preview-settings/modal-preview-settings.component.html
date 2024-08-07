@@ -22,14 +22,21 @@
     </div>
 </div>
 
-
-<div mat-dialog-content>
+<!-- (mousemove)="onMouseMove($event)" (mouseenter)="onMouseEnter($event)"-->
+<div mat-dialog-content (click)="handleClickInside($event)" >
     <!-- ----------------------------------------------- -->
     <!-- AI Model -->
     <!-- ----------------------------------------------- -->
     <div class="row-container" style="margin-top: 0px;">
         <!-- (click)="aiModel.toggle()(mouseleave)="aiModel.toggle()  -->
-        <label class="setting-label" [satPopoverAnchor]="aiModel" (mouseenter)="aiModel.open(); maxTokens.close();" (click)="aiModel.close()">
+        <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+            [satPopoverAnchor]="aiModel"
+            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close()"
+            (click)="aiModel.close()">
+            <!-- AI Model -->
+            {{ 'KbPage.SelectEngine'| translate}}
+        </label>
+        <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
             <!-- AI Model -->
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
@@ -86,14 +93,18 @@
         </ng-select>
     </div>
 
-    <sat-popover #aiModel horizontalAlign="before" verticalAlign="center"  panelClass="cb-details-popover">
+    <sat-popover id="ai-settings-label" #aiModel horizontalAlign="before" verticalAlign="center"
+        panelClass="cb-details-popover" (opened)="aiModelPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                <!-- The large language model (LLM) your agent will use to fetch and compile data. -->
+                 {{'KbPage.TheLLMYourAgentWillUse' | translate }}
+            </div>
 
-        <div class="cbPopover-cbname">
-            The large language model (LLM) your agent will use to fetch and compile data.
-        </div>
-
-        <div class="cbPopover-cbtext">
-            Learn more
+            <div class="sat-popover-content-learn-more" (click)="goToAIModelDoc()">
+                {{'LearnMore' | translate}}
+            </div>
         </div>
     </sat-popover>
 
@@ -101,15 +112,27 @@
     <!-- Max Tokens -->
     <!-- ----------------------------------------------- -->
     <div class="row-container">
-        <div class="label-wpr">
-            <label class="setting-label" [satPopoverAnchor]="maxTokens" (mouseenter)="maxTokens.open(); aiModel.close()"
-                (click)="maxTokens.toggle()">
-                <!-- Max Tokens -->
-                {{ 'KbPage.MaxTokens'| translate}}
-            </label>
+        <div class="label-and-slider-value">
+            <div class="label-wpr">
+                <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+                    [satPopoverAnchor]="maxTokens"
+                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close();chunkLimit.close(); systemContext.close()"
+                    (click)="maxTokens.close()">
+                    <!-- Max Tokens -->
+                    {{ 'KbPage.MaxTokens'| translate}}
+                </label>
+                <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                    <!-- Max Tokens -->
+                    {{ 'KbPage.MaxTokens'| translate}}
+                </label>
+            </div>
+            <div class="slider-value">
+                {{max_tokens}}
+                <!-- <input type="text" class="slider-output" value="{{max_tokens}}" disabled> -->
+            </div>
         </div>
 
-        <div class="field-box">
+        <div class="field-box  max-tokens-field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">10</div>
                 <mat-slider class="wait-slider" thumbLabel step="1" min="10" max="2048" [(ngModel)]="max_tokens"
@@ -117,18 +140,32 @@
                 </mat-slider>
                 <div class="action-wait-range">2048</div>
             </div>
-            <input type="text" class="slider-output" value="{{max_tokens}}" disabled>
+            <!-- <input type="text" class="slider-output" value="{{max_tokens}}" disabled> -->
+        </div>
+        <div class="max-token-slider-description-wpr">
+            <div class="max-token-slider-description">
+                {{'KbPage.Deterministic' | translate }}
+            </div>
+            <div class="max-token-slider-description">
+                {{'KbPage.Random' | translate }}
+                
+            </div>
         </div>
     </div>
 
-    <sat-popover #maxTokens horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover">
+    <sat-popover #maxTokens horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
+        (opened)="maxTokenPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                <!-- The maximum number of tokens that can be used to generate a single response -->
+                {{'KbPage.TheMaxTokensThatCanBeUsedToGenerateSingleResponse' | translate }}
+               
+            </div>
 
-        <div class="cbPopover-cbname">
-            The maximum number of tokens that can be used to generate a single response
-        </div>
-
-        <div class="cbPopover-cbtext">
-           Learn more
+            <div class="sat-popover-content-learn-more" (click)="goToMaxTokenDoc()">
+                {{'LearnMore' | translate}}
+            </div>
         </div>
     </sat-popover>
 
@@ -137,11 +174,23 @@
     <!-- Temperature -->
     <!-- ----------------------------------------------- -->
     <div class="row-container">
-        <div class="label-wpr">
-            <label class="setting-label">
-                <!-- Temperature -->
-                {{ 'KbPage.Temperature'| translate}}
-            </label>
+        <div class="label-and-slider-value">
+            <div class="label-wpr">
+                <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+                    [satPopoverAnchor]="aiModeltemperature"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); maxTokens.close();  chunkLimit.close(); systemContext.close()"
+                    (click)="aiModeltemperature.close()">
+                    <!-- Temperature -->
+                    {{ 'KbPage.Temperature'| translate}}
+                </label>
+                <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                    <!-- Temperature -->
+                    {{ 'KbPage.Temperature'| translate}}
+                </label>
+            </div>
+            <div class="slider-value">
+                {{temperature}}
+            </div>
         </div>
         <div class="field-box">
             <div class="action-wait-slider">
@@ -151,16 +200,48 @@
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
-            <input type="text" class="slider-output" value="{{temperature}}" disabled>
+            <!-- <input type="text" class="slider-output" value="{{temperature}}" disabled> -->
         </div>
     </div>
 
+    <sat-popover #aiModeltemperature horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
+        (opened)="temperaturePopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                <!-- Control the randomness of the answer the LLM provides. -->
+                {{'KbPage.ControlTheRandomnessOfTheAnswer' | translate }}
+               
+            </div>
+
+            <div class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
+
+    <!-- ----------------------------------------------- -->
+    <!-- Chunk Limit -->
+    <!-- ----------------------------------------------- -->
     <div class="form-container">
-        <div class="label-wpr">
-            <label class="setting-label">
-                <!-- {{ 'KbPage.ChunkLimit'| translate}} -->
-                Chunks
-            </label>
+
+        <div class="label-and-slider-value">
+            <div class="label-wpr">
+                <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+                    [satPopoverAnchor]="chunkLimit"
+                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.open(); systemContext.close()"
+                    (click)="chunkLimit.close()">
+                    {{ 'KbPage.ChunkLimit'| translate}}
+                    <!-- Chunks  -->
+                </label>
+                <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                    {{ 'KbPage.ChunkLimit'| translate}}
+                    <!-- Chunks  -->
+                </label>
+            </div>
+            <div class="slider-value">
+                {{topK}}
+            </div>
         </div>
         <div class="field-box">
             <div class="action-wait-slider">
@@ -170,15 +251,40 @@
                 </mat-slider>
                 <div class="action-wait-range">10</div>
             </div>
-            <input type="text" class="slider-output" value="{{topK}}" disabled>
+            <!-- <input type="text" class="slider-output" value="{{topK}}" disabled> -->
         </div>
     </div>
+
+    <sat-popover #chunkLimit horizontalAlign="before" verticalAlign="center" panelClass="cb-details-popover"
+        (opened)="chunkLimitPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                <!-- Determines how many data source chunks will be passed to the LLM as context to generate a response. We
+                recommend 2-4 to avoid LLM confusion. -->
+                 
+                {{'KbPage.DeterminesHowManyChunksWillBePassedToTheLLM' | translate }}
+            
+            </div>
+
+            <div class="sat-popover-content-learn-more" (click)="goToChunkLimitDoc()">
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
 
 
 
     <div class="form-container">
         <div class="label-wpr">
-            <label class="setting-label">
+            <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+                [satPopoverAnchor]="systemContext"
+                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.open();"
+                (click)="systemContext.close()">
+                <!-- System context -->
+                {{ 'KbPage.SystemContext'| translate}}
+            </label>
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
                 <!-- System context -->
                 {{ 'KbPage.SystemContext'| translate}}
             </label>
@@ -186,8 +292,24 @@
 
         <textarea class="context-texarea" [(ngModel)]="context" rows="4" placeholder="You are an awesome assistant"
             (ngModelChange)="onChangeTextInContex($event)">  </textarea>
-
     </div>
+
+    <sat-popover id="ai-settings-label" #systemContext horizontalAlign="before" verticalAlign="center"
+        panelClass="cb-details-popover" (opened)="systemContextPopoverIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                <!-- Give the system a role that it should play when creating your answers. -->
+                {{'KbPage.GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers' | translate }}
+                
+            </div>
+
+            <div class="sat-popover-content-learn-more" (click)="goToSystemContextDoc()">
+                <!-- Learn more -->
+                {{'LearnMore' | translate}}
+            </div>
+        </div>
+    </sat-popover>
 
 
 </div>
@@ -201,9 +323,9 @@
         {{'KbPage.ResetToDefault' | translate}}
 
     </button>
-
+    <!-- cdkFocusInitial -->
     <button *ngIf="!wasOpenedFromThePreviewKBModal" class="mat-dialog-ok-btn" mat-button
-        (click)="onSavePreviewSettings()" cdkFocusInitial>
+        (click)="onSavePreviewSettings()">
         {{ "Save" | translate }}
 
     </button>
