@@ -1754,7 +1754,14 @@
         "KBLimitReached": "{{plan_name}} үшін мазмұн шегіне жетті",
         "AllContents": "Барлық мазмұн",
         "DeleteNamespace": "Барлық мазмұнды жойыңыз",
-        "RestartTour": "Турды қайта бастау"
+        "RestartTour": "Турды қайта бастау",
+        "TheLLMYourAgentWillUse":"Агент деректерді алу және құрастыру үшін пайдаланатын үлкен тіл үлгісі (LLM).",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Бір жауапты жасау үшін пайдалануға болатын токендердің ең көп саны.",
+        "ControlTheRandomnessOfTheAnswer":"LLM беретін жауаптың кездейсоқтығын бақылаңыз.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"Жауапты жасау үшін мәтінмән ретінде LLM-ге қанша деректер көзінің бөліктері жіберілетінін анықтайды. LLM шатастыруын болдырмау үшін 2-4 ұсынамыз.",
+        "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Жүйеге жауаптарыңызды жасау кезінде ойнайтын рөлді беріңіз.",
+         "Deterministic":"Детерминистік",
+         "Random":"Кездейсоқ"
     },
     "ViewInTheDesignStudio": "Дизайн студиясында көру",
     "LearnHow": "Қалай білу",

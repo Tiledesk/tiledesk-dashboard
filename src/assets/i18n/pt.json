@@ -1754,7 +1754,14 @@
         "KBLimitReached": "Limite de conteúdo atingido para {{plan_name}}",
         "AllContents": "Todo o conteúdo",
         "DeleteNamespace": "Excluir todo o conteúdo",
-        "RestartTour": "Reiniciar passeio"
+        "RestartTour": "Reiniciar passeio",
+        "TheLLMYourAgentWillUse":"O modelo de linguagem grande (LLM) que o seu agente utilizará para procurar e compilar dados.",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"O número máximo de tokens que podem ser utilizados para gerar uma única resposta.",
+        "ControlTheRandomnessOfTheAnswer":"Controle a aleatoriedade da resposta fornecida pelo LLM.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"Determina quantos pedaços de origem de dados serão passados ​​para o LLM como contexto para gerar uma resposta. Recomendamos 2 a 4 para evitar confusão no LLM.",
+        "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Dê ao sistema uma função que ele deve desempenhar ao criar as suas respostas.",
+        "Deterministic":"Determinístico",
+         "Random":"Aleatório"
     },
     "ViewInTheDesignStudio": "Veja no Design Studio",
     "LearnHow": "Aprenda como",

@@ -1755,7 +1755,14 @@
         "KBLimitReached": "{{plan_name}} üçün məzmun limitinə çatdı",
         "AllContents": "Bütün məzmunlar",
         "DeleteNamespace": "Bütün məzmunu silin",
-        "RestartTour": "Turu yenidən başladın"
+        "RestartTour": "Turu yenidən başladın",
+        "TheLLMYourAgentWillUse":"Agentinizin məlumatları əldə etmək və tərtib etmək üçün istifadə edəcəyi böyük dil modeli (LLM).",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Tək cavab yaratmaq üçün istifadə edilə bilən işarələrin maksimum sayı.",
+        "ControlTheRandomnessOfTheAnswer":"LLM-nin verdiyi cavabın təsadüfi olmasına nəzarət edin.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"Cavab yaratmaq üçün kontekst kimi LLM-ə neçə məlumat mənbəyi parçasının ötürüləcəyini müəyyən edir. LLM qarışıqlığının qarşısını almaq üçün 2-4 tövsiyə edirik.",
+        "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Sistemə cavablarınızı yaratarkən oynamalı olduğu rolu verin.",
+        "Deterministic":"Determinist",
+        "Random":"Təsadüfi"
     },
     "ViewInTheDesignStudio": "Dizayn Studiyasında görüntüləyin",
     "LearnHow": "Necə öyrən",

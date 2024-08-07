@@ -1755,7 +1755,14 @@
         "KBLimitReached": "{{plan_name}} için içerik sınırına ulaşıldı",
         "AllContents": "Tüm içerikler",
         "DeleteNamespace": "Tüm içeriği sil",
-        "RestartTour": "Turu yeniden başlat"
+        "RestartTour": "Turu yeniden başlat",
+         "TheLLMYourAgentWillUse":"Aracınızın verileri almak ve derlemek için kullanacağı büyük dil modeli (LLM).",
+         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Tek bir yanıt oluşturmak için kullanılabilecek maksimum token sayısı.",
+         "ControlTheRandomnessOfTheAnswer":"LLM'nin verdiği cevabın rastgeleliğini kontrol edin.",
+         "DeterminesHowManyChunksWillBePassedToTheLLM":"Bir yanıt oluşturmak için LLM'ye bağlam olarak kaç veri kaynağı parçasının geçirileceğini belirler. LLM karışıklığını önlemek için 2-4 öneririz.",
+         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Cevaplarınızı oluştururken sisteme bir rol verin.",
+         "Deterministic":"Deterministik",
+         "Random":"Rastgele"
     },
     "ViewInTheDesignStudio": "Tasarım Stüdyosu'nda görüntüle",
     "LearnHow": "Nasıl yapılacağını öğrenin",

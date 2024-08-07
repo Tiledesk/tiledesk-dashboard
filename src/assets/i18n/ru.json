@@ -1754,7 +1754,14 @@
         "KBLimitReached": "Для {{plan_name}} достигнут лимит контента",
         "AllContents": "Все содержимое",
         "DeleteNamespace": "Удалить все содержимое",
-        "RestartTour": "Перезапустить тур"
+        "RestartTour": "Перезапустить тур",
+        "TheLLMYourAgentWillUse":"Большая языковая модель (LLM), которую ваш агент будет использовать для извлечения и компиляции данных.",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Максимальное количество токенов, которое можно использовать для генерации одного ответа.",
+        "ControlTheRandomnessOfTheAnswer":"Контролируйте случайность ответа, который дает LLM.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"Определяет, сколько фрагментов исходных данных будет передано в LLM в качестве контекста для генерации ответа. Мы рекомендуем 2-4, чтобы избежать путаницы LLM.",
+        "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Дайте системе роль, которую она должна играть при создании ваших ответов.",
+        "Deterministic":"Детерминированный",
+          "Random":"Случайный"
     },
     "ViewInTheDesignStudio": "Посмотреть в студии дизайна",
     "LearnHow": "Узнать, как",

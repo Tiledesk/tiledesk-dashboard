@@ -1754,7 +1754,14 @@
         "KBLimitReached": "تم الوصول إلى حد المحتوى لـ {{plan_name}}",
         "AllContents": "جميع المحتويات",
         "DeleteNamespace": "احذف كافة المحتويات",
-        "RestartTour": "إعادة تشغيل الجولة"
+        "RestartTour": "إعادة تشغيل الجولة",
+        "TheLLMYourAgentWillUse":"نموذج اللغة الكبير (LLM) الذي سيستخدمه الوكيل الخاص بك لجلب البيانات وتجميعها.",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"الحد الأقصى لعدد الرموز المميزة التي يمكن استخدامها لإنشاء استجابة واحدة",
+        "ControlTheRandomnessOfTheAnswer":"التحكم في عشوائية الإجابة التي يقدمها LLM.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"يحدد عدد أجزاء مصدر البيانات التي سيتم تمريرها إلى LLM كسياق لتوليد استجابة. نوصي بـ 2-4 لتجنب ارتباك LLM.",
+       "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"أعطِ النظام دورًا يجب أن يلعبه عند إنشاء إجاباتك.",
+       "Deterministic":"حتمية",
+        "Random":"عشوائي"
     },
     "ViewInTheDesignStudio": "عرض في استوديو التصميم",
     "LearnHow": "تعلم كيف",

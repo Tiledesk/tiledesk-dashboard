@@ -1754,7 +1754,14 @@
         "KBLimitReached": "Limite de contenu atteinte pour {{plan_name}}",
         "AllContents": "Tout le contenu",
         "DeleteNamespace": "Supprimer tout le contenu",
-        "RestartTour": "Redémarrer la tournée"
+        "RestartTour": "Redémarrer la tournée",
+        "TheLLMYourAgentWillUse":"Le grand modèle de langage (LLM) que votre agent utilisera pour récupérer et compiler des données.",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Le nombre maximal de jetons pouvant être utilisés pour générer une seule réponse.",
+        "ControlTheRandomnessOfTheAnswer":"Contrôlez le caractère aléatoire de la réponse fournie par le LLM.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"Détermine le nombre de blocs de sources de données qui seront transmis au LLM en tant que contexte pour générer une réponse. Nous recommandons 2 à 4 pour éviter toute confusion avec le LLM.",
+        "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Donnez au système un rôle qu’il doit jouer lors de la création de vos réponses.",
+        "Deterministic":"Déterministe",
+         "Random":"Aléatoire"
     },
     "ViewInTheDesignStudio": "Afficher dans le Design Studio",
     "LearnHow": "Apprenez comment",

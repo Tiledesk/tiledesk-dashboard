@@ -1755,7 +1755,14 @@
         "KBLimitReached": "Innehållsgränsen nådd för {{plan_name}}",
         "AllContents": "Allt innehåll",
         "DeleteNamespace": "Ta bort allt innehåll",
-        "RestartTour": "Starta om turnén"
+        "RestartTour": "Starta om turnén",
+        "TheLLMYourAgentWillUse":"Den stora språkmodellen (LLM) din agent kommer att använda för att hämta och kompilera data.",
+        "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Det maximala antalet tokens som kan användas för att generera ett enda svar.",
+        "ControlTheRandomnessOfTheAnswer":"Kontrollera slumpmässigheten i svaret som LLM ger.",
+        "DeterminesHowManyChunksWillBePassedToTheLLM":"Bestämmer hur många datakällbitar som ska skickas till LLM som kontext för att generera ett svar. Vi rekommenderar 2-4 för att undvika LLM-förvirring.",
+        "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Ge systemet en roll som det bör spela när du skapar dina svar.",
+        "Deterministic":"Deterministisk",
+        "Random":"Slumpmässig"
     },
     "ViewInTheDesignStudio": "Utsikt i designstudion",
     "LearnHow": "Lära sig hur",
