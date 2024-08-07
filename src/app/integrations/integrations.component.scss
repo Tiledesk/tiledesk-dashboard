@@ -189,7 +189,7 @@ mat-expansion-panel ::ng-deep {
     // }
 }
 
-.lock-container {
+.int-lock-container {
 
     width: 100%;
     background-color: transparent;
@@ -197,7 +197,7 @@ mat-expansion-panel ::ng-deep {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    height: calc(100vh - 225px);
     img {
         width: 300px;
         height: auto;

@@ -21,6 +21,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import scrollToWithAnimation from 'scrollto-with-animation'
 import { CHANNELS_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
@@ -632,25 +633,35 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) {
-    swal({
+    Swal.fire({
       title: this.areYouSureMsg,
       text: this.conversationWillBeAssignedToYourselfMsg,
       icon: "info",
-      buttons: {
-        cancel: this.cancelMsg,
-        catch: {
-          text: 'OK',
-          value: "catch",
-        },
-      },
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok') ,
+      cancelButtonText: this.cancelMsg,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
 
-      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-      dangerMode: false,
+
+      // title: this.areYouSureMsg,
+      // text: this.conversationWillBeAssignedToYourselfMsg,
+      // icon: "info",
+      // buttons: {
+      //   cancel: this.cancelMsg,
+      //   catch: {
+      //     text: 'OK',
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
     })
-      .then((value) => {
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+      .then((result) => {
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', result)
 
-        if (value === 'catch') {
+        if (result.isConfirmed) {
           this.onJoinHandled(requestid, currentuserid);
         }
       })

@@ -17,8 +17,13 @@
                   <div class="left-div-padding">
                     <div class="row"> 
                       <div class="col-sm-12"> 
-                        <h2 class="demopage-title">
-                          {{ "AvailableFromThePlan" | translate: tParamsAvailableFromTier2 }}
+                        <h2 class="demopage-title" >
+                          <span *ngIf="!isAppSumo" >
+                            {{ "AvailableFromThePlans" | translate: tParamsAvailableFromTier2 }}
+                          </span> 
+                          <span *ngIf="isAppSumo" >
+                            {{ "AvailableFromThePlan" | translate: tParamsAvailableFromAppSumoTier3 }}
+                          </span> 
                           <!-- {{'Analytics.UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers' | translate}} -->
                         </h2>
                       </div>

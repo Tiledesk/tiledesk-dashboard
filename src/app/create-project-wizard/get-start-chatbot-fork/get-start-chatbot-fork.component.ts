@@ -630,20 +630,25 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 
         } else if (project.profile.name === PLAN_NAME.D) {
-          this.prjct_profile_name = PLAN_NAME.C + " plan";
+          this.prjct_profile_name = PLAN_NAME.D + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 
         }
         else if (project.profile.name === PLAN_NAME.E) {
-          this.prjct_profile_name = PLAN_NAME.C + " plan";
+          this.prjct_profile_name = PLAN_NAME.E + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
+        }
 
+        else if (project.profile.name === PLAN_NAME.EE) {
+          this.prjct_profile_name = PLAN_NAME.EE + " plan";
+          this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.EE]
+          this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
         }
 
         else if (project.profile.name === PLAN_NAME.F) {
-          this.prjct_profile_name = PLAN_NAME.C + " plan";
+          this.prjct_profile_name = PLAN_NAME.F + " plan";
           this.chatBotLimit = null
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 
@@ -679,7 +684,11 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.prjct_profile_name = PLAN_NAME.E + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM.free
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
-
+        }
+        else if (project.profile.name === PLAN_NAME.EE) {
+          this.prjct_profile_name = PLAN_NAME.EE + " plan";
+          this.chatBotLimit = CHATBOT_MAX_NUM.free
+          this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
         }
         else if (project.profile.name === PLAN_NAME.F) {
           this.prjct_profile_name = PLAN_NAME.F + " plan";

@@ -156,6 +156,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
       this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
@@ -621,6 +622,10 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.E + " plan";
               project['prjct_profile_name'] = this.prjct_profile_name;
               project['plan_badge_background_type'] = 'b_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.EE) {
+                this.prjct_profile_name = PLAN_NAME.EE + " plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'bb_plan_badge'
             } else if (project.id_project.profile.name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
               project['prjct_profile_name'] = this.prjct_profile_name;
@@ -631,6 +636,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               project.id_project.profile.name !== PLAN_NAME.C &&
               project.id_project.profile.name !== PLAN_NAME.D &&
               project.id_project.profile.name !== PLAN_NAME.E &&
+              project.id_project.profile.name !== PLAN_NAME.EE &&
               project.id_project.profile.name !== PLAN_NAME.F
             ) {
               this.prjct_profile_name = project.id_project.profile.name + ' plan (UNSUPPORTED)'
@@ -876,7 +882,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
   goToCreateProject() {
-    console.log('[PROJECTS] - GO TO CREATE  PROJECT')
+    this.logger.log('[PROJECTS] - GO TO CREATE  PROJECT')
     this.router.navigate(['/create-new-project']);
   }
 

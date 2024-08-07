@@ -28,8 +28,9 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 
-
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { isDevMode } from '@angular/core';
@@ -390,6 +391,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public companyNametParams: any;
   public widgetLogoURL: string;
   public defaultFooter: string;
+  isAppSumo: boolean;
   // public widgetLauncherButtonPlaceholder: string;
 
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
@@ -638,11 +640,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             if (projectProfileData.trial_expired === false) {
               // Trial active
               if (this.profile_name === 'free') {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
                 this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
                 this.logger.log('[WIDGET-SET-UP] n0 ')
                 this.featureIsAvailable = true;
               } else if (this.profile_name === 'Sandbox') {
+                this.isAppSumo = false
                 this.logger.log('[WIDGET-SET-UP] n1 ')
                 this.featureIsAvailable = true;
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan (trial)"
@@ -652,16 +656,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             } else {
               // Trial expired
               if (this.profile_name === 'free') {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = "Free plan";
                 this.prjct_profile_name = "Free plan";
                 this.logger.log('[WIDGET-SET-UP] n2 ')
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
               } else if (this.profile_name === 'Sandbox') {
-
+                this.isAppSumo = false
                 this.logger.log('[WIDGET-SET-UP] n3 ')
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 this.prjct_profile_name_for_segment = "Sandbox plan";
@@ -677,13 +683,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
                 // Growth sub active
                 if (!this.appSumoProfile) {
+                  this.isAppSumo = false
                   this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
                   this.prjct_profile_name = PLAN_NAME.A + " plan";
                   this.featureIsAvailable = false;
-                  this.t_params = { 'plan_name': PLAN_NAME.B }
+                  // this.t_params = { 'plan_name': PLAN_NAME.B }
+                  this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
 
                   // Growth AppSumo sub active
                 } else {
+                  this.isAppSumo = true
                   this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
                   this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
                   this.featureIsAvailable = false;
@@ -692,37 +701,50 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 // Scale sub active
                 if (!this.appSumoProfile) {
+                  this.isAppSumo = false
                   this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
                   this.prjct_profile_name = PLAN_NAME.B + " plan";
                   this.featureIsAvailable = true;
                   // Scale AppSumo sub active
                 } else {
+                  this.isAppSumo = true
                   this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   this.featureIsAvailable = true;
                 }
                 // Plus sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.featureIsAvailable = true;
 
                 // Basic sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.D + " plan";
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Premium sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan";
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 this.featureIsAvailable = true;
 
+                // Team sub active
+              } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+                this.isAppSumo = false
+                this.prjct_profile_name_for_segment = PLAN_NAME.EE + " plan";
+                this.prjct_profile_name = PLAN_NAME.EE + " plan";
+                this.featureIsAvailable = true;
+
                 // Custom sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.F + " plan";
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 this.featureIsAvailable = true;
@@ -731,38 +753,58 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             } else if (this.subscription_is_active === false) {
               // Growth sub expired
               if (projectProfileData.profile_name === PLAN_NAME.A) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.A + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Scale sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.B + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Plus sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.C + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Basic sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.D + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Premium sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.E + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
+                this.featureIsAvailable = false;
+
+                // Team sub expired
+              } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+                this.isAppSumo = false
+                this.prjct_profile_name = PLAN_NAME.EE + " plan"
+                // this.t_params = { 'plan_name': PLAN_NAME.EE }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Custom sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.F + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
               }
@@ -959,20 +1001,27 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         } else if (this.prjct_profile_type === 'payment') {
           if (this.subscription_is_active) {
             if (this.profile_name === PLAN_NAME.A) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.D) {
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             }
           } else if (!this.subscription_is_active) {
             if (this.profile_name === PLAN_NAME.A) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.B) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.C) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.D) {
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.E) {
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
+            } else if (this.profile_name === PLAN_NAME.EE) {
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.F) {
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
@@ -992,23 +1041,31 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   presentModalFeautureAvailableFromTier2(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName
+    Swal.fire({
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+    
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromPlanC value', value)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
@@ -1140,7 +1197,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E,  plan_name_2: PLAN_NAME.EE})
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -4012,7 +4069,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
     // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
     // '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + encodeURIComponent(this.projectName) + '&role=' + this.USER_ROLE
 
     this.logger.log('[WIDGET-SET-UP] - TEST WIDGET URL ', url);
     window.open(url, '_blank');
