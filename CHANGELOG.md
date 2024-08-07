@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.9-rc1
+- Adds tooltips and documentation links to the AI ​​settings modal window
+- Adds images to the Knowledge Base tour
+
 ### 2.7.8-rc1
 - Adds the Team plan
 
