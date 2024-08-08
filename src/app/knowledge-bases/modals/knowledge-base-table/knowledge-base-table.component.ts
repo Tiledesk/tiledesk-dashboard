@@ -314,7 +314,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   getSubtitle(kb) {
-    console.log('getSubtitle')
+    this.logger.log('getSubtitle')
     let subtitle = kb.source;
     if (kb.type !== 'url') {
       // subtitle = kb.content;

@@ -5,6 +5,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { TYPE_GPT_MODEL, URL_AI_model_doc, URL_chunk_Limit_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
 import { BrandService } from 'app/services/brand.service';
+import { LoggerService } from 'app/services/logger/logger.service';
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
@@ -77,41 +78,31 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     public appConfigService: AppConfigService,
     private kbService: KnowledgeBaseService,
     public brandService: BrandService,
+    private logger: LoggerService,
   ) {
-    // console.log("[MODAL PREVIEW SETTINGS] data ", data)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] data ", data)
     const brand = brandService.getBrand();
     this.hideHelpLink= brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
-      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
-      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
 
-
-      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
-      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace > selectedNamespace.preview_settings", this.selectedNamespace.preview_settings) 
-      // if (namespaceAiSettings.model === "gpt-3.5-turbo") {
-      //   this.selectedModel = this.models_list[0].value;
-      // } else if (namespaceAiSettings.model === "gpt-4") {
-      //   this.selectedModel = this.models_list[1].value;
-      // } else if (namespaceAiSettings.model === "gpt-4-turbo-preview" ) {
-      //   this.selectedModel = this.models_list[2].value;
-      // } else if (namespaceAiSettings.model === "gpt-4o" ) {
-      //   this.selectedModel = this.models_list[3].value;
-      // }
-      // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+      
 
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
-      // console.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
       this.temperature = this.selectedNamespace.preview_settings.temperature
-      // console.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
 
       this.topK = this.selectedNamespace.preview_settings.top_k
-      // console.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] topK ", this.topK)
 
 
       this.context = this.selectedNamespace.preview_settings.context
@@ -131,7 +122,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
 
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
-    // console.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
     this.model_list = Object.values(TYPE_GPT_MODEL).filter(el => el.status !== 'inactive').map((el) => {
       if (ai_models[el.value])
@@ -140,7 +131,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
         return { ...el, multiplier: null }
     })
 
-    // console.log("[MODAL PREVIEW SETTINGS] model_list ", this.model_list )
+    // this.logger.log("[MODAL PREVIEW SETTINGS] model_list ", this.model_list )
     if (this.selectedNamespace.preview_settings.model === "gpt-3.5-turbo") {
       this.selectedModel = this.model_list[0].value;
     } else if (this.selectedNamespace.preview_settings.model === "gpt-4") {
@@ -152,7 +143,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     } else if (this.selectedNamespace.preview_settings.model === "gpt-4o-mini") {
       this.selectedModel = this.model_list[4].value;
     }
-    // console.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
 
 
@@ -201,14 +192,14 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
   onSelectModel(selectedModel) {
-    // console.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.model = selectedModel
     }
 
     // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].model = selectedModel
-    // console.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
     if (selectedModel !== this.modelDefaultValue) {
@@ -222,9 +213,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   updateSliderValue(value, type) {
-    //console.log("[MODAL PREVIEW SETTINGS] value: ", value);
-    // console.log("[MODAL PREVIEW SETTINGS] type: ", type);
-    // console.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
+    // this.logger.log("[MODAL PREVIEW SETTINGS] value: ", value);
+    // this.logger.log("[MODAL PREVIEW SETTINGS] type: ", type);
+    // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.max_tokens = value
@@ -242,7 +233,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       // Comunicate to the subscriber "modal-preview-k-b" the change of the max_tokens
       this.aiSettingsObject[0].maxTokens = value
-      // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
@@ -263,7 +254,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       // Comunicate to the subscriber "modal-preview-k-b" the change of the temperature
       this.aiSettingsObject[0].temperature = value
-      // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
@@ -284,18 +275,18 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
       this.aiSettingsObject[0].top_k = value
-      // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
-    // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
   }
 
 
 
 
   onChangeTextInContex(event) {
-    // console.log("[MODAL PREVIEW SETTINGS] onChangeTextInContex event: ", event);
+    // this.logger.log("[MODAL PREVIEW SETTINGS] onChangeTextInContex event: ", event);
     this.context = event
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.context = this.context
@@ -310,16 +301,16 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     } else {
       this.countOfOverrides = this.countOfOverrides - 1;
     }
-    // console.log("[MODAL PREVIEW SETTINGS] onChangeTextInContex selectedNamespace", this.selectedNamespace)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] onChangeTextInContex selectedNamespace", this.selectedNamespace)
 
     // Comunicate to the subscriber "modal-preview-k-b" the change of the context
     this.aiSettingsObject[0].context = event
-    // console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
   }
 
   onSavePreviewSettings() {
-    // console.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
+    // this.logger.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
     this.dialogRef.close({ action: "update", selectedNamespace: this.selectedNamespace });
   }
 
@@ -344,7 +335,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
-    // console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
+    // this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens = this.selectedNamespaceClone.preview_settings.max_tokens;
     // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
@@ -372,7 +363,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.model_list[3].value;
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
-    console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
+    this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens = this.maxTokensDefaultValue;
     this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
@@ -403,9 +394,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   listenToOnClickedBackdrop() {
     document.addEventListener(
       "on-backdrop-clicked", (e: CustomEvent) => {
-        console.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e:", e);
+        this.logger.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e:", e);
 
-        console.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e.detail:", e.detail);
+        this.logger.log("[MODAL PREVIEW SETTINGS] on-backdrop-clicked e.detail:", e.detail);
         if (e.detail && e.detail === true) {
           this.aiModel.close()
           this.maxTokens.close()
@@ -420,7 +411,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   handleClickInside(event: MouseEvent): void {
     // this.clickedInside = true;
     // this.clickedOutside = false;
-    console.log('Clicked inside the div');
+    this.logger.log('Clicked inside the div');
     this.aiModel.close()
     this.maxTokens.close()
     this.aiModeltemperature.close()
@@ -429,16 +420,16 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   // onMouseEnter(event: MouseEvent): void {
-  //   console.log('Mouse entered  event ', event);
+  //   this.logger.log('Mouse entered  event ', event);
   //   const hoveredElement = event.target as HTMLElement;
-  //   console.log('Mouse entered:', hoveredElement.tagName);
+  //   this.logger.log('Mouse entered:', hoveredElement.tagName);
   // }
 
   // onMouseMove(event: MouseEvent): void {
   //   // if (this.isMouseInside) {
   //     // You can perform actions continuously while the mouse is inside
-  //     console.log(`Mouse is moving inside event: `, event.target['id']);
-  //     console.log(`Mouse is moving inside the div at (${event.clientX}, ${event.clientY})`);
+  //     this.logger.log(`Mouse is moving inside event: `, event.target['id']);
+  //     this.logger.log(`Mouse is moving inside the div at (${event.clientX}, ${event.clientY})`);
   //     if (event.target['id'] !== "ai-settings-label")  {
   //       // this.aiModel.close()
   //       // this.maxTokens.close()
@@ -451,29 +442,29 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
   aiModelPopoverIsOpened() {
-    console.log('[MODAL PREVIEW SETTINGS] aiModelPopoverIsOpened')
-    console.log("[MODAL PREVIEW SETTINGS] aiModel sat popover", this.aiModel)
+    this.logger.log('[MODAL PREVIEW SETTINGS] aiModelPopoverIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] aiModel sat popover", this.aiModel)
   }
 
   maxTokenPopoverIsOpened() {
-    console.log('[MODAL PREVIEW SETTINGS] maxTokenPopoverIsOpened')
-    console.log("[MODAL PREVIEW SETTINGS] maxTokens sat popover", this.maxTokens)
+    this.logger.log('[MODAL PREVIEW SETTINGS] maxTokenPopoverIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] maxTokens sat popover", this.maxTokens)
   }
 
   temperaturePopoverIsOpened() {
-    console.log('[MODAL PREVIEW SETTINGS] temperaturePopoverIsOpened')
-    console.log("[MODAL PREVIEW SETTINGS] aiModeltemperature sat popover", this.aiModeltemperature)
+    this.logger.log('[MODAL PREVIEW SETTINGS] temperaturePopoverIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] aiModeltemperature sat popover", this.aiModeltemperature)
   }
 
   chunkLimitPopoverIsOpened() {
-    console.log('[MODAL PREVIEW SETTINGS] chunkLimitPopoverIsOpened')
-    console.log("[MODAL PREVIEW SETTINGS] chunkLimit sat popover", this.chunkLimit
+    this.logger.log('[MODAL PREVIEW SETTINGS] chunkLimitPopoverIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] chunkLimit sat popover", this.chunkLimit
     )
   }
 
   systemContextPopoverIsOpened() {
-    console.log('[MODAL PREVIEW SETTINGS] systemContextPopoverIsOpened')
-    console.log("[MODAL PREVIEW SETTINGS] systemContext sat popover", this.systemContext)
+    this.logger.log('[MODAL PREVIEW SETTINGS] systemContextPopoverIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] systemContext sat popover", this.systemContext)
   }
 
   goToAIModelDoc() {

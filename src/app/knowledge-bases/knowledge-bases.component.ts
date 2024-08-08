@@ -247,7 +247,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   ngAfterViewInit() {
     const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
-    console.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
+    this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
     if (!tourShowed) {
       setTimeout(() => {
         this.shepherdService.defaultStepOptions = defaultStepOptions;
@@ -260,7 +260,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         } else {
           steps.splice(4, 1);
         }
-        // console.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
+        // this.logger.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
         this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
         this.shepherdService.start();
 
@@ -1084,7 +1084,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
+      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
       if (result && result.chatbot && result.redirectTo === "block") {
 
         let faqkb = {
@@ -1181,7 +1181,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     });
     dialogRef.backdropClick().subscribe((event) => {  
-      console.log('AI model Backdrop clicked', event);  
+      this.logger.log('AI model Backdrop clicked', event);  
       this.hasCickedAiSettingsModalBackdrop = true
       const customevent = new CustomEvent("on-backdrop-clicked", { detail:  this.hasCickedAiSettingsModalBackdrop  });
       document.dispatchEvent(customevent);

@@ -89,8 +89,8 @@ export class CnpIsMobileComponent implements OnInit {
           spinnerContainerEl.style.visibility = "hidden";
         }, 60000);
       } else {
-        console.warn("[CNP-IS-MOB] Email not sent")
-        this.logger.warn('[CNP-IS-MOB] send email response ', response)
+        this.logger.error("[CNP-IS-MOB] Email not sent")
+        this.logger.error('[CNP-IS-MOB] send email response ', response)
       }
     }).catch((err) => {
       this.logger.error('[CNP-IS-MOB] send email error ', err)
