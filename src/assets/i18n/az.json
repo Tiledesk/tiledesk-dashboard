@@ -476,6 +476,10 @@
     "Back": "Geri",
     "WhatDoYouWantToDo":"Nə etmək istəyirsən?",
     "ModifyYourChatbotWithThePowerfulCDS": "Düymələr, insan ötürülməsi, qabaqcıl AI və s. kimi xüsusiyyətlər əlavə etmək istəyirsinizsə, chatbotunuzu güclü Chatbot Design Studio ilə dəyişdirin.",
+    "ModifyTheWelcomeMessage": "Xoş gəlmisiniz mesajını dəyişdirin,",
+    "ChangeYourChatbot": "chatbotunuzu dəyişdirin",
+    "NameOrIcon": "ad və ya ikona,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "düymələr əlavə edin və ya AI-nizi Chatbot Design Studio ilə təkmilləşdirin",
     "AreYouSureYouWantToEditTheChatbot": "{{ chat_bot_name }} chatbotunu redaktə etmək istədiyinizə əminsiniz?",
     "NowItIsTimeToAddContent":"İndi məzmun əlavə etmək vaxtıdır",
     "Subject": "Mövzu",
@@ -1625,6 +1629,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Komandanın iş saatlarını təyin etmək və agentlərinizin nə vaxt işlədiyini ziyarətçilərə bildirmək üçün hesabınızı təkmilləşdirin!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Bilik bazası haqqında ətraflı məlumat əldə edin",
         "WelcomeToKB": "{{company_name}} Bilik Bazasına xoş gəlmisiniz",
         "GetStartedByAddingContents": "Məzmun əlavə etməklə başlayın",
         "Secrets": "Sirlər",

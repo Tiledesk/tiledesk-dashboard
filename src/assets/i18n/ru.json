@@ -476,6 +476,12 @@
     "Back": "Назад",
     "WhatDoYouWantToDo":"Что ты хочешь делать?",
     "ModifyYourChatbotWithThePowerfulCDS": "Измените своего чат-бота с помощью мощной студии Chatbot Design Studio, если вы хотите добавить такие функции, как кнопки, передачу управления человеком, расширенный искусственный интеллект и т. д.",
+    
+    "ModifyTheWelcomeMessage": "Измените приветственное сообщение,",
+    "ChangeYourChatbot": "измените своего чат-бота",
+    "NameOrIcon": "имя или значок,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "добавьте кнопки или улучшите свой ИИ с помощью Chatbot Design Studio",
+    
     "AreYouSureYouWantToEditTheChatbot": "Вы уверены, что хотите изменить чат-бота {{chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Теперь пришло время добавить контент",
     "Subject": "Предмет",
@@ -1625,6 +1631,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Обновите свою учетную запись, чтобы установить часы работы команды и сообщать посетителям, когда работают ваши агенты!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",
         "WelcomeToKB": "Добро пожаловать в базу знаний {{company_name}}",
         "GetStartedByAddingContents": "Начните с добавления содержимого",
         "Secrets": "Секреты",

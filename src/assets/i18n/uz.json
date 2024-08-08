@@ -476,6 +476,12 @@
     "Back": "Orqaga",
     "WhatDoYouWantToDo":"What do you want to do?",
     "ModifyYourChatbotWithThePowerfulCDS": "Agar siz tugmalar, odam uzatish, ilg'or AI va hokazo kabi xususiyatlarni qo'shmoqchi bo'lsangiz, chatbotingizni kuchli Chatbot Design Studio bilan o'zgartiring.",
+    
+    "ModifyTheWelcomeMessage": "Xush kelibsiz xabarni o'zgartirish,",
+    "ChangeYourChatbot": "chatbotingizni o'zgartiring",
+    "NameOrIcon": "ism yoki belgi,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "tugmalar qo'shing yoki Chatbot Design Studio yordamida AIni yaxshilang",
+
     "AreYouSureYouWantToEditTheChatbot": "Haqiqatan ham {{ chat_bot_name }} chatbotini tahrir qilmoqchimisiz?",
     "NowItIsTimeToAddContent": "Endi tarkibni qo'shish vaqti keldi",
     "Subject": "Mavzu",
@@ -1624,6 +1630,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Jamoaning ish vaqtini belgilash va tashrif buyuruvchilarga agentlaringiz qachon ishlayotgani haqida xabar berish uchun hisobingizni yangilang!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Bilimlar bazasi haqida ko'proq bilib oling",
         "WelcomeToKB": "{{company_name}} bilimlar bazasiga xush kelibsiz",
         "GetStartedByAddingContents": "Tarkibni qo'shish bilan boshlang",
         "Secrets": "Sirlar",

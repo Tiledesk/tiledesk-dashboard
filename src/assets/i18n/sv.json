@@ -476,6 +476,12 @@
     "Back": "Tillbaka",
     "WhatDoYouWantToDo":"Vad vill du göra?",
     "ModifyYourChatbotWithThePowerfulCDS": "Ändra din chatbot med den kraftfulla Chatbot Design Studio om du vill lägga till funktioner som knappar, mänsklig handoff, avancerad AI, etc.",
+    
+    "ModifyTheWelcomeMessage": "Ändra välkomstmeddelandet,",
+    "ChangeYourChatbot": "ändra din chatbot",
+    "NameOrIcon": "namn eller ikon,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "lägg till knappar eller förbättra din AI med Chatbot Design Studio",
+    
     "AreYouSureYouWantToEditTheChatbot": "Är du säker på att du vill redigera chatboten {{ chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Nu är det dags att lägga till innehåll",
     "Subject": "Ämne",
@@ -1625,6 +1631,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Uppgradera ditt konto för att ställa in teamets kontorstid och låt besökarna veta när dina agenter arbetar!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Läs mer om Knowledge Base",
         "WelcomeToKB": "Välkommen till {{company_name}} kunskapsbas",
         "GetStartedByAddingContents": "Kom igång genom att lägga till innehåll",
         "Secrets": "Hemligheter",

@@ -475,6 +475,12 @@
     "Back": "Costas",
     "WhatDoYouWantToDo":"O que quer fazer?",
     "ModifyYourChatbotWithThePowerfulCDS": "Modifique o seu chatbot com o poderoso Chatbot Design Studio se quiser adicionar funcionalidades como botões, transferência humana, IA avançada, etc.",
+    
+    "ModifyTheWelcomeMessage": "Modifique a mensagem de boas-vindas,",
+    "ChangeYourChatbot": "mude o seu chatbot",
+    "NameOrIcon": "nome ou ícone,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "adicione botões ou melhore a sua IA com o Chatbot Design Studio",
+    
     "AreYouSureYouWantToEditTheChatbot": "Tem a certeza que pretende editar o chatbot {{ chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Agora é hora de adicionar conteúdo",
     "Subject": "Sujeito",
@@ -1624,6 +1630,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Atualize sua conta para definir o horário de expediente da equipe e informar aos visitantes quando seus agentes estão trabalhando!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",
         "WelcomeToKB": "Bem-vindo à base de dados de conhecimento da {{nome_empresa}}",
         "GetStartedByAddingContents": "Comece por adicionar conteúdo",
         "Secrets": "Segredos",

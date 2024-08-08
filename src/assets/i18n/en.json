@@ -475,6 +475,12 @@
     "Back": "Back",
     "WhatDoYouWantToDo":"What do you want to do?",
     "ModifyYourChatbotWithThePowerfulCDS": "Edit your chatbot with the powerful Chatbot Design Studio if you want to add features as buttons, human handoff, advanced AI etc.",
+    
+    "ModifyTheWelcomeMessage": "Modify the welcome message,",
+    "ChangeYourChatbot": "change your chatbot",
+    "NameOrIcon": "name or icon,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "add buttons or enhance your AI with the Chatbot Design Studio",
+    
     "AreYouSureYouWantToEditTheChatbot": "Are you sure you want to edit the chatbot {{ chat_bot_name }}?",
     "NowItIsTimeToAddContent": "Now it's time to add content",
     "Subject": "Subject",
@@ -1624,6 +1630,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Upgrade your account to set team office hours and let visitors know when your agents are working!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Learn more about Knowledge Base",
         "WelcomeToKB": "Welcome to {{company_name}} Knowledge Base",
         "GetStartedByAddingContents": "Get started by adding contents",
         "Secrets": "Secrets",

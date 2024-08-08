@@ -475,6 +475,12 @@
     "Back": "Артқа",
     "WhatDoYouWantToDo":"Сіз не істегіңіз келеді?",
     "ModifyYourChatbotWithThePowerfulCDS": "Түймешіктер, адамның ауысуы, кеңейтілген AI және т.б. мүмкіндіктерді қосқыңыз келсе, чатботыңызды қуатты Chatbot Design Studio көмегімен өзгертіңіз.",
+    
+    "ModifyTheWelcomeMessage": "Сәлемдесу хабарын өзгерту,",
+    "ChangeYourChatbot": "чат ботыңызды өзгертіңіз",
+    "NameOrIcon": "аты немесе белгішесі,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "түймелерді қосыңыз немесе Chatbot Design Studio көмегімен AI-ды жақсартыңыз",
+    
     "AreYouSureYouWantToEditTheChatbot": "{{ chat_bot_name }} чат роботын шынымен өңдегіңіз келе ме?",
     "NowItIsTimeToAddContent": "Енді мазмұнды қосу уақыты келді",
     "Subject": "Тақырып",
@@ -1624,6 +1630,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Топтың жұмыс уақытын орнату және келушілерге агенттеріңіз жұмыс істеген кезде хабарлау үшін тіркелгіңізді жаңартыңыз!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "Білім қоры туралы көбірек біліңіз",
         "WelcomeToKB": "{{company_name}} білім қорына қош келдіңіз",
         "GetStartedByAddingContents": "Мазмұнды қосу арқылы бастаңыз",
         "Secrets": "Құпиялар",

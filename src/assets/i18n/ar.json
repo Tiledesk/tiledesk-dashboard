@@ -475,6 +475,10 @@
     "Back": "عودة",
     "WhatDoYouWantToDo":"ماذا تريد أن تفعل؟",
     "ModifyYourChatbotWithThePowerfulCDS": "قم بتعديل chatbot الخاص بك باستخدام Chatbot Design Studio القوي إذا كنت تريد إضافة ميزات مثل الأزرار، والتسليم البشري، والذكاء الاصطناعي المتقدم، وما إلى ذلك",
+    "ModifyTheWelcomeMessage": "تعديل رسالة الترحيب،",
+    "ChangeYourChatbot": "قم بتغيير روبوت الدردشة الخاص بك",
+    "NameOrIcon": "الاسم أو الأيقونة,",
+    "AddButtonsOrEnhanceYourAIWithChatbotDesign": "أضف أزرارًا أو عزز الذكاء الاصطناعي الخاص بك باستخدام Chatbot Design Studio",
     "AreYouSureYouWantToEditTheChatbot": "هل أنت متأكد أنك تريد تعديل chatbot {{ chat_bot_name }}؟",
     "NowItIsTimeToAddContent": "الآن حان الوقت لإضافة المحتوى",
     "Subject": "موضوع",
@@ -1624,6 +1628,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "قم بترقية حسابك لتعيين ساعات عمل الفريق وإعلام الزائرين عندما يعمل وكلاؤك!"
     },
     "KbPage": {
+        "LearnMoreAboutKB": "تعرف على المزيد حول قاعدة المعرفة",
         "WelcomeToKB": "مرحبًا بك في قاعدة معارف {{company_name}}",
         "GetStartedByAddingContents": "ابدأ بإضافة محتويات",
         "Secrets": "أسرار",
