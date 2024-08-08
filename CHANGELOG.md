@@ -2,7 +2,7 @@
 
 ### 2.7.11
 - Deploys in production
-- Adds tootips and documentation links to the AI ​​settings modal window
+- Adds tooltips and documentation links to the AI ​​settings modal window
 
 ### 2.7.10
 - Deploys in production
