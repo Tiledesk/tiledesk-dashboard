@@ -856,7 +856,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_SmartAssignment() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment');
-    if (this.USER_ROLE === 'owner') {
+    if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.id_project + '/project-settings/smartassignment']);
     } else {
       this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
@@ -1109,6 +1109,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
 
+  presentModalAgentCannotManageSmartAssigment() {}
+
   presentModalOnlyOwnerCanManageTSMTPsettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings, this.learnMoreAboutDefaultRoles)
   }
@@ -1224,7 +1226,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
