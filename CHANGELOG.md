@@ -1,5 +1,32 @@
 # tiledesk-dashboard
 
+### 2.7.10
+- Deploys in production
+- Enables Smart assignment for teammates with Admin role
+
+### 2.7.9
+- Deploys in production
+- Fixes the bug: Knowledge Base page crashes if a content description is too long
+
+### 2.7.8
+- Deploys in production
+- Adds the "Team" plan
+
+### 2.7.7
+- Deploys in production
+- Adds the knowledge base walkthrough on the knowledge base page
+
+### 2.7.6
+- Deploys in production
+- Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
+
+### 2.7.5
+- Deploys in production
+- Fixes the bug: Indicators in the quota usage popup do not update for trial plans
+
+### 2.7.4
+- Added Time Slots in Operating Hours page
+
 ### 2.7.3
 - Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
 - Improves the knowledge base page

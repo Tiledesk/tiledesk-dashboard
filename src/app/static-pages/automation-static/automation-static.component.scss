@@ -48,6 +48,9 @@
 @media (min-width:992px) {
     .col-container {       
         display: flex;
+        align-items: center;
+        // height: 100%;
+        margin-top: 5%;
         // display: table;
     }
 

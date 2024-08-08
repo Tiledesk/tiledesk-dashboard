@@ -43,6 +43,7 @@ import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-mo
 import { BrandService } from 'app/services/brand.service';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 // './ws-requests-msgs.component.html',
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -4189,7 +4190,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       (this.profile_name === 'free' && this.trial_expired === true)) {
       if (!this.appSumoProfile) {
 
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -4197,6 +4199,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     } else if ((this.profile_name === PLAN_NAME.D) ||
       (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
       (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
 
@@ -4413,7 +4416,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('displayModalBanVisitor HERE 4 ')
         // this.presentModalFeautureAvailableOnlyWithTier3Plans(this.cPlanOnly)
         this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
-      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE || this.profile_name === 'Sandbox') {
         this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
         this.logger.log('displayModalBanVisitor HERE 5 ')
       }
@@ -4480,23 +4483,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // Download transcript
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName // this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName // this.featureAvailableFromBPlan
+    Swal.fire({
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromBPlan value', value)
         // this.router.navigate(['project/' + this.id_project + '/pricing']);
         if (this.isVisiblePaymentTab) {
@@ -4526,23 +4536,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.upgradePlan,
+      text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.CURRENT_USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
         } else {
@@ -4555,26 +4572,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // Banned visitors 
   presentModalFeautureAvailableOnlyWithTier3Plans(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName // this.cPlanOnly
-    swal({
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName // this.cPlanOnly
+    Swal.fire({
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.upgradePlan,
+      text: planName,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
+            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
               // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
@@ -5104,7 +5130,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
 
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });

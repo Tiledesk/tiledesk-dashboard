@@ -29,6 +29,7 @@ import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 type UserFields = 'creditCard' | 'expirationDate' | 'cvc';
 type FormErrors = { [u in UserFields]: string };
@@ -855,7 +856,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_SmartAssignment() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment');
-    if (this.USER_ROLE === 'owner') {
+    if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.id_project + '/project-settings/smartassignment']);
     } else {
       this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
@@ -887,6 +888,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.profile_name === PLAN_NAME.B ||
         this.profile_name === PLAN_NAME.D ||
         this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
         this.prjct_profile_type === 'free'
       ) {
         // this.logger.log('goToProjectSettings_Security HERE 4 ')
@@ -919,6 +921,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.profile_name === PLAN_NAME.B ||
         this.profile_name === PLAN_NAME.D ||
         this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
         this.prjct_profile_type === 'free'
       ) {
         // this.logger.log('displayModalBanVisitor HERE 4 ')
@@ -950,6 +953,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.profile_name === PLAN_NAME.B ||
         this.profile_name === PLAN_NAME.D ||
         this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
         this.prjct_profile_type === 'free'
       ) {
         // this.logger.log('displayModalBanVisitor HERE 4 ')
@@ -985,6 +989,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.profile_name === PLAN_NAME.B ||
         this.profile_name === PLAN_NAME.D ||
         this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
         this.prjct_profile_type === 'free'
       ) {
         // this.logger.log('goToCustomizeNotificationEmailPage HERE 4 ')
@@ -1017,6 +1022,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.profile_name === PLAN_NAME.B ||
         this.profile_name === PLAN_NAME.D ||
         this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
         this.prjct_profile_type === 'free'
       ) {
         // this.logger.log('goToManageEmailSettings HERE 4 ')
@@ -1031,34 +1037,42 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   presentModalFeautureAvailableOnlyWithPlanC() {
     // this.logger.log('here presentModalFeautureAvailableOnlyWithPlanC')
-    const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = this.cPlanOnly
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: this.cPlanOnly,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+ 
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
         if (this.isVisiblePaymentTab) {
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
                 // this.logger.log('HERE Y')
                 this.notify._displayContactUsModal(true, 'upgrade_plan');
               }
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
                 // this.logger.log('HERE Y')
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
               }
@@ -1094,6 +1108,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   presentModalAgentCannotManageAvancedSettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
+
+  presentModalAgentCannotManageSmartAssigment() {}
 
   presentModalOnlyOwnerCanManageTSMTPsettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings, this.learnMoreAboutDefaultRoles)
@@ -1210,7 +1226,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
@@ -1387,6 +1403,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
+
+            } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+              this.prjct_profile_name = PLAN_NAME.EE + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.EE, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
@@ -1431,6 +1454,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.E + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+              this.prjct_profile_name = PLAN_NAME.EE + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.EE, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
@@ -1491,7 +1521,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
             } else if (this.profile_name === 'free') {
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
             }
             // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
@@ -1521,6 +1551,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
               this.isTier3Plans = false
 
+            } else if (this.profile_name === PLAN_NAME.EE) {
+
+                this.isTier3Plans = false
+
             } else if (this.profile_name === PLAN_NAME.F) {
 
               this.isTier3Plans = true
@@ -1535,17 +1569,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
             if (this.profile_name === PLAN_NAME.A) {
 
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.B) {
 
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.C) {
 
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.D) {
@@ -1554,6 +1588,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.E) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+              this.isTier3Plans = false
+
+            } else if (this.profile_name === PLAN_NAME.EE) {
 
               this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
@@ -2254,6 +2293,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.profile_name === PLAN_NAME.B ||
           this.profile_name === PLAN_NAME.D ||
           this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
           this.prjct_profile_type === 'free'
 
         ) {
@@ -3067,6 +3107,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
+    if (this.profile_name == PLAN_NAME.EE && this.subscription_is_active === true) {
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+    }
     if (this.profile_name == PLAN_NAME.F && this.subscription_is_active === true) {
       // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN f ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
@@ -3090,6 +3134,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else if (this.profile_name == PLAN_NAME.E && this.subscription_is_active === false) {
       // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.EE && this.subscription_is_active === false) {
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.F && this.subscription_is_active === false) {
       // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
@@ -3098,23 +3145,32 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   // GoTo Weebhook
   presentModalFeautureAvailableOnlyWithPaidPlans() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableOnlyWithPaidPlans
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = this.featureAvailableOnlyWithPaidPlans
+    Swal.fire({
+    
+      // content: el,
+      title: this.upgradePlan,
+      text: this.featureAvailableOnlyWithPaidPlans,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+    
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('presentModalFeautureAvailableOnlyWithPaidPlans value', value)
         // this.router.navigate(['project/' + this.projectId + '/pricing']);
         if (this.isVisiblePaymentTab) {

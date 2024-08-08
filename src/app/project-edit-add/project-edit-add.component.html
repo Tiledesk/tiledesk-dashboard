@@ -137,6 +137,7 @@
                 {{'SettingUpAutomaticAssignment' | translate}}
               </span>
               <!-- profile_name !== PLAN_NAME?.C  -->
+              <!-- isTier3Plans  {{isTier3Plans}} -->
               <span *ngIf="!isTier3Plans" class="c-plan--only--badge">
                 {{'OnlyWithPlan'| translate: tParamsFeatureAvailableWith}}
               </span>
@@ -598,9 +599,11 @@
                              <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
                     
                                 <span *ngIf="isSripeSub"> 
+                                  <!-- {{ subscription_creation_date }} -->
                                   {{ subscription_creation_date * 1000 | amDateFormat: 'LL' }}
                                 </span>
                                 <span  *ngIf="!isSripeSub"> 
+                                 
                                   {{subscription_creation_date | amDateFormat: 'LL'}}
                                 </span> 
                               </span> 

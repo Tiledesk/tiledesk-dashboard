@@ -191,9 +191,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getIntegrations() {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
-      this.logger.log("[INTEGRATION-COMP] intName: ", this.intName);
+      this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
+      this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
+      
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
+        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
       }
     })
   }
@@ -322,18 +325,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   onIntegrationSelect(integration) {
+    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key )
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations )
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration )
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category , ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
       if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
         // this.integrationSelectedName = "external";
+        
         this.integrationSelectedType = "external";
         this.showInIframe = true;
+        this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType , ' showInIframe ', this.showInIframe)
         let app = this.availableApps.find(a => a.channel === integration.key);
         this.renderUrl = app.runURL;
       } else {
@@ -342,6 +352,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
     }).catch(() => {
+      this.showInIframe = false;
       this.integrationLocked = true;
       this.plan_require = integration.plan;
       this.integrationSelectedName = integration.key;
@@ -527,6 +538,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
           integration['displayBadge'] = true
         }
+        if (integration.plan === PLAN_NAME.EE) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
         if (integration.plan === PLAN_NAME.F) {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
           integration['displayBadge'] = true
@@ -546,6 +561,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           integration['displayBadge'] = false
         }
         if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.EE) {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
           integration['displayBadge'] = false
         }
@@ -574,13 +593,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = true
           }
+          // Team
+          if (integration.plan === PLAN_NAME.EE) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
           // CUSTOM
           if (integration.plan === PLAN_NAME.F) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = true
           }
 
-        } else if (projectProfileData.profile_name === PLAN_NAME.B || projectProfileData.profile_name === PLAN_NAME.E) {
+        } else if (projectProfileData.profile_name === PLAN_NAME.B || projectProfileData.profile_name === PLAN_NAME.E || projectProfileData.profile_name === PLAN_NAME.EE) {
           this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
           // BASIC
           if (integration.plan === PLAN_NAME.D) {
@@ -589,6 +613,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           }
           // PREMIUM
           if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+
+           // TEAM
+           if (integration.plan === PLAN_NAME.EE) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = false
           }
@@ -604,11 +634,20 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = false
           }
+
+        
           // PREMIUM
           if (integration.plan === PLAN_NAME.E) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = false
           }
+
+            // TEAM
+            if (integration.plan === PLAN_NAME.EE) {
+              this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+              integration['displayBadge'] = false
+            }
+
           // CUSTOM
           if (integration.plan === PLAN_NAME.F) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
@@ -644,25 +683,75 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     // this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
+     
       // FREE or SANDBOX PLAN
-      if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
+      // if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
+      //   if (integration_plan !== 'Sandbox') {
+      //     reject(false);
+      //   }
+      //   resolve(true)
+      // }
+
+       // FREE or SANDBOX PLAN - Trial expired // nk
+       if ((this.profile_name === 'free' && this.trialExpired) || (this.profile_name === 'Sandbox' && this.trialExpired)) {
         if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)
       }
 
+       // FREE or SANDBOX PLAN - Trial // nk 
+       if ((this.profile_name === 'free' && !this.trialExpired) || (this.profile_name === 'Sandbox' && !this.trialExpired)) {
+        if (integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
+        resolve(true)
+      }
+
+      
+
       // BASIC PLAN
-      else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
-        if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.F) {
+      // else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
+      //   if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.EE || integration_plan === PLAN_NAME.F) {
+      //     reject(false);
+      //   }
+      //   resolve(true)
+      // }
+
+       // BASIC PLAN ubscription Is Active // nk
+       else if ((this.profile_name === PLAN_NAME.A && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && this.subscriptionIsActive)) {
+        if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.EE || integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
+        resolve(true)
+      }
+
+       // BASIC PLAN ubscription Is Not Active // nk
+       else if ((this.profile_name === PLAN_NAME.A && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && !this.subscriptionIsActive)) {
+        if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)
       }
 
       // PREMIUM PLAN
-      else if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E) {
+      // else if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
+      //   if (integration_plan === PLAN_NAME.F) {
+      //     reject(false);
+      //   }
+      //   resolve(true)
+      // }
+
+      // PREMIUM PLAN subscription Is Active // nk
+      else if ((this.profile_name === PLAN_NAME.B && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && this.subscriptionIsActive )) {
         if (integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
+        resolve(true)
+      }
+      // PREMIUM PLAN subscription Is Not Active // nk
+      else if ((this.profile_name === PLAN_NAME.B && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.C && !this.subscriptionIsActive)  || (this.profile_name === PLAN_NAME.F && !this.subscriptionIsActive)) {
+        if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)

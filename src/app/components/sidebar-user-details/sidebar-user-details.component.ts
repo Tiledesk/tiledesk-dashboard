@@ -265,6 +265,8 @@ export class SidebarUserDetailsComponent implements OnInit {
             this._prjct_profile_name = PLAN_NAME.D + " plan";
           } else if (this.plan_name === PLAN_NAME.E) {
             this._prjct_profile_name = PLAN_NAME.E + " plan";
+          } else if (this.plan_name === PLAN_NAME.EE) {
+              this._prjct_profile_name = PLAN_NAME.EE + " plan";
           } else if (this.plan_name === PLAN_NAME.F) {
             this._prjct_profile_name = PLAN_NAME.F + " plan";
           }
@@ -280,6 +282,8 @@ export class SidebarUserDetailsComponent implements OnInit {
             this._prjct_profile_name = PLAN_NAME.D + " plan";
           } else if (this.plan_name === PLAN_NAME.E) {
             this._prjct_profile_name = PLAN_NAME.E + " plan";
+          } else if (this.plan_name === PLAN_NAME.EE) {
+            this._prjct_profile_name = PLAN_NAME.EE + " plan";
           } else if (this.plan_name === PLAN_NAME.F) {
             this._prjct_profile_name = PLAN_NAME.F + " plan";
           }
@@ -288,117 +292,6 @@ export class SidebarUserDetailsComponent implements OnInit {
     }
   }
 
-  // findCurrentProjectAmongAll(projectId: string) {
-  //   this.projectService.getProjects().subscribe((projects: any) => {
-  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
-  //     this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - current_prjct ', this.current_prjct);
-
-
-  //     if (this.current_prjct) {
-  //       this.logger.log('[IDEBAR-USER-DETAILS] PROJECT current_prjct', this.current_prjct);
-
-  //       this.is_active_subscription = this.current_prjct.id_project.isActiveSubscription;
-  //       this.plan_name = this.current_prjct.id_project.profile.name;
-  //       this.plan_type = this.current_prjct.id_project.profile.type;
-  //       this.prjct_name = this.current_prjct.id_project.name;
-  //       this.trialExpired = this.current_prjct.id_project.trialExpired
-  //       this.extra3 = this.current_prjct.id_project.profile.extra3;
-  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT is_active_subscription', this.is_active_subscription);
-  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_name ', this.plan_name);
-  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT plan_typeD', this.plan_type);
-  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT trialExpired', this.trialExpired);
-  //       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT extra3', this.extra3);
-
-  //       if (this.extra3) {
-  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[this.extra3];
-  //       }
-
-  //       if (this.plan_type === 'free') {
-  //         // USECASE: TRIAL ACTIVE 
-  //         if (this.trialExpired === false) {
-  //           if (this.plan_name === 'free') {
-  //             this._prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-  //           } else if (this.plan_name === 'Sandbox') {
-  //             this._prjct_profile_name = PLAN_NAME.E + " plan (trial)"
-  //           }
-  //           // USECASE: TRIAL EXPIRED 
-  //         } else {
-  //           if (this.plan_name === 'free') {
-  //             this._prjct_profile_name = "Free plan"
-  //           } else if (this.plan_name === 'Sandbox') {
-  //             this._prjct_profile_name = "Sandbox plan"
-  //           }
-  //         }
-  //       } else if (this.plan_type === 'payment') {
-
-  //         if (this.is_active_subscription === true) {
-  //           if (this.plan_name === PLAN_NAME.A) {
-  //             if (!this.appSumoProfile) {
-  //               this._prjct_profile_name = PLAN_NAME.A + " plan";
-  //             } else {
-  //               this._prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-  //             }
-  //           } else if (this.plan_name === PLAN_NAME.B) {
-  //             if (!this.appSumoProfile) {
-  //               this._prjct_profile_name = PLAN_NAME.B + " plan";
-  //             } else {
-  //               this._prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-  //             }
-  //           } else if (this.plan_name === PLAN_NAME.C) {
-  //             this._prjct_profile_name = PLAN_NAME.C + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.D) {
-  //             this._prjct_profile_name = PLAN_NAME.D + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.E) {
-  //             this._prjct_profile_name = PLAN_NAME.E + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.F) {
-  //             this._prjct_profile_name = PLAN_NAME.F + " plan";
-  //           }
-
-  //         } else if (this.is_active_subscription === false) {
-  //           if (this.plan_name === PLAN_NAME.A) {
-  //             this._prjct_profile_name = PLAN_NAME.A + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.B) {
-  //             this._prjct_profile_name = PLAN_NAME.B + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.C) {
-  //             this._prjct_profile_name = PLAN_NAME.C + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.D) {
-  //             this._prjct_profile_name = PLAN_NAME.D + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.E) {
-  //             this._prjct_profile_name = PLAN_NAME.E + " plan";
-  //           } else if (this.plan_name === PLAN_NAME.F) {
-  //             this._prjct_profile_name = PLAN_NAME.F + " plan";
-  //           }
-
-  //         }
-
-  //       }
-
-  //     }
-  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS - projects ', projects);
-  //   }, error => {
-  //     this.logger.error('[SIDEBAR-USER-DETAILS] - GET PROJECTS - ERROR: ', error);
-  //   }, () => {
-  //     this.logger.log('[SIDEBAR-USER-DETAILS] - GET PROJECTS * COMPLETE * ');
-  //   });
-  // }
-
-  // getProPlanTrialTranslation() {
-  //   this.translate.get('ProPlanTrial')
-  //     .subscribe((translation: any) => {
-  //       this._prjct_profile_name = translation;
-
-  //       this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //     });
-  // }
-
-  // getPaidPlanTranslation(project_profile_name) {
-  //   this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-  //     .subscribe((text: string) => {
-  //       this._prjct_profile_name = text;
-  //       this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //     });
-  // }
 
 
   getTranslations() {

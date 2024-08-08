@@ -1299,7 +1299,12 @@
 										<h4 class="widget-section-header__title-underlined">
 											Unbranding
 											<span class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
-												{{'AvailableFromThePlan' | translate: t_params }}
+												<span *ngIf="!isAppSumo">  
+													{{'AvailableFromThePlans' | translate: t_params }}
+												</span>
+												<span *ngIf="isAppSumo">  
+													{{'AvailableFromThePlan' | translate: t_params }}
+												</span>
 											</span>
 										</h4>
 									</div>
