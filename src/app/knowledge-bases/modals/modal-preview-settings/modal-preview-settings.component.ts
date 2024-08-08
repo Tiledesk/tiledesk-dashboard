@@ -4,6 +4,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { TYPE_GPT_MODEL, URL_AI_model_doc, URL_chunk_Limit_doc, URL_max_tokens_doc, URL_system_context_doc, URL_temperature_doc, loadTokenMultiplier } from 'app/utils/util';
 import { SatPopover } from '@ncstate/sat-popover';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
@@ -59,6 +60,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private hasAlreadyOverridedTopk: boolean;
   private hasAlreadyOverridedContex: boolean;
 
+  public hideHelpLink: boolean;
+
   aiSettingsObject = [{
     model: null,
     maxTokens: null,
@@ -73,8 +76,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     public dialogRef: MatDialogRef<ModalPreviewSettingsComponent>,
     public appConfigService: AppConfigService,
     private kbService: KnowledgeBaseService,
+    public brandService: BrandService,
   ) {
     // console.log("[MODAL PREVIEW SETTINGS] data ", data)
+    const brand = brandService.getBrand();
+    this.hideHelpLink= brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
       // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)

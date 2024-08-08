@@ -56,8 +56,8 @@
 
 
         <div class="kb-container-wpr">
-          <!-- *ngIf="hideHelpLink" -->
-          <div class="widget-set-up-link-to-docs-wpr">
+          
+          <div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
             <span>
               <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                 data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
@@ -69,7 +69,7 @@
             </span>
             <!-- (click)="goToWidgetWebSdk()" -->
             <span class="widget-set-up-link-to-docs" (click)="goToKbDoc()">
-              Learn more about Knowledge Base
+              {{'KbPage.LearnMoreAboutKB' | translate}}
             </span>
           </div>
 

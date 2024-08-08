@@ -185,7 +185,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   private dialogRefHookBoot: MatDialogRef<any>;
   timer: number = 2000
   hasCickedAiSettingsModalBackdrop: boolean = false
-
+  public hideHelpLink: boolean;
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -213,6 +213,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    this.hideHelpLink= brand['DOCS'];
 
   }
 

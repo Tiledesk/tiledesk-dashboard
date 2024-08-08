@@ -102,7 +102,7 @@
                  {{'KbPage.TheLLMYourAgentWillUse' | translate }}
             </div>
 
-            <div class="sat-popover-content-learn-more" (click)="goToAIModelDoc()">
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToAIModelDoc()">
                 {{'LearnMore' | translate}}
             </div>
         </div>
@@ -163,7 +163,7 @@
                
             </div>
 
-            <div class="sat-popover-content-learn-more" (click)="goToMaxTokenDoc()">
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToMaxTokenDoc()">
                 {{'LearnMore' | translate}}
             </div>
         </div>
@@ -214,7 +214,7 @@
                
             </div>
 
-            <div class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToTemperatureDoc()">
                 {{'LearnMore' | translate}}
             </div>
         </div>
@@ -267,7 +267,7 @@
             
             </div>
 
-            <div class="sat-popover-content-learn-more" (click)="goToChunkLimitDoc()">
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToChunkLimitDoc()">
                 {{'LearnMore' | translate}}
             </div>
         </div>
@@ -304,7 +304,7 @@
                 
             </div>
 
-            <div class="sat-popover-content-learn-more" (click)="goToSystemContextDoc()">
+            <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToSystemContextDoc()">
                 <!-- Learn more -->
                 {{'LearnMore' | translate}}
             </div>
