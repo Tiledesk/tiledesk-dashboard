@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.10
+- Deploys in production
+- Enables Smart assignment for teammates with Admin role
+
 ### 2.7.9
 - Deploys in production
 - Fixes the bug: Knowledge Base page crashes if a content description is too long
