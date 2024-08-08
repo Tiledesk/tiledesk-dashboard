@@ -78,14 +78,17 @@
             
 
         </div>
-
-        <div class="mat-dialog-content-item" (click)="onOkPresssed()"
+        <!-- (click)="onOkPresssed()" -->
+        <div class="mat-dialog-content-item" 
             [ngClass]="{'collapse-edit-column': hasClickedInstallBtn,  'mat-dialog-content-item-first-state': !hasClickedInstallBtn}">
 
             <div class="mat-dialog-content-item-title"> {{'Edit' | translate}} </div> 
             <div class="mat-dialog-content-item-desc" [ngClass]="{'mat-dialog-content-item-desc-center-text': !hasClickedInstallBtn }"> 
                 <!-- Edit your chatbot with the powerful Chatbot Design Studio if you want to add features as buttons, human handoff, advanced AI etc.  -->
-                {{'ModifyYourChatbotWithThePowerfulCDS'| translate}}
+                <!-- {{'ModifyYourChatbotWithThePowerfulCDS'| translate}} -->
+                 <span class="edit-text-wpr"> 
+                    <span class="link-to-cds" (click)="goToCDSBlock()"> {{ 'ModifyTheWelcomeMessage' | translate }} </span> <span>  {{'ChangeYourChatbot' | translate }} </span> <span class="link-to-cds" (click)="goToCDSSettings()"> {{'NameOrIcon' | translate }} </span>  <span>  {{'AddButtonsOrEnhanceYourAIWithChatbotDesign' | translate }} </span>
+                </span>
             </div>
 
 

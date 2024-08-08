@@ -114,6 +114,14 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
     this.dialogRef.close({ chatbot: this.chatbot });
   }
 
+  goToCDSBlock() {
+    this.dialogRef.close({ chatbot: this.chatbot, redirectTo: 'block' });
+  }
+
+  goToCDSSettings() {
+    this.dialogRef.close({ chatbot: this.chatbot, redirectTo: 'settings' });
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

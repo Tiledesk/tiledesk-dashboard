@@ -557,6 +557,22 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     }
 }
 
+export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
+    // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+
+    let chatBotDate = new Date(chatbot.createdAt)
+    let dateLimit = new Date('2023-10-02T00:00:00')
+    if(chatBotDate > dateLimit){
+        // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
+        let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/settings?active=bot_detail` //  /intent/0
+        window.open(urlCDS_v2, '_self')
+    } else {
+        router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+    }
+}
+
+// https://panel.tiledesk.com/v3/cds/#/project/669920398f4564001364e949/chatbot/6699226de730b70013fc3b67/settings?active=bot_detail
+
 
 export const botDefaultLanguages = [
     { code: 'da', name: 'Danish - da' },

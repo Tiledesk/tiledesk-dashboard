@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, URL_kb, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -1083,14 +1083,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
     dialogRef.afterClosed().subscribe(result => {
 
-      this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
-      if (result && result.chatbot) {
+      console.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
+      if (result && result.chatbot && result.redirectTo === "block") {
 
         let faqkb = {
           createdAt: new Date(),
           _id: chatbot._id
         }
         goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      } else if (result && result.chatbot && result.redirectTo === "settings") {
+        let faqkb = {
+          createdAt: new Date(),
+          _id: chatbot._id
+        }
+        goToCDSSettings(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
 
