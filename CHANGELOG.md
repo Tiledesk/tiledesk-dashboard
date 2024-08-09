@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.12-rc1
+- Improves the modal displayed to edit the Knowledge base chatbot
+
 ### 2.7.9-rc1
 - Adds tooltips and documentation links to the AI ​​settings modal window
 - Adds images to the Knowledge Base tour
