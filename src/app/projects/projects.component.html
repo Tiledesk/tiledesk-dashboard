@@ -329,6 +329,7 @@
               'tier0': project?.plan_badge_background_type === 'free_plan_badge', 
               'tier1': project?.plan_badge_background_type === 'a_plan_badge',
               'tier2': project?.plan_badge_background_type === 'b_plan_badge',
+              'tier2A': project?.plan_badge_background_type === 'bb_plan_badge',
               'tier3': project?.plan_badge_background_type === 'c_plan_badge',
               'tierX': project?.id_project?.status === 0}">
             </div> 
@@ -338,6 +339,7 @@
                   'free--plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
                   'a--plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
                   'b--plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                  'bb--plan-badge': project?.plan_badge_background_type === 'bb_plan_badge', 
                   'c--plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
                   'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge',
                   'deleted-project-badge': project?.id_project?.status === 0

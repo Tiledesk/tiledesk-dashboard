@@ -47,7 +47,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public context_placeholder: string
   wasOpenedFromThePreviewKBModal: boolean
 
-  private modelDefaultValue = "gpt-4o-mini";
+  private modelDefaultValue = "gpt-4o";
   private maxTokensDefaultValue = 256;
   private temperatureDefaultValue = 0.7
   private topkDefaultValue = 4
@@ -363,8 +363,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.model_list[3].value;
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
+<<<<<<< HEAD
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens = this.maxTokensDefaultValue;
+=======
+    // console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
+    this.max_tokens =  this.maxTokensDefaultValue;
+>>>>>>> master-PRE
     this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
     this.temperature = this.temperatureDefaultValue;

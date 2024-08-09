@@ -344,6 +344,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     }, () => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+      this.getFaqKbByProjectId();
     });
 
   }
@@ -658,6 +659,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     }, () => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.faqKbName = null;
+      this.getFaqKbByProjectId();
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
   }

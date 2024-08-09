@@ -346,8 +346,9 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         (this.profile_name === 'free' && this.trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        // this.presentModalFeautureAvailableFromBPlan()
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -361,6 +362,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         appTitle === 'Send transcript by email') &&
       ((this.profile_name === PLAN_NAME.D) ||
         (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
         (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
       if (!this.appSumoProfile) {
@@ -911,7 +913,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E , plan_name_2: PLAN_NAME.EE})
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });

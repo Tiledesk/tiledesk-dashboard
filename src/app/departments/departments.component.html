@@ -345,10 +345,14 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "Departments" | translate }}
-                          <span
-                            *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
+                          <span *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.B && !subscription_is_active || profile_name === PLAN_NAME.E && !subscription_is_active  || profile_name === PLAN_NAME.EE && !subscription_is_active || profile_name === PLAN_NAME.C && !subscription_is_active || profile_name === PLAN_NAME.F && !subscription_is_active || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
                             class="from-b-plan-badge"> 
-                            {{'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
+                              <span *ngIf="!isAppSumo"> 
+                                {{'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
+                              </span>
+                              <span *ngIf="isAppSumo">  
+                                {{'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+                              </span>
                            </span>
                         </span>
                       </h3>

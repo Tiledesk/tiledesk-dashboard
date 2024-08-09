@@ -31,7 +31,7 @@ import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
 
 const swal = require('sweetalert');
-
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-ws-requests-list',
@@ -995,23 +995,33 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalFeautureAvailableOnlyWithPlanC() {
-    const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = this.cPlanOnly
+    Swal.fire({
+
+      title: this.upgradePlan,
+      text: this.cPlanOnly,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancelLbl,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancelLbl,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+    
+      // content: el,
+      // icon: "info",
+      // buttons: {
+      //   cancel: this.cancelLbl,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // console.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePay) {
           if (this.CURRENT_USER_ROLE === 'owner') {
@@ -1932,7 +1942,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // + '&projectname=' + this.projectName
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId
     // '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&role=' + this.CURRENT_USER_ROLE
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + encodeURIComponent(this.projectName) + '&role=' + this.CURRENT_USER_ROLE
     // + '&prechatform=' + false + '&callout_timer=' + false + '&align=right';
     window.open(url, '_blank');
   }

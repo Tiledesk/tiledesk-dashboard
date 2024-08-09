@@ -451,8 +451,9 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
       (this.profile_name === 'free' && this.trial_expired === true)) {
       if (!this.appSumoProfile) {
-        // this.presentModalFeautureAvailableFromBPlan()
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+       
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -460,6 +461,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       }
     } else if ((this.profile_name === PLAN_NAME.D) ||
       (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
       (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
 
@@ -471,22 +473,32 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName //this.featureAvailableFromBPlan
-    swal({
-      content: el,
+    this.logger.log('[DEPT-EDIT-ADD] presentModalFeautureAvailableFromTier2Plan projectId',this.projectId)
+    
+    // const el = document.createElement('div')
+    // el.innerHTML = planName //this.featureAvailableFromBPlan
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.isVisiblePAY) {
           this.logger.log('[DEPT-EDIT-ADD] HERE 1')
           if (this.USER_ROLE === 'owner') {
@@ -513,22 +525,31 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      // content: el,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.upgradePlan,
+      text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
@@ -699,7 +720,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -983,6 +1004,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     )
     .subscribe((project) => {
       this.project = project
+      this.projectId = project._id
       // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
     });
   }
@@ -1209,7 +1231,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
 
                 if (divHeight && lineHeight) {
-                  lines = divHeight / lineHeight;
+                  lines = Math.round(divHeight / lineHeight);
                   this.logger.log('[DEPT-EDIT-ADD] - GET BOT BY ID - elem Sidebar Description lines', lines)
                 }
 
