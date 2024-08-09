@@ -9,7 +9,6 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
-import { timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -81,13 +80,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
-
-
-
-
   //analytics
   // SHOW_TABLE: boolean = false;
   CURRENT_USER: any;
+  CURRENT_USER_ID: string
   project: Project;
   project_name: string;
   id_project: string;
@@ -183,7 +179,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasAlreadyVisitedKb: string = 'false'
 
   private dialogRefHookBoot: MatDialogRef<any>;
-  timer: number = 2000
+  timer: number = 500;
   hasCickedAiSettingsModalBackdrop: boolean = false
   public hideHelpLink: boolean;
   constructor(
@@ -208,12 +204,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private shepherdService: ShepherdService,
-  
+
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
 
   }
 
@@ -246,34 +242,44 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   ngAfterViewInit() {
-    const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
+    // const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
+
+  }
+
+  presentKBTour() {
+    const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
     this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
     if (!tourShowed) {
       setTimeout(() => {
-        this.shepherdService.defaultStepOptions = defaultStepOptions;
-        this.shepherdService.modal = true;
-        this.shepherdService.confirmCancel = false;
-        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
-        if (!this.chatbotsUsingNamespace) {
-          // steps.filter(obj => obj.id !== "kb-tour-step-6-A")
-          steps.splice(3, 1);
-        } else {
-          steps.splice(4, 1);
+        const addButtonEl = <HTMLElement>document.querySelector('#kb-add-content');
+        this.logger.log('[KNOWLEDGE-BASES-COMP] addButtonEl ', addButtonEl)
+        if (addButtonEl) {
+          this.shepherdService.defaultStepOptions = defaultStepOptions;
+          this.shepherdService.modal = true;
+          this.shepherdService.confirmCancel = false;
+          const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+          if (!this.chatbotsUsingNamespace) {
+            steps.splice(3, 1);
+          } else {
+            steps.splice(4, 1);
+          }
+          this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+          this.shepherdService.start();
+
+          // this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
+          this.localDbService.setInStorage(`tour-shown-${this.CURRENT_USER_ID}`, 'true')
         }
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] shepherd steps', steps, 'chatbotsUsingNamespace ', this.chatbotsUsingNamespace)
-        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-        this.shepherdService.start();
-
-        this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
-
       }, this.timer);
     }
+    // }
   }
 
   restartTour() {
     this.timer = 0
-    this.localDbService.removeFromStorage(`tour-shown-${this.id_project}`)
-    this.ngAfterViewInit()
+    // this.localDbService.removeFromStorage(`tour-shown-${this.id_project}`)
+    this.localDbService.removeFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
+    // this.ngAfterViewInit()
+    this.presentKBTour()
     // this.shepherdService.start();
   }
 
@@ -302,22 +308,49 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.project_name = project.name;
         this.id_project = project._id;
 
-        const currentUrl = this.router.url;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
-        if (currentUrl.indexOf('/knowledge-bases') !== -1) {
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
-          const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
-          if (storedHasAlreadyVisitedKb) {
-            this.hasAlreadyVisitedKb = 'true'
-          }
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
-          this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
-          this.getAllNamespaces()
-        }
-        // 
+        // const currentUrl = this.router.url;
+        // this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
+        // if (currentUrl.indexOf('/knowledge-bases') !== -1) {
+        //   console.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
+        //   const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
+        //   if (storedHasAlreadyVisitedKb) {
+        //     this.hasAlreadyVisitedKb = 'true'
+        //   }
+        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
+        //   this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
+          
+        //   this.getAllNamespaces()
+        // }
+       
 
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+      }
+    });
+  }
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      this.profile_name = project.profile.name
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+    }, error => {
+      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID * COMPLETE * ');
+
+      const currentUrl = this.router.url;
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
+      if (currentUrl.indexOf('/knowledge-bases') !== -1) {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
+        const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
+        if (storedHasAlreadyVisitedKb) {
+          this.hasAlreadyVisitedKb = 'true'
+        }
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
+        this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
+        
+        this.getAllNamespaces()
       }
     });
   }
@@ -1086,30 +1119,30 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       this.logger.log(`[KNOWLEDGE-BASES-COMP] DIALOG GO TO CDS after closed result:`, result);
 
-      if (result && result.chatbot) {
+      //   if (result && result.chatbot) {
+
+      //     let faqkb = {
+      //       createdAt: new Date(),
+      //       _id: chatbot._id
+      //     }
+      //     goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+
+      //   }
+
+      if (result && result.chatbot && result.redirectTo === "block") {
 
         let faqkb = {
           createdAt: new Date(),
           _id: chatbot._id
         }
         goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-
+      } else if (result && result.chatbot && result.redirectTo === "settings") {
+        let faqkb = {
+          createdAt: new Date(),
+          _id: chatbot._id
+        }
+        goToCDSSettings(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
-
-      // if (result && result.chatbot && result.redirectTo === "block") {
-
-      //   let faqkb = {
-      //     createdAt: new Date(),
-      //     _id: chatbot._id
-      //   }
-      //   goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-      // } else if (result && result.chatbot && result.redirectTo === "settings") {
-      //   let faqkb = {
-      //     createdAt: new Date(),
-      //     _id: chatbot._id
-      //   }
-      //   goToCDSSettings(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-      // }
 
 
     });
@@ -1191,12 +1224,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         selectedNamespace: this.selectedNamespace,
       },
     });
-    dialogRef.backdropClick().subscribe((event) => {  
-      this.logger.log('AI model Backdrop clicked', event);  
+    dialogRef.backdropClick().subscribe((event) => {
+      this.logger.log('AI model Backdrop clicked', event);
       this.hasCickedAiSettingsModalBackdrop = true
-      const customevent = new CustomEvent("on-backdrop-clicked", { detail:  this.hasCickedAiSettingsModalBackdrop  });
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasCickedAiSettingsModalBackdrop });
       document.dispatchEvent(customevent);
-    }); 
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreviewSettings] Dialog after closed result: ', result);
       if (result && result.action) {
@@ -1481,8 +1514,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getFaqKbByProjectId() {
-    // this.showSpinner = true
-
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
@@ -1515,11 +1546,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);
-      // this.showSpinner = false;
+
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] GET BOTS COMPLETE');
       // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-      // this.showSpinner = false;
     });
 
   }
@@ -1641,9 +1671,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
+      console.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
+        this.CURRENT_USER_ID = user._id
       }
     });
   }
@@ -1651,17 +1682,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-  getProjectById(projectId) {
-    this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-      this.profile_name = project.profile.name
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
-    }, error => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID * COMPLETE * ');
-    });
-  }
+ 
 
   // startPooling() {
   //   this.interval_id = setInterval(() => {
@@ -1739,7 +1760,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getListOfKb(params?: any, calledby?: any) {
-    //this.showSpinner = true
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
@@ -1776,9 +1796,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.showSpinner = false
       this.getKbCompleted = false
     }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
+      console.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
 
+      this.presentKBTour()
 
     })
   }

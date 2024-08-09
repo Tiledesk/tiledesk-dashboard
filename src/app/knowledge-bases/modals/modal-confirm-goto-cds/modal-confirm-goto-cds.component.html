@@ -14,7 +14,7 @@
 <div mat-dialog-content>
 
 
-    <div class="back-to-btns" *ngIf="hasClickedInstallBtn" (click)="hasClickedBackFromInstall()">
+    <div class="back-to-btns" *ngIf="hasClickedInstallBtn || hasClickedEditBtn" (click)="hasClickedBackFromInstall()">
         <span class="material-icons-outlined" >
             chevron_left
         </span>
@@ -31,13 +31,16 @@
         
 
         <div class="mat-dialog-content-item" (click)="hasClickedInstall()"
-         [ngClass]="{'expand-install-column': hasClickedInstallBtn , 'mat-dialog-content-item-first-state': !hasClickedInstallBtn}">
+         [ngClass]="{'expand-install-column': hasClickedInstallBtn , 'collapse-install-column': hasClickedEditBtn, 'mat-dialog-content-item-first-state': !hasClickedInstallBtn}">
 
          
             <div class="mat-dialog-content-item-title" *ngIf="!hasClickedInstallBtn"> 
                 {{'Install' | translate}} 
             </div>
-            <div class="mat-dialog-content-item-desc" *ngIf="!hasClickedInstallBtn"> Install on your website </div>
+            <div class="mat-dialog-content-item-desc" *ngIf="!hasClickedInstallBtn"> 
+                <!-- Install on your website -->
+                {{'InstallOnYourWebsite' | translate}}
+            </div>
 
             <div class="mat-dialog-content-item-desc" style="position: relative;" *ngIf="hasClickedInstallBtn"> 
 
@@ -73,27 +76,37 @@
                       [ngClass]="{'has--copied--text' : has_copied}" >
                       {{ 'Copied' | translate }}
                 </div>
-            
             </div>
-            
-
         </div>
         <!-- (click)="onOkPresssed()" -->
-        <div (click)="onOkPresssed()" class="mat-dialog-content-item" 
-            [ngClass]="{'collapse-edit-column': hasClickedInstallBtn,  'mat-dialog-content-item-first-state': !hasClickedInstallBtn}">
+        <div *ngIf="!hasClickedEditBtn" class="mat-dialog-content-item" (click)="hasClickedEdit()"
+            [ngClass]="{'collapse-edit-column': hasClickedInstallBtn, 'expand-edit-column': hasClickedEditBtn, 'mat-dialog-content-item-first-state': !hasClickedInstallBtn }">
 
-            <div class="mat-dialog-content-item-title"> {{'Edit' | translate}} </div> 
-            <div class="mat-dialog-content-item-desc" [ngClass]="{'mat-dialog-content-item-desc-center-text': !hasClickedInstallBtn }"> 
+            <div  class="mat-dialog-content-item-title"> {{'Edit' | translate}} </div> 
+            <div  class="mat-dialog-content-item-desc" [ngClass]="{'mat-dialog-content-item-desc-center-text': !hasClickedInstallBtn }"> 
                 <!-- Edit your chatbot with the powerful Chatbot Design Studio if you want to add features as buttons, human handoff, advanced AI etc.  -->
-                {{'ModifyYourChatbotWithThePowerfulCDS'| translate}}
+                <!-- {{'ModifyYourChatbotWithThePowerfulCDS'| translate}} -->
+                {{'ModifyYourChatbotWithThePowerfulCDS_v2'| translate}}
                  <!-- <span class="edit-text-wpr"> 
                     <span class="link-to-cds" (click)="goToCDSBlock()"> {{ 'ModifyTheWelcomeMessage' | translate }} </span> <span>  {{'ChangeYourChatbot' | translate }} </span> <span class="link-to-cds" (click)="goToCDSSettings()"> {{'NameOrIcon' | translate }} </span>  <span>  {{'AddButtonsOrEnhanceYourAIWithChatbotDesign' | translate }} </span>
                 </span> -->
             </div>
-
-
         </div>
 
+        <div class="mat-dialog-content-item-desc" style="position: relative;width: 100%;padding-bottom: 26px;" *ngIf="hasClickedEditBtn"> 
+           <div class="edit-btn-wpr">
+                <div class="edit-btn" (click)="goToCDSBlock()"> 
+                    <!-- Modify the welcome message -->
+                    {{ 'ModifyTheWelcomeMessage' | translate }}
+
+                </div>
+                <div class="edit-btn" (click)="goToCDSSettings()"> 
+                    {{'ChangeNameOrIconOfYourChatbot' | translate }}
+                </div>
+           </div>
+            
+
+        </div>
     </div>
     
     

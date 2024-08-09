@@ -183,8 +183,8 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
         on: '',
       },
       // STEPS_BUTTONS.cancel,
-      buttons: [ STEPS_BUTTONS.cancel],
-      classes: 'step-with-image custom-class-name-2',
+      buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.cancel],
+      classes: 'step-with-image custom-cancel-button',
       id: 'kb-tour-step-5',
       // title: 'That\'s it!',
       text:`

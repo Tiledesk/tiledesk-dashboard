@@ -1112,11 +1112,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
    
     project['role'] =  project_role
     localStorage.setItem('last_project', JSON.stringify(prjct_user))
+    
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
     if (id_project !== this.projectId) {
      
       this.auth.projectSelected(project, 'navbar')
-      this.router.navigate([`/project/${id_project}/home`]);    
+      this.router.navigate([`/project/${id_project}/home`]);  
+      // console.log('[NAVBAR] goToHome prjct ', project )  
     }
   }
 

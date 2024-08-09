@@ -2984,6 +2984,19 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   margin-top: 6px;
 }
 
+.custom-cancel-button .shepherd-content .shepherd-footer .cancel-button {
+
+  background: #3288e6 !important;
+  color: #FFF;
+  font-weight: 400;
+}
+
+.custom-cancel-button .shepherd-content .shepherd-footer .cancel-button:hover { 
+  color: #FFF;
+  background: #196fcc !important;
+}
+
+/* ********************************** */
 
 .overlay-backdrop {
   background:  #191d2285;

@@ -23,6 +23,7 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   projectId: string;
   has_copied = false;
   hasClickedInstallBtn: boolean = false
+  hasClickedEditBtn: boolean = false
 
 
 
@@ -61,12 +62,21 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   }
 
   hasClickedInstall() {
-    this.logger.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedInstall ')
+    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedInstall ')
     this.hasClickedInstallBtn = true;
   }
 
   hasClickedBackFromInstall() {
+    
     this.hasClickedInstallBtn = false;
+    this.hasClickedEditBtn = false;
+    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedBackFromInstall hasClickedInstallBtn ', this.hasClickedInstallBtn)
+    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedBackFromInstall hasClickedEditBtn ', this.hasClickedEditBtn)
+  }
+
+  hasClickedEdit() {
+    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedEdit ')
+    this.hasClickedEditBtn = true;
   }
 
   getWidgetUrl() {
@@ -115,10 +125,12 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   }
 
   goToCDSBlock() {
+    console.log('goToCDSBlock')
     this.dialogRef.close({ chatbot: this.chatbot, redirectTo: 'block' });
   }
 
   goToCDSSettings() {
+    console.log('goToCDSSettings')
     this.dialogRef.close({ chatbot: this.chatbot, redirectTo: 'settings' });
   }
 
