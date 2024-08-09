@@ -363,13 +363,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.selectedModel = this.model_list[3].value;
     this.selectedNamespace.preview_settings.model = this.modelDefaultValue
 
-<<<<<<< HEAD
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
     this.max_tokens = this.maxTokensDefaultValue;
-=======
-    // console.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
-    this.max_tokens =  this.maxTokensDefaultValue;
->>>>>>> master-PRE
     this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
     this.temperature = this.temperatureDefaultValue;
