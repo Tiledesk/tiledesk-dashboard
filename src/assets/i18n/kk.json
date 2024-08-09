@@ -475,9 +475,10 @@
     "Back": "Артқа",
     "WhatDoYouWantToDo":"Сіз не істегіңіз келеді?",
     "ModifyYourChatbotWithThePowerfulCDS": "Түймешіктер, адамның ауысуы, кеңейтілген AI және т.б. мүмкіндіктерді қосқыңыз келсе, чатботыңызды қуатты Chatbot Design Studio көмегімен өзгертіңіз.",
-    
-    "ModifyTheWelcomeMessage": "Сәлемдесу хабарын өзгерту,",
-    "ChangeYourChatbot": "чат ботыңызды өзгертіңіз",
+    "ModifyYourChatbotWithThePowerfulCDS_v2":"Chatbot Design Studio көмегімен сәлемдесу хабарыңызды өңдеңіз, чатботтың атын немесе белгішесін өзгертіңіз, түймелерді қосыңыз немесе AI-ды жақсартыңыз",
+    "InstallOnYourWebsite": "Веб-сайтыңызға орнатыңыз",
+    "ModifyTheWelcomeMessage": "Сәлемдесу хабарын өңдеңіз",
+    "ChangeNameOrIconOfYourChatbot": "Чат-боттың атын немесе белгішесін өзгертіңіз",
     "NameOrIcon": "аты немесе белгішесі,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "түймелерді қосыңыз немесе Chatbot Design Studio көмегімен AI-ды жақсартыңыз",
     

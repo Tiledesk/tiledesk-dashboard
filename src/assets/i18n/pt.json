@@ -475,9 +475,10 @@
     "Back": "Costas",
     "WhatDoYouWantToDo":"O que quer fazer?",
     "ModifyYourChatbotWithThePowerfulCDS": "Modifique o seu chatbot com o poderoso Chatbot Design Studio se quiser adicionar funcionalidades como botões, transferência humana, IA avançada, etc.",
-    
-    "ModifyTheWelcomeMessage": "Modifique a mensagem de boas-vindas,",
-    "ChangeYourChatbot": "mude o seu chatbot",
+    "ModifyYourChatbotWithThePowerfulCDS_v2":"Edite a sua mensagem de boas-vindas, altere o nome ou o ícone do seu chatbot, adicione botões ou melhore a sua IA com o Chatbot Design Studio",
+    "InstallOnYourWebsite": "Instale no seu site",
+    "ModifyTheWelcomeMessage": "Edite a mensagem de boas-vindas",
+    "ChangeNameOrIconOfYourChatbot": "Altere o nome ou o ícone do seu chatbot",
     "NameOrIcon": "nome ou ícone,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "adicione botões ou melhore a sua IA com o Chatbot Design Studio",
     

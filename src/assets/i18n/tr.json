@@ -476,8 +476,10 @@
     "Back": "Geri",
     "WhatDoYouWantToDo":"Ne yapmak istiyorsun?",
     "ModifyYourChatbotWithThePowerfulCDS": "Düğmeler, insan geçişi, gelişmiş yapay zeka vb. özellikler eklemek istiyorsanız, sohbet robotunuzu güçlü Chatbot Design Studio ile değiştirin.",
-    "ModifyTheWelcomeMessage": "Hoş geldiniz mesajını değiştirin,",
-    "ChangeYourChatbot": "chatbot'unuzu değiştirin",
+    "ModifyYourChatbotWithThePowerfulCDS_v2":"Karşılama mesajınızı düzenleyin, chatbot'unuzun adını veya simgesini değiştirin, düğmeler ekleyin veya Chatbot Tasarım Stüdyosu ile yapay zekanızı geliştirin",
+    "InstallOnYourWebsite": "Web sitenize yükleyin",
+    "ModifyTheWelcomeMessage": "Hoş geldiniz mesajını düzenleyin",
+    "ChangeNameOrIconOfYourChatbot": "Chatbotunuzun adını veya simgesini değiştirin",
     "NameOrIcon": "isim veya simge,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "Chatbot Tasarım Stüdyosu ile düğmeler ekleyin veya AI'nızı geliştirin",
     

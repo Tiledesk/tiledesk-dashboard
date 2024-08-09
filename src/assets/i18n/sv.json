@@ -476,9 +476,10 @@
     "Back": "Tillbaka",
     "WhatDoYouWantToDo":"Vad vill du göra?",
     "ModifyYourChatbotWithThePowerfulCDS": "Ändra din chatbot med den kraftfulla Chatbot Design Studio om du vill lägga till funktioner som knappar, mänsklig handoff, avancerad AI, etc.",
-    
-    "ModifyTheWelcomeMessage": "Ändra välkomstmeddelandet,",
-    "ChangeYourChatbot": "ändra din chatbot",
+    "ModifyYourChatbotWithThePowerfulCDS_v2":"Redigera ditt välkomstmeddelande, ändra din chatbots namn eller ikon, lägg till knappar eller förbättra din AI med Chatbot Design Studio",
+    "InstallOnYourWebsite": "Installera på din webbplats",
+    "ModifyTheWelcomeMessage": "Redigera välkomstmeddelandet",
+    "ChangeNameOrIconOfYourChatbot": "Промените име или икону вашег цхат бота",
     "NameOrIcon": "namn eller ikon,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "lägg till knappar eller förbättra din AI med Chatbot Design Studio",
     

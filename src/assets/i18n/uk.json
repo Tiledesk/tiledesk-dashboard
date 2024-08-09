@@ -476,9 +476,10 @@
     "Back": "Назад",
     "WhatDoYouWantToDo":"Що ти хочеш робити?",
     "ModifyYourChatbotWithThePowerfulCDS": "Змініть свій чат-бот за допомогою потужної Chatbot Design Studio, якщо ви хочете додати такі функції, як кнопки, ручна передача людей, розширений штучний інтелект тощо",
-    
-    "ModifyTheWelcomeMessage": "Змінити вітальне повідомлення,",
-    "ChangeYourChatbot": "змінити свій чат-бот",
+    "ModifyYourChatbotWithThePowerfulCDS_v2":"Відредагуйте своє вітальне повідомлення, змініть назву чи піктограму свого чат-бота, додайте кнопки або вдосконаліть свій ШІ за допомогою Chatbot Design Studio",
+    "InstallOnYourWebsite": "Встановіть на свій сайт",
+    "ModifyTheWelcomeMessage": "Відредагуйте вітальне повідомлення",
+    "ChangeNameOrIconOfYourChatbot": "Змініть назву або піктограму свого чат-бота",
     "NameOrIcon": "ім'я або значок,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "додайте кнопки або вдосконаліть свій ШІ за допомогою Chatbot Design Studio",
     

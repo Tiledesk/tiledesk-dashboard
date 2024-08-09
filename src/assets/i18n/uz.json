@@ -476,9 +476,10 @@
     "Back": "Orqaga",
     "WhatDoYouWantToDo":"What do you want to do?",
     "ModifyYourChatbotWithThePowerfulCDS": "Agar siz tugmalar, odam uzatish, ilg'or AI va hokazo kabi xususiyatlarni qo'shmoqchi bo'lsangiz, chatbotingizni kuchli Chatbot Design Studio bilan o'zgartiring.",
-    
-    "ModifyTheWelcomeMessage": "Xush kelibsiz xabarni o'zgartirish,",
-    "ChangeYourChatbot": "chatbotingizni o'zgartiring",
+    "ModifyYourChatbotWithThePowerfulCDS_v2": "Chatbot Design Studio yordamida xush kelibsiz xabaringizni tahrirlang, chatbotingiz nomi yoki belgisini o‘zgartiring, tugmalar qo‘shing yoki AIni yaxshilang.",
+    "InstallOnYourWebsite": "Veb-saytingizga o'rnating",
+    "ModifyTheWelcomeMessage": "Xush kelibsiz xabarni tahrirlang",
+    "ChangeNameOrIconOfYourChatbot": "Chatbotingiz nomi yoki belgisini o'zgartiring",
     "NameOrIcon": "ism yoki belgi,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "tugmalar qo'shing yoki Chatbot Design Studio yordamida AIni yaxshilang",
 
