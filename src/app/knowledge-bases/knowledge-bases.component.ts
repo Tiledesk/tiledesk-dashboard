@@ -1671,7 +1671,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
         this.CURRENT_USER_ID = user._id
@@ -1796,7 +1796,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.showSpinner = false
       this.getKbCompleted = false
     }, () => {
-      console.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
+      this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
 
       this.presentKBTour()

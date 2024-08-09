@@ -62,7 +62,7 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   }
 
   hasClickedInstall() {
-    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedInstall ')
+    this.logger.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedInstall ')
     this.hasClickedInstallBtn = true;
   }
 
@@ -70,12 +70,12 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
     
     this.hasClickedInstallBtn = false;
     this.hasClickedEditBtn = false;
-    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedBackFromInstall hasClickedInstallBtn ', this.hasClickedInstallBtn)
-    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedBackFromInstall hasClickedEditBtn ', this.hasClickedEditBtn)
+    this.logger.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedBackFromInstall hasClickedInstallBtn ', this.hasClickedInstallBtn)
+    this.logger.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedBackFromInstall hasClickedEditBtn ', this.hasClickedEditBtn)
   }
 
   hasClickedEdit() {
-    console.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedEdit ')
+    this.logger.log('[MODAL-CONFIRM-GOTO-CDS] AppConfigService hasClickedEdit ')
     this.hasClickedEditBtn = true;
   }
 
@@ -125,12 +125,12 @@ export class ModalConfirmGotoCdsComponent implements OnInit {
   }
 
   goToCDSBlock() {
-    console.log('goToCDSBlock')
+    this.logger.log('goToCDSBlock')
     this.dialogRef.close({ chatbot: this.chatbot, redirectTo: 'block' });
   }
 
   goToCDSSettings() {
-    console.log('goToCDSSettings')
+    this.logger.log('goToCDSSettings')
     this.dialogRef.close({ chatbot: this.chatbot, redirectTo: 'settings' });
   }
 
