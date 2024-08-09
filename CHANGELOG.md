@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.12
+- Deploys in production
+- Improves the modal displayed to edit the Knowledge base chatbot
+
 ### 2.7.11
 - Deploys in production
 - Adds tooltips and documentation links to the AI ​​settings modal window
