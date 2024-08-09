@@ -1603,7 +1603,6 @@
         "OopsYoudontBelongToTheProject": "وجه الفتاة! يبدو أنك لا تنتمي إلى هذا المشروع."
     },
     "HoursPage": {
-        "ActivateTimetables": "تفعيل ساعات العمل",
         "TheProject": "المشروع ",
         "IsSettedTo": "مضبوط على:",
         "YouAreCurrentlyAt": "أنت حاليا في:",
@@ -1627,7 +1626,22 @@
         "AnErrorHasOccurred": "حدث خطأ أثناء تحديث ساعات العمل",
         "ErrorSelectTheProjectTimezone": "حدد المنطقة الزمنية للمشروع",
         "Continue": "يكمل",
-        "UpgradeYourAccountToSetTeamOfficeHours": "قم بترقية حسابك لتعيين ساعات عمل الفريق وإعلام الزائرين عندما يعمل وكلاؤك!"
+        "UpgradeYourAccountToSetTeamOfficeHours": "قم بترقية حسابك لتعيين ساعات عمل الفريق وإعلام الزائرين عندما يعمل وكلاؤك!",
+        "NewSlot": "فتحة جديدة",
+        "ActivateTimetables": "تفعيل ساعات العمل",
+        "ActivateTimeSlot": "تفعيل الفترة الزمنية",
+        "GeneralOperatingHoursDescription": "سيتم تعيين المحادثات للوكلاء بناءً على حالة توفرهم التي تم تقييمها خلال ساعات العمل. يشير وقت العمل العام إلى المشروع بأكمله. لا يمكن لعملائك/مستخدميك طلب وكيل أثناء ساعات العمل دون الاتصال بالإنترنت وسيتم وضع طلباتهم تلقائيًا في قائمة الدردشات غير المخصصة. يمكنك أيضًا استخدام ساعات العمل للتشغيل الآلي باستخدام إجراء If ساعات التشغيل.",
+        "TimeSlotDescription": "تحدد فتحة ساعات التشغيل نطاقًا من الساعات التي يمكن استخدامها في الأتمتة للانتقال إلى الكتلة التالية استنادًا إلى التطابق بين الوقت الحالي وساعات الفتحة المحددة.",
+        "ResetToTz": "إعادة التعيين إلى ",
+        "YourCurrentTz": "المنطقة الزمنية الحالية الخاصة بك",
+        "CreateNewSlot": "إنشاء فتحة جديدة",
+        "SlotName": "اسم الفتحة",
+        "DeleteSlot": "حذف الفاصل الزمني",
+        "SureDeleteSlot": "هل أنت متأكد أنك تريد حذف الفتحة <b>{{slotName}}</b>؟",
+        "YesDelete": "نعم احذف",
+        "NoDelete": "لا",
+        "SlotDeleteSuccess": "تم حذف الفتحة بنجاح",
+        "ErrorOccurred": "حدث خطأ"
     },
     "KbPage": {
         "LearnMoreAboutKB": "تعرف على المزيد حول قاعدة المعرفة",
@@ -2595,6 +2609,7 @@
     "CRMImprovesCustomerRelationship": "يعمل CRM أو إدارة علاقات العملاء على تحسين إدارة علاقات العملاء من خلال إنشاء عرض 360 درجة للعميل",
     "CRMRecordsCustomerContactInformation": "يسجل CRM معلومات الاتصال بالعميل ، مثل عنوان البريد الإلكتروني ورقم الهاتف وغير ذلك الكثير حتى تتمكن من فهم تطور شبكة تفاعلات شركتك بشكل أفضل.",
     "AvailableFromThePlan": "متاح من خطة {{plan_name}}",
+    "AvailableFromThePlans": "متوفر من خطتي {{plan_name_1 }} و{{plan_name_2 }}",
     "AvailableWithThePlan":"متوفر مع خطة {{plan_name}}",
     "FeatureAvailableOnlyWithPaidPlans":"الميزة متاحة فقط مع الخطط المدفوعة",
     "MonitorGivesYouWhatYouNeedForSmartCollaboration": "ابق على اطلاع بما يحدث في فريقك طوال الوقت. تمنحك أداة المراقبة (صندوق وارد الفريق) ما تحتاجه للتعاون الذكي ، كل ذلك في مكان واحد",

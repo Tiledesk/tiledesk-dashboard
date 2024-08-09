@@ -3045,3 +3045,15 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 //   width: 100%;
 //   bottom: 0;
 // }
+
+.mat-progress-spinner {
+  position: absolute;
+  box-shadow: 0 0 0 4px #e8e9ed inset;
+  // box-shadow: 0 0 0 10px #e8e9ed inset;
+  border-radius: 50%;
+}
+
+.mat-progress-spinner::ng-deep circle {
+  // background-color: #2196F2 !important;
+  stroke: #2196F2 !important;
+}

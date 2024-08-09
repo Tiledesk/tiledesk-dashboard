@@ -352,11 +352,11 @@
                 {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
               </div>
             </ng-container>
-            <!-- !projectProfileData?.extra3 || (profile_name === PLAN_NAME.A) || (profile_name === PLAN_NAME.D) || (profile_name === PLAN_NAME.B && !subscription_is_active) ||  (profile_name === PLAN_NAME.E && !subscription_is_active) || (profile_name === 'Sandbox' && trial_expired) || (profile_name === 'free' && trial_expired) -->
+
             <ng-container *ngIf="dispayBadgeAvaibleFromInAppStore ">
               <div class="available-from-b-plan-badge b-plan-badge-color"
                 *ngIf="((app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center') || (app?.title === 'Send transcript by email'))">
-                {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
+                {{ 'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
               </div>
             </ng-container>
 

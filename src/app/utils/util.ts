@@ -400,6 +400,7 @@ export enum PLAN_NAME {
     C = 'Plus',
     D = 'Basic',
     E = 'Premium',
+    EE = 'Team',
     F = 'Custom'
 }
 
@@ -409,6 +410,7 @@ export enum PLAN_SEATS {
     Scale = 15,
     Basic = 1,
     Premium = 2,
+    Team = 4,
     Custom = 'Custom'
 };
 
@@ -417,13 +419,15 @@ export enum CHATBOT_MAX_NUM {
     free = 2, 
     Basic = 5,
     Premium = 20,
-    Custom = 20
+    Team = 50,
+    Custom = 50
 };
 
 export enum KB_MAX_NUM {
     free = 50, 
     Basic = 150,
     Premium = 300,
+    Team = 1000,
     Custom = 1000
 };
 
@@ -432,7 +436,8 @@ export const PLANS_LIST = {
     Sandbox:    { requests: 200,    messages: 0,    tokens: 100000,     email: 200,     chatbots: 2,       namespace: 1,   kbs: 50     },
     Basic:      { requests: 800,    messages: 0,    tokens: 2000000,    email: 200,     chatbots: 5,       namespace: 1,   kbs: 150    },
     Premium:    { requests: 3000,   messages: 0,    tokens: 5000000,    email: 200,     chatbots: 20,      namespace: 3,   kbs: 300    },
-    Custom:     { requests: 3000,   messages: 0,    tokens: 5000000,    email: 200,     chatbots: 20,      namespace: 3,   kbs: 1000   }
+    Team:       { requests: 5000,   messages: 0,    tokens: 10000000,   email: 200,     chatbots: 50,      namespace: 10,  kbs: 1000   },
+    Custom:     { requests: 5000,   messages: 0,    tokens: 10000000,   email: 200,     chatbots: 50,      namespace: 10,  kbs: 1000   }
 }
 
 // Basic plan
@@ -448,9 +453,9 @@ export const featuresPlanD = [
     'Team Inbox',
     'Make integration',
     "1 Knowledge Base",
-    '150 Contents for Knowledge Base', 
+    '150 contents across all Knowledge Bases', 
+    // '150 Contents for Knowledge Base', 
     '2,000,000 AI Tokens'
-    // '50,000 AI Tokens'
 ]
 // Basic plan
 export const highlightedFeaturesPlanD = [
@@ -461,7 +466,7 @@ export const highlightedFeaturesPlanD = [
 
 export const additionalFeaturesPlanD = [
     'Addional users at 8€/User',
-   'Addional Chat/mo at 10€/500 Conversations'
+    'Addional Chat/mo at 10€/500 Conversations'
 ]
 
 
@@ -478,7 +483,7 @@ export const featuresPlanE = [
     'Livechat Support',
     'Analytics',
     "3 Knowledge Base",
-    '300 Contents for Knowledge Base', 
+    '300 contents across all Knowledge Bases', 
     '5,000,000 AI Tokens'
     // '250,000 AI Tokens'
 ]
@@ -495,6 +500,35 @@ export const additionalFeaturesPlanE = [
     'Addional Chat/mo at 10€/500 Conversations'
 ]
 
+
+// Team plan 
+export const featuresPlanEE = [
+    'Widget Unbranding',
+    'WhatsApp Business',
+    'Facebook Messenger',
+    'Help center',
+    'Unlimited Departments',
+    'Unlimited Groups',
+    'Qapla\' integration',
+    'Data export',
+    'Livechat Support',
+    'Analytics',
+    "10 Knowledge Base",
+    '1,000 contents across all Knowledge Bases', 
+    '10,000,000 AI Tokens'
+]
+
+// Premium plan 
+export const highlightedFeaturesPlanEE = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 User' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '5,000 Chat/mo.' },
+    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '50 Chatbot' }
+]
+
+export const additionalFeaturesPlanEE = [
+    'Addional users at 16€/User',
+    'Addional Chat/mo at 10€/500 Conversations'
+]
 
 // Custom Plan
 export const featuresPlanF = [

@@ -38,9 +38,13 @@ import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AnalyticsService } from 'app/services/analytics.service';
-
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { QuotesService } from 'app/services/quotes.service';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -72,6 +76,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   project: Project;
   projects: any;
   projectId: string;
+  projectName: string;
   // user_is_available: boolean;
 
   USER_ROLE: string;
@@ -215,6 +220,36 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   areVisibleChatbot: boolean;
   displayKbHeroSection: boolean;
+
+  // QUOTES
+  isVisibleQuoteBtn: boolean;
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'determinate';
+  requests_count = 0;
+  requests_perc = 0;
+  requests_limit = 0;
+  
+  messages_count = 0;
+  messages_perc = 0;
+  messages_limit = 0;
+  
+  email_count = 0;
+  email_perc = 0;
+  email_limit = 0;
+
+  tokens_count = 0;
+  tokens_perc = 0;
+  tokens_limit = 0;
+
+  project_limits: any;
+
+  conversationsRunnedOut: boolean = false;
+  emailsRunnedOut: boolean = false;
+  tokensRunnedOut: boolean = false;
+  displayQuotaSkeleton: boolean = true
+
+  salesEmail: string
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -233,7 +268,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
     private departmentService: DepartmentService,
-    public localDbService: LocalDbService
+    public localDbService: LocalDbService,
+    private quotesService: QuotesService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -243,6 +279,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.logger.log('[HOME] custom_company_home_logo ', this.custom_company_home_logo)
     this.tparams = brand;
     this.selectedDaysId = 7;
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   ngOnInit() {
@@ -286,6 +323,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
+
+    
   }
 
   ngAfterViewInit() {
@@ -315,8 +354,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
+
+          
           this.project = project
-          this.projectId = this.project._id
+          this.projectId = this.project._id;
+          this.projectName = this.project.name
+
+          if (this.projectId) {
+            this.getProjectQuotes();
+          }
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
@@ -336,6 +382,110 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
+  }
+
+
+
+  getProjectQuotes() {
+    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
+      this.logger.log("[HOME] getProjectQuotes response: ", response);
+      this.logger.log("[HOME] getProjectQuotes: ", response);
+      this.project_limits = response;
+      if (this.project_limits) {
+        this.getQuotes()
+      }
+    }).catch((err) => {
+      this.logger.error("[HOME] getProjectQuotes error: ", err);
+      this.displayQuotaSkeleton = false
+    })
+  }
+
+  getQuotes() {
+    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[HOME] getAllQuotes response: ", resp)
+
+      this.logger.log("[HOME] project_limits: ", this.project_limits)
+      this.logger.log("[HOME] resp.quotes: ", resp.quotes)
+
+      this.messages_limit = this.project_limits.messages;
+      this.requests_limit = this.project_limits.requests;
+      this.email_limit = this.project_limits.email;
+      this.tokens_limit = this.project_limits.tokens;
+
+      // -----------------------------
+      // For test
+      // -----------------------------
+      // this.requests_limit = 1;
+      // this.email_limit = 1;
+      // this.tokens_limit = 1;
+
+      if (resp.quotes.requests.quote === null) {
+        resp.quotes.requests.quote = 0;
+      }
+      if (resp.quotes.messages.quote === null) {
+        resp.quotes.messages.quote = 0;
+      }
+      if (resp.quotes.email.quote === null) {
+        resp.quotes.email.quote = 0;
+      }
+      if (resp.quotes.tokens.quote === null) {
+        resp.quotes.tokens.quote = 0;
+      }
+
+      this.logger.log('[HOME] used requests', resp.quotes.requests.quote) 
+      this.logger.log('[HOME] requests_limit', this.requests_limit) 
+
+      this.logger.log('[HOME] used email', resp.quotes.email.quote) 
+      this.logger.log('[HOME] email_limit', this.email_limit) 
+
+
+      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote) 
+      this.logger.log('[HOME] tokens_limit', this.tokens_limit) 
+      if(resp.quotes.requests.quote >= this.requests_limit) {
+        this.conversationsRunnedOut = true;
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+      } else {
+        this.conversationsRunnedOut = false;
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+      }
+
+      if(resp.quotes.email.quote >= this.email_limit) {
+        this.emailsRunnedOut = true;
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+      } else {
+        this.emailsRunnedOut = false;
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+      }
+ 
+      if(resp.quotes.tokens.quote >= this.tokens_limit) {
+        this.tokensRunnedOut = true;
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+      } else {
+        this.tokensRunnedOut = false;
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+      }
+      
+      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
+      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
+      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
+      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+
+      this.requests_count = resp.quotes.requests.quote;
+      this.messages_count = resp.quotes.messages.quote;
+      this.email_count = resp.quotes.email.quote;
+      this.tokens_count = resp.quotes.tokens.quote;
+
+    }, (error) => {
+      this.logger.error("[HOME] get all quotes error: ", error)
+      this.displayQuotaSkeleton = false
+    }, () => {
+      this.logger.log("[HOME] get all quotes *COMPLETE*");
+      this.displayQuotaSkeleton = false
+    })
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
   }
 
   getProjectById(projectId) {
@@ -536,6 +686,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.auth.projectProfile(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'b_plan_badge'
 
+      } else if (this.prjct_profile_name === PLAN_NAME.EE) {
+        this.prjct_profile_name = PLAN_NAME.EE + ' plan'
+        this.profile_name_for_segment = this.prjct_profile_name
+        this.auth.projectProfile(this.profile_name_for_segment)
+        this.project['plan_badge_background_type'] = 'bb_plan_badge'
+
         // Custom plan
       } else if (this.prjct_profile_name === PLAN_NAME.F) {
         this.prjct_profile_name = PLAN_NAME.F + ' plan'
@@ -549,6 +705,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.prjct_profile_name !== PLAN_NAME.C &&
         this.prjct_profile_name !== PLAN_NAME.D &&
         this.prjct_profile_name !== PLAN_NAME.E &&
+        this.prjct_profile_name !== PLAN_NAME.EE &&
         this.prjct_profile_name !== PLAN_NAME.F
       ) {
         this.prjct_profile_name = this.prjct_profile_name + ' plan (UNSUPPORTED)'
@@ -1292,11 +1449,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      // this.displayAnalyticsConvsGraph = false;
-      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
@@ -1494,7 +1646,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
+        (this.profile_name === 'free' && this.prjct_trial_expired === true))
+      ) {
 
       if (!this.appSumoProfile) {
 
@@ -1507,8 +1660,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.D) ||
         (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-        (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))) {
+        (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))
+      ) {
       if (!this.appSumoProfile) {
         // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
@@ -1677,6 +1832,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   checkPlanAndPresentModal(appTitle) {
+    console.log('[HOME] checkPlanAndPresentModal appTitle', appTitle , 'appSumoProfile ', this.appSumoProfile)
     if (
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
@@ -1685,8 +1841,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        // this.presentModalFeautureAvailableFromBPlan()
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -1696,6 +1852,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.D) ||
         (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
         (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))) {
       if (!this.appSumoProfile) {
@@ -2064,23 +2221,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName //this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName //this.featureAvailableFromBPlan
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+     
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
 
         if (this.isVisiblePay) {
           // this.logger.log('[APP-STORE] HERE 1')
@@ -2160,23 +2325,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      // content: el,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.upgradePlan,
+      text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
@@ -3301,6 +3474,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
 
+ 
+
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
@@ -3858,7 +4033,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -4004,29 +4179,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-  // async _updatesDashletsPreferences() {
-  //   // conast dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-  //   this.logger.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
-  //   this.projectService.updateDashletsPreferences(
-  //     this.displayAnalyticsConvsGraph,
-  //     this.displayAnalyticsIndicators,
-  //     this.displayConnectWhatsApp,
-  //     this.displayCreateChatbot,
-  //     this.displayKnowledgeBase,
-  //     this.displayInviteTeammate,
-  //     this.displayCustomizeWidget,
-  //     this.displayNewsFeed)
-  //     .subscribe((res: any) => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
-
-  //     }, error => {
-  //       this.logger.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
-  //     }, () => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
-  //       return
-  //     });
-  // }
 
   async updatesDashletsPreferences(calledBy) {
     // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]

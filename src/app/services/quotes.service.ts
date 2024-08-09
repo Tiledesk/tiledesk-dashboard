@@ -89,7 +89,7 @@ export class QuotesService {
       }
 
       const url = this.SERVER_BASE_PATH + "projects/" + project_id;
-      this.logger.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
+      // console.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
 
       this.http.get(url, httpOptions)
           .toPromise().then( async (project: any) => {
@@ -142,7 +142,14 @@ export class QuotesService {
         return limits;
       } else {
         limits = PLANS_LIST.FREE_TRIAL;
-        return limits;
+        // return limits;
+        if (project.profile.quotes) {
+          let profile_quotes = project?.profile?.quotes;
+          const merged_quotes = Object.assign({}, limits, profile_quotes);
+          return merged_quotes;
+        } else {
+            return limits;
+        }
       }
     }
   }

@@ -1,0 +1,591 @@
+<!-- <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+    {{ "Hours" | translate }}
+</div> -->
+<!-- <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ 'Settings' | translate }}
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+<!-- <span class="navbar-brand navbar-brand-title">
+  {{ "Hours" | translate }}
+</span> -->
+
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+ 
+  <div class="page-title--sidebar-settings"
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+    {{ 'Hours' | translate }}
+  </div>
+  
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+    <div class="content-wpr" style="display: flex;">
+
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+
+        <div class="row">
+          <div class="col-md-12">
+
+            <div class="card card card--no-border" style="padding-bottom: 25px;margin-top: 5px;">
+
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
+
+                <div class="selector-bar">
+
+                  <div class="slot-add-selector">
+                    <div class="slot-name">General</div>
+                  
+                    <!-- ----------- MAT-MENU ----------- -->
+                    <button mat-icon-button [matMenuTriggerFor]="slotList" aria-label="namespaceList">
+                      <mat-icon>unfold_more</mat-icon>
+                    </button>
+                  
+                    <mat-menu #slotList="matMenu">
+                      <!-- Add slot option -->
+                      <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item (click)="presentModalNewSlot()">
+                        <mat-icon>add</mat-icon>
+                        <span>New Slot</span>
+                      </button>
+
+                      <!-- General Operating Hours option -->
+                      <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item (click)="onSelectGeneralOperatingHours()">
+                        <!-- // to be translated -->
+                        <span>General</span>
+                      </button>
+                    
+                      <!-- (click)="onSelectNamespace(namespace)" -->
+                      <!-- <button [ngClass]="{'active--namespace': namespace.name === selectedNamespace.name}" mat-menu-item
+                        *ngFor="let slot of timeSlotsArray">
+                        <span>{{slot}}</span>
+                      </button> -->
+
+                      <!-- Slot list options -->
+                      <button mat-menu-item *ngFor="let slot of timeSlotsArray" (click)="onSelectSlot(slot)">
+                        <span>{{slot.name}}</span>
+                      </button>
+
+                    </mat-menu>
+                  </div>
+                  <!-- <mat-form-field>
+                    <mat-label>Choose an option</mat-label>
+                    <mat-select>
+                      <mat-option value="option1">Option 1</mat-option>
+                      <mat-option value="option2">Option 2</mat-option>
+                      <mat-option value="option3">Option 3</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+
+                  <button class="btn btn-primary" style="float:right" (click)="updateProject()">
+                    {{ "Save" | translate }}
+                  </button>
+                </div>
+
+                <!-- <div class="row">
+                  <div class="col-md-12">
+                    <button class="btn btn-primary" style="float:right" (click)="updateProject()">
+                      {{ "Save" | translate }}
+                    </button>
+
+                  </div>
+                </div> -->
+
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <div class="oaerror info" style="margin-bottom: 16px;">
+                      <!-- color: #566787; font-weight:500; font-size: 14px; -->
+                      <p
+                        style=" font-size: 16px; font-family: 'Poppins','Roboto', 'Arial', sans-serif; color: #394f5a;">
+                        {{ "HoursPage.ActivateTimetables" | translate }}
+                      </p>
+
+
+                      <!-- <label class="container" for="hoursActive"
+                    style="margin-left: 0px; margin-bottom: 6px; color:#7695a5; font-weight:300">
+                    {{ "HoursPage.OpeningHoursActivated" | translate }}
+                    <input type="checkbox" id="hoursActive" (change)="onChange($event)"
+                      [checked]="isActiveOperatingHours" />
+                    <span class="checkmark" style="margin-top: 2px;"></span>
+                  </label> -->
+
+                      <div class="checkbox">
+                        <label class="title-attribute">
+                          <input type="checkbox" class="form-check-input" id="exampleCheck1" (change)="onChange($event)"
+                            [checked]="isActiveOperatingHours">
+                          <span style="font-size: 14px; color: #7695a5;">
+                            {{ "HoursPage.OpeningHoursActivated" | translate }}
+                          </span>
+                        </label>
+                      </div>
+
+                      <!--
+                  <div class="onoffswitch">
+                    <input (change)="onChange($event)" 
+                    [checked]="isActiveOperatingHours" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                    <label class="onoffswitch-label" for="myonoffswitch">
+                      <span class="onoffswitch-inner"></span>
+                      <span class="onoffswitch-switch"></span>
+                    </label>
+                  </div>
+
+                  <div class="info-div"> 
+                  <i class="material-icons" style="color: #5e9ded; vertical-align: middle;"> info </i> 
+                    <span style="color:#7695a5"> {{ "HoursPage.OpeningHoursActivated" | translate }} </span> 
+                  </div>
+                -->
+
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <div class="oaerror info" [ngClass]="{'oaerror_info_disabled' : !isActiveOperatingHours}">
+                      <div class="row">
+
+                        <div class="col-sm-12">
+                          <p style=" font-size: 16px; font-family: 'Poppins', sans-serif !important; color: #394f5a;"
+                            [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                            Time zone
+                          </p>
+                        </div>
+
+                        <!-- /* THE PROJECT TIME ZONE IS SETTED TO */ -->
+                        <div class="col-sm-6 custom_col">
+                          <p style="color: #7695a5; font-size: 14px; margin-bottom: 8px"
+                            [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                            <!-- The project timezone is setted to: -->
+                            {{ "HoursPage.TheProject" | translate }} time zone {{ "HoursPage.IsSettedTo" | translate }}
+                          </p>
+                          <!-- // TOOLTIP -->
+                          <!-- <span class="tooltipx">time zone <span class="tooltiptext">{{ "HoursPage.CurrentTimezone" | translate }} (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}</span> </span>  -->
+
+                          <!-- // note: with ngModel is set the previously selected value on the select option dropdown -->
+                          <ng-select #selectElem class="custom" [(ngModel)]="current_prjct_timezone_name"
+                            (change)="setSelectedTimeZone()" style="margin-bottom: 6px;"
+                            [disabled]="!isActiveOperatingHours">
+                            <ng-option *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value"
+                              style="height: 16px !important" [disabled]="!isActiveOperatingHours">
+                              {{ tz.tz }}
+                            </ng-option>
+                          </ng-select>
+                        </div>
+
+                        <!-- /* YOU ARE CURRENTLY AT */ -->
+                        <div class="col-sm-6">
+                          <p style="color: #7695a5; font-size: 14px; margin-bottom: 6px"
+                            [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                            {{ "HoursPage.YouAreCurrentlyAt" | translate }} <span style="font-weight:400;"> (UTC
+                              {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}} </span>
+                          </p>
+                          <button class="btn btn-primary"
+                            [disabled]="timeZoneSelectedIsUnlikeCurrentTimezone === false || !isActiveOperatingHours"
+                            (click)="setProjectToYourTimezone()"
+                            style="padding-top: 9px; padding-bottom: 9px; padding-right: 15px; padding-left: 15px; margin-top: 2px;">
+                            <span class="tooltipx">{{ "HoursPage.SetProjectToYourTimeZone" | translate }}
+                              <span *ngIf="timeZoneSelectedIsUnlikeCurrentTimezone === false" class="tooltiptext">
+                                {{ "HoursPage.TheProjectIsAlreadySettedOnYourTZ" | translate }}
+                              </span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card" [ngClass]="{'card_disabled' : !isActiveOperatingHours}">
+
+                      <div class="card-content table-responsive">
+                        <table class="table table-hover oh-table">
+                          <thead>
+                            <tr>
+                              <th>
+                                <span style="color: #394f5a; font-family:'Poppins','Roboto', 'Arial', sans-serif"
+                                  [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                                  <!-- <strong> -->
+                                  {{ "HoursPage.Day" | translate }}
+                                  <!-- </strong> -->
+                                </span>
+                              </th>
+
+                              <th colspan="2">
+                                <span style="color: #394f5a; font-family:'Poppins','Roboto', 'Arial', sans-serif"
+                                  [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                                  <strong>
+                                    {{ "HoursPage.Status" | translate }}
+                                  </strong>
+                                </span>
+                              </th>
+
+                              <!-- // FOR DEBUG -->
+                              <!-- <th>
+                            <span style="color: #566787">
+                              <strong>
+                                Hours
+                              </strong>
+                            </span>
+                          </th> -->
+
+                              <th style="padding-left: 25px;">
+                                <!--  color: #566787  -->
+                                <span style="color: #394f5a; font-family: 'Poppins','Roboto', 'Arial', sans-serif"
+                                  [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                                  <strong>
+                                    {{ "HoursPage.Morning" | translate }}
+                                  </strong>
+                                </span>
+                              </th>
+
+                              <th></th>
+
+                              <th style="padding-left: 25px;">
+                                <span style="color: #394f5a; font-family: 'Poppins','Roboto', 'Arial', sans-serif"
+                                  [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                                  <strong>
+                                    {{ "HoursPage.Afternoon" | translate }}
+                                  </strong>
+                                </span>
+                              </th>
+
+                            <tr>
+                          </thead>
+
+                          <tbody>
+                            <tr *ngFor="let d of days">
+
+                              <td>
+                                <span style="color: #7695a5; font-weight: 300"
+                                  [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                                  {{ d.weekday | translate}}
+                                </span>
+                              </td>
+
+                              <td style="white-space: nowrap; width: 1%; padding-bottom: 6px;">
+                                <label class="switch" style="margin-bottom: 0px;">
+                                  <input type="checkbox"
+                                    (change)="onChangeOpenedClosedStatus($event, d?._id, d?.weekday)"
+                                    [checked]="d?.isOpen == true" [disabled]="!isActiveOperatingHours">
+                                  <!-- [ngClass]="{'open_close_switch_disabled' : !isActiveOperatingHours}" -->
+                                  <span class="slider round"
+                                    [ngClass]="{'open_close_switch_disabled' : !isActiveOperatingHours}"></span>
+                                </label>
+                              </td>
+
+                              <td>
+                                <span *ngIf="d.isOpen" class="opened_label"
+                                  [ngClass]="{'opened_closed_label_disabled' : !isActiveOperatingHours}">
+                                  <!-- APERTO -->
+                                  {{ "HoursPage.Opened" | translate }}
+                                </span>
+                                <span *ngIf="!d.isOpen" class="closed_label"
+                                  [ngClass]="{'opened_closed_label_disabled' : !isActiveOperatingHours}">
+                                  <!-- CHIUSO -->
+                                  {{ "HoursPage.Closed" | translate }}
+                                </span>
+                              </td>
+
+                              <!-- // FOR DEBUG -->
+                              <!-- <td>
+                            <tr *ngFor="let oh of d.operatingHours">
+                              <td> {{ oh.start }} </td>
+                              <td> {{ oh.end }}  </td>
+                            </tr>
+                          </td> -->
+
+                              <!-- ----------------------------------------------- -->
+                              <!-- AM HOUR -->
+                              <!-- ----------------------------------------------- -->
+                              <td style="padding-top: 6px; padding-bottom: 6px;">
+
+          
+                              <!-- ----------------------------------------------- -->
+                              <!-- AM START HOUR -->
+                              <!-- ----------------------------------------------- -->
+                                <!-- AM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
+                                <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
+                                  rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openAmStart(d?._id)' style="padding-right: 4px; color: #7695a5">
+                                  <span class="edithours_btnlabel">
+                                    {{ "HoursPage.From" | translate }}
+                                  </span>
+                                
+                                </button>
+
+                                <!-- AM START HOUR - THE INPUT/VISUALIZATION FIELD -->
+                                <input [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                  (input)="onChangeAmStartFromArrow($event.target.value, d?._id)"
+                                  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="time"
+                                  value="{{ d.operatingHoursAmStart }}">
+
+                                <!-- AM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
+                                <!-- <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
+                                  rel="tooltip" title="edit hour"
+                                  class="btn btn-primary btn-simple btn-xs custom_schedule_btn"
+                                  (click)='openAmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
+                                  <i class="material-icons">schedule</i>
+                                </button> -->
+
+                                <br class="newline">
+
+                                <!-- =================================== AM END HOUR ========================================== -->
+                                <!-- AM END HOUR - ONLY THE LABEL-BTN 'TO' -->
+                                <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
+                                  rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openAmEnd(d?._id)' style="padding-right: 4px; color: #7695a5">
+                                  <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
+                                    {{ "HoursPage.To" | translate }}
+                                  </span>
+                                </button>
+
+                                <!-- AM END HOUR - THE INPUT/VISUALIZATION FIELD -->
+                                <input [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                  (input)="onChangeAmEndFromArrow($event.target.value, d?._id)"
+                                  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="time"
+                                  value="{{ d.operatingHoursAmEnd }}">
+
+                                <!-- AM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
+                                <!-- <button [disabled]="d.isOpen != true || !isActiveOperatingHours"
+                                  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button"
+                                  rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openAmEnd(d?._id)' style="padding-right: 7px; padding-left: 1px;">
+                                  <i class="material-icons">schedule</i>
+                                </button> -->
+
+                              </td>
+
+                              <!-- =================================== BTNS: CLOSE / OPEN THE TIMES OF THE SECOND INTERVAL =================================== -->
+                              <td style="white-space: nowrap; width: 1%;">
+                                <!-- placeholder button - is dispalyed when the day is closed and when operating hours are not active -->
+                                <button *ngIf="d?.isOpen === false || !isActiveOperatingHours" type="button"
+                                  rel="tooltip" title="remove second interval"
+                                  class="btn btn-default btn-simple btn-xs  btn-circle close_pm disabled"
+                                  style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
+                                  <i class="material-icons"
+                                    style="font-size: 12px; font-weight: 600; padding-bottom: 3px">
+                                    clear
+                                  </i>
+                                </button>
+
+                                <button *ngIf="d?.isOpenPm === true && d?.isOpen === true && isActiveOperatingHours"
+                                  type="button" rel="tooltip" title="remove second interval"
+                                  class="btn btn-danger btn-simple btn-xs  btn-circle close_pm"
+                                  (click)="close_Pm(d?._id)"
+                                  style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
+                                  <i class="material-icons"
+                                    style="font-size: 12px; font-weight: 600; padding-bottom: 3px">
+                                    clear
+                                  </i>
+                                </button>
+
+                                <button *ngIf="d?.isOpenPm === false && d?.isOpen === true && isActiveOperatingHours"
+                                  type="button" rel="tooltip" title="add second interval"
+                                  class="btn btn-success btn-simple btn-xs  btn-circle open_pm"
+                                  (click)="open_Pm(d?._id)"
+                                  style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
+                                  <i class="material-icons"
+                                    style="font-size: 12px; font-weight: 600; padding-bottom: 2px; position: relative; top: -2px;">
+                                    add
+                                  </i>
+                                </button>
+                              </td>
+
+                              <!-- ===================================================================================================
+                          ========================================== PM HOUR ================================================
+                          =================================================================================================== -->
+                              <td style="padding-top: 6px; padding-bottom: 6px;">
+
+                                <!-- =================================== PM START HOUR ========================================== -->
+                                <!-- PM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
+                                <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                  type="button" rel="tooltip" title="edit hour"
+                                  class="btn btn-primary btn-simple btn-xs"
+                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
+                                  (click)='openPmStart(d?._id)' style="padding-right: 4px;color: #566787">
+                                  <span class="edithours_btnlabel">
+                                    {{ "HoursPage.From" | translate }}
+                                  </span>
+                                </button>
+
+                                <!-- PM START HOUR - THE INPUT/VISUALIZATION FIELD -->
+                                <input [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                  (input)="onChangePmStartFromArrow($event.target.value, d?._id)"
+                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
+                                  type="time" value="{{ d.operatingHoursPmStart }}">
+
+                                <!-- PM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
+                                <!-- <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                  type="button" rel="tooltip" title="edit hour"
+                                  class="btn btn-primary btn-simple btn-xs"
+                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
+                                  (click)='openPmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
+                                  <i class="material-icons">schedule</i>
+                                </button> -->
+
+                                <br class="newline">
+
+                                <!-- =================================== PM END HOUR ========================================== -->
+                                <!-- PM END HOUR - ONLY THE LABEL-BTN 'TO' -->
+                                <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                  type="button" rel="tooltip" title="edit hour"
+                                  class="btn btn-primary btn-simple btn-xs"
+                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
+                                  (click)='openPmEnd(d?._id)' style="padding-right: 4px; color: #566787">
+                                  <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
+                                    {{ "HoursPage.To" | translate }}
+                                  </span>
+                                </button>
+
+                                <!-- PM END HOUR - THE INPUT/VISUALIZATION FIELD -->
+                                <input [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                  (input)="onChangePmEndFromArrow($event.target.value, d?._id)"
+                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
+                                  type="time" value="{{ d.operatingHoursPmEnd }}">
+
+                                <!-- PM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
+                                <!-- <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"
+                                  type="button" rel="tooltip" title="edit hour"
+                                  class="btn btn-primary btn-simple btn-xs"
+                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}"
+                                  (click)='openPmEnd(d?._id)' style="padding-right: 7px;padding-left: 1px;">
+                                  <i class="material-icons">schedule</i>
+                                </button> -->
+
+                              </td>
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <button class="btn btn-primary" (click)="updateProject()">
+                      <!-- {{ "HoursPage.UpdateHours" | translate }} -->
+                      {{ "Save" | translate }}
+                    </button>
+
+                    <!-- // TEST THE OPERATORS  -->
+                    <!-- <button class="btn btn-success" (click)="testAvailableProjectUserConsideringProjectOperatingHours()">
+                  TEST AVAILABLE
+                </button> -->
+                  </div>
+                </div>
+
+                <!-- // TO TEST OPERATING HOURS BY INIECTING THE JSON IN THE INPUT FIELD -->
+                <!-- <label  class="col-sm-2" style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;">
+              + {{ "Hours" | translate }}
+            </label>
+            <div class="col-sm-10">
+              <input [(ngModel)]="operatingHours" class="" type="text" placeholder='{{ "Hours" | translate }}'>
+            </div> -->
+
+              </div>
+              <!-- // BUTTON TO TEST OPERATING HOURS BY INIECTING THE JSON IN THE INPUT FIELD -->
+              <!-- <div style="padding-left:25px" class="col-sm-10 col-sm-offset-2">
+            <button class="btn btn-success" (click)="updateProjectOperatingHours()">
+              {{ "HoursPage.UpdateHours" | translate }}
+            </button>   
+          </div> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INFO MODAL: UPDATING OPERATING HOURS IN PROGRESS ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalUpdatingOperatingHours}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeModalOperatingHours()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          {{ "HoursPage.UpdateHours" | translate }}
+          <!-- <code>{{id_toDelete}}</code> -->
+        </h4>
+      </div>
+
+      <div class="modal-body" style="padding-top:15px; padding-bottom:15px">
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div class="loader" style="top:25%;">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+
+          </div>
+          <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+            {{ "HoursPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <!-- IF THERE IS NO ERROR -->
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && !UPDATE_HOURS_ERROR ">
+          <div style="text-align: center">
+            <i class="material-icons" style="color:#70b665">done</i>
+            <p style="color:#70b665; font-weight: 500">
+              {{ "HoursPage.Completed" | translate }}
+            </p>
+          </div>
+          <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+            {{ "HoursPage.OperatingHoursSuccessfullyUpdated" | translate }}
+          </p>
+        </span>
+
+        <!-- IF THERE IS AN ERROR -->
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && UPDATE_HOURS_ERROR">
+          <div style="text-align: center ">
+            <i class="material-icons" style="color:#ff5252">report_problem</i>
+            <p style="color:#ff5252; font-weight: 500">
+              <!-- {{ "HoursPage.Error" | translate }} -->
+              {{ "Error" | translate }}
+            </p>
+          </div>
+          <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+            <span *ngIf="!TIMEZONE_NAME_IS_NULL">{{ "HoursPage.AnErrorHasOccurred" | translate }}</span> <span
+              *ngIf="TIMEZONE_NAME_IS_NULL">{{ "HoursPage.ErrorSelectTheProjectTimezone" | translate }}</span>
+          </p>
+        </span>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeModalOperatingHoursHandler()"
+          style="padding:12px 16px;">
+          {{ "HoursPage.Continue" | translate }}
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
