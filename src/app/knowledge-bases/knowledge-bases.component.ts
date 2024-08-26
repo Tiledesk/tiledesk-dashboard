@@ -2314,9 +2314,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // ---------------- OPEN AI FUNCTIONS --------------- //
 
   checkStatusWithRetry(kb) {
+    this.logger.log('[KNOWLEDGE BASES COMP] checkStatusWithRetry selectedNamespace id', this.selectedNamespace.id)
+   
     let data = {
       "namespace_list": [],
-      "namespace": this.id_project,
+      // "namespace": this.id_project,
+      "namespace": this.selectedNamespace.id,
       "id": kb._id
     }
     var status_msg = "Indexing completed successfully!";
