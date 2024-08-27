@@ -41,6 +41,9 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { BrandService } from 'app/services/brand.service';
+import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
+import { FaqService } from 'app/services/faq.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -411,7 +414,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   scrollYposition: any;
   storedRequestId: string;
   requestDuration: any;
-  dialedNumberIdentificationService : string;
+  dialedNumberIdentificationService: string;
 
   CHANNELS_NAME = CHANNELS_NAME;
 
@@ -461,7 +464,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private uploadImageNativeService: UploadImageNativeService,
     private prjctPlanService: ProjectPlanService,
     public dialog: MatDialog,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private faqService: FaqService,
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -735,7 +739,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
-        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl',    this.previousUrl)
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
       }
 
       if (params.calledby === '2') {
@@ -757,11 +761,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goBack() {
     if (this.previousUrl === 'wsrequests') {
-      if(!this.scrollYposition) { 
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
-    } else if(this.scrollYposition) { 
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
-    }
+      if (!this.scrollYposition) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      } else if (this.scrollYposition) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
+      }
       // && this.hasSearchedBy
 
       // Called by history with advanced search options opened 
@@ -1152,7 +1156,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   ngOnDestroy() {
-  //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
@@ -1382,7 +1386,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', this.current_selected_prjct);
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      
+
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
@@ -1402,7 +1406,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getRequesByIdRest(requestid) {
     this.wsRequestsService.getConversationByIDWithRestRequest(requestid)
       .subscribe((request: any) => {
-      //  this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
+        //  this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
         if (request) {
           this.REQUEST_EXIST = true
         }
@@ -1657,7 +1661,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // const seconds = milliseconds / 1000;
     // const minutes = seconds / 60;
     // return minutes;
-    
+
 
     // let milliseconds = Math.floor((millis % 1000) / 100)
     // let seconds = Math.floor((millis / 1000) % 60)
@@ -1679,7 +1683,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Minutes');
     else return days + " " + this.translate.instant('Analytics.Days');
 
-   
+
   }
 
   getWsRequestById$() {
@@ -1701,7 +1705,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // -----------------------------
           if (this.request.attributes && this.request.attributes.payload && this.request.attributes.payload.dnis) {
             this.dialedNumberIdentificationService = this.request.attributes.payload.dnis
-          } else if (this.request.attributes && this.request.attributes && this.request.attributes.dnis)  {
+          } else if (this.request.attributes && this.request.attributes && this.request.attributes.dnis) {
             this.dialedNumberIdentificationService = this.request.attributes.dnis
           } else {
             this.dialedNumberIdentificationService = "N/A"
@@ -1714,7 +1718,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.duration) {
             const duration = this.request.duration;
             this.logger.log('[WS-REQUESTS-MSGS] - duration ', duration)
-            this.requestDuration  =  this.millisToMinutesAndSeconds(duration)
+            this.requestDuration = this.millisToMinutesAndSeconds(duration)
             this.logger.log('[WS-REQUESTS-MSGS] - requestDuration ', this.requestDuration)
           } else {
             this.requestDuration = "N/A"
@@ -3719,58 +3723,190 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   selectBot(botid: string, botname: string) {
-    this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT ID ', botid);
-    this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT NAME ', botname);
+    console.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT ID ', botid);
+    console.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT NAME ', botname);
     this.userid_selected = 'bot_' + botid
     this.userfirstname_selected = botname;
     this.userlastname_selected = '';
     this.useremail_selected = '';
-    // this.displayConfirmReassignmentModal = 'block'
-    this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected)
+    this.displayConfirmReassignmentModal = 'block'
+    let blocks = {}
+    this.faqService.getAllFaqByFaqKbId(botid).subscribe((faqs: any) => {
+      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      // const intent_display_name_array = []
+
+      if (faqs) {
+
+        let processedItems = 0;
+        faqs.forEach((faq, index) => {
+          processedItems++;
+          blocks[faq.intent_display_name] = faq.intent_display_name
+          // intent_display_name_array.push(block)
+
+          if (processedItems === faqs.length) {
+            console.log('loop finished');
+            this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected, blocks)
+
+          }
+
+        });
+        console.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks', blocks);
+        // console.log('[MODAL-CHATBOT-REASSIGNMENT] - intent_display_name_array', intent_display_name_array);
+        // this.intent_display_name_array = this.intent_display_name_array.slice(0)
+      }
+    }, (error) => {
+      this.logger.error('[MODAL-CHATBOT-REASSIGNMENT] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
+    }, () => {
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+
+    });
+
+
   }
 
 
-  presentSwalModalReassignConversationToBot(botid, botname) {
-    swal({
+  async presentSwalModalReassignConversationToBot(botid, botname, blocks) {
+    console.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
+    const { value: block } = await Swal.fire({
       title: this.reassignRequestMsg,
       text: this.requestWillBeReassignedToMsg + ' ' + botname,
       icon: "info",
-      buttons: true,
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCancelButton: true,
+
+      // buttons: true,
+      // dangerMode: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      input: "select",
+      inputPlaceholder: "Select a block",
+      inputOptions: blocks,
+      inputValidator: (value: any) => {
+        return new Promise((resolve) => {
+          if (value === "") {
+            resolve("You need to select a block :)");
+          } else {
+            resolve(null);
+          }
+        });
+      }
+    });
+    if (block) {
+      console.log(`You selected: ${block}`);
+      this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
+        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+
+      }, (error) => {
+        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
+
+      }, () => {
+        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+        this.sendMessage(block)
+
+
+      })
+
+    }
+    // .then((result) => {
+    //   if (result.isConfirmed) {
+    //     console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot', result)
+
+
+    //     // this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
+    //     //   console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+
+    //     // }, (error) => {
+    //     //  console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
+
+    //     //  Swal.fire(this.anErrorHasOccurredMsg, {
+    //     //     icon: "error",
+    //     //   });
+
+    //     // }, () => {
+    //     //   console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+
+
+
+    //     //   Swal.fire({
+    //     //     title: this.done_msg + "!",
+    //     //     icon: "success",
+    //     //     // button: "OK",
+    //     //     confirmButtonText: this.translate.instant('Ok') ,
+    //     //     confirmButtonColor: "var(--blue-light)",
+    //     //     focusConfirm: true,
+    //     //     // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    //     //   }).then((okpressed) => {
+
+    //     //     this.displayUsersListModal = 'none';
+    //     //     this.presentModalSelectChatbotBlock(botname, botidNoPrefix) 
+    //     //   });
+    //     // });
+    //   } else {
+    //     console.log('swal result', result);
+    //   }
+    // });
+  }
+
+  sendMessage(block) {
+    let message = '/' + block;
+    this.selectedResponseTypeID = 3
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', message);
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
+      .subscribe((msg) => {
+
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+      }, (error) => {
+        console.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+      }, () => {
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - COMPLETE ');
+        this.selectedResponseTypeID = 1
+        // this.displayUsersListModal = 'none';
+        this.presentDoneDialog()
+      })
+
+  }
+
+  presentDoneDialog() {
+    Swal.fire({
+      title: this.done_msg + "!",
+      icon: "success",
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+    }).then((okpressed) => {
+      this.displayUsersListModal = 'none';
     })
-      .then((willReassign) => {
-        if (willReassign) {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot', willReassign)
+  }
 
 
-          this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants res ', res)
+  presentModalSelectChatbotBlock(botname, botidNoPrefix) {
+    // const dialogRef = this.dialog.open(ModalChatbotReassignmentComponent, {
+    const dialogRef = this.dialog.open(ModalChatbotReassignmentComponent, {
 
-          }, (error) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants - ERROR ', error);
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        chatbot_id: botidNoPrefix,
+        chatbot_name: botname
+      },
+    });
 
-            swal(this.anErrorHasOccurredMsg, {
-              icon: "error",
-            });
+    dialogRef.afterClosed().subscribe(res => {
+      // if (editedChatbot) {
+      //   this.logger.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME AFTER CLOSED editedChatbot:`, editedChatbot);
+      //   this.importChatbotFromJSON(editedChatbot)
 
-          }, () => {
-            this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+      //   this.logger.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME  AFTER CLOSE selectedNamespace:`, this.selectedNamespace);
+      //   // this.selectedNamespace['name'] = editedChatbot['name']
+      //   let body = { name: editedChatbot['name'] }
+      //   this.updateNamespace(body)
+      // }
+    });
 
-            swal({
-              title: this.done_msg + "!",
-              icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-
-              this.displayUsersListModal = 'none';
-            });
-          });
-        } else {
-          this.logger.log('swal willReassign', willReassign);
-        }
-      });
   }
 
   selectDept(deptname: string, deptid: string) {
@@ -4491,7 +4627,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
@@ -4544,7 +4680,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
@@ -4580,7 +4716,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       text: planName,
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
@@ -5389,9 +5525,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   sendChatMessage() {
     // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
+    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
     const requestclosedAt = moment(this.request['closed_at']);
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
@@ -5408,7 +5545,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.reopenConversation(this.id_request)
       }
 
-      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
       let _chat_message = ''
       if (this.type !== 'file') {
         _chat_message = this.chat_message

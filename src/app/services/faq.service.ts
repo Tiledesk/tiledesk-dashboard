@@ -162,21 +162,22 @@ export class FaqService {
  * @returns 
  */
 
-public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
+  public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
 
-  const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': this.TOKEN
-    })
-  };
- 
-  let url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb;
-  this.logger.log('[FAQ-SERV] - GET FAQ BY FAQ-KB ID (BOT-ID) - URL', url);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-  return this._httpClient
-    .get<Intent[]>(url, httpOptions)
-}
+    let url = this.FAQ_URL + '?id_faq_kb=' + id_faq_kb;
+    this.logger.log('[FAQ-SERV] - GET FAQ BY FAQ-KB ID (BOT-ID) - URL', url);
+
+    return this._httpClient
+      .get<Intent[]>(url, httpOptions)
+  }
+  
   public getAllFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
 
     const httpOptions = {
@@ -391,7 +392,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public addIntent(id_faq_kb: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+  public addIntent(id_faq_kb: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -400,14 +401,14 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     };
     const url = this.FAQ_URL;
     this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
-    const body = { 
-      'id_faq_kb': id_faq_kb, 
-      'question': question, 
-      'answer': answer, 
-      'intent_display_name': intent_display_name, 
+    const body = {
+      'id_faq_kb': id_faq_kb,
+      'question': question,
+      'answer': answer,
+      'intent_display_name': intent_display_name,
       'form': intent_form,
       'actions': intent_actions,
-      'webhook_enabled': webhook_enabled 
+      'webhook_enabled': webhook_enabled
     };
     this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
     return this._httpClient.post(url, JSON.stringify(body), httpOptions)
@@ -424,7 +425,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public updateIntent(id: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean, id_faq_kb: string) {
+  public updateIntent(id: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean, id_faq_kb: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -432,12 +433,12 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
       })
     };
     this.logger.log('[FAQ-SERV] UPDATE FAQ - ID ', id);
-    let url = this.FAQ_URL + id; 
+    let url = this.FAQ_URL + id;
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
-    const body = { 
-      'question': question, 
-      'answer': answer, 
-      'intent_display_name': intent_display_name, 
+    const body = {
+      'question': question,
+      'answer': answer,
+      'intent_display_name': intent_display_name,
       'form': intent_form,
       'actions': intent_actions,
       'webhook_enabled': webhook_enabled,

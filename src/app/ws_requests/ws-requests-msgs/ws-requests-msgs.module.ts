@@ -11,6 +11,11 @@ import { WsSidebarAppsComponent } from './ws-sidebar-apps/ws-sidebar-apps.compon
 import { ContactInfoModule } from 'app/components/shared/contact-info/contact-info.module';
 import { RouterModule ,Routes} from '@angular/router';
 import { SatPopoverModule } from '@ncstate/sat-popover';
+import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: "", component: WsRequestsMsgsComponent},
@@ -22,6 +27,7 @@ const routes: Routes = [
     WsRequestsMsgsComponent,
     // ContactInfoComponent,
     WsSidebarAppsComponent,
+    ModalChatbotReassignmentComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -34,7 +40,11 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgSelectModule,
     ContactInfoModule,
-    SatPopoverModule
+    SatPopoverModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatDialogModule
   ]
 })
 export class WsRequestsMsgsModule { }

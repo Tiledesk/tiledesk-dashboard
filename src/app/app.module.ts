@@ -400,6 +400,7 @@ import { AnalyticsService } from './services/analytics.service';
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
+// import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 // import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
 // import { ModalUploadFileComponent } from './knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
 // import { ModalChatbotNameComponent } from './knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
@@ -710,6 +711,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MessagesStatsModalComponent,
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
+    // ModalChatbotReassignmentComponent,
    
     // ModalAddNamespaceComponent,
     // ModalUploadFileComponent,
