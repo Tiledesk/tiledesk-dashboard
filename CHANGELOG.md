@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.15
+- Improves the Knowledge base preview modal window
+- Minor improvements and bug fixing
+
 ### 2.7.14
 - Deploys in production
 - Minor improvements and bug fixing
