@@ -155,23 +155,32 @@
 .answer {
     min-height: 37px;
     // max-height: auto;
+    max-height: 190px; // nk
     border-radius: 6px;
     border: solid 1px #ccc;
     padding: 6px 12px 6px;
     cursor: text;
-    overflow: hidden;
+    // overflow: hidden;
+    overflow: scroll; // nk
     transition: max-height 0.5s ease-out;
-
-    .answer-title {
-        margin-bottom: 0px;
-        font-size: 12px;
-        font-weight: 600;
-        color: rgb(98, 119, 140) !important;
-    }
 }
 
-.form-container {
-    margin-top: 12px;
+.answer-title {
+    margin-bottom: 3px;
+    font-size: 14px;
+    font-weight: 400;
+    // color: rgb(98, 119, 140) !important;
+    color: #000000de !important;
+
+}
+
+.answer-title  span { 
+    font-style: italic;
+    color: #647491;
+}
+
+.form--container {
+    // margin-top: 12px;
     margin-bottom: 12px;
     display: inline-block;
     width: 100%;
@@ -295,4 +304,26 @@
 
 .close-ai-settings {
     color:   var(--blue-light) !important; 
+}
+
+.horizontal-line {
+    margin-top: 35px !important; 
+}
+
+.response-time-label {
+    margin-top: 10px;
+    color: #647491 !important; 
+    span {
+        font-weight: 500 !important; 
+    }
+}
+
+.prompt-size-label {
+    margin-top: 6px;
+    display: block;
+    color: #647491 !important; 
+
+    span {
+        font-weight: 500 !important; 
+    }
 }

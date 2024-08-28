@@ -55,7 +55,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   translateparam: any;
   body: any;
   storedQuestionNoDoubleQuote: string;
-  aiQuotaExceeded: boolean = false
+  aiQuotaExceeded: boolean = false;
+  prompt_token_size: number
 
 
   constructor(
@@ -124,7 +125,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.isopenasetting = isopenasetting
     this.dialogRefAiSettings = this.dialog.open(ModalPreviewSettingsComponent, {
       width: '300px',
-      position: { left: 'calc(50% + 215px)', top: '192px' },
+      position: { left: 'calc(50% + 215px)', top: '138px' },
       hasBackdrop: false,
       data: {
         selectedNamespace: this.selectedNamespace,
@@ -250,11 +251,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     const startTime = performance.now();
     this.openaiService.askGpt(this.body).subscribe((response: any) => {
 
-      // this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
+      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
+      response['ai_model'] = this.selectedModel
+      this.prompt_token_size = response.prompt_token_size;
+      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
       this.responseTime = Math.round((endTime - startTime) / 1000);
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
+      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
         this.answer = response.answer;
