@@ -2335,9 +2335,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // -----------------------------------------------------------------------------------------------------
           // @ Msgs ws-subscription
           // -----------------------------------------------------------------------------------------------------
-          if (this.CHAT_PANEL_MODE === false)  {
+          // if (this.CHAT_PANEL_MODE === false)  {
             this.subscribeToWs_MsgsByRequestId(this.id_request);
-          }
+          // }
 
           // -----------------------------------------------------------
           // DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
