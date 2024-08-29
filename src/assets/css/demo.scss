@@ -3023,6 +3023,25 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   box-shadow: unset !important;
 }
 
+.swal2-html-container label {
+  display: block;
+  margin-top: 16px;
+}
+
+.swal2-html-container .swal2-select {
+  margin-top: 0px !important;
+
+}
+
+div:where(.swal2-container) .swal2-select { 
+  margin-top: 0px !important;
+
+  // appearance: none;
+  // border: 1px solid #ccc;
+  // background-color: #fff;
+  // border-radius: 4px;
+}
+
 // .swal2-html-container {
 //   margin-top: 12px !important;
 // }

@@ -3768,6 +3768,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   async presentSwalModalReassignConversationToBot(botid, botname, blocks) {
     console.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
     const { value: block } = await Swal.fire({
+      html: `${this.requestWillBeReassignedToMsg} ${botname} <label for="my-input">Select a block that will automatically execute when the chatbot joins the conversation</label>`,
       title: this.reassignRequestMsg,
       text: this.requestWillBeReassignedToMsg + ' ' + botname,
       icon: "info",
@@ -3781,6 +3782,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       focusConfirm: true,
       reverseButtons: true,
       input: "select",
+      inputAttributes: {
+        id: 'my-input'
+      },
       inputPlaceholder: "Select a block",
       inputOptions: blocks,
       inputValidator: (value: any) => {
