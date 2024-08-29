@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.16
+### 2.7.16-rc3
 - Bug fixing
 
 ### 2.7.16-rc2
