@@ -1,7 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.16
+- Bug fixing
+
+### 2.7.16-rc2
+- Bug fixing
+
 ### 2.7.16-rc1
-- Does not subscribe to messages in chat mode
+- Bug fixing
 
 ### 2.7.15
 - Improves the Knowledge base preview modal window
