@@ -619,7 +619,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
             // this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
             // this.logger.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
-            console.log('% »»» WebSocketJs WF - APP-COMPONENT - wsInitialized ', this.wsInitialized);
+            // console.log('% »»» WebSocketJs WF - APP-COMPONENT - wsInitialized ', this.wsInitialized);
             if (user && user.token && !this.wsInitialized) {
 
                 // const WS_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
@@ -638,7 +638,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     undefined
                 );
                 this.wsInitialized = true
-                console.log('% »»» WebSocketJs WF - APP-COMPONENT - wsInitialized ', this.wsInitialized);
+                // console.log('% »»» WebSocketJs WF - APP-COMPONENT - wsInitialized ', this.wsInitialized);
             }
         });
     }
