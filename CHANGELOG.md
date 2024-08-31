@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+
+### 2.7.16-rc4
+- Implements the help center page
+
 ### 2.7.16-rc3
 - Bug fixing
 
