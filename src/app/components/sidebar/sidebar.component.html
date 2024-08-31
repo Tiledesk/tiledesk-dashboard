@@ -331,26 +331,47 @@
         </a>
       </li>
       <!-- ----------------------------- -->
-      <!-- @ Support  -->
-      <li class="tiledesk-logo" 
+      <!-- @ Support   matTooltip="{{companyName}}" -->
+      <li class="tiledesk-logo" [ngClass]="{'active': SUPPORT_ROUTE_IS_ACTIVE}"
         id="support"
         matTooltipClass="sb-mat-tooltip" 
-        matTooltip="{{companyName}}" 
+       
+        [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )  "
         #tooltip="matTooltip"
         matTooltipPosition='right' 
         matTooltipHideDelay="100"
-        style="height: 50px !important;"
+        style="height: 60px !important;"
         routerLinkActive="active" 
         (click)="stopScroll()">
-        <a class="customAncor" routerLink="project/{{ project._id }}/support">
+
+        <a id="support-anchor" *ngIf="isVisibleSupportMenu" class="customAncor" [matMenuTriggerFor]="menuSupport" style="cursor: pointer;">
           <i class="material-icons sidebar-icons">support</i>
         </a>
-
-        
-        <!-- <a class="customAncor" [href]="companySiteUrl" target="_blank">
+        <a *ngIf="!isVisibleSupportMenu"  class="customAncor" [href]="companySiteUrl" target="_blank">
           <img [src]="companyLogoNoText" class="img-fluid" style="width: 25px; height: auto; margin-bottom: 5px;" />
-        </a>        -->
+        </a>       
       </li>
+
+      <!-- SIDEBAR MENU OPTIONS-->
+      <mat-menu #menuSupport="matMenu" class="menuElementSupport" xPosition="before">
+        <ng-template matMenuContent>
+
+          <!-- {{ INFO_MENU_ITEMS | json}} -->
+        <ng-container *ngFor="let item of INFO_MENU_ITEMS"> 
+          <button *ngIf="item.status === 'active'" mat-menu-item   (click)="onMenuOptionFN(item)">
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.label | translate}}  </span>
+          </button>
+        </ng-container>
+            <!-- <cds-menu
+                [items]="INFO_MENU_ITEMS"
+                [menuType]="'sidebar'"
+                (onMenuOption)="onMenuOptionFN($event)">
+            </cds-menu> -->
+        </ng-template>
+      </mat-menu>
+
+
 
 
 

@@ -37,15 +37,15 @@ export var PLAY_MENU_ITEMS: Array<{ key: string, label: string, icon: string, ty
 
 export var SUPPORT_OPTIONS: { [key: string]: Array<{ key: string, label: string, icon: string, type: TYPE_URL, status: "active" | "inactive", src?: string, description?: string}>} = {
     "SELF_SERVICE":[
-        { key: 'DOCS',          label: 'Docs',          icon: 'description',                    type: TYPE_URL.BLANK,   status:"active",    src: 'https://developer.tiledesk.com/'},
+        { key: 'DOCS',          label: 'DeveloperDocs', icon: 'description',                    type: TYPE_URL.BLANK,   status:"active",    src: 'https://developer.tiledesk.com/'},
         { key: 'HELP_CENTER',   label: 'HelpCenter',    icon: 'help',                           type: TYPE_URL.BLANK ,  status:"active",    src: 'https://gethelp.tiledesk.com/'},
         { key: 'ROAD_MAP',      label: 'RoadMap',       icon: 'checklist',                      type: TYPE_URL.BLANK,   status:"active",    src: 'https://feedback.tiledesk.com/roadmap'},
         { key: 'SYSTEM_STATUS', label: 'SystemStatus',  icon: 'health_and_safety',              type: TYPE_URL.BLANK,   status:"active",    src: 'https://tiledesk.instatus.com/'},
-        { key: 'GITHUB',        label: 'GitHubRepo',    icon: 'assets/images/github-mark.svg',  type: TYPE_URL.BLANK,   status:"active",    src: 'https://github.com/Tiledesk'}
+        { key: 'GITHUB',        label: 'GitHubRepo',    icon: 'assets/img/github-mark.svg',  type: TYPE_URL.BLANK,   status:"active",    src: 'https://github.com/Tiledesk'}
     ],
     "CONTACT_US": [
         { key: 'EMAIL',   label: 'SendUsEmail',         icon: 'mail',                           type: TYPE_URL.BLANK ,  status:"active",    src: 'mailto:support@tiledesk.com', description:"support@tiledesk.com"},
-        { key: 'CHAT',      label: 'ChatUs',            icon: 'forum',                          type: TYPE_URL.BLANK ,  status:"active",    description:"StartConversation"},
-        { key: 'DISCORD',   label: 'DiscordChannel',    icon: 'assets/images/discord.svg',  type: TYPE_URL.BLANK ,  status:"active",    src: 'https://discord.gg/Wut2FtpP', description:"JoinDiscordChannel"},
+        { key: 'CHAT',      label: 'ChatWithUs',        icon: 'forum',                          type: TYPE_URL.BLANK ,  status:"active",    description:"StartConversation"},
+        { key: 'DISCORD',   label: 'DiscordChannel',    icon: 'assets/img/discord.svg',  type: TYPE_URL.BLANK ,  status:"active",    src: 'https://discord.gg/Wut2FtpP', description:"JoinDiscordChannel"},
     ]
 }
