@@ -3,6 +3,8 @@
 
 ### 2.7.16-rc4
 - Implements the help center page
+- Adds the ability to manages the visibility of the Help Center page
+- Adds a popup window that explains the features of the Help Center page
 
 ### 2.7.16-rc3
 - Bug fixing
