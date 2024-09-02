@@ -273,7 +273,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private projectService: ProjectService,
     private auth: AuthService,
     private usersService: UsersService,
-    private usersLocalDbService: LocalDbService,
     private notify: NotifyService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
@@ -287,7 +286,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private faqKbService: FaqKbService,
     public dialog: MatDialog,
     private prjctPlanService: ProjectPlanService,
-    private shepherdService: ShepherdService
+    private shepherdService: ShepherdService,
+    public localDbService: LocalDbService,
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -299,7 +299,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.companySiteUrl = brand["COMPANY_SITE_URL"]
       this.companyName = brand["COMPANY_NAME"]
       this.isVisibleSupportMenu = brand["SUPPORT_MENU"]
-  
+
     }
   }
 
@@ -334,14 +334,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-    this.shepherdService.defaultStepOptions = defaultStepOptions;
-    this.shepherdService.modal = true;
-    this.shepherdService.confirmCancel = false;
-    const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
-    this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-    this.shepherdService.start();
-  }, 3000);
+    const sidebarTourShowed = this.localDbService.getFromStorage(`sidebar-tour-showed-${this.currentUserId}`)
+    if (!sidebarTourShowed) {
+      setTimeout(() => {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+        this.shepherdService.start();
+        this.localDbService.setInStorage(`sidebar-tour-showed-${this.currentUserId}`, 'true')
+      }, 1500);
+    }
   }
 
 
@@ -1222,7 +1226,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
 
-        
+
 
 
 
@@ -1656,7 +1660,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
   }
 
- 
+
 
 
   isMobileMenu() {
@@ -1780,18 +1784,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/project/' + this.projectId + '/home']);
   }
 
-  onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string}){
-    console.log('[SIDEBAR] onMenuOptionFN' , item)
-    switch(item.key){
+  onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string }) {
+    console.log('[SIDEBAR] onMenuOptionFN', item)
+    switch (item.key) {
       case 'FEEDBACK':
       case 'CHANGELOG':
         window.open(item.src, '_blank')
         break;
       case 'SUPPORT':
         this.goToSuppotPage()
-        // this.router.navigate(['./support'], {relativeTo: this.route})
-        // this.onClickItemList.emit(SIDEBAR_PAGES.SUPPORT)
-        // window.open(item.src, '_self')
+      // this.router.navigate(['./support'], {relativeTo: this.route})
+      // this.onClickItemList.emit(SIDEBAR_PAGES.SUPPORT)
+      // window.open(item.src, '_self')
     }
   }
 

@@ -21,7 +21,7 @@
     margin-top: 40px;
 }
 
-.cds-card {
+.support-card {
     // background: var(--content-background);
     border-radius: var(--base-radius);
     box-shadow: rgba(0, 0, 0, .1) 0px 3px 6px 0px, rgba(0, 0, 0, .08) 0px 1px 3px 0px;
@@ -59,7 +59,7 @@
     }
 }
 
-.cds-card-item {
+.support-card-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -76,7 +76,7 @@
     }
 
     &:hover {
-
+        background-color: rgba(0, 0, 0, .04);
         span.material-icons-outlined,
         img {
             // width: 20px;
@@ -99,7 +99,7 @@
     top: 25px;
 }
 
-.cds-title {
+.support-title {
     font-size: 18px;
     position: relative;
     color: var(--text-color);
@@ -107,7 +107,7 @@
     font-family: var(--header-font-family);
 }
 
-.cds-description {
+.support-description {
     font-weight: 400;
     font-size: 14px;
     font-family: var(--header-font-family);

@@ -47,7 +47,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
       trialExpired: this.trial_expired
     }
 
-    this.logger.log('[CDS-SUPPORT this.cardOptions]', this.cardOptions)
+    this.logger.log('[SUPPORT] this.cardOptions]', this.cardOptions)
     this.manageWidget("start", projectBaseInfo)
     this.manageWidget('show')
 
@@ -80,7 +80,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
   private manageWidget(status: "hide" | "show" | "open" | "close" | "start", projectInfo?: any) {
     try {
       if (window && window['tiledesk']) {
-        this.logger.log('[CDS DSHBRD] HIDE WIDGET ', window['tiledesk'])
+        this.logger.log('[SUPPORT] HIDE WIDGET ', window['tiledesk'])
         if (status === 'hide') {
           // window['tiledesk'].hide();
           window['tiledesk'].dispose();
@@ -103,7 +103,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
       }
       
     } catch (error) {
-      this.logger.error('tiledesk_widget_hide ERROR', error)
+      this.logger.error('manageWidget ERROR', error)
     }
   }
 

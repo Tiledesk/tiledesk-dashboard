@@ -1509,6 +1509,15 @@ li:hover>a>.realtime-icon-wpr>svg>path {
 
 ::ng-deep .mat-menu-panel.menuElementSupport {
   margin-left: 64px !important;
+  top: 40px;
+
+    .mat-menu-content{
+      padding: 0 !important;
+
+      button > .mat-icon {
+        color: var(--icon-color) !important;
+      }
+  }
   // min-width: 100px;
   // max-width: 400px;
   // min-height: unset;
@@ -1530,6 +1539,14 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   // left: 45px;
   // border: 2px solid var(--gray-02);
   // box-shadow: none;
+}
+
+::ng-deep .mat-menu-panel.menuElementSupport {
+    .mat-menu-content{
+      button:hover > .mat-icon {
+        color: var(--icon-hover-color) !important;
+      }
+  }
 }
 
 // ::ng-deep {

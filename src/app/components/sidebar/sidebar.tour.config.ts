@@ -182,10 +182,10 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
         element: '#support-anchor' ,
         on: 'right',
       },
-      // STEPS_BUTTONS.cancel,
-      buttons: [ STEPS_BUTTONS.back, STEPS_BUTTONS.cancel],
-      classes: 'step-with-image custom-cancel-button',
-      id: 'sb-tour-step-5',
+      // STEPS_BUTTONS.cancel, STEPS_BUTTONS.back,
+      buttons: [  STEPS_BUTTONS.cancel],
+      classes: 'step-with-image custom-cancel-button padding-4',
+      id: 'sb-tour-step-1',
       title: 'Welcome to your Help Center!',
       
       // text:`${translation.instant('KbPage.AIChatbotTourText')}
@@ -205,19 +205,7 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       // `
 
       text:`The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.
-      <div class="tour-text-container">
-        <div class="image-container">
-            <img 
-                src="assets/img/success.png"
-                class="image-style"
-                frameBorder="0" 
-                allowFullScreen>
-            </img>
-        </div>
-      </div>
-      <div class="step-image-text"> 
-       ${translation.instant('KbPage.LastStepText')} <a href='mailto:${brand['CONTACT_US_EMAIL']}?subject=Knowledge Base tour support'>${translation.instant('KbPage.LastStepContactUs')}</a>
-       </div>
+   
       `
     },
   
