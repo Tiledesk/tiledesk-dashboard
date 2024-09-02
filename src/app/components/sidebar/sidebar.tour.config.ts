@@ -186,7 +186,7 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       buttons: [  STEPS_BUTTONS.cancel],
       classes: 'step-with-image custom-cancel-button padding-4',
       id: 'sb-tour-step-1',
-      title: 'Welcome to your Help Center!',
+      title: translation.instant('WelcomeToYourHelpCenter'), //'Welcome to your Help Center!',
       
       // text:`${translation.instant('KbPage.AIChatbotTourText')}
       // <div class="tour-text-container">
@@ -204,9 +204,9 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       //  </div>
       // `
 
-      text:`The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.
+      text: `${translation.instant('TheHelpCenterIsDesignedToProvide')}  ` // `The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.
    
-      `
+     
     },
   
     

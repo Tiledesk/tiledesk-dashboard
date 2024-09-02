@@ -559,6 +559,8 @@
     "QuotaExceeded": "Quota superata",
     "PleaseContactSupport": "Si prega di contattare l'assistenza",
     "Rename":"Rinomina",
+    "WelcomeToYourHelpCenter":"Benvenuti al nostro Centro Assistenza!",
+    "TheHelpCenterIsDesignedToProvide":"L'Help Center è progettato per fornire un'opzione di supporto completa. Puoi ottenere informazioni dalla nostra documentazione o rivolgerti alla community. Se non riesci a trovare una risposta, puoi inviare una richiesta direttamente a uno dei nostri agenti tramite e-mail o live chat.",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",

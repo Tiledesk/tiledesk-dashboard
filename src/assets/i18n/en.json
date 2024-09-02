@@ -559,6 +559,8 @@
     "QuotaExceeded": "Quota exceeded",
     "PleaseContactSupport": "Please contact support",
     "Rename":"Rename",
+    "WelcomeToYourHelpCenter":"Welcome to your Help Center!",
+    "TheHelpCenterIsDesignedToProvide":"The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",

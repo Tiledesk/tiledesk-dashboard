@@ -560,6 +560,8 @@
     "QuotaExceeded": "Kvota keçib",
     "PleaseContactSupport": "Zəhmət olmasa dəstək ilə əlaqə saxlayın",
     "Rename":"Adını dəyişdirin",
+    "WelcomeToYourHelpCenter":"Yardım Mərkəzinizə xoş gəlmisiniz!",
+    "TheHelpCenterIsDesignedToProvide":"Yardım Mərkəzi tam dəstək seçimini təmin etmək üçün nəzərdə tutulmuşdur. Sənədlərimizdən məlumat ala və ya cəmiyyətə müraciət edə bilərsiniz. Cavab tapa bilmirsinizsə, e-poçt və ya canlı söhbət vasitəsilə birbaşa agentlərimizdən birinə sorğu göndərə bilərsiniz.",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",
@@ -1800,7 +1802,9 @@
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Cavab yaratmaq üçün kontekst kimi LLM-ə neçə məlumat mənbəyi parçasının ötürüləcəyini müəyyən edir. LLM qarışıqlığının qarşısını almaq üçün 2-4 tövsiyə edirik.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Sistemə cavablarınızı yaratarkən oynamalı olduğu rolu verin.",
         "Deterministic":"Determinist",
-        "Random":"Təsadüfi"
+        "Random":"Təsadüfi",
+        "-----------------------------": "-----------------------------",
+        "ThatsIsAll": "Hamısı budur"
     },
     "ViewInTheDesignStudio": "Dizayn Studiyasında görüntüləyin",
     "LearnHow": "Necə öyrən",

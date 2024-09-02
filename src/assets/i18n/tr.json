@@ -561,6 +561,8 @@
     "QuotaExceeded": "Kota aşıldı",
     "PleaseContactSupport": "Lütfen desteğe başvurun",
     "Rename":"Yeniden Adlandır",
+    "WelcomeToYourHelpCenter":"Yardım Merkezimize Hoş Geldiniz!",
+    "TheHelpCenterIsDesignedToProvide":"Yardım Merkezi, eksiksiz bir destek seçeneği sunmak için tasarlanmıştır. Belgelerimizden bilgi alabilir veya topluluğa başvurabilirsiniz. Bir cevap bulamazsanız, doğrudan temsilcilerimizden birine e-posta veya canlı sohbet yoluyla bir istek gönderebilirsiniz.",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",
@@ -1801,7 +1803,9 @@
          "DeterminesHowManyChunksWillBePassedToTheLLM":"Bir yanıt oluşturmak için LLM'ye bağlam olarak kaç veri kaynağı parçasının geçirileceğini belirler. LLM karışıklığını önlemek için 2-4 öneririz.",
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Cevaplarınızı oluştururken sisteme bir rol verin.",
          "Deterministic":"Deterministik",
-         "Random":"Rastgele"
+         "Random":"Rastgele",
+         "-----------------------------": "-----------------------------",
+         "ThatsIsAll": "Hepsi bu kadar"
     },
     "ViewInTheDesignStudio": "Tasarım Stüdyosu'nda görüntüle",
     "LearnHow": "Nasıl yapılacağını öğrenin",

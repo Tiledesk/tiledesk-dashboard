@@ -560,6 +560,8 @@
     "QuotaExceeded": "Kvota oshib ketdi",
     "PleaseContactSupport": "Iltimos, qo'llab-quvvatlash xizmatiga murojaat qiling",
     "Rename":"Nomini o'zgartirish",
+    "WelcomeToYourHelpCenter":"Yordam markazingizga xush kelibsiz!",
+    "TheHelpCenterIsDesignedToProvide":"Yordam markazi to'liq qo'llab-quvvatlash variantini taqdim etish uchun mo'ljallangan. Siz bizning hujjatlarimizdan ma'lumot olishingiz yoki jamiyatga murojaat qilishingiz mumkin. Agar javob topa olmasangiz, elektron pochta yoki jonli chat orqali bizning agentlarimizdan biriga so'rov yuborishingiz mumkin.",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",
@@ -1799,7 +1801,9 @@
          "DeterminesHowManyChunksWillBePassedToTheLLM":"Javobni yaratish uchun LLM ga kontekst sifatida qancha maʼlumot manbasi boʻlaklari uzatilishini aniqlaydi. LLM chalkashmaslik uchun 2-4 ni tavsiya qilamiz.",
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Tizimga javoblaringizni yaratishda o'ynashi kerak bo'lgan rolni bering.",
          "Deterministic":"Deterministik",
-         "Random":"Tasodifiy"
+         "Random":"Tasodifiy",
+         "-----------------------------": "-----------------------------",
+         "ThatsIsAll": "Ana xolos"
     },
     "ViewInTheDesignStudio": "Dizayn studiyasida ko'rish",
     "LearnHow": "Qanday qilib",
