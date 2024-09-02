@@ -43,6 +43,7 @@ import { ShepherdService } from 'angular-shepherd';
 import { getSteps as defaultSteps, defaultStepOptions } from './sidebar.tour.config';
 
 import Step from 'shepherd.js/src/types/step';
+import { environment } from 'environments/environment';
 
 declare const $: any;
 
@@ -79,6 +80,9 @@ declare interface RouteInfo {
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
   INFO_MENU_ITEMS = INFO_MENU_ITEMS;
+  public version: string = environment.VERSION;
+  test: Date = new Date();
+ 
   // tparams = brand;
 
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
@@ -333,20 +337,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.getBaseUrlAndThenProjectPlan()
   }
 
-  ngAfterViewInit() {
-    const sidebarTourShowed = this.localDbService.getFromStorage(`sidebar-tour-showed-${this.currentUserId}`)
-    if (!sidebarTourShowed) {
-      setTimeout(() => {
-        this.shepherdService.defaultStepOptions = defaultStepOptions;
-        this.shepherdService.modal = true;
-        this.shepherdService.confirmCancel = false;
-        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
-        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-        this.shepherdService.start();
-        this.localDbService.setInStorage(`sidebar-tour-showed-${this.currentUserId}`, 'true')
-      }, 1500);
-    }
-  }
+  ngAfterViewInit() { }
 
 
   getBaseUrlAndThenProjectPlan() {
@@ -758,9 +749,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (!this.public_Key.includes("CNT")) {
       this.isVisibleCNT = false;
     }
-
-
-
   }
 
 
@@ -1225,13 +1213,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
         }
 
-
-
-
-
-
+        if (event.url.indexOf('/home') !== -1) { 
+          this.presentHelpCenterPopup() 
+        }
       }
     });
+  }
+
+  presentHelpCenterPopup() {
+    const sidebarTourShowed = this.localDbService.getFromStorage(`sidebar-tour-showed-${this.currentUserId}`)
+     
+    if (!sidebarTourShowed) {
+      setTimeout(() => {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+        this.shepherdService.start();
+        this.localDbService.setInStorage(`sidebar-tour-showed-${this.currentUserId}`, 'true')
+      }, 1500);
+    }
   }
 
 
@@ -1785,7 +1787,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string }) {
-    console.log('[SIDEBAR] onMenuOptionFN', item)
+    this.logger.log('[SIDEBAR] onMenuOptionFN', item)
     switch (item.key) {
       case 'FEEDBACK':
       case 'CHANGELOG':

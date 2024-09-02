@@ -46,6 +46,7 @@ export var SUPPORT_OPTIONS: { [key: string]: Array<{ key: string, label: string,
     "CONTACT_US": [
         { key: 'EMAIL',   label: 'SendUsEmail',         icon: 'mail',                           type: TYPE_URL.BLANK ,  status:"active",    src: 'mailto:support@tiledesk.com', description:"support@tiledesk.com"},
         { key: 'CHAT',      label: 'ChatWithUs',        icon: 'forum',                          type: TYPE_URL.BLANK ,  status:"active",    description:"StartConversation"},
-        { key: 'DISCORD',   label: 'DiscordChannel',    icon: 'assets/img/discord.svg',         type: TYPE_URL.BLANK ,  status:"active",    src: 'https://discord.gg/Wut2FtpP', description:"JoinDiscordChannel"},
+        { key: 'DISCORD',   label: 'DiscordChannel',    icon: 'assets/img/discord.svg',         type: TYPE_URL.BLANK ,  status:"active",    src: 'https://discord.gg/Q5A6Ewadmz', description:"JoinDiscordChannel"},
+//    'https://discord.gg/Wut2FtpP'
     ]
 }
