@@ -78,9 +78,11 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
 
 
   private manageWidget(status: "hide" | "show" | "open" | "close" | "start", projectInfo?: any) {
+    
+    console.log('[SUPPORT] manageWidget  window[tiledesk]', window['tiledesk'])
+    console.log('[SUPPORT] manageWidget status ', status)
     try {
       if (window && window['tiledesk']) {
-        this.logger.log('[SUPPORT] HIDE WIDGET ', window['tiledesk'])
         if (status === 'hide') {
           // window['tiledesk'].hide();
           window['tiledesk'].dispose();
