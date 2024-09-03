@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.17-rc1
+- Implements the icons for the SMS channel
+
 ### 2.7.12-rc1
 - Improves the modal displayed to edit the Knowledge base chatbot
 
