@@ -218,13 +218,14 @@ export class WsMsgsService {
     }
 
     if (replytypedid === 3) {
-      body['sender'] = 'system';
       body['senderFullname'] = 'system';
       body['type'] = 'text';
       body['attributes'] = {
         "subtype": 'info',
       }
     }
+
+    // body['sender'] = 'system';
 
     console.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
     return this._httpClient.post(url, JSON.stringify(body), httpOptions)
