@@ -485,7 +485,9 @@
           conversationTypeValue  === CHANNELS_NAME.MESSANGER ||
           conversationTypeValue  === CHANNELS_NAME.TELEGRAM || 
           conversationTypeValue  === CHANNELS_NAME.WHATSAPP || 
-          conversationTypeValue  === CHANNELS_NAME.EMAIL " class="applied-filter">
+          conversationTypeValue  === CHANNELS_NAME.EMAIL ||
+          conversationTypeValue === CHANNELS_NAME.VOICE_VXML || 
+          conversationTypeValue === CHANNELS_NAME.SMS_TWILIO" class="applied-filter">
       <span *ngIf="conversationTypeValue === CHANNELS_NAME.CHAT21 ">
         Chat
       </span>
@@ -510,6 +512,13 @@
       <!-- || conversation_type  === 'email' -->
       <span *ngIf="conversationTypeValue === CHANNELS_NAME.EMAIL">
         Email
+      </span>
+
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.VOICE_VXML">
+        Voice
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.SMS_TWILIO">
+        SMS
       </span>
     </div>
 
@@ -1368,6 +1377,22 @@
                           <i></i>
                         </span>
                       </span>
+
+                       <!-- ---------------------------------------- -->
+                      <!-- Channel - SMS -->
+                      <!-- ---------------------------------------- -->
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO" class="tool_tip">
+                        <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/sms.svg"
+                          class="img-fluid">
+                        <span class="bottom tool-tip-bottom--custom">
+                          <span style="font-weight: 400;">
+                            {{'MessageChannel' | translate}}:
+                          </span>
+                          <span style="font-weight: 400;">SMS </span>
+                          <i></i>
+                        </span>
+                      </span>
+                      
                       <!-- ---------------------------------------- -->
                       <!-- Channel - WhatsApp -->
                       <!-- ---------------------------------------- -->
