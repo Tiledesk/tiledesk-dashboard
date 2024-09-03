@@ -188,23 +188,23 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
       id: 'sb-tour-step-1',
       title: translation.instant('WelcomeToYourHelpCenter'), //'Welcome to your Help Center!',
       
-      // text:`${translation.instant('KbPage.AIChatbotTourText')}
-      // <div class="tour-text-container">
-      //   <div class="image-container">
-      //       <img 
-      //           src="assets/img/success.png"
-      //           class="image-style"
-      //           frameBorder="0" 
-      //           allowFullScreen>
-      //       </img>
-      //   </div>
-      // </div>
+      text:`${translation.instant('TheHelpCenterIsDesignedToProvide')}
+      <div class="tour-text-container">
+        <div class="image-container">
+            <img 
+                src="assets/img/support-2.gif"
+                class="image-style"
+                frameBorder="0" 
+                allowFullScreen>
+            </img>
+        </div>
+      </div>
+     
+      `
       // <div class="step-image-text"> 
-      //  ${translation.instant('KbPage.LastStepText')} <a href='mailto:${brand['CONTACT_US_EMAIL']}?subject=Knowledge Base tour support'>${translation.instant('KbPage.LastStepContactUs')}</a>
-      //  </div>
-      // `
-
-      text: `${translation.instant('TheHelpCenterIsDesignedToProvide')}  ` // `The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.
+      // ${translation.instant('KbPage.LastStepText')} <a href='mailto:${brand['CONTACT_US_EMAIL']}?subject=Knowledge Base tour support'>${translation.instant('KbPage.LastStepContactUs')}</a>
+      // </div>
+     // text: `${translation.instant('TheHelpCenterIsDesignedToProvide')}  ` // `The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.
    
      
     },
