@@ -4,7 +4,8 @@
     <div class="row">
       <div class="col-xs-12">
         <h4 class="title customh4" style="margin-bottom:2px;">
-          {{ 'VisitorsPage.UnservedRequests' | translate }} <span *ngIf="wsRequestsUnserved.length >= 100"> - </span> <span *ngIf="wsRequestsUnserved.length >= 100" class="span-link-style" (click)="goToUnservedNTR()"> {{'MoreInQueque' | translate}} </span>
+          <!-- + countRequestsServedByBotRr -->
+          {{ 'VisitorsPage.UnservedRequests' | translate }} <span *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr )>= 100"> - </span> <span *ngIf="(countRequestsServedByHumanRr + countRequestsUnservedRr) >= 100" class="span-link-style" (click)="goToUnservedNTR()"> {{'MoreInQueque' | translate}} </span>
         </h4>
       </div>
     </div>

@@ -17,7 +17,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { Subscription, zip } from 'rxjs'
 import { DepartmentService } from '../../services/department.service';
 import { Subject } from 'rxjs';
-import { skip, takeUntil } from 'rxjs/operators'
+import { skip, takeUntil, throttleTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -62,6 +62,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   countRequestsServedByHumanRr: number = 0;
   countRequestsServedByBotRr: number = 0;
   countRequestsUnservedRr: number = 0;
+  requestCountResp: any
   ws_requests: any;
   projectId: string;
   zone: NgZone;
@@ -1828,10 +1829,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       
 
         // const sum = this.wsRequestsServed.length + this.wsRequestsUnserved.length
-        const sum = this.countRequestsServedByHumanRr + this.countRequestsServedByBotRr +  this.countRequestsUnservedRr
-    
+
+        // this.countRequestsServedByBotRr + 
+        const sum = this.countRequestsServedByHumanRr +  this.countRequestsUnservedRr
         this.served_unserved_sum = sum;
-        this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
+        // this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
 
         // ---------------------------------------------
         // @ Init dognut chart - to do 
@@ -1866,13 +1868,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   getWsConv$() {
-    
     this.wsRequestsService.wsConv$
-      .pipe(debounceTime(5000))
+      .pipe(throttleTime(5000))
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-
       .subscribe((wsConv) => {
         // console.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
         this.getRestRequestConversationCount()
@@ -1895,12 +1895,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     getRestRequestConversationCount() {
       this.wsRequestsService.getConversationCount()
-        .subscribe((request: any) => {
-        // console.log('[WS-REQUESTS-MSGS] - getRestRequestConversationCount - RES  ', request);
-          if (request) {
-            this.countRequestsServedByHumanRr = request.assigned;
-            this.countRequestsServedByBotRr = request.bot_assigned;
-            this.countRequestsUnservedRr= request.unassigned;
+        .subscribe((requests: any) => {
+        // console.log('[WS-REQUESTS-MSGS] - ************* getRestRequestConversationCount - requests  ', requests);
+          if (requests) {
+            this.requestCountResp = requests
+            this.countRequestsServedByHumanRr = requests.assigned;
+            this.countRequestsServedByBotRr = requests.bot_assigned;
+            this.countRequestsUnservedRr= requests.unassigned;
   
             // console.log('[WS-REQUESTS-MSGS] - countRequestsServedByHumanRestCall ', this.countRequestsServedByHumanRr);
             // console.log('[WS-REQUESTS-MSGS] - countRequestsServedByBotRestCall ', this.countRequestsServedByBotRr);

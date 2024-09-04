@@ -40,6 +40,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
+  @Input() requestCountResp: any;
+
+  countRequestsServedByHumanRr: number
+  countRequestsServedByBotRr: number
+  countRequestsUnservedRr: number
+
   CHAT_BASE_URL: string;
   storageBucket: string;
   baseUrl: string;
@@ -208,6 +214,19 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
+
+    // console.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
+
+
+    if (this.requestCountResp) {
+      this.countRequestsServedByHumanRr = this.requestCountResp.assigned;
+      this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
+      this.countRequestsUnservedRr = this.requestCountResp.unassigned;
+
+      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
+      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
+      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+    }
    
     
   
