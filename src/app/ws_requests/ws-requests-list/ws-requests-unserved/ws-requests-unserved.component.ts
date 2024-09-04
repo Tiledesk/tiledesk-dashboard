@@ -135,8 +135,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   }
 
+ 
+
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+    this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved length', this.wsRequestsUnserved.length)
     this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
 
 
@@ -174,10 +177,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-
-
-
 
   // -------------------------------------------------------------
   // @ Subscribe to project user role
@@ -434,7 +433,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          // console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          //  this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - requestid ', requestid);
@@ -572,6 +571,10 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET CURRENT PROJECT - PROJECT ID ', this.projectId)
         }
       });
+  }
+
+  goToUnservedNTR() {
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'],{ queryParams: { leftfilter: 100 } });
   }
 
   goToRequestMsgs(request_id: string) {

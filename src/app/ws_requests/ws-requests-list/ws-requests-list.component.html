@@ -93,7 +93,8 @@
 
     <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
       <span>
-        {{ served_unserved_sum }}
+        <!-- {{ served_unserved_sum }} -->
+          {{countRequestsServedByHumanRr + countRequestsServedByBotRr + countRequestsUnservedRr }}
       </span>
     </span>
   </li>
@@ -276,13 +277,14 @@
           <div class="col-xs-5">
             <div class="graph-legend" style="padding-left: 10px;">
               <div class="advanced-pie-legend-wrapper" style="display: inline-block;height: 107px;">
-                <!--  width: 420px;float: left; -->
+              
                 <div class="advanced-legend" style="position: relative;top: 50%;transform: translate(0,-50%);">
                   <div class="total-value"
                     style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 40px; color: rgba(0, 0, 0, 0.54) !important; margin-bottom: 8px;">
 
                     <span class="total-value-number-of-conversation" style="position: relative;top: 2px;">
-                      {{ wsRequestsServed?.length + wsRequestsUnserved?.length }}
+                      <!-- {{ wsRequestsServed?.length + wsRequestsUnserved?.length }} -->
+                      {{countRequestsServedByHumanRr +  countRequestsServedByBotRr  +  countRequestsUnservedRr }}
                     </span>
 
                     <span class="total-label" style="font-family: 'Poppins';
@@ -302,14 +304,15 @@
                         </div>
                         <div class="item-value"
                           style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                          {{ wsRequestsServed?.length }}
+                          <!-- {{ wsRequestsServed?.length }} -->
+                          {{countRequestsServedByHumanRr + countRequestsServedByBotRr }}
                         </div>
                         <div class="item-label" style="font-size: 14px;
                                 font-family: 'Poppins','Roboto', 'Arial', sans-serif;
                                 font-weight: 400;
                                 color: rgba(0, 0, 0, 0.54);
                                 line-height: 2;">{{'Served' | translate}}</div>
-                        <!-- <div class="item-percent">42%</div> -->
+                       
                       </div>
                       <div class="legend-item" style="margin-right: 20px;display: inline-block;">
                         <div class="item-color"
@@ -317,7 +320,8 @@
                         </div>
                         <div class="item-value"
                           style="font-family: 'Lato', sans-serif; font-weight: 400;font-size: 24px; color: rgba(0, 0, 0, 0.54) !important;">
-                          {{ wsRequestsUnserved?.length }}
+                          <!-- {{ wsRequestsUnserved?.length }} -->
+                          {{ countRequestsUnservedRr }}
                         </div>
                         <div class="item-label" style="font-size: 14px;
                                 font-family: 'Poppins','Roboto', 'Arial', sans-serif;
