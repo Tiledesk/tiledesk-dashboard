@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.18-rc1
+- Improves the method to get the number of conversations in the monitor page
+
 ### 2.7.17
 - Removes the ability to customize the quotas email template
 - Implements the icons for the SMS channel
