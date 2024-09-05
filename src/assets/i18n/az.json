@@ -548,6 +548,9 @@
     "QuotaExceeded": "Kvota keçib",
     "PleaseContactSupport": "Zəhmət olmasa dəstək ilə əlaqə saxlayın",
     "Rename":"Adını dəyişdirin",
+    "SelectAblockThatWillAutomaticallyExecute": "Çatbot söhbətə qoşulduqda avtomatik icra ediləcək blok seçin",
+    "SelectAblock": "Blok seçin",
+    "YouNeedToSelectABlock":"Siz blok seçməlisiniz :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",

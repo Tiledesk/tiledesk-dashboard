@@ -548,6 +548,9 @@
     "QuotaExceeded": "Квота асып кетті",
     "PleaseContactSupport": "Қолдау қызметіне хабарласыңыз",
     "Rename":"Атын өзгерту",
+    "SelectAblockThatWillAutomaticallyExecute":"Чатбот сөйлесуге қосылған кезде автоматты түрде орындалатын блокты таңдаңыз",
+    "SelectAblock": "Блокты таңдаңыз",
+    "YouNeedToSelectABlock":"Сізге блок таңдау керек :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "Консервіленген жауаптар - чат кезінде оңай еске түсіруге болатын алдын ала жасалған хабарлар.",

@@ -3764,11 +3764,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-
+  // Select a block that will automatically execute when the chatbot joins the conversation
   async presentSwalModalReassignConversationToBot(botid, botname, blocks) {
     console.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
     const { value: block } = await Swal.fire({
-      html: `${this.requestWillBeReassignedToMsg} ${botname} <label for="my-input">Select a block that will automatically execute when the chatbot joins the conversation</label>`,
+      html: `${this.requestWillBeReassignedToMsg} ${botname} <label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>`,
       title: this.reassignRequestMsg,
       text: this.requestWillBeReassignedToMsg + ' ' + botname,
       icon: "info",
@@ -3785,12 +3785,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       inputAttributes: {
         id: 'my-input'
       },
-      inputPlaceholder: "Select a block",
+      inputPlaceholder: this.translate.instant('SelectAblock'), //"Select a block",
       inputOptions: blocks,
       inputValidator: (value: any) => {
         return new Promise((resolve) => {
           if (value === "") {
-            resolve("You need to select a block :)");
+            resolve(this.translate.instant('YouNeedToSelectABlock'));
           } else {
             resolve(null);
           }

@@ -547,6 +547,9 @@
     "QuotaExceeded": "Quota exceeded",
     "PleaseContactSupport": "Please contact support",
     "Rename":"Rename",
+    "SelectAblockThatWillAutomaticallyExecute":"Select a block that will automatically execute when the chatbot joins the conversation",
+    "SelectAblock": "Select a block",
+    "YouNeedToSelectABlock":"You need to select a block :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",

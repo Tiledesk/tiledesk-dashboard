@@ -547,6 +547,9 @@
     "QuotaExceeded": "تم تجاوز الحصة",
     "PleaseContactSupport": "يرجى الاتصال بالدعم",
     "Rename":"إعادة تسمية",
+    "SelectAblockThatWillAutomaticallyExecute":"حدد الكتلة التي سيتم تنفيذها تلقائيًا عندما ينضم برنامج الدردشة الآلي إلى المحادثة",
+    "SelectAblock": "حدد كتلة",
+    "YouNeedToSelectABlock":"يجب عليك تحديد كتلة :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",

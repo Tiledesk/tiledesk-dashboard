@@ -548,6 +548,9 @@
     "QuotaExceeded": "Cota excedida",
     "PleaseContactSupport": "Entre em contato com o suporte",
     "Rename":"Renomear",
+    "SelectAblockThatWillAutomaticallyExecute":"Selecione um bloco que será executado automaticamente quando o chatbot entrar na conversa",
+    "SelectAblock": "Selecione um bloco",
+    "YouNeedToSelectABlock":"Precisa de selecionar um bloco :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",

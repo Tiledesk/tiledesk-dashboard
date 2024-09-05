@@ -549,6 +549,9 @@
     "QuotaExceeded": "Kvota oshib ketdi",
     "PleaseContactSupport": "Iltimos, qo'llab-quvvatlash xizmatiga murojaat qiling",
     "Rename":"Nomini o'zgartirish",
+    "SelectAblockThatWillAutomaticallyExecute":"Chatbot suhbatga qo'shilganda avtomatik ravishda bajariladigan blokni tanlang",
+    "SelectAblock": "Blokni tanlang",
+    "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",

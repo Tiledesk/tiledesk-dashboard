@@ -548,6 +548,9 @@
     "QuotaExceeded": "Quota dépassé",
     "PleaseContactSupport": "Veuillez contacter l'assistance",
     "Rename":"Renommer",
+    "SelectAblockThatWillAutomaticallyExecute":"Sélectionnez un bloc qui s'exécutera automatiquement lorsque le chatbot rejoindra la conversation",
+    "SelectAblock": "Sélectionnez un bloc",
+    "YouNeedToSelectABlock":"Vous devez sélectionner un bloc :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",

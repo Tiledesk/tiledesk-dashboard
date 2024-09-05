@@ -549,6 +549,9 @@
     "QuotaExceeded": "Kvoten överskriden",
     "PleaseContactSupport": "Vänligen kontakta support",
     "Rename":"Döp om",
+    "SelectAblockThatWillAutomaticallyExecute":"Välj ett block som körs automatiskt när chatboten går med i konversationen",
+    "SelectAblock": "Välj ett block",
+    "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",

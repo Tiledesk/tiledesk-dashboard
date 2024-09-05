@@ -548,6 +548,9 @@
 	"QuotaExceeded": "Quote überschritten",
     "PleaseContactSupport": "Bitte wenden Sie sich an den Support",
 	"Rename":"Umbenennen",
+	"SelectAblockThatWillAutomaticallyExecute": "Wählen Sie einen Block aus, der automatisch ausgeführt wird, wenn der Chatbot an der Konversation teilnimmt",
+	"SelectAblock": "Wählen Sie einen Block aus",
+	"YouNeedToSelectABlock":"Sie müssen einen Block auswählen :)",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
