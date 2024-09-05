@@ -21,7 +21,8 @@
 </div>
 <div mat-dialog-content>
 
-  <div class="form-container">
+  <div class="form--container">
+    <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
     <div class="fake-input">
       <div class="fake-input-inner">
         <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
@@ -38,26 +39,47 @@
     </div>
   </div>
 
-  <div *ngIf="show_answer" class="form-container" style="margin-bottom: 0px;">
+  <div *ngIf="show_answer" class="form--container" style="margin-bottom: 0px;">
+    <p *ngIf="answer" class="answer-title">
+      {{ 'KbPage.Answer' | translate }} <span> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+    </p>
     <div id="answer" class="answer">
-      <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
+      
        <!-- <span *ngIf="!aiQuotaExceeded">  -->
         {{ answer }} 
       <!-- </span>  -->
        <!-- <span *ngIf="aiQuotaExceeded">
        -> {{ answer }}
        </span> -->
-      <span *ngIf="qa && (!qa.answer || qa.answer == '')">{{ 'KbPage.NoAnswerFound' | translate }}</span>
-      <hr *ngIf="qa && qa.source">
-      <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
+      <span *ngIf="qa && (!qa.answer || qa.answer == '')">
+        {{ 'KbPage.NoAnswerFound' | translate }}
+      </span>
+      <!-- <hr *ngIf="qa && qa.source">
+      
+      <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
+        <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
+        <span *ngIf="!source_url">{{ qa.source }}</span>
+      </span> -->
+
+    </div>
+
+    <hr class="horizontal-line" *ngIf="qa && qa.source">
+
+    <p *ngIf="qa && qa.source" class="answer-title">{{ 'KbPage.Source' | translate }}</p>
+    <div id="answer" class="answer">
       <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
         <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
         <span *ngIf="!source_url">{{ qa.source }}</span>
       </span>
 
     </div>
-    <label *ngIf="!aiQuotaExceeded" class="control-label" style="margin-top: 10px;">
-      {{ 'KbPage.LabelResponseTime' | translate: translateparam }}
+    <label *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
+      <!-- {{ 'KbPage.LabelResponseTime' | translate: translateparam }} -->
+      {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate: translateparam }} </span>
+    </label>
+    <label *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
+      <!-- {{ 'KbPage.TotalTokensUsage' | translate: {prompt_token_size: prompt_token_size } }} -->
+      {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: prompt_token_size } }} </span>
     </label>
   </div>
 

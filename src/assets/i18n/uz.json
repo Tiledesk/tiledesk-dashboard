@@ -482,7 +482,6 @@
     "ChangeNameOrIconOfYourChatbot": "Chatbotingiz nomi yoki belgisini o'zgartiring",
     "NameOrIcon": "ism yoki belgi,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "tugmalar qo'shing yoki Chatbot Design Studio yordamida AIni yaxshilang",
-
     "AreYouSureYouWantToEditTheChatbot": "Haqiqatan ham {{ chat_bot_name }} chatbotini tahrir qilmoqchimisiz?",
     "NowItIsTimeToAddContent": "Endi tarkibni qo'shish vaqti keldi",
     "Subject": "Mavzu",
@@ -552,6 +551,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Chatbot suhbatga qo'shilganda avtomatik ravishda bajariladigan blokni tanlang",
     "SelectAblock": "Blokni tanlang",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
+    "MoreInQueque": "Navbatda koʻproq, hammasini koʻring",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",
@@ -1699,6 +1699,11 @@
         "AISettings":"AI sozlamalari",
         "SelectEngine": "AI modeli",
         "LabelResponseTime": "Javob vaqti taxminan {{ respTime }} soniya",
+        "AIResponseTime": "taxminan {{ respTime }} soniya",
+        "PromptSize":"Tezkor o'lcham",
+        "PromptSizeUsage":"{{ prompt_token_size }} token",
+        "GeneratedByModel": "{{ai_model_name}} tomonidan yaratilgan",
+        "TotalTokensUsage": "{{ prompt_token_size }} umumiy foydalanish tokeni",
         "PlaceholderSelectEngine": "Elementni tanlang",
         "TypeKbContentPlaceholder": "Bilimlar bazasining matn mazmuni",
         "AddKbInfoTextContentMsg1": "Diqqat, har bir matn mazmuni uchun ruxsat etilgan belgilarning maksimal soni 32768 ni tashkil qiladi.",

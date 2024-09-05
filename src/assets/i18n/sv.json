@@ -552,6 +552,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Välj ett block som körs automatiskt när chatboten går med i konversationen",
     "SelectAblock": "Välj ett block",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
+    "MoreInQueque": "Fler i kö, se alla",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",
@@ -1700,6 +1701,11 @@
         "AISettings":"AI-inställningar",
         "SelectEngine": "AI-modell",
         "LabelResponseTime": "Svarstiden handlar om {{ respTime }} sekunder",
+        "AIResponseTime": "ungefär {{ respTime }} sekunder",
+        "PromptSize":"Snabb storlek",
+        "PromptSizeUsage":"{{ prompt_token_size }} tokens",
+        "GeneratedByModel": "genererad av {{ai_model_name}}",
+        "TotalTokensUsage": "{{ prompt_token_size }} tokens total användning",
         "PlaceholderSelectEngine": "Välj ett element",
         "TypeKbContentPlaceholder": "Textinnehållet i Kunskapsbasen",
         "AddKbInfoTextContentMsg1": "Observera, det maximala antalet tillåtna tecken för varje textinnehåll är 32768.",

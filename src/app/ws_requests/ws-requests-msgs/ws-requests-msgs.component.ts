@@ -2339,7 +2339,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // -----------------------------------------------------------------------------------------------------
           // @ Msgs ws-subscription
           // -----------------------------------------------------------------------------------------------------
-          this.subscribeToWs_MsgsByRequestId(this.id_request);
+          // if (this.CHAT_PANEL_MODE === false)  {
+            this.subscribeToWs_MsgsByRequestId(this.id_request);
+          // }
 
           // -----------------------------------------------------------
           // DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
@@ -2459,17 +2461,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
-
   // -----------------------------------------------------------------------------------------------------
   // @ Messages ws-subscription and get msgs from BS subscription
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
+
     //  this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
+
   }
+
   // .pipe(filter((data) => data !== null))
   listenToGotAllMsg() {
     this.wsMsgsService.wsMsgsGotAllData$

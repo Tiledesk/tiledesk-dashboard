@@ -551,6 +551,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Selecione um bloco que será executado automaticamente quando o chatbot entrar na conversa",
     "SelectAblock": "Selecione um bloco",
     "YouNeedToSelectABlock":"Precisa de selecionar um bloco :)",
+    "MoreInQueque": "Mais na fila, veja tudo",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",
@@ -1699,6 +1700,11 @@
         "AISettings":"Configurações de IA",
         "SelectEngine": "Modelo de IA",
         "LabelResponseTime": "O tempo de resposta é aproximadamente {{ respTime }} segundos",
+        "AIResponseTime": "cerca de {{ respTime }} segundos",
+        "PromptSize":"Tamanho do prompt",
+        "PromptSizeUsage":"{{ prompt_token_size }} tokens",
+        "GeneratedByModel": "gerado por {{ai_model_name}}",
+        "TotalTokensUsage": "Utilização total de {{ prompt_token_size }} tokens",
         "PlaceholderSelectEngine": "Selecione um elemento",
         "TypeKbContentPlaceholder": "Conteúdo de texto da Base de Conhecimento",
         "AddKbInfoTextContentMsg1": "Atenção, o número máximo de caracteres permitidos para cada conteúdo de texto é 32768.",

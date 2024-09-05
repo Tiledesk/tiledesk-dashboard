@@ -6,7 +6,7 @@
       <div class="col-xs-12">
 
         <h4 class="title customh4" style="margin-bottom:2px;">
-          {{ 'VisitorsPage.ServedRequests' | translate }}
+          {{ 'VisitorsPage.ServedRequests' | translate }} <span *ngIf="wsRequestsServed.length >= 100"> - </span> <span *ngIf="wsRequestsServed.length >= 100" class="span-link-style" (click)="goToServedNTR()"> {{'MoreInQueque' | translate}} </span>
         </h4>
       </div>
 
@@ -480,13 +480,13 @@
               </div>
 
               <!-- ---------------------------------------- -->
-              <!-- Channel WRAPPER -->
+              <!-- Channel WRAPPER  -->
               <!-- ---------------------------------------- -->
               <div *ngIf="request?.channel?.name !== CHANNELS_NAME.CHAT21" class="channel_wpr" style="flex: 1; text-align: right;"
                 [ngClass]="{'channel-wpr-padding-left' : request?.priority !== 'medium'}">
 
                 <!-- ---------------------------------------- -->
-                <!-- Channel - Telegram -->
+                <!-- Channel - Telegram   -->
                 <!-- ---------------------------------------- -->
                 <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM" class="tool_tip">
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/Telegram-01.svg"
@@ -501,7 +501,7 @@
                 </span>
 
                 <!-- ---------------------------------------- -->
-                <!-- Channel - Voice -->
+                <!-- Channel - Voice  -->
                 <!-- ---------------------------------------- -->
                 <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML" class="tool_tip">
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
@@ -511,6 +511,36 @@
                       {{'MessageChannel' | translate}}:
                     </span>
                     <span style="font-weight: 400;">Voice </span>
+                    <i></i>
+                  </span>
+                </span>
+
+                 <!-- ---------------------------------------- -->
+                <!-- Channel - SMS  -->
+                <!-- ---------------------------------------- -->
+                <span  *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO" class="tool_tip">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/sms.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">SMS </span>
+                    <i></i>
+                  </span>
+                </span>
+
+                <!-- ---------------------------------------- -->
+                <!-- Channel - SMS  -->
+                <!-- ---------------------------------------- -->
+                <span  *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO" class="tool_tip">
+                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/sms.svg"
+                    class="img-fluid">
+                  <span class="bottom tool-tip-bottom--custom">
+                    <span style="font-weight: 400;">
+                      {{'MessageChannel' | translate}}:
+                    </span>
+                    <span style="font-weight: 400;">SMS </span>
                     <i></i>
                   </span>
                 </span>

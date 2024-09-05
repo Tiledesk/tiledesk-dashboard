@@ -552,6 +552,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Изаберите блок који ће се аутоматски извршити када се цхатбот придружи разговору",
     "SelectAblock": "Изаберите блок",
     "YouNeedToSelectABlock":"Морате да изаберете блок :)",
+    "MoreInQueque": "Више у реду, погледајте све",
     "CannedResponses": {
         "QuickTips": {
             "1": "Спремни одговори су унапред направљене поруке које можете лако да се сетите током ћаскања.",
@@ -1700,6 +1701,11 @@
         "AISettings":"АИ подешавања",
         "SelectEngine": "АИ модел",
         "LabelResponseTime": "Време одговора је отприлике {{ respTime }} секунди",
+        "AIResponseTime": "око {{ respTime }} секунди",
+        "PromptSize":"Промпт сизе",
+        "PromptSizeUsage":"{{ prompt_token_size }} токени",
+        "GeneratedByModel": "генерисао {{ai_model_name}}",
+        "TotalTokensUsage": "Укупна употреба токена: {{ prompt_token_size }}",
         "PlaceholderSelectEngine": "Изаберите елемент",
         "TypeKbContentPlaceholder": "Текстуални садржај Базе знања",
         "AddKbInfoTextContentMsg1": "Пажња, максимални дозвољени број знакова за сваки текстуални садржај је 32768.",

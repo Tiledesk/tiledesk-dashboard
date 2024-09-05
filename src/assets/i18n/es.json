@@ -481,7 +481,6 @@
     "ChangeNameOrIconOfYourChatbot": "Cambia el nombre o el icono de tu chatbot",
     "NameOrIcon": "nombre o icono,",
     "AddButtonsOrEnhanceYourAIWithChatbotDesign": "agregue botones o mejore su IA con Chatbot Design Studio",
-
     "AreYouSureYouWantToEditTheChatbot": "¿Estás segura de que quieres editar el chatbot {{chat_bot_name}}?",
     "NowItIsTimeToAddContent": "Ahora es el momento de agregar contenido",
     "Subject": "Asunto",
@@ -551,6 +550,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Seleccione un bloque que se ejecutará automáticamente cuando el chatbot se una a la conversación",
     "SelectAblock": "Seleccione un bloque",
     "YouNeedToSelectABlock":"Debes seleccionar un bloque :)",
+    "MoreInQueque": "Más en cola, ver todas",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",
@@ -1699,6 +1699,11 @@
         "AISettings":"Configuración de IA",
         "SelectEngine": "modelo de IA",
         "LabelResponseTime": "El tiempo de respuesta es aproximadamente {{ respTime }} segundos",
+        "AIResponseTime": "aproximadamente {{ respTime }} segundos",
+        "PromptSize":"Tamaño del mensaje",
+        "PromptSizeUsage":"{{ prompt_token_size }} fichas",
+        "GeneratedByModel": "generada por {{ai_model_name}}",
+        "TotalTokensUsage": "Uso total de {{ prompt_token_size }} tokens",
         "PlaceholderSelectEngine": "Seleccione un elemento",
         "TypeKbContentPlaceholder": "Contenido del texto de la base de conocimientos.",
         "AddKbInfoTextContentMsg1": "Atención, el número máximo de caracteres permitidos para cada contenido de texto es 32768.",
