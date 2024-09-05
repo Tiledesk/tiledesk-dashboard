@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.18
+- Minor improvements and bug fixing
+
 ### 2.7.17
 - Removes the ability to customize the quotas email template
 - Implements the icons for the SMS channel
