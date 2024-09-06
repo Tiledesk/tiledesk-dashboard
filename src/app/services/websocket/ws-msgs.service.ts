@@ -228,7 +228,7 @@ export class WsMsgsService {
 
     // 
 
-    console.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
+    this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL BODY ', body);
     return this._httpClient.post(url, JSON.stringify(body), httpOptions)
   }
 
