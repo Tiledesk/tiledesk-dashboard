@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.20
+- Fixes the bug: Home page conversations graph not displaying chatbots data
+
 ### 2.7.19
 - Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
 - Improves the method to get the number of conversations in the monitor page
