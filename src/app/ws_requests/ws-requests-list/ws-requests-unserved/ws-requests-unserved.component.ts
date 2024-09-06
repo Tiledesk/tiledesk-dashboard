@@ -595,10 +595,15 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   goToRequestMsgs(request_id: string) {
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
+    console.log('[WS-REQUESTS-UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages/' + this.scrollEl.scrollTop]);
     this.usersLocalDbService.setInStorage('last-selection-id', request_id)
+  }
+
+  onHoverConvRow() {
+    console.log('[WS-REQUESTS-UNSERVED] ON-HOVER-CONV scrollEl scrollTop', this.scrollEl.scrollTop)
+    this.scrollYposition = this.scrollEl.scrollTop
   }
 
 

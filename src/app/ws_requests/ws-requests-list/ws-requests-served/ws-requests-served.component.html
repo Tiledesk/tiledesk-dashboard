@@ -252,7 +252,7 @@
           <!-- ------------------------------------------------------------------------------------------------------ -->
           <!--  -->
           <td class="td-first-text " [ngClass]="{'padding_5' : request?.tags?.length > 0}"
-            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; " (contextmenu)="onContextMenu($event, request)">
+            (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; " (contextmenu)="onContextMenu($event, request)"  (mouseenter)="onHoverConvRow()">
               <span *ngIf="request?.ticket_id " class="ticket-id-badge" style="float: left;"
                 matTooltipClass="mat-white-tooltip" matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip"
                 matTooltipPosition='right' matTooltipHideDelay="100">

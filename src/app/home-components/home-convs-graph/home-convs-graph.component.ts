@@ -325,10 +325,10 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
 
     this.logger.log("[HOME-CONVS-GRAPH] GET REQUEST TYPE: Merged")
     this.analyticsService.requestsByDay(lastdays).subscribe((requestsByDay: any) => {
-      this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY  N-DAY ', requestsByDay);
+      console.log('[HOME-CONVS-GRAPH] - REQUESTS BY  N-DAY ', requestsByDay);
 
       this.analyticsService.requestsByDayBotServed(lastdays).subscribe((requestsByDayBotServed: any) => {
-        this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []

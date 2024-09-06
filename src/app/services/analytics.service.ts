@@ -94,11 +94,17 @@ export class AnalyticsService {
   }
 
   requestsByDayBotServed(lastdays, department_id?, participant_id?, channel?): Observable<[any]> {
+
+    console.log('[ANALYTICS-SERV] channel' , channel)
     if (!department_id) {
       department_id = ''
     }
     if (!participant_id) {
       participant_id = ''
+    }
+
+    if (!channel) {
+      channel = ''
     }
 
     this.logger.log("[ANALYTICS-SERV] requestsByDayBotServed DEPT-ID", department_id);
@@ -108,11 +114,13 @@ export class AnalyticsService {
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
     });
+    // 
     let params = new HttpParams()
       .set('lastdays', lastdays)
       .set('department_id', department_id)
       .set('participant', participant_id)
       .set('channel', channel)
+     
 
     return this.httpClient
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/aggregate/hasBot/day', { headers: headers, params: params })

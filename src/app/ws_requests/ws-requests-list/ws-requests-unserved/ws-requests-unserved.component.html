@@ -361,6 +361,7 @@
           <!-- MESSAGE -->
           <!-- --------------------------------------- -->
           <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)'
+            (mouseenter)="onHoverConvRow()"
             style="cursor:pointer; width: 215px;">
             <!-- [innerHTML]="getRequestText(request?.first_text)" -->
 

@@ -636,6 +636,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.usersLocalDbService.setInStorage('last-selection-id', request_id)
   }
 
+
+  onHoverConvRow() {
+    console.log('[WS-REQUESTS-SERVED] ON-HOVER-CONV scrollEl scrollTop', this.scrollEl.scrollTop)
+    this.scrollYposition = this.scrollEl.scrollTop
+  }
+
   // goToWsRequestsNoRealtimeServed() {
   //   this.logger.log("[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS ")
   //   this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '200']);
