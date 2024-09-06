@@ -551,6 +551,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Sélectionnez un bloc qui s'exécutera automatiquement lorsque le chatbot rejoindra la conversation",
     "SelectAblock": "Sélectionnez un bloc",
     "YouNeedToSelectABlock":"Vous devez sélectionner un bloc :)",
+    "MoreInQueque": "Plus en file d'attente, voir tout",
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",
@@ -1699,6 +1700,11 @@
         "AISettings":"Paramètres IA",
         "SelectEngine": "Modèle d'IA",
         "LabelResponseTime": "Le temps de réponse est d'environ {{ respTime }} secondes",
+        "AIResponseTime": "environ {{ respTime }} secondes",
+        "PromptSize":"Taille de l'invite",
+        "PromptSizeUsage":"Jetons {{ prompt_token_size }}",
+        "GeneratedByModel": "généré par {{ai_model_name}}",
+        "TotalTokensUsage": "Utilisation totale des jetons {{ prompt_token_size }}",
         "PlaceholderSelectEngine": "Sélectionnez un élément",
         "TypeKbContentPlaceholder": "Contenu textuel de la base de connaissances",
         "AddKbInfoTextContentMsg1": "Attention, le nombre maximum de caractères autorisés pour chaque contenu textuel est de 32768.",

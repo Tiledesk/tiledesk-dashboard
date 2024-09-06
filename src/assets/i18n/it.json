@@ -550,6 +550,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Seleziona un blocco che verrà eseguito automaticamente quando il chatbot si unisce alla conversazione",
     "SelectAblock": "Seleziona un blocco",
     "YouNeedToSelectABlock":"Devi selezionare un blocco :)",
+    "MoreInQueque": "Altre in coda, vedi tutto",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -1696,6 +1697,12 @@
         "AddKbInfoURL": "Imposta un URL di pagina valido.",
         "AISettings":"Impostazioni dell'IA",
         "SelectEngine": "Seleziona Motore",
+        "LabelResponseTime": "Il tempo di risposta è di circa {{ respTime }} secondi",
+        "AIResponseTime": "circa {{ respTime }} secondi",
+        "PromptSize":"Dimensione della richiesta",
+        "PromptSizeUsage":"{{ prompt_token_size }} token",
+        "GeneratedByModel": "generato da {{ai_model_name}}",
+        "TotalTokensUsage": "{{ prompt_token_size }} token utilizzati in totale",
         "PlaceholderSelectEngine": "Seleziona un elemento",
         "TypeKbContentPlaceholder": "Contenuto testuale della Knowledge Base",
         "AddKbInfoTextContentMsg1": "Attenzione, il numero massimo di caratteri consentiti per ciascun contenuto testuale è 32768.",

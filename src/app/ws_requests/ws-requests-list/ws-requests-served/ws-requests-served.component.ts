@@ -40,6 +40,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
+  @Input() requestCountResp: any;
+
+  countRequestsServedByHumanRr: number
+  countRequestsServedByBotRr: number
+  countRequestsUnservedRr: number
+
   CHAT_BASE_URL: string;
   storageBucket: string;
   baseUrl: string;
@@ -207,7 +213,22 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
+
+    // console.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
+
+
+    if (this.requestCountResp) {
+      this.countRequestsServedByHumanRr = this.requestCountResp.assigned;
+      this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
+      this.countRequestsUnservedRr = this.requestCountResp.unassigned;
+
+      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
+      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
+      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+    }
+   
+    
   
     if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
@@ -528,6 +549,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   }
   // }
 
+  goToServedNTR() {
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'],{ queryParams: { leftfilter: 200 } });
+  }
 
 
   goToBotProfile(bot, bot_id: string, bot_type: string) {
@@ -982,7 +1006,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          // console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
           
 
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
@@ -1006,7 +1030,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
-          // console.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
+          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
           this.usersLocalDbService.removeFromStorage('last-selection-id')
           // this.ngOnInit();
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');

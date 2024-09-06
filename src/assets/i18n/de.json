@@ -551,6 +551,7 @@
 	"SelectAblockThatWillAutomaticallyExecute": "Wählen Sie einen Block aus, der automatisch ausgeführt wird, wenn der Chatbot an der Konversation teilnimmt",
 	"SelectAblock": "Wählen Sie einen Block aus",
 	"YouNeedToSelectABlock":"Sie müssen einen Block auswählen :)",
+	"MoreInQueque": "Daha çox növbə var, hamısına baxın",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
@@ -1699,6 +1700,11 @@
 		"AISettings":"KI-Einstellungen",
 		"SelectEngine": "KI-Modell",
 		"LabelResponseTime": "Die Reaktionszeit beträgt ca {{ respTime }} Sekunden",
+		"AIResponseTime": "ungefähr {{ respTime }} Sekunden",
+		"PromptSize":"Prompte Größe",
+		"PromptSizeUsage":"{{ prompt_token_size }} Token",
+		"GeneratedByModel": "generiert von {{ai_model_name}}",
+		"TotalTokensUsage": "{{ prompt_token_size }} Token Gesamtnutzung",
 		"PlaceholderSelectEngine": "Wählen Sie ein Element aus",
 		"TypeKbContentPlaceholder": "Textinhalt der Wissensdatenbank",
 		"AddKbInfoTextContentMsg1": "Achtung, die maximal zulässige Zeichenanzahl für jeden Textinhalt beträgt 32768.",

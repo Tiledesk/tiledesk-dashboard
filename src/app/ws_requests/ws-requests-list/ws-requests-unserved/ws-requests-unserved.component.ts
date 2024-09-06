@@ -32,6 +32,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   @Input() wsRequestsUnserved: Request[];
   @Input() ws_requests_length: number
+  @Input() requestCountResp: any;
+
+  countRequestsServedByHumanRr: number
+  countRequestsServedByBotRr: number
+  countRequestsUnservedRr: number
 
   wsOndataRequestArray: Array<any>
   projectId: string;
@@ -135,9 +140,24 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   }
 
+
+
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+    this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved length', this.wsRequestsUnserved.length)
     this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
+    // console.log('[WS-REQUEST-UNSERVED] ngOnChanges requestCountResp', this.requestCountResp)
+
+
+    if (this.requestCountResp) {
+      this.countRequestsServedByHumanRr = this.requestCountResp.assigned;
+      this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
+      this.countRequestsUnservedRr = this.requestCountResp.unassigned;
+
+      // console.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
+      // console.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
+      // console.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+    }
 
 
     if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
@@ -174,10 +194,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-
-
-
 
   // -------------------------------------------------------------
   // @ Subscribe to project user role
@@ -434,14 +450,14 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          // console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          //  this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - requestid ', requestid);
 
           this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
-  
+
           if (requestid === this.storedRequestId) {
             this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
             this.usersLocalDbService.removeFromStorage('last-selection-id')
@@ -456,7 +472,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
-        
+
           this.usersLocalDbService.removeFromStorage('last-selection-id')
           // this.ngOnInit();
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
@@ -466,7 +482,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           const index = this.requests_selected.indexOf(requestid);
           if (index > -1) {
             this.requests_selected.splice(index, 1);
-           
+
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
@@ -574,6 +590,10 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       });
   }
 
+  goToUnservedNTR() {
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'], { queryParams: { leftfilter: 100 } });
+  }
+
   goToRequestMsgs(request_id: string) {
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
@@ -639,7 +659,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.translate.instant('Ok') ,
+      confirmButtonText: this.translate.instant('Ok'),
       cancelButtonText: this.cancelMsg,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,

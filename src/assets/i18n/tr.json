@@ -552,6 +552,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Chatbot sohbete katıldığında otomatik olarak yürütülecek bir blok seçin",
     "SelectAblock": "Bir blok seçin",
     "YouNeedToSelectABlock":"Bir blok seçmeniz gerekiyor :)",
+    "MoreInQueque": "Fler i kö, se alla",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",
@@ -1700,6 +1701,11 @@
         "AISettings":"Yapay Zeka Ayarları",
         "SelectEngine": "Yapay zeka modeli",
         "LabelResponseTime": "Tepki süresi yaklaşık {{ respTime }} saniye",
+        "AIResponseTime": "yaklaşık {{ respTime }} saniye",
+        "PromptSize":"Bilgi istemi boyutu",
+        "PromptSizeUsage":"{{ prompt_token_size }} belirteç",
+        "GeneratedByModel": "{{ai_model_name}} tarafından oluşturuldu",
+        "TotalTokensUsage": "{{ prompt_token_size }} token toplam kullanım",
         "PlaceholderSelectEngine": "Bir öğe seçin",
         "TypeKbContentPlaceholder": "Bilgi Bankasının metin içeriği",
         "AddKbInfoTextContentMsg1": "Dikkat, her metin içeriği için izin verilen maksimum karakter sayısı 32768'dir.",

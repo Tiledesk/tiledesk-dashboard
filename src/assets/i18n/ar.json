@@ -550,6 +550,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"حدد الكتلة التي سيتم تنفيذها تلقائيًا عندما ينضم برنامج الدردشة الآلي إلى المحادثة",
     "SelectAblock": "حدد كتلة",
     "YouNeedToSelectABlock":"يجب عليك تحديد كتلة :)",
+    "MoreInQueque": "المزيد في قائمة الانتظار، شاهد الكل",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",
@@ -1698,6 +1699,11 @@
         "AISettings":"إعدادات منظمة العفو الدولية",
         "SelectEngine": "نموذج الذكاء الاصطناعي",
         "LabelResponseTime": "وقت الاستجابة على وشك {{ respTime }} ثواني",
+        "TotalTokensUsage": "إجمالي استخدام الرموز {{ prompt_token_size }}",
+        "AIResponseTime": "حوالي {{ respTime }} ثانية",
+        "PromptSize":"حجم المطالبة",
+        "PromptSizeUsage":"{{ prompt_token_size }} رمز",
+        "GeneratedByModel": "تم إنشاؤه بواسطة {{ai_model_name}}",
         "PlaceholderSelectEngine": "حدد عنصرا",
         "TypeKbContentPlaceholder": "المحتوى النصي لقاعدة المعرفة",
         "AddKbInfoTextContentMsg1": "انتبه، الحد الأقصى لعدد الأحرف المسموح به لكل محتوى نصي هو 32768.",

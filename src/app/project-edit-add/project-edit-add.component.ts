@@ -1226,7 +1226,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      // console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);

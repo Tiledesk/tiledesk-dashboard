@@ -551,6 +551,7 @@
     "SelectAblockThatWillAutomaticallyExecute": "Çatbot söhbətə qoşulduqda avtomatik icra ediləcək blok seçin",
     "SelectAblock": "Blok seçin",
     "YouNeedToSelectABlock":"Siz blok seçməlisiniz :)",
+    "MoreInQueque": "Daha çox növbə var, hamısına baxın",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",
@@ -1699,6 +1700,11 @@
         "AISettings":"AI Parametrləri",
         "SelectEngine": "AI modeli",
         "LabelResponseTime": "Cavab müddəti təxminəndir {{ respTime }} saniyə",
+        "AIResponseTime": "təxminən {{ respTime }} saniyə",
+        "PromptSize":"Tələb ölçüsü",
+        "PromptSizeUsage":"{{ prompt_token_size }} token",
+        "GeneratedByModel": "{{ai_model_name}} tərəfindən yaradılıb",
+        "TotalTokensUsage": "{{ prompt_token_size }} tokens ümumi istifadə",
         "PlaceholderSelectEngine": "Element seçin",
         "TypeKbContentPlaceholder": "Bilik bazasının mətn məzmunu",
         "AddKbInfoTextContentMsg1": "Diqqət, hər mətn məzmunu üçün icazə verilən simvolların maksimum sayı 32768-dir.",

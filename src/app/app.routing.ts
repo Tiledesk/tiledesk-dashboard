@@ -150,6 +150,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
 
@@ -996,6 +997,12 @@ const routes: Routes = [
   {
     path: 'invalid-token',
     loadChildren: () => import('app/auth/unauthorized-token/unauthorized-token.module').then(m => m.UnauthorizedTokenModule),
+  },
+
+   // Support page
+   {
+    path: 'project/:projectid/support',
+    loadChildren: () => import('app/support/support.module').then(m => m.SupportModule),
   },
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
