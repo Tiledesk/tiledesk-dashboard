@@ -547,6 +547,7 @@
     "QuotaExceeded": "Quota exceeded",
     "PleaseContactSupport": "Please contact support",
     "Rename": "Rename",
+    "MoreInQueque": "More in queque, see all",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",
