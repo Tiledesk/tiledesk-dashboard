@@ -17,7 +17,7 @@ export class ModalChatbotReassignmentComponent implements OnInit {
     private logger: LoggerService,
     private faqService: FaqService,
   ) {
-    console.log('[MODAL-CHATBOT-REASSIGNMENT] data ', data)
+    this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] data ', data)
 
     if (data && data.chatbot_id) {
 
@@ -29,7 +29,7 @@ export class ModalChatbotReassignmentComponent implements OnInit {
 
   getAllFaqByFaqKbId(chatbot_id) {
     this.faqService.getAllFaqByFaqKbId(chatbot_id).subscribe((faqs: any) => {
-      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
       this.intent_display_name_array = []
 
       if (faqs) {
@@ -38,7 +38,7 @@ export class ModalChatbotReassignmentComponent implements OnInit {
           this.intent_display_name_array.push({id:index,  name: faq.intent_display_name})
 
         });
-        console.log('[MODAL-CHATBOT-REASSIGNMENT] - intent_display_name_array', this.intent_display_name_array);
+        this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - intent_display_name_array', this.intent_display_name_array);
         this.intent_display_name_array = this.intent_display_name_array.slice(0)
       }
     }, (error) => {
@@ -51,13 +51,12 @@ export class ModalChatbotReassignmentComponent implements OnInit {
   ngOnInit(): void { }
 
   onChangeBlock() {
-    console.log('[MODAL-CHATBOT-REASSIGNMENT] - onChangeBlock intent_display_name', this.intent_display_name);
+    this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - onChangeBlock intent_display_name', this.intent_display_name);
 
     
   }
 
   onOkPresssed() {
-    // console.log('[MODAL-CHATBOT-NAME] chatbot ', this.chatbot)
     this.dialogRef.close();
   }
 

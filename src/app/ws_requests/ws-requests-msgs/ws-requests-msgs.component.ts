@@ -3726,8 +3726,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   selectBot(botid: string, botname: string) {
-    console.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT ID ', botid);
-    console.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT NAME ', botname);
+    this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT ID ', botid);
+    this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation - SELECTED BOT NAME ', botname);
     this.userid_selected = 'bot_' + botid
     this.userfirstname_selected = botname;
     this.userlastname_selected = '';
@@ -3735,7 +3735,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayConfirmReassignmentModal = 'block'
     let blocks = {}
     this.faqService.getAllFaqByFaqKbId(botid).subscribe((faqs: any) => {
-      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
       // const intent_display_name_array = []
 
       if (faqs) {
@@ -3747,14 +3747,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // intent_display_name_array.push(block)
 
           if (processedItems === faqs.length) {
-            console.log('loop finished');
+            this.logger.log('loop finished');
             this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected, blocks)
 
           }
 
         });
-        console.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks', blocks);
-        // console.log('[MODAL-CHATBOT-REASSIGNMENT] - intent_display_name_array', intent_display_name_array);
+        this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks', blocks);
+        // this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - intent_display_name_array', intent_display_name_array);
         // this.intent_display_name_array = this.intent_display_name_array.slice(0)
       }
     }, (error) => {
@@ -3769,7 +3769,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // Select a block that will automatically execute when the chatbot joins the conversation
   async presentSwalModalReassignConversationToBot(botid, botname, blocks) {
-    console.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
+    this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
     const { value: block } = await Swal.fire({
       html: `${this.requestWillBeReassignedToMsg} ${botname} <label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>`,
       title: this.reassignRequestMsg,
@@ -3801,15 +3801,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     });
     if (block) {
-      console.log(`You selected: ${block}`);
+      // console.log(`You selected: ${block}`);
       this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
 
       }, (error) => {
-        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
 
       }, () => {
-        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
         this.sendMessage(block)
 
 
@@ -3863,12 +3863,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
       .subscribe((msg) => {
 
-        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
-        console.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+        this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
       }, () => {
-        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - COMPLETE ');
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - COMPLETE ');
         this.selectedResponseTypeID = 1
         // this.displayUsersListModal = 'none';
         this.presentDoneDialog()
@@ -5532,10 +5532,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   sendChatMessage() {
     // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
-    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
-    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
-    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
     const requestclosedAt = moment(this.request['closed_at']);
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
@@ -5552,7 +5552,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.reopenConversation(this.id_request)
       }
 
-      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
       let _chat_message = ''
       if (this.type !== 'file') {
         _chat_message = this.chat_message

@@ -47,7 +47,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
       trialExpired: this.trial_expired
     }
 
-    console.log('[CDS-SUPPORT this.cardOptions]', this.cardOptions)
+    // console.log('[CDS-SUPPORT this.cardOptions]', this.cardOptions)
     // this.manageWidget("start", projectBaseInfo)
     // this.manageWidget('show')
 
