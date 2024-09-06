@@ -552,6 +552,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Välj ett block som körs automatiskt när chatboten går med i konversationen",
     "SelectAblock": "Välj ett block",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
+    "MoreInQueque": "Fler i kö, se alla",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",

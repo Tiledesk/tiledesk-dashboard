@@ -550,6 +550,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Seleccione un bloque que se ejecutará automáticamente cuando el chatbot se una a la conversación",
     "SelectAblock": "Seleccione un bloque",
     "YouNeedToSelectABlock":"Debes seleccionar un bloque :)",
+    "MoreInQueque": "Más en cola, ver todas",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",

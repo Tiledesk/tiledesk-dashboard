@@ -4,9 +4,10 @@
     <div class="row">
 
       <div class="col-xs-12">
-
+        <!-- + countRequestsServedByBotRr -->
         <h4 class="title customh4" style="margin-bottom:2px;">
-          {{ 'VisitorsPage.ServedRequests' | translate }}
+          <!-- + countRequestsServedByBotRr -->
+          {{ 'VisitorsPage.ServedRequests' | translate }} <span *ngIf="(countRequestsServedByHumanRr  + countRequestsUnservedRr) >= 100"> - </span> <span *ngIf="(countRequestsServedByHumanRr  + countRequestsUnservedRr) >= 100" class="span-link-style" (click)="goToServedNTR()"> {{'MoreInQueque' | translate}} </span>
         </h4>
       </div>
 

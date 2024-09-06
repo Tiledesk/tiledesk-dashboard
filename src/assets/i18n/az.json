@@ -551,6 +551,7 @@
     "SelectAblockThatWillAutomaticallyExecute": "Çatbot söhbətə qoşulduqda avtomatik icra ediləcək blok seçin",
     "SelectAblock": "Blok seçin",
     "YouNeedToSelectABlock":"Siz blok seçməlisiniz :)",
+    "MoreInQueque": "Daha çox növbə var, hamısına baxın",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",

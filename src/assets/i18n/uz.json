@@ -551,6 +551,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Chatbot suhbatga qo'shilganda avtomatik ravishda bajariladigan blokni tanlang",
     "SelectAblock": "Blokni tanlang",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
+    "MoreInQueque": "Navbatda koʻproq, hammasini koʻring",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",

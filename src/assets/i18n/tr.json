@@ -552,6 +552,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"Chatbot sohbete katıldığında otomatik olarak yürütülecek bir blok seçin",
     "SelectAblock": "Bir blok seçin",
     "YouNeedToSelectABlock":"Bir blok seçmeniz gerekiyor :)",
+    "MoreInQueque": "Fler i kö, se alla",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",

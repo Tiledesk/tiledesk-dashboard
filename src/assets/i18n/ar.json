@@ -550,6 +550,7 @@
     "SelectAblockThatWillAutomaticallyExecute":"حدد الكتلة التي سيتم تنفيذها تلقائيًا عندما ينضم برنامج الدردشة الآلي إلى المحادثة",
     "SelectAblock": "حدد كتلة",
     "YouNeedToSelectABlock":"يجب عليك تحديد كتلة :)",
+    "MoreInQueque": "المزيد في قائمة الانتظار، شاهد الكل",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",
