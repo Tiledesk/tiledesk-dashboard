@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.19
+- Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
+- Improves the method to get the number of conversations in the monitor page
+
 ### 2.7.18
 - Minor improvements and bug fixing
 
