@@ -149,6 +149,26 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   }
 
+  getRouteParams() {
+    this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] oninit scrollEl', this.scrollEl)
+    this.route.params.subscribe((params) => {
+      // this.projectId = params.projectid
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET ROUTE PARAMS ', params);
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition;
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
+        if (this.scrollEl) {
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
+          
+        } else {
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl)
+        }
+      }
+    })
+
+  }
+
   onContextMenu(event: MouseEvent, item) {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
@@ -168,42 +188,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
 
-  getRouteParams() {
-    this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] oninit scrollEl', this.scrollEl)
-    this.route.params.subscribe((params) => {
-      // this.projectId = params.projectid
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET ROUTE PARAMS ', params);
-      if (params.scrollposition) {
-        this.scrollYposition = params.scrollposition;
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
-        if (this.scrollEl) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
-          // setTimeout(() => {
-          // this.scrollEl.scrollTo(0, +this.scrollYposition);
-
-          // scrollToWithAnimation(
-          //   this.scrollEl, // element to scroll
-          //   'scrollTop', // direction to scroll
-          //   +this.scrollYposition, // target scrollY (0 means top of the page)
-          //   10000, // duration in ms
-          //   'easeInOutCirc', /*
-          //       Can be a name of the list of 'Possible easing equations' or a callback
-          //       that defines the ease. # http://gizma.com/easing/
-          //   */
-          //   function () { // callback function that runs after the animation (optional)
-          //     this.logger.log('done!')
-          //   }
-          // );
-          // this.scrollEl.scrollTo({top: +this.scrollYposition, behavior: 'smooth'});
-          // }, 100);
-        } else {
-          this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl)
-        }
-      }
-    })
-
-  }
+ 
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
