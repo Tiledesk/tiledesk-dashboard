@@ -2311,6 +2311,8 @@
     "RefreshNow": "Atualize agora",
     "ServedByHumans": "Servido por humanos",
     "ServedByBots": "Servido por bots",
+    "AssignedToHumans": "Assigned to humans",
+    "AssignedToBots": "Assigned to bots",
     "AverageResponseTime": "Tempo médio de resposta",
     "AverageLengthOfConversation": "Duração média da conversa",
     "New Conversation": "Nova conversa",
