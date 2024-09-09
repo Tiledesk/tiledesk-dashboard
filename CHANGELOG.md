@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.21
+- Fixed the bug: on the "Monitor" page a new conversation causes the page to scroll top
+
 ### 2.7.20
 - Fixes the bug: Home page conversations graph not displaying chatbots data
 
