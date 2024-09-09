@@ -307,6 +307,10 @@
                     </ng-select>
                   </div>
                 </div>
+
+                
+
+
                 <div class="col-sm-6">
                   <label class="col-sm-12 label-7695a5">
                     {{ 'MessageChannel' | translate }}
@@ -334,6 +338,19 @@
                     placeholder="Email" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
                   </div>
                 </div>
+              </div>
+
+              <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                <label class="label-7695a5" style="padding-right: 30px;padding-top:8px">
+                  {{ "Status" | translate }}
+                </label>
+                <!-- <div class="col-sm-12"> -->
+                  <ng-select name="requeststatus" [(ngModel)]="requests_status" style="margin-right: 15px;"
+                    (change)="requestsStatusSelectFromAdvancedOption(requests_status)"
+                    [items]="statusInHistory | selectOptionsTranslate" bindLabel="name" [clearable]='false'
+                    [searchable]="false" bindValue="id" placeholder="Select status">
+                  </ng-select>
+                <!-- </div> -->
               </div>
 
 

@@ -234,6 +234,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: 'all', name: 'All' },
   ];
 
+  statusInHistory = [
+    { id: '1000', name: 'Closed' },
+    { id: '100', name: 'Unserved' },
+    { id: '200', name: 'Served' },
+    { id: '50', name: 'Temporary'},
+    { id: 'all', name: 'All' },
+  ];
+
   conversationType = [
     { id: 'all', name: 'All' },
     ... CHANNELS
@@ -1025,7 +1033,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // }
 
     if (request_status === 'all') {
-
       this.requests_status = 'all'
       this.requests_status_selected_from_advanced_option = 'all'
     } else if (request_status === '100') {
