@@ -2311,6 +2311,8 @@
     "RefreshNow": "قم بالتحديث الآن",
     "ServedByHumans": "يخدمها البشر",
     "ServedByBots": "يخدمها الروبوتات",
+    "AssignedToHumans": "Assigned to humans",
+    "AssignedToBots": "Assigned to bots",
     "AverageResponseTime": "متوسط وقت الاستجابة",
     "AverageLengthOfConversation": "متوسط طول المحادثة",
     "New Conversation": "محادثة جديدة",
