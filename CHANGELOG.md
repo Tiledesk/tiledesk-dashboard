@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.22
+- Improves the "Monitor" page
+
 ### 2.7.21
 - Fixed the bug: on the "Monitor" page a new conversation causes the page to scroll top
 
