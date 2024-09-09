@@ -2298,6 +2298,8 @@
     "RefreshNow": "Қазір жаңартыңыз",
     "ServedByHumans": "Адамдар қызмет етеді",
     "ServedByBots": "Боттар қызмет етеді",
+    "AssignedToHumans": "Адамдарға тағайындалған",
+    "AssignedToBots": "Боттарға тағайындалған",
     "AverageResponseTime": "Орташа жауап беру уақыты",
     "AverageLengthOfConversation": "Әңгімелесудің орташа ұзақтығы",
     "New Conversation": "Жаңа әңгіме",

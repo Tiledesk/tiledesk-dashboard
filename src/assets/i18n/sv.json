@@ -2299,6 +2299,8 @@
     "RefreshNow": "Uppdatera nu",
     "ServedByHumans": "Serveras av människor",
     "ServedByBots": "Serveras av bots",
+    "AssignedToHumans": "Tilldelad till människor",
+    "AssignedToBots": "Tilldelad till bots",
     "AverageResponseTime": "Genomsnittlig svarstid",
     "AverageLengthOfConversation": "Genomsnittlig konversationslängd",
     "New Conversation": "Nytt samtal",

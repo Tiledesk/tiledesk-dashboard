@@ -2297,6 +2297,8 @@
     "RefreshNow": "Hozir yangilang",
     "ServedByHumans": "Odamlar tomonidan xizmat qiladi",
     "ServedByBots": "Botlar tomonidan xizmat qiladi",
+    "AssignedToHumans": "Odamlarga tayinlangan",
+    "AssignedToBots": "Botlarga tayinlangan",
     "AverageResponseTime": "O'rtacha javob vaqti",
     "AverageLengthOfConversation": "Suhbatning o'rtacha davomiyligi",
     "New Conversation": "Yangi suhbat",

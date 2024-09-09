@@ -2298,6 +2298,8 @@
     "RefreshNow": "İndi yeniləyin",
     "ServedByHumans": "İnsanlar tərəfindən xidmət edilir",
     "ServedByBots": "Botlar tərəfindən xidmət edilir",
+    "AssignedToHumans": "İnsanlara təyin edilmişdir",
+    "AssignedToBots": "Botlara təyin edilmişdir",
     "AverageResponseTime": "Orta cavab müddəti",
     "AverageLengthOfConversation": "Söhbətin orta uzunluğu",
     "New Conversation": "Yeni Söhbət",

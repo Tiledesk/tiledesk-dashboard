@@ -2300,6 +2300,8 @@
     "RefreshNow": "Оновіть зараз",
     "ServedByHumans": "Обслуговується людьми",
     "ServedByBots": "Обслуговується ботами",
+    "AssignedToHumans": "Призначається людям",
+    "AssignedToBots": "Присвоєно ботам",
     "AverageResponseTime": "Середній час відповіді",
     "AverageLengthOfConversation": "Середня тривалість розмови",
     "New Conversation": "Нова розмова",
