@@ -2311,6 +2311,8 @@
     "RefreshNow": "Освежи сада",
     "ServedByHumans": "Служе људи",
     "ServedByBots": "Послужују ботови",
+    "AssignedToHumans": "Assigned to humans",
+    "AssignedToBots": "Assigned to bots",
     "AverageResponseTime": "Просечно време одговора",
     "AverageLengthOfConversation": "Просечна дужина разговора",
     "New Conversation": "Нови разговор",
