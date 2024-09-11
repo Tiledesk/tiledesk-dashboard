@@ -1244,15 +1244,16 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   // WS Requests NO-RT & HISTORY
   // -------------------------------------------------------------
-  public getHistoryAndNortRequests(operator: string, status: string, querystring: string, pagenumber: number) {
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUESTS - operator  ', operator);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - status  ', status);
-    //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
+  public getHistoryAndNortRequests(operator: string, status: string, _preflight, querystring: string, pagenumber: number) {
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      if (status === '100' || status === '200' || status === '1000') {
+      if (status === '100' || status === '200' || status === '1000' || status === '50' || status === '1000,100,200,50') {
         _querystring = '&' + querystring
       } else if (status === 'all') {
         _querystring = querystring + '&'
@@ -1263,15 +1264,15 @@ export class WsRequestsService implements OnDestroy {
 
     let url = '';
     if (status !== 'all') {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true';
-      // console.log('url status != all ' ,url )
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight='+ _preflight;
+      console.log('url status != all ' ,url )
 
     } else {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true';
-      // console.log('url status all ' ,url )
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight='+ _preflight;
+      console.log('url status all ' ,url )
     }
 
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

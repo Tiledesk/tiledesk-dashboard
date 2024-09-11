@@ -885,3 +885,19 @@ p.member:hover {
   position: relative;
   top: -3px;
 }
+
+.preflight-checkbox {
+  margin-left: 15px;
+  margin-top: 38px;
+}
+
+
+.request-statuses-select {
+  margin-right: 15px;
+}
+
+@media (max-width: 768px) { 
+  .request-statuses-select {
+    margin-right: 0px;
+  }
+}
