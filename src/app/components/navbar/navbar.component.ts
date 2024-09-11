@@ -183,6 +183,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_limit = 0;
 
   project_limits: any;
+  isOpenCurrentUsageMenu: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -878,9 +879,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
           // this.logger.log('[NAVBAR] route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
         }
-
-
-
       }
     });
   }
@@ -907,9 +905,17 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   onOpenQuoteMenu() {
-    this.logger.log('[NAVBAR] - on open quotes menu' )
+    this.isOpenCurrentUsageMenu = true
+    // console.log('[NAVBAR] - on open quotes menu' )
+    // console.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
     this.getQuotes();
+  }
+
+
+  onQuotasMenuClosed() {
+    this.isOpenCurrentUsageMenu = false
+    // console.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
   }
 
   getTrialLeft() {
@@ -919,10 +925,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
-       
-     
-      
-
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
           // this.logger.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
