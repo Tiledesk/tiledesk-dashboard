@@ -934,7 +934,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.getFirebaseToken(() => {
     this.logger.log('[HISTORY & NORT-CONVS] - JOIN PRESSED');
 
-
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
 
@@ -954,8 +953,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
     // });
   }
-
-
 
   openChatAtSelectedConversation(requestid: string, requester_fullanme: string) {
     localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
@@ -1000,8 +997,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   //     this.logger.log('[HOME] - cannot focus closed or nonexistant window');
   //   }
   // }
-
-
 
   requestsStatusSelect(request_status) {
     const currentUrl = this.router.url;
@@ -1071,13 +1066,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   requestsStatusesSelectFromAdvancedOption(requests_statuses) {
-    // console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
+    console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
+
+    if(this.requests_statuses.length === 0) {
+      console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses 2', this.requests_statuses);
+      // this.requests_statuses = ['1000', '100', '200', '50']
+      this.requests_status = "1000,100,200,50"
+      this.getRequests()
+    }
     this.requests_status = requests_statuses.join()
-    // console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_status', this.requests_status);
+    console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_status', this.requests_status);
   }
-
-
-
 
   getAllRequests() {
     // this.operator = '<'
@@ -1198,9 +1197,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getRequests() {
     // console.log('getRequests queryString' , this.queryString) 
     // console.log('getRequests _preflight' , this._preflight) 
+    console.log('getRequests requests_statuses ' , this._preflight) 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
-      this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
+      this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // console.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
@@ -1952,12 +1952,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   search() {
     // console.log('HERE IN SEARCH calledBy ', calledBy)
-    // console.log('HERE IN SEARCH this.preflight', this.preflight)
-    // console.log('HERE IN SEARCH this.fullText', this.fullText)
-    // console.log('HERE IN SEARCH this.startDate', this.startDate)
-    // console.log('HERE IN SEARCH this.endDate', this.endDate)
-    // console.log('HERE IN SEARCH this.requests_status', this.requests_status)
-    // console.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
+    console.log('HERE IN SEARCH this.preflight', this.preflight)
+    console.log('HERE IN SEARCH this.fullText', this.fullText)
+    console.log('HERE IN SEARCH this.startDate', this.startDate)
+    console.log('HERE IN SEARCH this.endDate', this.endDate)
+    console.log('HERE IN SEARCH this.requests_status', this.requests_status)
+    console.log('HERE IN SEARCH this.requests_status_selected_from_advanced_option', this.requests_status_selected_from_advanced_option)
 
 
     this.requests_status_temp = this.requests_status
@@ -2083,7 +2083,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.conversation_type && this.conversation_type !== 'all') {
       this.conversationTypeValue = this.conversation_type
-      // console.log('search this.conversation_type ', this.conversation_type)
+      console.log('search this.conversation_type ', this.conversation_type)
       // console.log('search this.conversationTypeValue ', this.conversationTypeValue)
     } else {
       this.conversationTypeValue = '';
@@ -2091,20 +2091,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
     } else {
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
       this.emailValue = ''
     }
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR preflight 1', this.preflight);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH FOR preflight 1', this.preflight);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH FOR IS_HERE_FOR_HISTORY ', this.IS_HERE_FOR_HISTORY);
     if (this.preflight === undefined) {
       if (this.IS_HERE_FOR_HISTORY) {
         this._preflight = true;
       } else {
         this._preflight = false;
       }
-      // console.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._preflight 2', this._preflight);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._preflight 2', this._preflight);
     } 
     
     // else { 
@@ -2126,7 +2126,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
     this.queryString =
-      variable_parameter + this.fullTextValue + '&'
+      variable_parameter 
+      + this.fullTextValue + '&'
       + 'dept_id=' + this.deptIdValue + '&'
       + 'start_date=' + this.startDateValue + '&'
       + 'end_date=' + this.endDateValue + '&'
@@ -2139,18 +2140,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // + 'preflight=' + this.preflightValue
 
 
-    // console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+    console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selectedDeptId > ', this.selectedDeptId);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 startDate > ', this.startDate);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 endDate > ', this.endDate);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requester_email > ', this.requester_email);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selecteTagName > ', this.selecteTagName);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 conversation_type > ', this.conversation_type);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_advanced_option > ', this.requests_status_selected_from_advanced_option);
-    // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_left_filter > ', this.requests_status_selected_from_left_filter);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selectedDeptId > ', this.selectedDeptId);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 startDate > ', this.startDate);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 endDate > ', this.endDate);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requester_email > ', this.requester_email);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 selecteTagName > ', this.selecteTagName);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 conversation_type > ', this.conversation_type);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 fullText', this.fullText)
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_advanced_option > ', this.requests_status_selected_from_advanced_option);
+    console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 requests_status_selected_from_left_filter > ', this.requests_status_selected_from_left_filter);
 
     // ||
     // this.requests_status_selected_from_left_filter !== undefined ||
@@ -2172,10 +2174,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       ) {
 
         this.showAdvancedSearchOption = true;
-        // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 2 ', this.showAdvancedSearchOption);
+        console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 2 ', this.showAdvancedSearchOption);
       } else {
         this.showAdvancedSearchOption = false;
-        // console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 3 ', this.showAdvancedSearchOption);
+        console.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 3 ', this.showAdvancedSearchOption);
       }
     }
     this.getRequests();
@@ -2184,7 +2186,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   clearFullText() {
     this.has_searched = false;
     const currentUrl = this.router.url;
-    // console.log('[HISTORY & NORT-CONVS] clearFullText current_url ', currentUrl);
+    console.log('[HISTORY & NORT-CONVS] clearFullText current_url ', currentUrl);
     const url_segments = currentUrl.split('/');
     url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
     // console.log('[HISTORY & NORT-CONVS] clearFullText url_segments ', url_segments);

@@ -1244,22 +1244,29 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   // WS Requests NO-RT & HISTORY
   // -------------------------------------------------------------
-  public getHistoryAndNortRequests(operator: string, status: string, _preflight, querystring: string, pagenumber: number) {
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
+  public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number) {
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses  ', statuses);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses length ', statuses?.length);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      if (status === '100' || status === '200' || status === '1000' || status === '50' || status === '1000,100,200,50') {
+      if (status === '100' || status === '200' || status === '1000' || status === '50' ||  status ==="1000,100,200,50" || statuses?.length>0) {
         _querystring = '&' + querystring
+        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {
         _querystring = querystring + '&'
+        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 2');
+      } else {
+        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 3');
       }
     } else {
       _querystring = ''
+      console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 4');
     }
 
     let url = '';
@@ -1272,7 +1279,7 @@ export class WsRequestsService implements OnDestroy {
       console.log('url status all ' ,url )
     }
 
-   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

@@ -339,7 +339,10 @@
                   </div>
                 </div>
               </div>
-
+              
+              <!-- ------------------------------------- -->
+              <!-- Select statuses in HISTORY -->
+              <!-- ------------------------------------- -->
               <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
                 <label class="label-7695a5" style="padding-right: 30px;padding-top:8px">
                   {{ "Status" | translate }}
@@ -353,11 +356,15 @@
                 <!-- </div> -->
               </div>
 
+              <!-- ------------------------------------- -->
+              <!-- Select preflight -->
+              <!-- ------------------------------------- -->
               <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
                 <div class="preflight-checkbox"> 
                   <div class="checkbox">
                     <label class="title-attribute">
-                      <input type="checkbox" [(ngModel)]="preflight"  class="form-check-input" id="exampleCheck1" (change)="onChangePreflight($event)">
+                      <input type="checkbox" [(ngModel)]="preflight"  class="form-check-input" id="exampleCheck1" 
+                        (change)="onChangePreflight($event)">
                       <span style="font-size: 14px; color: #7695a5;">
                         Exclude preflight conversations 
                         <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
