@@ -60,7 +60,7 @@
             <button  mat-button aria-label="trend icon"[matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()" class="quote-modal-btn"
               [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
               (click)="onOpenQuoteMenu()"> 
-              <mat-icon style="color: #555555">
+              <mat-icon style="color: #555555; font-size: 20px; position: relative; top: 3px;">
                 data_usage
               </mat-icon>
               <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
