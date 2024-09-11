@@ -2479,7 +2479,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       if (isAvailable === false) {
         return
       }
-      this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
+      this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight,  0).subscribe((requests: any) => {
         if (requests) {
           this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
 

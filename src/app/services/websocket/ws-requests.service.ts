@@ -1222,13 +1222,15 @@ export class WsRequestsService implements OnDestroy {
   // ------------------------------------------------------
   // @ Download history request as CSV
   // ------------------------------------------------------
-  public downloadHistoryRequestsAsCsv(querystring: string, pagenumber: number) {
+  public downloadHistoryRequestsAsCsv(requests_status:any, querystring: string, preflight: boolean, pagenumber: number) {
+    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV requests_status ', requests_status);
+    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV preflight ', preflight);
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV URL ', url);
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status='+ requests_status + _querystring + '&preflight=' + preflight + '&page=' + pagenumber;
+    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
