@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.23-rc2
+- Fixes the CSV download service on the History page
+
 ### 2.7.23-rc1
 - Adds the ability to view preflight conversations on the "History" page
 
