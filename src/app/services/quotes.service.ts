@@ -79,7 +79,6 @@ export class QuotesService {
   }
 
   getProjectQuotes(project_id: string) {
-
     return new Promise((resolve, reject) => {
       const httpOptions = {
         headers: new HttpHeaders({
@@ -99,7 +98,22 @@ export class QuotesService {
             reject(false);
           })
     })
+  }
 
+    // --------------------------------------------------
+  // @ Get request count
+  // --------------------------------------------------
+  public getQuotasCount(project_id) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + project_id + '/requests/count?conversation_quota=true'
+    console.log('[QUOTAS-SERV] - getQuotasCount - URL ', url)
+    return this.http.get(url, httpOptions)
   }
 
   async getQuoteLimits(project) {

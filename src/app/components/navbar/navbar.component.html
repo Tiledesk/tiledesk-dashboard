@@ -79,6 +79,9 @@
                     <div>
                       <p class="quote-title">Conversations</p>
                       <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
+
+                      <div (click)="goToHistoryOpenedConvs()">Opened <span style="cursor: pointer;"> {{openedConversations}}</span> </div>
+                      <div (click)="goToHistoryClosedConvs()">Closed <span style="cursor: pointer;"> {{closedConversations}}</span> </div>
                     </div>
 
                     <div class="quote">

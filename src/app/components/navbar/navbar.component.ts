@@ -185,6 +185,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   project_limits: any;
   isOpenCurrentUsageMenu: boolean = false;
 
+  openedConversations: number;
+  closedConversations: number;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -299,6 +302,32 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
     })
+  }
+
+
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      console.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+
+      console.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      console.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+    }, (error) => {
+      console.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      console.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+  goToHistoryOpenedConvs() {
+    console.log("[NAVBAR] goToHistoryOpenedConvs ");
+  }
+
+
+  goToHistoryClosedConvs() {
+    console.log("[NAVBAR] goToHistoryClosedConvs ");
   }
 
   getQuotes() {
@@ -896,6 +925,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectName = project.name;
           // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           this.getProjectQuotes();
+          this.getQuotasCount()
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
@@ -909,6 +939,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // console.log('[NAVBAR] - on open quotes menu' )
     // console.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
+    this.getQuotasCount()
     this.getQuotes();
   }
 

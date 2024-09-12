@@ -378,7 +378,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getQueryParams() {
     this.route.queryParamMap
       .subscribe(params => {
-        // console.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
+        console.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
         this.queryParams = params['params']
         // console.log('[HISTORY & NORT-CONVS]  this.queryParams', this.queryParams);
 
@@ -398,7 +398,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         if (this.queryParams && this.queryParams.qs) {
           const qsString = JSON.parse(this.queryParams.qs)
-          // console.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
+          console.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
           const searchedForArray = qsString.split('&');
           // console.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
@@ -1197,7 +1197,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getRequests() {
     // console.log('getRequests queryString' , this.queryString) 
     // console.log('getRequests _preflight' , this._preflight) 
-    console.log('getRequests requests_statuses ' , this._preflight) 
+    // console.log('getRequests requests_statuses ' , this.requests_statuses) 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {

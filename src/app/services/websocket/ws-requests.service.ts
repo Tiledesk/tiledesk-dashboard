@@ -778,7 +778,7 @@ export class WsRequestsService implements OnDestroy {
   }
 
   // --------------------------------------------------
-  // @ Get request by id
+  // @ Get request count
   // --------------------------------------------------
   public getConversationCount() {
     const httpOptions = {
@@ -794,7 +794,7 @@ export class WsRequestsService implements OnDestroy {
   }
 
   // --------------------------------------------------
-  // @ Get request by id
+  // @ Get request by id 
   // --------------------------------------------------
   public getConversationByIDWithRestRequest(request_id) {
     const httpOptions = {
