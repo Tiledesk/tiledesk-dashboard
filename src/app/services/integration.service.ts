@@ -118,7 +118,7 @@ export class IntegrationService {
     return this.http.delete(url, httpOptions);
   }
 
-  checkIntegrationKeyValidity(url: string, key?: string) {
+  checkIntegrationKeyValidity(url: string, key?: string, api_key?: string) {
     
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -128,11 +128,16 @@ export class IntegrationService {
       headers = headers.append('Authorization', key)
     }
 
+    if (api_key) {
+      headers = headers.append('api-key', api_key)
+    }
+
     const httpOptions = {
       headers: headers
     }
 
     return this.http.get(url, httpOptions);
   }
+
 
 }

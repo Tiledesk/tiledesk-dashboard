@@ -1,0 +1,32 @@
+p {
+    margin-bottom: 0px;
+}
+
+.header {
+    border-bottom: solid 1px #e0e0e0;
+    padding: 12px 12px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+
+    .signup {
+        display: flex;
+
+        p {
+            margin: 0 0 0 5px;
+        }
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.content {
+    padding: 20px;
+}

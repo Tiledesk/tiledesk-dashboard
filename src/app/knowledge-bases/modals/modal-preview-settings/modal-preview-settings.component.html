@@ -292,8 +292,11 @@
             </label>
         </div>
 
-        <textarea class="context-texarea" [(ngModel)]="context" rows="4" placeholder="You are an awesome assistant"
-            (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+        <textarea  class="context-texarea" [(ngModel)]="context" rows="4"
+        placeholder="You are an awesome assistant"
+        (ngModelChange)="onChangeTextInContex($event)">  </textarea>
+       
+
     </div>
 
     <sat-popover id="ai-settings-label" #systemContext horizontalAlign="before" verticalAlign="center"
