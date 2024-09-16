@@ -32,6 +32,7 @@ export class WsRequestsService implements OnDestroy {
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public wsConv$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public wsConvData$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProject$: BehaviorSubject<Array<[any]>> = new BehaviorSubject<Array<[any]>>([]);
   public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public foregroundNotificationCount$: BehaviorSubject<number> = new BehaviorSubject(null);
@@ -298,7 +299,7 @@ export class WsRequestsService implements OnDestroy {
             // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
-
+            
 
             // -------------------------------------------------------
             // @ Agents (UPDATE) pass in data agents get from snapshot
@@ -316,7 +317,9 @@ export class WsRequestsService implements OnDestroy {
 
           }, function (data, notification) {
             self.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ", data);
+            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ", data);
             self.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - NOTIFICATION ", notification);
+            // self.wsConvData$.next(data)
 
             // if (notification.event.method === 'CREATE') {
 

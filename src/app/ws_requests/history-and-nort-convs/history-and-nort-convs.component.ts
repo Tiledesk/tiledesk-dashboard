@@ -242,12 +242,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: '1000', name: 'Closed' },
     { id: '100', name: 'Unserved' },
     { id: '200', name: 'Served' },
-    { id: '50', name: 'Temporary'}
+    { id: '50', name: 'Temporary' }
   ];
 
   conversationType = [
     { id: 'all', name: 'All' },
-    ... CHANNELS
+    ...CHANNELS
   ];
   CHANNELS_NAME = CHANNELS_NAME;
 
@@ -330,7 +330,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public brandService: BrandService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
-  
+
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
@@ -400,10 +400,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           const qsString = JSON.parse(this.queryParams.qs)
           console.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
           const searchedForArray = qsString.split('&');
-          // console.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
+          console.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
-            // console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+            console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
 
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
@@ -430,14 +430,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               // console.log('[HISTORY & NORT-CONVS]  queryParams qs_dept_id ', this.qs_dept_id)
               if (this.qs_dept_id) {
                 this.selectedDeptId = this.qs_dept_id;
-                // console.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedDeptId:', this.selectedDeptId)
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedDeptId:', this.selectedDeptId)
 
               }
             }
 
             if (paramArray[0] === 'start_date' && paramArray[1] !== '') {
               const start_date_value = paramArray[1]
-              this.logger.log('[HISTORY & NORT-CONVS] queryParams start_date_value ', start_date_value)
+              console.log('[HISTORY & NORT-CONVS] queryParams start_date_value ', start_date_value)
               if (start_date_value) {
                 // this.startDate = {}
                 this.startDate = start_date_value;
@@ -455,7 +455,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (paramArray[0] === 'end_date' && paramArray[1] !== '') {
               const end_date = paramArray[1]
-              this.logger.log('[HISTORY & NORT-CONVS] queryParams end_date', end_date)
+              console.log('[HISTORY & NORT-CONVS] queryParams end_date', end_date)
               if (end_date) {
                 // this.endDate = {}
                 this.endDate = end_date;
@@ -470,16 +470,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (paramArray[0] === 'channel' && paramArray[1] !== '') {
               const channel_value = paramArray[1]
-              // console.log('[HISTORY & NORT-CONVS] queryParams channel value ', channel_value)
+              console.log('[HISTORY & NORT-CONVS] queryParams channel value ', channel_value)
               if (channel_value) {
                 this.conversation_type = channel_value
-                // console.log('[HISTORY & NORT-CONVS]  queryParams qsString > conversation_type:', this.conversation_type)
+                console.log('[HISTORY & NORT-CONVS]  queryParams qsString > conversation_type:', this.conversation_type)
               }
             }
 
             if (paramArray[0] === 'participant' && paramArray[1] !== '') {
               this.qs_teammate_id = paramArray[1]
-              // console.log('[HISTORY & NORT-CONVS] queryParams qs_teammate_id  ', this.qs_teammate_id)
+              console.log('[HISTORY & NORT-CONVS] queryParams qs_teammate_id  ', this.qs_teammate_id)
               if (this.qs_teammate_id) {
                 this.selectedAgentId = this.qs_teammate_id
                 // console.log('[HISTORY & NORT-CONVS]  queryParams qsString > selectedAgentId:', this.selectedAgentId)
@@ -500,21 +500,46 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (paramArray[0] === 'rstatus' && paramArray[1] !== '') {
               const requetStatusValue = paramArray[1]
-              // console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue ', requetStatusValue)
+              console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue ', requetStatusValue)
+              console.log("[HISTORY & NORT-CONVS] queryParams requetStatusValue includes(',')", requetStatusValue.includes(','))
 
-              this.requests_status_selected_from_advanced_option = null
-              if (requetStatusValue === 'all') {
+              if (!requetStatusValue.includes(',') && requetStatusValue !== '1000') {
+                this.requests_status_selected_from_advanced_option = null
+                if (requetStatusValue === 'all') {
 
-                this.requests_status = 'all'
-                this.requests_status_selected_from_advanced_option = 'all'
-              } else if (requetStatusValue === '100') {
-                this.operator = '='
-                this.requests_status = '100'
-                this.requests_status_selected_from_advanced_option = '100'
-              } else if (requetStatusValue === '200') {
-                this.operator = '='
-                this.requests_status_selected_from_advanced_option = '200'
-                this.requests_status = '200'
+                  this.requests_status = 'all'
+                  this.requests_status_selected_from_advanced_option = 'all'
+                } else if (requetStatusValue === '100') {
+                  this.operator = '='
+                  this.requests_status = '100'
+                  this.requests_status_selected_from_advanced_option = '100'
+                } else if (requetStatusValue === '200') {
+                  this.operator = '='
+                  this.requests_status_selected_from_advanced_option = '200'
+                  this.requests_status = '200'
+                } 
+                // else if (requetStatusValue === '1000') {
+                //   this.operator = '='
+                //   this.requests_status_selected_from_advanced_option = '1000'
+                //   this.requests_status = '1000'
+                // }
+              } else {
+                console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue 2 requetStatusValue >', requetStatusValue)
+                  if(requetStatusValue !== '1000') { 
+
+                  this.operator = '='
+                  this.requests_status_selected_from_advanced_option = requetStatusValue
+                  this.requests_status = requetStatusValue
+                  const requetStatusValueArray = requetStatusValue.split(',')
+                  console.log('[HISTORY & NORT-CONVS] queryParams requetStatusValueArray ', requetStatusValueArray)
+                  this.requests_statuses = requetStatusValueArray
+
+                } else if (requetStatusValue === '1000') {
+                  this.operator = '='
+                  this.requests_statuses = ['1000']
+                  this.requests_status = '1000'
+                  this.requests_status_selected_from_advanced_option = '1000'
+                }
               }
 
               // if () 
@@ -575,7 +600,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   goToRequestMsgs(request_recipient: string) {
     // console.log('HERE IN goToRequestMsgs this.requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter)
 
-    // console.log('goToRequestMsgs - has_searched', this.has_searched)
+    console.log('goToRequestMsgs - has_searched', this.has_searched)
+    console.log('goToRequestMsgs - queryString', this.queryString)
 
 
     if (this.IS_HERE_FOR_HISTORY) {
@@ -588,7 +614,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       }
     }
     else {
-      // console.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
+      console.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
 
       if (this.has_searched === true) {
         this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/3/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
@@ -1032,10 +1058,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // console.log('[HISTORY & NORT-CONVS] - onChangePreflight - checked', $event.target.checked);
     this.preflight = $event.target.checked
     if ($event.target.checked === true) {
-      this._preflight = false 
+      this._preflight = false
       // console.log('[HISTORY & NORT-CONVS] - onChangePreflight - this._preflight', this._preflight);
     } else {
-      this._preflight = true 
+      this._preflight = true
       // console.log('[HISTORY & NORT-CONVS] - onChangePreflight - this._preflight', this._preflight);
     }
   }
@@ -1044,7 +1070,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     // console.log('[HISTORY & NORT-CONVS] - requestsStatusSelectFromAdvancedOption', this.showAdvancedSearchOption);
     // console.log('[HISTORY & NORT-CONVS] - requestsStatusSelectFromAdvancedOption', request_status);
-    
+
 
     if (request_status === 'all') {
       this.requests_status = 'all'
@@ -1068,7 +1094,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   requestsStatusesSelectFromAdvancedOption(requests_statuses) {
     console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses', this.requests_statuses);
 
-    if(this.requests_statuses.length === 0) {
+    if (this.requests_statuses.length === 0) {
       console.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses 2', this.requests_statuses);
       // this.requests_statuses = ['1000', '100', '200', '50']
       this.requests_status = "1000,100,200,50"
@@ -1513,7 +1539,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         } else if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {  // && this.trial_expired === true
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-       
+
         }
 
       } else {
@@ -2105,18 +2131,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this._preflight = false;
       }
       console.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._preflight 2', this._preflight);
-    } 
-    
-    // else { 
-    //   this._preflight = this._preflight;
-    //   console.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._preflight 3', this._preflight);
-    // }
-    // else {
-    //   console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
-    //   this.emailValue = ''
-    // }
-
-
+    }
 
     // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
     // tslint:disable-next-line:max-line-length
@@ -2126,7 +2141,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
     this.queryString =
-      variable_parameter 
+      variable_parameter
       + this.fullTextValue + '&'
       + 'dept_id=' + this.deptIdValue + '&'
       + 'start_date=' + this.startDateValue + '&'
@@ -2134,10 +2149,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'participant=' + this.selectedAgentValue + '&'
       + 'requester_email=' + this.emailValue + '&'
       + 'tags=' + this.selecteTagNameValue + '&'
-      + 'channel=' + this.conversationTypeValue 
-      
-      // + '&'
-      // + 'preflight=' + this.preflightValue
+      + 'channel=' + this.conversationTypeValue + '&'
+      + 'rstatus=' + this.requests_status
+
+    // + '&'
+    // + 'preflight=' + this.preflightValue
 
 
     console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
@@ -2284,8 +2300,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       'channel=' + this.conversationTypeValue,
 
 
-    // console.log('clearFullText queryString ' , this.queryString ) 
-    this.pageNo = 0
+      // console.log('clearFullText queryString ' , this.queryString ) 
+      this.pageNo = 0
     this.getRequests();
 
   }
@@ -2324,7 +2340,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.requester_email = '';
     this.selecteTagName = '';
     this.conversation_type = 'all';
-   
+
 
     if (!this.IS_HERE_FOR_HISTORY) {
       this.requests_status = 'all'
@@ -2429,7 +2445,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
@@ -2471,7 +2487,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     });
   }
 
-   // Export CSV
+  // Export CSV
   exportRequestsToCSV() {
     if (this.payIsVisible) {
       const isAvailable = this.checkPlanAndPresentModal()
@@ -2479,7 +2495,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       if (isAvailable === false) {
         return
       }
-      this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight,  0).subscribe((requests: any) => {
+      this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight, 0).subscribe((requests: any) => {
         if (requests) {
           this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
 
@@ -2499,8 +2515,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
- 
- 
+
+
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
@@ -2512,12 +2528,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
-     
+
       // content: el,
       // buttons: {
       //   cancel: this.cancel,

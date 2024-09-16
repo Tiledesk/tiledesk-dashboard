@@ -716,14 +716,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        // this.logger.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        console.log('[WS-REQUESTS-MSGS]  queryParams', params);
         this.queryParams = params
       });
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      this.logger.log('[WS-REQUESTS-MSGS] params', params)
+    console.log('[WS-REQUESTS-MSGS] params', params)
 
       if (params.scrollposition) {
         this.scrollYposition = params.scrollposition
@@ -739,17 +739,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
-        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
       }
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-          this.hasSearchedBy = params.hassearchedby
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-          this.hasSearchedBy = params.hassearchedby
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.hasSearchedBy = params.hassearchedby
+        console.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
 
       if (!params.calledby) {
@@ -760,6 +763,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goBack() {
+    console.log('[WS-REQUESTS-MSGS] goBack' ) 
     if (this.previousUrl === 'wsrequests') {
       if (!this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);

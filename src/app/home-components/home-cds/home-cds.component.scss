@@ -1,3 +1,12 @@
+
+.home-cds-main-content {
+    margin-top: 18px;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+    background-color: #fff;
+}
+
 .home-cds-container {
     display: flex;
     flex-direction: column;
@@ -62,7 +71,7 @@
     display: flex;
     justify-content: center;
     margin-top: 35px;
-    margin-bottom: 70px;
+    // margin-bottom: 70px;
     height: 85px;
 }
 

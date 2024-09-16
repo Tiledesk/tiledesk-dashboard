@@ -228,11 +228,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   requests_count = 0;
   requests_perc = 0;
   requests_limit = 0;
-  
+
   messages_count = 0;
   messages_perc = 0;
   messages_limit = 0;
-  
+
   email_count = 0;
   email_perc = 0;
   email_limit = 0;
@@ -246,9 +246,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+
+  // ---------------------------------------
+  // For test 
+  // ---------------------------------------
+  // conversationsRunnedOut: boolean = true;
+  // emailsRunnedOut: boolean = true;
+  // tokensRunnedOut: boolean = true;
+
   displayQuotaSkeleton: boolean = true
 
   salesEmail: string
+
+  openedConversations: number
+  closedConversations: number
 
   constructor(
     public auth: AuthService,
@@ -324,7 +335,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
 
-    
+    this.listeHasOpenedNavbarQuotasMenu()
   }
 
   ngAfterViewInit() {
@@ -355,13 +366,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (project) {
 
-          
+
           this.project = project
           this.projectId = this.project._id;
           this.projectName = this.project.name
 
           if (this.projectId) {
             this.getProjectQuotes();
+            this.getQuotasCount()
           }
           this.prjct_name = this.project.name
 
@@ -384,6 +396,38 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      console.log("[HOME] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+
+      console.log("[HOME] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      console.log("[HOME] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+    }, (error) => {
+      console.error("[HOME] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      console.log("[HOME] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+
+  goToHistoryOpenedConvs() {
+    console.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: '"full_text=&dept_id=&start_date=&end_date=&partici…er_email=&tags=&channel=&rstatus=100,200,50"' } })
+  }
+
+
+  goToHistoryClosedConvs() {
+    console.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: '"full_text=&dept_id=&start_date=&end_date=&partici…er_email=&tags=&channel=&rstatus=1000"' } })
+  }
+
+  goToHistoryAllConvs() {
+    console.log("[NAVBAR] goToHistoryAllConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: '"full_text=&dept_id=&start_date=&end_date=&partici…er_email=&tags=&channel=&rstatus=1000,100,200,50"' } })
+  }
 
 
   getProjectQuotes() {
@@ -400,9 +444,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
+  listeHasOpenedNavbarQuotasMenu() {
+    //  console.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
+    this.quotesService.hasOpenNavbarQuotasMenu$
+
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((hasOpen) => {
+
+        console.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        if (this.projectId) {
+          this.getQuotes()
+        }
+      })
+
+  }
+
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[HOME] getAllQuotes response: ", resp)
+      console.log("[HOME] getAllQuotes response: ", resp)
 
       this.logger.log("[HOME] project_limits: ", this.project_limits)
       this.logger.log("[HOME] resp.quotes: ", resp.quotes)
@@ -432,45 +493,53 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         resp.quotes.tokens.quote = 0;
       }
 
-      this.logger.log('[HOME] used requests', resp.quotes.requests.quote) 
-      this.logger.log('[HOME] requests_limit', this.requests_limit) 
+      this.logger.log('[HOME] used requests', resp.quotes.requests.quote)
+      this.logger.log('[HOME] requests_limit', this.requests_limit)
 
-      this.logger.log('[HOME] used email', resp.quotes.email.quote) 
-      this.logger.log('[HOME] email_limit', this.email_limit) 
+      this.logger.log('[HOME] used email', resp.quotes.email.quote)
+      this.logger.log('[HOME] email_limit', this.email_limit)
 
 
-      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote) 
-      this.logger.log('[HOME] tokens_limit', this.tokens_limit) 
-      if(resp.quotes.requests.quote >= this.requests_limit) {
+      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
+      this.logger.log('[HOME] tokens_limit', this.tokens_limit)
+
+      if (resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.conversationsRunnedOut = false;
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut) 
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
       }
 
-      if(resp.quotes.email.quote >= this.email_limit) {
+      if (resp.quotes.email.quote >= this.email_limit) {
         this.emailsRunnedOut = true;
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.emailsRunnedOut = false;
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut) 
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
       }
- 
-      if(resp.quotes.tokens.quote >= this.tokens_limit) {
+
+      if (resp.quotes.tokens.quote >= this.tokens_limit) {
         this.tokensRunnedOut = true;
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.tokensRunnedOut = false;
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut) 
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
       }
-      
+
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
 
       this.requests_count = resp.quotes.requests.quote;
+      console.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
@@ -562,7 +631,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         this.buildProjectProfileName()
-       
+
 
         const projectCreatedAt = project.createdAt
         this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
@@ -602,7 +671,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  buildProjectProfileName( ) {
+  buildProjectProfileName() {
     if (this.prjct_profile_type === 'free') {
       if (this.prjct_trial_expired === false) {
 
@@ -713,7 +782,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-  } 
+  }
 
   manageChatbotVisibility(projectProfileData) {
     this.logger.log('[HOME] (manageChatbotVisibility) ')
@@ -816,24 +885,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
       // if(!this.displayKbHeroSection) {
-        this.showskeleton = false;
+      this.showskeleton = false;
       // } else {
       //   setTimeout(() => {
       //     this.showskeleton = false;
       //     this.logger.log('[HOME] - GET FAQKB - showskeleton ', this.showskeleton);
       //   }, 500);
       // }
-     
+
       this.delayNewsFeedSkeleton()
 
 
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       // if(!this.displayKbHeroSection) {
-        this.showskeleton = false;
+      this.showskeleton = false;
       // } else {
       //   setTimeout(() => {
-          
+
       //     this.showskeleton = false;
       //     this.logger.log('[HOME] - GET FAQKB COMPLETE - showskeleton ', this.showskeleton);
       //   }, 3000);
@@ -1590,7 +1659,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.logger.log('[HOME] getInstallations WA app index', WAInstallationIndex)
             if (WAInstallationIndex === -1) {
               this.whatsAppIsInstalled = false;
-             this.logger.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
+              this.logger.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
               if (this.userHasUnistalledWa === false) {
                 this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
@@ -1647,13 +1716,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
         (this.profile_name === 'free' && this.prjct_trial_expired === true))
-      ) {
+    ) {
 
       if (!this.appSumoProfile) {
 
         return false
       } else {
-        
+
         return false
       }
     } else if (
@@ -1663,7 +1732,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
         (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))
-      ) {
+    ) {
       if (!this.appSumoProfile) {
         // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
@@ -1823,7 +1892,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onClickOnGoToLearnMoreOrManageApp() {
-   this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+    this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
     if (this.whatsAppIsInstalled === false) {
       this.goToWhatsAppDetails()
     } else {
@@ -1832,7 +1901,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   checkPlanAndPresentModal(appTitle) {
-    this.logger.log('[HOME] checkPlanAndPresentModal appTitle', appTitle , 'appSumoProfile ', this.appSumoProfile)
+    this.logger.log('[HOME] checkPlanAndPresentModal appTitle', appTitle, 'appSumoProfile ', this.appSumoProfile)
     if (
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
@@ -1873,10 +1942,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // || this.appTitle === "Facebook Messenger"
-    if (this.appTitle === "WhatsApp Business" ) {
-      this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })
+    if (this.appTitle === "WhatsApp Business") {
+      this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
       // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
-     
+
     }
   }
 
@@ -1895,7 +1964,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
- 
+
 
   openAppStoreInPopupWindow() {
     const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
@@ -2230,12 +2299,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
-     
+
       // buttons: {
       //   cancel: this.cancel,
       //   catch: {
@@ -2334,7 +2403,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
@@ -3051,12 +3120,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.isVisibleKNB = this.getKnbValue()
       this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
-     
+
 
     } else if (projectProfileData['customization'] === undefined) {
       this.logger.log('[HOME] manageknowledgeBasesVisibility USECASE C customization is  ', projectProfileData['customization'], 'get value from FT')
-        this.isVisibleKNB = this.getKnbValue()
-        this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+      this.isVisibleKNB = this.getKnbValue()
+      this.logger.log('[HOME]  this.isVisibleKNB from FT ', this.isVisibleKNB)
     }
   }
 
@@ -3474,7 +3543,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
 
- 
+
 
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
@@ -4219,6 +4288,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['/create-new-project']);
   }
 
- 
+
 
 }

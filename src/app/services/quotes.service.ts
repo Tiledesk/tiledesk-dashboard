@@ -4,12 +4,15 @@ import { LoggerService } from './logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
 import { PLANS_LIST, PLAN_NAME } from 'app/utils/util';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuotesService {
-
+  public hasOpenNavbarQuotasMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
+  public hasReachedQuotasLimitInHome$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
+  
   user: any;
   project_id: string;
   TOKEN: string;
@@ -167,5 +170,13 @@ export class QuotesService {
       }
     }
   }
-  
+
+  hasOpenedNavbarQuotasMenu() {
+    this.hasOpenNavbarQuotasMenu$.next(true)
+  }
+  // hasReachedQuotasLimitInHome(value) {
+  //  console.log('[QUOTE-SERVICE] - hasReachedQuotasLimitInHome value ', value);
+  //   this.hasReachedQuotasLimitInHome$.next(value)
+    
+  // }
 }
