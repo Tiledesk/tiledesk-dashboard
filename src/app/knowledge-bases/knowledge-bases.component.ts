@@ -1376,7 +1376,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
-
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);

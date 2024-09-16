@@ -88,49 +88,49 @@
 
               <div class="header">
                 <!-- <p class="header-title">{{ 'KbPage.AllContents' | translate }}</p> -->
-                <div class="header-first-column">
-                  <div class="selected-namespace-label">
-                    Knowledge base:
+
+                <div style="display: flex; flex-direction: column;">
+                  <div style="display: flex; flex-direction: row; align-items: center;">
+                    <div class="selected-namespace-label" style="font-size: 14px; margin-right: 4px;">Knowledge Base</div>
+                    <div *ngIf="selectedNamespace.default" class="default-badge" style="background-color: #677693ab; color: white; padding: 0px 4px; border-radius: 6px; font-size: 12px; font-weight: 400;">Default</div>
                   </div>
                   <div class="selected-namespace-content">
                     <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
                       (mouseout)="onMouseOut()">
-
-                      <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+              
+                      <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output" style="padding: 0px;"
                         (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
                         matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100">
                         {{selectedNamespace?.name}}
                       </div>
-
-                      <input *ngIf="namespaceIsEditable" id="namespace-name-input"
-                        [ngStyle]="{ 'width': namespaceNameOutputElWidth }" class="namespace-name-input" type="text"
-                        [(ngModel)]="selectedNamespace.name" (keypress)="onPressEnterUpdateNamespaceName($event)"
-                        (focus)="onFocusNamespaceName($event.target.value)"
+              
+                      <input *ngIf="namespaceIsEditable" id="namespace-name-input" [ngStyle]="{ 'width': namespaceNameOutputElWidth }"
+                        class="namespace-name-input" type="text" [(ngModel)]="selectedNamespace.name"
+                        (keypress)="onPressEnterUpdateNamespaceName($event)" (focus)="onFocusNamespaceName($event.target.value)"
                         (ngModelChange)="onChangeNamespaceName($event)" (blur)="onBlurUpdateNamespaceName($event)">
                     </div>
-
+              
                     <!-- <button mat-icon-button (click)="openDialogKbList()">
-                    <mat-icon>view_list</mat-icon>
-                  </button> -->
-
+                                  <mat-icon>view_list</mat-icon>
+                                </button> -->
+              
                     <!-- ----------- MAT-MENU ----------- -->
-                    <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList"
-                      aria-label="namespaceList" matTooltipClass="kb-custom-mat-tooltip"
-                      matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}" #tooltip="matTooltip"
-                      matTooltipPosition='below' matTooltipHideDelay="100">
+                    <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
+                      matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       <mat-icon>unfold_more</mat-icon>
                     </button>
-
-
-
+              
+              
+              
                     <mat-menu #namespaceList="matMenu">
                       <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item
                         (click)="presentModalAddNewNamespace()">
                         <mat-icon>add</mat-icon>
                         <span>{{ 'KbPage.NewNamespace' | translate }}</span>
                       </button>
-
+              
                       <button [ngClass]="{'active--namespace': namespace.name === selectedNamespace.name}" mat-menu-item
                         *ngFor="let namespace of namespaces" (click)="onSelectNamespace(namespace)">
                         <span>{{namespace?.name}}</span>
@@ -138,6 +138,61 @@
                     </mat-menu>
                   </div>
                 </div>
+
+
+
+
+
+
+                <!-- <div class="header-first-column">
+                  <div class="header-first-column-namespace">
+                    <div class="selected-namespace-label">
+                      Knowledge base:
+                    </div>
+                    <div class="selected-namespace-content">
+                      <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
+                        (mouseout)="onMouseOut()">
+                
+                        <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output"
+                          (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
+                          matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                          matTooltipHideDelay="100">
+                          {{selectedNamespace?.name}}
+                        </div>
+                
+                        <input *ngIf="namespaceIsEditable" id="namespace-name-input" [ngStyle]="{ 'width': namespaceNameOutputElWidth }"
+                          class="namespace-name-input" type="text" [(ngModel)]="selectedNamespace.name"
+                          (keypress)="onPressEnterUpdateNamespaceName($event)" (focus)="onFocusNamespaceName($event.target.value)"
+                          (ngModelChange)="onChangeNamespaceName($event)" (blur)="onBlurUpdateNamespaceName($event)">
+                      </div>
+                
+                      <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
+                        matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}"
+                        #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                        <mat-icon>unfold_more</mat-icon>
+                      </button>
+                
+                
+                
+                      <mat-menu #namespaceList="matMenu">
+                        <button style="padding: 0 10px" class="mat-menu-custom-btn" mat-menu-item
+                          (click)="presentModalAddNewNamespace()">
+                          <mat-icon>add</mat-icon>
+                          <span>{{ 'KbPage.NewNamespace' | translate }}</span>
+                        </button>
+                
+                        <button [ngClass]="{'active--namespace': namespace.name === selectedNamespace.name}" mat-menu-item
+                          *ngFor="let namespace of namespaces" (click)="onSelectNamespace(namespace)">
+                          <span>{{namespace?.name}}</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                    
+                  </div>
+                  <div *ngIf="selectedNamespace?.default" class="badge-container">
+                    <div class="default-badge">Default</div>
+                  </div>
+                </div> -->
                 <!-- --------- ./ MAT-MENU ---------- -->
 
                 <!-- ---------------------------------------- -->
@@ -312,16 +367,21 @@
                 <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                   <!-- This namespace is not used by any chatbot -->
                   {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
-                </div>
-
-                <div id="kb-no-chatbot" *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
-                  <button class="custom-button xs" (click)="createChatbotfromKbOfficialResponderTemplate()">
+                  <button class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
                     <span>
                       <!-- Create chatbot  -->
                       {{ 'CreateChatbot' | translate }}
                     </span>
                   </button>
                 </div>
+
+                <!-- <div id="kb-no-chatbot" *ngIf="!chatbotsUsingNamespace" class="create-new-chatbot-btn-wpr">
+                  <button class="custom-button xs" (click)="createChatbotfromKbOfficialResponderTemplate()">
+                    <span>
+                      {{ 'CreateChatbot' | translate }}
+                    </span>
+                  </button>
+                </div> -->
 
               </div>
 
