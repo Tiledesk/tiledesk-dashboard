@@ -81,15 +81,15 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     });
     let body: any = {
       list: arrayURLS,
-      options: {
-        scrape_type: this.selectedScrapeType
-      }
+      scrape_type: this.selectedScrapeType,
     }
 
     if (this.selectedScrapeType === 4) {
-      body.options.tags_to_extract = this.extract_tags;
-      body.options.unwanted_tags = this.unwanted_tags;
-      body.options.unwanted_classnames = this.unwanted_classnames;
+      body.scrape_options = {
+        tags_to_extract: this.extract_tags,
+        unwanted_tags: this.unwanted_tags,
+        unwanted_classnames: this.unwanted_classnames
+      }
     }
     
     this.dialogRef.close(body);
