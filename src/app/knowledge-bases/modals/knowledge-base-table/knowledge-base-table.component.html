@@ -95,6 +95,9 @@
                     <ng-option value="docx">
                         DOCX
                     </ng-option>
+                    <ng-option value="faqs">
+                        FAQs
+                    </ng-option>
                 </ng-select>
             </div>
 
@@ -243,6 +246,12 @@
                             <span id="description" class="material-icons-outlined"
                                 style="font-size: 16px; color: white;">link</span>
                             <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
+                        </div>
+                        <div *ngIf="kb.type == 'faqs'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white;">quiz</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">FAQs</span>
                         </div>
                         <!-- <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span> -->
                         <!-- <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span> -->

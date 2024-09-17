@@ -42,6 +42,7 @@ import { ShepherdService } from 'angular-shepherd';
 import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
 
 import Step from 'shepherd.js/src/types/step';
+import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -1335,7 +1336,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   openAddKnowledgeBaseModal(type?: string) {
-    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
+    console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
     this.typeKnowledgeBaseModal = type;
     this.addKnowledgeBaseModal = 'block';
 
@@ -1350,8 +1351,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.presentModalImportSitemap()
     }
     if (type === 'file-upload') {
-      this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type 2 ', type)
+      
       this.presentModalUploadFile()
+    }
+
+    if (type === 'faqs') {
+      this.presentModalAddFaqs()
     }
   }
 
@@ -1369,6 +1374,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     });
 
+  }
+
+  presentModalAddFaqs() {
+    const dialogRef = this.dialog.open(ModalFaqsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+
+    });
+    dialogRef.afterClosed().subscribe(body => {
+      console.log('[Modal Add FAQs] Dialog body (afterClosed): ', body);
+      if (body) {
+        this.onAddKb(body)
+      }
+    });
   }
 
   presentModalAddURLs() {
