@@ -552,6 +552,16 @@
     "SelectAblock": "Выберите блок",
     "YouNeedToSelectABlock":"Вам нужно выбрать блок :)",
     "MoreInQueque": "Еще в очереди, посмотреть все",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "Готовые ответы — это готовые сообщения, которые вы можете легко вспомнить во время чата.",

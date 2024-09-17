@@ -552,6 +552,16 @@
     "SelectAblock": "Sélectionnez un bloc",
     "YouNeedToSelectABlock":"Vous devez sélectionner un bloc :)",
     "MoreInQueque": "Plus en file d'attente, voir tout",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",

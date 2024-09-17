@@ -552,6 +552,16 @@
     "SelectAblock": "Selecione um bloco",
     "YouNeedToSelectABlock":"Precisa de selecionar um bloco :)",
     "MoreInQueque": "Mais na fila, veja tudo",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",

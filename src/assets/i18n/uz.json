@@ -552,6 +552,16 @@
     "SelectAblock": "Blokni tanlang",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
     "MoreInQueque": "Navbatda koʻproq, hammasini koʻring",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",

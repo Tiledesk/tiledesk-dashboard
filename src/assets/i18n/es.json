@@ -551,6 +551,16 @@
     "SelectAblock": "Seleccione un bloque",
     "YouNeedToSelectABlock":"Debes seleccionar un bloque :)",
     "MoreInQueque": "Más en cola, ver todas",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",
