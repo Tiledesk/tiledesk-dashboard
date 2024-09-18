@@ -1336,7 +1336,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   openAddKnowledgeBaseModal(type?: string) {
-    console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
+    // console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
     this.typeKnowledgeBaseModal = type;
     this.addKnowledgeBaseModal = 'block';
 
@@ -1387,7 +1387,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
     dialogRef.afterClosed().subscribe(body => {
-      console.log('[Modal Add FAQs] Dialog body (afterClosed): ', body);
+      // console.log('[Modal Add FAQs] Dialog body (afterClosed): ', body);
       if (body) {
         this.onAddKb(body)
       }
