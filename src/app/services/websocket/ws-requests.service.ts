@@ -186,7 +186,6 @@ export class WsRequestsService implements OnDestroy {
         //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // WHEN CHANGING THE PROJECT I UNSUBSCRIBE FROM THE "REQUEST BY ID" TO WHICH IT IS POSSIBLY SUBSCRIBED
         //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // AS ABOVE BUT FOR MESSAGES
         // }
-
         //  unsuscribe requester presence al cambio progetto
         if (this.subscribed_requester_id) {
           this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + this.subscribed_requester_id);
@@ -482,7 +481,7 @@ export class WsRequestsService implements OnDestroy {
    * @param id_request 
    */
   subscribeTo_wsRequestById(id_request) {
-    // console.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
+    this.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
 
     this.unsubscribePreviousRequestId()
 
@@ -1205,6 +1204,9 @@ export class WsRequestsService implements OnDestroy {
 
     // const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + id_request + '/chatbot/parameters';
+    // https://tiledesk-server-pre.herokuapp.com/62c3f10152dc7400352bab0d/requests/support-group-62c3f10152dc7400352bab0d-e81d9c55-wab-109639215462567-393484506627/chatbot/parameters
+    
+
     // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
 
     // 'Authorization': this.TOKEN,
@@ -1222,13 +1224,15 @@ export class WsRequestsService implements OnDestroy {
   // ------------------------------------------------------
   // @ Download history request as CSV
   // ------------------------------------------------------
-  public downloadHistoryRequestsAsCsv(querystring: string, pagenumber: number) {
+  public downloadHistoryRequestsAsCsv(requests_status:any, querystring: string, preflight: boolean, pagenumber: number) {
+    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV requests_status ', requests_status);
+    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV preflight ', preflight);
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV URL ', url);
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status='+ requests_status + _querystring + '&preflight=' + preflight + '&page=' + pagenumber;
+    console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -1244,34 +1248,42 @@ export class WsRequestsService implements OnDestroy {
   // -------------------------------------------------------------
   // WS Requests NO-RT & HISTORY
   // -------------------------------------------------------------
-  public getHistoryAndNortRequests(operator: string, status: string, querystring: string, pagenumber: number) {
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUESTS - operator  ', operator);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - status  ', status);
-    //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
+  public getHistoryAndNortRequests(operator: string, status: string, statuses, _preflight, querystring: string, pagenumber: number) {
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUESTS - operator  ', operator);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - status  ', status);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses  ', statuses);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - statuses length ', statuses?.length);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - querystring  ', querystring);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
+   console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      if (status === '100' || status === '200' || status === '1000') {
+      if (status === '100' || status === '200' || status === '1000' || status === '50' ||  status ==="1000,100,200,50" || statuses?.length>0) {
         _querystring = '&' + querystring
+        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {
         _querystring = querystring + '&'
+        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 2');
+      } else {
+        console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 3');
       }
     } else {
       _querystring = ''
+      console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 4');
     }
 
     let url = '';
     if (status !== 'all') {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true';
-      // console.log('url status != all ' ,url )
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight='+ _preflight;
+      console.log('url status != all ' ,url )
 
     } else {
-      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true';
-      // console.log('url status all ' ,url )
+      url = this.SERVER_BASE_PATH + this.project_id + '/requests?' + _querystring + 'page=' + pagenumber + '&no_populate=true&no_textscore=true&preflight='+ _preflight;
+      console.log('url status all ' ,url )
     }
 
-    this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
+  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

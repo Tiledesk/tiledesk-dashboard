@@ -307,6 +307,10 @@
                     </ng-select>
                   </div>
                 </div>
+
+                
+
+
                 <div class="col-sm-6">
                   <label class="col-sm-12 label-7695a5">
                     {{ 'MessageChannel' | translate }}
@@ -332,6 +336,47 @@
                   <div style="padding-left: 15px; padding-right: 15px ">
                     <input name="requester_email" type="email" [(ngModel)]="requester_email" class="" autocomplete="off"
                     placeholder="Email" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- ------------------------------------- -->
+              <!-- Select statuses in HISTORY -->
+              <!-- ------------------------------------- -->
+              <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                <label class="label-7695a5" style="padding-right: 30px;padding-top:8px">
+                  {{ "Status" | translate }}
+                </label>
+                <!-- <div class="col-sm-12"> -->
+                  <ng-select class="request-statuses-select" name="requeststatuses" [(ngModel)]="requests_statuses" style=""
+                    (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
+                    [items]="statusInHistory | selectOptionsTranslate" bindLabel="name" [clearable]='false' [multiple]="true"
+                    [searchable]="false" bindValue="id" placeholder="Select status">
+                  </ng-select>
+                <!-- </div> -->
+              </div>
+
+              <!-- ------------------------------------- -->
+              <!-- Select preflight -->
+              <!-- ------------------------------------- -->
+              <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
+                <div class="preflight-checkbox"> 
+                  <div class="checkbox">
+                    <label class="title-attribute">
+                      <input type="checkbox" [(ngModel)]="preflight"  class="form-check-input" id="exampleCheck1" 
+                        (change)="onChangePreflight($event)">
+                      <span style="font-size: 14px; color: #7695a5;">
+                        Exclude preflight conversations 
+                        <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
+                          matTooltipClass="mat-white-tooltip"
+                          matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='below' 
+                          matTooltipHideDelay="100">
+                          help
+                        </span>
+                      </span>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -416,32 +461,25 @@
   <!-- <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;"
     *ngIf="fullText_applied_filter || startDateFormatted || selectedAgentFirstname || selectedDeptName || requests_status === '200' || requests_status === '100' || requests_status !== 'all' || selecteTagColor 
     || (conversation_type && conversation_type !== 'all') || (conversationTypeValue && conversationTypeValue !== 'all')  || conversationTypeValue !== undefined "> -->
-
+    <!-- requests_statuses {{ requests_statuses }} -->
+    <!-- requests_status_temp  {{requests_status_temp}} -->
+  
   <div style="margin-top: 16px; display: flex; position: relative;margin-bottom: 9px;" *ngIf="
     fullText_applied_filter || 
     startDateFormatted || 
     selectedAgentFirstname || 
     requests_status_temp === '200' || 
-    requests_status_temp === '100' || 
+    requests_status_temp === '100' ||
+    requests_statuses?.length > 0 ||
     selecteTagColor  || 
     conversationTypeValue || 
     selectedDeptName">
-
+    <!-- requests_status_temp === '50' || 
+    requests_status_temp === '1000' ||  -->
     <!-- conversation_type {{ conversation_type }} - conversationTypeValue {{conversationTypeValue}} -->
     <div class="applied-filter-title">
       {{'AppliedFilters' | translate}}
     </div>
-
-
-    <!-- 
-    <div *ngIf="requests_status === '200'" class="applied-filter">
-      {{ "VisitorsPage.ServedRequests" | translate }}
-    </div>
-
-    <div *ngIf="requests_status === '100'" class="applied-filter">
-      {{ "VisitorsPage.UnservedRequests" | translate }}
-    </div> -->
-
 
     <div id="full-text" *ngIf="fullText_applied_filter" class="applied-filter">
       {{fullText_applied_filter}}
@@ -473,19 +511,43 @@
       {{'Unserved' | translate}}
     </div>
 
+    <!-- <div id="served-1000" *ngIf="requests_status === '1000'" class="applied-filter">
+      {{'Closed' | translate}}
+    </div> -->
+
     <div id="tag" *ngIf="selecteTagColor" class="applied-filter">
       <div class="tag--color" [ngStyle]="{'background-color': selecteTagColor }"> </div>
       {{selecteTagNameValue}}
     </div>
 
+    <div class="requests-statuses-wpr" style="display: flex;" *ngIf="requests_statuses?.length > 0">
+      <!-- {{requests_statuses}} -->
+      <div class="requests-statuses" *ngFor="let status of requests_statuses">
+        <!-- status {{status}} -->
+        <div *ngIf="status === '1000'" class="applied-filter">
+          {{'Closed' | translate}}
+        </div>
+        <div *ngIf="status === '100'" class="applied-filter">
+          {{'Unserved' | translate}}
+        </div>
+        <div *ngIf="status === '200'" class="applied-filter">
+          {{'Served' | translate}}
+        </div>
+        <div *ngIf="status === '50'" class="applied-filter">
+          Temporary
+        </div>
+
+      </div>
+    </div>
+
     <!-- || conversation_type  === 'chat21'  && conversation_type !== 'all'-->
     <div id="conversation-type" *ngIf="
-          conversationTypeValue === CHANNELS_NAME.CHAT21 ||
-          conversationTypeValue === CHANNELS_NAME.FORM ||
-          conversationTypeValue === CHANNELS_NAME.MESSANGER ||
-          conversationTypeValue === CHANNELS_NAME.TELEGRAM || 
-          conversationTypeValue === CHANNELS_NAME.WHATSAPP || 
-          conversationTypeValue === CHANNELS_NAME.EMAIL ||
+          conversationTypeValue  === CHANNELS_NAME.CHAT21 ||
+          conversationTypeValue  === CHANNELS_NAME.FORM ||
+          conversationTypeValue  === CHANNELS_NAME.MESSANGER ||
+          conversationTypeValue  === CHANNELS_NAME.TELEGRAM || 
+          conversationTypeValue  === CHANNELS_NAME.WHATSAPP || 
+          conversationTypeValue  === CHANNELS_NAME.EMAIL ||
           conversationTypeValue === CHANNELS_NAME.VOICE_VXML || 
           conversationTypeValue === CHANNELS_NAME.SMS_TWILIO" class="applied-filter">
       <span *ngIf="conversationTypeValue === CHANNELS_NAME.CHAT21 ">
@@ -1378,6 +1440,7 @@
                         </span>
                       </span>
 
+                    
                       <!-- ---------------------------------------- -->
                       <!-- Channel - SMS -->
                       <!-- ---------------------------------------- -->
@@ -1392,6 +1455,7 @@
                           <i></i>
                         </span>
                       </span>
+                      
                       <!-- ---------------------------------------- -->
                       <!-- Channel - WhatsApp -->
                       <!-- ---------------------------------------- -->
