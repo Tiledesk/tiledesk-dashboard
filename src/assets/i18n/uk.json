@@ -554,6 +554,8 @@
     "SelectAblock": "Виберіть блок",
     "YouNeedToSelectABlock":"Потрібно вибрати блок :)",
     "MoreInQueque": "Більше в черзі, дивіться все",
+    "HideChatbotAttributesWidget":"Chatbot atributlari vidjetini yashirish",
+    "EnablingThisOptionHidesChatbotAttributes": "Увімкнення цієї опції приховує атрибути чат-бота на бічній панелі деталей розмови",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

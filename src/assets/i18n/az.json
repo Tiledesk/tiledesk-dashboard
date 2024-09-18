@@ -552,6 +552,8 @@
     "SelectAblock": "Blok seçin",
     "YouNeedToSelectABlock":"Siz blok seçməlisiniz :)",
     "MoreInQueque": "Daha çox növbə var, hamısına baxın",
+    "HideChatbotAttributesWidget":"Chatbot Atributları vidcetini gizlədin",
+    "EnablingThisOptionHidesChatbotAttributes": "Bu seçimin aktivləşdirilməsi chatbotun atributlarını söhbət detalları yan panelindən gizlədir",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

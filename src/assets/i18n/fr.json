@@ -552,6 +552,8 @@
     "SelectAblock": "Sélectionnez un bloc",
     "YouNeedToSelectABlock":"Vous devez sélectionner un bloc :)",
     "MoreInQueque": "Plus en file d'attente, voir tout",
+    "HideChatbotAttributesWidget":"Masquer le widget des attributs du chatbot",
+    "EnablingThisOptionHidesChatbotAttributes": "L'activation de cette option masque les attributs du chatbot dans la barre latérale des détails de la conversation",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

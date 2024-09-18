@@ -552,6 +552,8 @@
     "SelectAblock": "Блокты таңдаңыз",
     "YouNeedToSelectABlock":"Сізге блок таңдау керек :)",
     "MoreInQueque": "Кезекте көбірек, барлығын қараңыз",
+    "HideChatbotAttributesWidget":"Chatbot атрибуттары виджетін жасыру",
+    "EnablingThisOptionHidesChatbotAttributes": "Бұл опцияны қосу сөйлесу мәліметтерінің бүйірлік тақтасынан чатбот атрибуттарын жасырады",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

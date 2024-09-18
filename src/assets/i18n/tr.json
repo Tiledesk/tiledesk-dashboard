@@ -553,6 +553,8 @@
     "SelectAblock": "Bir blok seçin",
     "YouNeedToSelectABlock":"Bir blok seçmeniz gerekiyor :)",
     "MoreInQueque": "Fler i kö, se alla",
+    "HideChatbotAttributesWidget":"Chatbot Nitelikleri widget'ını gizle",
+    "EnablingThisOptionHidesChatbotAttributes": "Bu seçeneği etkinleştirmek, sohbet robotunun niteliklerini konuşma ayrıntıları kenar çubuğundan gizler",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
