@@ -1065,6 +1065,7 @@
         "EditBOT": "BOT-u redaktə edin",
         "FAQsOfBOT": "BOT haqqında tez-tez verilən suallar:",
         "AddFaq": "Faq əlavə edin",
+        "AddFaqs":"FAQs əlavə edin",
         "UploadFaqsFromCsv": "CSV-dən FAQ-ları yükləyin",
         "ExportFaqsToCsv": "Tez-tez verilən sualları CSV-yə ixrac edin",
         "BotQuery": "Bot Sorğu",

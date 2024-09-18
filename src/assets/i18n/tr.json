@@ -1066,6 +1066,7 @@
         "EditBOT": "YİD'yi düzenle",
         "FAQsOfBOT": "BOT'un SSS'leri:",
         "AddFaq": "SSS Ekle",
+        "AddFaqs":"FAQs'yi ekleyin",
         "UploadFaqsFromCsv": "CSV'den SSS yükleyin",
         "ExportFaqsToCsv": "SSS'leri CSV'ye aktarın",
         "BotQuery": "Bot Sorgusu",

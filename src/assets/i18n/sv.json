@@ -1066,6 +1066,7 @@
         "EditBOT": "Redigera BOT",
         "FAQsOfBOT": "Vanliga frågor om BOT:",
         "AddFaq": "Lägg till FAQ",
+        "AddFaqs":"Lägg till FAQs",
         "UploadFaqsFromCsv": "Ladda upp vanliga frågor från CSV",
         "ExportFaqsToCsv": "Exportera vanliga frågor till CSV",
         "BotQuery": "Bot fråga",

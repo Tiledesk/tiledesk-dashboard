@@ -1064,6 +1064,7 @@
         "EditBOT": "Editar BOT",
         "FAQsOfBOT": "FAQ de BOT:",
         "AddFaq": "Agregar Faq",
+        "AddFaqs":"Agregar FAQs",
         "UploadFaqsFromCsv": "Subir FAQ desde CSV",
         "ExportFaqsToCsv": "Exportar FAQ a CSV",
         "BotQuery": "Consulta de bot",

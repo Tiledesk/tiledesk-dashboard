@@ -1067,6 +1067,7 @@
         "EditBOT": "Редагувати BOT",
         "FAQsOfBOT": "Поширені запитання про Бот",
         "AddFaq": "Додати поширені запитання",
+        "AddFaqs":"Додайте FAQs",
         "UploadFaqsFromCsv": "Завантажте поширені запитання з CSV",
         "ExportFaqsToCsv": "Експортуйте поширені запитання в CSV",
         "BotQuery": "Запит бота",
