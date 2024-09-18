@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.23
+- Adds the ability to hide the Chatbot Attributes widget from Project Settings > Advanced
+
 ### 2.7.22
 - Improves the "Monitor" page
 
