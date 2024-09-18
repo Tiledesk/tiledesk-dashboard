@@ -57,7 +57,7 @@ export class AddContentMenuComponent implements OnInit {
         // console.log('ADD CONTENT MENU this.items ', this.items) 
     });
 
-    let item = {"label": 'FAQs', "type":"faqs"};
+    let item = {"label": 'FAQs', "type":"faq"};
     this.items.push(item);
 
 

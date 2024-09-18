@@ -1355,7 +1355,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.presentModalUploadFile()
     }
 
-    if (type === 'faqs') {
+    if (type === 'faq') {
       this.presentModalAddFaqs()
     }
   }
@@ -1381,6 +1381,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+      },
 
     });
     dialogRef.afterClosed().subscribe(body => {

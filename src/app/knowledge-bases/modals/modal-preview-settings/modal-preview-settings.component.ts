@@ -85,7 +85,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hideHelpLink= brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
-      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)

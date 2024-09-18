@@ -1,16 +1,19 @@
 <div class="m-header">
-    <h1 mat-dialog-title>  
-        <!-- {{ 'KbPage.AddContent' | translate }}  -->
-        Add FAQs
-    </h1>
-    <div class="m-top-right-icon">
-        <span class="material-icons-outlined" (click)="onCloseBaseModal()">
-            close
-        </span>
-    </div>
+  <h1 mat-dialog-title>
+    {{ 'FaqPage.AddFaqs' | translate }} 
+
+  </h1>
+  <div class="m-top-right-icon">
+    <span class="material-icons-outlined" (click)="onCloseBaseModal()">
+      close
+    </span>
+  </div>
 </div>
 
-<div mat-dialog-content>
+<!-- ---------------------------------- -->
+<!-- Section Adds single FAQ -->
+<!-- ---------------------------------- -->
+<div mat-dialog-content *ngIf="displayUploadFromCSVSection === false">
 
   <div class="info-container">
     <i class="material-icons-outlined info-icon">help_outline</i>
@@ -21,48 +24,150 @@
     </div>
   </div>
 
-  
+
   <div class="form-container">
     <form [formGroup]="kbForm">
       <div class="input-container">
         <span class="input-label">{{ 'FaqEditAddPage.Question' | translate }}</span>
         <!-- placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}"  -->
-        <input type="text" name="name" class="custom-input" 
-          [(ngModel)]="kb.name" 
-          formControlName="name"
+        <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
           (input)="onChangeInput($event)"
           [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
         <span class="input-label">{{ 'FaqEditAddPage.Answer' | translate }}</span>
 
         <!-- placeholder="{{ 'KbPage.TypeKbContentPlaceholder' | translate }}"  -->
-        <textarea type="text" name="content" class="custom-textarea" 
-          [(ngModel)]="kb.content" 
-          formControlName="content"
-          (input)="onChangeInput($event)" 
-          rows="4"
+        <textarea type="text" name="content" class="custom-textarea" [(ngModel)]="kb.content" formControlName="content"
+          (input)="onChangeInput($event)" rows="4"
           [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched">
         </textarea>
-        
+
       </div>
     </form>
   </div>
 
 </div>
+<!-- ---------------------------------- -->
+<!-- Section Upload FAQs from csv -->
+<!-- ---------------------------------- -->
+<div mat-dialog-content *ngIf="displayUploadFromCSVSection === true">
 
-<div mat-dialog-actions style="justify-content: center;">
-    <button class="mat-dialog-ok-btn" mat-button (click)="uploadFaqsFromCSV()">
-        {{ "FaqPage.UploadFaqsFromCsv" | translate }}
-    </button>
-   
-    <button [disabled]="buttonDisabled" class="mat-dialog-ok-btn" mat-button
-        (click)="onSaveKnowledgeBase()" cdkFocusInitial>
-      
-        {{ 'FaqPage.AddFaq' | translate }}
-        
-    </button>
+  <div class="second-section-subheader">
+    <div class="go-to-first-section-wpr">
+      <div class="go-to-first-section" (click)="goBack()">
+        <span class="material-icons-outlined" style="vertical-align: middle;">
+          arrow_back
+        </span>
+        <span>
+          {{'Back' | translate}}
+        </span>
+      </div>
+    </div>
+
+    <div class="sutitle-in-upload-from-csv-section ">
+      {{ "UploadFromCsv" | translate }}
+    </div>
+
+    <div class="second-section-subheader-right-column">
+
+    </div>
+  </div>
+
+  <div class="upload-from-csv-container">
+
+    <div class="download-example-csv-wpr">
+      <div class="download-example-csv-button">
+        <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer">
+          <i class="material-icons" style="font-size:18px; top: 4px; position: relative;">save_alt</i>
+          {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
+        </p>
+      </div>
+
+      <div class="csv-file-preview">
+        <!-- --------------------- -->
+        <!-- Question -->
+        <!-- --------------------- -->
+        <span>
+          <em>
+            {{ 'FaqPage.Question' | translate }}*
+          </em>
+        </span>
+
+        <!-- --------------------- -->
+        <!-- Columns Delimiter -->
+        <!-- --------------------- -->
+        <span>
+          <strong>
+            {{csvColumnsDelimiter}}
+          </strong>
+        </span>
+
+        <!-- --------------------- -->
+        <!-- Answer -->
+        <!-- --------------------- -->
+        <span>
+          <em>
+            {{ 'FaqPage.Answer' | translate }}*
+          </em>
+        </span>
+      </div>
+    </div>
+
+    <div class="csv-file-delimiter-container"> 
+      <div class="csv-file-delimiter-wpr">
+
+        <div class="csv-file-delimiter-label">
+          {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
+        </div>
+
+        <div class="csv-file-delimiter-value">
+
+          <input style="width:55px; border-radius: 5px;
+          border: 1px solid #d9d9d9 !important;
+          font-weight: 600;
+          padding-left: 10px;" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
+        </div>
+      </div>
+
+      <div class="columns-delimiter-error-msg" *ngIf="modalChoosefileDisabled">
+        <!-- Delimiter option must be one character long  -->
+        {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;" *ngIf="displayUploadFromCSVSection === false">
+  <button class="mat-dialog-ok-btn" mat-button (click)="changeSectionToUploadFaqsFromCSV()">
+    {{ "FaqPage.UploadFaqsFromCsv" | translate }}
+  </button>
+
+  <button [disabled]="buttonDisabled" class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()"
+    cdkFocusInitial>
+
+    {{ 'FaqPage.AddFaq' | translate }}
+
+  </button>
 </div>
 
 
+<div mat-dialog-actions style="justify-content: center;" *ngIf="displayUploadFromCSVSection === true">
+  <!-- <button class="mat-dialog-ok-btn" mat-button (click)="uploadFaqsFromCSV()">
+    <span class="material-icons-outlined">
+      file_upload
+    </span>
+    {{ "UploadFromCsv" | translate }}
+  </button> -->
 
+  <input style="display:inline" name="fileChangeUploadCSV" id="fileChangeUploadCSV" class="inputfile" type="file"
+    (change)="fileChangeUploadCSV($event)" accept=".csv" />
+  <label class="btn btn-primary" for="fileChangeUploadCSV"
+    [ngClass]="{'disabled': modalChoosefileDisabled }">
+    <!-- <i class="material-icons">file_upload</i> -->
+    <!-- CHOOSE FILE  -->
+    {{ 'FaqPage.ChooseFile' | translate }}
+  </label>
 
-
+</div>
