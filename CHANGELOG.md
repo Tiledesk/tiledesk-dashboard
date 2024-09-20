@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.24-rc1
+- Adds the ability to add FAQs as contents of knowledge bases
+
 ### 2.7.23-rc3
 - Adds, in the Knowledge Base page, the ability to add a single FAQ or add multiple FAQs by uploading them from a CSV file
 
