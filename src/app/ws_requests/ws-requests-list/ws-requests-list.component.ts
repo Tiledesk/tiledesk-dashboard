@@ -865,7 +865,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectId = project._id;
         this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT > projectId', this.projectId)
         this.projectName = project.name;
-        this.OPERATING_HOURS_ACTIVE = project.operatingHours
+        this.OPERATING_HOURS_ACTIVE = project.activeOperatingHours
 
         this.getProjectById(this.projectId)
         this.findCurrentProjectAmongAll(this.projectId)
