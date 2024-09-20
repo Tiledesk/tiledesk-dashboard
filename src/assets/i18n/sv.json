@@ -472,6 +472,7 @@
     "Success": "Framgång",
     "ChatbotSuccessfullyCreated":"Chatbot skapades framgångsrikt",
     "ItIsNotPossibleToCreateTheChatbot": "Det är inte möjligt att skapa Chatbot",
+    "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Ditt projekt saknar mallen som behövs för att skapa Chatbot",
     "EditChatbot": "Redigera chatbot {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
     "Back": "Tillbaka",

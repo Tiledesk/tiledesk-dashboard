@@ -471,6 +471,7 @@
     "Success": "Жетістік",
     "ChatbotSuccessfullyCreated":"Чатбот сәтті жасалды",
     "ItIsNotPossibleToCreateTheChatbot": "Чатбот жасау мүмкін емес",
+    "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Жобаңызда Чатбот жасау үшін қажетті үлгі жоқ",
     "EditChatbot": "{{ chat_bot_name }} чатботын өңдеу",
     "ChatbotAndChatbotName": "Чатбот {{ chat_bot_name }}",
     "Back": "Артқа",

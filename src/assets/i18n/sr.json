@@ -472,6 +472,7 @@
     "Success": "Успех",
     "ChatbotSuccessfullyCreated":"Цхатбот је успешно направљен",
     "ItIsNotPossibleToCreateTheChatbot": "Није могуће креирати Цхатбот",
+    "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Вашем пројекту недостаје шаблон потребан за креирање четбота",
     "EditChatbot": "Уреди цхатбот {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Цхатбот {{ chat_bot_name }}",
     "Back": "Назад",

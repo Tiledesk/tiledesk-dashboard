@@ -472,6 +472,7 @@
     "Success": "Muvaffaqiyat",
     "ChatbotSuccessfullyCreated":"Chatbot muvaffaqiyatli yaratildi",
     "ItIsNotPossibleToCreateTheChatbot": "Chatbot yaratish mumkin emas",
+    "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Loyihangizda Chatbot yaratish uchun kerakli shablon yetishmayapti",
     "EditChatbot": "Chatbotni tahrirlash {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
     "Back": "Orqaga",

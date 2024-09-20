@@ -472,6 +472,7 @@
     "Success": "Başarı",
     "ChatbotSuccessfullyCreated":"Chatbot başarıyla oluşturuldu",
     "ItIsNotPossibleToCreateTheChatbot": "Chatbot oluşturmak mümkün değil",
+    "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Projenizde Chatbot'u oluşturmak için gereken şablon eksik",
     "EditChatbot": "{{ chat_bot_name }} sohbet robotunu düzenle",
     "ChatbotAndChatbotName": "Sohbet robotu {{ chat_bot_name }}",
     "Back": "Geri",

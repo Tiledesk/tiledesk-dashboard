@@ -471,6 +471,7 @@
     "Success": "Succès",
     "ChatbotSuccessfullyCreated":"Chatbot créé avec succès",
     "ItIsNotPossibleToCreateTheChatbot": "Il n'est pas possible de créer le Chatbot",
+    "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Votre projet ne dispose pas du modèle nécessaire à la création du Chatbot",
     "EditChatbot": "Modifier le chatbot {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
     "Back": "Retour",
