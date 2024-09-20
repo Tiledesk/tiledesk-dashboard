@@ -18,6 +18,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   name: string;
   source: string;
   content: string;
+  faqcontent: string;
   chunks: Array<any> = [];
   chunksCount: number;
   showSpinner: boolean = true;
@@ -31,11 +32,15 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
       this.content = this.kb.content;
+
+      if (this.kb.type === 'faq') {
+       this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
+      } 
 
       this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
   }
@@ -44,10 +49,10 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
       if (chunks) {
         
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - RES', chunks);
+        console.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - RES', chunks);
         chunks.matches.forEach(el => {
 
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - element', el) 
+          console.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - element', el) 
 
           this.chunks.push({ id: el.id, text: el.text })
         });
@@ -95,9 +100,14 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   onUpdateKnowledgeBase(){
+    if (this.kb.type === 'faq') {
+      this.content = this.name + "\n" + this.content
+    }
     this.kb.name = this.name;
     this.kb.source = this.source;
     this.kb.content = this.content;
+
+   
     
     // console.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.dialogRef.close(this.kb);

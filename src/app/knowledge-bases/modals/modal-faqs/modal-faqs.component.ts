@@ -17,6 +17,7 @@ export class ModalFaqsComponent implements OnInit {
   buttonDisabled: boolean = true;
 
   displayUploadFromCSVSection: boolean = false;
+  displayAfterUploadFromCSVSection: boolean = false;
   csvColumnsDelimiter = ';'
   parse_done: boolean;
   parse_err: boolean;
@@ -38,8 +39,8 @@ export class ModalFaqsComponent implements OnInit {
     private logger: LoggerService,
     private kbService: KnowledgeBaseService,
 
-  ) { 
-    this.logger.log('[MODAL-FAQS] data',data)
+  ) {
+    this.logger.log('[MODAL-FAQS] data', data)
     if (data && data.selectedNamespace) {
       this.namespaceid = data.selectedNamespace.id
     }
@@ -66,8 +67,8 @@ export class ModalFaqsComponent implements OnInit {
     }
   }
 
-  onSaveKnowledgeBase() {
-    this.logger.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb)
+  onSaveKnowledgeBase(isSingle) {
+    console.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb, 'isSingle ', isSingle )
     const content = this.kb.name + "\n" + this.kb.content
     let body = {
       'name': this.kb.name,
@@ -75,7 +76,7 @@ export class ModalFaqsComponent implements OnInit {
       'content': content, // this.kb.content,
       'type': 'faq'
     }
-    this.dialogRef.close(body);
+    this.dialogRef.close({'body': body, 'isSingle': isSingle});
 
   }
 
@@ -143,6 +144,8 @@ export class ModalFaqsComponent implements OnInit {
 
 
   fileChangeUploadCSV(event) {
+    console.log('[FAQ-COMP] UPLOAD CSV DATA - parse_err', this.parse_err);
+    this.displayAfterUploadFromCSVSection = true;
     // this.displayImportModal = 'none';
     // this.displayInfoModal = 'block';
 
@@ -158,23 +161,23 @@ export class ModalFaqsComponent implements OnInit {
       this.logger.log('FORM DATA ', formData)
 
       this.kbService.uploadFaqCsv(formData, this.namespaceid)
+
         .subscribe(data => {
-          this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
-          if (data['success'] === true) {
-            this.parse_done = true;
-            this.parse_err = false;
-          } else if (data['success'] === false) {
-            this.parse_done = false;
-            this.parse_err = true;
+          console.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
+          if (data) {
+            // this.parse_done = true;
+           
           }
+        
         }, (error) => {
           this.logger.error('[FAQ-COMP] UPLOAD CSV - ERROR ', error);
-          // this.SHOW_CIRCULAR_SPINNER = false;
+          
+          // this.parse_done = false;
+
+          this.parse_err = true;
         }, () => {
-          this.logger.log('[FAQ-COMP] UPLOAD CSV * COMPLETE *');
-          setTimeout(() => {
-            // this.SHOW_CIRCULAR_SPINNER = false
-          }, 300);
+          console.log('[FAQ-COMP] UPLOAD CSV * COMPLETE *');
+          this.parse_err = false;
         });
 
     }

@@ -319,10 +319,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         //   }
         //   this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
         //   this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
-          
+
         //   this.getAllNamespaces()
         // }
-       
+
 
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
@@ -350,7 +350,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         }
         this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
         this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
-        
+
         this.getAllNamespaces()
       }
     });
@@ -821,10 +821,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             return officialResponder
           }
         });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+        console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
+        } else {
+          console.log('[KNOWLEDGE-BASES-COMP] Not exist kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+          this.presentDialogNotExistThekbOfficialResponderTemplate() 
         }
       }
     })
@@ -986,6 +989,26 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       title: this.translate.instant('ChatbotSuccessfullyCreated'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      // reverseButtons: true,
+      // buttons: [null, this.cancel],
+      // dangerMode: false
+    })
+    // }
+
+  }
+
+  presentDialogNotExistThekbOfficialResponderTemplate() {
+    Swal.fire({
+      // title: this.translate.instant('Success'),
+      // text: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot') , //"It is not possible to create the chatbot",
+      text: "Your project is missing the template needed to create the chatbot" + ' !',
+      icon: "error",
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
@@ -1305,7 +1328,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     });
     dialogRef.afterClosed().subscribe(kb => {
-      this.logger.log('[Modal KB DETAILS] Dialog kb: ', kb);
+      console.log('[Modal KB DETAILS] Dialog kb: ', kb);
       if (kb) {
         this.onUpdateKb(kb)
       }
@@ -1351,7 +1374,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.presentModalImportSitemap()
     }
     if (type === 'file-upload') {
-      
+
       this.presentModalUploadFile()
     }
 
@@ -1386,10 +1409,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
 
     });
-    dialogRef.afterClosed().subscribe(body => {
-      console.log('[Modal Add FAQs] Dialog body (afterClosed): ', body);
-      if (body) {
-        this.onAddKb(body)
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+      if (result && result.isSingle === "true") {
+        if (result.body) {
+          this.onAddKb(result.body)
+        }
+      } else if (result && result.isSingle === "false") {
+        let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+        this.getListOfKb(paramsDefault, 'add-multi-faq')
       }
     });
   }
@@ -1704,7 +1732,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
- 
+
 
   // startPooling() {
   //   this.interval_id = setInterval(() => {
@@ -1782,8 +1810,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getListOfKb(params?: any, calledby?: any) {
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
       this.kbsList = [];
@@ -1801,7 +1829,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (index !== -1) {
           this.kbsList[index] = kb;
         } else {
-          this.kbsList.push(kb);
+          if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
+            this.kbsList.unshift(kb);
+          } else {
+            this.kbsList.push(kb);
+          }
         }
         this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
         this.logger.log('[KNOWLEDGE BASES COMP] loop kbsListCount ', this.kbsListCount)
@@ -1872,7 +1904,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    * onAddKb
    */
   onAddKb(body) {
-    this.logger.log('onAddKb this.kbLimit ', this.kbLimit)
+    console.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
     this.logger.log("onAddKb body:", body);
     // this.onCloseBaseModal();
@@ -2001,6 +2033,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onAddMultiKb(body) {
+    console.log('onAddMultiKb body' ,body) 
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
@@ -2009,7 +2042,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
 
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
-      this.getListOfKb(paramsDefault, 'onAddMultiKb ');
+      this.getListOfKb(paramsDefault, 'onAddMultiKb');
 
       this.kbsListCount = this.kbsListCount + kbs.length;
       this.refreshKbsList = !this.refreshKbsList;
@@ -2243,6 +2276,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       dataAdd.content = kb.content,
         dataAdd.type = 'text'
     }
+    if (kb.type === 'faq') {
+      dataAdd.source = kb.name;
+      dataAdd.content = kb.content,
+        dataAdd.type = 'faq'
+    }
     if (kb.type === 'txt' || kb.type === 'docx' || kb.type === 'pdf') {
       dataAdd.type = kb.type
     }
@@ -2337,7 +2375,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   checkStatusWithRetry(kb) {
     this.logger.log('[KNOWLEDGE BASES COMP] checkStatusWithRetry selectedNamespace id', this.selectedNamespace.id)
-   
+
     let data = {
       "namespace_list": [],
       // "namespace": this.id_project,
