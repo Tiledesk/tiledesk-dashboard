@@ -471,6 +471,7 @@
     "Ok": "В порядке",
     "Success": "Успех",
     "ChatbotSuccessfullyCreated":"Чат-бот успешно создан",
+    "ItIsNotPossibleToCreateTheChatbot": "Невозможно создать чат-бота",
     "EditChatbot": "Изменить чат-бота {{chat_bot_name }}",
     "ChatbotAndChatbotName": "Чат-бот {{chat_bot_name }}",
     "Back": "Назад",

@@ -470,6 +470,7 @@
     "Ok": "موافق",
     "Success": "نجاح",
     "ChatbotSuccessfullyCreated":"تم إنشاء Chatbot بنجاح",
+    "ItIsNotPossibleToCreateTheChatbot": "ليس من الممكن إنشاء Chatbot",
     "EditChatbot": "تحرير chatbot {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "روبوت الدردشة {{ chat_bot_name }}",
     "Back": "عودة",

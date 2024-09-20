@@ -471,6 +471,7 @@
     "Ok": "Ок",
     "Success": "Успех",
     "ChatbotSuccessfullyCreated":"Цхатбот је успешно направљен",
+    "ItIsNotPossibleToCreateTheChatbot": "Није могуће креирати Цхатбот",
     "EditChatbot": "Уреди цхатбот {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Цхатбот {{ chat_bot_name }}",
     "Back": "Назад",

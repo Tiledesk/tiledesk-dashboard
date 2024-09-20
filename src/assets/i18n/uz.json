@@ -471,6 +471,7 @@
     "Ok": "Ok",
     "Success": "Muvaffaqiyat",
     "ChatbotSuccessfullyCreated":"Chatbot muvaffaqiyatli yaratildi",
+    "ItIsNotPossibleToCreateTheChatbot": "Chatbot yaratish mumkin emas",
     "EditChatbot": "Chatbotni tahrirlash {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
     "Back": "Orqaga",

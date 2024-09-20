@@ -470,6 +470,7 @@
     "Ok": "Ok",
     "Success": "Success",
     "ChatbotSuccessfullyCreated":"Chatbot successfully created",
+    "ItIsNotPossibleToCreateTheChatbot": "It is not possible to create the Chatbot",
     "EditChatbot": "Edit chatbot {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
     "Back": "Back",

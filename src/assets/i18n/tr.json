@@ -471,6 +471,7 @@
     "Ok": "Tamam",
     "Success": "Başarı",
     "ChatbotSuccessfullyCreated":"Chatbot başarıyla oluşturuldu",
+    "ItIsNotPossibleToCreateTheChatbot": "Chatbot oluşturmak mümkün değil",
     "EditChatbot": "{{ chat_bot_name }} sohbet robotunu düzenle",
     "ChatbotAndChatbotName": "Sohbet robotu {{ chat_bot_name }}",
     "Back": "Geri",

@@ -470,6 +470,7 @@
     "Ok": "Жарайды ма",
     "Success": "Жетістік",
     "ChatbotSuccessfullyCreated":"Чатбот сәтті жасалды",
+    "ItIsNotPossibleToCreateTheChatbot": "Чатбот жасау мүмкін емес",
     "EditChatbot": "{{ chat_bot_name }} чатботын өңдеу",
     "ChatbotAndChatbotName": "Чатбот {{ chat_bot_name }}",
     "Back": "Артқа",
