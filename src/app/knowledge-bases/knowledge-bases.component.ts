@@ -181,8 +181,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   private dialogRefHookBoot: MatDialogRef<any>;
   timer: number = 500;
-  hasCickedAiSettingsModalBackdrop: boolean = false
+  hasCickedAiSettingsModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
+  esportingKBChatBotTemplate: boolean = false;
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -312,7 +314,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         // const currentUrl = this.router.url;
         // this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
         // if (currentUrl.indexOf('/knowledge-bases') !== -1) {
-        //   console.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
+        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
         //   const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
         //   if (storedHasAlreadyVisitedKb) {
         //     this.hasAlreadyVisitedKb = 'true'
@@ -811,6 +813,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   findKbOfficialResponderAndThenExportToJSON() {
+    this.esportingKBChatBotTemplate = true
     this.faqKbService.getTemplates().subscribe((certifiedTemplates: any) => {
 
       if (certifiedTemplates) {
@@ -821,12 +824,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             return officialResponder
           }
         });
-        console.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] kbOfficialResponderTemplate', kbOfficialResponderTemplate)
 
         if (kbOfficialResponderTemplate) {
           this.exportKbOfficialResponderToJSON(kbOfficialResponderTemplate._id)
         } else {
-          console.log('[KNOWLEDGE-BASES-COMP] Not exist kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+          this.logger.log('[KNOWLEDGE-BASES-COMP] Not exist kbOfficialResponderTemplate', kbOfficialResponderTemplate)
+          this.esportingKBChatBotTemplate = false;
           this.presentDialogNotExistThekbOfficialResponderTemplate() 
         }
       }
@@ -845,15 +849,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (askGPT_Action) {
           askGPT_Action.namespace = this.selectedNamespace.id
           this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT CHATBOT TO JSON - CHATBOT INTENT > actions askGPT_Action', askGPT_Action)
+          this.esportingKBChatBotTemplate = false
           this.presentDialogChatbotname(chatbot)
         }
       });
 
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - ERROR', error);
+      this.esportingKBChatBotTemplate = false
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - COMPLETE');
-
+      
 
     });
   }
@@ -1007,7 +1013,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
       title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot') , //"It is not possible to create the chatbot",
-      text: "Your project is missing the template needed to create the chatbot" + ' !',
+      text: this.translate.instant('YourProjectIsMissingTheTemplateNeededToCreateTheChatbot') + ' !',
       icon: "error",
       showCloseButton: false,
       showCancelButton: false,
@@ -1328,7 +1334,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       },
     });
     dialogRef.afterClosed().subscribe(kb => {
-      console.log('[Modal KB DETAILS] Dialog kb: ', kb);
+      this.logger.log('[Modal KB DETAILS] Dialog kb: ', kb);
       if (kb) {
         this.onUpdateKb(kb)
       }
@@ -1359,7 +1365,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   openAddKnowledgeBaseModal(type?: string) {
-    console.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
+    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
     this.typeKnowledgeBaseModal = type;
     this.addKnowledgeBaseModal = 'block';
 
@@ -1410,7 +1416,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+      this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
       if (result && result.isSingle === "true") {
         if (result.body) {
           this.onAddKb(result.body)
@@ -1810,8 +1816,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getListOfKb(params?: any, calledby?: any) {
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
-    console.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
+    this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
     if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
       this.kbsList = [];
@@ -1904,7 +1910,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
    * onAddKb
    */
   onAddKb(body) {
-    console.log('onAddKb this.kbLimit ', this.kbLimit)
+    this.logger.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
     this.logger.log("onAddKb body:", body);
     // this.onCloseBaseModal();
@@ -2033,7 +2039,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onAddMultiKb(body) {
-    console.log('onAddMultiKb body' ,body) 
+    this.logger.log('onAddMultiKb body' ,body) 
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;

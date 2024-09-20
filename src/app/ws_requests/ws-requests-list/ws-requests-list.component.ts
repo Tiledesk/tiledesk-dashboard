@@ -860,13 +860,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT', project)
+      this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT', project)
       if (project) {
         this.projectId = project._id;
-        console.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT > projectId', this.projectId)
+        this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT > projectId', this.projectId)
         this.projectName = project.name;
         this.OPERATING_HOURS_ACTIVE = project.activeOperatingHours
-        console.log('[WS-REQUESTS-LIST] OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE ) 
+        this.logger.log('[WS-REQUESTS-LIST] OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE ) 
 
         this.getProjectById(this.projectId)
         this.findCurrentProjectAmongAll(this.projectId)

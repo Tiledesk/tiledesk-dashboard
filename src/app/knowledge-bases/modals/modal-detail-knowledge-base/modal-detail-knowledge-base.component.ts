@@ -32,7 +32,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   ) { 
     if (data && data.kb) 
       this.kb = data.kb
-      console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+      this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
 
       this.name = this.kb.name;
       this.source = this.kb.source;
@@ -49,10 +49,10 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.kbService.getContentChuncks(id_project, namespaceid, contentid).subscribe((chunks: any) => {
       if (chunks) {
         
-        console.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - RES', chunks);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - RES', chunks);
         chunks.matches.forEach(el => {
 
-          console.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - element', el) 
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS - element', el) 
 
           this.chunks.push({ id: el.id, text: el.text })
         });
@@ -82,7 +82,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+  //   this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
   // }
 
 
@@ -109,7 +109,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
    
     
-    // console.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
+    // this.logger.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.dialogRef.close(this.kb);
     // this.updateKnowledgeBase.emit(this.kb);
   }

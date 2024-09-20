@@ -129,7 +129,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
-    console.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
+    // console.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
 
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });

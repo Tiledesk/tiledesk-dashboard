@@ -367,10 +367,16 @@
                 <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                   <!-- This namespace is not used by any chatbot -->
                   {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
+
+                  <!-- esportingKBChatBotTemplate >  {{ esportingKBChatBotTemplate}} -->
                   <button class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
-                    <span>
+                    
+                    <span *ngIf="!esportingKBChatBotTemplate">
                       <!-- Create chatbot  -->
                       {{ 'CreateChatbot' | translate }}
+                    </span>
+                    <span *ngIf="esportingKBChatBotTemplate">
+                      {{ 'Processing' | translate }}
                     </span>
                   </button>
                 </div>

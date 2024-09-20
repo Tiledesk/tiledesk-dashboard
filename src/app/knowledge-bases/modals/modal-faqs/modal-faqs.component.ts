@@ -68,7 +68,7 @@ export class ModalFaqsComponent implements OnInit {
   }
 
   onSaveKnowledgeBase(isSingle) {
-    console.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb, 'isSingle ', isSingle )
+    this.logger.log('[MODAL-FAQS] onSaveKnowledgeBase kb ', this.kb, 'isSingle ', isSingle )
     const content = this.kb.name + "\n" + this.kb.content
     let body = {
       'name': this.kb.name,
@@ -144,7 +144,7 @@ export class ModalFaqsComponent implements OnInit {
 
 
   fileChangeUploadCSV(event) {
-    console.log('[FAQ-COMP] UPLOAD CSV DATA - parse_err', this.parse_err);
+    this.logger.log('[FAQ-COMP] UPLOAD CSV DATA - parse_err', this.parse_err);
     this.displayAfterUploadFromCSVSection = true;
     // this.displayImportModal = 'none';
     // this.displayInfoModal = 'block';
@@ -163,7 +163,7 @@ export class ModalFaqsComponent implements OnInit {
       this.kbService.uploadFaqCsv(formData, this.namespaceid)
 
         .subscribe(data => {
-          console.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
+          this.logger.log('[FAQ-COMP] UPLOAD CSV DATA ', data);
           if (data) {
             // this.parse_done = true;
            
@@ -176,7 +176,7 @@ export class ModalFaqsComponent implements OnInit {
 
           this.parse_err = true;
         }, () => {
-          console.log('[FAQ-COMP] UPLOAD CSV * COMPLETE *');
+          this.logger.log('[FAQ-COMP] UPLOAD CSV * COMPLETE *');
           this.parse_err = false;
         });
 
