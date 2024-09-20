@@ -968,18 +968,27 @@ button.close.custom-hover:hover {
 
 .quote-modal-btn {
   background-color: #fff;
-  color: #fff;
+  // color: #fff;
   box-shadow: unset;
-  margin-top: 5px;
-  margin-right: 15px;
+  margin-top: 7px;
+  margin-right: 8px;
 
   &:hover {
-    background-color: #0000001a;
+    // background-color: #0000001a;
   }
 }
 
 .quote-modal-btn-no-left-padding {
   margin-right: 0px !important;
+}
+
+
+.mat-munu-arrow-up {
+  transform: rotate(180deg);
+}
+
+.mat-munu-arrow-down {
+  transform: rotate(0deg);
 }
 
 

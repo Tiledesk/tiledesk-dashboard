@@ -1609,3 +1609,9 @@ $f21blue: #039be5;
   color: rgba(0, 0, 0, 0.54);
   line-height: 1.3;
 }
+
+.smart-assign-and-operatinghours-options {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}

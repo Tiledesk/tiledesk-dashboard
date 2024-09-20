@@ -183,6 +183,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_limit = 0;
 
   project_limits: any;
+  isOpenCurrentUsageMenu: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -278,8 +279,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
 
- 
-
   } // OnInit
 
 
@@ -293,7 +292,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -303,9 +301,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
-
-      this.logger.log("project_limits: ", this.project_limits)
-      this.logger.log("resp.quotes: ", resp.quotes)
 
       this.messages_limit = this.project_limits.messages;
       this.requests_limit = this.project_limits.requests;
@@ -878,9 +873,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
           // this.logger.log('[NAVBAR] route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
         }
-
-
-
       }
     });
   }
@@ -896,8 +888,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           
           this.projectId = project._id;
           this.projectName = project.name;
-          // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           this.getProjectQuotes();
+          // this.getQuotes();
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
@@ -907,9 +900,17 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   onOpenQuoteMenu() {
-    this.logger.log('[NAVBAR] - on open quotes menu' )
+    this.isOpenCurrentUsageMenu = true
+    // console.log('[NAVBAR] - on open quotes menu' )
+    // console.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
     this.getQuotes();
+  }
+
+
+  onQuotasMenuClosed() {
+    this.isOpenCurrentUsageMenu = false
+    // console.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
   }
 
   getTrialLeft() {
@@ -919,10 +920,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
-       
-     
-      
-
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
           // this.logger.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
