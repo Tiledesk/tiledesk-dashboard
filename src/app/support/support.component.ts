@@ -64,21 +64,22 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
   }
 
   removelaunchJsScript() {
-    // const scriptElement = document.getElementById(' tiledesk-jssdk');
-    // console.log('[SUPPORT] scriptElement ', scriptElement)
-    // if (scriptElement) {
-    //   scriptElement.remove();
-    // }
+    const scriptElement = document.getElementById('tiledesk-jssdk');
+    console.log('[SUPPORT] scriptElement ', scriptElement)
+    if (scriptElement) {
+      scriptElement.remove();
+      delete window['tiledesk']
+      delete window['Tiledesk']
+    }
 
-    const scripts = Array.from(document.getElementsByTagName('script'));
-    scripts.forEach(script => {
-      if (script.id === 'tiledesk-jssdk') {
-        this.logger.log('[SUPPORT]  script ', script);
-        script.remove();
-        delete window['tiledesk']
-      }
-      
-    });
+    // const scripts = Array.from(document.getElementsByTagName('script'));
+    // scripts.forEach(script => {
+    //   if (script.id === 'tiledesk-jssdk') {
+    //     this.logger.log('[SUPPORT]  script ', script);
+    //     script.remove();
+    //     delete window['tiledesk']
+    //   }
+    // });
 
   }
 
@@ -124,8 +125,9 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
       if (window && !window['tiledesk']) {
         if (status === "start") {
           window['startWidget']();
-          window['tiledesk_widget_login']();
-          window['tiledesk'].setAttributeParameter({ key: 'payload', value: { project: projectInfo } })
+          // window['tiledesk_widget_login']();
+          // window['tiledesk'].setAttributeParameter({ key: 'payload', value: { project: projectInfo } })
+          window['tiledesk_widget_login']({ key: 'payload', value: {project:  projectInfo}});
         }
       }
 
