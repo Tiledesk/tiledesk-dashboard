@@ -24,6 +24,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
   ) { super(prjctPlanService, notify); }
 
   ngOnInit(): void {
+    console.log('HELP CENTER HELLO !!!!')
     this.getProjectPlan();
     this.getBrowserVersion()
 
@@ -53,13 +54,37 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.manageWidget("hide")
+    // cancellare script
+    // cancellare tiledesk da window //
+    // 
+
+    this.removelaunchJsScript()
   }
 
-  onCardItemClick(item, section){
-    if(section === 'CONTACT_US'){
-      switch(item.key){
+  removelaunchJsScript() {
+    // const scriptElement = document.getElementById(' tiledesk-jssdk');
+    // console.log('[SUPPORT] scriptElement ', scriptElement)
+    // if (scriptElement) {
+    //   scriptElement.remove();
+    // }
+
+    const scripts = Array.from(document.getElementsByTagName('script'));
+    scripts.forEach(script => {
+      if (script.id === 'tiledesk-jssdk') {
+        console.log('[SUPPORT]  script ', script);
+        script.remove();
+        delete window['tiledesk']
+      }
+      
+    });
+
+  }
+
+  onCardItemClick(item, section) {
+    if (section === 'CONTACT_US') {
+      switch (item.key) {
         case 'EMAIL':
         case 'DISCORD':
           window.open(item.src, '_blank')
@@ -70,7 +95,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
       }
     }
 
-    if(section === 'SELF_SERVICE'){
+    if (section === 'SELF_SERVICE') {
       window.open(item.src, '_blank')
     }
 
@@ -78,7 +103,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
 
 
   private manageWidget(status: "hide" | "show" | "open" | "close" | "start", projectInfo?: any) {
-    
+
     console.log('[SUPPORT] manageWidget  window[tiledesk]', window['tiledesk'])
     console.log('[SUPPORT] manageWidget status ', status)
     try {
@@ -88,22 +113,22 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
           window['tiledesk'].dispose();
         } else if (status === 'show') {
           window['tiledesk'].show();
-        } else if(status === 'open'){
+        } else if (status === 'open') {
           window['tiledesk'].open();
-        }else if(status === "close"){
+        } else if (status === "close") {
           window['tiledesk'].close();
         }
-       
+
       }
 
       if (window && !window['tiledesk']) {
-        if(status === "start"){
+        if (status === "start") {
           window['startWidget']();
           window['tiledesk_widget_login']();
-          window['tiledesk'].setAttributeParameter({ key: 'payload', value: {project:  projectInfo}})
+          window['tiledesk'].setAttributeParameter({ key: 'payload', value: { project: projectInfo } })
         }
       }
-      
+
     } catch (error) {
       this.logger.error('manageWidget ERROR', error)
     }

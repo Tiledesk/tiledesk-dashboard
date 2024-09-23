@@ -1214,7 +1214,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         if (event.url.indexOf('/home') !== -1) { 
-          this.presentHelpCenterPopup() 
+          // this.presentHelpCenterPopup() 
         }
       }
     });
