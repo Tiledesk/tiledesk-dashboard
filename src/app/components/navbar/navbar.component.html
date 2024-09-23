@@ -55,23 +55,30 @@
         <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
         <ng-container *ngIf="project && isVisibleQuoteBtn">
           <li id="usage-stats">
-
-            <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn"
+            
+            <!-- mat-mini-fab -->
+            <button  mat-button aria-label="trend icon"[matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()" class="quote-modal-btn"
               [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
-              (click)="onOpenQuoteMenu()">
+              (click)="onOpenQuoteMenu()"> 
               <mat-icon style="color: #555555">
                 data_usage
+              </mat-icon>
+              <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
+              <mat-icon style="color: #555555" [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
+                arrow_drop_down
               </mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
 
               <div class="menu-container">
-                <p class="menu-title">{{'Usage' | translate}}</p>
+                <!-- <p class="menu-title">{{'Usage' | translate}}</p> -->
                 <div class="quotes-container">
 
                   <div class="quote-container">
 
                     <div>
+                      <!-- <p class="quote-title">{{'Requests' | translate}}</p>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div> -->
                       <p class="quote-title">Conversations</p>
                       <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, SimpleChanges, AfterViewInit } from '@angular/core';
 import { Request } from '../../../models/request-model';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
@@ -28,10 +28,15 @@ const Swal = require('sweetalert2')
   templateUrl: './ws-requests-unserved.component.html',
   styleUrls: ['./ws-requests-unserved.component.scss']
 })
-export class WsRequestsUnservedComponent extends WsSharedComponent implements OnInit, OnChanges, OnDestroy {
+export class WsRequestsUnservedComponent extends WsSharedComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   @Input() wsRequestsUnserved: Request[];
   @Input() ws_requests_length: number
+  @Input() requestCountResp: any;
+
+  countRequestsServedByHumanRr: number
+  countRequestsServedByBotRr: number
+  countRequestsUnservedRr: number
 
   wsOndataRequestArray: Array<any>
   projectId: string;
@@ -98,21 +103,10 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
-  }
 
-  // -------------------------------------------------------------
-  // @ Lifehooks
-  // -------------------------------------------------------------
-  ngOnInit() {
-
-    this.getCurrentProject();
-    this.getDepartments();
-    this.detectBrowserRefresh();
-    this.getTranslations();
-    this.getLoggedUser();
-    this.getProjectUserRole();
     this.getRouteParams()
   }
+
 
   getRouteParams() {
     this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
@@ -122,22 +116,62 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       if (params.scrollposition) {
         this.scrollYposition = params.scrollposition;
         this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - scrollYposition', +this.scrollYposition);
-        // if (this.scrollEl) {
-        //   this.logger.log('[WS-REQUESTS-LIST][UNSERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
-        //   setTimeout(() => {
-        //     this.scrollEl.scrollTo(0, +this.scrollYposition);
-        //   }, 1000);
-        // } else {
-        //   this.logger.error('[WS-REQUESTS-LIST][UNSERVED] scrollEl', this.scrollEl)
-        // }
       }
     })
-
   }
+
+  // -------------------------------------------------------------
+  // @ Lifehooks
+  // -------------------------------------------------------------
+  ngOnInit() {
+    this.getCurrentProject();
+    this.getDepartments();
+    this.detectBrowserRefresh();
+    this.getTranslations();
+    this.getLoggedUser();
+    this.getProjectUserRole();
+    
+  }
+
+ 
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      scrollToWithAnimation(
+        this.scrollEl, // element to scroll
+        'scrollTop', // direction to scroll
+        +this.scrollYposition, // target scrollY (0 means top of the page)
+        500, // duration in ms
+        'easeInOutCirc',
+        // Can be a name of the list of 'Possible easing equations' or a callback
+        // that defines the ease. # http://gizma.com/easing/
+
+        () => { // callback function that runs after the animation (optional)
+          this.logger.log('done!')
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+        }
+      );
+    }, 100);
+  }
+
+ 
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
+    this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved length', this.wsRequestsUnserved.length)
     this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
+    // console.log('[WS-REQUEST-UNSERVED] ngOnChanges requestCountResp', this.requestCountResp)
+
+
+    if (this.requestCountResp) {
+      this.countRequestsServedByHumanRr = this.requestCountResp.assigned;
+      this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
+      this.countRequestsUnservedRr = this.requestCountResp.unassigned;
+
+      // console.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
+      // console.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
+      // console.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+    }
 
 
     if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
@@ -145,39 +179,35 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
       this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
 
-      if (this.wsRequestsUnserved.length > 0) {
-        this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
-        setTimeout(() => {
-          scrollToWithAnimation(
-            this.scrollEl, // element to scroll
-            'scrollTop', // direction to scroll
-            +this.scrollYposition, // target scrollY (0 means top of the page)
-            500, // duration in ms
-            'easeInOutCirc',
-            // Can be a name of the list of 'Possible easing equations' or a callback
-            // that defines the ease. # http://gizma.com/easing/
+      // if (this.wsRequestsUnserved.length > 0) {
+      //   this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 2', changes)
+        // setTimeout(() => {
+        //   scrollToWithAnimation(
+        //     this.scrollEl, // element to scroll
+        //     'scrollTop', // direction to scroll
+        //     +this.scrollYposition, // target scrollY (0 means top of the page)
+        //     500, // duration in ms
+        //     'easeInOutCirc',
+        //     // Can be a name of the list of 'Possible easing equations' or a callback
+        //     // that defines the ease. # http://gizma.com/easing/
 
-            () => { // callback function that runs after the animation (optional)
-              this.logger.log('done!')
-              this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-            }
-          );
-        }, 100);
+        //     () => { // callback function that runs after the animation (optional)
+        //       this.logger.log('done!')
+        //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+        //     }
+        //   );
+        // }, 100);
 
-      }
+      // }
     }
 
   }
-
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-
-
-
+ 
 
   // -------------------------------------------------------------
   // @ Subscribe to project user role
@@ -434,14 +464,14 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          // console.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          //  this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - requestid ', requestid);
 
           this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
-  
+
           if (requestid === this.storedRequestId) {
             this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
             this.usersLocalDbService.removeFromStorage('last-selection-id')
@@ -456,7 +486,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
-        
+
           this.usersLocalDbService.removeFromStorage('last-selection-id')
           // this.ngOnInit();
           this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
@@ -466,7 +496,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
           const index = this.requests_selected.indexOf(requestid);
           if (index > -1) {
             this.requests_selected.splice(index, 1);
-           
+
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
@@ -574,6 +604,10 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       });
   }
 
+  goToUnservedNTR() {
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'], { queryParams: { leftfilter: 100 } });
+  }
+
   goToRequestMsgs(request_id: string) {
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
@@ -639,7 +673,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.translate.instant('Ok') ,
+      confirmButtonText: this.translate.instant('Ok'),
       cancelButtonText: this.cancelMsg,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,

@@ -38,6 +38,9 @@ import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/mo
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import {ClipboardModule} from '@angular/cdk/clipboard';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSelectModule } from '@angular/material/select';
+import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -56,6 +59,7 @@ const routes: Routes = [
     ModalPreviewKnowledgeBaseComponent,
     ModalSiteMapComponent,
     ModalTextFileComponent,
+    ModalFaqsComponent,
     ModalUrlsKnowledgeBaseComponent,
     ModalDeleteNamespaceComponent,
     ModalPreviewSettingsComponent,
@@ -86,7 +90,9 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
-    SatPopoverModule
+    SatPopoverModule,
+    MatChipsModule,
+    MatSelectModule
   ]
   // ,
   // providers: [

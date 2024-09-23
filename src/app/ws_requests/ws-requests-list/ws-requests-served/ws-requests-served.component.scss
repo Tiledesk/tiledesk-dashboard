@@ -1063,3 +1063,13 @@ $f21blue: #039be5;
     background-color: rgb(210, 210, 210, 0);
   }
 }
+
+
+.span-link-style {
+  cursor: pointer;
+  color: var(--blue-light);
+}
+
+.span-link-style:hover {
+  text-decoration: underline;
+}

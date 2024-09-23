@@ -193,7 +193,6 @@ export class WsMsgsService {
       body = { 'text': chatmsg, 'metadata': msgmetadata, 'type': msgTipe }
     }
 
-
     // replytypedid === 2 'Internal note'
     if (replytypedid === 2 && iscurrentuserjoined === true) {
       body['attributes'] = {
@@ -214,6 +213,15 @@ export class WsMsgsService {
     if (replytypedid === 1 && iscurrentuserjoined === false) {
       body['attributes'] = {
         "updateconversation": false,
+      }
+    }
+
+    if (replytypedid === 3) {
+      body['sender'] = 'bot_manager';
+      body['senderFullname'] = 'System';
+      body['type'] = 'text';
+      body['attributes'] = {
+        "subtype": 'info',
       }
     }
 

@@ -2965,8 +2965,8 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 }
 
 .step-with-image .shepherd-content .shepherd-header {
-  flex-direction: column!important;
-  justify-content: center!important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 .step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container {
@@ -2974,8 +2974,8 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   text-align: center;
 }
 
-.step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container img{
-   max-width: 345px !important;
+.step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container img {
+  max-width: 345px !important;
 }
 
 .padding-4 {
@@ -2999,7 +2999,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   font-weight: 400;
 }
 
-.custom-cancel-button .shepherd-content .shepherd-footer .cancel-button:hover { 
+.custom-cancel-button .shepherd-content .shepherd-footer .cancel-button:hover {
   color: #FFF;
   background: #196fcc !important;
 }
@@ -3007,10 +3007,10 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 /* ********************************** */
 
 .overlay-backdrop {
-  background:  #191d2285;
- }
+  background: #191d2285;
+}
 
- 
+
 
 /* ********************************** */
 
@@ -3029,6 +3029,25 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 .swal2-close:focus {
   box-shadow: unset !important;
+}
+
+.swal2-html-container label {
+  display: block;
+  margin-top: 16px;
+}
+
+.swal2-html-container .swal2-select {
+  margin-top: 0px !important;
+
+}
+
+div:where(.swal2-container) .swal2-select { 
+  margin-top: 0px !important;
+
+  // appearance: none;
+  // border: 1px solid #ccc;
+  // background-color: #fff;
+  // border-radius: 4px;
 }
 
 // .swal2-html-container {
@@ -3064,4 +3083,25 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 .mat-progress-spinner::ng-deep circle {
   // background-color: #2196F2 !important;
   stroke: #2196F2 !important;
+}
+
+.mat-dialog-container {
+  font-family: 'Poppins' !important;
+}
+
+.mat-expansion-panel-header {
+  font-family: 'Poppins' !important;
+  font-size: 14px !important;
+}
+
+.mat-form-field-infix {
+  font-family: 'Poppins' !important;
+}
+
+.mat-select {
+  font-family: 'Poppins' !important;
+}
+
+.mat-option {
+  font-family: 'Poppins' !important;
 }

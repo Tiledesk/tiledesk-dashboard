@@ -17,7 +17,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { Subscription, zip } from 'rxjs'
 import { DepartmentService } from '../../services/department.service';
 import { Subject } from 'rxjs';
-import { skip, takeUntil } from 'rxjs/operators'
+import { skip, takeUntil, throttleTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -29,6 +29,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
+import { debounceTime } from 'rxjs/operators';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -41,6 +42,7 @@ const Swal = require('sweetalert2')
   // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
+  changeValues = new Subject<string>();
   PLAN_NAME = PLAN_NAME;
   trial_expired: string;
   profile_name: string;
@@ -57,6 +59,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   wsRequestsUnserved: any;
   wsRequestsServed: any;
+  countRequestsServedByHumanRr: number = 0;
+  countRequestsServedByBotRr: number = 0;
+  countRequestsUnservedRr: number = 0;
+  requestCountResp: any
   ws_requests: any;
   projectId: string;
   zone: NgZone;
@@ -159,7 +165,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   maximum_chats: number; // key max_agent_assigned_chat
   AUTOMATIC_UNAVAILABLE_STAUS_IS_ENABLED: boolean; // automatic_unavailable_status_on
   chats_reassigned: number // key automatic_idle_chats
-  AGENTS_CAN_SEE_ONLY_OWN_CONVS : boolean
+  AGENTS_CAN_SEE_ONLY_OWN_CONVS: boolean
   // DISPLAY_MODAL_UPGRADE_PLAN: boolean; // NOT USED
   // DISPLAY_MODAL_SUBSCRIPTION_PROBLEM: boolean; // NOT USED
   CURRENT_USER_ROLE: string;
@@ -235,7 +241,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
 
   ngOnInit() {
-    // console.log('SELECTED PRIORITY ', this.selectedPriority)
+    // this.logger.log('SELECTED PRIORITY ', this.selectedPriority)
     this.getBrowserVersion()
     this.getOSCODE();
     this.getImageStorageAndThenProjectUsers();
@@ -249,9 +255,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getChatUrl();
     this.getTestSiteUrl();
     this.translateString()
+    this.getRestRequestConversationCount()
+    this.getWsConv$()
     // this.listenToParentPostMessage()
     // this.getGroupsByProjectId();
   }
+  
 
 
 
@@ -260,19 +269,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      // console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      // this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
   // listenToParentPostMessage() {
   //   window.addEventListener("message", (event) => {
-  //     console.log("[WS-REQUESTS-LIST] message event ", event);
+  //     this.logger.log("[WS-REQUESTS-LIST] message event ", event);
 
   //     if (event && event.data && event.data.action && event.data.parameter && event.data.calledBy) {
   //       if (event.data.action === 'hasArchived' && event.data.calledBy === 'ws_unserved_for_panel') {
-  //         console.log("[WS-REQUESTS-LIST] message event ", event.data.action);
-  //         console.log("[WS-REQUESTS-LIST] message parameter ", event.data.parameter);
-  //         console.log("[WS-REQUESTS-LIST] currentUserID ", this.currentUserID);
+  //         this.logger.log("[WS-REQUESTS-LIST] message event ", event.data.action);
+  //         this.logger.log("[WS-REQUESTS-LIST] message parameter ", event.data.parameter);
+  //         this.logger.log("[WS-REQUESTS-LIST] currentUserID ", this.currentUserID);
 
   //       }
   //     }
@@ -443,7 +452,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.cPlanOnly = translation;
       });
 
-      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+    this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
       .subscribe((translation: any) => {
         this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
       });
@@ -531,13 +540,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   getProjectUserRole() {
-    // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
+    // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE user_role ', user_role);
+        // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE user_role ', user_role);
         if (user_role) {
           this.CURRENT_USER_ROLE = user_role;
           if (user_role === 'agent') {
@@ -549,9 +558,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             //   this.displayAgentsSelect = true
             //   this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
             // } else 
-            // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE  AGENTS_CAN_SEE_ONLY_OWN_CONVS', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
-            if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
-             
+            // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE  AGENTS_CAN_SEE_ONLY_OWN_CONVS', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
+            if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
+
               this.displayAgentsSelect = false
               this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
             }
@@ -579,12 +588,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
       // this.logger.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
-    //  console.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
+      //  this.logger.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
         this.project_users = _projectUsers
         this.project_user_length = _projectUsers.length;
-        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
-        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
+        // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
+        // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
         this.projectUserArray = _projectUsers;
 
         _projectUsers.forEach(projectuser => {
@@ -608,7 +617,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
           this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
 
-         
+
           this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
@@ -649,7 +658,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        //  console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        // this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -672,7 +681,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.tempProjectUserArray.sort(function (a, b) { return a.user_available_rt - b.user_available_rt });
         this.tempProjectUserArray.reverse();
         this.projectUserArray = this.tempProjectUserArray;
-        // console.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
+        // this.logger.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
         // COMMENTED NK
         // this.getDeptsByProjectId(this.projectUserArray)
@@ -687,38 +696,38 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getDeptsByProjectId(projectUserArray) {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      // console.log('[WS-REQUESTS-LIST] - GET ALL DEPTS (FILTERED FOR PROJECT ID)', departments);
+      // this.logger.log('[WS-REQUESTS-LIST] - GET ALL DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       const activeDepartments = departments.filter(dept => dept.status !== 0);
-      // console.log('[WS-REQUESTS-LIST] - ONLY ACYIVE DEPTS ', activeDepartments);
+      // this.logger.log('[WS-REQUESTS-LIST] - ONLY ACYIVE DEPTS ', activeDepartments);
       if (activeDepartments) {
         const departmentsCount = activeDepartments.length;
 
-        // console.log('[WS-REQUESTS-LIST] - GET DEPTS active departmentsCount ', departmentsCount)
+        // this.logger.log('[WS-REQUESTS-LIST] - GET DEPTS active departmentsCount ', departmentsCount)
         let count = 0
         activeDepartments.forEach((dept: any) => {
 
           if (departmentsCount > 1) {
-            // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
+            // this.logger.log('»»» »»» DEPTS PAGE - DEPT)', dept);
             if (dept && dept.default !== true) {
-              // console.log('[DEPTS] - GET DEPTS -  DEPT NAME: ', dept.name, 'dept object', dept);
+              // this.logger.log('[DEPTS] - GET DEPTS -  DEPT NAME: ', dept.name, 'dept object', dept);
 
               if (!dept.id_group || dept.id_group === undefined) {
                 count = count + 1;
-                // console.log('[WS-REQUESTS-LIST] display all teammates')
+                // this.logger.log('[WS-REQUESTS-LIST] display all teammates')
               }
             }
           } else if (departmentsCount === 1) {
-            // console.log('[WS-REQUESTS-LIST] USECASE: THERE IS ONLY A DEPT  -  DEPT NAME ', dept.name, 'dept object', dept);
+            // this.logger.log('[WS-REQUESTS-LIST] USECASE: THERE IS ONLY A DEPT  -  DEPT NAME ', dept.name, 'dept object', dept);
 
 
             if (!dept.id_group || dept.id_group === undefined) {
-              // console.log('[WS-REQUESTS-LIST] (only default dept) ')
+              // this.logger.log('[WS-REQUESTS-LIST] (only default dept) ')
               count = count + 1;
             }
           }
         });
-        // console.log('[DEPTS] - COUNT OF DEPT WITHOUT GROUP', count);
+        // this.logger.log('[DEPTS] - COUNT OF DEPT WITHOUT GROUP', count);
         if (count > 0) {
           // this.DISPLAY_ALL_TEAMMATES_TO_AGENT = true;
           this.filteredProjectUsersArray = projectUserArray
@@ -738,35 +747,35 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   getGroupsByProjectId(projectUserArray) {
-    // console.log('[WS-REQUESTS-LIST] - GROUPS - ALL PROJECT USERS ', projectUserArray)
+    // this.logger.log('[WS-REQUESTS-LIST] - GROUPS - ALL PROJECT USERS ', projectUserArray)
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      // console.log('[WS-REQUESTS-LIST] - GROUPS GET BY PROJECT ID', groups);
+      // this.logger.log('[WS-REQUESTS-LIST] - GROUPS GET BY PROJECT ID', groups);
       const memberOfAllGroups = []
       if (groups) {
         this.groupsList = groups;
 
         // this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
-          // console.log('[WS-REQUESTS-LIST] - GROUP ', group);
+          // this.logger.log('[WS-REQUESTS-LIST] - GROUP ', group);
 
           if (group.members.includes(this.currentUserID)) {
-            // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
+            // this.logger.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
             group.members.forEach(member => {
               memberOfAllGroups.indexOf(member) === -1 ? memberOfAllGroups.push(member) : this.logger.log("PUSH MEMBER ID IN memberOfAllGroups : This item already exists");
             });
 
-            // console.log('[WS-REQUESTS-LIST] - ARRAY OF ALL MEMBERS OF GROUPS ', memberOfAllGroups);
+            // this.logger.log('[WS-REQUESTS-LIST] - ARRAY OF ALL MEMBERS OF GROUPS ', memberOfAllGroups);
 
             this.filteredProjectUsersArray = projectUserArray.filter(projectUser => memberOfAllGroups.includes(projectUser.id_user._id))
-            // console.log('[WS-REQUESTS-LIST] - PROJECT USER FILTERED FOR MEMBERS OF THE GROUPS IN WICH IS PRESENT THE CURRENT USER ', this.filteredProjectUsersArray);
+            // this.logger.log('[WS-REQUESTS-LIST] - PROJECT USER FILTERED FOR MEMBERS OF THE GROUPS IN WICH IS PRESENT THE CURRENT USER ', this.filteredProjectUsersArray);
           } else {
-            // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER  - SHOW ALL TEAMMATES');
+            // this.logger.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER  - SHOW ALL TEAMMATES');
             this.filteredProjectUsersArray = projectUserArray
           }
         });
 
       } else {
-        // console.log('[WS-REQUESTS-LIST] - THE PROJECT NOT HAS GROUPS - SHOW ALL TEAMMATES');
+        // this.logger.log('[WS-REQUESTS-LIST] - THE PROJECT NOT HAS GROUPS - SHOW ALL TEAMMATES');
         this.filteredProjectUsersArray = projectUserArray
       }
     }, (error) => {
@@ -851,12 +860,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      // this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT', project)
+      this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT', project)
       if (project) {
         this.projectId = project._id;
         this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT > projectId', this.projectId)
         this.projectName = project.name;
-        this.OPERATING_HOURS_ACTIVE = project.operatingHours
+        this.OPERATING_HOURS_ACTIVE = project.activeOperatingHours
+        this.logger.log('[WS-REQUESTS-LIST] OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE ) 
 
         this.getProjectById(this.projectId)
         this.findCurrentProjectAmongAll(this.projectId)
@@ -867,9 +877,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   findCurrentProjectAmongAll(projectId: string) {
 
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[WS-REQUESTS-LIST] - GET PROJECTS - projects ', projects);
+      // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECTS - projects ', projects);
       // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // console.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+      // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[WS-REQUESTS-LIST] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
@@ -886,7 +896,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   getProjectById(projectid) {
     this.projectService.getProjectById(projectid).subscribe((project: any) => {
       this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - project: ', project);
-      // console.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - project > settings: ', project.settings);
+      // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT BY ID - project > settings: ', project.settings);
 
 
       if (project && project.activeOperatingHours === true) {
@@ -920,7 +930,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         if (project.settings.current_agent_my_chats_only === true) {
           this.AGENTS_CAN_SEE_ONLY_OWN_CONVS = true;
-       
+
         } else {
           this.AGENTS_CAN_SEE_ONLY_OWN_CONVS = false
         }
@@ -957,15 +967,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (this.CURRENT_USER_ROLE === 'owner') {
       if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
 
-        // console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Smartassignment');
+        // this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Smartassignment');
         this.router.navigate(['project/' + this.projectId + '/project-settings/smartassignment']);
 
       } else if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === false) {
         this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-      } else if (this.profile_name !== PLAN_NAME.C  && this.profile_name !== PLAN_NAME.F) {
+      } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
-      
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -1009,7 +1019,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
-    
+
       // content: el,
       // icon: "info",
       // buttons: {
@@ -1022,7 +1032,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       // dangerMode: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        // console.log('featureAvailableFromPlanC value', value)
+        // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePay) {
           if (this.CURRENT_USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment') {
@@ -1069,7 +1079,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (upgradePlan) {
           this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan', upgradePlan)
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          
+
         } else {
           this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan (else)', upgradePlan)
         }
@@ -1078,11 +1088,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   seeIamAgentRequests(seeIamAgentReq) {
     this.ONLY_MY_REQUESTS = seeIamAgentReq
-    if (this.ONLY_MY_REQUESTS === false && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
+    if (this.ONLY_MY_REQUESTS === false && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
       this.displayAgentsSelect = true
       this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
-    } else if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) { 
-     
+    } else if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
+
       this.displayAgentsSelect = false
       this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
     }
@@ -1108,7 +1118,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   hasmeInAgents(agents, wsrequest) {
-    // console.log('[WS-REQUESTS-LIST] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
+    // this.logger.log('[WS-REQUESTS-LIST] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
     this.logger.log("[WS-REQUESTS-LIST] - hasmeInAgents - currentUserID ", this.currentUserID);
     if (agents) {
       for (let j = 0; j < agents.length; j++) {
@@ -1142,7 +1152,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-    //  console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1285,7 +1295,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
-            
+
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
               if (wsrequest !== null && wsrequest !== undefined) {
@@ -1304,7 +1314,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
-           
+
             this.ws_requests = [];
             wsrequests.forEach(wsrequest => {
               if (wsrequest !== null && wsrequest !== undefined) {
@@ -1329,7 +1339,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
           if (this.hasFiltered === true) {
             this.ws_requests = this.ws_requests.filter(r => {
-              // console.log('[WS-REQUESTS-LIST] - request: ', r);
+              // this.logger.log('[WS-REQUESTS-LIST] - request: ', r);
               this.logger.log('[WS-REQUESTS-LIST] - filter: ', this.filter);
               this.logger.log('[WS-REQUESTS-LIST] - filter filter[0]: ', this.filter[0]);
               this.logger.log('[WS-REQUESTS-LIST] - filter filter[1]: ', this.filter[1]);
@@ -1546,7 +1556,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         this.ws_requests.forEach((request) => {
 
-          // console.log('[WS-REQUESTS-LIST] - request ', request)
+          // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
           this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
@@ -1774,7 +1784,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         //  Sort requests
         // ----------------------------------------- 
         if (this.ws_requests) {
-          // console.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
+  
+          // this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
@@ -1811,38 +1822,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               return 0;
             });
 
-
         } else {
           // this.showSpinner = false;
         }
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests - served ', this.wsRequestsServed);
         this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - unserved ', this.wsRequestsUnserved);
-        this.logger.log('[WS-REQUESTS-LIST] getWsRequests - served length ', this.wsRequestsServed.length);
-        this.logger.log('[WS-REQUESTS-LIST] getWsRequests - unserved length ', this.wsRequestsUnserved.length);
-        // .pipe(skip(1))
-        // this.wsRequestsService.wsOnDataUnservedConvs$
+      
 
-        //   .subscribe((ondataUnserveConvs) => {
-        //     console.log("[WS-REQUESTS-LIST] ondataUnserveConvs ", ondataUnserveConvs);
-        //     console.log('[WS-REQUESTS-LIST] getWsRequests - unserved ', this.wsRequestsUnserved);
-        //     if (ondataUnserveConvs && ondataUnserveConvs.length > 0 && this.wsRequestsUnserved.length > 0) {
+        // const sum = this.wsRequestsServed.length + this.wsRequestsUnserved.length
 
-        //       // setTimeout(() => {
-
-
-        //         if (ondataUnserveConvs.length !== this.wsRequestsUnserved.length) {
-        //           console.log("[WS-REQUESTS-LIST] there are difference between the to array");
-        //           var result = ondataUnserveConvs.filter(e => !this.wsRequestsUnserved.find(a => e.id === a.id));
-
-        //           console.log('[WS-REQUESTS-LIST] - RESULT TEST', result)
-        //         }
-        //       // },200);
-        //     }
-        //   });
-
-        const sum = this.wsRequestsServed.length + this.wsRequestsUnserved.length
+        //  
+        const sum = this.countRequestsServedByHumanRr + this.countRequestsServedByBotRr +  this.countRequestsUnservedRr
         this.served_unserved_sum = sum;
-        this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
+        // this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
 
         // ---------------------------------------------
         // @ Init dognut chart - to do 
@@ -1875,6 +1867,66 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests$ */* COMPLETE */*')
       })
   }
+
+  getWsConv$() {
+    this.wsRequestsService.wsConv$
+      .pipe(throttleTime(5000))
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsConv) => {
+        // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
+        this.getRestRequestConversationCount()
+      
+        // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
+        //   if (wsConv['status'] === 100) {
+        //     this.logger.log('[WS-REQUESTS-MSGS] - countRequestsUnservedRestCall - Rest Request + RT ', this.countRequestsUnservedRr + 1);
+        //   }
+        //   if (wsConv['status'] !== 100 && wsConv['hasBot'] === false) {
+        //     this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByHuman - Rest Request + RT ', this.countRequestsServedByHumanRr + 1);
+        //   }
+        //   if (wsConv['status'] !== 100 && wsConv['hasBot'] === true) {
+        //     this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByBot - Rest Request + RT ', this.countRequestsServedByBotRr + 1);
+        //   }
+        
+      })
+
+    }
+
+
+    getRestRequestConversationCount() {
+      this.wsRequestsService.getConversationCount()
+        .subscribe((requests: any) => {
+        // this.logger.log('[WS-REQUESTS-MSGS] - ************* getRestRequestConversationCount - requests  ', requests);
+          if (requests) {
+            this.requestCountResp = requests
+            this.countRequestsServedByHumanRr = requests.assigned;
+            this.countRequestsServedByBotRr = requests.bot_assigned;
+            this.countRequestsUnservedRr= requests.unassigned;
+  
+            // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByHumanRestCall ', this.countRequestsServedByHumanRr);
+            // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByBotRestCall ', this.countRequestsServedByBotRr);
+            // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsUnservedRestCall ', this.countRequestsUnservedRr);
+          }
+  
+        }, (error) => {
+      
+          this.logger.error('[WS-REQUESTS-MSGS] - getRestRequestConversationCount - ERROR  ', error);
+         
+        }, () => {
+        
+          this.logger.log('[WS-REQUESTS-MSGS] -getRestRequestConversationCount * COMPLETE *');
+        });
+    }
+
+  
+  // getWsRequest$() {
+  //   this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequest$");
+  //   this.wsRequestsService.wsRequestList$
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //   }
 
   // checkIfFinished(wsRequestsServed) {
   //   return (wsRequestsServed.length > 0);
@@ -2108,27 +2160,27 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
     //   });
 
-    //  console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER ', hasFound);
+    //  this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER ', hasFound);
 
     //   if (hasFound.length > 0)
 
     //     this.id_for_view_requeter_dtls = hasFound[0]['requester_id'],
-    //       console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER id_for_view_requeter_dtls', this.id_for_view_requeter_dtls);
+    //       this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER id_for_view_requeter_dtls', this.id_for_view_requeter_dtls);
 
     //   if (hasFound[0]['requestertype'] === "agent") {
 
     //     this.requester_type = "agent"
-    //     console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
+    //     this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
     //   } else {
     //     this.requester_type = "lead"
-    //     console.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
+    //     this.logger.log('[WS-REQUESTS-LIST] - hasFound REQUESTER requester_type', this.requester_type);
     //   }
   }
 
   openRequesterDetails() {
-    // console.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - selectedRequester ',this.selectedRequester) 
-    // console.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - requester_type ',this.requester_type) 
-    // console.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - id_for_view_requeter_dtls ',this.id_for_view_requeter_dtls) 
+    // this.logger.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - selectedRequester ',this.selectedRequester) 
+    // this.logger.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - requester_type ',this.requester_type) 
+    // this.logger.log('[WS-REQUESTS-LIST] - OPEN REQUESTER DTLS - id_for_view_requeter_dtls ',this.id_for_view_requeter_dtls) 
     if (this.selectedRequester) {
       if (this.requester_type === "agent") {
         // this.router.navigate(['project/' + this.projectId + '/user/edit/' + this.id_for_view_requeter_dtls]);
@@ -2241,12 +2293,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // https://www.freakyjolly.com/ng-select-multiple-property-search-using-custom-filter-function/#.YDEDaJP0l7g
   // https://stackblitz.com/edit/so-angular-ng-select-searchfunc?file=app%2Fapp.component.ts
   customSearchFn(term: string, item: any) {
-    // console.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn term : ', term);
+    // this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn term : ', term);
 
     term = term.toLocaleLowerCase();
-    // console.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item : ', item);
+    // this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item : ', item);
 
-    // console.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.name.toLocaleLowerCase().indexOf(term) > -1);
+    // this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - customSearchFn item.name.toLocaleLowerCase().indexOf(term) : ', item.name.toLocaleLowerCase().indexOf(term) > -1);
 
     return item.name.toLocaleLowerCase().indexOf(term) > -1 || item.email.toLocaleLowerCase().indexOf(term) > -1;
   }

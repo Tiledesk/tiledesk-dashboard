@@ -219,6 +219,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   KB_ROUTE_IS_ACTIVE: boolean;
   CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
   SUPPORT_ROUTE_IS_ACTIVE: boolean;
+  NORT_CONV_ROUTE_IS_ACTIVE: boolean;
 
 
 
@@ -1202,6 +1203,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           this.CREATE_BOT_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/all-conversations') !== -1) {
+          this.NORT_CONV_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - NORT_CONV_ROUTE_IS_ACTIVE ', this.NORT_CONV_ROUTE_IS_ACTIVE);
+        } else {
+          this.NORT_CONV_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - NORT_CONV_ROUTE_IS_ACTIVE ', this.NORT_CONV_ROUTE_IS_ACTIVE);
         }
 
 
