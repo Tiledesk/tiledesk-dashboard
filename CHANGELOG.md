@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.25
+- Adds the ability to add FAQs as contents of knowledge bases
+
 ### 2.7.24
 - Fixes the bug: Operating hours on the "Monitor" page are active even though they are disabled
 
