@@ -1,0 +1,41 @@
+<h1 mat-dialog-title> 
+
+   Execute block
+</h1>
+
+<div mat-dialog-content>
+    intent_display_name_array > {{ intent_display_name_array | json}}
+
+    <ng-select [(ngModel)]="intent_display_name" [clearable]="false" (change)="onChangeBlock()"
+        [items]="intent_display_name_array"
+        bindLabel="name"
+        bindValue="name"
+        placeholder="Select city"
+        appendTo="body">
+    
+        
+      </ng-select>
+
+    <!-- <mat-form-field appearance="fill" class="cc-mat-form-field">
+        <mat-label>
+            
+            {{'MyAssistantName' | translate}}
+
+        </mat-label>
+        
+    </mat-form-field> -->
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPresssed()">
+        
+        {{ "Create" | translate }}
+        
+    </button>
+</div>

@@ -18,6 +18,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   name: string;
   source: string;
   content: string;
+  faqcontent: string;
   chunks: Array<any> = [];
   chunksCount: number;
   showSpinner: boolean = true;
@@ -36,6 +37,10 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       this.name = this.kb.name;
       this.source = this.kb.source;
       this.content = this.kb.content;
+
+      if (this.kb.type === 'faq') {
+       this.content = this.kb.content.replace(this.kb.name + '\n', '').trimStart()
+      } 
 
       this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
   }
@@ -77,7 +82,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('[MODAL-DETAIL-KB] kb ', this.kb) 
+  //   this.logger.log('[MODAL-DETAIL-KB] kb ', this.kb) 
   // }
 
 
@@ -95,11 +100,16 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   onUpdateKnowledgeBase(){
+    if (this.kb.type === 'faq') {
+      this.content = this.name + "\n" + this.content
+    }
     this.kb.name = this.name;
     this.kb.source = this.source;
     this.kb.content = this.content;
+
+   
     
-    // console.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
+    // this.logger.log('[MODAL-DETAIL-KB] onUpdateKnowledgeBase kb ', this.kb) 
     this.dialogRef.close(this.kb);
     // this.updateKnowledgeBase.emit(this.kb);
   }

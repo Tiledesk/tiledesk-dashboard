@@ -101,6 +101,10 @@ export class AnalyticsService {
       participant_id = ''
     }
 
+    if (!channel) {
+      channel = ''
+    }
+
     this.logger.log("[ANALYTICS-SERV] requestsByDayBotServed DEPT-ID", department_id);
     this.logger.log("[ANALYTICS-SERV] requestsByDayBotServed PARTICIPANT-ID", participant_id);
 

@@ -256,7 +256,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
-      this.responseTime = Math.round((endTime - startTime) / 1000);
+      this.responseTime = Math.round((endTime - startTime) / 1000); 
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
@@ -277,14 +277,21 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.show_answer = true;
       this.searching = false;
     }, (err) => {
-      // this.logger.log("ask gpt preview response error: ", err);
+      this.logger.log("ask gpt preview response error: ", err);
       // this.logger.log("ask gpt preview response error message: ", error.message);
       // this.logger.log("ask gpt preview response error error: ", error.error);
       if (err && err.error && err.error.error_code === 13001) {
         this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
         this.aiQuotaExceeded = true
-      } else {
+      } else if (err && err.error && err.error.message) {
         this.answer = err.error.message;
+      } else if (err.error && err.error.error && err.error.error.answer)  {
+        this.answer = err.error.error.answer;
+        // && err.headers.statusText
+        if (err.statusText) {
+          this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
+          this.answer = this.answer + ' (' + err.statusText + ')'
+        }
       }
 
       this.logger.error("ERROR ask gpt: ", err.message);

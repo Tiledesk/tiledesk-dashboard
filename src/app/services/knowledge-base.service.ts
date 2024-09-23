@@ -100,7 +100,6 @@ export class KnowledgeBaseService {
   }
 
   updateNamespace(body: string, namespaceid: string) {
-    // console.log('[KNOWLEDGE BASE SERVICE] upadateNamespace body', body)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -111,6 +110,23 @@ export class KnowledgeBaseService {
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/namespace/" + namespaceid;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - upadateNamespace URL ", url);
     return this.httpClient.put(url, body, httpOptions);
+  }
+
+  public uploadFaqCsv(formData: any, namespaceid) {
+   
+
+    const options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/csv?namespace=" + namespaceid;
+    this.logger.log('[KNOWLEDGE BASE SERVICE] UPLOAD FAQS CSV - URL ', url);
+
+    return this.httpClient
+      .post(url, formData, options)
   }
 
   getListOfKb(params?) {

@@ -31,6 +31,7 @@ export class WsRequestsService implements OnDestroy {
 
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public wsConv$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public projectUsersOfProject$: BehaviorSubject<Array<[any]>> = new BehaviorSubject<Array<[any]>>([]);
   public wsOnDataUnservedConvs$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public foregroundNotificationCount$: BehaviorSubject<number> = new BehaviorSubject(null);
@@ -208,7 +209,7 @@ export class WsRequestsService implements OnDestroy {
 
         // if (this.WS_IS_CONNECTED === 1) {
         this.webSocketJs.ref('/' + this.project_id + '/requests', 'getCurrentProjectAndSubscribeTo_WsRequests',
-
+          // Create
           function (data, notification) {
 
             if (data) {
@@ -291,9 +292,12 @@ export class WsRequestsService implements OnDestroy {
               // self.logger.log("[WS-REQUESTS-SERV] - CREATE - REQUEST ALREADY EXIST - NOT ADD");
             }
 
+          // Update
           }, function (data, notification) {
 
-            self.logger.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+
+            self.wsConv$.next(data)
 
 
             // -------------------------------------------------------
@@ -771,6 +775,22 @@ export class WsRequestsService implements OnDestroy {
 
     return this._httpClient.delete(url, httpOptions)
 
+  }
+
+  // --------------------------------------------------
+  // @ Get request by id
+  // --------------------------------------------------
+  public getConversationCount() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/count'
+    this.logger.log('[WS-REQUESTS-SERV] - getConversationByIDWithRestRequest - URL ', url)
+    return this._httpClient.get(url, httpOptions)
   }
 
   // --------------------------------------------------

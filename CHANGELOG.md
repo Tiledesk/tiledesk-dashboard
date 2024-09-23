@@ -1,12 +1,36 @@
 # tiledesk-dashboard
 
-### 2.7.16-rc5
+### 2.7.25
+- Adds the ability to add FAQs as contents of knowledge bases
+
+### 2.7.24
+- Fixes the bug: Operating hours on the "Monitor" page are active even though they are disabled
+
+### 2.7.23
+- Adds the ability to hide the Chatbot Attributes widget from Project Settings > Advanced
+
+### 2.7.22
+- Improves the "Monitor" page
+
+### 2.7.21
+- Fixed the bug: on the "Monitor" page a new conversation causes the page to scroll top
+
+### 2.7.20
+- Fixes the bug: Home page conversations graph not displaying chatbots data
+
+### 2.7.19
+- Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
+- Improves the method to get the number of conversations in the monitor page
+
+### 2.7.18
 - Minor improvements and bug fixing
 
-### 2.7.16-rc4
-- Implements the help center page
-- Adds the ability to manages the visibility of the Help Center page
-- Adds a popup window that explains the features of the Help Center page
+### 2.7.17
+- Removes the ability to customize the quotas email template
+- Implements the icons for the SMS channel
+
+### 2.7.16
+- Minor improvements and bug fixing
 
 ### 2.7.16-rc3
 - Bug fixing
