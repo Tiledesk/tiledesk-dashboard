@@ -553,6 +553,18 @@
     "SelectAblock": "Seleziona un blocco",
     "YouNeedToSelectABlock":"Devi selezionare un blocco :)",
     "MoreInQueque": "Altre in coda, vedi tutto",
+    "HideChatbotAttributesWidget":"Nascondi widget Attributi Chatbot",
+    "EnablingThisOptionHidesChatbotAttributes": "Abilitando questa opzione si nascondono gli attributi del chatbot dalla barra laterale dei dettagli della conversazione",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",

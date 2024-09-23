@@ -553,6 +553,8 @@
     "SelectAblock": "Select a block",
     "YouNeedToSelectABlock":"You need to select a block :)",
     "MoreInQueque": "More in queque, see all",
+    "HideChatbotAttributesWidget":"Hide Chatbot Attributes widget",
+    "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

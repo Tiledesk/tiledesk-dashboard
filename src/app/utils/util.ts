@@ -717,7 +717,6 @@ export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: st
     { name: "OpenAI o1-mini",                   value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",                  status: "active"    },
     { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    }
 ]
-
 export const CHANNELS_NAME = {
     CHAT21: 'chat21',
     EMAIL: 'email',

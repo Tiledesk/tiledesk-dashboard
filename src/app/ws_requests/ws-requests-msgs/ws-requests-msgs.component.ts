@@ -417,6 +417,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   dialedNumberIdentificationService: string;
 
   CHANNELS_NAME = CHANNELS_NAME;
+  HIDE_CHATBOT_ATTRIBUTES: boolean;
 
   /**
    * Constructor
@@ -1384,16 +1385,33 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   findCurrentProjectAmongAll(projectId: string) {
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', this.current_selected_prjct);
-      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-
+      //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.settings) {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
+        if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
+
+          this.HIDE_CHATBOT_ATTRIBUTES = this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden;
+          this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 1', this.HIDE_CHATBOT_ATTRIBUTES);
+
+        } else {
+          this.HIDE_CHATBOT_ATTRIBUTES = false;
+          this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
+        }
+      } else {
+        this.HIDE_CHATBOT_ATTRIBUTES = false;
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
+      }
+
+
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
         // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
       }
+
 
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
     }, error => {
@@ -2340,7 +2358,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // @ Msgs ws-subscription
           // -----------------------------------------------------------------------------------------------------
           // if (this.CHAT_PANEL_MODE === false)  {
-            this.subscribeToWs_MsgsByRequestId(this.id_request);
+          this.subscribeToWs_MsgsByRequestId(this.id_request);
           // }
 
           // -----------------------------------------------------------

@@ -554,6 +554,18 @@
     "SelectAblock": "Blok seçin",
     "YouNeedToSelectABlock":"Siz blok seçməlisiniz :)",
     "MoreInQueque": "Daha çox növbə var, hamısına baxın",
+    "HideChatbotAttributesWidget":"Chatbot Atributları vidcetini gizlədin",
+    "EnablingThisOptionHidesChatbotAttributes": "Bu seçimin aktivləşdirilməsi chatbotun atributlarını söhbət detalları yan panelindən gizlədir",
+    "TYPE_GPT_MODEL": {
+        "text-davinci-003": { "description": ""},
+        "gpt-3.5-turbo": { "description": ""},
+        "gpt-4": { "description": ""},
+        "gpt-4-turbo-preview": { "description": ""},
+        "gpt-4o": { "description": ""},
+        "gpt-4o-mini": { "description": ""},
+        "o1-mini": { "description": ""},
+        "o1-preview": { "description": ""}
+    },
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",

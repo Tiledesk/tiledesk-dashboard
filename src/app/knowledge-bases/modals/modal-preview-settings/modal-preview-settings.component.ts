@@ -124,6 +124,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
+    // this.model_list = Object.values(TYPE_GPT_MODEL).filter(el => el.status !== 'inactive').map((el) => {
+    //   if (ai_models[el.value])
+    //     return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
+    //   else
+    //     return { ...el, multiplier: null }
+    // })
 
     this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el)=> {
       if(ai_models[el.value])
@@ -144,13 +150,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // } else if (this.selectedNamespace.preview_settings.model === "gpt-4o-mini") {
     //   this.selectedModel = this.model_list[4].value;
     // }
-
-
-    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value 
-
-    // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
-
-
+    
+    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
+    this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
     // if(this.selectedModel !== this.selectedNamespaceClone.preview_settings.model) {
     //   this.countOfOverrides =  this.countOfOverrides + 1;

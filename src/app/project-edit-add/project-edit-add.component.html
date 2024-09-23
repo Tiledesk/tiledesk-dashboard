@@ -1872,6 +1872,60 @@
                         </div>
                       </div>
                     </div>
+
+
+                    <!-- ----------------------------------- -->
+                    <!-- Hide / display Chatbot attributes -->
+                    <!-- ----------------------------------- -->
+                    <div class="row" style="margin-top: 40px;">
+                      <div class="col-md-6">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            
+                            {{'HideChatbotAttributesWidget' | translate}}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-6">
+                        <h3 class="card-title onoffswitch_container_first_line">
+  
+                          <div class="onoffswitch">
+                            
+                            <input (change)="toggleVisibilityOfChatbotAttributes($event)"  type="checkbox"
+                              name="are_hide_chatbot_attributes_card_in_conv_dtls" class="onoffswitch-checkbox" id="are_hide_chatbot_attributes_card_in_conv_dtls"
+                              [checked]="areHideChatbotAttributesInConvDtls">
+                            <label class="onoffswitch-label" for="are_hide_chatbot_attributes_card_in_conv_dtls">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+  
+                    <div class="input-wrapper" style="max-width: 992px;">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <span style="display: flex;">
+                              <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;"
+                                class="material-icons">info
+                              </i>
+                              <span style="vertical-align: middle; display: inline-flex;">
+                                {{'EnablingThisOptionHidesChatbotAttributes' | translate }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                   </span> <!-- /. Advanced ROUTE -->
 
               </div>
