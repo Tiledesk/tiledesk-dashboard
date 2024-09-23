@@ -1832,7 +1832,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   checkPlanAndPresentModal(appTitle) {
-    console.log('[HOME] checkPlanAndPresentModal appTitle', appTitle , 'appSumoProfile ', this.appSumoProfile)
+    this.logger.log('[HOME] checkPlanAndPresentModal appTitle', appTitle , 'appSumoProfile ', this.appSumoProfile)
     if (
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
