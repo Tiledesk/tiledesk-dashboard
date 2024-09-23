@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.26
+- Adds the Help Center page to provide to the end user a complete support option
+
 ### 2.7.25
 - Adds the ability to add FAQs as contents of knowledge bases
 
