@@ -24,7 +24,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
   ) { super(prjctPlanService, notify); }
 
   ngOnInit(): void {
-    console.log('HELP CENTER HELLO !!!!')
+    this.logger.log('HELP CENTER HELLO !!!!')
     this.getProjectPlan();
     this.getBrowserVersion()
 
@@ -73,7 +73,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
     const scripts = Array.from(document.getElementsByTagName('script'));
     scripts.forEach(script => {
       if (script.id === 'tiledesk-jssdk') {
-        console.log('[SUPPORT]  script ', script);
+        this.logger.log('[SUPPORT]  script ', script);
         script.remove();
         delete window['tiledesk']
       }
@@ -104,8 +104,8 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
 
   private manageWidget(status: "hide" | "show" | "open" | "close" | "start", projectInfo?: any) {
 
-    console.log('[SUPPORT] manageWidget  window[tiledesk]', window['tiledesk'])
-    console.log('[SUPPORT] manageWidget status ', status)
+    this.logger.log('[SUPPORT] manageWidget  window[tiledesk]', window['tiledesk'])
+    this.logger.log('[SUPPORT] manageWidget status ', status)
     try {
       if (window && window['tiledesk']) {
         if (status === 'hide') {
