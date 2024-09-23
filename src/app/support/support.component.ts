@@ -65,7 +65,7 @@ export class SupportComponent extends PricingBaseComponent implements OnInit {
 
   removelaunchJsScript() {
     const scriptElement = document.getElementById('tiledesk-jssdk');
-    console.log('[SUPPORT] scriptElement ', scriptElement)
+    this.logger.log('[SUPPORT] scriptElement ', scriptElement)
     if (scriptElement) {
       scriptElement.remove();
       delete window['tiledesk']
