@@ -11,23 +11,17 @@
         </div>
     </div>
 
-    <mat-accordion>
+    <!-- <mat-accordion>
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="custom-expansion-panel">
             <mat-expansion-panel-header class="disable_ripple">
                 <mat-panel-title> Advanced Options </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="expansion-panel-content">
-                <!-- SCRAPE TYPE -->
+                <!- - SCRAPE TYPE - ->
                 <div class="option-box">
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">Indexing type</span>
-                        <!-- <mat-form-field appearance="outline">
-                            <mat-select [(ngModel)]="selectedScrapeType" disableOptionCentering>
-                                <mat-option *ngFor="let type of scrape_types" [value]="type.value">
-                                    {{type.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
+                       
                         <ng-select class="custom-ng-select" style="min-width: 200px; margin-bottom: 6px;" appendTo="body" [items]="scrape_types" bindLabel="name" bindValue="value"
                             placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" [clearable]="false"
                             [searchable]="false" [(ngModel)]="selectedScrapeType" (change)="onSelectScrapeType(selectedScrapeType)">
@@ -39,7 +33,7 @@
                 </div>
                 <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; margin-left: 12px;">
 
-                    <!-- TAGS TO EXTRACT -->
+                    <!- - TAGS TO EXTRACT - ->
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">Extract Tags (Mandatory)</span>
                         <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
@@ -52,7 +46,7 @@
                                     <button matChipRemove>
                                         <mat-icon>cancel</mat-icon>
                                     </button>
-                                    <!-- <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> -->
+                                    <!- - <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> - ->
                                 </mat-chip>
                                 <input style="font-size: 13px; background-color: white; border: none;" [matChipInputFor]="extractTags" placeholder="Type and press Enter"
                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addTag('extract_tags', $event)">
@@ -60,7 +54,7 @@
                         </mat-form-field>
                     </div>
 
-                    <!-- UNWANTED TAGS -->
+                    <!- - UNWANTED TAGS - ->
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">Unwanted Tags</span>
                         <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
@@ -78,7 +72,7 @@
                         </mat-form-field>
                     </div>
 
-                    <!-- UNWANTED CLASSNAMES -->
+                    <!- - UNWANTED CLASSNAMES - ->
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span class="input-label">Unwanted Classnames</span>
                         <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
@@ -99,7 +93,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-    </mat-accordion>
+    </mat-accordion> -->
 
     <div class="form-container">
         <!-- <form [formGroup]="kbForm"> -->

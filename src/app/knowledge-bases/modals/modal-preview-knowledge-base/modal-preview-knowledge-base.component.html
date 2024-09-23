@@ -41,7 +41,9 @@
 
   <div *ngIf="show_answer" class="form--container" style="margin-bottom: 0px;">
     <p *ngIf="answer" class="answer-title">
-      {{ 'KbPage.Answer' | translate }} <span> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
+      {{ 'KbPage.Answer' | translate }} 
+      
+      <span *ngIf="qa?.ai_model"> ({{ 'KbPage.GeneratedByModel' | translate: {ai_model_name: qa?.ai_model } }}) </span>
     </p>
     <div id="answer" class="answer">
       
@@ -66,7 +68,7 @@
     <hr class="horizontal-line" *ngIf="qa && qa.source">
 
     <p *ngIf="qa && qa.source" class="answer-title">{{ 'KbPage.Source' | translate }}</p>
-    <div id="answer" class="answer">
+    <div *ngIf="qa && qa.source" id="answer" class="answer">
       <span *ngIf="qa && qa.source">{{ 'KbPage.Source' | translate }}:
         <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
         <span *ngIf="!source_url">{{ qa.source }}</span>
@@ -75,11 +77,15 @@
     </div>
     <label *ngIf="!aiQuotaExceeded" class="control-label response-time-label">
       <!-- {{ 'KbPage.LabelResponseTime' | translate: translateparam }} -->
-      {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate: translateparam }} </span>
+      <span *ngIf="responseTime"> 
+        {{ 'Analytics.Metrics.ResponseTime' | translate }}: <span> {{ 'KbPage.AIResponseTime' | translate: translateparam }} </span>
+      </span>
     </label>
     <label *ngIf="!aiQuotaExceeded" class="control-label prompt-size-label">
       <!-- {{ 'KbPage.TotalTokensUsage' | translate: {prompt_token_size: prompt_token_size } }} -->
-      {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: prompt_token_size } }} </span>
+      <span *ngIf="prompt_token_size"> 
+        {{ 'KbPage.PromptSize' | translate }}: <span> {{ 'KbPage.PromptSizeUsage' | translate: {prompt_token_size: prompt_token_size } }} </span>
+      </span>
     </label>
   </div>
 
