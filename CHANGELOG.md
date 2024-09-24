@@ -1,8 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.27-rc2
+- Improves links to the quotas current usage panel that allow the user to view consumed conversations
+
 ### 2.7.27-rc1
 - Adds the section quotas "Current usage" in the Home page
-- Refactor the quotas "Current usage" panel
+- Refactors the quotas "Current usage" panel
 - Adds links to the quotas current usage panel that allow the user to view consumed conversations
 
 ### 2.7.25-rc1
