@@ -349,7 +349,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -406,9 +405,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
-
-      this.logger.log("project_limits: ", this.project_limits)
-      this.logger.log("resp.quotes: ", resp.quotes)
 
       this.messages_limit = this.project_limits.messages;
       this.requests_limit = this.project_limits.requests;
@@ -1822,14 +1818,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sidebarVisible = false;
     body.classList.remove('nav-open');
 
-    try {
-      if (window && window['tiledesk_widget_show']) {
-        this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
-        window['tiledesk_widget_show']();
-      }
-    } catch (e) {
-      this.logger.error('tiledesk_widget_show ERROR', e)
-    }
+    // try {
+    //   if (window && window['tiledesk_widget_show']) {
+    //     this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
+    //     window['tiledesk_widget_show']();
+    //   }
+    // } catch (e) {
+    //   this.logger.error('tiledesk_widget_show ERROR', e)
+    // }
 
   };
 
