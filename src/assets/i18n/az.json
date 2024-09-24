@@ -82,6 +82,9 @@
     "Temporary":"Müvəqqəti",
     "RequestsForAgent": "Agent üçün söhbətlər",
     "CurrentUsage": "Cari istifadə",
+    "Conversations": "Söhbətlər",
+    "TotalConversationsUsage": "Ümumi söhbət istifadəsi",
+    "TotalAITokensUsage": "Tokens AI-nin ümumi istifadəsi",
     "RequestsForDept": "Şöbə üçün söhbətlər",
     "NumberOfRequestsLast7Days": "Son 7 gündə söhbətlərin sayı",
     "NumberOfRequests": "Söhbətlərin sayı",
@@ -555,6 +558,7 @@
     "SelectAblock": "Blok seçin",
     "YouNeedToSelectABlock":"Siz blok seçməlisiniz :)",
     "MoreInQueque": "Daha çox növbə var, hamısına baxın",
+    "IncludeChatbotsOnlyConversations": "Yalnız Chatbots söhbətlərini daxil edin",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",

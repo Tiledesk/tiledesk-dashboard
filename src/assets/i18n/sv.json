@@ -81,6 +81,9 @@
     "Closed": "Stängd",
     "Temporary":"Geçici",
     "CurrentUsage": "Nuvarande användning",
+    "Conversations": "Samtal",
+    "TotalConversationsUsage": "Total användning av konversationer",
+    "TotalAITokensUsage": "Total användning av Tokens AI",
     "RequestsForAgent": "Samtal för agent",
     "RequestsForDept": "Samtal för avdelningen",
     "NumberOfRequestsLast7Days": "Antal konversationer senaste 7 dagarna",
@@ -556,6 +559,7 @@
     "SelectAblock": "Välj ett block",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
     "MoreInQueque": "Fler i kö, se alla",
+    "IncludeChatbotsOnlyConversations": "Inkludera endast chatbots-konversationer",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",

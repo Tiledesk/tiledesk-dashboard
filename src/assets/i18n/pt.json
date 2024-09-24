@@ -81,6 +81,9 @@
     "Closed": "Fechado",
     "Temporary":"Temporário",
     "CurrentUsage": "Utilização atual",
+    "Conversations": "Conversas",
+    "TotalConversationsUsage": "Utilização total de conversas",
+    "TotalAITokensUsage": "Utilização total de Tokens AI",
     "RequestsForAgent": "Conversas para agente",
     "RequestsForDept": "Conversas para o departamento",
     "NumberOfRequestsLast7Days": "Número de conversas nos últimos 7 dias",
@@ -555,6 +558,7 @@
     "SelectAblock": "Selecione um bloco",
     "YouNeedToSelectABlock":"Precisa de selecionar um bloco :)",
     "MoreInQueque": "Mais na fila, veja tudo",
+    "IncludeChatbotsOnlyConversations": "Incluir conversas apenas de Chatbots",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",

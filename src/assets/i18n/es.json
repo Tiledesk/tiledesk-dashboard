@@ -81,6 +81,9 @@
     "Closed": "Cerrada",
     "Temporary":"Temporaria",
     "CurrentUsage": "Uso actual",
+    "Conversations": "Conversaciones",
+    "TotalConversationsUsage": "Uso total de conversaciones",
+    "TotalAITokensUsage": "Uso total de Tokens AI",
     "RequestsForAgent": "Conversaciones para el agente",
     "RequestsForDept": "Conversaciones para el departamento",
     "NumberOfRequestsLast7Days": "Número de conversaciones en los últimos 7 días",
@@ -554,6 +557,7 @@
     "SelectAblock": "Seleccione un bloque",
     "YouNeedToSelectABlock":"Debes seleccionar un bloque :)",
     "MoreInQueque": "Más en cola, ver todas",
+    "IncludeChatbotsOnlyConversations": "Incluir solo conversaciones de Chatbots",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",

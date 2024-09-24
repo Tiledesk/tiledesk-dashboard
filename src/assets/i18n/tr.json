@@ -81,6 +81,9 @@
     "Closed": "Kapalı",
     "Temporary":"Geçici",
     "CurrentUsage": "Güncel kullanım",
+    "Conversations": "Konuşmalar",
+    "TotalConversationsUsage": "Toplam konuşma kullanımı",
+    "TotalAITokensUsage": "Tokens AI'nın toplam kullanımı",
     "RequestsForAgent": "Temsilci için konuşmalar",
     "RequestsForDept": "Departman görüşmeleri",
     "NumberOfRequestsLast7Days": "Son 7 gündeki görüşme sayısı",
@@ -556,6 +559,7 @@
     "SelectAblock": "Bir blok seçin",
     "YouNeedToSelectABlock":"Bir blok seçmeniz gerekiyor :)",
     "MoreInQueque": "Fler i kö, se alla",
+    "IncludeChatbotsOnlyConversations": "Yalnızca Chatbot konuşmalarını dahil et",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",

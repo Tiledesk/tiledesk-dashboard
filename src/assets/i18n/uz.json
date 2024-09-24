@@ -81,6 +81,9 @@
     "Closed": "Yopiq",
     "Temporary":"Vaqtinchalik",
     "CurrentUsage": "Joriy foydalanish",
+    "Conversations": "Suhbatlar",
+    "TotalConversationsUsage": "Umumiy suhbatlardan foydalanish",
+    "TotalAITokensUsage": "Повне використання токенів AI",
     "RequestsForAgent": "Agent uchun suhbatlar",
     "RequestsForDept": "Kafedra uchun suhbatlar",
     "NumberOfRequestsLast7Days": "Oxirgi 7 kunlik suhbatlar soni",
@@ -555,6 +558,7 @@
     "SelectAblock": "Blokni tanlang",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
     "MoreInQueque": "Navbatda koʻproq, hammasini koʻring",
+    "IncludeChatbotsOnlyConversations": "Faqat Chatbots suhbatlarini qo'shing",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",

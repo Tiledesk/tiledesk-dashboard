@@ -81,6 +81,9 @@
     "Closed": "Kapalı",
     "RequestsForAgent": "Розмови для агента",
     "CurrentUsage": "Поточне використання",
+    "Conversations": "Розмови",
+    "TotalConversationsUsage": "Загальне використання розмов",
+    "TotalAITokensUsage": "Загальне використання токенів AI",
     "Temporary":"Тимчасовий",
     "RequestsForDept": "Бесіди для кафедри",
     "NumberOfRequestsLast7Days": "Кількість розмов за останні 7 днів",
@@ -557,6 +560,7 @@
     "SelectAblock": "Виберіть блок",
     "YouNeedToSelectABlock":"Потрібно вибрати блок :)",
     "MoreInQueque": "Більше в черзі, дивіться все",
+    "IncludeChatbotsOnlyConversations": "Включати лише бесіди чат-ботів",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готові відповіді — це готові повідомлення, які ви можете легко згадати під час чату.",

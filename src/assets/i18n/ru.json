@@ -81,6 +81,9 @@
     "Closed": "Закрыто",
     "Temporary":"Временный",
     "CurrentUsage": "Текущее использование",
+    "Conversations": "Разговоры",
+    "TotalConversationsUsage": "Общее использование разговоров",
+    "TotalAITokensUsage": "Общее использование AI Tokens",
     "RequestsForAgent": "Разговоры для агента",
     "RequestsForDept": "Разговоры для отдела",
     "NumberOfRequestsLast7Days": "Количество разговоров за последние 7 дней",
@@ -555,6 +558,7 @@
     "SelectAblock": "Выберите блок",
     "YouNeedToSelectABlock":"Вам нужно выбрать блок :)",
     "MoreInQueque": "Еще в очереди, посмотреть все",
+    "IncludeChatbotsOnlyConversations": "Включить только разговоры с чат-ботами",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готовые ответы — это готовые сообщения, которые вы можете легко вспомнить во время чата.",

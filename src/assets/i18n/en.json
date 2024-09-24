@@ -81,6 +81,9 @@
     "Closed": "Closed",
     "Temporary":"Temporary",
     "CurrentUsage": "Current usage",
+    "Conversations": "Conversations",
+    "TotalConversationsUsage": "Total conversations usage",
+    "TotalAITokensUsage": "Total AI Tokens usage",
     "RequestsForAgent": "Conversations for agent",
     "RequestsForDept": "Conversations for department",
     "NumberOfRequestsLast7Days": "Number of conversations last 7 days",
@@ -554,6 +557,7 @@
     "SelectAblock": "Select a block",
     "YouNeedToSelectABlock":"You need to select a block :)",
     "MoreInQueque": "More in queque, see all",
+    "IncludeChatbotsOnlyConversations": "Include Chatbots only conversations",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",

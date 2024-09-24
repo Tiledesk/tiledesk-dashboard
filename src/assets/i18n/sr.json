@@ -81,6 +81,9 @@
     "Closed": "Затворено",
     "Temporary":"Привремени",
     "CurrentUsage": "Тренутна употреба",
+    "Conversations": "Разговори",
+    "TotalConversationsUsage": "Укупна употреба разговора",
+    "TotalAITokensUsage": "Укупна употреба AI Tokens",
     "RequestsForAgent": "Разговори за агента",
     "RequestsForDept": "Разговори за одељење",
     "NumberOfRequestsLast7Days": "Број разговора у последњих 7 дана",
@@ -556,6 +559,7 @@
     "SelectAblock": "Изаберите блок",
     "YouNeedToSelectABlock":"Морате да изаберете блок :)",
     "MoreInQueque": "Више у реду, погледајте све",
+    "IncludeChatbotsOnlyConversations": "Укључи разговоре само са чет-ботовима",
     "CannedResponses": {
         "QuickTips": {
             "1": "Спремни одговори су унапред направљене поруке које можете лако да се сетите током ћаскања.",
