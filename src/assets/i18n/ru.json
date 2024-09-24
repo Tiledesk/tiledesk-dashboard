@@ -84,6 +84,8 @@
     "Conversations": "Разговоры",
     "TotalConversationsUsage": "Общее использование разговоров",
     "TotalAITokensUsage": "Общее использование AI Tokens",
+    "TotalEmailUsage": "Общее использование электронной почты",
+    "Email": "Электронная почта",
     "RequestsForAgent": "Разговоры для агента",
     "RequestsForDept": "Разговоры для отдела",
     "NumberOfRequestsLast7Days": "Количество разговоров за последние 7 дней",

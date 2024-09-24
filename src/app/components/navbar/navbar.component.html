@@ -171,7 +171,10 @@
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
                             <div class="quota-title-wpr">
-                              <h2 class="quota-title">Conversations</h2>
+                              <h2 class="quota-title">
+                                <!-- Conversations -->
+                                {{'Conversations' | translate}}
+                              </h2>
                               <!-- <span  class="quota-plan-badge">Free</span> -->
                             </div>
                             <p class="quota-partial-count-link" (click)="goToHistoryOpenedConvs()">{{openedConversations}} open</p>
@@ -180,7 +183,8 @@
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
                               <p class="quota-right-title link"(click)="goToHistoryAllConvs()">
-                                Total conversations usage
+                                <!-- Total conversations usage -->
+                                {{'TotalConversationsUsage' | translate}}
                               </p>
                               <div class="quota-limit-wpr">
                                 <p  class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
@@ -223,7 +227,10 @@
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title">Total AI Tokens usage</p>
+                              <p class="quota-right-title">
+                                <!-- Total AI Tokens usage -->
+                                {{'TotalAITokensUsage' | translate}}
+                              </p>
                               <div class="quota-limit-wpr">
                                 <p  class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
                                 <p  class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
@@ -246,23 +253,26 @@
                             </div>
                           </div>
                         </div>
-                        <!-- <a class="css-2jls5z e1y2rc4y0" href="/panel/lyro-ai/configure">Set up Lyro AI Chatbot</a> -->
+                        
                       </div>
                     </div>
-                    <!-- css-j2xo2u -->
+                    
                     <div aria-label="Usage limit for Email" class="quota-section-main last">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
                             <div class="quota-title-wpr">
-                              <h2 class="quota-title">Email</h2>
+                              <h2 class="quota-title">{{'Email' | translate}}</h2>
                               <!-- <span class="quota-plan-badge">Free</span> -->
                             </div>
                             <!-- <p  class="quota-resets">Quota resets on 19 Sep 2024</p> -->
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title">Total email usage</p>
+                              <p class="quota-right-title">
+                                <!-- Total email usage -->
+                                {{'TotalEmailUsage' | translate}}
+                              </p>
                               <div class="quota-limit-wpr">
                                 <p class="quota-limit">{{email_count | number:'1.0-0'}} /&nbsp;</p>
                                 <p class="quota-limit">{{email_limit | number:'1.0-0'}}</p>

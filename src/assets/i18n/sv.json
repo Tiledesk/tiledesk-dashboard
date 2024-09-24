@@ -84,6 +84,8 @@
     "Conversations": "Samtal",
     "TotalConversationsUsage": "Total användning av konversationer",
     "TotalAITokensUsage": "Total användning av Tokens AI",
+    "TotalEmailUsage": "Total e-postanvändning",
+    "Email": "E-post",
     "RequestsForAgent": "Samtal för agent",
     "RequestsForDept": "Samtal för avdelningen",
     "NumberOfRequestsLast7Days": "Antal konversationer senaste 7 dagarna",

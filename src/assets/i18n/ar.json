@@ -84,6 +84,8 @@
     "Conversations": "المحادثات",
     "TotalConversationsUsage": "إجمالي استخدام المحادثات",
     "TotalAITokensUsage": "إجمالي استخدام Tokens AI",
+    "TotalEmailUsage": "إجمالي استخدام البريد الإلكتروني",
+    "Email": "بريد إلكتروني",
     "RequestsForAgent": "محادثات للوكيل",
     "RequestsForDept": "محادثات للقسم",
     "NumberOfRequestsLast7Days": "عدد المحادثات آخر 7 أيام",

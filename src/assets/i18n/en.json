@@ -84,6 +84,8 @@
     "Conversations": "Conversations",
     "TotalConversationsUsage": "Total conversations usage",
     "TotalAITokensUsage": "Total AI Tokens usage",
+    "TotalEmailUsage": "Total email usage",
+    "Email": "Email",
     "RequestsForAgent": "Conversations for agent",
     "RequestsForDept": "Conversations for department",
     "NumberOfRequestsLast7Days": "Number of conversations last 7 days",

@@ -84,6 +84,8 @@
     "Conversations": "Әңгімелер",
     "TotalConversationsUsage": "Сөйлесулердің жалпы пайдаланылуы",
     "TotalAITokensUsage": "Токендерді AI толық пайдалануы",
+    "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
+    "Email": "Электронды пошта",
     "RequestsForAgent": "Агентке арналған әңгімелер",
     "RequestsForDept": "Бөлімге арналған әңгімелер",
     "NumberOfRequestsLast7Days": "Соңғы 7 күндегі сөйлесулер саны",

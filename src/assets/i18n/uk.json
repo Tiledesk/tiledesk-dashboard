@@ -84,6 +84,8 @@
     "Conversations": "Розмови",
     "TotalConversationsUsage": "Загальне використання розмов",
     "TotalAITokensUsage": "Загальне використання токенів AI",
+    "TotalEmailUsage": "Загальна кількість використання електронної пошти",
+    "Email": "Електронна пошта",
     "Temporary":"Тимчасовий",
     "RequestsForDept": "Бесіди для кафедри",
     "NumberOfRequestsLast7Days": "Кількість розмов за останні 7 днів",
