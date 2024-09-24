@@ -362,20 +362,21 @@
               <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY">
                 <div class="preflight-checkbox"> 
                   <div class="checkbox">
-                    <label class="title-attribute">
-                      <input type="checkbox" [(ngModel)]="preflight"  class="form-check-input" id="exampleCheck1" 
+                    <label class="checkbox--label">
+                      <input type="checkbox" [(ngModel)]="_preflight"  class="form-check-input" id="exampleCheck1" 
                         (change)="onChangePreflight($event)">
-                      <span style="font-size: 14px; color: #7695a5;">
-                        Exclude preflight conversations 
-                        <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
+                      <div class="checkbox--label-text">
+                        <!-- Include Chatbot only converations -->
+                         {{'IncludeChatbotsOnlyConversations' | translate}}
+                        <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
                           matTooltipClass="mat-white-tooltip"
                           matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
                           #tooltip="matTooltip"
                           matTooltipPosition='below' 
                           matTooltipHideDelay="100">
                           help
-                        </span>
-                      </span>
+                        </span> -->
+                      </div>
                     </label>
                   </div>
                 </div>

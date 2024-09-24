@@ -158,6 +158,7 @@ input:-webkit-autofill:active {
     // top: 28px;
     top: 7px;
   }
+
   .delete-selected-wpr {
     position: absolute;
     left: 107px;
@@ -217,10 +218,12 @@ input:-webkit-autofill:active {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   font-size: 0.9em !important;
 }
+
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   font-size: 0.9em !important;
 }
+
 ::-ms-input-placeholder {
   /* Microsoft Edge */
   font-size: 0.9em !important;
@@ -297,7 +300,8 @@ p.member:hover {
   // width: 420px;
   bottom: 100%;
   left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 
   // NEW
   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
@@ -308,6 +312,7 @@ p.member:hover {
 .tooltipx:hover .tooltiptext {
   visibility: visible;
 }
+
 // /.end TOOLTIP
 
 .requester-avatar--in-history {
@@ -335,6 +340,7 @@ p.member:hover {
   margin-bottom: 1px;
   object-fit: cover;
 }
+
 .bot-type-logo-wpr {
   position: relative;
 }
@@ -436,6 +442,7 @@ p.member:hover {
 .member {
   font-weight: 400;
 }
+
 .current-user-member {
   font-weight: 400;
   color: #4caf50;
@@ -447,7 +454,7 @@ p.member:hover {
 }
 
 .msg-alert {
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   font-weight: 400;
 }
 
@@ -487,6 +494,7 @@ p.member:hover {
   border-radius: 5px;
   border: 0.1px solid lightgrey;
 }
+
 .search-field {
   border-radius: 0 !important;
   border-color: transparent !important;
@@ -496,6 +504,7 @@ p.member:hover {
   height: 50px;
   padding: 5px 10px;
 }
+
 .fa-search {
   color: grey;
   font-size: 18px;
@@ -521,15 +530,19 @@ p.member:hover {
   .fa-search-btn {
     color: black !important;
   }
+
   .fa-advanced-option-btn {
     color: black !important;
   }
+
   .fa-clear-search-btn {
     color: black !important;
   }
+
   .refresh-page-icon {
     color: black !important;
   }
+
   .delete-forever-icon {
     color: black !important;
   }
@@ -605,7 +618,7 @@ p.member:hover {
 }
 
 .customh4 {
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   font-size: 16px;
   font-weight: 400;
   //    color: #394f5a !important;
@@ -674,6 +687,7 @@ p.member:hover {
   .left-date-picker {
     padding-right: 0px;
   }
+
   .right-date-picker {
     padding-left: 0px;
   }
@@ -711,7 +725,8 @@ p.member:hover {
 }
 
 .child-x {
-  flex: 1 0 21%; /* explanation below */
+  flex: 1 0 21%;
+  /* explanation below */
   margin: 5px;
   height: 100px;
   background-color: blue;
@@ -733,7 +748,7 @@ p.member:hover {
   background-color: #e8f0fe;
   color: #1a73e8;
   padding: 6px 12px;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -746,7 +761,7 @@ p.member:hover {
 
   color: #353f45;
   padding: 6px 12px;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -760,7 +775,7 @@ p.member:hover {
 
   color: #353f45;
   padding: 6px 12px;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   border-radius: 10px;
   font-weight: 500;
   height: 32px;
@@ -785,6 +800,7 @@ p.member:hover {
   background: #bb001b;
   border-radius: 50%;
 }
+
 .form-wpr {
   background: #39988D;
   border-radius: 50%;
@@ -812,13 +828,15 @@ p.member:hover {
 .loading {
   color: #aaa
 }
+
 .loading:after {
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
-  animation: ellipsis steps(4,end) 900ms infinite;
-  content: "\2026"; /* ascii code for the ellipsis character */
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: "\2026";
+  /* ascii code for the ellipsis character */
   width: 0px;
   color: #ddd;
   font-weight: 100 !important;
@@ -826,13 +844,13 @@ p.member:hover {
 
 @keyframes ellipsis {
   to {
-    width: 20px;    
+    width: 20px;
   }
 }
 
 @-webkit-keyframes ellipsis {
   to {
-    width: 20px;    
+    width: 20px;
   }
 }
 
@@ -856,7 +874,7 @@ p.member:hover {
   background-color: #2d323e !important;
   font-size: 11px !important;
   border-radius: 2px !important;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif !important;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
   padding-top: 6px !important;
   padding-bottom: 6px !important;
 }
@@ -865,12 +883,12 @@ p.member:hover {
   background-color: #fff !important;
   font-size: 11px !important;
   border-radius: 2px !important;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif !important;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
   border: 1px solid #ccc;
-  color:#000 !important ;
-  font-weight: 400 !important ;
+  color: #000 !important;
+  font-weight: 400 !important;
 }
 
 
@@ -896,8 +914,16 @@ p.member:hover {
   margin-right: 15px;
 }
 
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
   .request-statuses-select {
     margin-right: 0px;
   }
+}
+
+.checkbox--label {
+  font-size: 14px;
+  color: #7695a5;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }

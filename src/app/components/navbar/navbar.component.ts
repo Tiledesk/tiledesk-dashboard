@@ -192,6 +192,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
 
+  startSlot: string;
+  endSlot: string;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -360,9 +363,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.openedConversations = resp.open;
       this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
 
       console.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
       console.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      console.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      console.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
     }, (error) => {
       console.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
     }, () => {
@@ -476,18 +483,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   goToHistoryOpenedConvs() {
     console.log("[NAVBAR] goToHistoryOpenedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: '"full_text=&dept_id=&start_date=&end_date=&partici…er_email=&tags=&channel=&rstatus=100,200,50"' } })
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
   }
 
 
   goToHistoryClosedConvs() {
     console.log("[NAVBAR] goToHistoryClosedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: '"full_text=&dept_id=&start_date=&end_date=&partici…er_email=&tags=&channel=&rstatus=1000"' } })
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
   }
 
   goToHistoryAllConvs() {
     console.log("[NAVBAR] goToHistoryAllConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: '"full_text=&dept_id=&start_date=&end_date=&partici…er_email=&tags=&channel=&rstatus=1000,100,200,50"' } })
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
   }
 
   getformat(number, intg: Boolean | null) {

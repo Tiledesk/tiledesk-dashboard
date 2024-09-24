@@ -241,9 +241,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   statusInHistory = [
     { id: '1000', name: 'Closed' },
     { id: '100', name: 'Unserved' },
-    { id: '200', name: 'Served' },
-    { id: '50', name: 'Temporary' }
+    { id: '200', name: 'Served' }
   ];
+  
+    // { id: '50', name: 'Temporary' }
 
   conversationType = [
     { id: 'all', name: 'All' },
@@ -587,6 +588,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.requests_statuses = ['1000']
       // this.requests_status_temp === '1000'
       this._preflight = true;
+      // this.preflight = true;
       // this.queryString = 'preflight=' + true
 
       if (currentUrl.indexOf('?') === -1) {
@@ -1058,10 +1060,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // console.log('[HISTORY & NORT-CONVS] - onChangePreflight - checked', $event.target.checked);
     this.preflight = $event.target.checked
     if ($event.target.checked === true) {
-      this._preflight = false
+      this._preflight = true
       // console.log('[HISTORY & NORT-CONVS] - onChangePreflight - this._preflight', this._preflight);
     } else {
-      this._preflight = true
+      this._preflight = false
       // console.log('[HISTORY & NORT-CONVS] - onChangePreflight - this._preflight', this._preflight);
     }
   }
