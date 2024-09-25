@@ -534,9 +534,9 @@
         <div *ngIf="status === '200'" class="applied-filter">
           {{'Served' | translate}}
         </div>
-        <div *ngIf="status === '50'" class="applied-filter">
+        <!-- <div *ngIf="status === '50'" class="applied-filter">
           Temporary
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -1115,7 +1115,7 @@
                   <!--  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                   <!--  --------------------------------------------------------------------------------------------------- -->
                   <!-- rel="tooltip"  title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}" -->
-                  <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
+                  <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined && request.preflight === false">
                     <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
 
@@ -1140,6 +1140,17 @@
                           matTooltipPosition='right' matTooltipHideDelay="100">
                       </span>
                     </span>
+                  </span>
+
+                  <!-- ------------------------------------------------------- -->
+                  <!-- Preflight - served by bot but without user interaction -->
+                  <!-- -------------------------------------------------------- -->
+                  <span *ngIf="request?.status == 200 && request.preflight === true">
+                  <img style="width: 30px;" src="assets/img/request_icons/status200_preflight.svg"
+                    class="img-fluid" matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'RequestMsgsPage.ConversationAssignedPreflight' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">
+
                   </span>
 
 

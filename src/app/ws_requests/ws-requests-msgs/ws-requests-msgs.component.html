@@ -1419,7 +1419,7 @@
                         <!-- ------------------------------------------------------------------------------------ -->
                         <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
                         <!-- ------------------------------------------------------------------------------------ -->
-                        <svg *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject"
+                        <svg *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject && request?.preflight === false"
                           class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
                           xml:space="preserve" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
@@ -1479,10 +1479,16 @@
                               c0.5,0,0.9-0.5,0.9-1.1V22z" />
                         </svg> -->
 
-                        <img *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject"
+                        <img *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject && request?.preflight === false"
                           src="assets/img/request_icons/status200_no_joined_internal.svg" class="header-conv-svg-icon"
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='above' matTooltipHideDelay="100" style="width: 24px;height: 24px;">
+
+                        <img *ngIf="request?.status == 200 && request?.preflight === true"
+                          src="assets/img/request_icons/status200_preflight.svg" class="header-conv-svg-icon"
+                          matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.ConversationAssignedPreflight' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='above' matTooltipHideDelay="100" style="width: 24px;height: 24px;">
                       </div>
 
