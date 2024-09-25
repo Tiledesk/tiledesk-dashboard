@@ -1260,6 +1260,7 @@
         "RequestUnserved": "Suhbat tayinlanmagan",
         "InternalRequestUnserved": "Chipta tayinlanmagan",
         "RequestServedBy": "Suhbat tayinlandi",
+        "ConversationAssignedPreflight": "Suhbat tayinlandi (foydalanuvchi aloqasi yo'q)",
         "InternalRequestServedBy": "Chipta tayinlandi",
         "ConversationAssignedToYou": "Suhbat sizga tayinlandi",
         "TicketAssignedToYou": "Sizga tayinlangan chipta",

@@ -1260,6 +1260,7 @@
         "RequestUnserved": "Söhbət təyin edilmədi",
         "InternalRequestUnserved": "Bilet təyin edilmədi",
         "RequestServedBy": "Söhbət təyin edildi",
+        "ConversationAssignedPreflight": "Söhbət təyin edildi (istifadəçi ilə əlaqə yoxdur)",
         "InternalRequestServedBy": "Bilet təyin edildi",
         "ConversationAssignedToYou": "Söhbət sizə təyin edildi",
         "TicketAssignedToYou": "Bilet sizə təyin edildi",

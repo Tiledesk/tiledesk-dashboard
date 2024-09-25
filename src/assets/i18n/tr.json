@@ -1261,6 +1261,7 @@
         "RequestUnserved": "Görüşmenin atanması kaldırıldı",
         "InternalRequestUnserved": "Bilet atanmadı",
         "RequestServedBy": "Konuşma atandı",
+        "ConversationAssignedPreflight": "Konuşma atandı (Kullanıcı etkileşimi yok)",
         "InternalRequestServedBy": "Bilet atandı",
         "ConversationAssignedToYou": "Size atanan konuşma",
         "TicketAssignedToYou": "Size atanan bilet",

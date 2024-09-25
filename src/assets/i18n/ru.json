@@ -1260,6 +1260,7 @@
         "RequestUnserved": "Беседа не назначена",
         "InternalRequestUnserved": "Билет не назначен",
         "RequestServedBy": "Цепочка назначена",
+        "ConversationAssignedPreflight": "Разговор назначен (без взаимодействия с пользователем)",
         "InternalRequestServedBy": "Билет назначен",
         "ConversationAssignedToYou": "Беседа назначен вам",
         "TicketAssignedToYou": "Билет назначен вам",

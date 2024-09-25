@@ -1262,6 +1262,7 @@
         "RequestUnserved": "Розмову не призначено",
         "InternalRequestUnserved": "Квиток не призначено",
         "RequestServedBy": "Бесіду призначено",
+        "ConversationAssignedPreflight": "Розмову призначено (без взаємодії з користувачем)",
         "InternalRequestServedBy": "Квиток призначено",
         "ConversationAssignedToYou": "Розмова призначена вам",
         "TicketAssignedToYou": "Квиток призначений вам",

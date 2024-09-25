@@ -1259,6 +1259,7 @@
         "RequestUnserved": "Conversation unassigned",
         "InternalRequestUnserved": "Ticket unassigned",
         "RequestServedBy": "Conversation assigned",
+        "ConversationAssignedPreflight": "Conversation assigned (No user interaction)",
         "InternalRequestServedBy": "Ticket assigned",
         "ConversationAssignedToYou": "Conversation assigned to you",
         "TicketAssignedToYou": "Ticket assigned to you",

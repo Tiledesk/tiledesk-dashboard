@@ -1261,6 +1261,7 @@
 		"RequestUnserved": "Gespräch nicht zugeordnet",
 		"InternalRequestUnserved": "Ticket nicht zugewiesen",
 		"RequestServedBy": "Gespräch zugewiesen",
+		"ConversationAssignedPreflight": "Konversation zugewiesen (keine Benutzerinteraktion)",
 		"InternalRequestServedBy": "Ticket zugewiesen",
 		"ConversationAssignedToYou": "Ihnen zugewiesene Konversation",
 		"TicketAssignedToYou": "Ihnen zugewiesenes Ticket",

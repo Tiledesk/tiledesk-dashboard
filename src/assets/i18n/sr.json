@@ -1261,6 +1261,7 @@
         "RequestUnserved": "Преписка није додељена",
         "InternalRequestUnserved": "Карта није додељена",
         "RequestServedBy": "Разговор је додељен",
+        "ConversationAssignedPreflight": "Конверзација је додељена (без интеракције корисника)",
         "InternalRequestServedBy": "Додељена карта",
         "ConversationAssignedToYou": "Разговор је додељен вама",
         "TicketAssignedToYou": "Улазница је додељена вама",

@@ -1259,6 +1259,7 @@
         "RequestUnserved": "المحادثة غير محددة",
         "InternalRequestUnserved": "التذكرة غير مخصصة",
         "RequestServedBy": "تم تعيين المحادثة",
+        "ConversationAssignedPreflight": "تم تخصيص المحادثة (لا يوجد تفاعل للمستخدم)",
         "InternalRequestServedBy": "تم تخصيص التذكرة",
         "ConversationAssignedToYou": "محادثة مخصصة لك",
         "TicketAssignedToYou": "التذكرة المخصصة لك",

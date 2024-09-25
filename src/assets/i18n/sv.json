@@ -1261,6 +1261,7 @@
         "RequestUnserved": "Konversation har inte tilldelats",
         "InternalRequestUnserved": "Biljetten har inte tilldelats",
         "RequestServedBy": "Konversation tilldelad",
+        "ConversationAssignedPreflight": "Konversation tilldelad (ingen användarinteraktion)",
         "InternalRequestServedBy": "Biljett tilldelad",
         "ConversationAssignedToYou": "Konversation tilldelad dig",
         "TicketAssignedToYou": "Biljett tilldelad till dig",

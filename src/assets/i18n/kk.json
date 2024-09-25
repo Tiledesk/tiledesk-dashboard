@@ -1260,6 +1260,7 @@
         "RequestUnserved": "Әңгімелесу тағайындалмады",
         "InternalRequestUnserved": "Билет тағайындалмады",
         "RequestServedBy": "Әңгімелесу тағайындалды",
+        "ConversationAssignedPreflight": "Әңгімелесу тағайындалды (пайдаланушы әрекеті жоқ)",
         "InternalRequestServedBy": "Билет тағайындалды",
         "ConversationAssignedToYou": "Әңгімелесу сізге тағайындалды",
         "TicketAssignedToYou": "Сізге билет тағайындалды",

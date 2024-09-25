@@ -1260,6 +1260,7 @@
         "RequestUnserved": "Conversa não atribuída",
         "InternalRequestUnserved": "Ticket não atribuído",
         "RequestServedBy": "Conversa atribuída",
+        "ConversationAssignedPreflight": "Conversa atribuída (sem interação do utilizador)",
         "InternalRequestServedBy": "Bilhete atribuído",
         "ConversationAssignedToYou": "Conversa atribuída a você",
         "TicketAssignedToYou": "Bilhete atribuído a você",
