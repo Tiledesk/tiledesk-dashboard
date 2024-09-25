@@ -258,8 +258,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   salesEmail: string
 
-  openedConversations: number
-  closedConversations: number;
+  openedConversations: number = 0;
+  closedConversations: number = 0;
   startSlot: string;
   endSlot: string;
 

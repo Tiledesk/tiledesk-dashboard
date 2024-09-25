@@ -191,8 +191,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   project_limits: any;
   isOpenCurrentUsageMenu: boolean = false;
 
-  openedConversations: number;
-  closedConversations: number;
+  openedConversations: number = 0;
+  closedConversations: number = 0;
 
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
@@ -1176,16 +1176,16 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.presentModalIncreaseMonltlResource()
 
         }
-        // else {
-        //   this.router.navigate(['project/' + this.projectId + '/pricing']);
+        else {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
 
-        // }
+        }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
     } else {
-      // this.notify._displayContactUsModal(true, 'upgrade_plan');
-      this.presentModalIncreaseMonltlResource()
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      // this.presentModalIncreaseMonltlResource()
     }
   }
 
