@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.27-rc3
+- Adds an icon to indicate the conversations assigned where there is no user interaction
+
 ### 2.7.27-rc2
 - Improves links to the quotas current usage panel that allow the user to view consumed conversations
 
