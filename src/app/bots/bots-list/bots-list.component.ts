@@ -347,7 +347,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // WIDGET_BASE_URL = 'https://widget.tiledesk.com/v6/' (prod)
     // WIDGET_BASE_URL = ''https://widget-pre.tiledesk.com/v5/' (pre)
     this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
-    const botLink = this.WIDGET_BASE_URL + "assets/twp/chatbot-panel.html?tiledesk_projectid=" + this.currentProjectId + "&tiledesk_participants=bot_" + botid + "&tiledesk_departmentID=" + this.defaultDeptId + "&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle=" + botname + "&tiledesk_preChatForm=false&td_draft=true"
+    const botLink = this.WIDGET_BASE_URL + "assets/twp/chatbot-panel.html?tiledesk_projectid=" + this.currentProjectId + "&tiledesk_participants=bot_" + botid + "&tiledesk_departmentID=" + this.defaultDeptId + "&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle=" + encodeURIComponent(botname) + "&tiledesk_preChatForm=false&td_draft=true"
     this.clipboard.copy(botLink)
     this._snackBar.open(" Copied to clipboard", null, {
       duration: 3000,

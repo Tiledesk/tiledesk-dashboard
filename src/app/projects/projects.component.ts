@@ -814,14 +814,14 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
     elemAppSidebar.setAttribute('style', 'display:none;');
 
-    try {
-      if (window && window['tiledesk_widget_show']) {
-        this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
-        window['tiledesk_widget_show']();
-      }
-    } catch (e) {
-      this.logger.error('tiledesk_widget_show ERROR', e)
-    }
+    // try {
+    //   if (window && window['tiledesk_widget_show']) {
+    //     this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
+    //     window['tiledesk_widget_show']();
+    //   }
+    // } catch (e) {
+    //   this.logger.error('tiledesk_widget_show ERROR', e)
+    // }
   };
   sidebarToggle() {
     // const toggleButton = this.toggleButton;

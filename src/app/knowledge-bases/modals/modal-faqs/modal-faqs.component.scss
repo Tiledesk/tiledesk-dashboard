@@ -1,0 +1,635 @@
+.modal-header {
+    .modal-title {
+        font-weight: 400;
+    }
+
+    .close {
+        opacity: 0.5;
+    }
+
+    .close:hover {
+        opacity: 1;
+    }
+}
+
+.modal-body {
+    display: inline-block;
+    width: 100%;
+}
+
+.modal-state {
+    width: 40%;
+    text-align: right;
+    float: right;
+}
+
+.fake-input {
+    height: 37px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    cursor: text;
+
+    .fake-input-inner {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    input {
+        height: 32px;
+        width: 100%;
+        border: transparent;
+    }
+
+    .input-bold {
+        font-weight: 400;
+    }
+
+    .enter-button {
+        display: none;
+        transition: background-color 0.15s ease 0s, color 0.15s ease 0s;
+        cursor: pointer;
+        animation: 0.15s ease 0s 1 normal none running fadein, 0.15s ease 0s 1 normal none running moveinleft;
+        box-sizing: border-box;
+        min-width: 22px;
+        height: 22.4px;
+        margin-top: -4px;
+        margin-bottom: -4px;
+        padding-right: 8px;
+        padding-left: 8px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 24px;
+        text-align: center;
+        border-radius: 5px;
+        // color: #61778c;
+        color: rgb(98, 119, 140);
+        background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+        box-shadow: rgb(212, 217, 230) 0px 1px 0px;
+    }
+
+    @keyframes fadein {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes moveinleft {
+        0% {
+            transform: translate(16px);
+        }
+
+        100% {
+            transform: translate(0px);
+        }
+    }
+}
+
+// ::ng-deep .custom-spinner {
+//     .sk-fading-circle {
+//         width: 20px;
+//         height: 20px;
+//         margin: 0px;
+//     }
+
+//     .sk-fading-circle .sk-circle:before {
+//         background-color: rgb(98, 119, 140) !important;
+//     }
+// }
+
+.answer {
+    min-height: 37px;
+    max-height: auto;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 6px 12px 20px;
+    cursor: text;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+
+    .answer-title {
+        margin-bottom: 0px;
+        font-size: 12px;
+        font-weight: 600;
+        color: rgb(98, 119, 140) !important;
+    }
+}
+
+.form-container {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    display: inline-block;
+    width: 100%;
+
+    .input-container {
+        margin-bottom: 14px;
+    }
+
+    .input-label {
+        font-weight: 400;
+        // letter-spacing: 0.5px;
+    }
+
+    .custom-input {
+        width: 100%;
+        height: 37px;
+        border-radius: 6px;
+        border: 1px solid #c6cdd4;
+        padding: 0px 15px;
+        color: #22272d;
+        // line-height: 35px;
+        // font-weight: 400;
+        margin-bottom: 10px;
+
+        // letter-spacing: 0.5px;
+        &.invalid {
+            border: 1px solid red !important;
+            outline: 0px solid red !important;
+            transition: border 0.3s;
+        }
+    }
+
+    .custom-textarea {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #c6cdd4;
+        padding: 10px 15px;
+        color: #22272d;
+
+        // line-height: 35px;
+        // font-weight: 400;
+        &.invalid {
+            border: 1px solid red !important;
+            outline: 0px solid red !important;
+            transition: border 0.3s;
+        }
+    }
+}
+
+
+.kb-container {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: solid 1px #c2c2c2;
+    border-radius: 12px;
+    padding: 2px 10px;
+    background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+    box-shadow: rgb(212, 217, 230) 0px 1px 0px;
+
+    p {
+        font-size: 12px;
+        margin-bottom: 0px;
+        color: rgb(98, 119, 140);
+    }
+
+    .material-icons-round {
+        font-size: 20px;
+        margin-right: 8px;
+        color: rgb(98, 119, 140);
+    }
+}
+
+.selectEngine {
+    ::ng-deep .ng-select-container {
+        border: 2px solid #c6cdd4;
+    }
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    padding: 12px 15px;
+    border-radius: 4px;
+    background-color: #d7ebfa6e;
+
+    .info-icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    p {
+        margin-bottom: 0px;
+    }
+}
+
+.btn {
+    text-transform: none;
+}
+
+.mat-dialog-close-btn {
+    background-color: #647491;
+    color: #fff;
+}
+
+.mat-dialog-ok-btn {
+    background-color: var(--blue-light);
+    color: #fff;
+}
+
+
+.mat-dialog-traspatent-btn {
+    font-size: 16px !important;
+    background-color: transparent;
+    color: var(--secondary-text-color)
+}
+
+
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+}
+
+.m-top-right-icon>span {
+    padding: 8px;
+    background: #e4e6eb;
+    border-radius: 999px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    font-size: 18px;
+    color: rgb(91, 98, 106);
+
+}
+
+.m-top-right-icon:hover>span {
+    background-color: rgb(213, 214, 220);
+    color: rgb(28, 30, 33)
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+
+
+
+.download-example-csv-button {
+    background: #3ea9f5;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    border: 1px solid #3ea9f5;
+    cursor: pointer;
+}
+
+.download-example-csv-button:hover {
+    opacity: .8;
+}
+
+.csv-file-preview {
+    width: 100%;
+    text-align: center;
+    padding: 6px 0;
+    // border-right: 1px solid #eeeeee;
+    // border-left: 1px solid #eeeeee;
+    border-right: 1px solid #d7ebfa6e;
+    border-left: 1px solid #d7ebfa6e;
+    background-color: #d7ebfa6e;
+}
+
+.second-section-subheader {
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.go-to-first-section-wpr {
+    flex: 1;
+}
+
+.sutitle-in-upload-from-csv-section {
+    font-size: 21px;
+    font-weight: 400;
+    // margin-bottom: 24px;
+}
+
+.second-section-subheader-right-column {
+    flex: 1;
+}
+
+.go-to-first-section {
+    font-weight: 400;
+    cursor: pointer;
+    width: fit-content;
+}
+
+
+.download-example-csv-wpr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.csv-file-delimiter-container {
+    // margin-bottom: 24px;
+    margin-bottom: 25px;
+}
+
+.csv-file-delimiter-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+
+}
+
+.columns-delimiter-error-msg {
+    color: #ff5252;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Animated Check Mark & Cross in upload CSV file
+/* ----------------------------------------------- */
+.dialog-content-after-to-upload>div>svg {
+    width: 100px;
+    display: block;
+    margin: 10px auto 0;
+    // margin: auto;
+}
+
+.path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+
+    &.circle {
+        -webkit-animation: dash .9s ease-in-out;
+        animation: dash .9s ease-in-out;
+    }
+
+    &.line {
+        stroke-dashoffset: 1000;
+        -webkit-animation: dash .9s .35s ease-in-out forwards;
+        animation: dash .9s .35s ease-in-out forwards;
+    }
+
+    &.check {
+        stroke-dashoffset: -100;
+        -webkit-animation: dash-check .9s .35s ease-in-out forwards;
+        animation: dash-check .9s .35s ease-in-out forwards;
+    }
+}
+
+.dialog-content-after-to-upload-msg>p {
+    text-align: center;
+    // margin: 20px 0 60px;
+    margin: 20px 0 40px;
+    font-size: 1.25em;
+
+    &.processing {
+        color: var( --secondary-text-color);
+    }
+
+    &.success {
+        color: #73AF55;
+    }
+
+    &.error {
+        color: #D06079;
+    }
+}
+
+
+@-webkit-keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@-webkit-keyframes dash-check {
+    0% {
+        stroke-dashoffset: -100;
+    }
+
+    100% {
+        stroke-dashoffset: 900;
+    }
+}
+
+@keyframes dash-check {
+    0% {
+        stroke-dashoffset: -100;
+    }
+
+    100% {
+        stroke-dashoffset: 900;
+    }
+}
+
+
+/* Loading spinner in upload CSV file
+/* ----------------------------------------------- */
+
+.sk-fading-circle-faqs-modal {
+    // margin: 100px auto;
+    // margin: 80px auto;
+    margin: 75.01px auto;
+    width: 41px;
+    height: 41px;
+    // width: 100px;
+    // height: 100px;
+    position: relative;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle:before {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    width: 15%;
+    height: 15%;
+    background-color: var(--blue-light); // #333;
+    border-radius: 100%;
+    -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
+    animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle2 {
+    -webkit-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
+    transform: rotate(30deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle3 {
+    -webkit-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    transform: rotate(60deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle4 {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle5 {
+    -webkit-transform: rotate(120deg);
+    -ms-transform: rotate(120deg);
+    transform: rotate(120deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle6 {
+    -webkit-transform: rotate(150deg);
+    -ms-transform: rotate(150deg);
+    transform: rotate(150deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle7 {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle8 {
+    -webkit-transform: rotate(210deg);
+    -ms-transform: rotate(210deg);
+    transform: rotate(210deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle9 {
+    -webkit-transform: rotate(240deg);
+    -ms-transform: rotate(240deg);
+    transform: rotate(240deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle10 {
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle11 {
+    -webkit-transform: rotate(300deg);
+    -ms-transform: rotate(300deg);
+    transform: rotate(300deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle12 {
+    -webkit-transform: rotate(330deg);
+    -ms-transform: rotate(330deg);
+    transform: rotate(330deg);
+}
+
+.sk-fading-circle-faqs-modal .sk-circle2:before {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle3:before {
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle4:before {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle5:before {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle6:before {
+    -webkit-animation-delay: -0.7s;
+    animation-delay: -0.7s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle7:before {
+    -webkit-animation-delay: -0.6s;
+    animation-delay: -0.6s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle8:before {
+    -webkit-animation-delay: -0.5s;
+    animation-delay: -0.5s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle9:before {
+    -webkit-animation-delay: -0.4s;
+    animation-delay: -0.4s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle10:before {
+    -webkit-animation-delay: -0.3s;
+    animation-delay: -0.3s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle11:before {
+    -webkit-animation-delay: -0.2s;
+    animation-delay: -0.2s;
+}
+
+.sk-fading-circle-faqs-modal .sk-circle12:before {
+    -webkit-animation-delay: -0.1s;
+    animation-delay: -0.1s;
+}
+
+@-webkit-keyframes sk-circleFadeDelay {
+
+    0%,
+    39%,
+    100% {
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 1;
+    }
+}
+
+@keyframes sk-circleFadeDelay {
+
+    0%,
+    39%,
+    100% {
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 1;
+    }
+}
