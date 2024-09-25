@@ -36,8 +36,21 @@
 
 .header-first-column{
     display: flex;
+    flex-direction: column;
+}
+
+.header-first-column-namespace {
+    display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.badge-container {
+    display: flex;
+
+    .default-badge {
+        background-color: #0566ff;
+    }
 }
 
 .selected-namespace-label {
@@ -753,7 +766,7 @@ table {
 .chatbot-using-current-namespace {
     font-weight: 400;
     height: 24px;
-
+    display: flex;
 }
 
 .chatbot-list-using-current-namespace {

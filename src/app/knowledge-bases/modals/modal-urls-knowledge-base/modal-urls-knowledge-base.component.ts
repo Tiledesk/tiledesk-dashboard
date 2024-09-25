@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter, SimpleChanges, Inject } from '
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'modal-urls-knowledge-base',
@@ -19,6 +21,20 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   listOfUrls: string;
   countSitemap: number;
   errorLimit: boolean = false;
+
+  panelOpenState = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  scrape_types: Array<any> = [
+    { name: "Full HTML page", value: 1 },
+    { name: "Headless (Standard)", value: 2 },
+    { name: "Headless (Text Only)", value: 3 },
+    { name: "Headless (Parameterizable)", value: 4 },
+  ];
+  
+  selectedScrapeType = 3;
+  extract_tags = [];
+  unwanted_tags = [];
+  unwanted_classnames = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -63,11 +79,46 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
       return row.trim() !== '';
     });
-    let body = {
-      'list': arrayURLS
+    let body: any = {
+      list: arrayURLS,
+      scrape_type: this.selectedScrapeType,
     }
+
+    if (this.selectedScrapeType === 4) {
+      body.scrape_options = {
+        tags_to_extract: this.extract_tags,
+        unwanted_tags: this.unwanted_tags,
+        unwanted_classnames: this.unwanted_classnames
+      }
+    }
+    
     this.dialogRef.close(body);
     // this.saveKnowledgeBase.emit(body);
+  }
+
+  onSelectScrapeType(selectedType) {
+    // console.log("onSelectScrapeType: ", selectedType);
+  }
+
+  addTag(type, event: MatChipInputEvent): void {
+    //console.log("Tag Event: ", event);
+    const value = (event.value || '').trim();
+    if (value) {
+      if (type === 'extract_tags') {
+        this.extract_tags.push(value);
+      }
+      if (type === 'unwanted_tags') {
+        this.unwanted_tags.push(value);
+      }
+      if (type === 'unwanted_classnames') {
+        this.unwanted_classnames.push(value);
+      }
+    }
+    // Clear the input value
+    if (event.input) {
+      event.input.value = "";
+    }
+    //console.log("Tags: ", this.content.tags);
   }
 
   /** */
