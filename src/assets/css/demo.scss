@@ -2978,6 +2978,14 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   max-width: 345px !important;
 }
 
+.padding-4 {
+  padding: 0px !important;
+}
+
+// .padding-4 .shepherd-content .shepherd-text {
+//   padding: 0 8px 8px !important
+// }
+
 
 .step-with-gif .shepherd-content .shepherd-text .image-container img {
   max-width: 369px !important;
@@ -3075,4 +3083,25 @@ div:where(.swal2-container) .swal2-select {
 .mat-progress-spinner::ng-deep circle {
   // background-color: #2196F2 !important;
   stroke: #2196F2 !important;
+}
+
+.mat-dialog-container {
+  font-family: 'Poppins' !important;
+}
+
+.mat-expansion-panel-header {
+  font-family: 'Poppins' !important;
+  font-size: 14px !important;
+}
+
+.mat-form-field-infix {
+  font-family: 'Poppins' !important;
+}
+
+.mat-select {
+  font-family: 'Poppins' !important;
+}
+
+.mat-option {
+  font-family: 'Poppins' !important;
 }

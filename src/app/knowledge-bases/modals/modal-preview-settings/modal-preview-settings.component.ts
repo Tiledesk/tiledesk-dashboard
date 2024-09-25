@@ -85,7 +85,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hideHelpLink= brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
-      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
@@ -124,25 +124,30 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
-    this.model_list = Object.values(TYPE_GPT_MODEL).filter(el => el.status !== 'inactive').map((el) => {
-      if (ai_models[el.value])
+
+    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el)=> {
+      if(ai_models[el.value])
         return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
       else
         return { ...el, multiplier: null }
     })
 
     // this.logger.log("[MODAL PREVIEW SETTINGS] model_list ", this.model_list )
-    if (this.selectedNamespace.preview_settings.model === "gpt-3.5-turbo") {
-      this.selectedModel = this.model_list[0].value;
-    } else if (this.selectedNamespace.preview_settings.model === "gpt-4") {
-      this.selectedModel = this.model_list[1].value;
-    } else if (this.selectedNamespace.preview_settings.model === "gpt-4-turbo-preview") {
-      this.selectedModel = this.model_list[2].value;
-    } else if (this.selectedNamespace.preview_settings.model === "gpt-4o") {
-      this.selectedModel = this.model_list[3].value;
-    } else if (this.selectedNamespace.preview_settings.model === "gpt-4o-mini") {
-      this.selectedModel = this.model_list[4].value;
-    }
+    // if (this.selectedNamespace.preview_settings.model === "gpt-3.5-turbo") {
+    //   this.selectedModel = this.model_list[0].value;
+    // } else if (this.selectedNamespace.preview_settings.model === "gpt-4") {
+    //   this.selectedModel = this.model_list[1].value;
+    // } else if (this.selectedNamespace.preview_settings.model === "gpt-4-turbo-preview") {
+    //   this.selectedModel = this.model_list[2].value;
+    // } else if (this.selectedNamespace.preview_settings.model === "gpt-4o") {
+    //   this.selectedModel = this.model_list[3].value;
+    // } else if (this.selectedNamespace.preview_settings.model === "gpt-4o-mini") {
+    //   this.selectedModel = this.model_list[4].value;
+    // }
+
+
+    this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value 
+
     // this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
 

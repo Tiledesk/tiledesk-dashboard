@@ -37,6 +37,13 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { INFO_MENU_ITEMS } from 'app/support/support-utils';
+
+import { ShepherdService } from 'angular-shepherd';
+import { getSteps as defaultSteps, defaultStepOptions } from './sidebar.tour.config';
+
+import Step from 'shepherd.js/src/types/step';
+import { environment } from 'environments/environment';
 
 declare const $: any;
 
@@ -72,7 +79,10 @@ declare interface RouteInfo {
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
-
+  INFO_MENU_ITEMS = INFO_MENU_ITEMS;
+  public version: string = environment.VERSION;
+  test: Date = new Date();
+ 
   // tparams = brand;
 
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
@@ -208,6 +218,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
   CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
+  SUPPORT_ROUTE_IS_ACTIVE: boolean;
   NORT_CONV_ROUTE_IS_ACTIVE: boolean;
 
 
@@ -258,6 +269,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   areVisibleChatbot: boolean;
   currentProjectUser: any;
+  isVisibleSupportMenu: boolean
 
   constructor(
     private router: Router,
@@ -266,7 +278,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private projectService: ProjectService,
     private auth: AuthService,
     private usersService: UsersService,
-    private usersLocalDbService: LocalDbService,
     private notify: NotifyService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
@@ -280,6 +291,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private faqKbService: FaqKbService,
     public dialog: MatDialog,
     private prjctPlanService: ProjectPlanService,
+    private shepherdService: ShepherdService,
+    public localDbService: LocalDbService,
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -290,6 +303,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.companyLogoNoText = brand['COMPANY_LOGO_NO_TEXT'];
       this.companySiteUrl = brand["COMPANY_SITE_URL"]
       this.companyName = brand["COMPANY_NAME"]
+      this.isVisibleSupportMenu = brand["SUPPORT_MENU"]
+
     }
   }
 
@@ -322,6 +337,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // this.getProjectPlan()
     this.getBaseUrlAndThenProjectPlan()
   }
+
+  ngAfterViewInit() { }
+
 
   getBaseUrlAndThenProjectPlan() {
     const href = window.location.href;
@@ -732,9 +750,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (!this.public_Key.includes("CNT")) {
       this.isVisibleCNT = false;
     }
-
-
-
   }
 
 
@@ -1199,12 +1214,35 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
 
-        
+        if (event.url.indexOf('/support') !== -1) {
+          this.SUPPORT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE; ', this.SUPPORT_ROUTE_IS_ACTIVE);
+        } else {
+          this.SUPPORT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
+        }
 
-
-
+        if (event.url.indexOf('/home') !== -1) { 
+          this.presentHelpCenterPopup() 
+        }
       }
     });
+  }
+
+  presentHelpCenterPopup() {
+    const sidebarTourShowed = this.localDbService.getFromStorage(`sidebar-tour-showed-${this.currentUserId}`)
+     
+    if (!sidebarTourShowed) {
+      setTimeout(() => {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+        this.shepherdService.start();
+        this.localDbService.setInStorage(`sidebar-tour-showed-${this.currentUserId}`, 'true')
+      }, 1500);
+    }
   }
 
 
@@ -1633,9 +1671,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
   }
 
-  ngAfterViewInit() {
 
-  }
 
 
   isMobileMenu() {
@@ -1757,6 +1793,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   goToHome() {
     this.router.navigate(['/project/' + this.projectId + '/home']);
+  }
+
+  onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string }) {
+    this.logger.log('[SIDEBAR] onMenuOptionFN', item)
+    switch (item.key) {
+      case 'FEEDBACK':
+      case 'CHANGELOG':
+        window.open(item.src, '_blank')
+        break;
+      case 'SUPPORT':
+        this.goToSuppotPage()
+      // this.router.navigate(['./support'], {relativeTo: this.route})
+      // this.onClickItemList.emit(SIDEBAR_PAGES.SUPPORT)
+      // window.open(item.src, '_self')
+    }
   }
 
   goToSuppotPage() {
