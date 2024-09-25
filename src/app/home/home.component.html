@@ -370,7 +370,7 @@
           <div class="home-quotas-banner-footer">
             <!-- You have used a total of <span class="hqb-footer-link"> 90 </span> conversations of which <span class="hqb-footer-link"> 12 </span>  are open and 22 are closed. -->
            
-            Conversations usage detail: total <span class="hqb-footer-link" (click)="goToHistoryAllConvs()"> {{openedConversations + closedConversations}}</span><span *ngIf="requests_count > 0">, open <span  class="hqb-footer-link" (click)="goToHistoryOpenedConvs()">{{openedConversations}}</span>, closed <span class="hqb-footer-link" (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span>
+            Conversations usage detail: total <span class="hqb-footer-link" (click)="goToHistoryAllConvs()">{{requests_count | number:'1.0-0'}}</span><span *ngIf="requests_count > 0">, open <span  class="hqb-footer-link" (click)="goToHistoryOpenedConvs()">{{openedConversations}}</span>, closed <span class="hqb-footer-link" (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span>
           </div>
         </div>
         <!-- .\ QUOTA Banner  -->
