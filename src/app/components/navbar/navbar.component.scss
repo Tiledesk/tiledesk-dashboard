@@ -1019,9 +1019,50 @@ button.close.custom-hover:hover {
 }
 
 .mat-progress-spinner::ng-deep circle {
-  // background-color: #2196F2 !important;
   stroke: #2196F2 !important;
 }
+
+
+.pie-green-stroke::ng-deep circle {
+  stroke: #008000 !important;
+}
+
+.pie-yellow-stroke::ng-deep circle {
+  stroke: #ffff00 !important;
+}
+
+.pie-orange-stroke::ng-deep circle {
+  stroke: #ffa500 !important;
+}
+
+.pie-red-stroke::ng-deep circle {
+  // stroke: #ff0000 !important;
+  stroke: linear-gradient(90deg, rgba(0,128,0,1) 0%, rgba(255,255,0,1) 26%, rgba(255,165,0,1) 51%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%) !important;
+}
+
+// ::ng-deep .requests-circular-spinner circle {
+//   stroke: url(#gradient);
+// }
+
+// svg {
+//   display: block;
+//   margin: auto;
+// }
+
+// .gradient-spinner {
+//   position: relative;
+// }
+
+// .gradient-spinner svg {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+// }
+
+// .gradient-svg {
+//   height: 100%;
+//   width: 100%;
+// }
 
 .mat-progress-spinner-conversations-runned-out::ng-deep circle {
   stroke: #f55a4e !important;

@@ -201,7 +201,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
 
-    // console.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
+    // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
 
 
     if (this.requestCountResp) {
@@ -209,9 +209,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
       this.countRequestsUnservedRr = this.requestCountResp.unassigned;
 
-      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
-      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
-      // console.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+      // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
+      // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
+      // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
     }
    
     

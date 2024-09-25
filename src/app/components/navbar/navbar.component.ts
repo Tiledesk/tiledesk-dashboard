@@ -182,6 +182,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_perc = 0;
   tokens_limit = 0;
 
+  requestsPieStroke: string;
+  requestsPieGreenStroke: boolean;
+  requestsPieYellowStroke: boolean;
+  requestsPieOrangeStroke: boolean;
+  requestsPieRedStroke: boolean;
+
   project_limits: any;
   isOpenCurrentUsageMenu: boolean = false;
 
@@ -331,13 +337,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getQuotasCount()
     this.getQuotes();
     const currentURL = this.router.url;
-    console.log('[NAVBAR] - currentURL 1 ', currentURL);
-    if (currentURL.indexOf('/home') !== -1) { 
-      console.log('[NAVBAR] - currentURL 2 ', currentURL);
+    this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);
+    if (currentURL.indexOf('/home') !== -1) {
+      this.logger.log('[NAVBAR] - currentURL 2 ', currentURL);
       this.quotesService.hasOpenedNavbarQuotasMenu()
     }
 
-    
+
   }
 
 
@@ -359,21 +365,21 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotasCount() {
     this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      console.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
 
       this.openedConversations = resp.open;
       this.closedConversations = resp.closed;
       this.startSlot = resp.slot.startDate;
       this.endSlot = resp.slot.endDate;
 
-      console.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
-      console.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      console.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      console.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
     }, (error) => {
-      console.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
+      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
     }, () => {
-      console.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
     })
   }
 
@@ -384,7 +390,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   //   // .pipe(throttleTime(0))
   //   console.log("[NAVBAR] listenToWSRequestsDataCallBack ");
   //   this.wsRequestsService.wsConvData$
-      
+
   //     .pipe(
   //       takeUntil(this.unsubscribe$)
   //     )
@@ -396,7 +402,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   // listenToQuotasReachedInHome() {
   //   console.log("[NAVBAR] listenToQuotasReachedInHome ", )
-   
+
   //   if (this.projectId)  {
   //     console.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
   //     this.getQuotes()
@@ -409,11 +415,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log("project_limits: ", this.project_limits)
       this.logger.log("resp.quotes: ", resp.quotes)
+      if (this.project_limits) {
 
-      this.messages_limit = this.project_limits.messages;
-      this.requests_limit = this.project_limits.requests;
-      this.email_limit = this.project_limits.email;
-      this.tokens_limit = this.project_limits.tokens;
+        this.messages_limit = this.project_limits.messages;
+        this.requests_limit = this.project_limits.requests;
+        this.email_limit = this.project_limits.email;
+        this.tokens_limit = this.project_limits.tokens;
+      }
 
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;
@@ -428,38 +436,38 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         resp.quotes.tokens.quote = 0;
       }
 
-      console.log('[NAVBAR] used requests', resp.quotes.requests.quote)
-      console.log('[NAVBAR] requests_limit', this.requests_limit)
+      this.logger.log('[NAVBAR] used requests', resp.quotes.requests.quote)
+      this.logger.log('[NAVBAR] requests_limit', this.requests_limit)
 
-      console.log('[NAVBAR] used email', resp.quotes.email.quote)
-      console.log('[NAVBAR] email_limit', this.email_limit)
+      this.logger.log('[NAVBAR] used email', resp.quotes.email.quote)
+      this.logger.log('[NAVBAR] email_limit', this.email_limit)
 
 
-      console.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
-      console.log('[NAVBAR] tokens_limit', this.tokens_limit)
+      this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
+      this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
 
       if (resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
-        console.log('[NAVBAR] conversationsRunnedOut', this.conversationsRunnedOut)
+        this.logger.log('[NAVBAR] conversationsRunnedOut', this.conversationsRunnedOut)
       } else {
         this.conversationsRunnedOut = false;
-        console.log('[NAVBAR] conversationsRunnedOut', this.conversationsRunnedOut)
+        this.logger.log('[NAVBAR] conversationsRunnedOut', this.conversationsRunnedOut)
       }
 
       if (resp.quotes.email.quote >= this.email_limit) {
         this.emailsRunnedOut = true;
-        console.log('[NAVBAR] emailsRunnedOut', this.emailsRunnedOut)
+        this.logger.log('[NAVBAR] emailsRunnedOut', this.emailsRunnedOut)
       } else {
         this.emailsRunnedOut = false;
-        console.log('[NAVBAR] emailsRunnedOut', this.emailsRunnedOut)
+        this.logger.log('[NAVBAR] emailsRunnedOut', this.emailsRunnedOut)
       }
 
       if (resp.quotes.tokens.quote >= this.tokens_limit) {
         this.tokensRunnedOut = true;
-        console.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
+        this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
       } else {
         this.tokensRunnedOut = false;
-        console.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
+        this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
       }
 
 
@@ -467,6 +475,35 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+
+      this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
+      if (this.requests_perc <= 25) {
+        this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
+        this.requestsPieGreenStroke = true; // 0% a 25%
+        this.requestsPieYellowStroke = false;
+        this.requestsPieOrangeStroke = false
+        this.requestsPieRedStroke = false
+      } else if (this.requests_perc <= 50) {
+        this.requestsPieGreenStroke = false;
+        this.requestsPieYellowStroke = true; // 26% a 50%
+        this.requestsPieOrangeStroke = false
+        this.requestsPieRedStroke = false
+      } else if (this.requests_perc <= 75) {
+        this.requestsPieGreenStroke = false;
+        this.requestsPieYellowStroke = false;
+        this.requestsPieOrangeStroke = true; // 51% a 75%
+        this.requestsPieRedStroke = false
+      } else {
+        this.requestsPieGreenStroke = false;
+        this.requestsPieYellowStroke = false;
+        this.requestsPieOrangeStroke = false;
+        this.requestsPieRedStroke = true; // 76% a 100%
+      }
+
+
+
+
+
 
       this.requests_count = resp.quotes.requests.quote;
       this.messages_count = resp.quotes.messages.quote;
@@ -482,18 +519,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   goToHistoryOpenedConvs() {
-    console.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
     this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
   }
 
 
   goToHistoryClosedConvs() {
-    console.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
     this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
   }
 
   goToHistoryAllConvs() {
-    console.log("[NAVBAR] goToHistoryAllConvs ");
+    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
     this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
   }
 

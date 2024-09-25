@@ -716,14 +716,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        console.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        this.logger.log('[WS-REQUESTS-MSGS]  queryParams', params);
         this.queryParams = params
       });
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-    console.log('[WS-REQUESTS-MSGS] params', params)
+      this.logger.log('[WS-REQUESTS-MSGS] params', params)
 
       if (params.scrollposition) {
         this.scrollYposition = params.scrollposition
@@ -739,20 +739,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
-        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
       }
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
-        console.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
+        this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
 
       if (!params.calledby) {
@@ -763,7 +763,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goBack() {
-    console.log('[WS-REQUESTS-MSGS] goBack' ) 
+    this.logger.log('[WS-REQUESTS-MSGS] goBack' ) 
     if (this.previousUrl === 'wsrequests') {
       if (!this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
@@ -3805,7 +3805,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     });
     if (block) {
-      // console.log(`You selected: ${block}`);
+      // this.logger.log(`You selected: ${block}`);
       this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
 
@@ -3822,21 +3822,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
     // .then((result) => {
     //   if (result.isConfirmed) {
-    //     console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot', result)
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot', result)
 
 
     //     // this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-    //     //   console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
 
     //     // }, (error) => {
-    //     //  console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
 
     //     //  Swal.fire(this.anErrorHasOccurredMsg, {
     //     //     icon: "error",
     //     //   });
 
     //     // }, () => {
-    //     //   console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
 
 
 

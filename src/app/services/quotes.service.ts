@@ -115,7 +115,7 @@ export class QuotesService {
     };
 
     const url = this.SERVER_BASE_PATH + project_id + '/requests/count?conversation_quota=true'
-    console.log('[QUOTAS-SERV] - getQuotasCount - URL ', url)
+    this.logger.log('[QUOTAS-SERV] - getQuotasCount - URL ', url)
     return this.http.get(url, httpOptions)
   }
 
