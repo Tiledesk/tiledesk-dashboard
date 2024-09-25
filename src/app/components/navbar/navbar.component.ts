@@ -355,7 +355,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -1859,14 +1858,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sidebarVisible = false;
     body.classList.remove('nav-open');
 
-    try {
-      if (window && window['tiledesk_widget_show']) {
-        this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
-        window['tiledesk_widget_show']();
-      }
-    } catch (e) {
-      this.logger.error('tiledesk_widget_show ERROR', e)
-    }
+    // try {
+    //   if (window && window['tiledesk_widget_show']) {
+    //     this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
+    //     window['tiledesk_widget_show']();
+    //   }
+    // } catch (e) {
+    //   this.logger.error('tiledesk_widget_show ERROR', e)
+    // }
 
   };
 
