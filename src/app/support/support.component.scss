@@ -1,0 +1,116 @@
+:host {
+    --content-background: rgb(244, 246, 251, 0.4);
+    --content-hover-background: #{var(--blu)};
+    --base-radius: 8px;
+
+    width: 100%;
+}
+
+.card-container {
+    width: 100%;
+    padding: 40px 0;
+    /* max-width: 1280px; */
+    justify-content: center;
+    align-items: center;
+
+    display: grid;
+    grid-column-gap: 30px;
+    width: 100%;
+    grid-template-columns: 1fr 0.6fr;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 40px;
+}
+
+.support-card {
+    // background: var(--content-background);
+    border-radius: var(--base-radius);
+    box-shadow: rgba(0, 0, 0, .1) 0px 3px 6px 0px, rgba(0, 0, 0, .08) 0px 1px 3px 0px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+
+.section-wrp {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-around;
+}
+
+.section-info {
+    display: flex;
+    gap: 20px;
+}
+
+.section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span.material-icons-outlined,
+    img {
+        width: 22px;
+        font-size: 22px;
+        color: var(--icon-color);
+        // filter: brightness(0) saturate(100%) invert(96%) sepia(0%) saturate(504%) hue-rotate(151deg) brightness(92%) contrast(88%);
+        filter: brightness(0) saturate(100%) invert(64%) sepia(5%) saturate(1424%) hue-rotate(179deg) brightness(91%) contrast(98%);
+    }
+}
+
+.support-card-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    // border-radius: 8px;
+    // padding: 10px;
+    padding: 20px;
+    gap: 20px;
+    cursor: pointer;
+    height: 100%;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid rgb(223, 227, 237);
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, .04);
+        span.material-icons-outlined,
+        img {
+            // width: 20px;
+            // font-size: 20px;
+            color: var(--icon-hover-color);
+            // filter: brightness(0) saturate(100%) invert(39%) sepia(19%) saturate(1139%) hue-rotate(184deg) brightness(91%) contrast(85%);
+            filter: brightness(0) saturate(100%) invert(48%) sepia(90%) saturate(6459%) hue-rotate(212deg) brightness(99%) contrast(104%);
+        }
+    }
+}
+
+.title-label {
+    font-size: 23px;
+    font-weight: 600;
+    margin: 10px 15px;
+    margin: 10px 0px;
+    color: var(--text-color);
+    font-family: var(--header-font-family);
+    position: absolute;
+    top: 25px;
+}
+
+.support-title {
+    font-size: 18px;
+    position: relative;
+    color: var(--text-color);
+    font-weight: 400;
+    font-family: var(--header-font-family);
+}
+
+.support-description {
+    font-weight: 400;
+    font-size: 14px;
+    font-family: var(--header-font-family);
+    color: var(--secondary-text-color);
+
+}
