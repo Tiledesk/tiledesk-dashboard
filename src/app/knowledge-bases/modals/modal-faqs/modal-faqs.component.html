@@ -1,0 +1,236 @@
+<div class="m-header">
+  <h1 mat-dialog-title>
+    {{ 'FaqPage.AddFaqs' | translate }}
+
+  </h1>
+  <div class="m-top-right-icon">
+    <span class="material-icons-outlined" (click)="onCloseBaseModal()">
+      close
+    </span>
+  </div>
+</div>
+
+<!-- ---------------------------------- -->
+<!-- Section Adds single FAQ -->
+<!-- ---------------------------------- -->
+<div mat-dialog-content *ngIf="displayUploadFromCSVSection === false">
+
+  <div class="info-container">
+    <i class="material-icons-outlined info-icon">help_outline</i>
+    <div class="info-text">
+      <p>{{ 'KbPage.AddKbInfoTextContent' | translate }}</p>
+      <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
+      <p [innerHTML]="'KbPage.AddKbInfoTextContentMsg1' | translate" style="margin-top: 8px;"></p>
+    </div>
+  </div>
+
+
+  <div class="form-container">
+    <form [formGroup]="kbForm">
+      <div class="input-container">
+        <span class="input-label">{{ 'FaqEditAddPage.Question' | translate }}</span>
+        <!-- placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}"  -->
+        <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
+          (input)="onChangeInput($event)"
+          [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
+        <span class="input-label">{{ 'FaqEditAddPage.Answer' | translate }}</span>
+
+        <!-- placeholder="{{ 'KbPage.TypeKbContentPlaceholder' | translate }}"  -->
+        <textarea type="text" name="content" class="custom-textarea" [(ngModel)]="kb.content" formControlName="content"
+          (input)="onChangeInput($event)" rows="4"
+          [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched">
+        </textarea>
+
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<!-- ---------------------------------- -->
+<!-- Section Upload FAQs from csv -->
+<!-- ---------------------------------- -->
+<div mat-dialog-content *ngIf="displayUploadFromCSVSection === true">
+  <div class="dialog-content-first-to-upload" *ngIf="displayAfterUploadFromCSVSection === false">
+    <div class="second-section-subheader">
+      <div class="go-to-first-section-wpr">
+        <div class="go-to-first-section" (click)="goBack()">
+          <span class="material-icons-outlined" style="vertical-align: middle;">
+            arrow_back
+          </span>
+          <span>
+            {{'Back' | translate}}
+          </span>
+        </div>
+      </div>
+
+      <div class="sutitle-in-upload-from-csv-section ">
+        {{ "UploadFromCsv" | translate }}
+      </div>
+
+      <div class="second-section-subheader-right-column">
+
+      </div>
+    </div>
+
+    <div class="upload-from-csv-container">
+
+      <div class="download-example-csv-wpr">
+        <div class="download-example-csv-button">
+          <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer">
+            <i class="material-icons" style="font-size:18px; top: 4px; position: relative;">save_alt</i>
+            {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
+          </p>
+        </div>
+
+        <div class="csv-file-preview">
+          <!-- --------------------- -->
+          <!-- Question -->
+          <!-- --------------------- -->
+          <span>
+            <em>
+              {{ 'FaqPage.Question' | translate }}*
+            </em>
+          </span>
+
+          <!-- --------------------- -->
+          <!-- Columns Delimiter -->
+          <!-- --------------------- -->
+          <span>
+            <strong>
+              {{csvColumnsDelimiter}}
+            </strong>
+          </span>
+
+          <!-- --------------------- -->
+          <!-- Answer -->
+          <!-- --------------------- -->
+          <span>
+            <em>
+              {{ 'FaqPage.Answer' | translate }}*
+            </em>
+          </span>
+        </div>
+      </div>
+
+      <div class="csv-file-delimiter-container">
+        <div class="csv-file-delimiter-wpr">
+
+          <div class="csv-file-delimiter-label">
+            {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
+          </div>
+
+          <div class="csv-file-delimiter-value">
+
+            <input style="width:55px; border-radius: 5px;
+          border: 1px solid #d9d9d9 !important;
+          font-weight: 600;
+          padding-left: 10px;" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
+          </div>
+        </div>
+
+        <div class="columns-delimiter-error-msg" *ngIf="modalChoosefileDisabled">
+          <!-- Delimiter option must be one character long  -->
+          {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-content-after-to-upload" *ngIf="displayAfterUploadFromCSVSection === true">
+    <div class="dialog-content-after-to-upload-processing" *ngIf="parse_err === undefined">
+      <div class="sk-fading-circle-faqs-modal">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+      </div>
+
+      <!-- <div class="dialog-content-after-to-upload-msg"> 
+        <p class="processing">Processing</p>
+      </div> -->
+
+    </div>
+  </div>
+
+  <div class="dialog-content-after-to-upload" *ngIf="displayAfterUploadFromCSVSection === true">
+    <div class="dialog-content-after-to-upload-success" *ngIf="parse_err === false">
+
+     
+
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+        <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1"
+          cy="65.1" r="62.1" />
+        <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
+          stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+      </svg>
+      <div class="dialog-content-after-to-upload-msg"> 
+        <p class="success">{{'FaqPage.FaqsSuccessfullyUploaded' | translate}}!</p>
+      </div>
+    </div>
+    <!-- parse_err > {{parse_err}} -->
+    <div class="dialog-content-after-to-upload-failure" *ngIf="parse_err === true">  
+     
+
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+        <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+        <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+        <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+      </svg>
+      <div class="dialog-content-after-to-upload-msg"> 
+        <p class="error">{{'FaqPage.AnErrorOccurredDuringTheUpload' | translate}}!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;" *ngIf="displayUploadFromCSVSection === false">
+  <button class="mat-dialog-ok-btn" mat-button (click)="changeSectionToUploadFaqsFromCSV()">
+    {{ "FaqPage.UploadFaqsFromCsv" | translate }}
+  </button>
+
+  <button  [disabled]="buttonDisabled" class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase('true')">
+
+    {{ 'FaqPage.AddFaq' | translate }}
+
+  </button>
+</div>
+
+
+<div mat-dialog-actions style="justify-content: center;" *ngIf="displayUploadFromCSVSection === true">
+ 
+  <div class="btn-before-upload-wpr" *ngIf="displayAfterUploadFromCSVSection === false"> 
+    <input style="display:inline" name="fileChangeUploadCSV" id="fileChangeUploadCSV" class="inputfile" type="file"
+      (change)="fileChangeUploadCSV($event)" accept=".csv" />
+
+    <label class="btn btn-primary" for="fileChangeUploadCSV" [ngClass]="{'disabled': modalChoosefileDisabled }">
+      <!-- <i class="material-icons">file_upload</i> -->
+      <!-- CHOOSE FILE  -->
+      {{ 'FaqPage.ChooseFile' | translate }}
+    </label>
+  </div> 
+
+  <div class="btn-after-upload-wpr" *ngIf="displayAfterUploadFromCSVSection === true"> 
+
+    <button *ngIf="parse_err === true" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
+      {{ "Close" | translate }}
+    </button>
+
+    <button *ngIf="parse_err === false" class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase('false')">
+      {{ "Done" | translate }}
+    </button>
+
+    <button *ngIf="parse_err === undefined" class="mat-dialog-traspatent-btn" mat-button disabled>
+      {{ "Processing" | translate }}
+    </button>
+
+  </div>
+</div>
