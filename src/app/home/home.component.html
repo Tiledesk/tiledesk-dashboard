@@ -71,8 +71,10 @@
                       {{ prjct_name }}
                     </span>
                     <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      matTooltipClass="custom-mat-tooltip" 
+                      matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' 
+                      matTooltipHideDelay="100">
                       mode_edit
                     </span>
                   </div>
@@ -249,12 +251,12 @@
         <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
           [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
        
-          <div class="home-quota-banner-title-wpr">
+          <!-- <div class="home-quota-banner-title-wpr">
 
             <div class="home-quota-banner-title-no-alert" [ngClass]="{'home-quota-banner-title-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
               Current usage
             </div>
-          </div>
+          </div> -->
 
           <div class="home-quota-wpr">
             <!-- -------------------------- -->
@@ -264,7 +266,13 @@
               [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
 
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title link" (click)="goToHistoryAllConvs()"> Conversations</p>
+                <p class="quote-title link" (click)="goToHistoryAllConvs()"
+                      matTooltipClass="custom-mat-tooltip" 
+                      matTooltip="Current usage"
+                      #tooltip="matTooltip" matTooltipPosition='above' 
+                      matTooltipHideDelay="100">
+                       Conversations
+                      </p>
                 <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                 <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
                   You run out of converations
@@ -288,7 +296,13 @@
             <!-- -------------------------- -->
             <div class="home-quote-container" [ngClass]="{'home-quote-container-tokens-runned-out': tokensRunnedOut}">
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title">AI Tokens</p>
+                <p class="quote-title"
+                  matTooltipClass="custom-mat-tooltip" 
+                  matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  AI Tokens
+                </p>
                 <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
                 <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
                   You run out of AI Tokens
@@ -315,7 +329,13 @@
             <div class="home-quote-container" [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
 
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title">Email</p>
+                <p class="quote-title"
+                  matTooltipClass="custom-mat-tooltip" 
+                  matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' 
+                  matTooltipHideDelay="100">
+                  Email
+                </p>
                 <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
                 <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
                   You run out of Email
@@ -354,7 +374,7 @@
           </div>
         </div>
         <!--  *ngIf="displayQuotaSkeleton" -->
-        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 111px;">
+        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 68px;">
 
           <!-- <div class="quota-skeleton-title">
               <div class="quota--fake--box"></div>

@@ -2888,12 +2888,10 @@ img {
 }
 
 .home-blocks-wpr {
-  // border-top: 1px solid rgb(226, 232, 240);
   margin-top: -1px;
-  // background-color: rgb(241, 245, 249);
-  padding: 45px 80px 18px;
+  // padding: 45px 80px 18px;
+  padding: 6px 80px 18px;
   max-width: 994px;
-  // margin: 0px auto;
   display: flex;
   align-self: center;
 }
@@ -3008,7 +3006,7 @@ img {
   .quota-skeleton-container {
     display: flex;
     gap: 52px;
-    margin-top: 50px;
+    // margin-top: 50px;
   }
 
   .quota-skeleton-wpr {
@@ -3217,6 +3215,7 @@ img {
 /* *********************************** */
 .home-quota-banner {
   width: 100%;
+  padding-top: 18px;
   // margin-top: 34px;
   // margin-top: 24px;
   // height: 152px;
@@ -3224,8 +3223,9 @@ img {
 
 .home-quota-banner-alert {
   background: #fefae6;
+  padding-top: 0px !important;
   // border: 6px solid #f55a4e;
-  padding-bottom: 12px;
+  // padding-bottom: 12px;
 }
 
 .home-quota-banner-title-wpr {
@@ -3239,10 +3239,10 @@ img {
 .home-quota-banner-icon {
   // width: 30px;
   // min-width: 30px;
-  width: 21px;
-  min-width: 21px;
+  width: 16px;
+  // min-width: 21px;
   vertical-align: middle;
-  height: 21px;
+  height: 18px;
 }
 
 .home-quota-banner-icon svg {
@@ -3342,7 +3342,7 @@ img {
 
 .home-quotas-banner-footer {
   text-align: center;
-  margin-top: 12px;
+  // margin-top: 6px;
   font-family: var(--header-font-family);
   font-weight: 400;
   font-size: 14px;
