@@ -556,7 +556,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayQuotaSkeleton = false
     }, () => {
       this.logger.log("[HOME] get all quotes *COMPLETE*");
-      this.displayQuotaSkeleton = false
+      setTimeout(() => {
+        this.displayQuotaSkeleton = false
+      }, 1000);
+     
     })
   }
 

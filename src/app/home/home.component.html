@@ -244,8 +244,9 @@
         </div> <!-- ./ bg-card -->
 
         <!-- QUOTA Banner -->
-        <!--  -->
-        <div class="home-quota-banner"
+        <!--  *ngIf="!displayQuotaSkeleton"-->
+        <!-- <div class="test">  -->
+        <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
           [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
           <div class="home-quota-banner-title-wpr" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
             <div class="home-quota-banner-icon">
@@ -262,33 +263,19 @@
               <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
             </div>
           </div>
-          <div class="home-quota-banner-title-wpr" *ngIf="!conversationsRunnedOut && !emailsRunnedOut && !tokensRunnedOut">
-            
+          <div class="home-quota-banner-title-wpr"
+            *ngIf="!conversationsRunnedOut && !emailsRunnedOut && !tokensRunnedOut">
+
             <div class="home-quota-banner-title-no-alert">
               Current usage
               <!-- <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span> -->
             </div>
           </div>
           <!-- displayQuotaSkeleton > {{ displayQuotaSkeleton }} -->
-          <div class="first-card is-loading" *ngIf="displayQuotaSkeleton">
-            <div class="quota-skeleton-container">
-              <div class="quota-skeleton-wpr">
-                <div class="quota--fake--box"></div>
-                <div class="quota--fake--circle"></div>
-              </div>
-              <div class="quota-skeleton-wpr">
-                <div class="quota--fake--box"></div>
-                <div class="quota--fake--circle"></div>
-              </div>
-              <div class="quota-skeleton-wpr">
-                <div class="quota--fake--box"></div>
-                <div class="quota--fake--circle"></div>
-              </div>
-            </div>
-          </div>
 
 
-          <div class="home-quota-wpr" *ngIf="!displayQuotaSkeleton">
+
+          <div class="home-quota-wpr">
             <!-- -------------------------- -->
             <!-- Conversations  -->
             <!-- -------------------------- -->
@@ -369,10 +356,37 @@
           </div>
           <div class="home-quotas-banner-footer">
             <!-- You have used a total of <span class="hqb-footer-link"> 90 </span> conversations of which <span class="hqb-footer-link"> 12 </span>  are open and 22 are closed. -->
-           
-            Conversations usage detail: total <span class="hqb-footer-link" (click)="goToHistoryAllConvs()">{{requests_count | number:'1.0-0'}}</span><span *ngIf="requests_count > 0">, open <span  class="hqb-footer-link" (click)="goToHistoryOpenedConvs()">{{openedConversations}}</span>, closed <span class="hqb-footer-link" (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span>
+
+            Conversations usage detail: total <span class="hqb-footer-link"
+              (click)="goToHistoryAllConvs()">{{requests_count | number:'1.0-0'}}</span><span
+              *ngIf="requests_count > 0">, open <span class="hqb-footer-link"
+                (click)="goToHistoryOpenedConvs()">{{openedConversations}}</span>, closed <span class="hqb-footer-link"
+                (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span>
           </div>
         </div>
+        <!--  *ngIf="displayQuotaSkeleton" -->
+        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 179px;">
+
+          <!-- <div class="quota-skeleton-title">
+              <div class="quota--fake--box"></div>
+            </div> -->
+          <div class="quota-skeleton-container">
+
+            <div class="quota-skeleton-wpr">
+              <div class="quota--fake--box"></div>
+              <div class="quota--fake--circle"></div>
+            </div>
+            <div class="quota-skeleton-wpr">
+              <div class="quota--fake--box"></div>
+              <div class="quota--fake--circle"></div>
+            </div>
+            <div class="quota-skeleton-wpr">
+              <div class="quota--fake--box"></div>
+              <div class="quota--fake--circle"></div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> // test div -->
         <!-- .\ QUOTA Banner  -->
 
 
