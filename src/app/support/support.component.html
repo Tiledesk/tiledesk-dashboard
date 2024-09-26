@@ -1,8 +1,6 @@
 <p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-  <!-- {{ 'Contacts' | translate }} -->
-
-  Support
+  {{ 'Support' | translate }}
 </p>
 
 <div class="main-content" style="padding-top:0px;padding-left:0px; padding-right:0px">
@@ -13,45 +11,53 @@
 
         <div class="container-fluid">
             <div class="card-container">
-                <div class="cds-card">
+              
+                
+                <div class="support-card">
                     <label class="title-label">
-                        <!-- {{'SelfService' | translate }} -->
-                        Self Service
+                        {{'SelfService' | translate }}
+                        
                     </label>
                     <div class="section-wrp">
-                        <div class="cds-card-item" *ngFor="let item of SUPPORT_OPTIONS['SELF_SERVICE']" (click)="onCardItemClick(item, 'SELF_SERVICE')">
+                        <div class="support-card-item" *ngFor="let item of SUPPORT_OPTIONS['SELF_SERVICE']" (click)="onCardItemClick(item, 'SELF_SERVICE')">
                             <div class="section-info">
                                 <div class="section-icon">
                                     <span class="material-icons-outlined" *ngIf="!item.localIcon">{{item.icon}}</span>
                                     <img class="icon" *ngIf="item.localIcon" [src]="item.icon"/>
                                 </div>
                                 <div class="section-text">
-                                    <div class="cds-title">{{item.label | translate}}</div>
-                                    <div class="cds-description">{{item?.description | translate }}</div>
+                                    <div class="support-title">{{item.label | translate}}</div>
+                                    <div class="support-description">{{item?.description | translate }}</div>
                                 </div>
                             </div>
                             <div class="section-icon">
-                                <span class="material-icons-outlined">chevron_right</span>
+                                <span class="material-icons-outlined">open_in_new</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="cds-card">
-                    <label class="title-label">{{'ContactUs' | translate }}</label>
+               
+                <div class="support-card">
+                    <label class="title-label">
+                        
+                        {{'ContactUs' | translate }}
+                    </label>
                     <div class="section-wrp">
-                        <div class="cds-card-item"  *ngFor="let item of SUPPORT_OPTIONS['CONTACT_US']" (click)="onCardItemClick(item, 'CONTACT_US')">
+                        <div class="support-card-item"  *ngFor="let item of SUPPORT_OPTIONS['CONTACT_US']" (click)="onCardItemClick(item, 'CONTACT_US')">
                             <div class="section-info">
                                 <div class="section-icon">
                                     <span class="material-icons-outlined" *ngIf="!item.localIcon">{{item.icon}}</span>
                                     <img class="icon" *ngIf="item.localIcon" [src]="item.icon"/>
                                 </div>
                                 <div class="section-text">
-                                    <div class="cds-title">{{item.label | translate}}</div>
-                                    <div class="cds-description">{{item?.description | translate }}</div>
+                                    <div class="support-title">{{item.label | translate}}</div>
+                                    <div class="support-description">{{item?.description | translate }}</div>
                                 </div>
                             </div>
                             <div class="section-icon">
-                                <span class="material-icons-outlined">chevron_right</span>
+                                
+                                <span *ngIf="item.label !== 'DiscordChannel'" class="material-icons-outlined">chevron_right</span>
+                                <span *ngIf="item.label === 'DiscordChannel'" class="material-icons-outlined">open_in_new</span>
                             </div>
                         </div>
                     </div>

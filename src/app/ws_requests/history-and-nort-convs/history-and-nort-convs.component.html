@@ -348,7 +348,7 @@
                   {{ "Status" | translate }}
                 </label>
                 <!-- <div class="col-sm-12"> -->
-                  <ng-select class="request-statuses-select" name="requeststatuses" [(ngModel)]="requests_statuses" style=""
+                  <ng-select class="request-statuses-select" name="requeststatuses" [(ngModel)]="requests_statuses"
                     (change)="requestsStatusesSelectFromAdvancedOption(requests_statuses)"
                     [items]="statusInHistory | selectOptionsTranslate" bindLabel="name" [clearable]='false' [multiple]="true"
                     [searchable]="false" bindValue="id" placeholder="Select status">

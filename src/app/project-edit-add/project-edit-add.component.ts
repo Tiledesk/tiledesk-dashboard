@@ -27,6 +27,7 @@ import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATi
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
+import { CacheService } from 'app/services/cache.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -158,6 +159,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   reassignment_on: boolean;
   automatic_unavailable_status_on: boolean;
   agents_can_see_only_own_convs: boolean;
+  areHideChatbotAttributesInConvDtls: boolean;
 
   // unavailable_status_on: boolean;
 
@@ -277,7 +279,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private logger: LoggerService,
     private _fb: FormBuilder,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
+    private cacheService: CacheService
     // private formGroup: FormGroup
 
   ) {
@@ -631,7 +634,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
@@ -651,7 +654,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SECURITY_ROUTE ', this.PROJECT_SETTINGS_SECURITY_ROUTE);
-    
+
       /** THE ACTIVE ROUTE IS /project-settings/payments (i.e. Subcsription) */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
@@ -661,7 +664,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
@@ -686,7 +689,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -711,7 +714,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -737,7 +740,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') !== -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -759,7 +762,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') !== -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -781,7 +784,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') !== -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) 
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -803,7 +806,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
       (currentUrl.indexOf('/project-settings/banned') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') !== -1) 
+      (currentUrl.indexOf('/project-settings/advanced') !== -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
@@ -852,7 +855,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
 
- 
+
 
   goToProjectSettings_SmartAssignment() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment');
@@ -1045,13 +1048,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       text: this.cPlanOnly,
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
       icon: "info",
- 
+
       // buttons: {
       //   cancel: this.cancel,
       //   catch: {
@@ -1109,7 +1112,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
 
-  presentModalAgentCannotManageSmartAssigment() {}
+  presentModalAgentCannotManageSmartAssigment() { }
 
   presentModalOnlyOwnerCanManageTSMTPsettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings, this.learnMoreAboutDefaultRoles)
@@ -1164,9 +1167,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsParts ', mtsParts);
     let mtsValue = mtsParts[1]
     this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsValue ', mtsValue);
-    if (mtsValue === 'T')  {
+    if (mtsValue === 'T') {
       return true
-    } else  if (mtsValue === 'F'){
+    } else if (mtsValue === 'F') {
       return false
     }
 
@@ -1198,7 +1201,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         this.isVisibleSMTPsettings = this.SMTPsettingsValue()
         this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
-      
+
       } else if (!this.public_Key.includes("MTS")) {
         this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
         this.isVisibleSMTPsettings = false;
@@ -1206,13 +1209,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
 
     } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[PRJCT-EDIT-ADD] USECASE C customization is  ', projectProfileData['customization'] , 'get value foem FT')
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE C customization is  ', projectProfileData['customization'], 'get value foem FT')
       if (this.public_Key.includes("MTS")) {
         this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
 
         this.isVisibleSMTPsettings = this.SMTPsettingsValue()
         this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
-      
+
       } else if (!this.public_Key.includes("MTS")) {
         this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
         this.isVisibleSMTPsettings = false;
@@ -1226,7 +1229,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      //  this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
@@ -1553,7 +1556,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
             } else if (this.profile_name === PLAN_NAME.EE) {
 
-                this.isTier3Plans = false
+              this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.F) {
 
@@ -2430,19 +2433,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         if (project.settings) {
           this.logger.log('[PRJCT-EDIT-ADD] -  project.settings ', project.settings);
-         this.logger.log('[PRJCT-EDIT-ADD] -  project.settings displayWidget ', project.settings.displayWidget);
-         this.logger.log('[PRJCT-EDIT-ADD] -  project.settings .hasOwnProperty(displayWidget) ', project.settings.hasOwnProperty('displayWidget'));
-          if (project.settings.hasOwnProperty('displayWidget') ) {
+          this.logger.log('[PRJCT-EDIT-ADD] -  project.settings displayWidget ', project.settings.displayWidget);
+          this.logger.log('[PRJCT-EDIT-ADD] -  project.settings .hasOwnProperty(displayWidget) ', project.settings.hasOwnProperty('displayWidget'));
+          if (project.settings.hasOwnProperty('displayWidget')) {
 
-            if (project.settings.displayWidget === true ) {
+            if (project.settings.displayWidget === true) {
               this.displaySupportWidget = true
               this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
             } else if (project.settings.displayWidget === false) {
               this.displaySupportWidget = false;
               this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
             }
-         
-          } else  if (!project.settings.hasOwnProperty('displayWidget') ){
+
+          } else if (!project.settings.hasOwnProperty('displayWidget')) {
             this.displaySupportWidget = true
             this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget, 'so set to true displaySupportWidget ', this.displaySupportWidget);
           }
@@ -2539,14 +2542,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           } else {
             this.reassignment_on = false;
           }
-          
+
           if (project.settings.current_agent_my_chats_only) {
             this.agents_can_see_only_own_convs = project.settings.current_agent_my_chats_only
           } else {
             this.agents_can_see_only_own_convs = false;
           }
 
-          
+          if (project.settings.chatbots_attributes_hidden) {
+            this.areHideChatbotAttributesInConvDtls = project.settings.chatbots_attributes_hidden
+          } else {
+            this.areHideChatbotAttributesInConvDtls = false;
+          }
+
+
 
           // Automatic unavailable status
           if (project.settings.automatic_idle_chats) {
@@ -2570,6 +2579,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.reassignment_on = false;
           this.automatic_unavailable_status_on = false;
           this.agents_can_see_only_own_convs = false;
+          this.areHideChatbotAttributesInConvDtls = false;
         }
       }
 
@@ -2624,7 +2634,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleAgentViewOnlyOwnConv(event){
+  toggleAgentViewOnlyOwnConv(event) {
     this.logger.log('[PRJCT-EDIT-ADD]- toggleCurrentAgentViewOnlyOwnConv event', event.target.checked);
     this.agents_can_see_only_own_convs = event.target.checked;
     this.projectService.agentViewOnlyOwnConv(this.agents_can_see_only_own_convs).then((result) => {
@@ -2636,11 +2646,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  toggleVisibilityOfChatbotAttributes(event) {
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleVisibilityOfChatbotAttributes', event.target.checked);
+    this.areHideChatbotAttributesInConvDtls = event.target.checked;
+    this.projectService.switchChatbotAttributesVisibility(this.areHideChatbotAttributesInConvDtls).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleVisibilityOfChatbotAttributes RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
   toggleSupportWidgetVisibility($event) {
     // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
     this.displaySupportWidget = $event.target.checked;
     // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility displaySupportWidget: ", this.displaySupportWidget);
-   
+
     this.projectService.enableDisableSupportWidgetVisibility(this.displaySupportWidget).then((result) => {
       // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
@@ -2792,7 +2816,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.DISABLE_UPDATE_BTN = true;
           }
 
-      
+
           prjct['role'] = this.USER_ROLE
           this.auth.projectSelected(prjct, 'project-edit-add update-project-name')
           localStorage.setItem(prjct._id, JSON.stringify(prjct));
@@ -2818,8 +2842,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           //   if (storedProjectName !== prjct['name']) {
 
-             
-              
+
+
           //     // const updatedProjectForStorage: Project = {
           //     //   _id: storedProjectId,
           //     //   name: prjct['name'],
@@ -2830,7 +2854,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           //     // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
           //     localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
 
-            // }
+          // }
           // }
         }
 
@@ -3081,7 +3105,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToWebhookPage() {
     this.logger.log("[PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE > ProjectID: ", this.id_project);
-  
+
 
     if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
       // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B TRIAL ')
@@ -3148,19 +3172,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // const el = document.createElement('div')
     // el.innerHTML = this.featureAvailableOnlyWithPaidPlans
     Swal.fire({
-    
+
       // content: el,
       title: this.upgradePlan,
       text: this.featureAvailableOnlyWithPaidPlans,
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
-    
+
       // buttons: {
       //   cancel: this.cancel,
       //   catch: {

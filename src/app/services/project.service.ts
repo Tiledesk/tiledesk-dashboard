@@ -849,6 +849,28 @@ export class ProjectService {
     return promise;
   }
 
+
+  // --------------------------------------------------------------------------------------
+  // HIDE/DISPLAY Chatbot attributes card in monitor page 
+  // --------------------------------------------------------------------------------------
+  switchChatbotAttributesVisibility (status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV] HIDE/DISPLAY Chatbot attributes status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.chatbots_attributes_hidden": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
   // -------------------------------------
   // New home service
   // -------------------------------------
