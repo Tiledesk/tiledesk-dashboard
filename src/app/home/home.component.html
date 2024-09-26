@@ -248,32 +248,13 @@
         <!-- <div class="test">  -->
         <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
           [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
-          <div class="home-quota-banner-title-wpr" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
-            <div class="home-quota-banner-icon">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                <path
-                  d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
-              </svg>
+       
+          <div class="home-quota-banner-title-wpr">
 
-            </div>
-            <div class="home-quota-banner-title">
-              ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
-              quotas,
-              <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
-            </div>
-          </div>
-          <div class="home-quota-banner-title-wpr"
-            *ngIf="!conversationsRunnedOut && !emailsRunnedOut && !tokensRunnedOut">
-
-            <div class="home-quota-banner-title-no-alert">
+            <div class="home-quota-banner-title-no-alert" [ngClass]="{'home-quota-banner-title-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
               Current usage
-              <!-- <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span> -->
             </div>
           </div>
-          <!-- displayQuotaSkeleton > {{ displayQuotaSkeleton }} -->
-
-
 
           <div class="home-quota-wpr">
             <!-- -------------------------- -->
@@ -283,7 +264,7 @@
               [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
 
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title">Conversations</p>
+                <p class="quote-title link" (click)="goToHistoryAllConvs()"> Conversations</p>
                 <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                 <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
                   You run out of converations
@@ -354,18 +335,26 @@
               </div>
             </div>
           </div>
-          <div class="home-quotas-banner-footer">
-            <!-- You have used a total of <span class="hqb-footer-link"> 90 </span> conversations of which <span class="hqb-footer-link"> 12 </span>  are open and 22 are closed. -->
-
-            Conversations usage detail: total <span class="hqb-footer-link"
+          <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
+            <div class="home-quota-banner-icon">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                  d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+              </svg>
+            </div>
+            ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
+            quotas,
+            <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+            <!-- Conversations usage detail: total <span class="hqb-footer-link"
               (click)="goToHistoryAllConvs()">{{requests_count | number:'1.0-0'}}</span><span
               *ngIf="requests_count > 0">, open <span class="hqb-footer-link"
                 (click)="goToHistoryOpenedConvs()">{{openedConversations}}</span>, closed <span class="hqb-footer-link"
-                (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span>
+                (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span> -->
           </div>
         </div>
         <!--  *ngIf="displayQuotaSkeleton" -->
-        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 179px;">
+        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 111px;">
 
           <!-- <div class="quota-skeleton-title">
               <div class="quota--fake--box"></div>

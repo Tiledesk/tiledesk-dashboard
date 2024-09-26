@@ -3224,8 +3224,8 @@ img {
 
 .home-quota-banner-alert {
   background: #fefae6;
-  border: 6px solid #f55a4e;
-  padding: 6px;
+  // border: 6px solid #f55a4e;
+  padding-bottom: 12px;
 }
 
 .home-quota-banner-title-wpr {
@@ -3237,8 +3237,12 @@ img {
 }
 
 .home-quota-banner-icon {
-  width: 30px;
-  min-width: 30px;
+  // width: 30px;
+  // min-width: 30px;
+  width: 21px;
+  min-width: 21px;
+  vertical-align: middle;
+  height: 21px;
 }
 
 .home-quota-banner-icon svg {
@@ -3262,22 +3266,27 @@ img {
   // display: flex;
   // flex-direction: row;
   // justify-content: center;
-  margin-top: 34px;
-  margin-bottom: 35px;
-  font-size: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  // margin: 20px 0px;
+  font-size: 20px;
   font-weight: 600;
   font-family: var(--header-font-family);
   color: #3ea9f5;
 }
 
-.home-quota-banner-title .sales-mail-to {
+.home-quota-banner-title-alert{
+  margin-bottom: 2px !important;
+}
+
+.sales-mail-to {
   color: #3ea9f5;
   font-weight: 500;
   cursor: pointer;
   // margin-left: 6px;
 }
 
-.home-quota-banner-title .sales-mail-to:hover {
+.sales-mail-to:hover {
   text-decoration: underline;
 }
 
@@ -3306,11 +3315,11 @@ img {
   text-align: right;
 }
 
-.home-quote-container-tokens-runned-out{
+.home-quote-container-tokens-runned-out {
   margin-top: 18px;
 }
 
-.home-quote-container-email-runned-out{
+.home-quote-container-email-runned-out {
   margin-top: 18px;
 }
 
@@ -3321,12 +3330,27 @@ img {
   font-family: var(--header-font-family);
 }
 
+.quote-title.link {
+  color: var(--blue-light);
+  cursor: pointer;
+}
+
+.quote-title.link:hover { 
+ text-decoration: underline;
+}
+
+
 .home-quotas-banner-footer {
-    text-align: center;
-    margin-top: 18px;
-    font-family: var(--header-font-family);
-    font-weight: 400;
-    font-size: 14px;
+  text-align: center;
+  margin-top: 12px;
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .hqb-footer-link {
@@ -3334,9 +3358,10 @@ img {
   cursor: pointer !important;
   font-weight: 500;
 }
-.hqb-footer-link:hover { 
+
+.hqb-footer-link:hover {
   text-decoration: underline;
-} 
+}
 
 .hide-expired-subscription-indicator {
   display: none;
