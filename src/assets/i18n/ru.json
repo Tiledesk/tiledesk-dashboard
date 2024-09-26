@@ -83,6 +83,7 @@
     "CurrentUsage": "Текущее использование",
     "Conversations": "Разговоры",
     "TotalConversationsUsage": "Общее использование разговоров",
+    "OpenConversations":"Открыть",
     "TotalAITokensUsage": "Общее использование AI Tokens",
     "TotalEmailUsage": "Общее использование электронной почты",
     "Email": "Электронная почта",

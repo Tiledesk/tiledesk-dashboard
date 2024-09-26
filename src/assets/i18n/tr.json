@@ -83,6 +83,7 @@
     "CurrentUsage": "Güncel kullanım",
     "Conversations": "Konuşmalar",
     "TotalConversationsUsage": "Toplam konuşma kullanımı",
+    "OpenConversations":"Açık",
     "TotalAITokensUsage": "Tokens AI'nın toplam kullanımı",
     "TotalEmailUsage": "Toplam e-posta kullanımı",
     "Email": "E-posta",

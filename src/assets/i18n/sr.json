@@ -83,6 +83,7 @@
     "CurrentUsage": "Тренутна употреба",
     "Conversations": "Разговори",
     "TotalConversationsUsage": "Укупна употреба разговора",
+    "OpenConversations":"Отворено",
     "TotalAITokensUsage": "Укупна употреба AI Tokens",
     "TotalEmailUsage": "Укупна употреба е-поште",
     "Email": "Емаил",

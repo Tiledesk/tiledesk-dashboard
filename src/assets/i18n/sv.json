@@ -83,6 +83,7 @@
     "CurrentUsage": "Nuvarande användning",
     "Conversations": "Samtal",
     "TotalConversationsUsage": "Total användning av konversationer",
+    "OpenConversations":"Öppna",
     "TotalAITokensUsage": "Total användning av Tokens AI",
     "TotalEmailUsage": "Total e-postanvändning",
     "Email": "E-post",

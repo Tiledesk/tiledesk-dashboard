@@ -83,6 +83,7 @@
     "CurrentUsage": "Поточне використання",
     "Conversations": "Розмови",
     "TotalConversationsUsage": "Загальне використання розмов",
+    "OpenConversations":"відкритий",
     "TotalAITokensUsage": "Загальне використання токенів AI",
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",
     "Email": "Електронна пошта",

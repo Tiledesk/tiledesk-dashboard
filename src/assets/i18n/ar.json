@@ -83,6 +83,7 @@
     "CurrentUsage": "الاستخدام الحالي",
     "Conversations": "المحادثات",
     "TotalConversationsUsage": "إجمالي استخدام المحادثات",
+    "OpenConversations":"مفتوح",
     "TotalAITokensUsage": "إجمالي استخدام Tokens AI",
     "TotalEmailUsage": "إجمالي استخدام البريد الإلكتروني",
     "Email": "بريد إلكتروني",

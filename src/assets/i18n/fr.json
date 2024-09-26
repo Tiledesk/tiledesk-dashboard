@@ -83,6 +83,7 @@
     "CurrentUsage": "Utilisation actuelle",
     "Conversations": "Conversations",
     "TotalConversationsUsage": "Utilisation totale des conversations",
+    "OpenConversations":"Ouvrir",
     "TotalAITokensUsage": "Utilisation totale des Tokens AI",
     "TotalEmailUsage": "Utilisation totale des e-mails",
     "Email": "E-mail",
