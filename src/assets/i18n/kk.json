@@ -82,6 +82,8 @@
     "Temporary":"уақытша",
     "CurrentUsage": "Ағымдағы пайдалану",
     "Conversations": "Әңгімелер",
+    "OpenConvsCount": "{{conv_num}} ашық сөйлесу",
+    "ClosedConvsCount": "{{conv_num}} жабық әңгіме",
     "TotalConversationsUsage": "Сөйлесулердің жалпы пайдаланылуы",
     "TotalAITokensUsage": "Токендерді AI толық пайдалануы",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",

@@ -82,6 +82,8 @@
     "Temporary":"Geçici",
     "CurrentUsage": "Güncel kullanım",
     "Conversations": "Konuşmalar",
+    "OpenConvsCount": "{{conv_num}} açık konuşma",
+    "ClosedConvsCount": "{{conv_num}} kapalı görüşme",
     "TotalConversationsUsage": "Toplam konuşma kullanımı",
     "TotalAITokensUsage": "Tokens AI'nın toplam kullanımı",
     "TotalEmailUsage": "Toplam e-posta kullanımı",

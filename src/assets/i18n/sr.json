@@ -82,6 +82,8 @@
     "Temporary":"Привремени",
     "CurrentUsage": "Тренутна употреба",
     "Conversations": "Разговори",
+    "OpenConvsCount": "{{conv_num}} отворених конверзација",
+    "ClosedConvsCount": "{{conv_num}} затворених конверзација",
     "TotalConversationsUsage": "Укупна употреба разговора",
     "TotalAITokensUsage": "Укупна употреба AI Tokens",
     "TotalEmailUsage": "Укупна употреба е-поште",

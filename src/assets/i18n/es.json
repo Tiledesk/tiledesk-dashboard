@@ -82,6 +82,8 @@
     "Temporary":"Temporaria",
     "CurrentUsage": "Uso actual",
     "Conversations": "Conversaciones",
+    "OpenConvsCount": "{{conv_num}} conversaciones abiertas",
+    "ClosedConvsCount": "{{conv_num}} conversaciones cerradas",
     "TotalConversationsUsage": "Uso total de conversaciones",
     "TotalAITokensUsage": "Uso total de Tokens AI",
     "TotalEmailUsage": "Uso total del correo electrónico",

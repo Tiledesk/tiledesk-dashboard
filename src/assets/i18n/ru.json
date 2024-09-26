@@ -82,6 +82,8 @@
     "Temporary":"Временный",
     "CurrentUsage": "Текущее использование",
     "Conversations": "Разговоры",
+    "OpenConvsCount": "{{conv_num}} открытых разговоров",
+    "ClosedConvsCount": "{{conv_num}} закрытых разговоров",
     "TotalConversationsUsage": "Общее использование разговоров",
     "TotalAITokensUsage": "Общее использование AI Tokens",
     "TotalEmailUsage": "Общее использование электронной почты",

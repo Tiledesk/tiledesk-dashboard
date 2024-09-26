@@ -82,6 +82,8 @@
     "Temporary":"Vaqtinchalik",
     "CurrentUsage": "Joriy foydalanish",
     "Conversations": "Suhbatlar",
+    "OpenConvsCount": "{{conv_num}} ta ochiq suhbat",
+    "ClosedConvsCount": "{{conv_num}} ta yopiq suhbat",
     "TotalConversationsUsage": "Umumiy suhbatlardan foydalanish",
     "TotalAITokensUsage": "Jami AI Tokens foydalanish",
     "TotalEmailUsage": "Jami elektron pochtadan foydalanish",

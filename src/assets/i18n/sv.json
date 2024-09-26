@@ -82,6 +82,8 @@
     "Temporary":"Geçici",
     "CurrentUsage": "Nuvarande användning",
     "Conversations": "Samtal",
+    "OpenConvsCount": "{{conv_num}} öppna konversationer",
+    "ClosedConvsCount": "{{conv_num}} stängda konversationer",
     "TotalConversationsUsage": "Total användning av konversationer",
     "TotalAITokensUsage": "Total användning av Tokens AI",
     "TotalEmailUsage": "Total e-postanvändning",

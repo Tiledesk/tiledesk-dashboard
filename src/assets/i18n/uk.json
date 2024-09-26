@@ -82,6 +82,8 @@
     "RequestsForAgent": "Розмови для агента",
     "CurrentUsage": "Поточне використання",
     "Conversations": "Розмови",
+    "OpenConvsCount": "{{conv_num}} відкритих бесід",
+    "ClosedConvsCount": "{{conv_num}} закритих бесід",
     "TotalConversationsUsage": "Загальне використання розмов",
     "TotalAITokensUsage": "Загальне використання токенів AI",
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",

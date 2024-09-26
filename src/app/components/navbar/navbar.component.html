@@ -177,8 +177,8 @@
                               </h2>
                               <!-- <span  class="quota-plan-badge">Free</span> -->
                             </div>
-                            <p class="quota-partial-count-link" (click)="goToHistoryOpenedConvs()">{{openedConversations}} <span style="text-transform: lowercase;"> {{'VisitorsPage.Open' | translate }}</span></p>
-                            <p class="quota-partial-count-link" (click)="goToHistoryClosedConvs()" >{{closedConversations}} <span style="text-transform: lowercase;"> {{'Closed' | translate }}</span></p>
+                            <p class="quota-partial-count-link" (click)="goToHistoryOpenedConvs()"> <span style="text-transform: lowercase;"> {{'OpenConvsCount' | translate: {conv_num: openedConversations}  }}</span></p>
+                            <p class="quota-partial-count-link" (click)="goToHistoryClosedConvs()"><span style="text-transform: lowercase;"> {{'ClosedConvsCount' | translate: {conv_num: closedConversations} }}</span></p>
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">

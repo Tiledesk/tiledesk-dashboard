@@ -83,6 +83,8 @@
     "RequestsForAgent": "Agent üçün söhbətlər",
     "CurrentUsage": "Cari istifadə",
     "Conversations": "Söhbətlər",
+    "OpenConvsCount": "{{conv_num}} açıq söhbət",
+    "ClosedConvsCount": "{{conv_num}} qapalı söhbət",
     "TotalConversationsUsage": "Ümumi söhbət istifadəsi",
     "TotalAITokensUsage": "Tokens AI-nin ümumi istifadəsi",
     "TotalEmailUsage": "Ümumi e-poçt istifadəsi",
