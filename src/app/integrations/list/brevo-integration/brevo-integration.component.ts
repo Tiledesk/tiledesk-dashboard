@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 
@@ -17,16 +16,18 @@ export class BrevoIntegrationComponent implements OnInit {
   keyVisibile: boolean = false;
   isVerified: boolean;
 
+  translateparams: any;
+
   constructor(
     private integrationService: IntegrationService,
     private logger: LoggerService,
-    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
     this.logger.debug("[INT-Brevo] integration ", this.integration)
+    this.translateparams = { intname: "Brevo" }
     if (this.integration.value.apikey) {
-      this.checkKey(this.integration.value.apikey);
+      this.checkKey();
     }
   }
 
@@ -41,13 +42,13 @@ export class BrevoIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    // this.checkKey(this.integration.value.apikey).then((status) => {
-    //   let data = {
-    //     integration: this.integration,
-    //     isVerified: status
-    //   }
-    //   this.onUpdateIntegration.emit(data);
-    // })
+    this.checkKey().then((status) => {
+      let data = {
+        integration: this.integration,
+        isVerified: status
+      }
+      this.onUpdateIntegration.emit(data);
+    })
   }
 
   deleteIntegration() {
@@ -55,7 +56,19 @@ export class BrevoIntegrationComponent implements OnInit {
     this.onDeleteIntegration.emit(this.integration);
   }
 
-  checkKey(key: string) {
+  checkKey() {
+    return new Promise((resolve) => {
+      let url = "https://api.brevo.com/v3/contacts?limit=2";
+      let apikey = 'Basic ' + this.integration.value.apikey;
+      this.integrationService.checkIntegrationKeyValidity(url, null, apikey).subscribe((resp: any) => {
+        this.isVerified = true;
+        resolve(true);
+      }, (error) => {
+        this.logger.error("[INT-Customer.io] Key verification failed: ", error);
+        this.isVerified = false;
+        resolve(false);
+      })
+    })
   }
 
   resetValues() {

@@ -6,7 +6,8 @@
     <div class="kb-details-form-container">
 
         <div class="input-container">
-            <span class="input-label">{{ 'Name' | translate }}</span>
+            <span class="input-label" *ngIf="kb.type !== 'faq'">{{ 'Name' | translate }}</span>
+            <span class="input-label" *ngIf="kb.type === 'faq'">{{ 'FaqPage.Question' | translate }}</span>
             <input [(ngModel)]="name" type="text" name="name" class="custom-input">
 
             <!-- ------------------------------------ -->
@@ -23,10 +24,18 @@
 
             </div>
             <!-- ------------------------------------ -->
-            <!-- Use cese text -->
+            <!-- Use case text -->
             <!-- ------------------------------------ -->
             <div *ngIf="kb.type === 'text'">
                 <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
+                <textarea [(ngModel)]="content" type="text" name="content" class="custom-textarea" rows="4"></textarea>
+            </div>
+
+            <!-- ------------------------------------ -->
+            <!-- Use case text -->
+            <!-- ------------------------------------ -->
+            <div *ngIf="kb.type === 'faq'">
+                <span class="input-label">{{ 'FaqPage.Answer' | translate }}</span>
                 <textarea [(ngModel)]="content" type="text" name="content" class="custom-textarea" rows="4"></textarea>
             </div>
 
@@ -72,7 +81,7 @@
         {{ "Cancel" | translate }}
     </button>
 
-    <button *ngIf="kb.type === 'text'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
+    <button *ngIf="kb.type === 'text' || kb.type === 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
