@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.27-rc4
+- Fixes translations
+
 ### 2.7.27-rc3
 - Adds an icon to indicate the conversations assigned where there is no user interaction
 
