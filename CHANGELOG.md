@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.27-rc6
+- Improves the quotas current usage panel and home page section
+
 ### 2.7.27-rc5
 - Improves the quotas current usage panel and home page section
 
