@@ -577,6 +577,16 @@ button.close {
   background: var(--card-background-color) !important;
 }
 
+.assign-reassign-modal-card-in-accordion { 
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  border-radius: 0px !important;
+  border-top: 1px solid #e5effe !important;
+  border-bottom: unset !important;
+  border-left: unset !important;
+  border-right: unset !important;
+}
+
 .assign-reassign-modal-text-col1 {
   font-size: 14px;
   font-weight: 400;

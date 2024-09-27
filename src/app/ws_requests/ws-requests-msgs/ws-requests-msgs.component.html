@@ -1419,7 +1419,8 @@
                         <!-- ------------------------------------------------------------------------------------ -->
                         <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
                         <!-- ------------------------------------------------------------------------------------ -->
-                        <svg *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject && request?.preflight === false"
+                        <svg
+                          *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject && request?.preflight === false"
                           class="header-conv-svg-icon" height="24" width="24" viewBox="0 0 58.1 53.9"
                           xml:space="preserve" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
@@ -1479,7 +1480,8 @@
                               c0.5,0,0.9-0.5,0.9-1.1V22z" />
                         </svg> -->
 
-                        <img *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject && request?.preflight === false"
+                        <img
+                          *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject && request?.preflight === false"
                           src="assets/img/request_icons/status200_no_joined_internal.svg" class="header-conv-svg-icon"
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
@@ -1488,8 +1490,9 @@
                         <img *ngIf="request?.status == 200 && request?.preflight === true"
                           src="assets/img/request_icons/status200_preflight.svg" class="header-conv-svg-icon"
                           matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'RequestMsgsPage.ConversationAssignedPreflight' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100" style="width: 24px;height: 24px;">
+                          matTooltip="{{ 'RequestMsgsPage.ConversationAssignedPreflight' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
+                          style="width: 24px;height: 24px;">
                       </div>
 
 
@@ -1754,7 +1757,7 @@
                             class="form-control input-md" title="{{ requestDuration }}" disabled
                             style="width: 240px;cursor: default;" value="{{ requestDuration }}">
 
-                            <!-- <div *ngIf="requestDuration === 'N/A' ">
+                          <!-- <div *ngIf="requestDuration === 'N/A' ">
                               <span class="material-icons-outlined">
                                 question_mark
                                 </span>
@@ -1906,18 +1909,18 @@
                     <li class="sms-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO">
                       <div id="contact-row-sms-channel" class="contact-row">
                         <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  height="20px" width="20px"
-                              style="min-width: 20px; min-height: 20px;margin-right: 13px;" fill="none"
-                              matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'MessageChannel' | translate }}: SMS" #tooltip="matTooltip"
-                              matTooltipPosition='right' matTooltipHideDelay="100">
-                            <path d="M256 448c141.4 0 256-93.1 256-208S397.4 32 256 32S0 125.1 0 240c0 45.1 17.7 86.8 47.7 120.9c-1.9 24.5-11.4 46.3-21.4 62.9c-5.5 9.2-11.1 16.6-15.2 21.6c-2.1 2.5-3.7 4.4-4.9 5.7c-.6 .6-1 1.1-1.3 1.4l-.3 .3c0 0 0 0 0 0c0 0 0 0 0 0s0 0 0 0s0 0 0 0c-4.6 4.6-5.9 11.4-3.4 17.4c2.5 6 8.3 9.9 14.8 9.9c28.7 0 57.6-8.9 81.6-19.3c22.9-10 42.4-21.9 54.3-30.6c31.8 11.5 67 17.9 104.1 17.9zM96 212.8c0-20.3 16.5-36.8 36.8-36.8l19.2 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-19.2 0c-2.7 0-4.8 2.2-4.8 4.8c0 1.6 .8 3.1 2.2 4l29.4 19.6c10.3 6.8 16.4 18.3 16.4 30.7c0 20.3-16.5 36.8-36.8 36.8L112 304c-8.8 0-16-7.2-16-16s7.2-16 16-16l27.2 0c2.7 0 4.8-2.2 4.8-4.8c0-1.6-.8-3.1-2.2-4l-29.4-19.6C102.2 236.7 96 225.2 96 212.8zM372.8 176l19.2 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-19.2 0c-2.7 0-4.8 2.2-4.8 4.8c0 1.6 .8 3.1 2.2 4l29.4 19.6c10.2 6.8 16.4 18.3 16.4 30.7c0 20.3-16.5 36.8-36.8 36.8L352 304c-8.8 0-16-7.2-16-16s7.2-16 16-16l27.2 0c2.7 0 4.8-2.2 4.8-4.8c0-1.6-.8-3.1-2.2-4l-29.4-19.6c-10.2-6.8-16.4-18.3-16.4-30.7c0-20.3 16.5-36.8 36.8-36.8zm-152 6.4L256 229.3l35.2-46.9c4.1-5.5 11.3-7.8 17.9-5.6s10.9 8.3 10.9 15.2l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48-19.2 25.6c-3 4-7.8 6.4-12.8 6.4s-9.8-2.4-12.8-6.4L224 240l0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-6.9 4.4-13 10.9-15.2s13.7 .1 17.9 5.6z"/>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="20px" width="20px"
+                            style="min-width: 20px; min-height: 20px;margin-right: 13px;" fill="none"
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}: SMS"
+                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                            <path
+                              d="M256 448c141.4 0 256-93.1 256-208S397.4 32 256 32S0 125.1 0 240c0 45.1 17.7 86.8 47.7 120.9c-1.9 24.5-11.4 46.3-21.4 62.9c-5.5 9.2-11.1 16.6-15.2 21.6c-2.1 2.5-3.7 4.4-4.9 5.7c-.6 .6-1 1.1-1.3 1.4l-.3 .3c0 0 0 0 0 0c0 0 0 0 0 0s0 0 0 0s0 0 0 0c-4.6 4.6-5.9 11.4-3.4 17.4c2.5 6 8.3 9.9 14.8 9.9c28.7 0 57.6-8.9 81.6-19.3c22.9-10 42.4-21.9 54.3-30.6c31.8 11.5 67 17.9 104.1 17.9zM96 212.8c0-20.3 16.5-36.8 36.8-36.8l19.2 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-19.2 0c-2.7 0-4.8 2.2-4.8 4.8c0 1.6 .8 3.1 2.2 4l29.4 19.6c10.3 6.8 16.4 18.3 16.4 30.7c0 20.3-16.5 36.8-36.8 36.8L112 304c-8.8 0-16-7.2-16-16s7.2-16 16-16l27.2 0c2.7 0 4.8-2.2 4.8-4.8c0-1.6-.8-3.1-2.2-4l-29.4-19.6C102.2 236.7 96 225.2 96 212.8zM372.8 176l19.2 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-19.2 0c-2.7 0-4.8 2.2-4.8 4.8c0 1.6 .8 3.1 2.2 4l29.4 19.6c10.2 6.8 16.4 18.3 16.4 30.7c0 20.3-16.5 36.8-36.8 36.8L352 304c-8.8 0-16-7.2-16-16s7.2-16 16-16l27.2 0c2.7 0 4.8-2.2 4.8-4.8c0-1.6-.8-3.1-2.2-4l-29.4-19.6c-10.2-6.8-16.4-18.3-16.4-30.7c0-20.3 16.5-36.8 36.8-36.8zm-152 6.4L256 229.3l35.2-46.9c4.1-5.5 11.3-7.8 17.9-5.6s10.9 8.3 10.9 15.2l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48-19.2 25.6c-3 4-7.8 6.4-12.8 6.4s-9.8-2.4-12.8-6.4L224 240l0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-6.9 4.4-13 10.9-15.2s13.7 .1 17.9 5.6z" />
                           </svg>
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="sms-channel" type="text" data-id="sms-channel"
-                            class="form-control input-md" title="SMS" disabled
-                            value="SMS" style="cursor: default;width: 240px;">
+                            class="form-control input-md" title="SMS" disabled value="SMS"
+                            style="cursor: default;width: 240px;">
                         </div>
                       </div>
                     </li>
@@ -1925,7 +1928,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel voice  -->
                     <!-- ---------------------------------------- -->
-                    <li class="voice-channel"  *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
+                    <li class="voice-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
                       <div id="contact-row-voice-channel" class="contact-row">
                         <span>
 
@@ -1940,17 +1943,16 @@
                           </svg> -->
                           <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
                             fill="none" style="min-width: 20px; min-height: 20px;margin-right: 13px;"
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'MessageChannel' | translate }}: Voice" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}: Voice"
+                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path d="M7 18h2V6H7v12zm4 4h2V2h-2v20zm-8-8h2v-4H3v4zm12 4h2V6h-2v12zm4-8v4h2v-4h-2z" />
                           </svg>
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="voice-channel" type="text" data-id="voice-channel"
-                            class="form-control input-md" title="voice" disabled
-                            value="Voice" style="cursor: default;width: 240px;">
+                            class="form-control input-md" title="voice" disabled value="Voice"
+                            style="cursor: default;width: 240px;">
                         </div>
                       </div>
                     </li>
@@ -2268,7 +2270,7 @@
                   <!--  ------------------------------------------------------------------------------------- -->
                   <!--  @ Chatbot attributes accordion  Not used (see in ts this.getBotConversationAttribute) -->
                   <!--  ------------------------------------------------------------------------------------- -->
-                  <ng-container *ngIf="HIDE_CHATBOT_ATTRIBUTES === false"> 
+                  <ng-container *ngIf="HIDE_CHATBOT_ATTRIBUTES === false">
                     <div id="chatbot-attributes-accordion"
                       *ngIf="tab0 && botConversationArray && botConversationArray.length > 0">
                       <div class="chatbot-conv-accordion-wpr"
@@ -3193,17 +3195,6 @@
             <!-- --- new ---- -->
 
 
-            <!-- ----------------------------------------------------------------------------- -->
-            <!-- @ RIGHT SIDEBAR - CONTACT IF CHAT PANEL MODE IS TRUE -->
-            <!-- ----------------------------------------------------------------------------- -->
-
-
-
-            <!-- ------------------------------------------------------ -->
-            <!-- @ Attributes decoded JWT accordion -->
-            <!-- ------------------------------------------------------ -->
-
-
 
             <!-- ------------------------------------------------------- -->
             <!-- NEW - EVENTS -->
@@ -3244,66 +3235,6 @@
                         </p>
                       </div>
                     </div> -->
-
-            <!--  ---------------------------------------------------------------- -->
-            <!--  @ Apps row -->
-            <!--  ---------------------------------------------------------------- -->
-
-
-            <!--  ---------------------------------------------------------------- -->
-            <!--  @ Pre-chat form accordion -->
-            <!--  ---------------------------------------------------------------- -->
-
-
-
-            <!--  ---------------------------------------------------------------- -->
-            <!--  @ Contact coversation accordion -->
-            <!--  ---------------------------------------------------------------- -->
-
-
-
-            <!--  ---------------------------------------------------------------- -->
-            <!--  @ Ticket accordion -->
-            <!--  ---------------------------------------------------------------- -->
-
-
-
-
-
-            <!-- ----------------------------------------------------------------------------- -->
-            <!-- Agents -->
-            <!-- ----------------------------------------------------------------------------- -->
-
-
-
-
-            <!--  ----------------------------------------------------------------------------- -->
-            <!--  Tags -->
-            <!--  ----------------------------------------------------------------------------- -->
-            <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-
-
-            <!-- ----------------------------------------------------------------------------- -->
-            <!-- @ Notes accordion -->
-            <!-- ----------------------------------------------------------------------------- -->
-
-
-            <!-- ------------------------------------------------------ -->
-            <!-- Rating  -->
-            <!-- ------------------------------------------------------ -->
-
-
-
-            <!--  ---------------------------------------------------------------- -->
-            <!--  @ Create Jira issue -->
-            <!--  ---------------------------------------------------------------- -->
-
-
-            <!--  ---------------------------------------------------------------- -->
-            <!--  @ Attributes accordion -->
-            <!--  ---------------------------------------------------------------- -->
-
 
           </div>
         </div>
@@ -3369,11 +3300,11 @@
           <!-- modal subtitle -->
           <!-- --------------------------------------------------------------------------------------------- -->
           <div class="col-md-12" *ngIf="CHAT_PANEL_MODE === false">
-            <span *ngIf="actionInModal === 'reassign'">
+            <!-- <span *ngIf="actionInModal === 'reassign'">
               <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                 {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
               </h4>
-            </span>
+            </span> -->
 
             <span *ngIf="actionInModal === 'invite'">
               <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
@@ -3382,9 +3313,723 @@
             </span>
           </div>
 
+
+
           <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
 
-            <div class="card assign-reassign-modal-card" style="margin-top:5px; margin-bottom:5px"
+            <mat-accordion *ngIf="actionInModal === 'reassign'">
+              <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                   {{'HumanTeammates' | translate }} ( {{projectUsersList?.length}} )
+                  </mat-panel-title>
+                  <!-- <mat-panel-description>
+                    1 Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                  </mat-panel-description> -->
+                </mat-expansion-panel-header>
+                <div class="card assign-reassign-modal-card assign-reassign-modal-card-in-accordion"
+                  [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
+
+                  <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
+                  <!-- table-responsive -->
+                  <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive"
+                    [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+
+                    <table class="table table-hover assign-reassign-modal-table">
+                      <thead>
+                        <tr>
+
+                          <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
+                            <span style="color: #566787"
+                              [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                              {{ "UsersPage.User" | translate }}
+                            </span>
+
+                            <!-- --------------------------------------------------------------------------------------------------- -->
+                            <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
+                            <!-- --------------------------------------------------------------------------------------------------- -->
+                            <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
+                              <span *ngIf="actionInModal === 'reassign'">
+                                <h4 style="font-weight:400"
+                                  [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                  {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
+                                </h4>
+                              </span>
+
+                              <span *ngIf="actionInModal === 'invite'">
+                                <h4 style="font-weight:400"
+                                  [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                  {{ "VisitorsPage.InviteAnotherUserToServe" | translate }}
+                                </h4>
+                              </span>
+                            </span>
+
+                          </th>
+
+                          <th *ngIf="CHAT_PANEL_MODE === false">
+                            <span style="color: #566787">
+
+                              {{ "Assignee" | translate }}
+
+                            </span>
+                          </th>
+
+                          <th *ngIf="CHAT_PANEL_MODE === false">
+                            <span style="color: #566787; white-space: nowrap;">
+                              {{ "UserRole" | translate }}
+                            </span>
+                          </th>
+
+
+                          <th *ngIf="!isMobile && CHAT_PANEL_MODE === false"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Project users for -->
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <tr *ngFor="let projectUser of projectUsersList" class="table-row">
+
+                          <td style="width: 25px; cursor:pointer"
+                            (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+
+                            <!-- --------------------------------------- -->
+                            <!-- Usecase  Firebase -->
+                            <!-- --------------------------------------- -->
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
+                              [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/no_image_user.png'" />
+
+                            <!-- --------------------------------------- -->
+                            <!-- Usecase  Native -->
+                            <!-- --------------------------------------- -->
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
+                              [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              onerror="this.src='assets/img/no_image_user.png'" />
+
+
+                            <div class="ws_request_msgs__status-icon" [ngClass]="{
+                                        'is-user-online' : projectUser?.user_available === true && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
+                                        'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus),
+                                        'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive',
+                                        'ws_request_msgs__status-icon-chat-panel-mode' : CHAT_PANEL_MODE === true
+                                       }">
+                            </div>
+                          </td>
+
+                          <td style="cursor:pointer"
+                            (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                            <p class="assign-reassign-modal-text-col1">
+                              {{ projectUser?.id_user?.firstname }} {{ projectUser?.id_user?.lastname }}
+
+
+                              <!-- --------------------------------------------------- -->
+                              <!-- user role in CHAT_PANEL_MODE x Project Users -->
+                              <!-- --------------------------------------------------- -->
+                              <span *ngIf="CHAT_PANEL_MODE === true" class="assign-reassign-modal-subtext-col1">
+                                <span> ({{ projectUser?.role | translate}}) </span>
+                              </span>
+                            </p>
+                            <span class="assign-reassign-modal-text-col2">
+                              <span> {{ projectUser?.id_user?.email }} </span>
+                            </span>
+
+                            <!-- --------------------------------------------------- -->
+                            <!-- icon 'done' in CHAT_PANEL_MODE x Project Users -->
+                            <!-- --------------------------------------------------- -->
+                            <div class="done-wpr" style="position: relative;" *ngIf="CHAT_PANEL_MODE === true">
+                              <div style="position: absolute; top: -33px; right: 0;"
+                                *ngIf="projectUser?.is_joined_to_request === true">
+                                <i class="material-icons assign-reassign-modal-assignee-icon">
+                                  done
+                                </i>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                            <div *ngIf="projectUser?.is_joined_to_request === true">
+                              <i class="material-icons" style="margin-left: 14px;color: #73AF55;">
+                                done
+                              </i>
+                            </div>
+                          </td>
+
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                            {{ projectUser?.role | translate}}
+                          </td>
+
+
+                          <!-- ------------------------------------------------------ -->
+                          <!-- column displayed on the over -->
+                          <!-- ------------------------------------------------------ -->
+                          <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer;"
+                            (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+
+                            <div class="assign-request">
+                              <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
+                                <span *ngIf="actionInModal === 'reassign'">
+                                  {{ 'VisitorsPage.ReassignTo' | translate}}
+                                </span>
+                                <span *ngIf="actionInModal === 'invite'">
+                                  <!-- {{ 'VisitorsPage.AssignTo' | translate}} -->
+                                  {{ 'Add' | translate}}
+
+                                </span>
+                              </p>
+                              <span
+                                style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; text-transform: lowercase;">
+                                {{ projectUser?.id_user?.email }}
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'Chatbots' | translate}}  ( {{bots?.length}} )
+                  </mat-panel-title>
+                  <!-- <mat-panel-description>
+                    2 Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                  </mat-panel-description> -->
+                </mat-expansion-panel-header>
+                <div class="card assign-reassign-modal-card-in-accordion assign-reassign-modal-card"
+                  style="margin-top:5px; margin-bottom:5px"
+                  [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
+
+                  <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
+                  <!-- table-responsive -->
+                  <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive"
+                    [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+
+                    <table class="table table-hover assign-reassign-modal-table">
+                      <thead>
+                        <tr>
+
+                          <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
+                            <span style="color: #566787"
+                              [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                              {{ "UserProfile.Name" | translate }}
+                            </span>
+
+                            <!-- --------------------------------------------------------------------------------------------------- -->
+                            <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
+                            <!-- --------------------------------------------------------------------------------------------------- -->
+                            <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
+                              <span *ngIf="actionInModal === 'reassign'">
+                                <h4 style="font-weight:400"
+                                  [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                  {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
+                                </h4>
+                              </span>
+
+                              <span *ngIf="actionInModal === 'invite'">
+                                <h4 style="font-weight:400"
+                                  [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                  {{ "VisitorsPage.InviteAnotherUserToServe" | translate }}
+                                </h4>
+                              </span>
+                            </span>
+
+                          </th>
+
+                          <th *ngIf="CHAT_PANEL_MODE === false">
+                            <span style="color: #566787">
+
+                              {{ "Assignee" | translate }}
+
+                            </span>
+                          </th>
+
+                          <th *ngIf="CHAT_PANEL_MODE === false">
+                            <span style="color: #566787; white-space: nowrap;">
+                              <!-- {{ "UserRole" | translate }} -->
+                            </span>
+                          </th>
+
+
+                          <th *ngIf="!isMobile && CHAT_PANEL_MODE === false"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <!-- ----------------------------------------------------------------------------- -->
+                        <!-- Bots for -->
+                        <!-- ----------------------------------------------------------------------------- -->
+
+                        <tr *ngFor="let bot of bots" class="table-row">
+
+                          <td style="width: 25px; cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
+
+                            <!-- --------------------------------------- -->
+                            <!-- Usecase Firebase (bot) -->
+                            <!-- --------------------------------------- -->
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
+                              [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                            <!-- --------------------------------------- -->
+                            <!-- Usecase Native (bot) -->
+                            <!-- --------------------------------------- -->
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="ws_requets_msgs__user-img-in-modal"
+                              [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+
+                            <span *ngIf="bot.type === 'internal'">
+                              <img class="ws-request-msgs-bot-type-logo"
+                                [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                src="assets/img/tiledesk_logo_no_text.png" />
+                            </span>
+
+                            <span *ngIf="bot.type === 'external'">
+                              <img class="ws-request-msgs-bot-type-logo"
+                                [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                src="assets/img/external_bot_logo.png" />
+                            </span>
+
+                            <span *ngIf="bot.type === 'dialogflow'">
+                              <img class="ws-request-msgs-bot-type-logo"
+                                [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                src="assets/img/Dialogflow_logo_no_text.png" />
+                            </span>
+
+                            <span *ngIf="bot.type === 'rasa'">
+                              <img class="ws-request-msgs-bot-type-logo"
+                                [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                src="assets/img/rasa_bot_logo.png" />
+                            </span>
+
+
+                            <!-- <span *ngIf="bot.type === 'tilebot'">
+                                <img class="ws-request-msgs-bot-type-logo"
+                                  [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                  src="assets/img/tilebot_logo_small.png" />
+                              </span> -->
+
+                            <span *ngIf="bot.type === 'tilebot'">
+                              <img class="ws-request-msgs-bot-type-logo"
+                                [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                [src]="botLogo" />
+                            </span>
+
+
+                            <!-- <span *ngIf="bot.type === 'tiledesk-ai'">
+                              <img class="ws-request-msgs-bot-type-logo"
+                                [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                                src="assets/img/tiledesk-ai-logo.png" />
+                            </span> -->
+                          </td>
+
+                          <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
+                            <p class="assign-reassign-modal-text-col1">
+                              {{ bot?.name }}
+
+                              <!-- --------------------------------------------------- -->
+                              <!-- string in CHAT_PANEL_MODE x Project Users -->
+                              <!-- --------------------------------------------------- -->
+                              <span *ngIf="CHAT_PANEL_MODE === true" class="assign-reassign-modal-subtext-col1">
+                                <!-- <span> (Bot) </span> -->
+                              </span>
+                            </p>
+                            <!-- <span class="assign-reassign-modal-text-col2">
+                                {{ 'Type' | translate }}:
+                                <span style="text-transform: capitalize;font-weight: 400; ">
+                                  <span *ngIf="bot.type !== 'internal'">
+                                    {{ bot?.type }}
+                                  </span>
+                                  <span *ngIf="bot.type === 'internal'">
+                                    Resolution
+                                  </span>
+                                </span>
+                              </span> -->
+
+                            <!-- --------------------------------------------------- -->
+                            <!-- icon 'done' in CHAT_PANEL_MODE x Bot -->
+                            <!-- --------------------------------------------------- -->
+                            <div class="done-wpr" style="position: relative;" *ngIf="CHAT_PANEL_MODE === true">
+                              <div style="position: absolute; top: -33px; right: 0;"
+                                *ngIf="bot?._id === bot_participant_id">
+                                <i class="material-icons assign-reassign-modal-assignee-icon">
+                                  done
+                                </i>
+                              </div>
+                            </div>
+
+                          </td>
+
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectBot(bot?._id, bot?.name)">
+                            <div *ngIf="bot?._id === bot_participant_id">
+                              <i class="material-icons" style="margin-left: 14px;color: #73AF55;">
+                                done
+                              </i>
+                            </div>
+                          </td>
+
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectBot(bot?._id, bot?.name)">
+                            <!-- Bot -->
+                          </td>
+
+
+                          <!-- ------------------------------------------------------ -->
+                          <!-- column displayed on the over -->
+                          <!-- ------------------------------------------------------ -->
+                          <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectBot(bot?._id, bot?.name)">
+                            <div class="assign-request">
+                              <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
+                                <span *ngIf="actionInModal === 'reassign'">
+                                  {{ 'VisitorsPage.ReassignTo' | translate}}
+                                </span>
+                                <span *ngIf="actionInModal === 'invite'">
+                                  {{ 'VisitorsPage.AssignTo' | translate}}
+                                </span>
+                              </p>
+                              <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                                {{ bot?.name }} (bot)
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+
+
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'Departments' | translate}}  ( {{departments?.length }})
+                  </mat-panel-title>
+                  <!-- <mat-panel-description>
+                    2 Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                  </mat-panel-description> -->
+                </mat-expansion-panel-header>
+                
+              
+                  <!-- -------------------------------------- -->
+                  <!-- modal subtitle -->
+                  <!-- -------------------------------------- -->
+                  <!-- <div class="col-md-12" *ngIf="CHAT_PANEL_MODE === false">
+                    <span>
+                      <h4 style="font-weight:400">
+                        {{ "VisitorsPage.SelectTheDeptsToWhom" | translate }}
+                      </h4>
+                    </span>
+                  </div> -->
+                  <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
+      
+                    <div class="card assign-reassign-modal-card assign-reassign-modal-card-in-accordion"
+                      [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
+      
+                      <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+      
+                      <div *ngIf="!showSpinner_inModalUserList" class="card-content"
+                        [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+      
+                        <table class="table table-hover assign-reassign-modal-table">
+                          <thead>
+                            <tr>
+                              <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
+                                <span style="color: #566787"
+                                  [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                  {{ "Department" | translate }}
+                                </span>
+      
+                                <!-- ------------------------------------------------------------------------------------------------ -->
+                                <!-- the table header if CHAT_PANEL_MODE === true (replace Department abd the above modal subtitle) -->
+                                <!-- ------------------------------------------------------------------------------------------------ -->
+                                <span *ngIf="CHAT_PANEL_MODE === true">
+                                  <h4 style="font-weight:400"
+                                    [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                    {{ "VisitorsPage.SelectTheDeptsToWhom" | translate }}
+                                  </h4>
+                                </span>
+                              </th>
+      
+                              <th *ngIf="CHAT_PANEL_MODE === false">
+                                <span style="color: #566787">
+                                  {{ "Assignee" | translate }}
+                                </span>
+                              </th>
+      
+                              <th *ngIf="CHAT_PANEL_MODE === false">
+                                <span style="color: #566787">
+                                  {{ "Agents" | translate }}
+                                </span>
+                              </th>
+      
+                              <th *ngIf="!isMobile && CHAT_PANEL_MODE === false"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let dept of departments" class="table-row">
+                              
+                                <td style="cursor:pointer; width:1%;" [ngClass]="{'top-alignment' : CHAT_PANEL_MODE === true}"
+                                  (click)="selectDept(dept?.name, dept?._id)">
+                                  <div class="dept---avatar-in-modal"
+                                    [ngStyle]="{'background-color': dept?.dept_name_fillcolour, 'margin-top':  (CHAT_PANEL_MODE === true ) ? '5px' : '' }">
+                                    {{ dept?.dept_name_initial }}
+      
+      
+                                    <span class="default-dept-disabled-badge-in-modal"
+                                      *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT > 0">
+                                      <span class="tool_tip">
+                                        <span class="material-icons">
+                                          unpublished
+                                        </span>
+                                        <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                          <h4 style="font-weight:400"> Default Department {{ 'Disabled' | translate }}
+                                          </h4>
+      
+                                          {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
+                                          <i></i>
+                                        </span>
+                                      </span>
+                                    </span>
+      
+      
+                                    <span class="default-dept-active-badge-in-modal"
+                                      *ngIf="dept?.default === true && COUNT_OF_VISIBLE_DEPT === 0">
+                                      <span class="tool_tip">
+                                        <span class="material-icons">
+                                          check_circle
+                                        </span>
+                                        <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                          <h4 style="font-weight:400"> Default Department {{ 'Enabled' | translate }}
+                                          </h4>
+                                          <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
+                                          {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
+                                          <i></i>
+                                        </span>
+                                      </span>
+                                    </span>
+      
+                                    <!-- // visible / not visible -->
+                                    <span class="dept-not-visible-badge-in-modal"
+                                      *ngIf="dept?.default !== true  && dept?.status === 0">
+                                      <span class="tool_tip">
+                                        <span class="material-icons" style="height: 13px;width: 15px;">
+                                          visibility_off
+      
+                                        </span>
+                                        <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                          <h4 style="font-weight:400">
+                                            {{dept?.name}} {{ 'IsSetToNotVisible' | translate}}
+                                          </h4>
+      
+                                          <i></i>
+                                        </span>
+                                      </span>
+                                    </span>
+      
+      
+                                    <span class="dept-visible-badge-in-modal"
+                                      *ngIf="dept?.default !== true && dept?.status === 1">
+                                      <span class="tool_tip">
+                                        <span class="material-icons" style="height: 13px;width: 15px;">
+                                          visibility
+                                        </span>
+                                        <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
+                                          <h4 style="font-weight:400"> {{dept?.name}}
+                                            {{ 'IsSetToVisible' | translate }}
+                                          </h4>
+      
+                                          <i></i>
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </div>
+                                </td>
+      
+                                <td style="cursor:pointer" (click)="selectDept(dept?.name, dept?._id)">
+                                  <p style="margin-bottom: 0px;"
+                                    [ngStyle]="{'line-height':  (CHAT_PANEL_MODE === true ) ? '14px' : '' }">
+      
+                                    <span class="dept---name" style="display: block;"
+                                      [ngClass]="{'dept---name-in-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                      {{ dept?.name }}
+                                    </span>
+      
+                                    <span class="dept---routing-wpr">
+                                      <span style="font-weight:300;">
+                                        Routing:
+                                      </span>
+                                      {{ dept?.routing }}
+                                    </span>
+      
+      
+                                    <span *ngIf="CHAT_PANEL_MODE === true">
+                                      <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
+                                        <span class="group-label">
+                                          {{ 'DepartmentsPage.Group' | translate }}
+                                        </span>
+                                        <span [ngClass]="{'group-name' : CHAT_PANEL_MODE === true}">
+                                          {{ dept?.hasGroupName}}
+                                        </span>
+                                      </span>
+                                      <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
+                                        <span style="vertical-align: middle;"> {{ dept?.hasGroupName }} </span>
+                                        <i class="material-icons"
+                                          style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                        <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                          {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                                        </span>
+                                      </span>
+      
+                                      <span *ngIf="!dept?.hasGroupName" class="group-name">
+                                        {{ 'DepartmentsPage.AllUsers' | translate }}
+                                      </span>
+      
+                                      <span *ngIf="dept?.id_bot" style="display: block;">
+                                        <span class="bot-label">
+                                          Bot:
+                                        </span>
+      
+                                        <span *ngIf="dept?.hasBot === true" class="bot-name">
+                                          {{ dept?.hasBotName }}
+                                        </span>
+                                        <span *ngIf="dept?.hasBot === false" class="no-bot">
+                                          no bot
+                                        </span>
+                                        <span *ngIf="dept.bot_only == true"
+                                          style="font-size: 12px; color: #7695a5; font-weight: 400">
+                                          {{ 'DepartmentsPage.OnlyBot' | translate }}
+                                        </span>
+                                        <span *ngIf="dept.botHasBeenTrashed == true">
+                                          <i class="material-icons"
+                                            style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                          <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                            {{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </p>
+                                  <!-- --------------------------------------------------- -->
+                                  <!-- icon 'done' in CHAT_PANEL_MODE x DEPTS -->
+                                  <!-- --------------------------------------------------- -->
+                                  <div class="done-wpr" style="position: relative;" *ngIf="CHAT_PANEL_MODE === true">
+                                    <div style="position: absolute; top: -43px; right: 0;"
+                                      *ngIf="request?.department?._id === dept?._id">
+                                      <i class="material-icons assign-reassign-modal-assignee-icon">
+                                        done
+                                      </i>
+                                    </div>
+                                  </div>
+                                </td>
+      
+                                <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                                  (click)="selectDept(dept?.name, dept?._id)">
+                                  <div *ngIf="request?.department?._id === dept?._id">
+                                    <i class="material-icons" style="margin-left: 14px; color: #73AF55;">
+                                      done
+                                    </i>
+                                  </div>
+                                </td>
+      
+      
+                                <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                                  (click)="selectDept(dept?.name, dept?._id)">
+                                  <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
+                                    <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                                      {{ 'DepartmentsPage.Group' | translate }}
+                                    </span>
+                                    {{ dept?.hasGroupName}}
+                                  </span>
+                                  <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
+      
+                                    <span style="vertical-align: middle;"> {{ dept?.hasGroupName }} </span>
+                                    <i class="material-icons"
+                                      style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                    <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                      {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                                    </span>
+                                  </span>
+      
+                                  <span *ngIf="!dept?.hasGroupName" style="font-size:13px">
+                                    {{ 'DepartmentsPage.AllUsers' | translate }}
+                                  </span>
+      
+                                  <span *ngIf="dept?.id_bot" style="display: block;">
+                                    <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                                      Bot:
+                                      <!-- {{ 'DepartmentsPage.ActivatedBot' | translate }} -->
+                                    </span>
+      
+                                    <span *ngIf="dept?.hasBot === true" style="font-size:13px; font-weight:400">
+                                      {{ dept?.hasBotName }}
+                                    </span>
+                                    <span *ngIf="dept?.hasBot === false"
+                                      style="font-size:13px; font-weight:400;color: #bdbdbd;font-style: italic;">
+                                      {{ 'DepartmentsPage.NoBotActivated' | translate }}
+                                    </span>
+                                    <span *ngIf="dept.bot_only == true"
+                                      style="font-size: 12px; color: #7695a5; font-weight: 400">
+                                      {{ 'DepartmentsPage.OnlyBot' | translate }}
+                                    </span>
+                                    <span *ngIf="dept.botHasBeenTrashed == true">
+                                      <i class="material-icons"
+                                        style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                      <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
+                                        'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                      </span>
+                                    </span>
+                                  </span>
+      
+                                </td>
+      
+                                <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer"
+                                  (click)="selectDept(dept?.name, dept?._id)">
+                                  <div class="assign-request">
+                                    <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
+                                      {{ 'ReassignToDept' | translate}}
+                                    </p>
+                                    <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                                      {{ dept?.name }}
+                                    </span>
+                                  </div>
+                                </td>
+                            
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <!-- --------------------------------------------------------------- -->
+            <!-- Project user -->
+            <!-- --------------------------------------------------------------- -->
+            <div *ngIf="actionInModal === 'invite'" class="card assign-reassign-modal-card" style="margin-top:5px; margin-bottom:5px"
               [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
 
               <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
@@ -3549,6 +4194,81 @@
                       </td>
                     </tr>
 
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+            <!-- ---------------------------------------------------------------------------------------------------- -->
+
+            <!-- --------------------------------------------------------------- -->
+            <!-- Chatbot -->
+            <!-- --------------------------------------------------------------- -->
+            <div  *ngIf="actionInModal === '_reassign'" class="card assign-reassign-modal-card"
+              style="margin-top:5px; margin-bottom:5px"
+              [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
+
+              <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
+             
+              <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive"
+                [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+
+                <table class="table table-hover assign-reassign-modal-table">
+                  <thead>
+                    <tr>
+
+                      <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
+                        <span style="color: #566787"
+                          [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                          {{ "UsersPage.User" | translate }}
+                        </span>
+
+                        <!-- --------------------------------------------------------------------------------------------------- -->
+                        <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
+                        <!-- --------------------------------------------------------------------------------------------------- -->
+                        <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
+                          <span *ngIf="actionInModal === 'reassign'">
+                            <h4 style="font-weight:400"
+                              [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                              {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
+                            </h4>
+                          </span>
+
+                          <span *ngIf="actionInModal === 'invite'">
+                            <h4 style="font-weight:400"
+                              [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                              {{ "VisitorsPage.InviteAnotherUserToServe" | translate }}
+                            </h4>
+                          </span>
+                        </span>
+
+                      </th>
+
+                      <th *ngIf="CHAT_PANEL_MODE === false">
+                        <span style="color: #566787">
+
+                          {{ "Assignee" | translate }}
+
+                        </span>
+                      </th>
+
+                      <th *ngIf="CHAT_PANEL_MODE === false">
+                        <span style="color: #566787; white-space: nowrap;">
+                          {{ "UserRole" | translate }}
+                        </span>
+                      </th>
+
+
+                      <th *ngIf="!isMobile && CHAT_PANEL_MODE === false"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+
+
+
 
                     <!-- ----------------------------------------------------------------------------- -->
                     <!-- Bots for -->
@@ -3601,10 +4321,10 @@
 
 
                           <!-- <span *ngIf="bot.type === 'tilebot'">
-                            <img class="ws-request-msgs-bot-type-logo"
-                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="assets/img/tilebot_logo_small.png" />
-                          </span> -->
+                        <img class="ws-request-msgs-bot-type-logo"
+                          [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                          src="assets/img/tilebot_logo_small.png" />
+                      </span> -->
 
                           <span *ngIf="bot.type === 'tilebot'">
                             <img class="ws-request-msgs-bot-type-logo"
@@ -3614,10 +4334,10 @@
 
 
                           <!-- <span *ngIf="bot.type === 'tiledesk-ai'">
-                            <img class="ws-request-msgs-bot-type-logo"
-                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              src="assets/img/tiledesk-ai-logo.png" />
-                          </span> -->
+                        <img class="ws-request-msgs-bot-type-logo"
+                          [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                          src="assets/img/tiledesk-ai-logo.png" />
+                      </span> -->
                         </td>
 
                         <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
@@ -3632,16 +4352,16 @@
                             </span>
                           </p>
                           <!-- <span class="assign-reassign-modal-text-col2">
-                            {{ 'Type' | translate }}:
-                            <span style="text-transform: capitalize;font-weight: 400; ">
-                              <span *ngIf="bot.type !== 'internal'">
-                                {{ bot?.type }}
-                              </span>
-                              <span *ngIf="bot.type === 'internal'">
-                                Resolution
-                              </span>
-                            </span>
-                          </span> -->
+                        {{ 'Type' | translate }}:
+                        <span style="text-transform: capitalize;font-weight: 400; ">
+                          <span *ngIf="bot.type !== 'internal'">
+                            {{ bot?.type }}
+                          </span>
+                          <span *ngIf="bot.type === 'internal'">
+                            Resolution
+                          </span>
+                        </span>
+                      </span> -->
 
                           <!-- --------------------------------------------------- -->
                           <!-- icon 'done' in CHAT_PANEL_MODE x Bot -->
@@ -3696,14 +4416,23 @@
 
                   </tbody>
                 </table>
+
               </div>
             </div>
+
+
+
+            <!-- ---------------------------------------------------------------------------------------------------- -->
+
           </div>
+
+
+
 
           <!-- ------------------------------------------------------------------------------ -->
           <!-- Reassign to a dept -->
           <!-- ------------------------------------------------------------------------------ -->
-          <section *ngIf="actionInModal === 'reassign' && departments?.length > 1">
+          <section *ngIf="actionInModal === '_reassign' && departments?.length > 1">
 
             <!-- -------------------------------------- -->
             <!-- modal subtitle -->

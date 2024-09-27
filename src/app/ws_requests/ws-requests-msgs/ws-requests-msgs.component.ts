@@ -44,6 +44,7 @@ import { BrandService } from 'app/services/brand.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
+import { Chatbot } from 'app/models/faq_kb-model';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -419,6 +420,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   CHANNELS_NAME = CHANNELS_NAME;
   HIDE_CHATBOT_ATTRIBUTES: boolean;
 
+  panelOpenState = false;
+
   /**
    * Constructor
    * @param router 
@@ -745,13 +748,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
         this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
@@ -764,7 +767,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goBack() {
-    this.logger.log('[WS-REQUESTS-MSGS] goBack' ) 
+    this.logger.log('[WS-REQUESTS-MSGS] goBack')
     if (this.previousUrl === 'wsrequests') {
       if (!this.scrollYposition) {
         this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
@@ -3489,6 +3492,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
+
+
+          this.projectUsersList.sort(function compare(a: any, b: any) {
+            if (a['id_user']['firstname'].toLowerCase() < b['id_user']['firstname'].toLowerCase()) {
+              return -1;
+            }
+            if (a['id_user']['firstname'].toLowerCase() > b['id_user']['firstname'].toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
+
           this.projectUsersList.forEach(projectUser => {
 
             projectUser['is_joined_to_request'] = this.currentUserIdIsInParticipants(this.request.participants, projectUser.id_user._id, this.request.request_id);
@@ -3505,6 +3520,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 return false
               }
             })
+
+          this.bots.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['name'].toLowerCase() < b['name'].toLowerCase()) {
+              return -1;
+            }
+            if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
         }
       }, error => {
         this.showSpinner_inModalUserList = false;
@@ -3522,6 +3547,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
       this.logger.log('[WS-REQUESTS-MSGS] - GET DEPTS RESPONSE ', depts);
       this.departments = depts;
+
       let count = 0;
       this.departments.forEach(dept => {
         if (dept.default === false && dept.status === 1) {
@@ -3555,6 +3581,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         }
       });
+
+      this.departments.sort(function compare(a: any, b: any) {
+        if (a['name'].toLowerCase() < b['name'].toLowerCase()) {
+          return -1;
+        }
+        if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+
 
       this.COUNT_OF_VISIBLE_DEPT = count;
       this.logger.log('[WS-REQUESTS-MSGS] - GET DEPTS - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);

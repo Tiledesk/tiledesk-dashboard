@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 
 const routes: Routes = [
   { path: "", component: WsRequestsMsgsComponent},
@@ -27,7 +29,7 @@ const routes: Routes = [
     WsRequestsMsgsComponent,
     // ContactInfoComponent,
     WsSidebarAppsComponent,
-    ModalChatbotReassignmentComponent
+    ModalChatbotReassignmentComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -44,7 +46,8 @@ const routes: Routes = [
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule
   ]
 })
 export class WsRequestsMsgsModule { }
