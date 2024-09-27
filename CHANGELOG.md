@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.30
+- Minor improvements and bug fixing
+
+### 2.7.29
+- Fixes UI issues due to chrome update
+
+### 2.7.28
+- Fixes UI issues due to chrome update
+
 ### 2.7.27
 - Adds the section quotas "Current usage" in the Home page
 - Refactor the quotas "Current usage" panel
