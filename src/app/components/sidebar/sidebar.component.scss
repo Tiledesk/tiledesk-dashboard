@@ -401,6 +401,7 @@ button.close {
 .small-sidebar-avatar .avatar {
   width: 35px;
   height: 35px;
+  min-width: 35px;
 }
 
 #sidebaravatar-altenative-user-avatar {
@@ -1557,6 +1558,15 @@ li:hover>a>.realtime-icon-wpr>svg>path {
         color: var(--icon-hover-color) !important;
       }
   }
+}
+
+#openchat-span {
+  position: relative;
+  top: 3px;
+  vertical-align: middle;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 // ::ng-deep {

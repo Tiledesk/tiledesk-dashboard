@@ -70,6 +70,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   public_Key: any;
   currentUserId: string;
   selectedStatus: any;
+  isChromeVerGreaterThan100: boolean;
   teammateStatus = [
     { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
     { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
@@ -127,6 +128,14 @@ export class SidebarUserDetailsComponent implements OnInit {
     // this.listenTocurrentProjectUserUserAvailability$();
     this.getWsCurrentUserAvailability$()
     this.getWsCurrentUserIsBusy$()
+    this.getBrowserVersion()
+  }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      // this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
   }
 
   onMouseOutBusyIcon() {

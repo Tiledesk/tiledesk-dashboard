@@ -634,13 +634,13 @@
                   [displayKbHeroSection]="displayKbHeroSection" > </home-cds>
               </ng-container> -->
 
-              <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
+              <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order" style="margin-top:18px ;">
 
                 <!-- ----------------------- -->
                 <!-- Child 1 Convs Graph -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child1'">
-                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
+                <ng-container *ngIf="item.type === 'child1'" >
+                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph" 
                     [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
                     [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
