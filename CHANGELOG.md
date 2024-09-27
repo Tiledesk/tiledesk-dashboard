@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.31-rc2
+- Minor improvements
+
 ### 2.7.31-rc1
 - Groups in the conversation reassignment modal window Humans, Chatbots and Departments in the expansion panels
 
