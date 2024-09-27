@@ -29,6 +29,8 @@
     "ViewOption": "Variantlarni ko‘rish",
     "Notification": "Bildirishnomalar",
     "Departments": "Bo'limlar",
+    "Chatbots": "Chatbots",
+    "HumanTeammates":"Inson jamoadoshlari",
     "Resources": "Resurslar",
     "Hours": "Ish vaqti",
     "KnowledgeBases": "Bilim bazalari",
@@ -578,9 +580,7 @@
     "SelectAblock": "Blokni tanlang",
     "YouNeedToSelectABlock":"Siz blokni tanlashingiz kerak :)",
     "MoreInQueque": "Navbatda koʻproq, hammasini koʻring",
-<<<<<<< HEAD
     "IncludeChatbotsOnlyConversations": "Faqat Chatbots suhbatlarini qo'shing",
-=======
     "HideChatbotAttributesWidget":"Chatbot atributlari vidjetini yashirish",
     "EnablingThisOptionHidesChatbotAttributes": "Ushbu parametr yoqilsa, chatbotning atributlari suhbat tafsilotlari yon panelidan yashiriladi",
     "TYPE_GPT_MODEL": {
@@ -593,7 +593,6 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
->>>>>>> master
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",
