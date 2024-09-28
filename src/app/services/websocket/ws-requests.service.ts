@@ -213,6 +213,7 @@ export class WsRequestsService implements OnDestroy {
           function (data, notification) {
 
             if (data) {
+              // console.log("[WS-REQUESTS-SERV] DSHB - Create - DATA ", data);
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
@@ -295,7 +296,7 @@ export class WsRequestsService implements OnDestroy {
           // Update
           }, function (data, notification) {
 
-            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
             
