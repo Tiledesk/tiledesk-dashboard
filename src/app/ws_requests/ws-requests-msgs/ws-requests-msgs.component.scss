@@ -4844,6 +4844,7 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: var(--no-tags-line-clamp);
+  line-clamp: var(--no-tags-line-clamp);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   font-family: var(--content-font-family);

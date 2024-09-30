@@ -187,7 +187,6 @@ export class WsRequestsService implements OnDestroy {
         //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // WHEN CHANGING THE PROJECT I UNSUBSCRIBE FROM THE "REQUEST BY ID" TO WHICH IT IS POSSIBLY SUBSCRIBED
         //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // AS ABOVE BUT FOR MESSAGES
         // }
-
         //  unsuscribe requester presence al cambio progetto
         if (this.subscribed_requester_id) {
           this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + this.subscribed_requester_id);
@@ -214,6 +213,7 @@ export class WsRequestsService implements OnDestroy {
           function (data, notification) {
 
             if (data) {
+              // console.log("[WS-REQUESTS-SERV] DSHB - Create - DATA ", data);
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
@@ -296,7 +296,7 @@ export class WsRequestsService implements OnDestroy {
           // Update
           }, function (data, notification) {
 
-            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
             
@@ -485,7 +485,7 @@ export class WsRequestsService implements OnDestroy {
    * @param id_request 
    */
   subscribeTo_wsRequestById(id_request) {
-    // console.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
+    this.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
 
     this.unsubscribePreviousRequestId()
 
@@ -1208,6 +1208,9 @@ export class WsRequestsService implements OnDestroy {
 
     // const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + id_request + '/chatbot/parameters';
+    // https://tiledesk-server-pre.herokuapp.com/62c3f10152dc7400352bab0d/requests/support-group-62c3f10152dc7400352bab0d-e81d9c55-wab-109639215462567-393484506627/chatbot/parameters
+    
+
     // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
 
     // 'Authorization': this.TOKEN,

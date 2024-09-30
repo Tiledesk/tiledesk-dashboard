@@ -3343,12 +3343,12 @@
                             <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
                             <!-- --------------------------------------------------------------------------------------------------- -->
                             <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
-                              <span *ngIf="actionInModal === 'reassign'">
+                              <!-- <span *ngIf="actionInModal === 'reassign'">
                                 <h4 style="font-weight:400"
                                   [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                                   {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
                                 </h4>
-                              </span>
+                              </span> -->
 
                               <span *ngIf="actionInModal === 'invite'">
                                 <h4 style="font-weight:400"
@@ -4020,7 +4020,7 @@
               <mat-expansion-panel  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    {{'Departments' | translate}}  ( {{departments?.length }})
+                    {{'Departments' | translate}}  ( {{departments?.length }} )
                   </mat-panel-title>
                   <!- - <mat-panel-description>
                     2 Currently I am {{panelOpenState ? 'open' : 'closed'}}
