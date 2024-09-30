@@ -5674,3 +5674,16 @@ label {
   line-height: 16px;
   letter-spacing: -0.01em;
 }
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #0566ff;
+}
+
+
+::ng-deep .mat-tab-header {
+  top: 0;
+  z-index: 1000; 
+  position: sticky !important;
+  position: -webkit-sticky !important; /* macOS/iOS Safari */  
+  background: #fff;  
+}
