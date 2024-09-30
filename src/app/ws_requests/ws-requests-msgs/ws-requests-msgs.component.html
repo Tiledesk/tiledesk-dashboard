@@ -3277,16 +3277,16 @@
 
       <div class="modal-header assign-reassign-modal-header"
         [ngClass]="{'modal-header-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-        <button type="button" class="close--round-btn" aria-label="Close" (click)="closeSelectUsersModal()">
+        <button type="button" class="close---round-btn" aria-label="Close" (click)="closeSelectUsersModal()">
           <span aria-hidden="true">&times;</span>
         </button>
 
         <h4 class="modal-title">
           <div class="title-wpr">
-            <span *ngIf="actionInModal === 'reassign'">
+            <span *ngIf="actionInModal === 'reassign' && CHAT_PANEL_MODE === true">
               {{ "VisitorsPage.ReassignRequest" | translate }}
             </span>
-            <span *ngIf="actionInModal === 'invite'">
+            <span *ngIf="actionInModal === 'invite' && CHAT_PANEL_MODE === true">
               {{ "VisitorsPage.AddAgent" | translate }}
             </span>
           </div>
@@ -3300,15 +3300,17 @@
           <!-- modal subtitle -->
           <!-- --------------------------------------------------------------------------------------------- -->
           <div class="col-md-12" *ngIf="CHAT_PANEL_MODE === false">
-            <!-- <span *ngIf="actionInModal === 'reassign'">
+            <span *ngIf="actionInModal === 'reassign'">
               <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-                {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
+                <!-- {{ "VisitorsPage.SelectTheUserToWhom" | translate }} -->
+                {{ "VisitorsPage.ReassignRequest" | translate }}
               </h4>
-            </span> -->
+            </span>
 
             <span *ngIf="actionInModal === 'invite'">
               <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-                {{ "VisitorsPage.InviteAnotherUserToServe" | translate }}
+                <!-- {{ "VisitorsPage.InviteAnotherUserToServe" | translate }} -->
+                {{ "VisitorsPage.AddAgent" | translate }}
               </h4>
             </span>
           </div>
@@ -3331,10 +3333,9 @@
                     <table class="table table-hover assign-reassign-modal-table">
                       <thead>
                         <tr>
-
-                          <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
-                            <span style="color: #566787"
-                              [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                          <!-- [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}" -->
+                          <th colspan="2"  [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                            <span style="color: #566787">
                               {{ "UsersPage.User" | translate }}
                             </span>
 
@@ -3505,10 +3506,9 @@
                       <table class="table table-hover assign-reassign-modal-table">
                         <thead>
                           <tr>
-
-                            <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
-                              <span style="color: #566787"
-                                [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                            <!-- [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}" -->
+                            <th colspan="2" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                              <span style="color: #566787">
                                 {{ "UserProfile.Name" | translate }}
                               </span>
 
@@ -3718,9 +3718,9 @@
                         <table class="table table-hover assign-reassign-modal-table">
                           <thead>
                             <tr>
-                              <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
-                                <span style="color: #566787"
-                                  [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                              <!-- [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}" -->
+                              <th colspan="2" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                                <span style="color: #566787">
                                   {{ "Department" | translate }}
                                 </span>
       
@@ -4899,7 +4899,7 @@
           </span>
         </button> -->
 
-        <button type="button" style="position: absolute; right: 12px;" class="close--round-btn" aria-label="Close"
+        <button type="button" style="position: absolute; right: 12px;" class="close---round-btn" aria-label="Close"
           (click)="closeModalTranscript()">
           <span aria-hidden="true">&times;</span>
         </button>

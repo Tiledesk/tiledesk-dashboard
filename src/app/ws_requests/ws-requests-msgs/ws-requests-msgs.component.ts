@@ -3833,7 +3833,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       html: `${this.requestWillBeReassignedToMsg} ${botname} <label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>`,
       title: this.reassignRequestMsg,
       text: this.requestWillBeReassignedToMsg + ' ' + botname,
-      icon: "info",
+      // icon: "info",
       showCancelButton: true,
 
       // buttons: true,

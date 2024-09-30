@@ -5687,3 +5687,25 @@ label {
   position: -webkit-sticky !important; /* macOS/iOS Safari */  
   background: #fff;  
 }
+
+.close---round-btn {
+  border: none !important;
+  float: right !important;
+  border-radius: 50%;
+  // color: rgb(235, 234, 235);
+  height: 36px;
+  width: 36px;
+  background-color: transparent;
+  
+}
+// .close---round-btn:hover>span {
+.close---round-btn:hover {
+  // color: rgba(60, 72, 88, .6) !important;
+  // opacity: .6;
+  background-color: var(--btn-background-color)
+}
+
+.close---round-btn>span {
+  font-size: 31px;
+  color: var(--btn-color) !important;
+}
