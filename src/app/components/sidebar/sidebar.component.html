@@ -206,7 +206,7 @@
       <!-- CONTACTS (LEADS)  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleCNT">
-        <li id="contacts" *ngIf="project" routerLinkActive="active" 
+        <li class="sb-bottom-items" id="contacts" *ngIf="project" routerLinkActive="active" 
           matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Contacts' | translate }}" 
           #tooltip="matTooltip" 
@@ -221,9 +221,9 @@
       </ng-container>
 
       <!-- ----------------------------- -->
-      <!-- APPS  -->
+      <!-- APPS  moved in settings sidebar -->
       <!-- ----------------------------- -->
-      <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
+      <!-- <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
         <li id="apps" *ngIf="project" routerLinkActive="active" 
           matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Apps' | translate }}" 
@@ -236,7 +236,7 @@
 
           </a>
         </li>
-      </ng-container>
+      </ng-container> -->
 
       <!-- ----------------------------- -->
       <!-- ANALYTICS -->
@@ -332,15 +332,13 @@
       </li>
       <!-- ----------------------------- -->
       <!-- @ Support   matTooltip="{{companyName}}" -->
-      <li class="tiledesk-logo" [ngClass]="{'active': SUPPORT_ROUTE_IS_ACTIVE}"
+      <li class="sb-last-item" [ngClass]="{'active': SUPPORT_ROUTE_IS_ACTIVE}"
         id="support"
         matTooltipClass="sb-mat-tooltip" 
-       
         [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )  "
         #tooltip="matTooltip"
         matTooltipPosition='right' 
         matTooltipHideDelay="100"
-        style="height: 60px !important;"
         routerLinkActive="active" 
         (click)="stopScroll()">
 
@@ -348,7 +346,7 @@
           <i class="material-icons sidebar-icons">support</i>
         </a>
         <a *ngIf="!isVisibleSupportMenu"  class="customAncor" [href]="companySiteUrl" target="_blank">
-          <img [src]="companyLogoNoText" class="img-fluid" style="width: 25px; height: auto; margin-bottom: 5px;" />
+          <img [src]="companyLogoNoText" class="img-fluid" style="width: 25px; height: auto; margin-bottom: 5px; margin-left: 2px;" />
         </a>       
       </li>
 

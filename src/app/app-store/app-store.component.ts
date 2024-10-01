@@ -65,7 +65,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   project: any;
   callingPage: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
-  hideExternalChatbotLeranMore: boolean
+  hideExternalChatbotLeranMore: boolean;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   public chatBotCount: any;
   constructor(
@@ -103,7 +104,15 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     this.getLoggedUser();
     this.getRouteParams();
     this.listenToParentPostMessage()
-    this.getFaqKbByProjectId()
+    this.getFaqKbByProjectId();
+    this.listenSidebarIsOpened()
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[APP-STORE] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
 

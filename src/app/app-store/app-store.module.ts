@@ -5,6 +5,7 @@ import { RouterModule ,Routes} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     TranslateModule,
     SharedModule,
     MatTooltipModule,
+    SettingsSidebarModule,
   ],
   exports: [
     RouterModule

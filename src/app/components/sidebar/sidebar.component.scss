@@ -1501,11 +1501,15 @@ li:hover>a>.realtime-icon-wpr>svg>path {
 // }
 
 
-.tiledesk-logo {
+.sb-bottom-items {
   position: relative;
   margin-top: auto;
   z-index: 4;
-  margin-bottom: 18px;
+  // margin-bottom: 18px;
+}
+
+.sb-last-item {
+  height: 80px !important;
 }
 
 
@@ -1513,22 +1517,23 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   margin-left: 64px !important;
   top: 40px;
 
-    .mat-menu-content{
-      padding: 0 !important;
+  .mat-menu-content {
+    padding: 0 !important;
 
-      button > .mat-icon {
-        color: var(--icon-color) !important;
-      }
+    button>.mat-icon {
+      color: var(--icon-color) !important;
+    }
 
-      .mat-menu-footer {
-        padding: 5px 10px;
-        font-size: 11px;
-        color: var(--secondary-text-color);
-        font-weight: 400;
-        border-top: 1px solid #ddd;
-        font-family: var(--header-font-family)
-      }
+    .mat-menu-footer {
+      padding: 5px 10px;
+      font-size: 11px;
+      color: var(--secondary-text-color);
+      font-weight: 400;
+      border-top: 1px solid #ddd;
+      font-family: var(--header-font-family)
+    }
   }
+
   // min-width: 100px;
   // max-width: 400px;
   // min-height: unset;
@@ -1553,10 +1558,10 @@ li:hover>a>.realtime-icon-wpr>svg>path {
 }
 
 ::ng-deep .mat-menu-panel.menuElementSupport {
-    .mat-menu-content{
-      button:hover > .mat-icon {
-        color: var(--icon-hover-color) !important;
-      }
+  .mat-menu-content {
+    button:hover>.mat-icon {
+      color: var(--icon-hover-color) !important;
+    }
   }
 }
 
