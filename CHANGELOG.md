@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.32
+- Moves the menu item "Apps" from the sidebar to the setting sidebar
+
 ### 2.7.31
 - Groups in the conversation reassignment modal window Humans, Chatbots and Departments in tabs
 
