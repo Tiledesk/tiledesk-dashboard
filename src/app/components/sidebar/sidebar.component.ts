@@ -222,7 +222,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   NORT_CONV_ROUTE_IS_ACTIVE: boolean;
 
 
-
   prjct_profile_name: string;
   prjct_trial_expired: boolean;
   prjc_trial_days_left: number
