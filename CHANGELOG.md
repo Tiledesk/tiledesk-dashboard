@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.31
+- Groups in the conversation reassignment modal window Humans, Chatbots and Departments in tabs
+
 ### 2.7.30
 - Minor improvements and bug fixing
 
