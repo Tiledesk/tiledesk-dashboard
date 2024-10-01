@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.31-rc5
+- Minor improvements
+
 ### 2.7.31-rc4
 - Minor improvements
 
