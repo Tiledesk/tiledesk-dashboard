@@ -5675,6 +5675,10 @@ label {
   letter-spacing: -0.01em;
 }
 
+.mat-tab-group-on-panel {
+  margin-top: 5px;
+}
+
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,.mat-tab-nav-bar.mat-primary .mat-ink-bar {
   background-color: #0566ff;
 }
