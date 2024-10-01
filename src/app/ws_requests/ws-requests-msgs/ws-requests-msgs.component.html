@@ -3321,7 +3321,8 @@
            
               <mat-tab-group  mat-align-tabs="center"  *ngIf="actionInModal === 'reassign'">
                 <mat-tab label="{{'HumanTeammates' | translate }} ( {{projectUsersList?.length}} )"> 
-                  <div class="card assign-reassign-modal-card assign-reassign-modal-card-in-accordion"
+                  <!-- assign-reassign-modal-card-in-accordion -->
+                  <div class="card assign-reassign-modal-card"
                   [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
 
                   <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
@@ -3493,8 +3494,8 @@
 
                 </mat-tab>
                 <mat-tab label="{{'Chatbots' | translate}}  ( {{bots?.length}} )">
-                  <div class="card assign-reassign-modal-card-in-accordion assign-reassign-modal-card"
-                    style="margin-top:5px; margin-bottom:5px"
+                  <!-- assign-reassign-modal-card-in-accordion -->
+                  <div class="card  assign-reassign-modal-card"
                     [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
 
                     <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
@@ -3706,8 +3707,8 @@
                 </mat-tab>
                 <mat-tab label="{{'Departments' | translate}} ( {{departments?.length }} )"> 
                   <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
-        
-                    <div class="card assign-reassign-modal-card assign-reassign-modal-card-in-accordion"
+                    <!-- assign-reassign-modal-card-in-accordion -->
+                    <div class="card assign-reassign-modal-card"
                       [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
       
                       <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
