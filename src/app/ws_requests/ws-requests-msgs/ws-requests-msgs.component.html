@@ -745,7 +745,15 @@
                         [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
                         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                         (click)="goToContactDetails()">
-                        {{ requester_fullname_initial }}
+                        <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                          {{ requester_fullname_initial }}
+                        </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname === request?.lead?.phone)" class="material-icons-outlined">
+                          call
+                        </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname !== request?.lead?.phone)">
+                          {{ requester_fullname_initial }}
+                        </span>
                       </div>
                       <!-- ----------------------------------- -->
                       <!-- Contact verified icon   -->

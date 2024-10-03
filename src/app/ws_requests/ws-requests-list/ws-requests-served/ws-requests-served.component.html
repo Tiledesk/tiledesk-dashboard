@@ -613,15 +613,18 @@
             <span class="requester-avatar-wrapper">
               <span class="requester-avatar"
                 [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
-                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, requester_avatar_not_has_email: !request?.lead?.email }">
-                <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname, 'requester_avatar_not_has_email': !request?.lead?.email, 'requester-avatar-has-phone-as-email': request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname !==  request?.lead?.phone)  }">
+                <span *ngIf="request?.lead?.fullname !== request?.lead?.phone" style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                <span *ngIf="request?.lead?.fullname === request?.lead?.phone" class="material-icons-outlined" style="color: #ffffff; font-size:18px; position: relative; top: 1px;"> call </span>
                 <!-- <span class="requester-presence"
                   [ngStyle]="{ 'background-color':(request?.requester?.presence?.status === 'online')?'#24d066':'#db4437' }">
                 </span> -->
               </span>
               <!-- [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname , 'verified-icon-requester-internal-ticket': request?.subject}" -->
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                <svg class="requester-verified-icon" [ngClass]="{'requester-verified-icon-voice-channel': request?.channel?.name === CHANNELS_NAME.VOICE_VXML }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                <svg class="requester-verified-icon" [ngClass]="{'requester-verified-icon-voice-channel': request?.channel?.name === CHANNELS_NAME.VOICE_VXML, 
+                                                                'requester-has-phone-as-fullname': request?.lead?.fullname === request?.lead?.phone, 
+                                                                'requester-fullname-is-not-phone': request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname !== request?.lead?.phone)  }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                   height="17" xml:space="preserve">
                   <style type="text/css">
@@ -653,7 +656,7 @@
 
               <span class="lead_data">
 
-                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email}">
+                <span class="contact-fullname" [ngClass]="{'requester_not_has_email' : !request?.lead?.email, 'requester-email-is-a-phone': CHANNELS_NAME.VOICE_VXML && (request?.lead?.phone !== request?.lead?.fullname) }">
                   {{ request?.lead?.fullname}}
                 </span>
 
@@ -664,8 +667,38 @@
 
                 <!-- [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}" -->
                 <span class="requester-email">
-                  {{ request?.lead?.email }}
+                  <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                    {{ request?.lead?.email }}
+                  </span>
+                  <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML) && (request?.lead?.phone !== request?.lead?.fullname)"
+                    matTooltipClass="convs-custom-mat-tooltip"
+                    matTooltip="{{ 'RequesterPhoneNumber' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100">
+                     {{request?.lead?.phone}}
+                  </span>
                 </span>
+                
+               
+              
+
+              <!-- <span class="requester-email-undefined"
+                *ngIf="!request?.lead?.email && request?.channel?.name === CHANNELS_NAME.VOICE_VXML"
+                [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                
+                <span *ngIf="request?.lead?.fullname !== request?.lead?.phone">
+                 
+                  <span class="requester-phone"
+                    matTooltipClass="convs-custom-mat-tooltip"
+                    matTooltip="{{ 'RequesterPhoneNumber' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100"> 
+                        {{request?.lead?.phone}}
+                  </span> 
+                </span>
+              </span> -->
 
                 <!-- <span class="requester-email" *ngIf="!request?.lead?.email"
                   [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">

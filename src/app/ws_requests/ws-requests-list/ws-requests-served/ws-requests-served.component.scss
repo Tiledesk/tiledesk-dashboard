@@ -431,6 +431,10 @@ span .switch-agent-admin-requests-btn {
   top: -5px;
 }
 
+.requester-avatar-has-phone-as-email {
+  top: 3px !important;
+}
+
 .lead_data {
   position: relative;
   top: -2px;
@@ -439,6 +443,15 @@ span .switch-agent-admin-requests-btn {
 .requester_not_has_email {
   top: -2px;
   position: relative;
+}
+
+.requester-email-is-a-phone {
+  top: 0px!important; 
+}
+
+.requester-name-is-a-phone-num {
+  position: relative ;
+  top: -5px !important;
 }
 
 .requester-email {
@@ -1021,7 +1034,13 @@ $f21blue: #039be5;
 .requester-verified-icon-voice-channel {
   top: -26px;
 }
+.requester-has-phone-as-fullname {
+  top: -29px !important;
+}
 
+.requester-fullname-is-not-phone {
+  top: -18px !important;
+}
 .active-row {
   animation-name: ripple_effect;
   animation-duration: 3s;

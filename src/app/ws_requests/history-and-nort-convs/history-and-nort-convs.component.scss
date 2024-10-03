@@ -9,19 +9,77 @@ input[type="text"] {
   -webkit-appearance: none;
   appearance: none;
   background: #fff;
-  border: 1px solid #d9d9d9 !important;
+  border: 1px solid #d9d9d9;
   // border-top: 1px solid #c0c0c0;
   /* border-radius: 2px; */
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  border-radius: 5px !important;
-  background-color: #fff !important;
-  background-image: none !important;
+  border-radius: 5px;
+  background-color: #fff;
+  background-image: none;
   // border: solid 1px #ddd;
 }
 
-//added from here
+input[type="email"] {
+  // min-width: 307px !important;
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  // border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff;
+  background-image: none;
+  // border: solid 1px #ddd;
+}
+
+
+.input-custom {
+  border-radius: 4px !important;
+  border-color: #ccc !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  padding-left: 10px !important;
+}
+
+.duration-input-wpr {
+  display: flex;
+  gap: 6px;
+}
+
+.duration-operator {
+  width: 30%;
+}
+
+.duration-value {
+  width: 70%;
+}
+
+.input---group {
+  display: flex;
+  height: 36px;
+}
+
+.input-group-addon {
+  width: 30%;
+}
+
+.suffix-text {
+  position: relative;
+  top: 3px;
+  font-size: 12px;
+}
+
+// added from here
 .table-header-text {
   width: 15%;
 }
@@ -330,6 +388,10 @@ p.member:hover {
   top: 4px;
 }
 
+.requester-avatar--in-history-phone-number{
+  top: -4px !important;
+}
+
 .ws-requests-list-servedby-avatar {
   vertical-align: middle;
   width: 30px;
@@ -388,6 +450,10 @@ p.member:hover {
   top: -8px !important;
 }
 
+.verified-icon-requester-phone-num {
+  top: -14px !important;
+}
+
 .requester_fullname_initial-undefined {
   position: relative;
   top: 1px;
@@ -396,6 +462,10 @@ p.member:hover {
 .requester-verified {
   position: relative;
   left: -17px;
+}
+
+.requester-verified-with-phone-num {
+  top: -11px !important;
 }
 
 .requester-email {
@@ -907,19 +977,19 @@ p.member:hover {
 
 .preflight-checkbox {
   margin-left: 15px;
-  margin-top: 38px;
+  margin-top: 30px;
 }
 
 
-.request-statuses-select {
-  margin-right: 15px;
-}
+// .request-statuses-select {
+//   margin-right: 15px;
+// }
 
-@media (max-width: 768px) {
-  .request-statuses-select {
-    margin-right: 0px;
-  }
-}
+// @media (max-width: 768px) {
+//   .request-statuses-select {
+//     margin-right: 0px;
+//   }
+// }
 
 .checkbox--label {
   font-size: 14px;

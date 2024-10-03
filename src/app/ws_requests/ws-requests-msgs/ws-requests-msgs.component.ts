@@ -1678,6 +1678,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   }, 1500);
   // }
 
+
+  millisToMinutesAndSecondsNoFixedPoint(millis) {
+    let seconds = (millis / 1000).toFixed();
+    let minutes = (millis / (1000 * 60)).toFixed();
+    let hours = (millis / (1000 * 60 * 60)).toFixed();
+    let days = (millis / (1000 * 60 * 60 * 24)).toFixed();
+    if (+seconds < 60) return seconds + " " + this.translate.instant('Analytics.Seconds');
+    else if (+minutes < 60) return minutes + " " + this.translate.instant('Analytics.Minutes');
+    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
+    else return days + " " + this.translate.instant('Analytics.Days');
+
+  }
+
   millisToMinutesAndSeconds(millis) {
     // let minutes = Math.floor(millis / 60000);
     // let seconds = ((millis % 60000) / 1000).toFixed(0);
@@ -1705,7 +1718,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     let days = (millis / (1000 * 60 * 60 * 24)).toFixed(1);
     if (+seconds < 60) return seconds + " " + this.translate.instant('Analytics.Seconds');
     else if (+minutes < 60) return minutes + " " + this.translate.instant('Analytics.Minutes');
-    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Minutes');
+    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
     else return days + " " + this.translate.instant('Analytics.Days');
 
 
@@ -1743,7 +1756,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.duration) {
             const duration = this.request.duration;
             this.logger.log('[WS-REQUESTS-MSGS] - duration ', duration)
-            this.requestDuration = this.millisToMinutesAndSeconds(duration)
+            this.requestDuration = this.millisToMinutesAndSecondsNoFixedPoint(duration)
             this.logger.log('[WS-REQUESTS-MSGS] - requestDuration ', this.requestDuration)
           } else {
             this.requestDuration = "N/A"

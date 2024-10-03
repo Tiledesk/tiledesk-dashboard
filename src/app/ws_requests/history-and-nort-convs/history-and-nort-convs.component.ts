@@ -232,6 +232,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   disableUntilDate: any;
 
+
+  // duration_in_table_test: any
+
   status = [
     { id: '100', name: 'Unserved' },
     { id: '200', name: 'Served' },
@@ -250,10 +253,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: 'all', name: 'All' },
     ...CHANNELS
   ];
+
+
+
   CHANNELS_NAME = CHANNELS_NAME;
 
+  request_duration_operator_array  = [
+    { id: '0', name: '>=' },
+    { id: '1', name: '<=' }
+  ]
+
+  duration: any;
+  duration_operator_temp
+  duration_op: any;
+  duration_in_table: any
 
 
+  caller_phone:string;
+  called_phone :string;
+  call_id: string;
+ 
   start_date_is_null = true
 
 
@@ -334,6 +353,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
+    this.duration_operator_temp = this.request_duration_operator_array[0]['id']
+    this.duration_op =  'gt' 
+
+    console.log('[HISTORY & NORT-CONVS] duration_op (on init)',   this.duration_op)
+
   }
 
   ngOnInit() {
@@ -399,12 +423,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         if (this.queryParams && this.queryParams.qs) {
           const qsString = JSON.parse(this.queryParams.qs)
-          this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
+          console.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
           const searchedForArray = qsString.split('&');
           this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
-            this.logger.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+            console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
 
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
@@ -498,6 +522,28 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               this.selecteTagNameValue = this.selecteTagName
 
             }
+
+            if (paramArray[0] === 'duration' && paramArray[1] !== '') {
+              this.duration = paramArray[1]
+
+            }
+
+            if (paramArray[0] === 'duration_op' && paramArray[1] !== '') {
+              this.duration_op = paramArray[1]
+            }
+
+            if (paramArray[0] === 'caller' && paramArray[1] !== '') {
+              this.caller_phone = paramArray[1]
+            }
+
+            if (paramArray[0] === 'called' && paramArray[1] !== '') {
+              this.called_phone = paramArray[1]
+            }
+
+            if (paramArray[0] === 'call_id' && paramArray[1] !== '') {
+              this.call_id = paramArray[1]
+            }
+
 
             if (paramArray[0] === 'rstatus' && paramArray[1] !== '') {
               const requetStatusValue = paramArray[1]
@@ -1221,15 +1267,40 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     });
   }
 
+
+  millisToMinutesAndSeconds(millis) {
+    let seconds = (millis / 1000).toFixed(1);
+    let minutes = (millis / (1000 * 60)).toFixed(1);
+    let hours = (millis / (1000 * 60 * 60)).toFixed(1);
+    let days = (millis / (1000 * 60 * 60 * 24)).toFixed(1);
+    if (+seconds < 60) return seconds + " " + this.translate.instant('Analytics.Seconds');
+    else if (+minutes < 60) return minutes + " " + this.translate.instant('Analytics.Minutes');
+    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
+    else return days + " " + this.translate.instant('Analytics.Days');
+
+  }
+
+  millisToMinutesAndSecondsNoFixedPoint(millis) {
+    let seconds = (millis / 1000).toFixed();
+    let minutes = (millis / (1000 * 60)).toFixed();
+    let hours = (millis / (1000 * 60 * 60)).toFixed();
+    let days = (millis / (1000 * 60 * 60 * 24)).toFixed();
+    if (+seconds < 60) return seconds + " " + this.translate.instant('Analytics.Seconds');
+    else if (+minutes < 60) return minutes + " " + this.translate.instant('Analytics.Minutes');
+    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
+    else return days + " " + this.translate.instant('Analytics.Days');
+
+  }
+
   // GET REQUEST COPY - START
   getRequests() {
-    // this.logger.log('getRequests queryString' , this.queryString) 
+   console.log('getRequests queryString' , this.queryString) 
     // this.logger.log('getRequests _preflight' , this._preflight) 
     // this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
-        // this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
+       console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
         if (requests) {
@@ -1277,6 +1348,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
               const date = moment.localeData().longDateFormat(request.createdAt);
               request.fulldate = date;
+
+              if(request['duration']) {
+
+                // console.log('[HISTORY & NORT-CONVS] duration ', request['duration']) 
+                this.duration_in_table = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
+                // console.log('[HISTORY & NORT-CONVS] duration_in_table ', this.duration_in_table) 
+                request['duration_in_table'] = this.duration_in_table
+
+                // this.duration_in_table_test = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
+                // request['duration_in_table_test'] = this.duration_in_table_test
+              } else {
+                request['duration_in_table'] = "N/A"
+              }
+
+
 
               if (request.participants.length > 0) {
                 this.logger.log('[HISTORY & NORT-CONVS] participants length', request.participants.length);
@@ -1776,7 +1862,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   requestsTypeSelectFromAdvancedOption() {
     // this.logger.log('this.conversationTypeValue: ', this.conversationTypeValue)
-    // this.logger.log('this.conversation_type: ', this.conversation_type)
+   console.log('this.conversation_type: ', this.conversation_type)
     if (this.conversation_type === 'all') {
       // this.conversationTypeValue = 'all'
       this.conversation_type = 'all'
@@ -1821,7 +1907,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
 
 
+    if (this.conversation_type === 'voice-vxml') {
+      // this.conversationTypeValue = 'whatsapp'
+      this.conversation_type = 'voice-vxml'
+    }
+  }
 
+
+  onChangeDurationOperator() {
+    
+    if (this.duration_operator_temp === '0') {
+      this.duration_op = "gt";
+      console.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
+    } else if (this.duration_operator_temp === '1'){
+      this.duration_op = "lt";
+      console.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
+    }
   }
 
   fulltextChange($event) {
@@ -1979,6 +2080,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   search() {
+    console.log('HERE IN SEARCH duration operator ',  this.duration_op) 
+    console.log('HERE IN SEARCH duration ',  this.duration) 
+    console.log('HERE IN SEARCH duration called_phone ',  this.called_phone) 
+    console.log('HERE IN SEARCH duration caller_phone ',  this.caller_phone) 
+    console.log('HERE IN SEARCH duration call_id ',  this.call_id) 
     // this.logger.log('HERE IN SEARCH calledBy ', calledBy)
     this.logger.log('HERE IN SEARCH this.preflight', this.preflight)
     this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
@@ -1995,6 +2101,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
     this.pageNo = 0
+
+   
 
 
     if (this.fullText) {
@@ -2109,6 +2217,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor = null
     }
 
+    console.log('search this.conversation_type ', this.conversation_type)
+    console.log('search this.conversationTypeValue ', this.conversationTypeValue)
     if (this.conversation_type && this.conversation_type !== 'all') {
       this.conversationTypeValue = this.conversation_type
       this.logger.log('search this.conversation_type ', this.conversation_type)
@@ -2142,6 +2252,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       variable_parameter = "ticket_id="
     }
 
+    if (!this.duration) {
+      this.logger.log('[HISTORY & NORT-CONVS] - here y');
+      this.duration_op = ""
+      this.duration = ""
+    }
+
+    if (!this.called_phone) { 
+      this.called_phone = ""
+    }
+
+    if (!this.caller_phone) { 
+      this.caller_phone = ""
+    }
+    if (!this.call_id) { 
+      this.call_id = ""
+    }
+
+
     this.queryString =
       variable_parameter
       + this.fullTextValue + '&'
@@ -2152,13 +2280,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'requester_email=' + this.emailValue + '&'
       + 'tags=' + this.selecteTagNameValue + '&'
       + 'channel=' + this.conversationTypeValue + '&'
-      + 'rstatus=' + this.requests_status
+      + 'rstatus=' + this.requests_status + '&' 
+      + 'duration_op=' + this.duration_op + '&'
+      + 'duration=' + this.duration + '&'
+      + 'called=' + this.called_phone + '&'
+      + 'caller=' + this.caller_phone + '&'
+      + 'call_id=' + this.call_id 
 
+      // + 'called_phone=' + this.called_phone + '&'
+      // + 'caller_phone=' + this.caller_phone
     // + '&'
     // + 'preflight=' + this.preflightValue
+    
 
-
-    this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+    console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
@@ -2205,6 +2340,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.has_searched = false;
     const currentUrl = this.router.url;
     this.logger.log('[HISTORY & NORT-CONVS] clearFullText current_url ', currentUrl);
+    console.log('[HISTORY & NORT-CONVS] clearFullText this.conversation_type ', this.conversation_type);
+    console.log('[HISTORY & NORT-CONVS] clearFullText this.conversationTypeValue ', this.conversationTypeValue);
     const url_segments = currentUrl.split('/');
     url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
     // this.logger.log('[HISTORY & NORT-CONVS] clearFullText url_segments ', url_segments);
@@ -2264,19 +2401,46 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor = null
     }
 
-    if (this.conversation_type && this.conversation_type !== 'all') {
-      this.conversationTypeValue = this.conversation_type
+    // if (this.conversation_type && this.conversation_type !== 'all') {
+    //   this.conversationTypeValue = this.conversation_type
 
-    } else {
-      this.conversationTypeValue = '';
+    // } else {
+    //   this.conversationTypeValue = '';
 
-    }
+    // }
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
     } else {
       this.emailValue = ''
     }
+
+    if (this.call_id)  {
+      this.call_id = ''
+    }
+
+    if (this.called_phone)  {
+      this.called_phone = ''
+    }
+
+    if (this.caller_phone)  {
+      this.caller_phone = ''
+    }
+
+    if (this.called_phone)  {
+      this.called_phone = ''
+    }
+
+    if (this.duration_op)  {
+      this.duration_op = 'gt'
+    }
+
+    if (this.duration)  {
+      this.duration = ''
+    }
+
+
 
     if (this.IS_HERE_FOR_HISTORY) {
       this.requests_statuses = ['1000']
@@ -2285,21 +2449,42 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // tslint:disable-next-line:max-line-length
 
     this.queryString =
-      'full_text='
-      + '&' +
-      'dept_id=' + this.deptIdValue
-      + '&' +
-      'start_date=' + this.startDateValue
-      + '&' +
-      'end_date=' + this.endDateValue
-      + '&' +
-      'participant=' + this.selectedAgentValue
-      + '&' +
-      'requester_email=' + this.emailValue
-      + '&' +
-      'tags=' + this.selecteTagNameValue
-      + '&' +
-      'channel=' + this.conversationTypeValue,
+      // 'full_text='
+      // + '&' +
+      // 'dept_id=' + this.deptIdValue
+      // + '&' +
+      // 'start_date=' + this.startDateValue
+      // + '&' +
+      // 'end_date=' + this.endDateValue
+      // + '&' +
+      // 'participant=' + this.selectedAgentValue
+      // + '&' +
+      // 'requester_email=' + this.emailValue
+      // + '&' +
+      // 'tags=' + this.selecteTagNameValue
+      // + '&' +
+      // 'channel=' + this.conversationTypeValue, 
+      // + 'rstatus=' + '&' 
+      // + 'duration_op='  + '&'
+      // + 'duration='  + '&'
+      // + 'called='  + '&'
+      // + 'caller='  + '&'
+      // + 'call_id='
+
+      'full_text='+ '&' 
+      + 'dept_id=' + '&' 
+      + 'start_date=' + '&'
+      + 'end_date=' + '&' 
+      +  'participant=' + '&' 
+      + 'requester_email='  + '&' 
+      + 'tags=' + '&' 
+      + 'channel=' + '&' 
+      + 'rstatus=' + '&' 
+      + 'duration_op='  + '&'
+      + 'duration='  + '&'
+      + 'called='  + '&'
+      + 'caller='  + '&'
+      + 'call_id='
 
 
       // this.logger.log('clearFullText queryString ' , this.queryString ) 
@@ -2309,6 +2494,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   clearSearch() {
+    console.log('[HISTORY & NORT-CONVS] clearSearch this.conversation_type ', this.conversation_type);
+    console.log('[HISTORY & NORT-CONVS] clearSearch this.conversationTypeValue ', this.conversationTypeValue);
     this.has_searched = false;
     const currentUrl = this.router.url;
     // this.logger.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
@@ -2342,6 +2529,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.requester_email = '';
     this.selecteTagName = '';
     this.conversation_type = 'all';
+    this.duration = '';
+    this.duration_op = "gt";
+    this.caller_phone = '';
+    this.called_phone = '';
+    this.call_id = "";
 
 
     if (!this.IS_HERE_FOR_HISTORY) {
@@ -2370,8 +2562,23 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.selecteTagName = null
     this.selecteTagColor = null
     this.conversationTypeValue = 'all'
+    this.conversation_type = ''
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=' + '&' + 'tags=' + '&' + 'channel=';
+    this.queryString = 
+    'full_text=' + '&'
+     + 'dept_id=' + '&'
+      + 'start_date=' + '&'
+      + 'end_date=' + '&' 
+      + 'participant=' + '&' 
+      + 'requester_email=' + '&' 
+      + 'tags=' + '&' 
+      + 'channel=';
+      + 'rstatus=' + '&' 
+      + 'duration_op='  + '&'
+      + 'duration='  + '&'
+      + 'called='  + '&'
+      + 'caller='  + '&'
+      + 'call_id='  
     this.pageNo = 0;
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.fullTextValue)
     // this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.queryString)
@@ -2647,7 +2854,33 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      if (this.current_selected_prjct.id_project.profile)  {
+        const projectProfile = this.current_selected_prjct.id_project.profile
+        console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
+        if(projectProfile && projectProfile.customization && projectProfile.customization.voice &&  projectProfile.customization.voice === true )  {
+          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          // if (projectProfile.customization.voice) {
+
+          // } else {
+          //   console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          // }
+        } else {
+          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
+          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
+          let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);   
+          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', index);
+          this.conversationType.splice(index, 1);
+        }
+
+        // if(projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice){
+        //   console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+        // } else {
+        //   let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);   
+        //   console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 2 index', index);
+        //   this.conversationType.splice(index, 1);
+        // }
+      }
 
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
     }, error => {
