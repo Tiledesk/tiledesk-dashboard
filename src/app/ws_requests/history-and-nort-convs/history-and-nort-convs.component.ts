@@ -356,7 +356,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.duration_operator_temp = this.request_duration_operator_array[0]['id']
     this.duration_op =  'gt' 
 
-    console.log('[HISTORY & NORT-CONVS] duration_op (on init)',   this.duration_op)
+    this.logger.log('[HISTORY & NORT-CONVS] duration_op (on init)',   this.duration_op)
 
   }
 
@@ -423,12 +423,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         if (this.queryParams && this.queryParams.qs) {
           const qsString = JSON.parse(this.queryParams.qs)
-          console.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
+          this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString:', qsString);
           const searchedForArray = qsString.split('&');
           this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
-            console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+            this.logger.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
 
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
@@ -1294,13 +1294,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-   console.log('getRequests queryString' , this.queryString) 
+    this.logger.log('getRequests queryString' , this.queryString) 
     // this.logger.log('getRequests _preflight' , this._preflight) 
     // this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
-       console.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
+        this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS COUNT ', requests['count']);
         if (requests) {
@@ -1315,7 +1315,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
           this.requestList = requests['requests'];
-          // console.log('requestList ', this.requestList)
+          // this.logger.log('requestList ', this.requestList)
           for (const request of this.requestList) {
 
             if (request) {
@@ -1351,9 +1351,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
               if(request['duration']) {
 
-                // console.log('[HISTORY & NORT-CONVS] duration ', request['duration']) 
+                // his.logger.log('[HISTORY & NORT-CONVS] duration ', request['duration']) 
                 this.duration_in_table = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
-                // console.log('[HISTORY & NORT-CONVS] duration_in_table ', this.duration_in_table) 
+                // his.logger.log('[HISTORY & NORT-CONVS] duration_in_table ', this.duration_in_table) 
                 request['duration_in_table'] = this.duration_in_table
 
                 // this.duration_in_table_test = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
@@ -1862,7 +1862,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   requestsTypeSelectFromAdvancedOption() {
     // this.logger.log('this.conversationTypeValue: ', this.conversationTypeValue)
-   console.log('this.conversation_type: ', this.conversation_type)
+    this.logger.log('this.conversation_type: ', this.conversation_type)
     if (this.conversation_type === 'all') {
       // this.conversationTypeValue = 'all'
       this.conversation_type = 'all'
@@ -1918,10 +1918,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     
     if (this.duration_operator_temp === '0') {
       this.duration_op = "gt";
-      console.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
+      this.logger.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
     } else if (this.duration_operator_temp === '1'){
       this.duration_op = "lt";
-      console.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
+      this.logger.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
     }
   }
 
@@ -2080,11 +2080,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   search() {
-    console.log('HERE IN SEARCH duration operator ',  this.duration_op) 
-    console.log('HERE IN SEARCH duration ',  this.duration) 
-    console.log('HERE IN SEARCH duration called_phone ',  this.called_phone) 
-    console.log('HERE IN SEARCH duration caller_phone ',  this.caller_phone) 
-    console.log('HERE IN SEARCH duration call_id ',  this.call_id) 
+    this.logger.log('HERE IN SEARCH duration operator ',  this.duration_op) 
+    this.logger.log('HERE IN SEARCH duration ',  this.duration) 
+    this.logger.log('HERE IN SEARCH duration called_phone ',  this.called_phone) 
+    this.logger.log('HERE IN SEARCH duration caller_phone ',  this.caller_phone) 
+    this.logger.log('HERE IN SEARCH duration call_id ',  this.call_id) 
     // this.logger.log('HERE IN SEARCH calledBy ', calledBy)
     this.logger.log('HERE IN SEARCH this.preflight', this.preflight)
     this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
@@ -2217,8 +2217,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor = null
     }
 
-    console.log('search this.conversation_type ', this.conversation_type)
-    console.log('search this.conversationTypeValue ', this.conversationTypeValue)
+    this.logger.log('search this.conversation_type ', this.conversation_type)
+    this.logger.log('search this.conversationTypeValue ', this.conversationTypeValue)
     if (this.conversation_type && this.conversation_type !== 'all') {
       this.conversationTypeValue = this.conversation_type
       this.logger.log('search this.conversation_type ', this.conversation_type)
@@ -2293,7 +2293,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // + 'preflight=' + this.preflightValue
     
 
-    console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+    this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
     // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
     this.logger.log('[HISTORY & NORT-CONVS] - SEARCH  showAdvancedSearchOption 1 > showAdvancedSearchOption', this.showAdvancedSearchOption);
@@ -2340,8 +2340,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.has_searched = false;
     const currentUrl = this.router.url;
     this.logger.log('[HISTORY & NORT-CONVS] clearFullText current_url ', currentUrl);
-    console.log('[HISTORY & NORT-CONVS] clearFullText this.conversation_type ', this.conversation_type);
-    console.log('[HISTORY & NORT-CONVS] clearFullText this.conversationTypeValue ', this.conversationTypeValue);
+    this.logger.log('[HISTORY & NORT-CONVS] clearFullText this.conversation_type ', this.conversation_type);
+    this.logger.log('[HISTORY & NORT-CONVS] clearFullText this.conversationTypeValue ', this.conversationTypeValue);
     const url_segments = currentUrl.split('/');
     url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
     // this.logger.log('[HISTORY & NORT-CONVS] clearFullText url_segments ', url_segments);
@@ -2497,8 +2497,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   clearSearch() {
-    console.log('[HISTORY & NORT-CONVS] clearSearch this.conversation_type ', this.conversation_type);
-    console.log('[HISTORY & NORT-CONVS] clearSearch this.conversationTypeValue ', this.conversationTypeValue);
+    this.logger.log('[HISTORY & NORT-CONVS] clearSearch this.conversation_type ', this.conversation_type);
+    this.logger.log('[HISTORY & NORT-CONVS] clearSearch this.conversationTypeValue ', this.conversationTypeValue);
     this.has_searched = false;
     const currentUrl = this.router.url;
     // this.logger.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
@@ -2857,32 +2857,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
       if (this.current_selected_prjct.id_project.profile)  {
         const projectProfile = this.current_selected_prjct.id_project.profile
-        console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
+        this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
         if(projectProfile && projectProfile.customization && projectProfile.customization.voice &&  projectProfile.customization.voice === true )  {
-          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
           // if (projectProfile.customization.voice) {
 
           // } else {
-          //   console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          //   this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
           // }
         } else {
-          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
-          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
           let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);   
-          console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', index);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', index);
           this.conversationType.splice(index, 1);
         }
 
-        // if(projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice){
-        //   console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-        // } else {
-        //   let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);   
-        //   console.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 2 index', index);
-        //   this.conversationType.splice(index, 1);
-        // }
       }
 
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
