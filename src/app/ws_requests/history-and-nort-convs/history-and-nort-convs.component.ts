@@ -2448,6 +2448,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
     // tslint:disable-next-line:max-line-length
 
+    this.conversationTypeValue = 'all'
+    this.conversation_type = 'all'
+
     this.queryString =
       // 'full_text='
       // + '&' +
@@ -2562,7 +2565,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.selecteTagName = null
     this.selecteTagColor = null
     this.conversationTypeValue = 'all'
-    this.conversation_type = ''
+    this.conversation_type = 'all'
     // tslint:disable-next-line:max-line-length
     this.queryString = 
     'full_text=' + '&'
