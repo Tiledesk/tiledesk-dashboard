@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.33
+- Adds, on the History page, the ability to filter by conversation duration
+
 ### 2.7.32
 - Moves the menu item "Apps" from the sidebar to the setting sidebar
 
