@@ -1842,6 +1842,12 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Дайте системі роль, яку вона повинна відігравати під час створення ваших відповідей.",
         "Deterministic":"Детермінований",
         "Random":"Випадковий",
+        "AdvancedOptions":"Розширені параметри",
+        "IndexingType":"Тип індексації",
+        "ExtractTags": "Витягти теги (обов'язково)",
+        "TypeAndPressEnter": "Введіть і натисніть Enter",
+        "UnwantedTags": "Небажані теги",
+        "UnwantedClassnames":"Небажані імена класів",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Ось і все"
     },

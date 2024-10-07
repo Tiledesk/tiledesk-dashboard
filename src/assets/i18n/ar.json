@@ -1839,6 +1839,12 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "أعطِ النظام دورًا يجب أن يلعبه عند إنشاء إجاباتك.",
         "Deterministic": "حتمية",
         "Random": "عشوائي",
+        "AdvancedOptions":"خيارات متقدمة",
+        "IndexingType":"نوع الفهرسة",
+        "ExtractTags": "استخراج العلامات (إلزامي)",
+        "TypeAndPressEnter": "اكتب واضغط على Enter",
+        "UnwantedTags": "العلامات غير المرغوب فيها",
+        "UnwantedClassnames":"الأسماء الصفية غير المرغوب فيها",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "هذا كل شئ"
     },

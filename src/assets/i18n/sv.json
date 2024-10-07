@@ -1841,6 +1841,12 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Ge systemet en roll som det bör spela när du skapar dina svar.",
         "Deterministic":"Deterministisk",
         "Random":"Slumpmässig",
+        "AdvancedOptions":"Напредне опције",
+        "IndexingType":"Indexeringstyp",
+        "ExtractTags": "Extrahera taggar (obligatoriskt)",
+        "TypeAndPressEnter": "Skriv och tryck på Enter",
+        "UnwantedTags": "Unwanted Tags",
+        "UnwantedClassnames":"Oönskade klassnamn",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

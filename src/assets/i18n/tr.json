@@ -1841,6 +1841,12 @@
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Cevaplarınızı oluştururken sisteme bir rol verin.",
          "Deterministic":"Deterministik",
          "Random":"Rastgele",
+         "AdvancedOptions":"Gelişmiş seçenekler",
+         "IndexingType":"Dizinleme türü",
+         "ExtractTags": "Etiketleri Çıkar (Zorunlu)",
+         "TypeAndPressEnter": "Yazın ve Enter'a basın",
+         "UnwantedTags": "İstenmeyen Etiketler",
+         "UnwantedClassnames":"İstenmeyen Sınıf Adları",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Hepsi bu kadar"
     },

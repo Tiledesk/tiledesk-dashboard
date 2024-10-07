@@ -1839,6 +1839,12 @@
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Tizimga javoblaringizni yaratishda o'ynashi kerak bo'lgan rolni bering.",
          "Deterministic":"Deterministik",
          "Random":"Tasodifiy",
+         "AdvancedOptions":"Kengaytirilgan variantlar",
+         "IndexingType":"Indekslash turi",
+         "ExtractTags": "Chiqarish teglari (majburiy)",
+         "TypeAndPressEnter": "kiriting va Enter tugmasini bosing",
+         "UnwantedTags": "Keraksiz teglar",
+         "UnwantedClassnames":"Keraksiz sinf nomlari",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },

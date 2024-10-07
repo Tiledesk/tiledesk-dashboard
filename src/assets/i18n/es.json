@@ -1839,6 +1839,12 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Dale al sistema el rol que debe desempeñar al crear tus respuestas.",
         "Deterministic": "Determinista",
         "Random": "Aleatorio",
+        "AdvancedOptions":"Opciones avanzadas",
+        "IndexingType":"Tipo de indexación",
+        "ExtractTags": "Extraer etiquetas (obligatorio)",
+        "TypeAndPressEnter": "Escribe y pulsa Enter",
+        "UnwantedTags": "Etiquetas no deseadas",
+        "UnwantedClassnames":"Nombres de clases no deseados",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Eso es todo"
     },

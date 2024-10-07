@@ -1839,6 +1839,12 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Жүйеге жауаптарыңызды жасау кезінде ойнайтын рөлді беріңіз.",
         "Deterministic": "Детерминистік",
         "Random": "Кездейсоқ",
+        "AdvancedOptions":"Қосымша опциялар",
+        "IndexingType":"Индекстеу түрі",
+        "ExtractTags": "Тегтерді шығару (міндетті)",
+        "TypeAndPressEnter": "Теріп, Enter пернесін басыңыз",
+        "UnwantedTags": "Қажет емес тегтер",
+        "UnwantedClassnames":"Қажетсіз сынып аттары",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"
     },

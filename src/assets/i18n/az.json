@@ -1840,6 +1840,12 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Sistemə cavablarınızı yaratarkən oynamalı olduğu rolu verin.",
         "Deterministic":"Determinist",
         "Random":"Təsadüfi",
+        "AdvancedOptions":"Qabaqcıl seçimlər",
+        "IndexingType":"İndeksləmə növü",
+        "ExtractTags": "Çıxarış Teqləri (məcburi)",
+        "TypeAndPressEnter": "Yazın və Enter düyməsini basın",
+        "UnwantedTags": "İstənməyən Teqlər",
+        "UnwantedClassnames":"İstənməyən Sinif Adları",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hamısı budur"
     },

@@ -1841,8 +1841,14 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Дајте систему улогу коју треба да игра приликом креирања ваших одговора.",
         "Deterministic":"Детерминистички",
         "Random":"Рандом",
-          "-----------------------------": "-----------------------------",
-         "ThatsIsAll": "То је све"
+        "AdvancedOptions":"Напредне опције",
+        "IndexingType":"Тип индексирања",
+        "ExtractTags": "Издвоји ознаке (обавезно)",
+        "TypeAndPressEnter": "Откуцајте и притисните Ентер",
+        "UnwantedTags": "Нежељене ознаке",
+        "UnwantedClassnames":"Нежељена имена класа",
+        "-----------------------------": "-----------------------------",
+        "ThatsIsAll": "То је све"
     },
     "ViewInTheDesignStudio": "Погледајте у Студију дизајна",
     "LearnHow": "Научите како",
