@@ -5,6 +5,7 @@ import { KB_LIMIT_CONTENT } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'modal-site-map',
@@ -52,7 +53,8 @@ export class ModalSiteMapComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
@@ -63,16 +65,16 @@ export class ModalSiteMapComponent implements OnInit {
   listenToOnSenSitemapSiteListEvent() {
     document.addEventListener(
       "on-send-sitemap-site-list", (e: CustomEvent) => {
-        // console.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
+        // this.logger.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
         this.listSitesOfSitemap=e.detail
        
         if(this.listSitesOfSitemap.length > 0){
           this.buttonDisabled = false;
           this.listOfUrls = this.listSitesOfSitemap.join('\n');
-          // console.log('MODAL-SITE-MAP listOfUrls: ', this.listOfUrls);
+          // this.logger.log('MODAL-SITE-MAP listOfUrls: ', this.listOfUrls);
           this.countSitemap = this.listSitesOfSitemap.length;
           this.isSitemapLoaded = true;
-          // console.log('MODAL-SITE-MAP isSitemapLoaded: ', this.isSitemapLoaded);
+          // this.logger.log('MODAL-SITE-MAP isSitemapLoaded: ', this.isSitemapLoaded);
         } else {
           this.buttonDisabled = true;
           this.isSitemapLoaded = false;
@@ -82,11 +84,11 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   // ngOnChanges(changes: SimpleChanges){
-  //   // console.log('ModalSiteMapComponent changes: ', changes);
+  //   // this.logger.log('ModalSiteMapComponent changes: ', changes);
   //   if(this.listSitesOfSitemap.length > 0){
   //     this.buttonDisabled = false;
   //     this.listOfUrls = this.listSitesOfSitemap.join('\n');
-  //     // console.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
+  //     // this.logger.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
   //     this.countSitemap = this.listSitesOfSitemap.length;
   //     this.isSitemapLoaded = true;
   //   } else {
@@ -146,7 +148,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
-    // console.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
+    // this.logger.log('[MODAL-SITE-MAP] onSendSitemap body ', body)
     this.buttonDisabled = true;
 
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });
@@ -181,11 +183,11 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   onSelectScrapeType(selectedType) {
-    // console.log("onSelectScrapeType: ", selectedType);
+    // this.logger.log("onSelectScrapeType: ", selectedType);
   }
 
   addTag(type, event: MatChipInputEvent): void {
-    //console.log("Tag Event: ", event);
+    //this.logger.log("Tag Event: ", event);
     const value = (event.value || '').trim();
     if (value) {
       if (type === 'extract_tags') {
@@ -202,30 +204,30 @@ export class ModalSiteMapComponent implements OnInit {
     if (event.input) {
       event.input.value = "";
     }
-    //console.log("Tags: ", this.content.tags);
+    //this.logger.log("Tags: ", this.content.tags);
   }
 
 
   removeTag(arrayName, tag) {
-    console.log("Remove tag arrayName: ", arrayName, ' tag ', tag);
+    this.logger.log("Remove tag arrayName: ", arrayName, ' tag ', tag);
     if (arrayName === 'extract_tags')  {
-      console.log('extract_tags array',  this.extract_tags)
+      this.logger.log('extract_tags array',  this.extract_tags)
       const index =  this.extract_tags.findIndex((val) => val === tag); 
-      console.log("Remove tag index: ", index);
+      this.logger.log("Remove tag index: ", index);
       this.extract_tags.splice(index, 1)
     }
 
     if (arrayName === 'unwanted_tags')  {
-      console.log('unwanted_tags array',  this.extract_tags)
+      this.logger.log('unwanted_tags array',  this.extract_tags)
       const index =  this.unwanted_tags.findIndex((val) => val === tag); // Returns 1  
-      console.log("Remove tag index: ", index);
+      this.logger.log("Remove tag index: ", index);
       this.unwanted_tags.splice(index, 1)
     }
 
     if (arrayName === 'unwanted_classnames')  {
-      console.log('unwanted_classnames array',  this.extract_tags)
+      this.logger.log('unwanted_classnames array',  this.extract_tags)
       const index =  this.unwanted_classnames.findIndex((val) => val === tag); // Returns 1  
-      console.log("Remove tag index: ", index);
+      this.logger.log("Remove tag index: ", index);
       this.unwanted_classnames.splice(index, 1)
     }
 

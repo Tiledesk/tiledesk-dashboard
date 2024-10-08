@@ -1263,20 +1263,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreviewSettings] Dialog after closed result: ', result);
       if (result && result.action) {
-        console.log('[ModalPreviewSettings] Dialog after closed action 1', result.action)
+        this.logger.log('[ModalPreviewSettings] Dialog after closed action 1', result.action)
         this.logger.log('[ModalPreviewSettings] Dialog after closed action 2', result.action)
         this.logger.log('[ModalPreviewSettings] Dialog after closed selectedNamespace ', result.selectedNamespace)
 
         if (result.action === "update") {
           let body = { preview_settings: result.selectedNamespace.preview_settings }
-          console.log('[ModalPreviewSettings] update body ', body)
+          this.logger.log('[ModalPreviewSettings] update body ', body)
           this.updateNamespace(body, 'modal-update-settings')
         }
 
         if (result.action === "update-and-open-preview") {
-          console.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
+          this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
           let body = { preview_settings: result.selectedNamespace.preview_settings }
-          console.log('[ModalPreviewSettings] update-and-open-preview body ', body)
+          this.logger.log('[ModalPreviewSettings] update-and-open-preview body ', body)
           if (previedata) {
             this.updateNamespace(body, 'modal-update-settings-and-open-preview', previedata)
           } else {
