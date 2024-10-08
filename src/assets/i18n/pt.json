@@ -1845,6 +1845,13 @@
         "TypeAndPressEnter": "Digite e prima Enter",
         "UnwantedTags": "Tags indesejadas",
         "UnwantedClassnames":"Nomes de classes indesejados",
+        "AdvancedContext":"Contexto avançado",
+        "AdvancedContextDesc1":"Aqui tem mais controlo. Tenha cuidado, o aviso nativo será completamente substituído.",
+        "AdvancedContextDesc2":"Certifique-se de que instrui o seu aviso para responder com <NOANS> quando não encontrar uma resposta satisfatória e feche sempre com {context}",
+        "GetContentsSources": "Obtenha fontes de conteúdo",
+        "GetContentsSourcesDesc1":"Utilize esta opção para obter fontes precisas de documentos utilizados para gerar a resposta.",
+        "GetContentsSourcesDesc2":"Tenha em mente que isto consome mais tokens do que a recuperação regular de KB.",
+        "GetContentsSourcesDesc3":"A quota máxima de tokens será ajustada automaticamente para obter as citações, se necessário.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Isso é tudo"
     },

@@ -1845,6 +1845,13 @@
          "TypeAndPressEnter": "kiriting va Enter tugmasini bosing",
          "UnwantedTags": "Keraksiz teglar",
          "UnwantedClassnames":"Keraksiz sinf nomlari",
+         "AdvancedContext":"Kengaytirilgan kontekst",
+         "AdvancedContextDesc1":"Bu erda siz eng ko'p nazoratga egasiz. Ehtiyot bo'ling, mahalliy so'rov butunlay o'chiriladi.",
+         "AdvancedContextDesc2":"Agar u qoniqarli javob topmasa, unga <NOANS> bilan javob berishni buyuring va har doim {context} bilan yoping.",
+         "GetContentsSources": "Tarkib manbalarini oling",
+         "GetContentsSourcesDesc1":"Javobni yaratishda foydalaniladigan hujjatlarning aniq manbalarini olish uchun ushbu parametrdan foydalaning.",
+         "GetContentsSourcesDesc2": "Shuni yodda tutingki, bu odatiy KB olishdan ko'ra ko'proq tokenlarni iste'mol qiladi.",
+         "GetContentsSourcesDesc3":"Agar kerak bo'lsa, iqtiboslarni olish uchun maksimal tokenlar kvotasi avtomatik ravishda o'rnatiladi.",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },

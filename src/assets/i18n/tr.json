@@ -1847,6 +1847,13 @@
          "TypeAndPressEnter": "Yazın ve Enter'a basın",
          "UnwantedTags": "İstenmeyen Etiketler",
          "UnwantedClassnames":"İstenmeyen Sınıf Adları",
+         "AdvancedContext":"Gelişmiş bağlam",
+         "AdvancedContextDesc1":"Burada en fazla kontrol sizde. Dikkatli olun, yerel komut istemi tamamen üzerine yazılacak.",
+         "AdvancedContextDesc2":"İstemciye tatmin edici bir cevap bulamadığında <NOANS> ile yanıt vermesini ve her zaman {context} ile kapatmasını söylediğinizden emin olun",
+         "GetContentsSources": "İçerik kaynaklarını edinin",
+         "GetContentsSourcesDesc1":"Cevabı oluşturmak için kullanılan belgelerin doğru kaynaklarını almak için bu seçeneği kullanın.",
+         "GetContentsSourcesDesc2":"Bunun normal KB alımından daha fazla token tüketeceğini unutmayın.",
+         "GetContentsSourcesDesc3":"Gerektiğinde alıntı alabilmek için maksimum token kotası otomatik olarak ayarlanacaktır.",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Hepsi bu kadar"
     },
