@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KB_LIMIT_CONTENT } from 'app/utils/util';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'modal-site-map',
@@ -23,6 +25,21 @@ export class ModalSiteMapComponent implements OnInit {
   listOfUrls: string;
   countSitemap: number;
   errorLimit: boolean = false;
+
+
+  panelOpenState = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  scrape_types: Array<any> = [
+    { name: "Full HTML page", value: 1 },
+    { name: "Headless (Standard)", value: 2 },
+    { name: "Headless (Text Only)", value: 3 },
+    { name: "Headless (Parameterizable)", value: 4 },
+  ];
+
+  selectedScrapeType = 3;
+  extract_tags = [];
+  unwanted_tags = [];
+  unwanted_classnames = [];
 
   kb: KB = {
     _id: null,
@@ -146,13 +163,73 @@ export class ModalSiteMapComponent implements OnInit {
         return row.trim() !== '';
       });
       let body = {
-        'list': arrayURLS
+        'list': arrayURLS,
+        scrape_type: this.selectedScrapeType,
       }
 
+      if (this.selectedScrapeType === 4) {
+        body['scrape_options'] = {
+          tags_to_extract: this.extract_tags,
+          unwanted_tags: this.unwanted_tags,
+          unwanted_classnames: this.unwanted_classnames
+        }
+      }
       this.dialogRef.close(body)
       // this.saveKnowledgeBase.emit(body);
     }
     
   }
+
+  onSelectScrapeType(selectedType) {
+    // console.log("onSelectScrapeType: ", selectedType);
+  }
+
+  addTag(type, event: MatChipInputEvent): void {
+    //console.log("Tag Event: ", event);
+    const value = (event.value || '').trim();
+    if (value) {
+      if (type === 'extract_tags') {
+        this.extract_tags.push(value);
+      }
+      if (type === 'unwanted_tags') {
+        this.unwanted_tags.push(value);
+      }
+      if (type === 'unwanted_classnames') {
+        this.unwanted_classnames.push(value);
+      }
+    }
+    // Clear the input value
+    if (event.input) {
+      event.input.value = "";
+    }
+    //console.log("Tags: ", this.content.tags);
+  }
+
+
+  removeTag(arrayName, tag) {
+    console.log("Remove tag arrayName: ", arrayName, ' tag ', tag);
+    if (arrayName === 'extract_tags')  {
+      console.log('extract_tags array',  this.extract_tags)
+      const index =  this.extract_tags.findIndex((val) => val === tag); 
+      console.log("Remove tag index: ", index);
+      this.extract_tags.splice(index, 1)
+    }
+
+    if (arrayName === 'unwanted_tags')  {
+      console.log('unwanted_tags array',  this.extract_tags)
+      const index =  this.unwanted_tags.findIndex((val) => val === tag); // Returns 1  
+      console.log("Remove tag index: ", index);
+      this.unwanted_tags.splice(index, 1)
+    }
+
+    if (arrayName === 'unwanted_classnames')  {
+      console.log('unwanted_classnames array',  this.extract_tags)
+      const index =  this.unwanted_classnames.findIndex((val) => val === tag); // Returns 1  
+      console.log("Remove tag index: ", index);
+      this.unwanted_classnames.splice(index, 1)
+    }
+
+  }
+
 
 }

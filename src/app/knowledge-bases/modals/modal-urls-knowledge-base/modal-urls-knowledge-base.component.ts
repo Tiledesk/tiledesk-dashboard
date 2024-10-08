@@ -101,7 +101,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   }
 
   addTag(type, event: MatChipInputEvent): void {
-    //console.log("Tag Event: ", event);
+    // console.log("Tag Event: ", event);
     const value = (event.value || '').trim();
     if (value) {
       if (type === 'extract_tags') {
@@ -119,6 +119,31 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
       event.input.value = "";
     }
     //console.log("Tags: ", this.content.tags);
+  }
+
+  removeTag(arrayName, tag) {
+    console.log("Remove tag arrayName: ", arrayName, ' tag ', tag);
+    if (arrayName === 'extract_tags')  {
+      console.log('extract_tags array',  this.extract_tags)
+      const index =  this.extract_tags.findIndex((val) => val === tag); 
+      console.log("Remove tag index: ", index);
+      this.extract_tags.splice(index, 1)
+    }
+
+    if (arrayName === 'unwanted_tags')  {
+      console.log('unwanted_tags array',  this.extract_tags)
+      const index =  this.unwanted_tags.findIndex((val) => val === tag); // Returns 1  
+      console.log("Remove tag index: ", index);
+      this.unwanted_tags.splice(index, 1)
+    }
+
+    if (arrayName === 'unwanted_classnames')  {
+      console.log('unwanted_classnames array',  this.extract_tags)
+      const index =  this.unwanted_classnames.findIndex((val) => val === tag); // Returns 1  
+      console.log("Remove tag index: ", index);
+      this.unwanted_classnames.splice(index, 1)
+    }
+
   }
 
   /** */
