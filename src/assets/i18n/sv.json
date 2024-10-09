@@ -601,6 +601,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Avancerad",
+    "Standard": "Standard",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",

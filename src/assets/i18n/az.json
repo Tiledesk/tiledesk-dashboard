@@ -600,6 +600,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Qabaqcıl",
+    "Standard": "Standart",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",

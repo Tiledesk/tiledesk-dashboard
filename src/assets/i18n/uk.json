@@ -602,6 +602,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Просунутий",
+    "Standard": "Стандартний",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готові відповіді — це готові повідомлення, які ви можете легко згадати під час чату.",

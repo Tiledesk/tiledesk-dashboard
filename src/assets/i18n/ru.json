@@ -600,6 +600,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Передовой",
+    "Standard": "Стандарт",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готовые ответы — это готовые сообщения, которые вы можете легко вспомнить во время чата.",

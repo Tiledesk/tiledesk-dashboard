@@ -599,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Advanced",
+    "Standard": "Standard",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned responses are pre-made messages you can recall easily during chat.",

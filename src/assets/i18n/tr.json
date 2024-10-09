@@ -601,6 +601,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Gelişmiş",
+    "Standard": "Standart",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",

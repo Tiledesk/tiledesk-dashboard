@@ -601,6 +601,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Напредно",
+    "Standard": "Стандард",
     "CannedResponses": {
         "QuickTips": {
             "1": "Спремни одговори су унапред направљене поруке које можете лако да се сетите током ћаскања.",

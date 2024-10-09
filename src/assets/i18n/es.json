@@ -599,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Avanzado",
+    "Standard": "Estándar",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",

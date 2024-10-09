@@ -599,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Avançado",
+    "Standard": "Padrão",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",

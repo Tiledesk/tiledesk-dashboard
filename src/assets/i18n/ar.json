@@ -599,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "المتقدمة",
+    "Standard": "معيار",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",
