@@ -25,14 +25,15 @@
                         </span>
                        
                         <ng-select class="custom-ng-select" style="min-width: 200px; margin-bottom: 6px;" 
-                            appendTo="body" [items]="scrape_types" bindLabel="name" bindValue="value"
+                            appendTo="body" 
+                            [items]="scrape_types | selectOptionsTranslate" bindLabel="name" bindValue="value"
                             placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
                             [clearable]="false"
                             [searchable]="false" 
                             [(ngModel)]="selectedScrapeType" 
                             (change)="onSelectScrapeType(selectedScrapeType)">
             
-                            <ng-option *ngFor="let type of scrape_types" [value]="type.value">{{type.name}}</ng-option>
+                            <!-- <ng-option *ngFor="let type of scrape_types" [value]="type.value">{{type.name}}</ng-option> -->
                             
                         </ng-select>
                     </div>

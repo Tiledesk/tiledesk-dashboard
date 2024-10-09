@@ -30,14 +30,21 @@ export class ModalSiteMapComponent implements OnInit {
 
   panelOpenState = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
+  // scrape_types: Array<any> = [
+  //   { name: "Full HTML page", value: 1 },
+  //   { name: "Headless (Standard)", value: 2 },
+  //   { name: "Headless (Text Only)", value: 3 },
+  //   { name: "Headless (Parameterizable)", value: 4 },
+  // ];
+
   scrape_types: Array<any> = [
-    { name: "Full HTML page", value: 1 },
-    { name: "Headless (Standard)", value: 2 },
-    { name: "Headless (Text Only)", value: 3 },
-    { name: "Headless (Parameterizable)", value: 4 },
+    // { name: "Full HTML page", value: 1 },
+    { name: "Standard", value: 2 },
+    // { name: "Headless (Text Only)", value: 3 },
+    { name: "Advanced", value: 4 },
   ];
 
-  selectedScrapeType = 3;
+  selectedScrapeType = 2;
   extract_tags = [];
   unwanted_tags = [];
   unwanted_classnames = [];
