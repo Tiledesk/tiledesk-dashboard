@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.34-rc3
+- AI settings and KB preview bug fixing
+
 ### 2.7.34-rc2
 - Minor improvements
 
