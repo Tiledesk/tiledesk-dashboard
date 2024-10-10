@@ -2408,6 +2408,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
+    this.conversationTypeValue = 'all'
+    this.conversation_type = 'all'
     
 
     if (this.requester_email) {

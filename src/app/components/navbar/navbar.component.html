@@ -80,26 +80,11 @@
 
                   <div class="quote-container">
 
-                    <div class="quota-wpr">
-
-                      <div class="quota-header-section">
-                        <p class="quote-title">Conversations</p>
-                        <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit |
-                          number:'1.0-0'}}</div>
-                      </div>
-
-                      <div class="convs-count-container">
-                        <div class="convs-count-wpr">
-                          <div class="convs-count-label">Opened </div>
-                          <div class="convs-count-value" (click)="goToHistoryOpenedConvs()"> {{openedConversations}}
-                          </div>
-                        </div>
-                        <div class="convs-count-wpr">
-                          <div class="convs-count-label">Closed </div>
-                          <div class="convs-count-value" (click)="goToHistoryClosedConvs()"> {{closedConversations}}
-                          </div>
-                        </div>
-                      </div>
+                    <div>
+                      <p class="quote-title">{{'Requests' | translate}}</p>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div> 
+                      <p class="quote-title">Conversations</p>
+                      <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                     </div>
 
 
