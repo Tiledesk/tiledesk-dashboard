@@ -242,9 +242,9 @@
       <!-- ANALYTICS -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleANA">
-        <li id="analytics" *ngIf="project && USER_ROLE !== 'agent'" 
+        <li id="analytics"  *ngIf="project && USER_ROLE !== 'agent'" 
           routerLinkActive="active"
-          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}" 
+          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true, 'sb-bottom-items': !isVisibleCNT}" 
           (click)="stopScroll()"
           matTooltipClass="sb-mat-tooltip" 
           matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
@@ -263,7 +263,7 @@
       <ng-container *ngIf="isVisibleACT">
         <li id="activities" *ngIf="project && USER_ROLE !== 'agent'" 
           routerLinkActive="active"
-          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}" 
+          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true, 'sb-bottom-items': !isVisibleCNT || !isVisibleANA }" 
           (click)="stopScroll()"
           matTooltipClass="sb-mat-tooltip" 
           matTooltip="{{ 'Activities' | translate }}" 
@@ -288,6 +288,7 @@
         #tooltip="matTooltip"
         matTooltipPosition='right' 
         matTooltipHideDelay="100" 
+        [ngClass]="{'sb-bottom-items': !isVisibleCNT || !isVisibleANA || !isVisibleACT}"
         style="height: 50px !important;">
         <a class="customAncor" routerLink="project/{{ project._id }}/history">
           <i class="material-icons sidebar-icons">history</i>
@@ -373,170 +374,6 @@
         </ng-template>
       </mat-menu>
 
-
-
-
-
-
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Canned responses -->
-      <!-- ------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleCAR">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/cannedresponses">
-            <i class="material-icons sidebar-icons" style="font-size:24px !important">
-              bolt
-            </i>
-            <p class="onBlackBckgrnd">
-              <!-- <span class="sidebar-mini">
-                {{'CannedResponses.CR' | translate}}
-              </span> -->
-              {{'CannedResponses.CannedResponses' | translate}}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-
-      <!-- -------------------------------------------------------------  -->
-      <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
-      <!-- ------------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleLBS">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
-            <p class="onBlackBckgrnd">
-              <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i>
-              {{'Tags.Tags' | translate}}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-      <!-- ------------------------------------------------------- -->
-      <!-- New: MERGE ROUTING / DEPT - Routing & depts -->
-      <!-- ------------------------------------------------------- -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
-          <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i>
-          <p class="onBlackBckgrnd">
-
-            <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-            <span *ngIf="!isVisibleDEP"> Routing </span>
-
-          </p>
-        </a>
-      </li>
-
-
-      <!-- ------------------------------------------------------- -->
-      <!-- TRIGGER -->
-      <!-- ------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleTRI">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
-
-            <i class="material-icons sidebar-icons" style="
-            font-size:23px; position:relative; left:1px">
-              generating_tokens
-            </i>
-            <span class="_badge" style="font-size: 9px;"
-              [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
-            <p class="onBlackBckgrnd">
-              {{ 'Trigger.Trigger' | translate }}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Teammates & Groups -->
-      <!-- ------------------------------------------------------- -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
-          <i class="material-icons sidebar-icons">
-            groups
-          </i>
-          <p class="onBlackBckgrnd">
-            <span *ngIf="isVisibleGRO">
-              <!-- <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span> -->
-              {{ 'UsersAndGroups' | translate }}
-            </span>
-            <span *ngIf="!isVisibleGRO">
-              <!-- <span class="sidebar-mini">{{'TeammateInitial' | translate }} </span>  -->
-              <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
-            </span>
-          </p>
-        </a>
-      </li>
-
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Chatbot -->
-      <!-- ------------------------------------------------------- -->
-      <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
-          <i class="material-icons sidebar-icons">
-            smart_toy
-          </i>
-          <p class="onBlackBckgrnd">
-            Bots
-          </p>
-        </a>
-      </li>
-
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Widget  -->
-      <!-- -------------------------------------------------------- -->
-      <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
-        (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget-set-up">
-          <i class="material-icons sidebar-icons">
-            chat_bubble
-          </i>
-
-          <p class="onBlackBckgrnd">
-            Widget
-          </p>
-        </a>
-      </li>
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Operatinf Hours  -->
-      <!-- -------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleOPH">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
-          <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/hours">
-            <i class="material-icons sidebar-icons">
-              watch_later
-            </i>
-            <p class="onBlackBckgrnd">
-              {{ 'Hours' | translate }}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Project Settings  -->
-      <!-- -------------------------------------------------------- -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
-        <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
-
-          <i class="material-icons sidebar-icons">
-            construction
-          </i>
-          <p class="onBlackBckgrnd">
-
-            {{ 'ProjectSettings' | translate }}
-          </p>
-
-
-        </a>
-      </li>
     </ul>
   </div>
 </div>

@@ -135,7 +135,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   subscription_is_active: boolean;
   HOME_ROUTE_IS_ACTIVE: boolean;
   projects: any;
-  isVisible: boolean;
+  // isVisible: boolean;
 
   storageBucket: string;
   baseUrl: string;
@@ -689,20 +689,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
     keys.forEach(key => {
-      // this.logger.log('NavbarComponent public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisible = false;
-          // this.logger.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
-        } else {
-          this.isVisible = true;
-          // this.logger.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
-        }
-      }
-
+     
       if (key.includes("MTT")) {
         // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
         let mt = key.split(":");
@@ -1142,14 +1129,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   openModalSubsExpired() {
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
-        this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    if (this.isVisiblePay) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+          this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
@@ -1168,7 +1159,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   goToPricing() {
     this.logger.log('[WSREQUEST-STATIC] - goToPricing projectId ', this.projectId);
-    if (this.isVisible) {
+    if (this.isVisiblePay) {
       if (this.USER_ROLE === 'owner') {
         // && this.subscription_is_active === false
         if (this.prjct_profile_type === 'payment') {

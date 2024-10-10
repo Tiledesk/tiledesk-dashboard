@@ -111,6 +111,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   CHAT_BASE_URL: string;
   id_request: string;
   payIsVisible: boolean;
+  overridePay: boolean;
   public_Key: any;
   isChromeVerGreaterThan100: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -187,18 +188,32 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
         }
       }
+
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
       this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
     }
+
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
   }
 
 
   getTranslation() {
 
-    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE})
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -636,11 +651,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       const allContacts = res['leads'];
       this.logger.log('[CONTACTS-COMP] - GET ALL LEADS - LEADS  ', allContacts);
       allContacts.forEach(contact => {
-        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
+        console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.tags.length > 0) {
           // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
           contact.tags.forEach((tag: string) => {
-            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
+            console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
             let index = this.tagsArray.findIndex(x => x.name == tag)
             // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
             if (index === -1) {
@@ -1062,30 +1077,65 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  checkPlanAndPresentModalContactUs() {
+    if ((this.profile_name === PLAN_NAME.A) ||
+    (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    (this.profile_name === 'free' && this.trial_expired === true)) {
+
+    this.notify._displayContactUsModal(true, 'upgrade_plan');
+    return false
+
+  } else if ((this.profile_name === PLAN_NAME.D) ||
+    (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+    (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+    (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+    (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+    this.notify._displayContactUsModal(true, 'upgrade_plan');
+    return false
+  }
+  }
+
 
   exportContactsToCsv() {
-    if (this.payIsVisible) {
-      const isAvailable = this.checkPlanAndPresentModal()
-      this.logger.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
+    if (!this.overridePay) {
+      if (this.payIsVisible) {
+        const isAvailable = this.checkPlanAndPresentModal()
+        this.logger.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
+        if (isAvailable === false) {
+          return
+        }
+
+        this.dwnldCSV()
+
+        // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    } else {
+
+      const isAvailable = this.checkPlanAndPresentModalContactUs()
+      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }
-
-      this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
-        if (leads_object) {
-          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-          this.downloadFile(leads_object);
-        }
-      }, (error) => {
-        this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-      }, () => {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-      });
-      // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.dwnldCSV()
     }
+  }
+
+
+  dwnldCSV() {
+    this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+      if (leads_object) {
+        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+        this.downloadFile(leads_object);
+      }
+    }, (error) => {
+      this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+    }, () => {
+      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+    });
   }
 
   // Export CSV
@@ -1099,7 +1149,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
@@ -1129,7 +1179,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-              
+
             }
 
           } else {
@@ -1151,7 +1201,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,

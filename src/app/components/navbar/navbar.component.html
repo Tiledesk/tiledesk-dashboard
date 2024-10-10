@@ -332,7 +332,7 @@
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
-        <ng-container *ngIf="isVisible">
+        <ng-container *ngIf="isVisiblePay">
           <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
 
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
@@ -393,7 +393,7 @@
         <!--  ------------------------------------------------ -->
         <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisible">
+        <ng-container *ngIf="isVisiblePay">
           <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
             <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
@@ -403,7 +403,8 @@
         <!--  ------------------------------------------------ -->
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisible">
+        <!-- *ngIf="isVisiblePay" -->
+        <ng-container >
           <li
             [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
             id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">

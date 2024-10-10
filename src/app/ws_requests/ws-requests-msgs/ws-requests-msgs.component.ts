@@ -66,6 +66,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   objectKeys = Object.keys;
   isVisiblePaymentTab: boolean;
+  overridePay: boolean;
   @ViewChild('scrollMe', { static: false })
   private myScrollContainer: ElementRef;
 
@@ -1316,6 +1317,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+
       if (key.includes("APP")) {
         let app = key.split(":");
         if (app[1] === "F") {
@@ -1337,6 +1348,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePaymentTab = false;
     }
+
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
+
+    
   }
 
   // -------------------------------------------------------------
@@ -4425,24 +4442,57 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  checkPlanAndPresentModalContactUs() {
+
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
+
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      return false
+
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      return false
+    }
+  }
+
 
 
   displayModalDownloadTranscript() {
-    if (this.isVisiblePaymentTab) {
+    if (!this.overridePay) {
+      if (this.isVisiblePaymentTab) {
 
-      const isAvailable = this.checkPlanAndPresentModal()
-      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
+        const isAvailable = this.checkPlanAndPresentModal()
+        console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
+        if (isAvailable === false) {
+          return
+        }
+
+        this.displayModalTranscript = 'block'
+
+
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    } else {
+
+      const isAvailable = this.checkPlanAndPresentModalContactUs()
+      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }
 
       this.displayModalTranscript = 'block'
 
-
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
+
 
   closeModalTranscript() {
     this.displayModalTranscript = 'none'
