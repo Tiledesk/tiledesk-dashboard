@@ -421,12 +421,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.citations = this.selectedNamespaceClone.preview_settings.citations
     // this.selectedNamespace.preview_settings.context = this.contextDefaultValue;
 
-    this.aiSettingsObject[0].model = this.modelDefaultValue;
-    this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
-    this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
-    this.aiSettingsObject[0].top_k = this.topkDefaultValue;
-    this.aiSettingsObject[0].advancedPrompt = this.advancedPromptDefaultValue;
-    this.aiSettingsObject[0].citations = this.citationsDefaultValue;
+    // this.aiSettingsObject[0].model = this.modelDefaultValue;
+    // this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
+    // this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
+    // this.aiSettingsObject[0].top_k = this.topkDefaultValue;
+    // this.aiSettingsObject[0].advancedPrompt = this.advancedPromptDefaultValue;
+    // this.aiSettingsObject[0].citations = this.citationsDefaultValue;
+
+    this.aiSettingsObject[0].model = this.selectedModel;
+    this.aiSettingsObject[0].maxTokens = this.max_tokens
+    this.aiSettingsObject[0].temperature = this.temperature;
+    this.aiSettingsObject[0].top_k = this.topK;
+    this.aiSettingsObject[0].context = this.context
+    this.aiSettingsObject[0].advancedPrompt = this.advancedPrompt;
+    this.aiSettingsObject[0].citations = this.citations;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
