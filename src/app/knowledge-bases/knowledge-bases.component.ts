@@ -1269,12 +1269,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         if (result.action === "update") {
           let body = { preview_settings: result.selectedNamespace.preview_settings }
+          this.logger.log('[ModalPreviewSettings] update body ', body)
           this.updateNamespace(body, 'modal-update-settings')
         }
 
         if (result.action === "update-and-open-preview") {
           this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
           let body = { preview_settings: result.selectedNamespace.preview_settings }
+          this.logger.log('[ModalPreviewSettings] update-and-open-preview body ', body)
           if (previedata) {
             this.updateNamespace(body, 'modal-update-settings-and-open-preview', previedata)
           } else {
@@ -1435,7 +1437,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
+      console.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
       if (body) {
         this.onAddMultiKb(body)
       }
@@ -1452,7 +1454,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
       if (body) {
         this.onAddMultiKb(body)
       }

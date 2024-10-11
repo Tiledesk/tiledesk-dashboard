@@ -1366,9 +1366,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
               if (request['duration']) {
 
-                // his.logger.log('[HISTORY & NORT-CONVS] duration ', request['duration']) 
+                // this.logger.log('[HISTORY & NORT-CONVS] duration ', request['duration']) 
                 this.duration_in_table = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
-                // his.logger.log('[HISTORY & NORT-CONVS] duration_in_table ', this.duration_in_table) 
+                // this.logger.log('[HISTORY & NORT-CONVS] duration_in_table ', this.duration_in_table) 
                 request['duration_in_table'] = this.duration_in_table
 
                 // this.duration_in_table_test = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
@@ -2423,7 +2423,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -2451,7 +2452,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.duration_op = 'gt'
     }
 
-    if (this.duration) {
+    this.duration_operator_temp = this.request_duration_operator_array[0]['id']
+
+    if (this.duration)  {
       this.duration = ''
     }
 
@@ -2548,7 +2551,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.selecteTagName = '';
     this.conversation_type = 'all';
     this.duration = '';
-    this.duration_op = "gt";
+    this.duration_op = 'gt';
+    this.duration_operator_temp = this.request_duration_operator_array[0]['id']
     this.caller_phone = '';
     this.called_phone = '';
     this.call_id = "";

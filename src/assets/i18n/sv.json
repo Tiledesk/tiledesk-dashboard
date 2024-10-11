@@ -571,6 +571,9 @@
     "MyChatbots": "MINA CHATBOTS",
     "ManageYourContents": "Hantera ditt innehåll",
     "CreateChatbot": "Skapa chatbot",
+    "CreateYuorAIAgent": "Skapa din AI-agent",
+    "ChooseNameForYourAIAgent":"Välj ett namn för din AI-agent",
+    "MyAIAgentName": "Mitt AI-agentnamn",
     "ChatbotName":"Chatbot namn",
     "Oops":"Hoppsan",
     "YourAuthTokenHasBeenInvalidated":"Din autentiseringstoken har ogiltigförklarats",
@@ -598,6 +601,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Avancerad",
+    "Standard": "Standard",
     "CannedResponses": {
         "QuickTips": {
             "1": "Standardsvar är färdiga meddelanden som du enkelt kan återkalla under chatten.",
@@ -1841,6 +1846,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Ge systemet en roll som det bör spela när du skapar dina svar.",
         "Deterministic":"Deterministisk",
         "Random":"Slumpmässig",
+        "AdvancedOptions":"Напредне опције",
+        "IndexingType":"Indexeringstyp",
+        "ExtractTags": "Extrahera taggar (obligatoriskt)",
+        "TypeAndPressEnter": "Skriv och tryck på Enter",
+        "UnwantedTags": "Unwanted Tags",
+        "UnwantedClassnames":"Oönskade klassnamn",
+        "AdvancedContext":"Avancerat sammanhang",
+        "AdvancedContextDesc1":"Här har du mest kontroll. Var försiktig, den ursprungliga prompten kommer att skrivas över helt.",
+        "AdvancedContextDesc2":"Se till att instruera din uppmaning att svara med <NOANS> när den inte hittar ett tillfredsställande svar och stäng alltid med {context}",
+        "GetContentsSources": "Skaffa innehållskällor",
+        "GetContentsSourcesDesc1": "Använd det här alternativet för att få korrekta dokumentkällor som används för att generera svaret.",
+        "GetContentsSourcesDesc2":"Tänk på att detta förbrukar fler tokens än vanlig KB-hämtning.",
+        "GetContentsSourcesDesc3":"Max-tokens kvot kommer att justeras automatiskt för att få citat om det behövs.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },

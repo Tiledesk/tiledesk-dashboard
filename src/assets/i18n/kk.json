@@ -569,6 +569,9 @@
     "MyChatbots": "МЕНІҢ ЧАТБОТТАРЫМ",
     "ManageYourContents": "Мазмұныңызды басқарыңыз",
     "CreateChatbot": "Чат-бот жасау",
+    "CreateYuorAIAgent": "AI агентіңізді жасаңыз",
+    "ChooseNameForYourAIAgent":"AI агенті үшін атау таңдаңыз",
+    "MyAIAgentName": "Менің AI агент атым",
     "ChatbotName": "Чатбот атауы",
     "Oops": "Ой",
     "YourAuthTokenHasBeenInvalidated": "Аутентификация таңбалауышы жарамсыз",
@@ -596,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Жетілдірілген",
+    "Standard": "Стандартты",
     "CannedResponses": {
         "QuickTips": {
             "1": "Консервіленген жауаптар - чат кезінде оңай еске түсіруге болатын алдын ала жасалған хабарлар.",
@@ -1839,6 +1844,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Жүйеге жауаптарыңызды жасау кезінде ойнайтын рөлді беріңіз.",
         "Deterministic": "Детерминистік",
         "Random": "Кездейсоқ",
+        "AdvancedOptions":"Қосымша опциялар",
+        "IndexingType":"Индекстеу түрі",
+        "ExtractTags": "Тегтерді шығару (міндетті)",
+        "TypeAndPressEnter": "Теріп, Enter пернесін басыңыз",
+        "UnwantedTags": "Қажет емес тегтер",
+        "UnwantedClassnames":"Қажетсіз сынып аттары",
+        "AdvancedContext":"Жетілдірілген контекст",
+        "AdvancedContextDesc1":"Мұнда сізде ең көп бақылау бар. Сақ болыңыз, жергілікті шақыру толығымен қайта жазылады.",
+        "AdvancedContextDesc2":"Сұрау қанағаттанарлық жауап таппаған кезде <NOANS> арқылы жауап беруге нұсқау беріңіз және әрқашан {context} арқылы жабыңыз.",
+        "GetContentsSources": "Мазмұн көздерін алыңыз",
+        "GetContentsSourcesDesc1":"Жауапты жасау үшін пайдаланылған құжаттардың нақты көздерін алу үшін осы опцияны пайдаланыңыз.",
+        "GetContentsSourcesDesc2":"Бұл әдеттегі КБ алудан гөрі көбірек таңбалауыштарды тұтынатынын есте сақтаңыз.",
+        "GetContentsSourcesDesc3":"Қажет болса, дәйексөздерді алу үшін максималды белгілер квотасы автоматты түрде реттеледі.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Бар болғаны"
     },

@@ -569,6 +569,9 @@
     "MyChatbots": "MIS CHATBOTS",
     "ManageYourContents": "Gestiona tus Contenidos",
     "CreateChatbot": "Crear chatbot",
+    "CreateYuorAIAgent": "Crea tu agente de IA",
+    "ChooseNameForYourAIAgent":"Elige un nombre para tu agente de IA",
+    "MyAIAgentName": "Mi nombre de agente AI",
     "ChatbotName": "Nombre del chatbot",
     "Oops": "Ups",
     "YourAuthTokenHasBeenInvalidated": "Su token de autenticación ha sido invalidadod",
@@ -596,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Avanzado",
+    "Standard": "Estándar",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",
@@ -1839,6 +1844,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Dale al sistema el rol que debe desempeñar al crear tus respuestas.",
         "Deterministic": "Determinista",
         "Random": "Aleatorio",
+        "AdvancedOptions":"Opciones avanzadas",
+        "IndexingType":"Tipo de indexación",
+        "ExtractTags": "Extraer etiquetas (obligatorio)",
+        "TypeAndPressEnter": "Escribe y pulsa Enter",
+        "UnwantedTags": "Etiquetas no deseadas",
+        "UnwantedClassnames":"Nombres de clases no deseados",
+        "AdvancedContext":"Contexto avanzado",
+        "AdvancedContextDesc1":"Aquí tienes el máximo control. Ten cuidado, el mensaje nativo se sobrescribirá por completo.",
+        "AdvancedContextDesc2":"Asegúrese de indicarle a su mensaje que responda con <NOANS> cuando no encuentre una respuesta satisfactoria y cierre siempre con {context}",
+        "GetContentsSources": "Obtener fuentes de contenidos",
+        "GetContentsSourcesDesc1":"Utilice esta opción para obtener fuentes precisas de los documentos utilizados para generar la respuesta.",
+        "GetContentsSourcesDesc2":"Tenga en cuenta que esto consume más tokens que la recuperación de KB normal.",
+        "GetContentsSourcesDesc3":"La cuota máxima de tokens se ajustará automáticamente para obtener las citas si es necesario.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Eso es todo"
     },

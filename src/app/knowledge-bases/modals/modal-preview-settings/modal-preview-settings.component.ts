@@ -15,12 +15,15 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   @ViewChild('aiModel') aiModel: SatPopover;
   @ViewChild('maxTokens') maxTokens: SatPopover;
-  @ViewChild('aiModeltemperature')  aiModeltemperature: SatPopover;
-  @ViewChild('chunkLimit')  chunkLimit: SatPopover;
-  @ViewChild('systemContext')  systemContext: SatPopover;
-  
+  @ViewChild('aiModeltemperature') aiModeltemperature: SatPopover;
+  @ViewChild('chunkLimit') chunkLimit: SatPopover;
+  @ViewChild('systemContext') systemContext: SatPopover;
+  @ViewChild('advancedContext') advancedContext: SatPopover;
+  @ViewChild('contentsSources') contentsSources: SatPopover;
 
- 
+
+
+
 
   // @Output() closeBaseModal = new EventEmitter();
   // @Input() hasCickedAiSettingsModalBackdrop: boolean;
@@ -45,6 +48,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   public topK: number;
   public context: string
   public context_placeholder: string
+  public advancedPrompt: boolean // = false;
+  public citations: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
   private modelDefaultValue = "gpt-4o-mini";
@@ -52,6 +57,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private temperatureDefaultValue = 0.7
   private topkDefaultValue = 4
   private contextDefaultValue = null
+  private advancedPromptDefaultValue = false
+  private citationsDefaultValue = false
 
   public countOfOverrides = 0
 
@@ -60,8 +67,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   private hasAlreadyOverridedTemperature: boolean;
   private hasAlreadyOverridedTopk: boolean;
   private hasAlreadyOverridedContex: boolean;
+  private hasAlreadyOverrideAdvancedContex: boolean;
+  private hasAlreadyOverrideCitations: boolean;
 
   public hideHelpLink: boolean;
+
 
   aiSettingsObject = [{
     model: null,
@@ -69,7 +79,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     temperature: null,
     top_k: null,
     context: null,
-
+    advancedPrompt: null,
+    citations: null,
   }]
 
   constructor(
@@ -82,18 +93,25 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   ) {
     // this.logger.log("[MODAL PREVIEW SETTINGS] data ", data)
     const brand = brandService.getBrand();
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
-      // console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
-      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
 
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
-      
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
+
+
+      // new
+      // this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
+      // this.selectedNamespace.preview_settings.citations = this.citations
+      // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 2", this.selectedNamespace.preview_settings)
+
 
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
       // this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
@@ -106,6 +124,30 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
       this.context = this.selectedNamespace.preview_settings.context
+
+      this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.advancedPrompt)
+      if (!this.selectedNamespace.preview_settings.advancedPrompt) {
+        this.advancedPrompt = false
+        this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
+      } else {
+        this.advancedPrompt = this.selectedNamespace.preview_settings.advancedPrompt
+        this.logger.log("[MODAL PREVIEW SETTINGS] advancedPrompt ", this.advancedPrompt)
+      }
+
+
+
+      this.logger.log("[MODAL PREVIEW SETTINGS] this.selectedNamespace.preview_settings.advancedPrompt ", this.selectedNamespace.preview_settings.citations)
+      if (!this.selectedNamespace.preview_settings.citations) {
+        this.citations = false
+        this.selectedNamespace.preview_settings.citations = this.citations
+      } else {
+        this.citations = this.selectedNamespace.preview_settings.citations
+        this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
+      }
+
+
+
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 2", this.selectedNamespace.preview_settings)
       // if (this.selectedNamespace.preview_settings.context !== "You are an awesome AI Assistant.")  {
       //   this.context = this.selectedNamespace.preview_settings.context
       // } else {
@@ -131,8 +173,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     //     return { ...el, multiplier: null }
     // })
 
-    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el)=> {
-      if(ai_models[el.value])
+    this.model_list = TYPE_GPT_MODEL.filter(el => Object.keys(ai_models).includes(el.value)).map((el) => {
+      if (ai_models[el.value])
         return { ...el, multiplier: ai_models[el.value] + ' x tokens' }
       else
         return { ...el, multiplier: null }
@@ -150,41 +192,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // } else if (this.selectedNamespace.preview_settings.model === "gpt-4o-mini") {
     //   this.selectedModel = this.model_list[4].value;
     // }
-    
+
     this.selectedModel = this.model_list.find(el => el.value === this.selectedNamespace.preview_settings.model).value
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel ", this.selectedModel)
 
-    // if(this.selectedModel !== this.selectedNamespaceClone.preview_settings.model) {
-    //   this.countOfOverrides =  this.countOfOverrides + 1;
-    //   this.hasAlreadyOverridedModel = true;
-    //   console.log("[MODAL PREVIEW SETTINGS] onInit hasAlreadyOverridedModel", this.hasAlreadyOverridedModel)
-    // }
-
-    // if(this.max_tokens !== this.selectedNamespaceClone.preview_settings.max_tokens) {
-    //   this.countOfOverrides =  this.countOfOverrides + 1;
-    //   this.hasAlreadyOverridedMaxTokens = true;
-    //    console.log("[MODAL PREVIEW SETTINGS] onInit hasAlreadyOverridedMaxTokens", this.hasAlreadyOverridedMaxTokens)
-    // }
-
-    // // if(this.temperature !== this.temperatureDefaultValue) {
-    // if(this.temperature !== this.selectedNamespace.preview_settings.temperature) {
-    //   this.countOfOverrides =  this.countOfOverrides + 1;
-    //   this.hasAlreadyOverridedTemperature = true;
-    //   console.log("[MODAL PREVIEW SETTINGS] onInit hasAlreadyOverridedTemperature", this.hasAlreadyOverridedTemperature)
-    // }
-
-    // if(this.topK !== this.selectedNamespace.preview_settings.top_k) {
-    //   this.countOfOverrides =  this.countOfOverrides + 1
-    //   this.hasAlreadyOverridedTopk = true;
-    //   console.log("[MODAL PREVIEW SETTINGS] onInit hasAlreadyOverridedTopk", this.hasAlreadyOverridedTopk)
-    // }
-
-
-    // if (this.context !== this.selectedNamespace.preview_settings.context) {
-    //   this.countOfOverrides =  this.countOfOverrides + 1;
-    //   this.hasAlreadyOverridedContex = true
-    //   console.log("[MODAL PREVIEW SETTINGS] onInit hasAlreadyOverridedContex", this.hasAlreadyOverridedContex)
-    // }
+   
     this.listenToOnClickedBackdrop()
   }
 
@@ -209,7 +221,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
-    if (selectedModel !== this.modelDefaultValue) {
+    if (selectedModel !== this.selectedNamespace.preview_settings.model) {
       if (this.hasAlreadyOverridedModel !== true) {
         this.countOfOverrides = this.countOfOverrides + 1;
       }
@@ -316,15 +328,63 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
   }
 
+  changeAdvancePrompt(event) {
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext event ", event.target.checked)
+    this.advancedPrompt = event.target.checked
+    // advancedPrompt: boolean = false;
+    // citations: boolean = false;
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext this.selectedNamespace ", this.selectedNamespace)
+    }
+    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
+    this.aiSettingsObject[0].advancedPrompt = event.target.checked
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
+      if (this.hasAlreadyOverrideAdvancedContex !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideAdvancedContex = true
+    } else {
+      this.countOfOverrides = this.countOfOverrides - 1;
+    }
+
+  }
+
+  changeCitations(event) {
+    this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations event ", event.target.checked)
+    this.citations = event.target.checked
+    // advancedPrompt: boolean = false;
+    // citations: boolean = false;
+
+    if (!this.wasOpenedFromThePreviewKBModal) {
+      this.selectedNamespace.preview_settings.citations = this.citations
+      this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations this.selectedNamespace ", this.selectedNamespace)
+    }
+
+    this.aiSettingsObject[0].citations = this.citations;
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+
+    if (this.citations !== this.selectedNamespace.preview_settings.advancedPrompt) {
+      if (this.hasAlreadyOverrideCitations !== true) {
+        this.countOfOverrides = this.countOfOverrides + 1;
+      }
+      this.hasAlreadyOverrideCitations = true
+    } else {
+      this.countOfOverrides = this.countOfOverrides - 1;
+    }
+
+  }
+
   onSavePreviewSettings() {
     // this.logger.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
     this.dialogRef.close({ action: "update", selectedNamespace: this.selectedNamespace });
   }
 
-  closeSettingsAndOpenPreviewKBModal() {
-    this.dialogRef.close({ action: "update-and-open-preview", selectedNamespace: this.selectedNamespace });
-
-  }
+  // closeSettingsAndOpenPreviewKBModal() {
+  //   this.dialogRef.close({ action: "update-and-open-preview", selectedNamespace: this.selectedNamespace });
+  // }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -338,6 +398,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hasAlreadyOverridedTemperature = false;
     this.hasAlreadyOverridedTopk = false;
     this.hasAlreadyOverridedContex = false;
+    this.hasAlreadyOverrideAdvancedContex = false;
+    this.hasAlreadyOverrideCitations = false;
 
     this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
     // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
@@ -353,13 +415,26 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     // this.selectedNamespace.preview_settings.top_k = this.topkDefaultValue;
 
     this.context = this.selectedNamespaceClone.preview_settings.context;
+
+    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt
+
+    this.citations = this.selectedNamespaceClone.preview_settings.citations
     // this.selectedNamespace.preview_settings.context = this.contextDefaultValue;
 
-    this.aiSettingsObject[0].model = this.modelDefaultValue;
-    this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
-    this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
-    this.aiSettingsObject[0].top_k = this.topkDefaultValue;
-    this.aiSettingsObject[0].context = this.contextDefaultValue;
+    // this.aiSettingsObject[0].model = this.modelDefaultValue;
+    // this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
+    // this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
+    // this.aiSettingsObject[0].top_k = this.topkDefaultValue;
+    // this.aiSettingsObject[0].advancedPrompt = this.advancedPromptDefaultValue;
+    // this.aiSettingsObject[0].citations = this.citationsDefaultValue;
+
+    this.aiSettingsObject[0].model = this.selectedModel;
+    this.aiSettingsObject[0].maxTokens = this.max_tokens
+    this.aiSettingsObject[0].temperature = this.temperature;
+    this.aiSettingsObject[0].top_k = this.topK;
+    this.aiSettingsObject[0].context = this.context
+    this.aiSettingsObject[0].advancedPrompt = this.advancedPrompt;
+    this.aiSettingsObject[0].citations = this.citations;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
   }
@@ -382,6 +457,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
     this.context = this.contextDefaultValue;
     this.selectedNamespace.preview_settings.context = this.contextDefaultValue;
+
+    this.advancedPrompt = this.advancedPromptDefaultValue
+    this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPromptDefaultValue;
+
+    this.citations = this.citationsDefaultValue
+    this.selectedNamespace.preview_settings.citations = this.citationsDefaultValue;
 
     this.aiSettingsObject[0].model = this.modelDefaultValue;
     this.aiSettingsObject[0].maxTokens = this.maxTokensDefaultValue
@@ -410,6 +491,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
           this.aiModeltemperature.close()
           this.chunkLimit.close()
           this.systemContext.close()
+          this.advancedContext.close()
+          this.contentsSources.close()
         }
       }
     );
@@ -424,6 +507,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiModeltemperature.close()
     this.chunkLimit.close()
     this.systemContext.close()
+    this.advancedContext.close()
+    this.contentsSources.close()
   }
 
   // onMouseEnter(event: MouseEvent): void {
@@ -444,7 +529,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   //       // this.chunkLimit.close()
   //       // this.systemContext.close()
   //     }
-    
+
   // }
 
 
@@ -472,6 +557,16 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   systemContextPopoverIsOpened() {
     this.logger.log('[MODAL PREVIEW SETTINGS] systemContextPopoverIsOpened')
     this.logger.log("[MODAL PREVIEW SETTINGS] systemContext sat popover", this.systemContext)
+  }
+
+  advancedContextIsOpened() {
+    this.logger.log('[MODAL PREVIEW SETTINGS] advancedContextIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] advancedPrompt sat popover", this.advancedPrompt)
+  }
+
+  contentsSourcesIsOpened() {
+    this.logger.log('[MODAL PREVIEW SETTINGS] contentsSourcesIsOpened')
+    this.logger.log("[MODAL PREVIEW SETTINGS] contentsSources sat popover", this.contentsSources)
   }
 
   goToAIModelDoc() {

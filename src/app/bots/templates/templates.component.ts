@@ -198,6 +198,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   // Pre-sale -> #00699e
   //  Support -> #25833e
   // Self-serve -> #0049bd
+  // Internal-Processes -> #a613ec
 
   // certified: true
   // mainCategory
@@ -469,6 +470,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
             tagbckgnd = 'rgba(204,241,213, 1)'
           } else if (tag.color === "#0049bd" || tag.color === "#0049BD") {
             tagbckgnd = 'rgba(220,233,255, 1)'
+          } else if (tag.color === "#a613ec" || tag.color === "#A613EC") {
+            tagbckgnd = 'rgba(166, 19, 236, 0.2)'
           } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
 
             tagbckgnd = this.hexToRgba(tag.color)

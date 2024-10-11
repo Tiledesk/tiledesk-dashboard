@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 
 @Component({
@@ -33,6 +34,7 @@ export class ModalUploadFileComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUploadFileComponent>,
     private uploadImageNativeService: UploadImageNativeService,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
@@ -41,34 +43,34 @@ export class ModalUploadFileComponent implements OnInit {
 
   // listenToUploadingStatus() {
   //   this.uploadImageNativeService.uploadAttachment$.subscribe((uploadingStatus) => { 
-  //     console.log('[MODAL-UPLOAD-FILE] uploadingStatus  ',uploadingStatus);
+  //     this.logger.log('[MODAL-UPLOAD-FILE] uploadingStatus  ',uploadingStatus);
   //   })
   // }
 
   onFileChange(event: any) {
-    // console.log('[MODAL-UPLOAD-FILE] ----> FILE - event.target.files ', event.target.files);
-    // console.log('[MODAL-UPLOAD-FILE] ----> FILE - event.target.files.length ', event.target.files.length);
+    // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - event.target.files ', event.target.files);
+    // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - event.target.files.length ', event.target.files.length);
     if (event.target.files && event.target.files.length) {
       const fileList = event.target.files;
-      // console.log('[MODAL-UPLOAD-FILE] ----> FILE - fileList ', fileList);
+      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - fileList ', fileList);
 
       if (fileList.length > 0) { }
       const file: File = fileList[0];
-      // console.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
+      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
 
       this.uploadedFile = file;
 
 
       // const formData: FormData = new FormData();
       // formData.append('uploadFile', file, file.name);
-      // console.log('FORM DATA ', formData)
+      // this.logger.log('FORM DATA ', formData)
       if (file.size <= 10485760) {
         this.handleFileUploading(file);
         this.fileSizeExceeds = false;
-        // console.log('[MODAL-UPLOAD-FILE] onFileChange fileSizeExceeds ', this.fileSizeExceeds);
+        // this.logger.log('[MODAL-UPLOAD-FILE] onFileChange fileSizeExceeds ', this.fileSizeExceeds);
       } else {
         this.fileSizeExceeds = true;
-        // console.log('[MODAL-UPLOAD-FILE] onFileChange fileSizeExceeds ', this.fileSizeExceeds);
+        // this.logger.log('[MODAL-UPLOAD-FILE] onFileChange fileSizeExceeds ', this.fileSizeExceeds);
       }
       // this.doFormData(file)
 
@@ -79,16 +81,16 @@ export class ModalUploadFileComponent implements OnInit {
     ev.preventDefault();
     ev.stopPropagation();
 
-    // console.log('[MODAL-UPLOAD-FILE] ----> FILE - DROP ev ', ev);
+    // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - DROP ev ', ev);
     const fileList = ev.dataTransfer.files;
-    // console.log('----> FILE - DROP ev.dataTransfer.files ', fileList);
+    // this.logger.log('----> FILE - DROP ev.dataTransfer.files ', fileList);
 
     if (fileList.length > 0) {
       const file: File = fileList[0];
-      // console.log('[MODAL-UPLOAD-FILE] ----> FILE - DROP file ', file);
+      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - DROP file ', file);
 
       var mimeType = fileList[0].type;
-      // console.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
+      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
       // || mimeType === "application/json"
       // || mimeType === "text/plain"
       if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
@@ -99,22 +101,22 @@ export class ModalUploadFileComponent implements OnInit {
 
         // const currentUpload = new UploadModel(this.uploadedFile);
 
-        // console.log('[MODAL-UPLOAD-FILE] ----> FILE - drop this.uploadedFile ', this.uploadedFile);
+        // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop this.uploadedFile ', this.uploadedFile);
         // this.uploadedFileName = this.uploadedFile.name
-        // console.log('[MODAL-UPLOAD-FILE] Create Faq Kb - drop uploadedFileName ', this.uploadedFileName);
+        // this.logger.log('[MODAL-UPLOAD-FILE] Create Faq Kb - drop uploadedFileName ', this.uploadedFileName);
         if (file.size <= 10485760) {
           this.handleFileUploading(file);
           this.fileSizeExceeds = false;
-          // console.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
+          // this.logger.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
         } else {
           this.fileSizeExceeds = true;
           this.isHovering = false;
-          // console.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
+          // this.logger.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
         }
         // this.doFormData(file)
         // && mimeType !==  "text/plain"
       } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-        // console.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
+        // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
         
         this.fileSupported = false;
         this.isHovering  = false;
@@ -128,14 +130,14 @@ export class ModalUploadFileComponent implements OnInit {
   allowDrop(ev: any) {
     ev.preventDefault();
     ev.stopPropagation();
-    // console.log('[MODAL-UPLOAD-FILE] ----> FILE - (dragover) allowDrop ev ', ev);
+    // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - (dragover) allowDrop ev ', ev);
     
     this.isHovering = true;
-    // console.log('[MODAL-UPLOAD-FILE] allowDrop isHovering',  this.isHovering);
+    // this.logger.log('[MODAL-UPLOAD-FILE] allowDrop isHovering',  this.isHovering);
 
     // if (this.fileSizeExceeds ) {
     //   this.isHovering = false;
-    //   console.log('[MODAL-UPLOAD-FILE] allowDrop fileSizeExceed  ', this.fileSizeExceeds, 'isHovering ',  this.isHovering);
+    //   this.logger.log('[MODAL-UPLOAD-FILE] allowDrop fileSizeExceed  ', this.fileSizeExceeds, 'isHovering ',  this.isHovering);
     // }
   }
 
@@ -143,7 +145,7 @@ export class ModalUploadFileComponent implements OnInit {
   drag(ev: any) {
     ev.preventDefault();
     ev.stopPropagation();
-    // console.log('[MODAL-UPLOAD-FILE] ----> FILE - (dragleave) drag ev ', ev);
+    // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - (dragleave) drag ev ', ev);
     this.isHovering = false;
   }
 
@@ -152,23 +154,23 @@ export class ModalUploadFileComponent implements OnInit {
       this.hideProgressBar = false;
       this.hideDropZone = true;
 
-      // console.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file ', file);
+      // this.logger.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file ', file);
       this.uploadedFileName = file.name
-      // console.log('[MODAL-UPLOAD-FILE]  - handleFileUploading > uploadedFileName ', this.uploadedFileName);
+      // this.logger.log('[MODAL-UPLOAD-FILE]  - handleFileUploading > uploadedFileName ', this.uploadedFileName);
       this.file_extension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name
-      // console.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file_extension ', this.file_extension)
+      // this.logger.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file_extension ', this.file_extension)
 
       this.file_size_in_mb = (file.size / (1024 * 1024)).toFixed(2);
-      // console.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file_size_in_mb ', this.file_size_in_mb)
+      // this.logger.log('[MODAL-UPLOAD-FILE] - handleFileUploading > file_size_in_mb ', this.file_size_in_mb)
 
       this.file_name_ellipsis_the_middle = this.start_and_end(file.name)
 
       this.uploadImageNativeService.uploadAttachment_Native(this.uploadedFile)
         .then(downloadURL => {
-          // console.log(`[MODAL-UPLOAD-FILE] - upload native downloadURL `, downloadURL);
+          // this.logger.log(`[MODAL-UPLOAD-FILE] - upload native downloadURL `, downloadURL);
           if (downloadURL) {
             this.uploadCompleted = true;
-            // console.log(`[MODAL-UPLOAD-FILE] - upload native uploadCompleted `, this.uploadCompleted);
+            // this.logger.log(`[MODAL-UPLOAD-FILE] - upload native uploadCompleted `, this.uploadCompleted);
 
             this.body = {
               type: this.file_extension,
@@ -179,7 +181,7 @@ export class ModalUploadFileComponent implements OnInit {
           }
         })
         .catch((error) => {
-          console.error(`[MODAL-UPLOAD-FILE] - upload native error `, error);
+          this.logger.error(`[MODAL-UPLOAD-FILE] - upload native error `, error);
         });
     }
 
@@ -187,7 +189,7 @@ export class ModalUploadFileComponent implements OnInit {
 
     // const reader = new FileReader();
     // this.reader.readAsDataURL(file);
-    // console.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', reader.readAsDataURL(file));
+    // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', reader.readAsDataURL(file));
 
 
     // this.reader.onloadstart = () => {
@@ -195,11 +197,11 @@ export class ModalUploadFileComponent implements OnInit {
     // };
 
     // this.reader.onprogress = (data) => {
-    //   console.log('[MODAL-UPLOAD-FILE] READER ON PROGRESS DATA', data);
+    //   this.logger.log('[MODAL-UPLOAD-FILE] READER ON PROGRESS DATA', data);
     //   if (data.lengthComputable) {
     //     // const progress = parseInt(((data.loaded / data.total) * 100), 10 );
     //     this.percentLoaded = Math.round((data.loaded / data.total) * 100);
-    //     console.log('[MODAL-UPLOAD-FILE] READER ON PROGRESS PROGRESS ', this.percentLoaded);
+    //     this.logger.log('[MODAL-UPLOAD-FILE] READER ON PROGRESS PROGRESS ', this.percentLoaded);
 
     //     if (this.percentLoaded === 100) {
     //       setTimeout(() => {
@@ -220,7 +222,7 @@ export class ModalUploadFileComponent implements OnInit {
     //     this.loadingFile = false;
     //   }, 500);
 
-    //   // console.log('READER ON LOAD result', reader.result);
+    //   // this.logger.log('READER ON LOAD result', reader.result);
     //   if (this.reader.result) {
 
     //     // this.form.get(this.field.name).patchValue({ 'value': file['name'] });
@@ -252,7 +254,7 @@ export class ModalUploadFileComponent implements OnInit {
   onOkPresssed() {
     this.dialogRef.close(this.body);
     
-    // console.log('[MODAL-UPLOAD-FILE] onOkPresssed')
+    // this.logger.log('[MODAL-UPLOAD-FILE] onOkPresssed')
   }
 
 }

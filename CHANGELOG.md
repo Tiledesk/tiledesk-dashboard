@@ -1,6 +1,19 @@
 # tiledesk-dashboard
 
-### 2.7.32
+### 2.7.34-rc3
+- AI settings and KB preview bug fixing
+
+### 2.7.34-rc2
+- Minor improvements
+
+### 2.7.34-rc1
+- Adds the ability to select the indexing type for Knowledge Base URL contents
+- Adds to AI models used by knowledge bases the ability to add an advanced context and to visualize the contents sources
+
+### 2.7.33-rc1
+- Adds, on the History page, the ability to filter by conversation duration 
+
+### 2.7.32-rc1
 - Moves the menu item "Apps" from the sidebar to the setting sidebar
 
 ### 2.7.31
@@ -45,8 +58,14 @@
 - Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
 - Improves the method to get the number of conversations in the monitor page
 
+### 2.7.19-rc1
+- Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
+
 ### 2.7.18
 - Minor improvements and bug fixing
+
+### 2.7.18-rc1
+- Improves the method to get the number of conversations in the monitor page
 
 ### 2.7.17
 - Removes the ability to customize the quotas email template
@@ -96,6 +115,9 @@
 - Deploys in production
 - Adds the knowledge base walkthrough on the knowledge base page
 
+### 2.7.7-rc1
+- Adds the knowledge base walkthrough on the knowledge base page
+
 ### 2.7.6
 - Deploys in production
 - Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
@@ -107,9 +129,20 @@
 ### 2.7.4
 - Added Time Slots in Operating Hours page
 
+### 2.7.4-rc1
+- Fix saving operation hours bug
+
 ### 2.7.3
 - Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
 - Improves the knowledge base page
+
+### 2.7.3-rc2
+- Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
+- Improves the knowledge base page 
+- Improves time slots UI
+
+### 2.7.3-rc1
+- Kb onboarding
 
 ### 2.7.2
 - Deploys in production
@@ -124,21 +157,58 @@
 - Adds the ability to edit the "Quota checkpoint notification" email template
 - Adds Twilio SMS channel integration  
 
+### 2.6.45-rc2
+- Improves time slots UI
+- Added translations for time slots
+
+### 2.6.45-rc1
+- Added time slots in Operating Hours
+
 ### 2.6.44
 - Deploys in production
 - Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
 - Improvements and bug fixing
+
+### 2.6.44-rc4
+- Improvements and bug fixing
+
+### 2.6.44-rc3
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+
+### 2.6.44-rc2
+- Fix vxml voice integration visibility
+
+### 2.6.44-rc1
+- Added vxml voice integration
+- Added twilio sms integration
 
 ### 2.6.43
 - Deploys in production
 - Improves the quota usage widget
 - Minor improvements
 
+### 2.6.43-rc2
+- Improves Knowledge Bases page
+
+### 2.6.43-rc1
+- Improves quotes widget
+- Added voice-vxml and sms-twilio channel in analytics
+
 ### 2.6.42
 - Deploys in production
 - Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
 
+### 2.6.42-rc1
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
 ### 2.6.41
+- Deploys in production
+- Displays information about the Voice channel
+
+### 2.6.41-rc2
+- Adds the Voice Channel integration 
+
+### 2.6.41-rc1
 - Deploys in production
 - Displays information about the Voice channel
 
