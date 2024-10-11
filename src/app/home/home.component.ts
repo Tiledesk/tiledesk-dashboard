@@ -567,6 +567,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
   }
 
+  contacUsViaEmailToUpdadePaymentInformation() {
+    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
+  }
+
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);

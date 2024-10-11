@@ -651,11 +651,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       const allContacts = res['leads'];
       this.logger.log('[CONTACTS-COMP] - GET ALL LEADS - LEADS  ', allContacts);
       allContacts.forEach(contact => {
-        console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
+        this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.tags.length > 0) {
           // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
           contact.tags.forEach((tag: string) => {
-            console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
+            this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
             let index = this.tagsArray.findIndex(x => x.name == tag)
             // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
             if (index === -1) {
@@ -1115,7 +1115,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
 
       const isAvailable = this.checkPlanAndPresentModalContactUs()
-      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }

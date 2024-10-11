@@ -4469,7 +4469,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (this.isVisiblePaymentTab) {
 
         const isAvailable = this.checkPlanAndPresentModal()
-        console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
+        this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
         if (isAvailable === false) {
           return
         }
@@ -4483,7 +4483,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
 
       const isAvailable = this.checkPlanAndPresentModalContactUs()
-      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }

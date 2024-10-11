@@ -1057,13 +1057,18 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   // NOT USED 
   presentModalFeatureAvailableWithProPlanUserRoleAdmin() {
-    swal({
+    Swal.fire({
+      title: this.translate.instant('Warning'),
       text: this.featureIsAvailableWithTheProPlan,
       icon: "info",
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
   }
 

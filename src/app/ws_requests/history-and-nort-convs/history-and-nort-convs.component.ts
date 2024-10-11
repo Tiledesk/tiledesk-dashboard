@@ -1330,7 +1330,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
           this.requestList = requests['requests'];
-          console.log('requestList ', this.requestList)
+          this.logger.log('requestList ', this.requestList)
           for (const request of this.requestList) {
 
             if (request) {
@@ -2750,7 +2750,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     } else {
 
       const isAvailable = this.checkPlanAndPresentModalContactUs()
-      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }

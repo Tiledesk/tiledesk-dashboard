@@ -103,7 +103,7 @@ export class QuotesService {
     })
   }
 
-    // --------------------------------------------------
+  // --------------------------------------------------
   // @ Get request count
   // --------------------------------------------------
   public getQuotasCount(project_id) {
@@ -120,10 +120,11 @@ export class QuotesService {
   }
 
   async getQuoteLimits(project) {
+    this.logger.log('calling  getQuoteLimits ', project)
     let limits;
 
     if (project.profile.type === 'payment') {
-
+      this.logger.log('calling 1 ')
       if (project.isActiveSubscription === false) {
         limits = PLANS_LIST.Sandbox;
         return limits;
@@ -145,29 +146,27 @@ export class QuotesService {
 
       limits = PLANS_LIST[plan];
 
-      if (project.profile.quotes) {
-        let profile_quotes = project?.profile?.quotes;
-        const merged_quotes = Object.assign({}, limits, profile_quotes);
-        return merged_quotes;
-      } else {
-          return limits;
-      }
     } else {
-
       if (project.trialExpired === true) {
         limits = PLANS_LIST.Sandbox;
-        return limits;
+        this.logger.log('calling 2 limits ', limits)
+        
       } else {
         limits = PLANS_LIST.FREE_TRIAL;
+        this.logger.log('calling 3 ')
         // return limits;
-        if (project.profile.quotes) {
-          let profile_quotes = project?.profile?.quotes;
-          const merged_quotes = Object.assign({}, limits, profile_quotes);
-          return merged_quotes;
-        } else {
-            return limits;
-        }
       }
+    }
+    this.logger.log('project 2', project)
+    if (project.profile.quotes) {
+      this.logger.log('calling 3 ')
+      let profile_quotes = project?.profile?.quotes;
+      const merged_quotes = Object.assign({}, limits, profile_quotes);
+      this.logger.log('merged_quotes ', merged_quotes)
+      return merged_quotes;
+    } else {
+      this.logger.log('merged_quotes ', limits)
+        return limits;
     }
   }
 

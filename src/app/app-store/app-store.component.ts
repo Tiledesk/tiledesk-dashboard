@@ -396,7 +396,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    console.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
+    this.logger.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
     this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
@@ -794,7 +794,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   presentModalFeautureAvailableFromTier2Plan(planName) {
     // if (!this.overridePay) {
       if (this.isVisiblePAY) {
-        console.log('presentModalFeautureAvailableFromTier2Plan', planName)
+        this.logger.log('presentModalFeautureAvailableFromTier2Plan', planName)
         const el = document.createElement('div')
         el.innerHTML = planName //this.featureAvailableFromBPlan
 
@@ -815,7 +815,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
             // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
             // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
             // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
-            console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+            this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
             if (this.isVisiblePAY) {
               // this.logger.log('[APP-STORE] HERE 1')
               if (this.USER_ROLE === 'owner') {
