@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.34-rc4
+- Refactors table in Monitor page 
+- Improves handling of alert windows display
+
 ### 2.7.34-rc3
 - AI settings and KB preview bug fixing
 
