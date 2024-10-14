@@ -569,6 +569,9 @@
     "MyChatbots": "MY CHATBOTS",
     "ManageYourContents": "Manage your Contents",
     "CreateChatbot": "Create chatbot",
+    "CreateYuorAIAgent": "Create your AI Agent",
+    "ChooseNameForYourAIAgent": "Choose a name for your AI Agent",
+    "MyAIAgentName": "My AI agent name",
     "ChatbotName": "Chatbot name",
     "Oops": "Oops",
     "YourAuthTokenHasBeenInvalidated": "Your authentication token has been invalidated",
@@ -612,6 +615,8 @@
             "description": ""
         }
     },
+    "Advanced": "Advanced",
+    "Standard": "Standard",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",
@@ -1855,6 +1860,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Give the system a role that it should play when creating your answers.",
         "Deterministic": "Deterministic",
         "Random": "Random",
+        "AdvancedOptions": "Advanced Options",
+        "IndexingType": "Indexing type",
+        "ExtractTags": "Extract Tags (Mandatory)",
+        "TypeAndPressEnter": "Type and press Enter",
+        "UnwantedTags": "Unwanted Tags",
+        "UnwantedClassnames": "Unwanted Classnames",
+        "AdvancedContext": "Advanced context",
+        "AdvancedContextDesc1": "Here you have the most control. Be careful, the native prompt will be completely overwritten.",
+        "AdvancedContextDesc2": "Make sure to instruct your prompt to respond with <NOANS> when it doesn't find a satisfactory answer and always close with {context}",
+        "GetContentsSources": "Get contents sources",
+        "GetContentsSourcesDesc1": "Use this option to get accurate sources of documents used to generate the reply.",
+        "GetContentsSourcesDesc2": "Keep in mind that this consumes more tokens then regular KB retrieving.",
+        "GetContentsSourcesDesc3": "Max-tokens quota will be automatically adjusted to get the citations if needed.",
         "-----------------------------": "-----------------------------",
         "Next": "Next",
         "Back": "Back",
