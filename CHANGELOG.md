@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.34-rc5
+- Manages the "max tokens" min value when is selected the AI settings option "Get contents sources"
+
 ### 2.7.34-rc4
 - Refactors table in Monitor page 
 - Improves handling of alert windows display
