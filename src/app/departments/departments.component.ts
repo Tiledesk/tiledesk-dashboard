@@ -57,6 +57,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
   COUNT_OF_VISIBLE_DEPT: number;
 
   isVisibleDEP: boolean;
+  payIsVisible: boolean;
   public_Key: string;
 
   prjct_profile_type: string;
@@ -137,11 +138,27 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         }
       }
 
+      if (key.includes("PAY")) {
+        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+  
+        } else {
+          this.payIsVisible = true;
+       
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("DEP")) {
       // this.logger.log('[DEPTS] PUBLIC-KEY - key.includes("DEP")', this.public_Key.includes("DEP"));
       this.isVisibleDEP = false;
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
     }
   }
 

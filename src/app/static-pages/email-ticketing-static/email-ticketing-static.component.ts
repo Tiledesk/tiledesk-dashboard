@@ -39,7 +39,7 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   isChromeVerGreaterThan100: boolean;
   public_Key: any;
   payIsVisible: boolean;
- 
+
 
   constructor(
     private router: Router,
@@ -54,7 +54,7 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   ) {
     // super(translate); 
     super(prjctPlanService, notify);
-   }
+  }
 
   ngOnInit(): void {
     this.getOSCODE();
@@ -75,13 +75,13 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      })
   }
 
   listenSidebarIsOpened() {
@@ -127,41 +127,43 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[EMAIL-TKTNG-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.USER_ROLE = user_role;
+        this.logger.log('[EMAIL-TKTNG-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      });
   }
 
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
 
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('[EMAIL-TKTNG-STATIC] - project id', this.projectId)
-      }
-    });
+        if (project) {
+          this.projectId = project._id
+          this.logger.log('[EMAIL-TKTNG-STATIC] - project id', this.projectId)
+        }
+      });
   }
 
   presentModalsOnInit() {
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      if (this.USER_ROLE === 'owner') {
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        if (this.USER_ROLE === 'owner') {
 
-        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+          if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+          }
         }
       }
     }
@@ -176,12 +178,12 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
 
-       
+
           this.notify._displayContactUsModal(true, 'upgrade_plan');
 
         } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          
+
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

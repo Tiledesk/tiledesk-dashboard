@@ -559,12 +559,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       setTimeout(() => {
         this.displayQuotaSkeleton = false
       }, 1000);
-     
+
     })
   }
 
   contacUsViaEmail() {
     window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
+  }
+
+  contacUsViaEmailToUpdadePaymentInformation() {
+    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
   }
 
   getProjectById(projectId) {
@@ -2300,56 +2304,60 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    // const el = document.createElement('div')
-    // el.innerHTML = planName //this.featureAvailableFromBPlan
-    Swal.fire({
-      // content: el,
-      title: this.upgradePlan,
-      text: planName,
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.upgradePlan,
-      cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: true,
-      reverseButtons: true,
+    if (this.isVisiblePay) {
+      // const el = document.createElement('div')
+      // el.innerHTML = planName //this.featureAvailableFromBPlan
+      Swal.fire({
+        // content: el,
+        title: this.upgradePlan,
+        text: planName,
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.upgradePlan,
+        cancelButtonText: this.cancel,
+        confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
 
-      // buttons: {
-      //   cancel: this.cancel,
-      //   catch: {
-      //     text: this.upgradePlan,
-      //     value: "catch",
-      //   },
-      // },
-      // dangerMode: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
+        // buttons: {
+        //   cancel: this.cancel,
+        //   catch: {
+        //     text: this.upgradePlan,
+        //     value: "catch",
+        //   },
+        // },
+        // dangerMode: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
 
-        if (this.isVisiblePay) {
-          // this.logger.log('[APP-STORE] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // this.logger.log('[APP-STORE] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // this.logger.log('[APP-STORE] HERE 3')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // this.logger.log('[APP-STORE] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
+          if (this.isVisiblePay) {
+            // this.logger.log('[APP-STORE] HERE 1')
+            if (this.USER_ROLE === 'owner') {
+              // this.logger.log('[APP-STORE] HERE 2')
+              if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+                // this.logger.log('[APP-STORE] HERE 3')
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+                // this.logger.log('[APP-STORE] HERE 4')
+                this.router.navigate(['project/' + this.projectId + '/pricing']);
+              }
+            } else {
+              // this.logger.log('[APP-STORE] HERE 5')
+
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
             }
           } else {
-            // this.logger.log('[APP-STORE] HERE 5')
-
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            // this.logger.log('[APP-STORE] HERE 6')
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
           }
-        } else {
-          // this.logger.log('[APP-STORE] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
-      }
-    });
+      });
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
   }
 
   // No more used - replaced by presentModalFeautureAvailableFromTier2Plan

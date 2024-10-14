@@ -1037,6 +1037,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
       }
 
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 

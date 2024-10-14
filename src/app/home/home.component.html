@@ -71,10 +71,8 @@
                       {{ prjct_name }}
                     </span>
                     <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" 
-                      matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' 
-                      matTooltipHideDelay="100">
+                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       mode_edit
                     </span>
                   </div>
@@ -203,12 +201,13 @@
                   <!-- --------------------- -->
                   <!-- From here -->
                   <!-- --------------------- -->
-                  <!-- <button mat-menu-item (click)="$event.stopPropagation()">
+                  <!-- 
+                   <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
                       (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
                     <span>Connect WhatsApp </span>
-                  </button>
-                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    </button>
+                   <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayCreateChatbot"
                       (change)="switchCreateChatbot($event.checked)"></mat-checkbox>
                     <span>Create Chatbot</span>
@@ -250,7 +249,7 @@
         <!-- <div class="test">  -->
         <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
           [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
-       
+
           <!-- <div class="home-quota-banner-title-wpr">
 
             <div class="home-quota-banner-title-no-alert" [ngClass]="{'home-quota-banner-title-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
@@ -266,13 +265,10 @@
               [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
 
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title link" (click)="goToHistoryAllConvs()"
-                      matTooltipClass="custom-mat-tooltip" 
-                      matTooltip="Current usage"
-                      #tooltip="matTooltip" matTooltipPosition='above' 
-                      matTooltipHideDelay="100">
-                       Conversations
-                      </p>
+                <p class="quote-title link" (click)="goToHistoryAllConvs()" matTooltipClass="custom-mat-tooltip"
+                  matTooltip="Current usage" #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                  Conversations
+                </p>
                 <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                 <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
                   You run out of converations
@@ -296,11 +292,8 @@
             <!-- -------------------------- -->
             <div class="home-quote-container" [ngClass]="{'home-quote-container-tokens-runned-out': tokensRunnedOut}">
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title"
-                  matTooltipClass="custom-mat-tooltip" 
-                  matTooltip="Current usage"
-                  #tooltip="matTooltip" matTooltipPosition='above' 
-                  matTooltipHideDelay="100">
+                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                   AI Tokens
                 </p>
                 <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
@@ -329,11 +322,8 @@
             <div class="home-quote-container" [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
 
               <div class="home-quote-title-count-wpr">
-                <p class="quote-title"
-                  matTooltipClass="custom-mat-tooltip" 
-                  matTooltip="Current usage"
-                  #tooltip="matTooltip" matTooltipPosition='above' 
-                  matTooltipHideDelay="100">
+                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                   Email
                 </p>
                 <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
@@ -363,14 +353,22 @@
                   d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
               </svg>
             </div>
-            ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
-            quotas,
-            <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
-            <!-- Conversations usage detail: total <span class="hqb-footer-link"
-              (click)="goToHistoryAllConvs()">{{requests_count | number:'1.0-0'}}</span><span
-              *ngIf="requests_count > 0">, open <span class="hqb-footer-link"
-                (click)="goToHistoryOpenedConvs()">{{openedConversations}}</span>, closed <span class="hqb-footer-link"
-                (click)="goToHistoryClosedConvs()"> {{closedConversations}}</span> </span> -->
+            <!-- prjct_profile_type > {{prjct_profile_type}} subscription_is_active {{subscription_is_active}} -->
+            <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+
+              <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                {{ 'Pricing.SubscriptionPaymentProblem' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
+              </span>
+              <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
+                {{ 'Pricing.ThePlanHasExpired' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
+              </span>
+            </span>
+            <span
+              *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true || prjct_profile_type === 'free'">
+              ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
+              quotas,
+              <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+            </span>
           </div>
         </div>
         <!--  *ngIf="displayQuotaSkeleton" -->
@@ -639,8 +637,8 @@
                 <!-- ----------------------- -->
                 <!-- Child 1 Convs Graph -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child1'" >
-                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph" 
+                <ng-container *ngIf="item.type === 'child1'">
+                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
                     [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
                     [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>

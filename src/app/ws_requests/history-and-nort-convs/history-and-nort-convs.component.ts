@@ -246,8 +246,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     { id: '100', name: 'Unserved' },
     { id: '200', name: 'Served' }
   ];
-  
-    // { id: '50', name: 'Temporary' }
+
+  // { id: '50', name: 'Temporary' }
 
   conversationType = [
     { id: 'all', name: 'All' },
@@ -258,7 +258,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   CHANNELS_NAME = CHANNELS_NAME;
 
-  request_duration_operator_array  = [
+  request_duration_operator_array = [
     { id: '0', name: '>=' },
     { id: '1', name: '<=' }
   ]
@@ -269,10 +269,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   duration_in_table: any
 
 
-  caller_phone:string;
-  called_phone :string;
+  caller_phone: string;
+  called_phone: string;
   call_id: string;
- 
+
   start_date_is_null = true
 
 
@@ -286,6 +286,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   FIREBASE_AUTH: boolean;
   profile_name: string;
   payIsVisible: boolean;
+  overridePay: boolean;
   public_Key: any;
   current_selected_prjct: any;
   isChromeVerGreaterThan100: boolean;
@@ -354,9 +355,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
     this.duration_operator_temp = this.request_duration_operator_array[0]['id']
-    this.duration_op =  'gt' 
+    this.duration_op = 'gt'
 
-    this.logger.log('[HISTORY & NORT-CONVS] duration_op (on init)',   this.duration_op)
+    this.logger.log('[HISTORY & NORT-CONVS] duration_op (on init)', this.duration_op)
 
   }
 
@@ -564,7 +565,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                   this.operator = '='
                   this.requests_status_selected_from_advanced_option = '200'
                   this.requests_status = '200'
-                } 
+                }
                 // else if (requetStatusValue === '1000') {
                 //   this.operator = '='
                 //   this.requests_status_selected_from_advanced_option = '1000'
@@ -572,7 +573,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 // }
               } else {
                 this.logger.log('[HISTORY & NORT-CONVS] queryParams requetStatusValue 2 requetStatusValue >', requetStatusValue)
-                  if(requetStatusValue !== '1000') { 
+                if (requetStatusValue !== '1000') {
 
                   this.operator = '='
                   this.requests_status_selected_from_advanced_option = requetStatusValue
@@ -725,11 +726,25 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - pay isVisible', this.payIsVisible);
         }
       }
+
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
       this.logger.log('[HISTORY & NORT-CONVS] - pay isVisible', this.payIsVisible);
+    }
+
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
     }
   }
 
@@ -1294,7 +1309,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-    this.logger.log('getRequests queryString' , this.queryString) 
+    this.logger.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
     // this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
     this.showSpinner = true;
@@ -1315,7 +1330,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
           this.requestList = requests['requests'];
-          // this.logger.log('requestList ', this.requestList)
+          this.logger.log('requestList ', this.requestList)
           for (const request of this.requestList) {
 
             if (request) {
@@ -1349,7 +1364,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               const date = moment.localeData().longDateFormat(request.createdAt);
               request.fulldate = date;
 
-              if(request['duration']) {
+              if (request['duration']) {
 
                 // this.logger.log('[HISTORY & NORT-CONVS] duration ', request['duration']) 
                 this.duration_in_table = this.millisToMinutesAndSecondsNoFixedPoint(request['duration'])
@@ -1915,13 +1930,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   onChangeDurationOperator() {
-    
+
     if (this.duration_operator_temp === '0') {
       this.duration_op = "gt";
-      this.logger.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
-    } else if (this.duration_operator_temp === '1'){
+      this.logger.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op);
+    } else if (this.duration_operator_temp === '1') {
       this.duration_op = "lt";
-      this.logger.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op );
+      this.logger.log('[HISTORY & NORT-CONVS] - onChangeDurationOperator duration_op', this.duration_op);
     }
   }
 
@@ -2080,11 +2095,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   search() {
-    this.logger.log('HERE IN SEARCH duration operator ',  this.duration_op) 
-    this.logger.log('HERE IN SEARCH duration ',  this.duration) 
-    this.logger.log('HERE IN SEARCH duration called_phone ',  this.called_phone) 
-    this.logger.log('HERE IN SEARCH duration caller_phone ',  this.caller_phone) 
-    this.logger.log('HERE IN SEARCH duration call_id ',  this.call_id) 
+    this.logger.log('HERE IN SEARCH duration operator ', this.duration_op)
+    this.logger.log('HERE IN SEARCH duration ', this.duration)
+    this.logger.log('HERE IN SEARCH duration called_phone ', this.called_phone)
+    this.logger.log('HERE IN SEARCH duration caller_phone ', this.caller_phone)
+    this.logger.log('HERE IN SEARCH duration call_id ', this.call_id)
     // this.logger.log('HERE IN SEARCH calledBy ', calledBy)
     this.logger.log('HERE IN SEARCH this.preflight', this.preflight)
     this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
@@ -2102,7 +2117,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('search has_searched ' + this.has_searched)
     this.pageNo = 0
 
-   
+
 
 
     if (this.fullText) {
@@ -2258,14 +2273,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.duration = ""
     }
 
-    if (!this.called_phone) { 
+    if (!this.called_phone) {
       this.called_phone = ""
     }
 
-    if (!this.caller_phone) { 
+    if (!this.caller_phone) {
       this.caller_phone = ""
     }
-    if (!this.call_id) { 
+    if (!this.call_id) {
       this.call_id = ""
     }
 
@@ -2280,18 +2295,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'requester_email=' + this.emailValue + '&'
       + 'tags=' + this.selecteTagNameValue + '&'
       + 'channel=' + this.conversationTypeValue + '&'
-      + 'rstatus=' + this.requests_status + '&' 
+      + 'rstatus=' + this.requests_status + '&'
       + 'duration_op=' + this.duration_op + '&'
       + 'duration=' + this.duration + '&'
       + 'called=' + this.called_phone + '&'
       + 'caller=' + this.caller_phone + '&'
-      + 'call_id=' + this.call_id 
+      + 'call_id=' + this.call_id
 
-      // + 'called_phone=' + this.called_phone + '&'
-      // + 'caller_phone=' + this.caller_phone
+    // + 'called_phone=' + this.called_phone + '&'
+    // + 'caller_phone=' + this.caller_phone
     // + '&'
     // + 'preflight=' + this.preflightValue
-    
+
 
     this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
 
@@ -2409,6 +2424,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     // }
     
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -2416,23 +2432,23 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.emailValue = ''
     }
 
-    if (this.call_id)  {
+    if (this.call_id) {
       this.call_id = ''
     }
 
-    if (this.called_phone)  {
+    if (this.called_phone) {
       this.called_phone = ''
     }
 
-    if (this.caller_phone)  {
+    if (this.caller_phone) {
       this.caller_phone = ''
     }
 
-    if (this.called_phone)  {
+    if (this.called_phone) {
       this.called_phone = ''
     }
 
-    if (this.duration_op)  {
+    if (this.duration_op) {
       this.duration_op = 'gt'
     }
 
@@ -2476,24 +2492,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       // + 'caller='  + '&'
       // + 'call_id='
 
-      'full_text='+ '&' 
-      + 'dept_id=' + '&' 
+      'full_text=' + '&'
+      + 'dept_id=' + '&'
       + 'start_date=' + '&'
-      + 'end_date=' + '&' 
-      +  'participant=' + '&' 
-      + 'requester_email='  + '&' 
-      + 'tags=' + '&' 
-      + 'channel=' + '&' 
-      + 'rstatus=' + '&' 
-      + 'duration_op='  + '&'
-      + 'duration='  + '&'
-      + 'called='  + '&'
-      + 'caller='  + '&'
+      + 'end_date=' + '&'
+      + 'participant=' + '&'
+      + 'requester_email=' + '&'
+      + 'tags=' + '&'
+      + 'channel=' + '&'
+      + 'rstatus=' + '&'
+      + 'duration_op=' + '&'
+      + 'duration=' + '&'
+      + 'called=' + '&'
+      + 'caller=' + '&'
       + 'call_id='
 
 
-      // this.logger.log('clearFullText queryString ' , this.queryString ) 
-      this.pageNo = 0
+    // this.logger.log('clearFullText queryString ' , this.queryString ) 
+    this.pageNo = 0
     this.getRequests();
 
   }
@@ -2570,21 +2586,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.conversationTypeValue = 'all'
     this.conversation_type = 'all'
     // tslint:disable-next-line:max-line-length
-    this.queryString = 
-    'full_text=' + '&'
-     + 'dept_id=' + '&'
+    this.queryString =
+      'full_text=' + '&'
+      + 'dept_id=' + '&'
       + 'start_date=' + '&'
-      + 'end_date=' + '&' 
-      + 'participant=' + '&' 
-      + 'requester_email=' + '&' 
-      + 'tags=' + '&' 
+      + 'end_date=' + '&'
+      + 'participant=' + '&'
+      + 'requester_email=' + '&'
+      + 'tags=' + '&'
       + 'channel=';
-      + 'rstatus=' + '&' 
-      + 'duration_op='  + '&'
-      + 'duration='  + '&'
-      + 'called='  + '&'
-      + 'caller='  + '&'
-      + 'call_id='  
+    + 'rstatus=' + '&'
+      + 'duration_op=' + '&'
+      + 'duration=' + '&'
+      + 'called=' + '&'
+      + 'caller=' + '&'
+      + 'call_id='
     this.pageNo = 0;
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.fullTextValue)
     // this.logger.log('[HISTORY & NORT-CONVS] - CLEAR SEARCH fullTextValue ', this.queryString)
@@ -2623,8 +2639,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  checkPlanAndPresentModal() {
+  checkPlanAndPresentModalContactUs() {
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
 
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      return false
+
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      return false
+    }
+  }
+
+  checkPlanAndPresentModal() {
     if ((this.profile_name === PLAN_NAME.A) ||
       (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
@@ -2704,35 +2738,46 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // Export CSV
   exportRequestsToCSV() {
-    if (this.payIsVisible) {
-      const isAvailable = this.checkPlanAndPresentModal()
-      this.logger.log('[HISTORY & NORT-CONVS] isAvaibleFromPlan ', isAvailable)
+    if (!this.overridePay) {
+      if (this.payIsVisible) {
+        const isAvailable = this.checkPlanAndPresentModal()
+        this.logger.log('[HISTORY & NORT-CONVS] isAvaibleFromPlan ', isAvailable)
+        if (isAvailable === false) {
+          return
+        }
+        this.dwnldCSV()
+
+
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    } else {
+
+      const isAvailable = this.checkPlanAndPresentModalContactUs()
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }
-      this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight, 0).subscribe((requests: any) => {
-        if (requests) {
-          this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
-
-          // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
-          // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
-          this.downloadFile(requests)
-        }
-      }, error => {
-        this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
-      }, () => {
-        this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
-      });
-      // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE '
-
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.dwnldCSV()
     }
   }
 
+  dwnldCSV() {
+    this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight, 0).subscribe((requests: any) => {
+      if (requests) {
+        this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
 
-
-
+        // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
+        // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
+        this.downloadFile(requests)
+      }
+    }, error => {
+      this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
+    });
+    // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE '
+  }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
     // const el = document.createElement('div')
@@ -2861,10 +2906,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-      if (this.current_selected_prjct.id_project.profile)  {
+      if (this.current_selected_prjct.id_project.profile) {
         const projectProfile = this.current_selected_prjct.id_project.profile
         this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
-        if(projectProfile && projectProfile.customization && projectProfile.customization.voice &&  projectProfile.customization.voice === true )  {
+        if (projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice === true) {
           this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
           // if (projectProfile.customization.voice) {
 
@@ -2874,7 +2919,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         } else {
           this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
           this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
-          let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);   
+          let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
           this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', index);
           this.conversationType.splice(index, 1);
         }

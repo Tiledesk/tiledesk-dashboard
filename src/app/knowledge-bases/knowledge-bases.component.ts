@@ -1437,7 +1437,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
+      console.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
       if (body) {
         this.onAddMultiKb(body)
       }
@@ -1454,7 +1454,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
       if (body) {
         this.onAddMultiKb(body)
       }
@@ -1989,33 +1989,38 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
-        // this.logger.log('here 2 this.kbLimit ', this.kbLimit)
+        this.logger.log('here 1 this.kbLimit ', this.kbLimit , 'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
           // className: "custom-swal",
           showCloseButton: false,
-          showCancelButton: false,
-          confirmButtonText: this.cancel,
+          showCancelButton: true,
+          confirmButtonText: this.contactUs,
+          cancelButtonText: this.cancel,
           confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true,
           // buttons: [null, this.cancel],
           // dangerMode: false
+        }).then((result) => {
+          if (result) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        // this.logger.log('here 1')
+        console.log('here 2 this.kbLimit ', this.kbLimit,  'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
           icon: "warning",
           // className: "custom-swal",
-          buttons: [this.cancel, this.contactUs],
+          // buttons: [this.cancel, this.contactUs],
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
-          ccnacelButtonText: this.contactUs,
+          cancelButtonText: this.cancel,
           confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true,

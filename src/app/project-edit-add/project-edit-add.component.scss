@@ -940,6 +940,11 @@ $f21blue: #039be5;
   padding: 6px 15px !important;
 }
 
+.btn-get-feature-no-boxshadow.custom-margin {
+  margin-bottom: 0px;
+  margin-top: 0px !important;
+}
+
 .btn-get-feature-no-boxshadow:hover {
   background-color: #eff2f6;
   border: 1px solid #acb8cb;
@@ -1496,6 +1501,8 @@ $f21blue: #039be5;
   margin-left: -15px;
 }
 
-.link-to-automatic-assignment-doc>div>svg { 
-  width: 25px;height:auto; vertical-align: middle;
+.link-to-automatic-assignment-doc>div>svg {
+  width: 25px;
+  height: auto;
+  vertical-align: middle;
 }

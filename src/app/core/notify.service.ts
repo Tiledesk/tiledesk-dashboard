@@ -913,15 +913,19 @@ export class NotifyService {
     } else {
       el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+      html: el,
       icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+   
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
   }
 

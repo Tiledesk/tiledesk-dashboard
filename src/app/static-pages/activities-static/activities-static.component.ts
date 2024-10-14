@@ -50,7 +50,7 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
   //   dateFormat: 'dd/mm/yyyy',
   // };
   profile_name: string;
-  isChromeVerGreaterThan100:boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public translate: TranslateService,
     public auth: AuthService,
@@ -88,14 +88,14 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
-   }
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      })
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -131,28 +131,28 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[ACTIVITIES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.USER_ROLE = user_role;
+        this.logger.log('[ACTIVITIES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      });
   }
 
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe((project) => {
-      this.logger.log('[ACTIVITIES-STATIC] - project ', project)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      ).subscribe((project) => {
+        this.logger.log('[ACTIVITIES-STATIC] - project ', project)
 
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('[ACTIVITIES-STATIC] - project id ', this.projectId)
-      }
-    });
+        if (project) {
+          this.projectId = project._id
+          this.logger.log('[ACTIVITIES-STATIC] - project id ', this.projectId)
+        }
+      });
   }
 
 
@@ -161,21 +161,24 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
   }
 
   presentModalsOnInit() {
-
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
         if (this.USER_ROLE === 'owner') {
           if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
-  
+
             this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
-  
+
           } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-  
+
             this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
           }
         }
-      
-    }
+      }
+    } 
+    // else {
+    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+    // }
   }
 
 
@@ -187,8 +190,8 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
           if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
             this.notify._displayContactUsModal(true, 'upgrade_plan');
           } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-           
-            
+
+
             this.notify._displayContactUsModal(true, 'upgrade_plan');
           } else if (this.prjct_profile_type === 'free') {
             this.router.navigate(['project/' + this.projectId + '/pricing']);
@@ -203,12 +206,12 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
       // this.notify.presentContactUsModalToUpgradePlan(true);
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
-    
+
     // else if (this.projectProfileData && this.projectProfileData.extra3) {
     //   if (this.projectProfileData.extra3 === 'tiledesk_tier1' || this.projectProfileData.extra3 === 'tiledesk_tier2') {
     //     this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
     //   } else if (this.projectProfileData.extra3 === 'tiledesk_tier3' || this.projectProfileData.extra3 === 'tiledesk_tier4') {
-        
+
     //   }
     // }
   }

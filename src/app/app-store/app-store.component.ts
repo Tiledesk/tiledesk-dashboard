@@ -53,6 +53,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   USER_ROLE: string;
   public_Key: string;
   isVisiblePAY: boolean;
+  overridePay: boolean;
   // areVisiblePaidApps: boolean = false;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
@@ -218,6 +219,16 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         }
       }
 
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+
       // if (key.includes("DPA")) {
 
       //   let paidApps = key.split(":");
@@ -238,9 +249,9 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePAY = false;
     }
-    // if (!this.public_Key.includes("DPA")) {
-    //   this.areVisiblePaidApps = false;
-    // }
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
   }
 
   getCurrentProject() {
@@ -355,8 +366,9 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         (this.profile_name === 'free' && this.trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        
-        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+
+
+
         this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
@@ -780,96 +792,58 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   // Modals
   // -----------------------------
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    this.logger.log('presentModalFeautureAvailableFromTier2Plan', planName)
-    const el = document.createElement('div')
-    el.innerHTML = planName //this.featureAvailableFromBPlan
-    // swal({
-    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-    //   content: el,
-    //   icon: "info",
-    //   // buttons: true,
-    //   buttons: {
-    //     cancel: this.cancel,
-    //     catch: {
-    //       text: this.upgradePlan,
-    //       value: "catch",
-    //     },
-    //   },
-    //   dangerMode: false,
-    // }).then((value) => {
-    //   if (value === 'catch') {
-    //     this.logger.log('presentModalFeautureAvailableFromTier2Plan value', value)
-    //     // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-    //     // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-    //     // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-    //     // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
-    //     this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
-    //     if (this.isVisiblePAY) {
-    //       // this.logger.log('[APP-STORE] HERE 1')
-    //       if (this.USER_ROLE === 'owner') {
-    //         // this.logger.log('[APP-STORE] HERE 2')
-    //         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-    //           // this.logger.log('[APP-STORE] HERE 3')
-    //           this.notify._displayContactUsModal(true, 'upgrade_plan');
-    //         } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
-    //           this.notify._displayContactUsModal(true, 'upgrade_plan');
-    //         } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-    //           // this.logger.log('[APP-STORE] HERE 4')
-    //           this.router.navigate(['project/' + this.projectId + '/pricing']);
-    //         }
-    //       } else {
-    //         // this.logger.log('[APP-STORE] HERE 5')
+    // if (!this.overridePay) {
+      if (this.isVisiblePAY) {
+        this.logger.log('presentModalFeautureAvailableFromTier2Plan', planName)
+        const el = document.createElement('div')
+        el.innerHTML = planName //this.featureAvailableFromBPlan
 
-    //         this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    //       }
-    //     } else {
-    //       // this.logger.log('[APP-STORE] HERE 6')
-    //       this.notify._displayContactUsModal(true, 'upgrade_plan');
-    //     }
-    //   }
-    // });
 
-    Swal.fire({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      html: el,
-      icon: "info",
-      showCloseButton: true,
-      showCancelButton: false,
-      confirmButtonText: this.upgradePlan,
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.logger.log('presentModalFeautureAvailableFromTier2Plan result', result)
-        // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-        // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
-        this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
-        if (this.isVisiblePAY) {
-          // this.logger.log('[APP-STORE] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // this.logger.log('[APP-STORE] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // this.logger.log('[APP-STORE] HERE 3')
+        Swal.fire({
+          // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+          html: el,
+          icon: "info",
+          showCloseButton: true,
+          showCancelButton: false,
+          confirmButtonText: this.upgradePlan,
+          confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.logger.log('presentModalFeautureAvailableFromTier2Plan result', result)
+            // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+            // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+            // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+            // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
+            this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+            if (this.isVisiblePAY) {
+              // this.logger.log('[APP-STORE] HERE 1')
+              if (this.USER_ROLE === 'owner') {
+                // this.logger.log('[APP-STORE] HERE 2')
+                if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+                  // this.logger.log('[APP-STORE] HERE 3')
+                  this.notify._displayContactUsModal(true, 'upgrade_plan');
+                } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+                  this.notify._displayContactUsModal(true, 'upgrade_plan');
+                } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+                  // this.logger.log('[APP-STORE] HERE 4')
+                  this.router.navigate(['project/' + this.projectId + '/pricing']);
+                }
+              } else {
+                // this.logger.log('[APP-STORE] HERE 5')
+
+                this.presentModalOnlyOwnerCanManageTheAccountPlan();
+              }
+            } else {
+              // this.logger.log('[APP-STORE] HERE 6')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              // this.logger.log('[APP-STORE] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
-          } else {
-            // this.logger.log('[APP-STORE] HERE 5')
-
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
-        } else {
-          // this.logger.log('[APP-STORE] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
+        });
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
       }
-    });
+   
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
@@ -922,7 +896,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E , plan_name_2: PLAN_NAME.EE})
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -996,19 +970,19 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   goToWhatsapp() {
-    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })
+    this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
   }
 
   goToMessenger() {
-    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'messenger' } })
+    this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'messenger' } })
   }
 
   goToTelegram() {
-    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'telegram' } })
+    this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'telegram' } })
   }
 
   goToIntegrations() {
-    this.router.navigate(['project/' + this.projectId + '/integrations' ])
+    this.router.navigate(['project/' + this.projectId + '/integrations'])
   }
 
 }

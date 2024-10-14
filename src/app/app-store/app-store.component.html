@@ -123,16 +123,20 @@
 
                   <ng-container
                     *ngIf="projectProfileData?.extra3 && projectProfileData?.extra3 !== 'tiledesk_tier3' && projectProfileData?.extra3 !== 'tiledesk_tier4'">
-                    <div class="available-from-b-plan-badge b-plan-badge-color"
+                    <div class="available-from-b-plan-badge"
                       *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
-                      {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+                      <div class="b--plan-badge-color">
+                        {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+                      </div>
                     </div>
                   </ng-container>
 
                   <ng-container *ngIf="dispayBadgeAvaibleFromInAppStore ">
-                    <div class="available-from-b-plan-badge b-plan-badge-color"
+                    <div class="available-from-b-plan-badge"
                       *ngIf="((app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center') || (app?.title === 'Send transcript by email'))">
-                      {{ 'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
+                      <div class="b--plan-badge-color">
+                        {{ 'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
+                      </div>
                     </div>
                   </ng-container>
 

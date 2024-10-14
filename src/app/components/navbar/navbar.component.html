@@ -80,26 +80,11 @@
 
                   <div class="quote-container">
 
-                    <div class="quota-wpr">
-
-                      <div class="quota-header-section">
-                        <p class="quote-title">Conversations</p>
-                        <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit |
-                          number:'1.0-0'}}</div>
-                      </div>
-
-                      <div class="convs-count-container">
-                        <div class="convs-count-wpr">
-                          <div class="convs-count-label">Opened </div>
-                          <div class="convs-count-value" (click)="goToHistoryOpenedConvs()"> {{openedConversations}}
-                          </div>
-                        </div>
-                        <div class="convs-count-wpr">
-                          <div class="convs-count-label">Closed </div>
-                          <div class="convs-count-value" (click)="goToHistoryClosedConvs()"> {{closedConversations}}
-                          </div>
-                        </div>
-                      </div>
+                    <div>
+                      <p class="quote-title">{{'Requests' | translate}}</p>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div> 
+                      <p class="quote-title">Conversations</p>
+                      <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
                     </div>
 
 
@@ -332,7 +317,7 @@
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
-        <ng-container *ngIf="isVisible">
+        <ng-container *ngIf="isVisiblePay">
           <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
 
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
@@ -393,7 +378,7 @@
         <!--  ------------------------------------------------ -->
         <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisible">
+        <ng-container *ngIf="isVisiblePay">
           <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
             <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
@@ -403,7 +388,8 @@
         <!--  ------------------------------------------------ -->
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisible">
+        <!-- *ngIf="isVisiblePay" -->
+        <ng-container >
           <li
             [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
             id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">

@@ -1298,14 +1298,16 @@
 										</div>
 										<h4 class="widget-section-header__title-underlined">
 											Unbranding
-											<span class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
-												<span *ngIf="!isAppSumo">  
-													{{'AvailableFromThePlans' | translate: t_params }}
+											<ng-container *ngIf="payIsVisible">
+												<span  class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
+													<span *ngIf="!isAppSumo">  
+														{{'AvailableFromThePlans' | translate: t_params }}
+													</span>
+													<span *ngIf="isAppSumo">  
+														{{'AvailableFromThePlan' | translate: t_params }}
+													</span>
 												</span>
-												<span *ngIf="isAppSumo">  
-													{{'AvailableFromThePlan' | translate: t_params }}
-												</span>
-											</span>
+											</ng-container>
 										</h4>
 									</div>
 									<div class="widget-section-arrow">
