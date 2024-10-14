@@ -44,6 +44,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
   public selectedModel: any // = this.models_list[0].value;
   public max_tokens: number;
+  public max_tokens_min: number;
   public temperature: number; // 0.7
   public topK: number;
   public context: string
@@ -114,7 +115,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
 
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
-      // this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
+      this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
+
 
       this.temperature = this.selectedNamespace.preview_settings.temperature
       // this.logger.log("[MODAL PREVIEW SETTINGS] temperature ", this.temperature)
@@ -140,9 +142,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       if (!this.selectedNamespace.preview_settings.citations) {
         this.citations = false
         this.selectedNamespace.preview_settings.citations = this.citations
+        this.max_tokens_min = 10
+        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       } else {
-        this.citations = this.selectedNamespace.preview_settings.citations
+        this.citations = this.selectedNamespace.preview_settings.citations;
+        this.max_tokens_min = 1024;
+        // this.max_tokens = 1024;
+        // this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
         this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
+        this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens_min ", this.max_tokens_min)
       }
 
 
@@ -162,7 +170,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)
     // this.logger.log("[MODAL PREVIEW SETTINGS] ai_models ", ai_models)
 
@@ -232,8 +239,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   updateSliderValue(value, type) {
-    // this.logger.log("[MODAL PREVIEW SETTINGS] value: ", value);
-    // this.logger.log("[MODAL PREVIEW SETTINGS] type: ", type);
+    this.logger.log("[MODAL PREVIEW SETTINGS] value: ", value);
+    this.logger.log("[MODAL PREVIEW SETTINGS] type: ", type);
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
       if (!this.wasOpenedFromThePreviewKBModal) {
@@ -331,8 +338,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   changeAdvancePrompt(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext event ", event.target.checked)
     this.advancedPrompt = event.target.checked
-    // advancedPrompt: boolean = false;
-    // citations: boolean = false;
+    
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
       this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext this.selectedNamespace ", this.selectedNamespace)
@@ -342,21 +348,30 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
     if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
-      if (this.hasAlreadyOverrideAdvancedContex !== true) {
+      // if (this.hasAlreadyOverrideAdvancedContex !== true) {
         this.countOfOverrides = this.countOfOverrides + 1;
-      }
+      // }
       this.hasAlreadyOverrideAdvancedContex = true
-    } else {
+    } else if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
       this.countOfOverrides = this.countOfOverrides - 1;
+      this.hasAlreadyOverrideAdvancedContex = false
     }
 
   }
 
   changeCitations(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeCitations event ", event.target.checked)
-    this.citations = event.target.checked
-    // advancedPrompt: boolean = false;
-    // citations: boolean = false;
+    this.citations = event.target.checked;
+     if (this.citations === true) {
+      this.max_tokens_min = 1024
+      this.max_tokens = 1024
+       this.selectedNamespace.preview_settings.max_tokens = this.max_tokens
+     } else {
+      this.max_tokens_min = 10;
+      this.max_tokens = 256
+      this.selectedNamespace.preview_settings.max_tokens = this.max_tokens 
+     }
+    
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.citations = this.citations
@@ -366,14 +381,30 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.aiSettingsObject[0].citations = this.citations;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
-    if (this.citations !== this.selectedNamespace.preview_settings.advancedPrompt) {
-      if (this.hasAlreadyOverrideCitations !== true) {
+    // if (this.citations !== this.selectedNamespace.preview_settings.citations) {
+    //   if (this.hasAlreadyOverrideCitations !== true) {
+    //     this.countOfOverrides = this.countOfOverrides + 1;
+    //   }
+    //   this.hasAlreadyOverrideCitations = true
+    //   this.logger.log('hasAlreadyOverrideCitations ' , this.hasAlreadyOverrideCitations) 
+    // } else {
+    //   this.logger.log('here y hasAlreadyOverrideCitations' , this.hasAlreadyOverrideCitations) 
+    //   this.countOfOverrides = this.countOfOverrides - 1;
+    // }
+
+    if (this.citations !== this.selectedNamespace.preview_settings.citations) {
+      // if (this.hasAlreadyOverrideCitations !== true) {
         this.countOfOverrides = this.countOfOverrides + 1;
-      }
+      // }
       this.hasAlreadyOverrideCitations = true
-    } else {
+      this.logger.log('hasAlreadyOverrideCitations ' , this.hasAlreadyOverrideCitations) 
+    } else if (this.citations === this.selectedNamespace.preview_settings.citations)  {
+      this.hasAlreadyOverrideCitations = false
+      this.logger.log('here y hasAlreadyOverrideCitations' , this.hasAlreadyOverrideCitations) 
       this.countOfOverrides = this.countOfOverrides - 1;
     }
+
+
 
   }
 
@@ -419,6 +450,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt
 
     this.citations = this.selectedNamespaceClone.preview_settings.citations
+    this.logger.log('Reset this.citations ', this.citations) 
+    if (this.citations) {
+      this.max_tokens_min = 1024;
+    } else {
+      this.max_tokens_min = 10;
+    }
     // this.selectedNamespace.preview_settings.context = this.contextDefaultValue;
 
     // this.aiSettingsObject[0].model = this.modelDefaultValue;
