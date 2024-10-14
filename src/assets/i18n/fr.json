@@ -569,6 +569,9 @@
     "MyChatbots": "MES CHATBOTS",
     "ManageYourContents": "Gérez votre Contenus",
     "CreateChatbot": "Créer un chatbot",
+    "CreateYuorAIAgent": "Créez votre agent IA",
+    "ChooseNameForYourAIAgent":"Choisissez un nom pour votre agent IA",
+    "MyAIAgentName": "Mon nom d'agent IA",
     "ChatbotName": "Nom du chatbot",
     "Oops": "Oops",
     "YourAuthTokenHasBeenInvalidated": "Votre jeton d'authentification a été invalidé",
@@ -596,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Avancé",
+    "Standard": "Standard",
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",
@@ -1839,6 +1844,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Donnez au système un rôle qu’il doit jouer lors de la création de vos réponses.",
         "Deterministic": "Déterministe",
         "Random": "Aléatoire",
+        "AdvancedOptions":"Options avancées",
+        "IndexingType":"Tipo de indexación",
+        "ExtractTags": "Extraire les balises (obligatoire)",
+        "TypeAndPressEnter": "Tapez et appuyez sur Entrée",
+        "UnwantedTags": "Balises indésirables",
+        "UnwantedClassnames":"Noms de classe indésirables",
+        "AdvancedContext":"Contexte avancé",
+        "AdvancedContextDesc1":"C'est ici que vous avez le plus de contrôle. Soyez prudent, l'invite native sera complètement écrasée.",
+        "AdvancedContextDesc2":"Assurez-vous d'indiquer à votre invite de répondre avec <NOANS> lorsqu'elle ne trouve pas de réponse satisfaisante et de toujours fermer avec {context}",
+        "GetContentsSources": "Obtenir les sources de contenu",
+        "GetContentsSourcesDesc1":"Utilisez cette option pour obtenir des sources précises des documents utilisés pour générer la réponse.",
+        "GetContentsSourcesDesc2":"Gardez à l’esprit que cela consomme plus de jetons que la récupération normale de Ko.",
+        "GetContentsSourcesDesc3":"Le quota de jetons maximum sera automatiquement ajusté pour obtenir les citations si nécessaire.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "C'est tout"
     },

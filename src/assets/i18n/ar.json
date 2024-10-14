@@ -569,6 +569,9 @@
     "MyChatbots": "روبوتات الدردشة الخاصة بي",
     "ManageYourContents": "إدارة المحتوى الخاص بك",
     "CreateChatbot": "إنشاء روبوت الدردشة",
+    "CreateYuorAIAgent": "قم بإنشاء وكيل AI الخاص بك",
+    "ChooseNameForYourAIAgent":"اختر اسمًا لوكيل AI الخاص بك",
+    "MyAIAgentName": "اسم وكيل AI الخاص بي",
     "ChatbotName": "اسم الشات بوت",
     "Oops": "أُووبس",
     "YourAuthTokenHasBeenInvalidated": "تم إبطال رمز المصادقة المميز الخاص بك",
@@ -596,6 +599,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "المتقدمة",
+    "Standard": "معيار",
     "CannedResponses": {
         "QuickTips": {
             "1": "الردود الجاهزة هي رسائل مسبقة الصنع يمكنك تذكرها بسهولة أثناء الدردشة.",
@@ -1839,6 +1844,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "أعطِ النظام دورًا يجب أن يلعبه عند إنشاء إجاباتك.",
         "Deterministic": "حتمية",
         "Random": "عشوائي",
+        "AdvancedOptions":"خيارات متقدمة",
+        "IndexingType":"نوع الفهرسة",
+        "ExtractTags": "استخراج العلامات (إلزامي)",
+        "TypeAndPressEnter": "اكتب واضغط على Enter",
+        "UnwantedTags": "العلامات غير المرغوب فيها",
+        "UnwantedClassnames":"الأسماء الصفية غير المرغوب فيها",
+        "AdvancedContext":"السياق المتقدم",
+        "AdvancedContextDesc1":"هنا يمكنك التحكم بشكل أكبر. كن حذرًا، سيتم استبدال موجه الأوامر الأصلي بالكامل.",
+        "AdvancedContextDesc2":"تأكد من توجيه موجهك للرد باستخدام <NOANS> عندما لا يجد إجابة مرضية وأغلقه دائمًا باستخدام {context}",
+        "GetContentsSources": "الحصول على مصادر المحتوى",
+        "GetContentsSourcesDesc1": "استخدم هذا الخيار للحصول على مصادر دقيقة للمستندات المستخدمة لإنشاء الرد.",
+        "GetContentsSourcesDesc2": "ضع في اعتبارك أن هذا يستهلك عددًا أكبر من الرموز مقارنة باسترداد قاعدة المعارف العادية.",
+        "GetContentsSourcesDesc3":"سيتم تعديل حصة الحد الأقصى للرموز تلقائيًا للحصول على الاستشهادات إذا لزم الأمر.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "هذا كل شئ"
     },

@@ -319,10 +319,10 @@ mat-expansion-panel ::ng-deep {
     }
 }
 
-::ng-deep.ng-select-container {
-    height: 48px !important;
+::ng-deep.ng-select.scrape-types-select .ng-select-container {
+    // height: 48px !important;
     margin-top: 3px;
-    border-radius: 6px;
+    border-radius: 5px;
     border: solid 1px #e4e4e4 !important;
     box-shadow: none;
  }
@@ -331,3 +331,4 @@ mat-expansion-panel ::ng-deep {
 ::ng-deep.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
     box-shadow: none;
 }
+

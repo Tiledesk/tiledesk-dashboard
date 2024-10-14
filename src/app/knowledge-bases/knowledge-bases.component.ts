@@ -1269,12 +1269,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         if (result.action === "update") {
           let body = { preview_settings: result.selectedNamespace.preview_settings }
+          this.logger.log('[ModalPreviewSettings] update body ', body)
           this.updateNamespace(body, 'modal-update-settings')
         }
 
         if (result.action === "update-and-open-preview") {
           this.logger.log('[ModalPreviewSettings] Dialog after closed HRE YES ', result.selectedNamespace)
           let body = { preview_settings: result.selectedNamespace.preview_settings }
+          this.logger.log('[ModalPreviewSettings] update-and-open-preview body ', body)
           if (previedata) {
             this.updateNamespace(body, 'modal-update-settings-and-open-preview', previedata)
           } else {

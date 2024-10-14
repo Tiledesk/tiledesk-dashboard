@@ -57,6 +57,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   storedQuestionNoDoubleQuote: string;
   aiQuotaExceeded: boolean = false;
   prompt_token_size: number
+  public citations: boolean // = false;
+  public advancedPrompt: boolean // = false;
 
 
   constructor(
@@ -80,14 +82,30 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.maxTokens = this.selectedNamespace.preview_settings.max_tokens;
       this.temperature = this.selectedNamespace.preview_settings.temperature;
       this.topK = this.selectedNamespace.preview_settings.top_k;
-      this.context = this.selectedNamespace.preview_settings.context
+      this.context = this.selectedNamespace.preview_settings.context;
+
+      if (!this.selectedNamespace.preview_settings.advancedPrompt) {
+        this.advancedPrompt = false
+        this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
+      } else {
+        this.advancedPrompt = this.selectedNamespace.preview_settings.advancedPrompt
+        this.logger.log("[MODAL-PREVIEW-KB] advancedPrompt ", this.advancedPrompt)
+      }
+
+      if (!this.selectedNamespace.preview_settings.citations) {
+        this.citations = false
+        this.selectedNamespace.preview_settings.citations = this.citations
+      } else {
+        this.citations = this.selectedNamespace.preview_settings.citations
+        this.logger.log("[MODAL PREVIEW SETTINGS] citations ", this.citations)
+      }
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
       this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
     if (data && data.askBody) {
-      this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
+      // console.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
       // this.question = data.askBody.question
       // this.submitQuestion()
     }
@@ -189,7 +207,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   listenToAiSettingsChanges() {
     this.kbService.editedAiSettings$.subscribe((editedAiSettings: any) => {
-
+      this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings ', editedAiSettings)
       if (editedAiSettings && editedAiSettings.length > 0) {
         this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges current selectedModel', this.selectedModel)
 
@@ -216,6 +234,22 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
           this.context = editedAiSettings[0]['context']
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test', this.context)
         }
+
+        if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true)  {
+          this.advancedPrompt = editedAiSettings[0]['advancedPrompt']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test',  this.advancedPrompt)
+        } else if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === false) {
+          this.advancedPrompt = editedAiSettings[0]['advancedPrompt']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test',  this.advancedPrompt)
+        }
+
+        if (editedAiSettings && editedAiSettings[0]['citations'] === true)  {
+          this.citations =  editedAiSettings[0]['citations']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test', this.citations)
+        } else if (editedAiSettings && editedAiSettings[0]['citations'] === false){
+          this.citations =  editedAiSettings[0]['citations']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test', this.citations)
+        }
       }
     })
 
@@ -238,7 +272,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       "temperature": this.temperature,
       "max_tokens": this.maxTokens,
       "top_k": this.topK,
-      "system_context": this.context
+      "system_context": this.context,
+      'advancedPrompt': this.advancedPrompt,
+      'citations': this.citations
+
     }
     // this.error_answer = false;
 

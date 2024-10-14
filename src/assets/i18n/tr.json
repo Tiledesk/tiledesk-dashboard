@@ -571,6 +571,9 @@
     "MyChatbots":"SOHBETLERİM",
     "ManageYourContents": "İçeriğinizi Yönetin",
     "CreateChatbot": "Sohbet robotu oluştur",
+    "CreateYuorAIAgent": "AI Temsilcinizi oluşturun",
+    "ChooseNameForYourAIAgent":"AI Agent'ınız için bir isim seçin",
+    "MyAIAgentName": "AI ajanımın adı",
     "ChatbotName":"Sohbet robotu adı",
     "Oops":"Hata",
     "YourAuthTokenHasBeenInvalidated":"Kimlik doğrulama jetonunuz geçersiz kılındı",
@@ -598,6 +601,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Gelişmiş",
+    "Standard": "Standart",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",
@@ -1841,6 +1846,19 @@
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Cevaplarınızı oluştururken sisteme bir rol verin.",
          "Deterministic":"Deterministik",
          "Random":"Rastgele",
+         "AdvancedOptions":"Gelişmiş seçenekler",
+         "IndexingType":"Dizinleme türü",
+         "ExtractTags": "Etiketleri Çıkar (Zorunlu)",
+         "TypeAndPressEnter": "Yazın ve Enter'a basın",
+         "UnwantedTags": "İstenmeyen Etiketler",
+         "UnwantedClassnames":"İstenmeyen Sınıf Adları",
+         "AdvancedContext":"Gelişmiş bağlam",
+         "AdvancedContextDesc1":"Burada en fazla kontrol sizde. Dikkatli olun, yerel komut istemi tamamen üzerine yazılacak.",
+         "AdvancedContextDesc2":"İstemciye tatmin edici bir cevap bulamadığında <NOANS> ile yanıt vermesini ve her zaman {context} ile kapatmasını söylediğinizden emin olun",
+         "GetContentsSources": "İçerik kaynaklarını edinin",
+         "GetContentsSourcesDesc1":"Cevabı oluşturmak için kullanılan belgelerin doğru kaynaklarını almak için bu seçeneği kullanın.",
+         "GetContentsSourcesDesc2":"Bunun normal KB alımından daha fazla token tüketeceğini unutmayın.",
+         "GetContentsSourcesDesc3":"Gerektiğinde alıntı alabilmek için maksimum token kotası otomatik olarak ayarlanacaktır.",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Hepsi bu kadar"
     },

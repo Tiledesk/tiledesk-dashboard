@@ -570,6 +570,9 @@
     "MyChatbots":"MƏNİM SOHBOTLARIM",
     "ManageYourContents": "Məzmununuzu idarə edin",
     "CreateChatbot": "Çatbot yaradın",
+    "CreateYuorAIAgent": "AI agentinizi yaradın",
+    "ChooseNameForYourAIAgent":"AI Agentiniz üçün ad seçin",
+    "MyAIAgentName": "Mənim AI agent adım",
     "ChatbotName":"Chatbot adı",
     "Oops":"Ups",
     "YourAuthTokenHasBeenInvalidated":"Doğrulama nişanınız etibarsızdır",
@@ -597,6 +600,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Qabaqcıl",
+    "Standard": "Standart",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",
@@ -1840,6 +1845,19 @@
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Sistemə cavablarınızı yaratarkən oynamalı olduğu rolu verin.",
         "Deterministic":"Determinist",
         "Random":"Təsadüfi",
+        "AdvancedOptions":"Qabaqcıl seçimlər",
+        "IndexingType":"İndeksləmə növü",
+        "ExtractTags": "Çıxarış Teqləri (məcburi)",
+        "TypeAndPressEnter": "Yazın və Enter düyməsini basın",
+        "UnwantedTags": "İstənməyən Teqlər",
+        "UnwantedClassnames":"İstənməyən Sinif Adları",
+        "AdvancedContext":"Qabaqcıl kontekst",
+        "AdvancedContextDesc1":"Burada ən çox nəzarət sizdədir. Ehtiyatlı olun, yerli sorğu tamamilə üzərinə yazılacaq.",
+        "AdvancedContextDesc2":"Qənaətbəxş cavab tapmayanda <NOANS> ilə cavab verməyi əmr etdiyinizə əmin olun və həmişə {context} ilə bağlayın.",
+        "GetContentsSources": "Məzmun mənbələrini əldə edin",
+        "GetContentsSourcesDesc1":"Cavab yaratmaq üçün istifadə olunan sənədlərin dəqiq mənbələrini əldə etmək üçün bu seçimdən istifadə edin.",
+        "GetContentsSourcesDesc2":"Nəzərə alın ki, bu, adi KB axtarışından daha çox token sərf edir.",
+        "GetContentsSourcesDesc3":"Lazım gələrsə, sitatları əldə etmək üçün maksimum nişan kvotaları avtomatik tənzimlənəcək.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Hamısı budur"
     },

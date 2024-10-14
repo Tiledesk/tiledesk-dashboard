@@ -237,7 +237,7 @@
                   <!-- ---------------------------------------- -->
                   <div class="add-kb-div">
                     <button id="kb-add-content" class="custom-button add-content" [disabled]="addButtonDisabled"
-                      [matMenuTriggerFor]="menu" aria-label="Actions">
+                      [matMenuTriggerFor]="menu">
                       <span class=""> {{ 'KbPage.Add' | translate }} </span>
                     </button>
                     <mat-menu #menu="matMenu" xPosition="before" class="custom-menu" style="width: 150px;">
@@ -373,7 +373,8 @@
                     
                     <span *ngIf="!esportingKBChatBotTemplate">
                       <!-- Create chatbot  -->
-                      {{ 'CreateChatbot' | translate }}
+                      <!-- {{ 'CreateChatbot' | translate }} -->
+                      {{ 'CreateYuorAIAgent' | translate }}
                     </span>
                     <span *ngIf="esportingKBChatBotTemplate">
                       {{ 'Processing' | translate }}

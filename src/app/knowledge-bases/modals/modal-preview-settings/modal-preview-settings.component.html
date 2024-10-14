@@ -31,7 +31,7 @@
         <!-- (click)="aiModel.toggle()(mouseleave)="aiModel.toggle()  -->
         <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
             [satPopoverAnchor]="aiModel"
-            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close()"
+            (mouseenter)="aiModel.open(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
             (click)="aiModel.close()">
             <!-- AI Model -->
             {{ 'KbPage.SelectEngine'| translate}}
@@ -116,7 +116,7 @@
             <div class="label-wpr">
                 <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="maxTokens"
-                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close();chunkLimit.close(); systemContext.close()"
+                    (mouseenter)="aiModel.close(); maxTokens.open(); aiModeltemperature.close();chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
                     (click)="maxTokens.close()">
                     <!-- Max Tokens -->
                     {{ 'KbPage.MaxTokens'| translate}}
@@ -134,8 +134,8 @@
 
         <div class="field-box">
             <div class="action-wait-slider">
-                <div class="action-wait-range">10</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="10" max="2048" [(ngModel)]="max_tokens"
+                <div class="action-wait-range">{{max_tokens_min}}</div>
+                <mat-slider class="wait-slider" thumbLabel step="1" [min]="max_tokens_min" max="2048" [(ngModel)]="max_tokens"
                     (change)="updateSliderValue($event.value, 'max_tokens')" aria-label="units">
                 </mat-slider>
                 <div class="action-wait-range">2048</div>
@@ -170,7 +170,7 @@
             <div class="label-wpr">
                 <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="aiModeltemperature"
-                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); maxTokens.close();  chunkLimit.close(); systemContext.close()"
+                    (mouseenter)="aiModel.close(); aiModeltemperature.open(); maxTokens.close();  chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.close()"
                     (click)="aiModeltemperature.close()">
                     <!-- Temperature -->
                     {{ 'KbPage.Temperature'| translate}}
@@ -231,7 +231,7 @@
             <div class="label-wpr">
                 <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
                     [satPopoverAnchor]="chunkLimit"
-                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.open(); systemContext.close()"
+                    (mouseenter)=" aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.open(); systemContext.close(); advancedContext.close(); contentsSources.close()"
                     (click)="chunkLimit.close()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                     <!-- Chunks  -->
@@ -281,7 +281,7 @@
         <div class="label-wpr">
             <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
                 [satPopoverAnchor]="systemContext"
-                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.open();"
+                (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.open(); advancedContext.close(); contentsSources.close()"
                 (click)="systemContext.close()">
                 <!-- System context -->
                 {{ 'KbPage.SystemContext'| translate}}
@@ -292,9 +292,11 @@
             </label>
         </div>
 
-        <textarea class="context-texarea" [(ngModel)]="context" rows="4" placeholder="You are an awesome assistant"
+        <textarea class="context-texarea" [(ngModel)]="context" rows="2" placeholder="You are an awesome assistant"
             (ngModelChange)="onChangeTextInContex($event)">  </textarea>
     </div>
+
+
 
     <sat-popover id="ai-settings-label" #systemContext horizontalAlign="before" verticalAlign="center"
         panelClass="cb-details-popover" (opened)="systemContextPopoverIsOpened()" closeTransition="1ms ease-in">
@@ -312,6 +314,86 @@
             </div>
         </div>
     </sat-popover>
+
+    <div class="checkbox-container">
+
+        <div class="checkbox">
+            <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+            [satPopoverAnchor]="advancedContext"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close(); advancedContext.open(); contentsSources.close()"
+            (click)="advancedContext.close()">
+                <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)">
+                <span class="setting-label">
+                    {{'KbPage.AdvancedContext' | translate}}
+                </span> 
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                <input type="checkbox" name="advanced-prompt" [(ngModel)]="advancedPrompt" (change)="changeAdvancePrompt($event)">
+                <span class="setting-label">
+                    {{'KbPage.AdvancedContext' | translate}}
+                </span> 
+            </label>
+        </div>
+
+        <sat-popover id="ai-settings-label" 
+        #advancedContext 
+        horizontalAlign="before"
+        verticalAlign="center"
+        panelClass="cb-details-popover" (opened)="advancedContextIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                <!-- Here you have the most control. Be careful, the native prompt will be completely overwritten. -->
+                {{'KbPage.AdvancedContextDesc1' | translate}} <br>
+                {{'KbPage.AdvancedContextDesc2' | translate}}
+                <!-- Make sure to instruct your prompt to respond with <NOANS> when it doesn't find a satisfactory answer and always close with {context} -->
+            </div>
+        </div>
+    </sat-popover>
+
+        <div class="checkbox">
+            <label id="ai-settings-label" *ngIf="!wasOpenedFromThePreviewKBModal" class="setting-label"
+            [satPopoverAnchor]="contentsSources"
+            (mouseenter)="aiModel.close(); maxTokens.close(); aiModeltemperature.close(); chunkLimit.close(); systemContext.close(); advancedContext.close(); contentsSources.open() "
+            (click)="contentsSources.close()">
+                <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)">
+                <span class="setting-label">
+                    
+                    {{'KbPage.GetContentsSources' | translate}}
+                </span>   
+            </label>
+
+            <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label">
+                <input type="checkbox" name="citations" [(ngModel)]="citations" (change)="changeCitations($event)">
+                <span class="setting-label">
+                    {{'KbPage.GetContentsSources' | translate}}
+                </span>   
+            </label>
+        </div>
+
+        <sat-popover id="ai-settings-label" 
+        #contentsSources 
+        horizontalAlign="before"
+        verticalAlign="center"
+        panelClass="cb-details-popover" (opened)="contentsSourcesIsOpened()" closeTransition="1ms ease-in">
+        <div class="sat-popover-content-wpr">
+            <div class="sat-popover-arrow"></div>
+            <div class="sat-popover-content">
+                {{'KbPage.GetContentsSourcesDesc1' | translate}} <br>
+                {{'KbPage.GetContentsSourcesDesc2' | translate}} <br>
+                {{'KbPage.GetContentsSourcesDesc3' | translate}} <br>
+                
+            </div>
+
+            <!-- <div *ngIf="hideHelpLink" class="sat-popover-content-learn-more" (click)="goToSystemContextDoc()">
+               
+                {{'LearnMore' | translate}}
+            </div> -->
+        </div>
+    </sat-popover>
+
+    </div>
 
 
 </div>

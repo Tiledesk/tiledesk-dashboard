@@ -39,6 +39,115 @@
             <span>{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
         </div>
     </div>
+
+
+    <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" class="custom-expansion-panel">
+            <mat-expansion-panel-header class="disable_ripple">
+                <mat-panel-title> {{'KbPage.AdvancedOptions' | translate}} </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="expansion-panel-content">
+                <!-- SCRAPE TYPE -->
+                <div class="option-box">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <span class="input-label">
+                            {{'KbPage.IndexingType' | translate}}
+                        </span>
+                       
+                        <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px;" 
+                            appendTo="body" 
+                            [items]="scrape_types | selectOptionsTranslate" 
+                            bindLabel="name" 
+                            bindValue="value"
+                            placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}" 
+                            [clearable]="false"
+                            [searchable]="false" 
+                            [(ngModel)]="selectedScrapeType" 
+                            (change)="onSelectScrapeType(selectedScrapeType)">
+            
+                            <!-- <ng-option *ngFor="let type of scrape_types" [value]="type.value">{{type.name}}</ng-option> -->
+                            
+                        </ng-select>
+                    </div>
+                </div>
+                <div *ngIf="selectedScrapeType === 4" class="option-box" style="width: 100%; margin-left: 12px;">
+
+                    <!-- TAGS TO EXTRACT -->
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <span class="input-label">
+                            {{'KbPage.ExtractTags' | translate }}
+                        </span>
+                        <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                            <mat-chip-list #extractTags aria-label="Tag selection">
+                                <mat-chip *ngFor="let tag of extract_tags" 
+                                    (removed)="removeTag('extract_tags', tag)">
+                                    {{ tag }}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                    <!-- <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> -->
+                                </mat-chip>
+                                <input style="font-size: 13px; background-color: white; border: none;" 
+                                    [matChipInputFor]="extractTags" 
+                                    placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
+                                    (matChipInputTokenEnd)="addTag('extract_tags', $event)">
+                            </mat-chip-list>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- UNWANTED TAGS -->
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <span class="input-label">
+                            <!-- Unwanted Tags -->
+                            {{'KbPage.UnwantedTags' | translate}}
+                        </span>
+                        <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                            <mat-chip-list #unwantedTags aria-label="Tag selection">
+                                <mat-chip *ngFor="let tag of unwanted_tags"
+                                    (removed)="removeTag('unwanted_tags', tag)">
+                                    {{ tag }}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                                <input style="font-size: 13px; background-color: white; border: none;" 
+                                    [matChipInputFor]="unwantedTags" 
+                                    placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
+                                    (matChipInputTokenEnd)="addTag('unwanted_tags', $event)">
+                            </mat-chip-list>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- UNWANTED CLASSNAMES -->
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <span class="input-label">
+                            <!-- Unwanted Classnames -->
+                            {{'KbPage.UnwantedClassnames' | translate}}
+                        </span>
+                        <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
+                            <mat-chip-list #unwantedClassnames aria-label="Tag selection">
+                                <mat-chip *ngFor="let tag of unwanted_classnames"
+                                    (removed)="removeTag('unwanted_classnames', tag)">
+                                    {{ tag }}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                                <input style="font-size: 13px; background-color: white; border: none;" 
+                                    [matChipInputFor]="unwantedClassnames" placeholder="{{'KbPage.TypeAndPressEnter' | translate}}"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
+                                    (matChipInputTokenEnd)="addTag('unwanted_classnames', $event)">
+                            </mat-chip-list>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion> 
+
     <div class="form-container">
         <div class="input-container">
         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
@@ -58,7 +167,7 @@
         {{ "Cancel" | translate }}
     </button>
 
-    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0" (click)="onSaveKnowledgeBase()">
+    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0" (click)="onSaveKnowledgeBase()">
         {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
     </button>
 </div>

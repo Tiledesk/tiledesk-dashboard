@@ -570,6 +570,9 @@
     "MyChatbots":"MENING CHATBOTLARIM",
     "ManageYourContents": "Tarkibingizni Boshqaring",
     "CreateChatbot": "Chatbot yaratish",
+    "CreateYuorAIAgent": "AI agentingizni yarating",
+    "ChooseNameForYourAIAgent":"AI agentingiz uchun nom tanlang",
+    "MyAIAgentName": "Mening AI agentim nomi",
     "ChatbotName":"Chatbot nomi",
     "Oops":"Op",
     "YourAuthTokenHasBeenInvalidated":"Autentifikatsiya tokeningiz yaroqsiz deb topildi",
@@ -597,6 +600,8 @@
         "o1-mini": { "description": ""},
         "o1-preview": { "description": ""}
     },
+    "Advanced": "Murakkab",
+    "Standard": "Standart",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservalangan javoblar suhbat davomida osongina eslab qolishingiz mumkin bo'lgan oldindan tayyorlangan xabarlardir.",
@@ -1839,6 +1844,19 @@
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Tizimga javoblaringizni yaratishda o'ynashi kerak bo'lgan rolni bering.",
          "Deterministic":"Deterministik",
          "Random":"Tasodifiy",
+         "AdvancedOptions":"Kengaytirilgan variantlar",
+         "IndexingType":"Indekslash turi",
+         "ExtractTags": "Chiqarish teglari (majburiy)",
+         "TypeAndPressEnter": "kiriting va Enter tugmasini bosing",
+         "UnwantedTags": "Keraksiz teglar",
+         "UnwantedClassnames":"Keraksiz sinf nomlari",
+         "AdvancedContext":"Kengaytirilgan kontekst",
+         "AdvancedContextDesc1":"Bu erda siz eng ko'p nazoratga egasiz. Ehtiyot bo'ling, mahalliy so'rov butunlay o'chiriladi.",
+         "AdvancedContextDesc2":"Agar u qoniqarli javob topmasa, unga <NOANS> bilan javob berishni buyuring va har doim {context} bilan yoping.",
+         "GetContentsSources": "Tarkib manbalarini oling",
+         "GetContentsSourcesDesc1":"Javobni yaratishda foydalaniladigan hujjatlarning aniq manbalarini olish uchun ushbu parametrdan foydalaning.",
+         "GetContentsSourcesDesc2": "Shuni yodda tutingki, bu odatiy KB olishdan ko'ra ko'proq tokenlarni iste'mol qiladi.",
+         "GetContentsSourcesDesc3":"Agar kerak bo'lsa, iqtiboslarni olish uchun maksimal tokenlar kvotasi avtomatik ravishda o'rnatiladi.",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },

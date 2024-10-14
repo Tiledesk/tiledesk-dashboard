@@ -1831,6 +1831,17 @@ footer ul {
   border: none;
 }
 
+.ng-select.custom--input .ng-select-container  {
+  box-shadow: 0 0 4px #c7c7c7 !important;
+  border: unset !important;
+  border-radius: 12px !important;
+} 
+
+.ng-select-container {
+    height: 36px !important;
+}
+
+
 .ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
   margin-top: 0px !important;
   margin-left: 0px !important;
@@ -1848,6 +1859,11 @@ footer ul {
   border-right: 1px solid $icon-color;
   border-bottom: 1px solid $icon-color;
   outline: 1px solid $icon-color;
+}
+
+// Used 
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 4.64px 0px 10px 0px !important;
 }
 
 // ::ng-deep
@@ -3105,3 +3121,14 @@ div:where(.swal2-container) .swal2-select {
 .mat-option {
   font-family: 'Poppins' !important;
 }
+
+// .mat-form-field-appearance-outline .mat-form-field-outline {
+//   transition: border-color 0.3s ease; /* Smooth transition */
+// }
+
+// .mat-form-field-flex:hover .mat-form-field-outline {
+
+//   .mat-form-field-outline-start {
+//     border: 1px solid #ccc !important; /* Change to your desired hover color */
+//   }
+// }

@@ -14,7 +14,7 @@ export class SelectOptionsTranslatePipe implements PipeTransform {
         for(let item of items) {
            
             
-            // console.log('PIPE SELECT OPTION TRANSLATED translated ',translated)
+            // console.log('PIPE SELECT OPTION TRANSLATED item ',item)
 
             this.translate.get(item.name)
             .subscribe((text: any) => {

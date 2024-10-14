@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.34
+- Adds the ability to select the indexing type for Knowledge Base URL contents
+- Adds to AI models used by knowledge bases the ability to add an advanced context and to visualize the contents sources
+
+### 2.7.33
+- Adds, on the History page, the ability to filter by conversation duration
+
 ### 2.7.32
 - Moves the menu item "Apps" from the sidebar to the setting sidebar
 
