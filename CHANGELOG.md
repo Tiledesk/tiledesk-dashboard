@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.35
+- Refactors tables in Monitor page 
+- Improves handling of alert windows display
+
 ### 2.7.34
 - Adds the ability to select the indexing type for Knowledge Base URL contents
 - Adds to AI models used by knowledge bases the ability to add an advanced context and to visualize the contents sources
