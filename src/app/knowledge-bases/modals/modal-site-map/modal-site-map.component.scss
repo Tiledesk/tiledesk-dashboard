@@ -256,19 +256,7 @@
 }
 
 
-.custom-expansion-panel {
-    //background-color: transparent !important;
-    margin-top: 12px;
-    box-shadow: none;
-    // background-color: transparent;
-    // box-shadow: none;
-    //color: white;
-}
 
-
-.expansion-panel-content {
-    display: flex;
-}
 
 // .option-box {
 //     // margin-right: 12px;
@@ -320,7 +308,7 @@ mat-expansion-panel ::ng-deep {
 
 ::ng-deep.ng-select.scrape-types-select .ng-select-container {
     // height: 48px !important;
-    margin-top: 3px;
+    margin-top: 4px;
     border-radius: 5px;
     border: solid 1px #e4e4e4 !important;
     box-shadow: none;
@@ -329,4 +317,27 @@ mat-expansion-panel ::ng-deep {
 
 ::ng-deep.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
     box-shadow: none;
+}
+
+
+.custom--expansion-panel {
+    //background-color: transparent !important;
+    margin-top: 12px;
+    box-shadow: none;
+    // background-color: transparent;
+    // box-shadow: none;
+    //color: white;
+}
+
+
+.expansion-panel-content {
+    display: flex;
+}
+
+::ng-deep.custom--expansion-panel:not(.mat-expanded) {
+    background: rgba(0, 0, 0, .04) !important;
+}
+
+::ng-deep.custom--expansion-panel {
+    padding: 0px 10px;
 }

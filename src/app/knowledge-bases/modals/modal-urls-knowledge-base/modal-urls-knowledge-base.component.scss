@@ -258,7 +258,7 @@
     cursor: not-allowed;
 }
 
-.custom-expansion-panel {
+.custom--expansion-panel {
     //background-color: transparent !important;
     margin-top: 12px;
     box-shadow: none;
@@ -321,7 +321,7 @@ mat-expansion-panel ::ng-deep {
 
 ::ng-deep.ng-select.scrape-types-select .ng-select-container {
     // height: 48px !important;
-    margin-top: 3px;
+    margin-top: 4px;
     border-radius: 5px;
     border: solid 1px #e4e4e4 !important;
     box-shadow: none;
@@ -332,3 +332,14 @@ mat-expansion-panel ::ng-deep {
     box-shadow: none;
 }
 
+// ::ng-deep.custom--expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
+//     background: rgba(0, 0, 0, .04) !important;
+// }
+
+::ng-deep.custom--expansion-panel:not(.mat-expanded) {
+    background: rgba(0, 0, 0, .04) !important;
+}
+
+::ng-deep.custom--expansion-panel {
+    padding: 0px 10px;
+}
