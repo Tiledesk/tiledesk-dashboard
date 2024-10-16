@@ -67,6 +67,7 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.buildActivitiesOptions();
     this.getCurrentProject();
     this.getBrowserLang();

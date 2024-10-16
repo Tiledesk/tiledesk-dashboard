@@ -467,7 +467,7 @@ export class AuthService {
   }
 
   checkRoleForCurrentProject() {
-    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
+   console.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -776,6 +776,7 @@ export class AuthService {
     };
 
     const url = this.VERIFY_EMAIL_URL + user_id
+    // const url = this.VERIFY_EMAIL_URL + user_id + '/' + code
     this.logger.log('[AUTH-SERV] VERIFY EMAIL URL ', url)
     const body = { emailverified: true }
     return this._httpClient

@@ -150,6 +150,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { RoleGuard } from './core/role.guard';
 
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
@@ -292,7 +293,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/analytics',
     loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
+    canActivate: [AuthGuard, ProjectProfileGuard] // RoleGuard
   },
   // { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
@@ -588,7 +589,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
@@ -596,7 +597,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/widget/translations',
     loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   // { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
 
@@ -604,14 +605,14 @@ const routes: Routes = [
   {
     path: 'project/:projectid/widget/translations/:calledby',
     loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
 
   // Widget installation
   {
     path: 'project/:projectid/installation',
     loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
 
@@ -619,7 +620,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/departments',
     loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -1243,6 +1244,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AdminGuard, ProjectProfileGuard, PendingChangesGuard]
+  providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]
 })
 export class AppRoutingModule { }

@@ -352,7 +352,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
                     if (projects) {
                         this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-                        this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+                        console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+                        this.USER_ROLE = this.current_selected_prjct_user.role
+                        console.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
                     }
                 })
             }
@@ -857,10 +859,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1) ||
-                    (this.route.indexOf('/desktop--access') !== -1)
+                    (this.route.indexOf('/desktop--access') !== -1) 
 
                 ) {
-
+                    // && this.USER_ROLE === 'agent' 
+            
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
                     // margin-top: -70px

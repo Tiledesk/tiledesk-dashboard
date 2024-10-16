@@ -1341,6 +1341,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               // User Agent
               // -------------------------------------------------------------------
               const user_agent_result = this.parseUserAgent(request.userAgent);
+              console.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
               const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version

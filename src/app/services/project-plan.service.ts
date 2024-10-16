@@ -10,6 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from './app-config.service';
 import { CacheService } from './cache.service';
+import { UsersService } from './users.service';
+
 @Injectable()
 
 export class ProjectPlanService {
@@ -18,7 +20,8 @@ export class ProjectPlanService {
   areActivePay: boolean;
   public_Key: string;
   projectID: string;
-  TOKEN: string
+  TOKEN: string;
+  userId: string;
   project_deleted_notification: string
   progetIdGetFromParams: string;
   constructor(
@@ -29,7 +32,8 @@ export class ProjectPlanService {
     private translate: TranslateService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private usersService: UsersService,
   ) {
     this.getOSCODE()
     this.getUserToken();
@@ -89,7 +93,8 @@ export class ProjectPlanService {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.TOKEN = user.token
-        // this.logger.log('[PROJECT-PLAN-SERV] - User is signed in)
+        this.userId = user._id
+       console.log('[PROJECT-PLAN-SERV] - User is signed in userId', this.userId)
       } else {
         this.logger.log('[PROJECT-PLAN-SERV] - No user is signed in');
       }
@@ -155,7 +160,7 @@ export class ProjectPlanService {
       // this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
       
      
       if (current_prjct) {
@@ -282,6 +287,15 @@ export class ProjectPlanService {
       this.logger.log('[PROJECT-PLAN-SERV] - _GET PROJECT BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', prjct_id);
       this.projectService.getProjectById(prjct_id).subscribe((project: any) => {
         resolve(project);
+      })
+    });
+  }
+
+  public getProjectUserByUserId(userId, prjct_id): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      console.log('[PROJECT-PLAN-SERV] - _GET PROJECT USER BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', userId);
+      this.usersService.getProjectUserByUserIdPassingProjectId(userId, prjct_id).subscribe((pu: any) => {
+        resolve(pu[0]['role']);
       })
     });
   }

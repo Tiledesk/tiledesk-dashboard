@@ -4,24 +4,54 @@ import { Location } from '@angular/common';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { UsersService } from 'app/services/users.service';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class ProjectProfileGuard implements CanActivate {
   userIsAuthorized: boolean;
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  USER_ROLE: string
+  userId: string
   constructor(
     private router: Router,
     public location: Location,
     private prjctPlanService: ProjectPlanService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private usersService: UsersService,
+    public auth: AuthService,
   ) {
-    this.logger.log('[PROJECT-PROFILE-GUARD] HELLO !!!')
+    console.log('[PROJECT-PROFILE-GUARD] HELLO !!!')
+    this.getLoggedUser()
+  }
 
+  getLoggedUser() {
+    this.auth.user_bs
+      .subscribe((user) => {
+        console.log('[PROJECT-PROFILE-GUARD] - user ', user)
+
+
+        if (user) {
+        
+          this.userId = user._id
+          console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
+        }
+      })
   }
 
   async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
+    this.auth.user_bs
+    .subscribe((user) => {
+      console.log('[PROJECT-PROFILE-GUARD] - user ', user)
 
+
+      if (user) {
+      
+        this.userId = user._id
+        console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
+      }
+    })
     // this.logger.log('[PROJECT-PROFILE-GUARD]  canActivate next ', next)
     // this.logger.log('[PROJECT-PROFILE-GUARD]  canActivate state ', state)
     const prjct_id = next.params.projectid;
@@ -32,7 +62,10 @@ export class ProjectProfileGuard implements CanActivate {
 
 
     const project = await this.prjctPlanService._getProjectById(prjct_id);
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userIsAuthorized ****** ', project)
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** project ****** ', project)
+
+    const userRole = await this.prjctPlanService.getProjectUserByUserId(this.userId, prjct_id );
+    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userRole ****** ', userRole)
 
     const type = project['profile'].type;
     const planName = project['profile'].name;
@@ -256,14 +289,25 @@ export class ProjectProfileGuard implements CanActivate {
       }
     }
 
-
+    
     if (this.userIsAuthorized === true) {
       return true
+      // if (this.userIsAuthorized === false &&  userRole !== 'agent')
     } else {
       // console.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
       this.router.navigate([url + '-demo']);
       return false
     }
+
+
+    // if (this.userIsAuthorized === true) {
+    //   return true
+    // } else if (this.userIsAuthorized === false && this.USER_ROLE !== 'agent' ){
+    //   // console.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
+    //   console.log('[PROJECT-PROFILE-GUARD] YERE GO TO DEMO USER_ROLE ', this.USER_ROLE);
+    //   this.router.navigate([url + '-demo']);
+    //   return false
+    // }
 
   }
 
