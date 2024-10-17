@@ -184,7 +184,7 @@
       <!-- CONTACTS (LEADS)  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleCNT">
-        <div class="sb-bottom-items" id="contacts" *ngIf="project" routerLinkActive="item-active" 
+        <div id="contacts" *ngIf="project" routerLinkActive="item-active" 
           matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'Contacts' | translate }}" 
           #tooltip="matTooltip"  matTooltipPosition='right' matTooltipHideDelay="100" 
           [class.item-active]="CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE">
