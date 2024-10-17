@@ -1,5 +1,11 @@
 @import "./src/assets/sass/md/_variables.scss";
 
+
+:host {
+  --sidebar-icon-color: #647491;
+  --sidebar-hover-icon-color: #a9afbb;
+  --sidebar-active-icon: #fff
+}
 .nav-container {
   height: 100%;
 }
@@ -14,10 +20,81 @@
 }
 
 .sidebar-wrapper {
+  position: relative;
+  height: calc(100vh - 60px);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 60px;
+  z-index: 4;
+
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
   transition-timing-function: linear, linear, ease;
   background-color: $brand-sidebar-bckgrnd-bottom-section !important;
+}
+
+
+.nav-custom{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  > div {
+    height: 40px;
+    width: 60px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    span{
+      display: flex;
+    }
+  }
+
+}
+
+svg path,
+svg ellipse {
+  fill: var(--sidebar-icon-color);
+}
+
+div > a > i {
+  // font-size: 20px;
+  // float: left;
+  // margin-right: 15px;
+  // line-height: 30px;
+  width: 60px;
+  text-align: center;
+  // color: #a9afbb;
+  color: var(--sidebar-icon-color);
+}
+
+
+
+svg:hover path,
+svg:hover ellipse {
+  fill: var(--sidebar-hover-icon-color);
+}
+
+div:hover > a > i {
+  // background-color: #eee;
+  color: var(--sidebar-hover-icon-color);
+}
+div.item-active > a > i {
+  color: var(--sidebar-active-icon) !important;
+}
+
+.item-active svg path,
+.item-active svg ellipse{
+  height: 40px;
+  // background-color: #3ea9f5;
+  fill: var(--sidebar-active-icon) !important;
+  pointer-events: none;
 }
 
 // li.active a span.sidebar-mini {
@@ -96,17 +173,6 @@ ul.dropdown-menu>li>a {
 /* end - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
 /* END - USED WITH SIDWBAR WITH BLACK BACKGROUND */
 
-/* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
-.nav li>a.customAncor {
-  /* margin: 5px 15px !important; */
-
-  margin-top: 5px !important;
-  margin-right: 15px !important;
-  margin-bottom: 5px !important;
-  margin-left: 0px !important;
-  width: 60px;
-  border-radius: 0px;
-}
 
 /* MODAL START */
 .modal {
@@ -479,103 +545,19 @@ button.close {
   background-color: transparent !important;
 }
 
-#sidebar_wrapper>div>ul>li:hover>#home-btn>i {
-  color: #a9afbb !important;
-  background-color: transparent !important;
-}
 
-#sidebar_wrapper>div>ul>li:hover>a>#openchat-span>svg {
-  color: #a9afbb;
-  background-color: transparent !important;
-}
+// #sidebar_wrapper>div>ul>li:hover>a>#openchat-span>svg {
+//   color: #a9afbb;
+//   background-color: transparent !important;
+// }
 
 .chat21-icon {
   fill: #647491;
 }
 
-#openchat-a:hover>#openchat-a>#openchat-span>svg>.chat21-icon {
-  fill: #a9afbb;
-}
-
-// Bot icon sidebar menu item default color
-.chat-bot-icon-st0 {
-  // fill: #a9afbb;
-  fill: #647491;
-}
-
-// Bot icon sidebar menu item default color
-.chat-bot-icon-st1 {
-  fill: none;
-}
-
-// Bot icon sidebar menu item active
-#sidebar_wrapper>div>ul>#bot-anchor-wpr.active>#bot-anchor>.bot-icon-wpr>svg>g>g>.chat-bot-icon-st0 {
-  fill: #ffffff !important;
-}
-
-// Bot icon sidebar menu item active
-#sidebar_wrapper>div>ul>#bot-anchor-wpr.menu_item_active>#bot-anchor>.bot-icon-wpr>svg>g>g>.chat-bot-icon-st0 {
-  fill: #ffffff !important;
-}
-
-// Bot icon sidebar menu item hover
-#bot-anchor-wpr:hover>#bot-anchor>.bot-icon-wpr>svg>g>g>.chat-bot-icon-st0 {
-  fill: #a9afbb;
-}
-
-// RT monitor sidebar menu item default color
-.realtime-icon-st3 {
-  fill: #647491;
-}
-
-// Replaces realtime-icon-st3
-.convs-monitor--st0 {
-  fill: none;
-}
-
-.convs-monitor--st1 {
-  fill: #647491;
-}
-
-// RT monitor sidebar menu item hover
-li:hover>a>.realtime-icon-wpr>svg>path {
-  fill: #a9afbb;
-}
-
-#sidebar_wrapper>div>ul>li.menu_item_active>a>.realtime-icon-wpr>svg>.realtime-icon-st3 {
-  fill: #ffffff !important;
-}
-
-#sidebar_wrapper>div>ul>li.active>a>.realtime-icon-wpr>svg>.realtime-icon-st3 {
-  fill: #ffffff !important;
-}
-
-// No more used - classs of an old svg icon used for the RT monitor sidebar menu item
-// .realtime-icon-st0{
-//   fill:none;
-// }
-
-// No more used - classs of an old svg icon used for the RT monitor sidebar menu item
-// .realtime-icon-st1{
-//   fill:#647491;
-// }
-
-// .chat21-icon:hover {
+// #openchat-a:hover>#openchat-a>#openchat-span>svg>.chat21-icon {
 //   fill: #a9afbb;
-//   // fill: #647491
 // }
-
-.active {
-  height: 40px;
-  // background-color: $brand-sidebar-active-item-bckgrnd;
-  color: #fff !important;
-}
-
-.active a {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-}
 
 .menu_item_active {
   height: 40px;
@@ -583,26 +565,9 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   color: #fff !important;
 }
 
-#sidebar_wrapper>div>ul>li.active>a>i {
-  color: #ffffff;
-}
-
-#sidebar_wrapper>div>ul>li.menu_item_active>a>i {
-  color: #ffffff;
-}
 
 .menu_item_active>a>i {
   color: #ffffff;
-}
-
-.nav>li>a {
-  padding: 5px 15px !important;
-  // border-radius: 0 20px 20px 0; // commented fo small sidebar
-  // margin-right: 16px; // commented fo small sidebar
-  padding: 0 12px 0 24px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 // No more used
@@ -1459,13 +1424,7 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   margin-left: 51px !important;
 }
 
-.bot-icon-wpr {
-  width: 25px;
-  display: block;
-  position: relative;
-  left: 3px;
-  top: 2px;
-}
+
 
 .display-sidebar-menu-item {
   display: block;
@@ -1496,10 +1455,6 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   bottom: 9px;
 }
 
-// #bot-anchor-wpr.active > .chat-bot-icon-st0 {
-//   fill: #ffffff !important;
-// }
-
 
 .sb-bottom-items {
   position: relative;
@@ -1508,14 +1463,10 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   // margin-bottom: 18px;
 }
 
-.sb-last-item {
-  height: 80px !important;
-}
-
 
 ::ng-deep .mat-menu-panel.menuElementSupport {
-  margin-left: 64px !important;
-  top: 40px;
+  margin-left: 65px !important;
+  top: 30px;
 
   .mat-menu-content {
     padding: 0 !important;
@@ -1565,14 +1516,7 @@ li:hover>a>.realtime-icon-wpr>svg>path {
   }
 }
 
-#openchat-span {
-  position: relative;
-  top: 3px;
-  vertical-align: middle;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+
 
 // ::ng-deep {
 //   .mat-menu-content{

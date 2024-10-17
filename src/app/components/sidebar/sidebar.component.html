@@ -56,85 +56,65 @@
 
 <div id="sidebar_wrapper" class="sidebar-wrapper" (scroll)="onScroll($event)">
 
-  <div class="nav-container">
-    <ul style="margin-top: 0px;" class="nav">
+  <div class="nav-custom sidebar-up">
 
-      <!-- CHAT  {{'Chat' | translate}}-->
-      <li id="openchat-a" *ngIf="project" 
-        routerLinkActive="active" 
-        matTooltipClass="sb-mat-tooltip"
-        matTooltip="Chat" 
-        #tooltip="matTooltip" 
-        matTooltipPosition='right' 
-        matTooltipHideDelay="100">
-        <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
-          (click)="openChat()" style="cursor: pointer; text-align: center;height: 40px;">
-          <div id="openchat-span">
-            <svg id="openchat-svg" version="1.1" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21"
-              style="enable-background:new 0 0 23 21;" xml:space="preserve"
-              style="width:20px;height:20px; vertical-align: middle;">
-              <path id="openchat-path" class="chat21-icon" d="M11.5,0.5C5.8,0.5,1.3,5,1.3,10.5c0,1.8,0.5,3.5,1.4,5l-0.8,4.3l4.4-0.8c1.5,0.9,3.3,1.4,5.3,1.4
+      <!-- ------------------------------------------- -->
+      <!-- CHAT  -->
+      <!-- ------------------------------------------- -->
+      <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat"
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+        <!-- <i class="material-icons sidebar-icons">chat</i> -->
+        <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}" (click)="openChat()">
+          <span id="openchat-span">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21"  xml:space="preserve" width="20" height="20">
+              <path d="M11.5,0.5C5.8,0.5,1.3,5,1.3,10.5c0,1.8,0.5,3.5,1.4,5l-0.8,4.3l4.4-0.8c1.5,0.9,3.3,1.4,5.3,1.4
               c5.7,0,10.2-4.5,10.2-10S17.2,0.5,11.5,0.5z M11.5,17.2c-2.5,0-4.6-1.3-5.7-2.6c0.6-0.2,0.8-0.8,1.4-1c0.7,0.9,2.5,2.1,4.4,2.1
               c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z" />
             </svg>
-          </div>
+          </span>
           <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
             class="new-messages-count">{{new_messages_count}} </span>
         </a>
-      </li>
+      </div>
 
-
-      <!-- HOME  -->
-      <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
-      <li *ngIf="project" routerLinkActive="active" 
-        matTooltipClass="sb-mat-tooltip" 
-        matTooltip="Home"
-        #tooltip="matTooltip" 
-        matTooltipPosition='right' 
-        matTooltipHideDelay="100" 
-        style="height:50px !important">
-        <a #homebtn id="home-btn" class="customAncor" routerLink="project/{{ project._id }}/home">
-          <i class="material-icons sidebar-icons"
-            [ngStyle]="{'color':HOME_ROUTE_IS_ACTIVE === true ? '#fff' : '#647491' }">
+      <!-- ------------------------------------------- -->
+      <!-- HOME   (click)="goToHome()"" -->
+      <!-- ------------------------------------------- -->
+      <div matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+        matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
+        <a target="_self" routerLink="project/{{ project._id }}/home" class="customAncor">
+          <i class="material-icons sidebar-icons">
             home
           </i>
         </a>
-      </li>
+      </div>
+
 
       <!-- ---------------------------------- -->
-      <!-- Bot -->
+      <!-- Bot  (click)="goToBots()"  -->
       <!-- ---------------------------------- -->
-     <!-- routerLink="project/{{ project._id }}/bots/my-chatbots/all" -->
-     <!--  -->
       <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
-        <li id="bot-anchor-wpr" *ngIf="project"  
+        <div id="bot-anchor-wpr" *ngIf="project"  
           matTooltipClass="sb-mat-tooltip"
           matTooltip="Bots" 
           #tooltip="matTooltip" 
           matTooltipPosition='right'
           matTooltipHideDelay="100"
-          style="height: 50px !important; cursor: pointer;"
-          [ngClass]="{
-            'active': 
-            MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
+          routerLinkActive="item-active"
+          [class.item-active]="MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
             MY_BOTS_IS_ROUTE_IS_ACTIVE || 
             BOTS_DEMO_ROUTE_IS_ACTIVE || 
-            MY_BOTS_CS_ROUTE_IS_ACTIVE, 
-            'menu_item_active': 
+            MY_BOTS_CS_ROUTE_IS_ACTIVE ||
             TMPLT_ALL_ROUTE_IS_ACTIVE || 
             TMPLT_CMNT_ROUTE_IS_ACTIVE ||
             TMPLT_IS_ROUTE_IS_ACTIVE ||
             TMPLT_CS_ROUTE_IS_ACTIVE ||
             KB_ROUTE_IS_ACTIVE ||
-            CREATE_BOT_ROUTE_IS_ACTIVE} ">
-          <a id="bot-anchor" #botbtn class="customAncor" (click)="goToAllMyChatbot()"  
-            style="height: 40px;">
+            CREATE_BOT_ROUTE_IS_ACTIVE">
+          <a id="bot-anchor" #botbtn  (click)="goToAllMyChatbot()">
             <span class="bot-icon-wpr">
-              <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 30"
+              <svg  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 30"  width="25" height="25"
                 style="enable-background:new 0 0 30 30;" xml:space="preserve">
-                <g>
                   <g>
                     <path class="chat-bot-icon-st0" d="M24.6,12.6c-0.1,0-0.2,0-0.3,0c-1.6-2.9-4.5-5.8-9.2-5.8c-4.7,0-7.6,2.9-9.2,5.8c-0.2,0-0.4-0.1-0.6-0.1
                       c-2,0-3.5,2.3-3.5,5c0,2.8,1.6,5,3.5,5c0.1,0,0.3,0,0.4,0c2.3,3.6,7,3.9,9.4,3.9c2.3,0,6.9-0.5,9.2-3.9c0.1,0,0.1,0,0.2,0
@@ -145,53 +125,51 @@
                     <path class="chat-bot-icon-st0" d="M14.5,5.3v1.1h1V5.3c0.3-0.2,0.5-0.5,0.5-0.8c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
                       C14.1,4.8,14.2,5.1,14.5,5.3z" />
                   </g>
-                  <rect class="chat-bot-icon-st1" width="30" height="30" />
-                </g>
               </svg>
             </span>
           </a>
-        </li>
+        </div>
       </ng-container>
 
+      
+      <!-- ------------------------------------------- -->
+      <!-- Conversations (MONITOR) ------------------- -->
+      <!-- ------------------------------------------- -->
       <ng-container *ngIf="isVisibleMON">
-        <li id="monitor" *ngIf="project" routerLinkActive="active" 
+        <div id="monitor" *ngIf="project" routerLinkActive="item-active" 
           matTooltipClass="sb-mat-tooltip" 
           matTooltip="Monitor"
           #tooltip="matTooltip" 
           matTooltipPosition='right' 
           matTooltipHideDelay="100"
-          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE}" style="text-align: center; height: 50px !important;">
-          <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
-
-          <!-- <a class="customAncor" routerLink="project/{{ project._id }}/all-conversations" style="height: 40px;"> -->
-
-          <span class="realtime-icon-wpr" style="width: 30px;">
-            <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
-              style="enable-background:new 0 0 24 24;width: 30px;height: 30px;" xml:space="preserve">
-
-              <path class="realtime-icon-st3" d="M17.9,11.6l-1.4,1.9l-3.2-5.6l-1-2l-0.2,0.2l-3.7,6.4l-3-4.8L2.7,9.9v2.4l2.4-1.8L9,16.2l3.3-6.2l4,6.7l2.7-3.3
-              l0.9,0c0.5-0.7,1-1.4,1.4-2L17.9,11.6z" />
-            </svg>
-          </span>
+          [class.item-active]="CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE">
+          <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
+            <!-- <a class="customAncor" routerLink="project/{{ project._id }}/all-conversations" style="height: 40px;"> -->
+            <span class="realtime-icon-wpr">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+                viewBox="0 0 24 24"  width="30" height="30" style="enable-background:new 0 0 24 24" xml:space="preserve">
+                <path class="realtime-icon-st3" d="M17.9,11.6l-1.4,1.9l-3.2-5.6l-1-2l-0.2,0.2l-3.7,6.4l-3-4.8L2.7,9.9v2.4l2.4-1.8L9,16.2l3.3-6.2l4,6.7l2.7-3.3 l0.9,0c0.5-0.7,1-1.4,1.4-2L17.9,11.6z" />
+              </svg>
+            </span>
         </a>
-      </li>
+        </div>
       </ng-container>
-      
-      <!-- ----------------------------- -->
+
+
+  </div>
+
+
+  <div class="nav-custom sidebar-bottom">
+
+    <!-- ----------------------------- -->
       <!-- Integrations  -->
       <!-- ----------------------------- -->
       <!-- <ng-container *ngIf="isVisibleINT && USER_ROLE !== 'agent' ">
-        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" 
+        <div id="bot-anchor-wpr" *ngIf="project" routerLinkActive="item-active" 
           matTooltipClass="sb-mat-tooltip"
-          matTooltip="Integrations" 
-          #tooltip="matTooltip" 
-          matTooltipPosition='right' 
-          matTooltipHideDelay="100" 
-          style="height: 50px !important;"
-          [ngClass]="{'menu_item_active': INTEGRATIONS_ROUTE_IS_ACTIVE}">
-          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/integrations"   
-            style="height: 40px;">
+          matTooltip="Integrations"  #tooltip="matTooltip" 
+          matTooltipPosition='right' matTooltipHideDelay="100" >
+          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/integrations">
             <span class="bot-icon-wpr">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" class="chat-bot-icon-st0">
                 <path d="M0 0h24v24H0V0z" fill="none"/>
@@ -199,103 +177,84 @@
               </svg>
             </span>
           </a>
-        </li>
+        </div>
       </ng-container> -->
 
-      <!-- ----------------------------- -->
+       <!-- ----------------------------- -->
       <!-- CONTACTS (LEADS)  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleCNT">
-        <li class="sb-bottom-items" id="contacts" *ngIf="project" routerLinkActive="active" 
-          matTooltipClass="sb-mat-tooltip"
-          matTooltip="{{ 'Contacts' | translate }}" 
-          #tooltip="matTooltip" 
-          matTooltipPosition='right'
-          matTooltipHideDelay="100" 
-          style="height: 50px !important;"
-          [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE}">
+        <div class="sb-bottom-items" id="contacts" *ngIf="project" routerLinkActive="item-active" 
+          matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'Contacts' | translate }}" 
+          #tooltip="matTooltip"  matTooltipPosition='right' matTooltipHideDelay="100" 
+          [class.item-active]="CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE">
           <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
             <i class="material-icons sidebar-icons">contacts</i>
           </a>
-        </li>
+        </div>
       </ng-container>
 
       <!-- ----------------------------- -->
       <!-- APPS  moved in settings sidebar -->
       <!-- ----------------------------- -->
       <!-- <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
-        <li id="apps" *ngIf="project" routerLinkActive="active" 
+        <div id="apps" *ngIf="project" routerLinkActive="active" 
           matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Apps' | translate }}" 
           #tooltip="matTooltip" 
           matTooltipPosition='right'
-          matTooltipHideDelay="100" 
-          style="height: 50px !important;">
+          matTooltipHideDelay="100" >
           <a class="customAncor" routerLink="project/{{ project._id }}/app-store">
             <i class="material-icons sidebar-icons">dashboard_customize</i>
-
           </a>
-        </li>
+        </div>
       </ng-container> -->
 
       <!-- ----------------------------- -->
       <!-- ANALYTICS -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleANA">
-        <li id="analytics"  *ngIf="project && USER_ROLE !== 'agent'" 
-          routerLinkActive="active"
-          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true, 'sb-bottom-items': !isVisibleCNT}" 
+        <div id="analytics"  *ngIf="project && USER_ROLE !== 'agent'" 
+          routerLinkActive="item-active"
           (click)="stopScroll()"
-          matTooltipClass="sb-mat-tooltip" 
-          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
-          #tooltip="matTooltip" 
-          matTooltipPosition='right' 
-          matTooltipHideDelay="100" 
-          style="height: 50px !important;">
+          [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" 
+          matTooltipClass="sb-mat-tooltip"  matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
+          #tooltip="matTooltip"  matTooltipPosition='right'  matTooltipHideDelay="100">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
             <i class="material-icons sidebar-icons"> bar_chart </i>
           </a>
-        </li>
+        </div>
       </ng-container>
+
       <!-- ----------------------------- -->
       <!-- ACTIVITIES -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleACT">
-        <li id="activities" *ngIf="project && USER_ROLE !== 'agent'" 
-          routerLinkActive="active"
-          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true, 'sb-bottom-items': !isVisibleCNT || !isVisibleANA }" 
-          (click)="stopScroll()"
-          matTooltipClass="sb-mat-tooltip" 
-          matTooltip="{{ 'Activities' | translate }}" 
-          #tooltip="matTooltip"
-          matTooltipPosition='right' 
-          matTooltipHideDelay="100" 
-          style="height: 50px !important;">
+        <div id="activities" *ngIf="project && USER_ROLE !== 'agent'" 
+          routerLinkActive="item-active"
+          [class.item-active]="ACTIVITIES_DEMO_ROUTE_IS_ACTIVE" (click)="stopScroll()"
+          matTooltipClass="sb-mat-tooltip"  matTooltip="{{ 'Activities' | translate }}" 
+          #tooltip="matTooltip" matTooltipPosition='right'  matTooltipHideDelay="100" >
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
             <i class="material-icons sidebar-icons">assignment</i>
           </a>
-        </li>
+        </div>
       </ng-container>
-      
+
       <!-- ----------------------------- -->
       <!-- REQUESTS HISTORY -->
       <!-- ----------------------------- -->
-      <li id="history" *ngIf="project" 
-        routerLinkActive="active" 
-        (click)="stopScroll()"
-        matTooltipClass="sb-mat-tooltip" 
-        matTooltip="{{ 'History' | translate }}" 
-        #tooltip="matTooltip"
-        matTooltipPosition='right' 
-        matTooltipHideDelay="100" 
-        [ngClass]="{'sb-bottom-items': !isVisibleCNT || !isVisibleANA || !isVisibleACT}"
-        style="height: 50px !important;">
+      <div id="history" *ngIf="project" 
+        routerLinkActive="item-active" (click)="stopScroll()"
+        matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'History' | translate }}" 
+        #tooltip="matTooltip" matTooltipPosition='right'  matTooltipHideDelay="100">
         <a class="customAncor" routerLink="project/{{ project._id }}/history">
           <i class="material-icons sidebar-icons">history</i>
         </a>
-      </li>
+      </div>
 
-      <li id="settings" *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
+
+      <div id="settings" *ngIf="project && USER_ROLE !== 'agent'" [class.item-active]=" 
         TRIGGER_ROUTE_IS_ACTIVE || 
         TAG_ROUTE_IS_ACTIVE || 
         CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
@@ -319,21 +278,18 @@
         AUTOMATIONS_ROUTE_IS_ACTIVE ||
         OLD_KB_ROUTE_IS_ACTIVE ||
         APPS_ROUTE_IS_ACTIVE ||
-        INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUpOrToCannedResponses()"
-        style="cursor:pointer; height: 50px !important;" 
-        matTooltipClass="sb-mat-tooltip"
-        matTooltip="{{ 'Settings' | translate }}" 
-        #tooltip="matTooltip" 
-        matTooltipPosition='right'
-        matTooltipHideDelay="100">
+        INTEGRATIONS_ROUTE_IS_ACTIVE" (click)="goToWidgetSetUpOrToCannedResponses()"
+        matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'Settings' | translate }}" 
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
 
         <a class="customAncor">
           <i class="material-icons sidebar-icons">settings</i>
         </a>
-      </li>
+      </div>
+
       <!-- ----------------------------- -->
       <!-- @ Support   matTooltip="{{companyName}}" -->
-      <li class="sb-last-item" [ngClass]="{'active': SUPPORT_ROUTE_IS_ACTIVE}"
+      <div class="sb-last-item" [class.item-active]="SUPPORT_ROUTE_IS_ACTIVE"
         id="support"
         matTooltipClass="sb-mat-tooltip" 
         [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )  "
@@ -349,34 +305,34 @@
         <a *ngIf="!isVisibleSupportMenu"  class="customAncor" [href]="companySiteUrl" target="_blank">
           <img [src]="companyLogoNoText" class="img-fluid" style="width: 25px; height: auto; margin-bottom: 5px; margin-left: 2px;" />
         </a>       
-      </li>
+      </div>
 
-      <!-- SIDEBAR MENU OPTIONS-->
-      <mat-menu #menuSupport="matMenu" class="menuElementSupport" xPosition="before">
-        <ng-template matMenuContent>
+      
 
-          <!-- {{ INFO_MENU_ITEMS | json}} -->
-        <ng-container *ngFor="let item of INFO_MENU_ITEMS"> 
-          <button *ngIf="item.status === 'active'" mat-menu-item   (click)="onMenuOptionFN(item)">
-            <mat-icon>{{item.icon}}</mat-icon>
-            <span>{{item.label | translate}}  </span>
-          </button>
-        </ng-container>
-          <div class="mat-menu-footer">
-            &copy; {{test | date: 'yyyy'}} {{companyName}} ver {{version}}
-          </div>
-            <!-- <cds-menu
-                [items]="INFO_MENU_ITEMS"
-                [menuType]="'sidebar'"
-                (onMenuOption)="onMenuOptionFN($event)">
-            </cds-menu> -->
-        </ng-template>
-      </mat-menu>
 
-    </ul>
+      
+
   </div>
+
 </div>
 
+
+<!-- SIDEBAR MENU OPTIONS-->
+<mat-menu #menuSupport="matMenu" class="menuElementSupport" xPosition="before">
+  <ng-template matMenuContent>
+
+    <!-- {{ INFO_MENU_ITEMS | json}} -->
+  <ng-container *ngFor="let item of INFO_MENU_ITEMS"> 
+    <button *ngIf="item.status === 'active'" mat-menu-item   (click)="onMenuOptionFN(item)">
+      <mat-icon>{{item.icon}}</mat-icon>
+      <span>{{item.label | translate}}  </span>
+    </button>
+  </ng-container>
+    <div class="mat-menu-footer">
+      &copy; {{test | date: 'yyyy'}} {{companyName}} ver {{version}}
+    </div>
+  </ng-template>
+</mat-menu>
 
 
 <!-- MODAL - LOGOUT WINDOWS -->
