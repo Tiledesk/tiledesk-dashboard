@@ -304,7 +304,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
           resolve(fileJsonToUpload)
         } catch (error) {
-          console.error('Errore nel parsing del JSON:', error);
+          this.logger.error('Errore nel parsing del JSON:', error);
           reject(error)
         }
       };
@@ -333,11 +333,11 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     const jsonString = JSON.stringify(json)
     // Check for XSS patterns
     if (containsXSS(jsonString)) {
-      console.log("Potential XSS attack detected!");
+      this.logger.log("Potential XSS attack detected!");
       this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
       return;
     } else {
-        console.log("No XSS patterns found.");
+      this.logger.log("No XSS patterns found.");
     }
   
 
