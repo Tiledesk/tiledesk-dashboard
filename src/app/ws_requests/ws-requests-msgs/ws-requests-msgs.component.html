@@ -518,7 +518,7 @@
 
                           <!-- File upload -->
                           <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload
-                            style="display: none;">
+                            style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
                             <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
@@ -3333,7 +3333,7 @@
 
           <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
            
-              <mat-tab-group  mat-align-tabs="center"  *ngIf="actionInModal === 'reassign'">
+              <mat-tab-group  mat-align-tabs="center"  *ngIf="actionInModal === 'reassign'" [ngClass]="{'mat-tab-group-on-panel': CHAT_PANEL_MODE === true}">
                 <mat-tab label="{{'HumanTeammates' | translate }} ( {{projectUsersList?.length}} )"> 
                   <!-- assign-reassign-modal-card-in-accordion -->
                   <div class="card assign-reassign-modal-card"
@@ -3358,12 +3358,12 @@
                             <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
                             <!-- --------------------------------------------------------------------------------------------------- -->
                             <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
-                              <span *ngIf="actionInModal === 'reassign'">
+                              <!-- <span *ngIf="actionInModal === 'reassign'">
                                 <h4 style="font-weight:400"
                                   [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                                   {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
                                 </h4>
-                              </span>
+                              </span> -->
 
                               <span *ngIf="actionInModal === 'invite'">
                                 <h4 style="font-weight:400"
@@ -4035,7 +4035,7 @@
               <mat-expansion-panel  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    {{'Departments' | translate}}  ( {{departments?.length }})
+                    {{'Departments' | translate}}  ( {{departments?.length }} )
                   </mat-panel-title>
                   <!- - <mat-panel-description>
                     2 Currently I am {{panelOpenState ? 'open' : 'closed'}}
