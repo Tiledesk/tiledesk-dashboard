@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.36-rc1
+- Adds role guard
+- Updates the libraries ua-parser-js, bootstrap and jquery
+- Adds checks to validate user upload (user profile, inport chatbot, widget settings, conversation detail)
+
 ### 2.7.35
 - Refactors tables in Monitor page 
 - Improves handling of alert windows display
