@@ -73,6 +73,7 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();

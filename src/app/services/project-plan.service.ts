@@ -284,21 +284,21 @@ export class ProjectPlanService {
   // ------------------------------------
   public _getProjectById(prjct_id): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.logger.log('[PROJECT-PLAN-SERV] - _GET PROJECT BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', prjct_id);
+     console.log('[PROJECT-PLAN-SERV] - _GET PROJECT BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', prjct_id);
       this.projectService.getProjectById(prjct_id).subscribe((project: any) => {
         resolve(project);
       })
     });
   }
 
-  public getProjectUserByUserId(userId, prjct_id): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      console.log('[PROJECT-PLAN-SERV] - _GET PROJECT USER BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', userId);
-      this.usersService.getProjectUserByUserIdPassingProjectId(userId, prjct_id).subscribe((pu: any) => {
-        resolve(pu[0]['role']);
-      })
-    });
-  }
+  // public getProjectUserByUserId(userId, prjct_id): Promise<string> {
+  //   return new Promise<string>((resolve, reject) => {
+  //     console.log('[PROJECT-PLAN-SERV] - _GET PROJECT USER BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', userId);
+  //     this.usersService.getProjectUserByUserIdPassingProjectId(userId, prjct_id).subscribe((pu: any) => {
+  //       resolve(pu[0]['role']);
+  //     })
+  //   });
+  // }
 
 
 

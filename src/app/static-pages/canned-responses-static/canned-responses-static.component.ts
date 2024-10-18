@@ -68,6 +68,7 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
   }
 
   ngOnInit(): void {
+    this.auth.checkRoleForCurrentProject();
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();

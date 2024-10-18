@@ -43,9 +43,12 @@ export class AutomationsComponent implements OnInit {
     private logger: LoggerService,
     private automationsService: AutomationsService,
     private router: Router
-  ) { }
+  ) { 
+   
+  }
 
   ngOnInit(): void {
+    this.auth.checkRoleForCurrentProject();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.showSpinner = true;

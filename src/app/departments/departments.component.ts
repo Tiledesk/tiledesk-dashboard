@@ -352,43 +352,43 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    this.logger.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 
+    console.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 
     this.logger.log('DEPTS subscription_is_active ', this.subscription_is_active) 
     this.logger.log('DEPTS trial_expired ', this.trial_expired) 
     
+    this.router.navigate(['project/' + this.project._id + '/department/create']);
 
+    // if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
+    //   this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+    // } else {
+    //   this.router.navigate(['project/' + this.project._id + '/department/create']);
+    // }
 
-    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
-      this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-    } else {
-      this.router.navigate(['project/' + this.project._id + '/department/create']);
-    }
-
-    if (
-      (this.profile_name === PLAN_NAME.A) ||
-      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-      (this.profile_name === 'free' && this.trial_expired === true) ||  
-      (this.profile_name === PLAN_NAME.D) ||
-      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-      (this.profile_name === 'Sandbox' && this.trial_expired === true)
-      ) {
-        this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-      // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
-    } else if (
-      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-      (this.profile_name === 'free' && this.trial_expired === false) ||
-      (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
-      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
-      (this.profile_name === 'Sandbox' && this.trial_expired === false)
+    // if (
+    //   (this.profile_name === PLAN_NAME.A) ||
+    //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    //   (this.profile_name === 'free' && this.trial_expired === true) ||  
+    //   (this.profile_name === PLAN_NAME.D) ||
+    //   (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+    //   (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+    //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+    //   (this.profile_name === 'Sandbox' && this.trial_expired === true)
+    //   ) {
+    //     this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+    //   // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
+    // } else if (
+    //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+    //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+    //   (this.profile_name === 'free' && this.trial_expired === false) ||
+    //   (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
+    //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
+    //   (this.profile_name === 'Sandbox' && this.trial_expired === false)
      
-      ) {
-        this.router.navigate(['project/' + this.project._id + '/department/create']);
-        // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
-      }
+    //   ) {
+    //     this.router.navigate(['project/' + this.project._id + '/department/create']);
+    //     // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
+    //   }
   }
 
   /**

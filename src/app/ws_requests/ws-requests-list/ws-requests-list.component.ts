@@ -1564,7 +1564,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
-          console.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
+          // console.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
 
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
 

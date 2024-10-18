@@ -64,7 +64,7 @@ export class GroupsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
     this.getCurrentProject();
     this.getOSCODE();
     this.getGroupsByProjectId();

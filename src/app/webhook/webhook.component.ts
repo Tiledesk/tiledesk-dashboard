@@ -27,6 +27,8 @@ export class WebhookComponent implements OnInit {
   subscriptionIDToDelete: string;
   isChromeVerGreaterThan100: boolean;
   public hideHelpLink: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
@@ -44,7 +46,15 @@ export class WebhookComponent implements OnInit {
   ngOnInit() {
     this.getSubscriptions();
     this.translateNotificationMsgs();
-    this.getBrowserVersion() 
+    this.getBrowserVersion() ;
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[USER-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getBrowserVersion() {

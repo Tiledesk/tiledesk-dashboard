@@ -80,7 +80,7 @@ export class GroupEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
 
     this.translateUpdateGroupSuccessNoticationMsg();
     this.translateUpdateGroupErrorNoticationMsg();

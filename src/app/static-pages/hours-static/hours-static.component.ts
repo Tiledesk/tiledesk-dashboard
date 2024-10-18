@@ -59,6 +59,7 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();

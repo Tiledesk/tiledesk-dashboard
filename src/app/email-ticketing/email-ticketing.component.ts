@@ -38,6 +38,7 @@ export class EmailTicketingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getCurrentProjectAndBuildTicketingEmail();
     this.getDeptsByProjectId();
     this.getBrowserVersion();

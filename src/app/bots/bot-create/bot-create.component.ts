@@ -282,16 +282,16 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event) {
 
-    this.logger.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
+    console.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
     // let fileJsonToUpload = ''
     // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
-    // const selectedFile = event.target.files[0];
-    // const fileReader = new FileReader();
-    // fileReader.readAsText(selectedFile, "UTF-8");
-    // fileReader.onload = () => {
-    //   fileJsonToUpload = JSON.parse(fileReader.result as string)
-    //   this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
-    // }
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsText(selectedFile, "UTF-8");
+    fileReader.onload = () => {
+     let fileJsonToUpload = JSON.parse(fileReader.result as string)
+      console.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+    }
     // fileReader.onerror = (error) => {
     //   this.logger.log(error);
     // }

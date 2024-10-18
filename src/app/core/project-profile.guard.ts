@@ -22,36 +22,36 @@ export class ProjectProfileGuard implements CanActivate {
     public auth: AuthService,
   ) {
     console.log('[PROJECT-PROFILE-GUARD] HELLO !!!')
-    this.getLoggedUser()
+    // this.getLoggedUser()
   }
 
-  getLoggedUser() {
-    this.auth.user_bs
-      .subscribe((user) => {
-        console.log('[PROJECT-PROFILE-GUARD] - user ', user)
+  // getLoggedUser() {
+  //   this.auth.user_bs
+  //     .subscribe((user) => {
+  //       console.log('[PROJECT-PROFILE-GUARD] - user ', user)
 
 
-        if (user) {
+  //       if (user) {
         
-          this.userId = user._id
-          console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
-        }
-      })
-  }
+  //         this.userId = user._id
+  //         console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
+  //       }
+  //     })
+  // }
 
   async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
-    this.auth.user_bs
-    .subscribe((user) => {
-      console.log('[PROJECT-PROFILE-GUARD] - user ', user)
+    // this.auth.user_bs
+    // .subscribe((user) => {
+    //   console.log('[PROJECT-PROFILE-GUARD] - user ', user)
 
 
-      if (user) {
+    //   if (user) {
       
-        this.userId = user._id
-        console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
-      }
-    })
+    //     this.userId = user._id
+    //     console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
+    //   }
+    // })
     // this.logger.log('[PROJECT-PROFILE-GUARD]  canActivate next ', next)
     // this.logger.log('[PROJECT-PROFILE-GUARD]  canActivate state ', state)
     const prjct_id = next.params.projectid;
@@ -64,8 +64,8 @@ export class ProjectProfileGuard implements CanActivate {
     const project = await this.prjctPlanService._getProjectById(prjct_id);
     console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** project ****** ', project)
 
-    const userRole = await this.prjctPlanService.getProjectUserByUserId(this.userId, prjct_id );
-    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userRole ****** ', userRole)
+    // const userRole = await this.prjctPlanService.getProjectUserByUserId(this.userId, prjct_id );
+    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userRole ****** ', userRole)
 
     const type = project['profile'].type;
     const planName = project['profile'].name;
@@ -129,10 +129,10 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN A and D UNAUTHORIZED TO Analytics + Departments + GROUPS 
         if (
           (planName === PLAN_NAME.A && url.indexOf('/analytics') !== -1) ||
-          (planName === PLAN_NAME.A && url.indexOf('/departments') !== -1) ||
+          (planName === PLAN_NAME.A && url.indexOf('/department/create') !== -1) ||
           (planName === PLAN_NAME.A && url.indexOf('/groups') !== -1) ||
           (planName === PLAN_NAME.D && url.indexOf('/analytics') !== -1) ||
-          (planName === PLAN_NAME.D && url.indexOf('/departments') !== -1) ||
+          (planName === PLAN_NAME.D && url.indexOf('/department/create') !== -1) ||
           (planName === PLAN_NAME.D && url.indexOf('/groups') !== -1)
 
         ) {
@@ -226,15 +226,15 @@ export class ProjectProfileGuard implements CanActivate {
         // }
 
         // PLAN B and PLAN C AUTHORIZED TO DEPARTMENTS
-        if ((planName === PLAN_NAME.B && url.indexOf('/departments') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/departments') !== -1)) {
-          this.userIsAuthorized = true;
-          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS departments', url.indexOf('/departments') !== -1);
+        // if ((planName === PLAN_NAME.B && url.indexOf('/departments') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/departments') !== -1)) {
+        //   this.userIsAuthorized = true;
+        //   // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+        //   // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS departments', url.indexOf('/departments') !== -1);
 
-        }
-        // else {
-        //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS departments', url.indexOf('/departments') !== -1);
         // }
+        // // else {
+        // //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS departments', url.indexOf('/departments') !== -1);
+        // // }
 
         // PLAN B and PLAN C AUTHORIZED TO GROUPS
         if ((planName === PLAN_NAME.B && url.indexOf('/groups') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/groups') !== -1)) {
@@ -277,7 +277,7 @@ export class ProjectProfileGuard implements CanActivate {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
       } else if (isActiveSubscription === false) {
-        // console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
+       console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
         this.userIsAuthorized = false;
 
         if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.EE && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.F && url.indexOf('/email') !== -1)) {
@@ -294,7 +294,7 @@ export class ProjectProfileGuard implements CanActivate {
       return true
       // if (this.userIsAuthorized === false &&  userRole !== 'agent')
     } else {
-      // console.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
+      console.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
       this.router.navigate([url + '-demo']);
       return false
     }

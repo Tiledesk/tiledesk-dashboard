@@ -47,7 +47,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     this.subscribeToCurrentProjectAndGetProjectById()
 
     this.logger.log('[NOTIFICATION-EMAIL] - GET EMAIL TEMPALTE - ACTIVE TEMPLATE ', this.active_template);
-    this.auth.checkRoleForCurrentProjectPermissionOnlyToOwner()
+    // this.auth.checkRoleForCurrentProjectPermissionOnlyToOwner()
     this.getTranslations();
 
     // if (window.matchMedia(`(min-width: 960px)`).matches) {

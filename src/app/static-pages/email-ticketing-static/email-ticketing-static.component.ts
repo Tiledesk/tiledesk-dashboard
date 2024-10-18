@@ -57,6 +57,7 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   }
 
   ngOnInit(): void {
+    this.auth.checkRoleForCurrentProject();
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();

@@ -80,6 +80,7 @@ input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9;
     padding: 0 8px;
@@ -104,8 +105,9 @@ input[type="text"] {
 
 .link-to-webhook-doc {
     background-color: rgb(241, 241, 241);
-    margin-top: -17px;
-    padding: 20px 20px 10px 36px;
+    margin-top: -9px;
+    padding: 20px 20px 10px 28px;
+    margin-left: -3px
 }
 
 .link-to-webhook-doc > div {

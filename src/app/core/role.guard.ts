@@ -15,7 +15,9 @@ export class RoleGuard implements CanActivate {
   //   state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
   //   return true;
   // }
-  currentUserId: string
+  private currentUserId: string
+  private roles: Array<string> = [];
+  private projectUser: any;
 
   constructor(
     private router: Router,
@@ -43,17 +45,22 @@ export class RoleGuard implements CanActivate {
 
   async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> { 
     
-    console.log(['ROLE-GUARD next ',next])
-    console.log(['ROLE-GUARD state ',state])
+    console.log('[ROLE-GUARD] next ',next)
+    console.log('[ROLE-GUARD] state ',state)
 
     const prjct_id = next.params.projectid;
-    console.log(['ROLE-GUARD prjct_id ',prjct_id])
+    console.log(['[ROLE-GUARD] prjct_id ',prjct_id])
 
-    const isAgent = await this.getProjectUserInProject(this.currentUserId, prjct_id)
-    console.log('[ROLE-GUARD] isAgent ', isAgent) 
+    this.roles = next.data[0].roles
+    console.log('[ROLE-GUARD] roles ',this.roles)
 
-    if(isAgent) {
-      console.log('[ROLE-GUARD] isAgent here y ', isAgent) 
+    const userIsInProject = await this.getProjectUserInProject(this.currentUserId, prjct_id)
+    console.log('[ROLE-GUARD] userIsInProject ', userIsInProject) 
+    console.log('[ROLE-GUARD] this.projectUser.role ', this.projectUser.role)
+    const roleEnabled = this.roles.includes(this.projectUser.role);
+    console.log('[ROLE-GUARD] roleEnabled ', roleEnabled) 
+    if(!userIsInProject || !roleEnabled) {
+      console.log('[ROLE-GUARD]  here y redirect', userIsInProject) 
       this.router.navigate([`project/${prjct_id}/unauthorized`]);
       // this.router.navigate([`project/unauthorized`]);
    
@@ -66,14 +73,15 @@ export class RoleGuard implements CanActivate {
   getProjectUserInProject(currentUserId,prjct_id): Promise<boolean>{
     return new Promise((resolve, reject)=> {
       this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe( (projectUser) => {
-        
-        console.log('[ROLE-GUARD] projectUser ', projectUser) 
+        this.projectUser = projectUser[0]
+        console.log('[ROLE-GUARD] projectUser ', this.projectUser) 
         console.log('[ROLE-GUARD] projectUser role', projectUser[0]['role']) 
-        if (projectUser[0]['role'] === 'agent') {
-          resolve(true)
-        } else {
-          resolve(false)
-        }
+        resolve(true)
+        // if (projectUser[0]['role'] === 'agent') {
+        //   resolve(true)
+        // } else {
+        //   resolve(false)
+        // }
       },  (error)=> {
           this.logger.error('[ROLE-GUARD] getProjectUserRole --> ERROR:', error)
           resolve(false)

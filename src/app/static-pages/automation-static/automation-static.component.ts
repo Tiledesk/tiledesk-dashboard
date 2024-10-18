@@ -70,6 +70,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   }
 
   ngOnInit(): void {
+    this.auth.checkRoleForCurrentProject();
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();

@@ -482,6 +482,26 @@ export class WsSharedComponent implements OnInit {
   }
 
 
+  async getProjectUserInProject(currentUserId,prjct_id): Promise<string>{
+    return new Promise((resolve, reject)=> {
+      this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe( (projectUser) => {
+        
+        console.log('[ROLE-GUARD] projectUser ', projectUser) 
+        console.log('[ROLE-GUARD] projectUser role', projectUser[0]['role']) 
+        resolve(projectUser[0]['role'])
+        // if (projectUser[0]['role'] === 'agent') {
+        //   resolve(true)
+        // } else {
+        //   resolve(false)
+        // }
+      },  (error)=> {
+          this.logger.error('[ROLE-GUARD] getProjectUserRole --> ERROR:', error)
+          resolve(error)
+      })
+    
+    })
+  }
+
   currentUserIdIsInParticipants(participants: any, currentUserID: string, request_id): boolean {
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST][WS-REQUESTS-MSGS] - currentUserIdIsInParticipants participants ', participants, ' currentUserID ', currentUserID)
     let currentUserIsJoined = false

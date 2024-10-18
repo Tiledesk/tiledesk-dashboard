@@ -262,7 +262,7 @@ export class AuthService {
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
     this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
-    this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
+    console.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -475,15 +475,15 @@ export class AuthService {
       project_id = this.selected_project_id
     }
     const storedProjectJson = localStorage.getItem(project_id)
-    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
-    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
+    console.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
+    // console.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
-      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
+      console.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
       this._user_role = storedProjectObject['role']
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
-          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          console.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role, ' RUN NAVIGATE')
           this.router.navigate([`project/${project_id}/unauthorized`])
           // this.router.navigate(['/unauthorized']);
         } else {

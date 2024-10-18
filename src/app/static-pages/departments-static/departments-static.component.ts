@@ -78,6 +78,7 @@ export class DepartmentsStaticComponent extends PricingBaseComponent implements 
   }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();

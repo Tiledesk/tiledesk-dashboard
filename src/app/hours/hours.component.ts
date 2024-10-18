@@ -62,9 +62,13 @@ export class HoursComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
-  ) { }
+  ) { 
+    this.auth.checkRoleForCurrentProject();
+  }
 
   ngOnInit() {
+    console.log('Hello HOURS on init ' ) 
+    
     this.getCurrentProject();
     this.getUserRole();
     this.getOSCODE();

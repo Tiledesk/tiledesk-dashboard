@@ -40,6 +40,7 @@ export class CannedResponsesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getResponses();
     this.translateNotificationMsgs();
     // this.getMainPanelAndSetOverflow();

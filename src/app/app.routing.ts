@@ -225,7 +225,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/payments',
     loadChildren: () => import('app/pricing/payments-list/payments-list.module').then(m => m.PaymentsListModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}]
   },
   // { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] }, // now Lazy
   {
@@ -356,14 +357,16 @@ const routes: Routes = [
   {
     path: 'project/:projectid/app-store',
     loadChildren: () => import('app/app-store/app-store.module').then(m => m.AppStoreModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
 
   {
     path: 'project/:projectid/app-store-install/:appid/:reason',
     loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -590,6 +593,7 @@ const routes: Routes = [
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
     canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
@@ -598,6 +602,7 @@ const routes: Routes = [
     path: 'project/:projectid/widget/translations',
     loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
     canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
 
@@ -606,6 +611,7 @@ const routes: Routes = [
     path: 'project/:projectid/widget/translations/:calledby',
     loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
     canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
 
   // Widget installation
@@ -613,14 +619,16 @@ const routes: Routes = [
     path: 'project/:projectid/installation',
     loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
     canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
 
-  // Departments
+  // Departments RoleGuard
   {
     path: 'project/:projectid/departments',
     loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
     canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -628,7 +636,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/department/create',
     loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, ProjectProfileGuard]
     // ,
     // canDeactivate: [PendingChangesGuard]
   },
@@ -638,7 +646,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/department/edit/:deptid',
     loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
     // ,
     // canDeactivate: [PendingChangesGuard]
   },
@@ -655,7 +664,7 @@ const routes: Routes = [
 
   // Departments demo page
   {
-    path: 'project/:projectid/departments-demo',
+    path: 'project/:projectid/department/create-demo',
     loadChildren: () => import('app/static-pages/departments-static/departments-static.module').then(m => m.DepartmentsStaticModule),
     canActivate: [AuthGuard]
   },
@@ -668,7 +677,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/users',
     loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -676,7 +686,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/user/add',
     loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -702,7 +713,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/group/create',
     loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -710,7 +722,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/group/edit/:groupid',
     loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -744,7 +757,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/labels',
     loadChildren: () => import('app/tags/tags.module').then(m => m.TagsModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard ],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
 
@@ -787,7 +801,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/integrations',
     loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}],
   },
   // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -799,7 +814,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/project-settings/general',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}],
   },
   // { path: 'project/:projectid/project-settings/general', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -807,7 +823,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/project-settings/payments',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}],
   },
   // { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -815,7 +832,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/project-settings/auth',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}],
   },
   // { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -823,14 +841,16 @@ const routes: Routes = [
  {
   path: 'project/:projectid/project-settings/smartassignment',
   loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-  canActivate: [AuthGuard],
+  canActivate: [AuthGuard, RoleGuard],
+  data: [ { roles: ['owner', 'admin']}]
 },
 
   // Project edit / add - Advanced
   {
     path: 'project/:projectid/project-settings/advanced',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}]
   },
   // { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -838,7 +858,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/project-settings/notification',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -847,7 +868,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/project-settings/security',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}]
   },
   // { path: 'project/:projectid/project-settings/security', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -856,7 +878,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/project-settings/banned',
     loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}]
   },
   // { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -864,7 +887,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/notification-email',
     loadChildren: () => import('app/project-edit-add/notification-email/notification-email.module').then(m => m.NotificationEmailModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}]
   },
   // { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -873,7 +897,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/smtp-settings',
     loadChildren: () => import('app/project-edit-add/smtp-settings/smtp-settings.module').then(m => m.SmtpSettingsModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner']}]
   },
   // { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -881,7 +906,8 @@ const routes: Routes = [
   {
     path: 'project/:projectid/webhook',
     loadChildren: () => import('app/webhook/webhook.module').then(m => m.WebhookModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: [ { roles: ['owner', 'admin']}]
   },
   // { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] }, // now lazy
 
