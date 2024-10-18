@@ -824,10 +824,29 @@ export function isMaliciousURL(url: string): boolean {
   
     // Se l'URL non corrisponde a pattern noti, restituisce false (non malevolo)
     return false;
-  }
+}
 
 
+export function containsXSS(jsonData) {
+    // List of common XSS attack patterns
+    const xssPatterns = [
+        /<script.*?>.*?<\/script.*?>/gi,  // script tags
+        /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
+        /eval\s*\(.*?\)/gi,               // eval calls
+        /javascript\s*:\s*.*/gi,          // javascript protocol
+        /document\.cookie/gi,             // access to cookies
+        /<iframe.*?>.*?<\/iframe.*?>/gi,  // iframe injection
+        /<img.*?src=['"]javascript:.*?['"]/gi,  // img tags with JS in src
+    ];
 
+    // Check if any of the patterns match
+    for (const pattern of xssPatterns) {
+        if (pattern.test(jsonData)) {
+            return true; // XSS detected
+        }
+    }
+    return false; // No XSS detected
+}
 
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
