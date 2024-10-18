@@ -818,7 +818,6 @@ export function isMaliciousURL(url: string): boolean {
   
     for (const pattern of suspiciousPatterns) {
       if (pattern.test(url)) {
-        console.log('ssssssss', pattern, url)
         return true; // URL sospetto
       }
     }
