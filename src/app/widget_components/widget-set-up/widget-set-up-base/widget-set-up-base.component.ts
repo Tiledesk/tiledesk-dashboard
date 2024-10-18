@@ -18,13 +18,13 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
     { seconds: '30', value: 30 }
   ]
 
-  onlineMsgSuccessNoticationMsg: string;
-  offlineMsgSuccessNoticationMsg: string;
-  updateWidgetSuccessNoticationMsg: string;
-  errorNoticationMsg: string;
-  invalidJSON_ErrorMsg: string;
+  // onlineMsgSuccessNoticationMsg: string;
+  // offlineMsgSuccessNoticationMsg: string;
+  // updateWidgetSuccessNoticationMsg: string;
+  // errorNoticationMsg: string;
+  // invalidJSON_ErrorMsg: string;
 
-
+  translationMap: Map<string, string> = new Map();
 
   public widgetDefaultSettings =
     {
@@ -121,80 +121,19 @@ export class WidgetSetUpBaseComponent extends WidgetSharedComponent implements O
 
 
   translateTextBaseComp() {
-    this.translateOnlineMsgSuccessNoticationMsg();
-    this.translateOfflineMsgSuccessNoticationMsg();
-    this.translateOfficeClosedSuccessNoticationMsg();
-    this.translateGetTranslationErrorMsg();
-    this.translateInvalidJSON_ErrorMsg();
+
+    const keys = [
+      'InvalidJSON',
+      'UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg',
+      'UpdateDeptGreetingsOfflineMsgSuccessNoticationMsg',
+      'UpdateDeptGreetingsSuccessNoticationMsg',
+      'UserEditAddPage.AnErrorHasOccurred',
+      'URLTypeNotAllowed'
+    ]
+
+    this.translate.get(keys).subscribe(translations =>{
+      Object.keys(translations).forEach(key => this.translationMap.set(key, translations[key]))
+    })
+
   }
-
-
-  translateInvalidJSON_ErrorMsg() {
-    this.translate.get('InvalidJSON')
-      .subscribe((text: string) => {
-
-        this.invalidJSON_ErrorMsg = text;
-        // console.log('»» WIDGET SERVICE - translateOnlineMsgSuccessNoticationMsg ', text)
-      }, (error) => {
-        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
-      }, () => {
-        // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
-      });
-  }
-
-  translateOnlineMsgSuccessNoticationMsg() {
-    this.translate.get('UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg')
-      .subscribe((text: string) => {
-
-        this.onlineMsgSuccessNoticationMsg = text;
-        // console.log('»» WIDGET SERVICE - translateOnlineMsgSuccessNoticationMsg ', text)
-      }, (error) => {
-        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
-      }, () => {
-        // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
-      });
-  }
-
-
-
-  translateOfflineMsgSuccessNoticationMsg() {
-    this.translate.get('UpdateDeptGreetingsOfflineMsgSuccessNoticationMsg')
-      .subscribe((text: string) => {
-
-        this.offlineMsgSuccessNoticationMsg = text;
-        // console.log('»» WIDGET SERVICE - translateOfflineMsgSuccessNoticationMsg ', text)
-      }, (error) => {
-        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
-      }, () => {
-        // console.log('»» WIDGET SERVICE -  translateOfflineMsgSuccessNoticationMsg * COMPLETE *');
-      });
-  }
-
-
-
-  translateOfficeClosedSuccessNoticationMsg() {
-    this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
-      .subscribe((text: string) => {
-
-        this.updateWidgetSuccessNoticationMsg = text;
-        // console.log('»» WIDGET SERVICE - translateOfflineMsgSuccessNoticationMsg ', text)
-      }, (error) => {
-        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
-      }, () => {
-        // console.log('»» WIDGET SERVICE -  translateOfflineMsgSuccessNoticationMsg * COMPLETE *');
-      });
-  }
-
-
-
-  translateGetTranslationErrorMsg() {
-    this.translate.get('UserEditAddPage.AnErrorHasOccurred')
-      .subscribe((text: string) => {
-
-        this.errorNoticationMsg = text;
-        // console.log('+ + + An Error Has Occurred Notication Msg', text)
-      });
-  }
-
-
 }

@@ -804,6 +804,29 @@ export function filterImageMimeTypesAndExtensions(fileUploadAccept: string): str
     return imageTypesAndExtensions;
 }
 
+export function isMaliciousURL(url: string): boolean {
+    // Verifica se l'URL ha pattern sospetti
+    const suspiciousPatterns = [
+      /\/\/\d+\.\d+\.\d+\.\d+/, // URL con indirizzi IP
+      /@/,                      // URL con '@' per ingannare la visualizzazione
+      /%00/,                    // Caratteri di null byte
+      /javascript:/i,           // URL con javascript
+      /data:/i,                 // URL con data URI
+      /\.\.\//,                 // Directory traversal
+      /(https?:\/\/)?bit\.ly/i, // URL abbreviati comuni (come bit.ly)
+    ];
+  
+    for (const pattern of suspiciousPatterns) {
+      if (pattern.test(url)) {
+        console.log('ssssssss', pattern, url)
+        return true; // URL sospetto
+      }
+    }
+  
+    // Se l'URL non corrisponde a pattern noti, restituisce false (non malevolo)
+    return false;
+  }
+
 
 
 
