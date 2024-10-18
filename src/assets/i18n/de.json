@@ -487,6 +487,8 @@
 	"SupportedFileTypesPdfDocx": "Unterstützte Dateitypen: pdf und docx - {{file_size_limit}} MB max.",
 	"FileSizeExceedsFileSizeLimitMb": "Die Dateigröße überschreitet {{file_size_limit}} MB.",
 	"FileTypeNotSupported": "Dateityp nicht unterstützt",
+	"UploadedFileMayContainsDangerousCode": "Die hochgeladene Datei enthält möglicherweise Schadcode",
+  	"URLTypeNotAllowed": "Ressource nicht erlaubt!",
 	"FileSuccessfullyUploaded": "{{file_mb}} MB-Datei erfolgreich hochgeladen.",
 	"ToUpload": "und hochladen",
 	"CreateAnswers": "Antworten erstellen",

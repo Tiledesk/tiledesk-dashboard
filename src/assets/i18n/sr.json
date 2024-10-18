@@ -488,6 +488,8 @@
     "SupportedFileTypesPdfDocx":"Подржани типови датотека: пдф и доцк - {{file_size_limit}} Мб мак.",
     "FileSizeExceedsFileSizeLimitMb":"Величина датотеке премашује {{file_size_limit}} Мб.",
     "FileTypeNotSupported":"Тип датотеке није подржан",
+    "UploadedFileMayContainsDangerousCode": "Отпремљена датотека можда садржи злонамерни код",
+    "URLTypeNotAllowed": "Ресурс није дозвољен!",
     "FileSuccessfullyUploaded": "{{file_mb}} Мб датотека је успешно отпремљена.",
     "ToUpload": "за уплоад",
     "CreateAnswers": "Креирајте одговоре",

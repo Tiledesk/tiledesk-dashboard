@@ -489,6 +489,8 @@
     "FileSizeExceedsFileSizeLimitMb":"Filstorleken överstiger {{file_size_limit}} Mb.",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb-fil har laddats upp.",
     "FileTypeNotSupported":"Filtyp stöds inte",
+    "UploadedFileMayContainsDangerousCode": "Den uppladdade filen kan innehålla skadlig kod",
+    "URLTypeNotAllowed": "Resurs inte tillåten!",
     "ToUpload": "att ladda upp",
     "CreateAnswers": "Skapa svar",
     "CreateAFreeAccount": "Skapa ett gratis konto",

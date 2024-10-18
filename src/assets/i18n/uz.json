@@ -488,6 +488,8 @@
     "SupportedFileTypesPdfDocx":"Qo'llab-quvvatlanadigan fayl turlari: pdf va docx - {{file_size_limit}} Mb maks.",
     "FileSizeExceedsFileSizeLimitMb":"Fayl hajmi {{file_size_limit}} Mb dan oshadi.",
     "FileTypeNotSupported":"Fayl turi qo'llab-quvvatlanmaydi",
+    "UploadedFileMayContainsDangerousCode": "Yuklangan faylda zararli kod bo'lishi mumkin",
+    "URLTypeNotAllowed": "Resursga ruxsat berilmagan!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb fayl muvaffaqiyatli yuklandi.",
     "ToUpload": "yuklash uchun",
     "CreateAnswers": "Javoblarni yarating",

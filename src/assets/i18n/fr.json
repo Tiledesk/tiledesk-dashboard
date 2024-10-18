@@ -487,6 +487,8 @@
     "SupportedFileTypesPdfDocx": "Types de fichiers pris en charge: pdf et docx - {{file_size_limit}} Mo max.",
     "FileSizeExceedsFileSizeLimitMb": "La taille du fichier dépasse {{file_size_limit}} Mo.",
     "FileTypeNotSupported": "Type de fichier non pris en charge",
+    "UploadedFileMayContainsDangerousCode": "Le fichier téléchargé peut contenir du code malveillant",
+    "URLTypeNotAllowed": "Ressource non autorisée !",
     "FileSuccessfullyUploaded": "{{file_mb}} Fichier Mo téléchargé avec succès.",
     "ToUpload": "à upload",
     "CreateAnswers": "Créer des réponses",

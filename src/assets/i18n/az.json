@@ -526,6 +526,8 @@
     "HereTheTutorial": "Budur, chatbotlarınızı {{ BRAND_NAME }}-a necə qoşmaq haqqında təlimat.",
     "HereThe_Tutorial": "Budur dərslik.",
     "FiletypeNotSupported": "fayl növü dəstəklənmir",
+    "UploadedFileMayContainsDangerousCode": "Yüklənmiş faylda zərərli kod ola bilər",
+    "URLTypeNotAllowed": "Resurs icazə verilmir!",
     "ChatLimit": "Söhbət limiti",
     "SuccessfullyUpdated": "Uğurla yeniləndi",
     "AnErrorOccurredWhileUpdating": "Yeniləmə zamanı xəta baş verdi",

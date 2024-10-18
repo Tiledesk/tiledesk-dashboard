@@ -488,6 +488,8 @@
     "SupportedFileTypesPdfDocx":"Поддерживаемые типы файлов: pdf и docx — максимум {{file_size_limit}} МБ.",
     "FileSizeExceedsFileSizeLimitMb":"Размер файла превышает {{file_size_limit}} МБ.",
     "FileTypeNotSupported":"Тип файла не поддерживается",
+    "UploadedFileMayContainsDangerousCode": "Загруженный файл может содержать вредоносный код",
+    "URLTypeNotAllowed": "Ресурс запрещен!",
     "FileSuccessfullyUploaded": "{{file_mb}} Файл в Мб успешно загружен.",
     "ToUpload": "загрузить",
     "CreateAnswers": "Создать ответы",

@@ -487,6 +487,8 @@
     "SupportedFileTypesPdfDocx":"Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb":"File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported":"File type not supported",
+    "UploadedFileMayContainsDangerousCode": "The uploaded file may contains malicious code",
+    "URLTypeNotAllowed": "Resource not allowed!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",
     "ToUpload": "to upload",
     "CreateAnswers": "Create answers",

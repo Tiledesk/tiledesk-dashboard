@@ -488,6 +488,8 @@
     "SupportedFileTypesPdfDocx":"Desteklenen dosya türleri: pdf ve docx - {{file_size_limit}} Mb maks.",
     "FileSizeExceedsFileSizeLimitMb":"Dosya boyutu {{file_size_limit}} Mb'ı aşıyor.",
     "FileTypeNotSupported":"Dosya türü desteklenmiyor",
+    "UploadedFileMayContainsDangerousCode": "Yüklenen dosya kötü amaçlı kod içeriyor olabilir",
+    "URLTypeNotAllowed": "Kaynağa izin verilmiyor!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb dosya başarıyla yüklendi.",
     "ToUpload": "yüklemek",
     "CreateAnswers": "Cevaplar oluşturun",

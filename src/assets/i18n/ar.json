@@ -487,6 +487,8 @@
     "SupportedFileTypesPdfDocx": "أنواع الملفات المدعومة: pdf وdocx - {{file_size_limit}} ميجابايت كحد أقصى.",
     "FileSizeExceedsFileSizeLimitMb": "حجم الملف يتجاوز {{file_size_limit}} ميغابايت.",
     "FileTypeNotSupported": "صيغة الملف غير مدعومةr",
+    "UploadedFileMayContainsDangerousCode": "قد يحتوي الملف الذي تم تحميله على تعليمات برمجية ضارة",
+    "URLTypeNotAllowed": "الموارد غير مسموح بها!",
     "FileSuccessfullyUploaded": "تم تحميل الملف {{file_mb}} ميغابايت بنجاح.",
     "ToUpload": "للتحميل",
     "CreateAnswers": "أنشئ إجابات",
