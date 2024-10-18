@@ -2619,7 +2619,6 @@
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
                       <!--  Btn Add Notes (note: is disabled if the current user has agent role and is not among the participants) -->
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
-                      DISABLE_ADD_NOTE_AND_TAGS  {{DISABLE_ADD_NOTE_AND_TAGS}}  CURRENT_USER_ROLE {{ CURRENT_USER_ROLE }}
                       <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
                         style="margin-bottom: 0px;" (click)="addNote()"
                         [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
