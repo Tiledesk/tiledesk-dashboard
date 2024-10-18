@@ -5161,7 +5161,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       'OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings',
       'Pricing.UpgradePlan',
       'OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan',
-      'CHAT_IONIC.FAILED_TO_UPLOAD_THE_FORMAT_IS_NOT_SUPPORTED',
+      'SorryFileTypeNotSupported',
     ]
 
     this.translate.get(keys).subscribe({next: (translation)=>{
@@ -5256,7 +5256,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
       if(!canUploadFile){
         this.uploadedFiles = null;
-        this.presenModalMessageCouldNotBeSent();
+        this.presenModalAttachmentFileTypeNotSupported();
         return;
       }
 
@@ -5595,6 +5595,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     swal({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('TheMessageCouldNotBeSent'),
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
+  }
+
+  presenModalAttachmentFileTypeNotSupported() {
+    swal({
+      title: this.translationMap.get('Warning'),
+      text: this.translationMap.get('SorryFileTypeNotSupported'),
       icon: "warning",
       button: "OK",
       dangerMode: false,
