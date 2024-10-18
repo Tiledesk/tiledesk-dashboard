@@ -722,7 +722,9 @@
         "YourDetails": "Detayların",
         "AddYourOwnPicture": "⚡️ Konuşmalarınıza daha samimi bir his vermek için kendi resminizi ekleyin!",
         "AddYourOwnPicture_": "⚡️ Ziyaretçiniz kiminle konuştuğunu görebileceği için sohbetlerinize daha samimi bir his vermek için kendi resminizi ekleyin!",
-        "PreferredSize": "Tercih edilen resim boyutu 128x128 piksel - Resim formatı: .jpeg veya .png"
+        "PreferredSize": "Tercih edilen resim boyutu 128x128 piksel - Resim formatı: .jpeg veya .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Doğrulama bağlantısı gönderilirken bir hata oluştu",
+        "YourProfileHasBeenUploaded": "profiliniz başarıyla güncellendi"
     },
     "ChangePsw": {
         "ChangePsw": "Şifre değiştir",

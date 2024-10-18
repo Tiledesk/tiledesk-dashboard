@@ -720,7 +720,9 @@
         "YourDetails": "Vos détails",
         "AddYourOwnPicture": "⚡️ Ajoutez votre propre photo pour donner à vos conversations une sensation plus intime !",
         "AddYourOwnPicture_": "⚡️ Ajoutez votre propre photo pour donner à vos conversations une sensation plus intime, car votre visiteur peut voir à qui il parle !",
-        "PreferredSize": "Taille d'image préférée 128x128 px - Format d'image : .jpeg ou .png"
+        "PreferredSize": "Taille d'image préférée 128x128 px - Format d'image : .jpeg ou .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Une erreur s'est produite lors de l'envoi du lien de vérification",
+        "YourProfileHasBeenUploaded": "votre profil a été mis à jour avec succès"
     },
     "ChangePsw": {
         "ChangePsw": "Changer le mot de passe",
