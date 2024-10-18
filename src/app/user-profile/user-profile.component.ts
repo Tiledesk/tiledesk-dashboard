@@ -503,7 +503,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     ];
 
     this.translate.get(keys).subscribe(translations => {
-      Object.keys(keys).forEach(key => {
+      Object.keys(translations).forEach(key => {
         this.translationsMap.set(key, translations[key])
       });
       
