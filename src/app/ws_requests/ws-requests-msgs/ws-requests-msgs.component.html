@@ -518,7 +518,7 @@
 
                           <!-- File upload -->
                           <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload
-                            style="display: none;">
+                            style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
                             <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
