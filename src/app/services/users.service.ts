@@ -24,11 +24,7 @@ interface NewUser {
 export class UsersService {
 
   wsService: WebSocketJs;
-  public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  public user_is_busy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public projectUser_bs: BehaviorSubject<ProjectUser> = new BehaviorSubject<ProjectUser>(null);
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -567,47 +563,6 @@ export class UsersService {
   }
 
 
-  // ------------------------------------------------------------------------------------------------
-  // TODO: TO REPLACE "getProjectUser()" USED BY THE SIDEBAR AND HOME COMPONENTS - CURRENTLY NOT USED
-  // -------------------------------------------------------------------------------------------------
-  getProjectUserAvailabilityAndRole() {
-    this.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      // this.logger.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USE ID ', this.currentUserId);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER LENGTH', projectUser.length);
-      if ((projectUser) && (projectUser.length !== 0)) {
-        this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ID ', projectUser[0]._id)
-        this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - USER IS AVAILABLE ', projectUser[0].user_available)
-        // this.user_is_available_bs = projectUser.user_available;
-
-        if (projectUser[0].user_available !== undefined) {
-          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
-        }
-
-        // ADDED 21 AGO
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USER ROLE ', projectUser[0].role);
-          this.user_role(projectUser[0].role);
-
-          // save the user role in storage - then the value is get by auth.service:
-          // the user with agent role can not access to the pages under the settings sub-menu
-          // this.auth.user_role(projectUser[0].role);
-
-          this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-        }
-      } else {
-        // this could be the case in which the current user was deleted as a member of the current project
-        this.logger.log('[USER-SERV] -  PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER UNDEFINED ')
-      }
-
-    }, (error) => {
-      this.logger.error('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - ERROR  ', error);
-    }, () => {
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID * COMPLETE *');
-    });
-  }
-
 
   // -------------------------------------------------------------------------
   // GET ALL PROJECT PROJECT-USERS AND SAVE IN STORAGE USERS AND PROJECT-USERS
@@ -720,15 +675,9 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser:any) {
-    this.logger.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
-    this.logger.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
-    this.logger.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
-
-    this.project_user_id_bs.next(projectUser_id);
-    this.user_is_available_bs.next(user_available);
-    this.user_is_busy$.next(user_isbusy);
-    this.projectUser_bs.next(projctuser);
+  public user_availability(projctUser:ProjectUser) {
+    this.logger.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
+    this.projectUser_bs.next(projctUser);
   }
 
 
@@ -838,47 +787,6 @@ export class UsersService {
       });
 
     })
-  }
-
-
-  /**
-   * PUBLISH PROJECT-USER ROLE AND CHECK THE ROLE (FOR THE CURRENT PROJECT) SAVED IN THE STORAGE
-   * NOTE: THE projectUser_role IS PASSED FROM HOME - SIDEBAR - NAVBAR-FOR-PANEL
-   * NOTE: IF THE USER ROLE STORED NOT MATCHES THE USER ROLE PUBLISHED IS RESET IN STORAGE THE PROJECT OBJCT
-   * @param projectUser_role 
-   */
-  public user_role(projectUser_role: string) {
-    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
-
-    // PUBLISH THE USER ROLE
-    this.project_user_role_bs.next(projectUser_role);
-
-    // COMPARE THE STORED ROLE WITH THE USER ROLE PUBLISHED
-    // const storedProjectJson = localStorage.getItem(this.project_id);
-    // if (storedProjectJson) {
-    //   const projectObject = JSON.parse(storedProjectJson);
-    //   const storedUserRole = projectObject['role'];
-    //   const storedProjectName = projectObject['name'];
-    //   const storedProjectId = projectObject['_id'];
-    //   const storedProjectOH = projectObject['operatingHours'];
-    //   this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
-    //   this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
-    //   this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
-
-      // if (storedUserRole !== projectUser_role) {
-      // this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
-
-      //   // const projectForStorage: Project = {
-      //   //   _id: storedProjectId,
-      //   //   name: storedProjectName,
-      //   //   role: projectUser_role,
-      //   //   operatingHours: storedProjectOH
-      //   // }
-
-      //   // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
-      //   localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
-      // }
-    // }
   }
 
 

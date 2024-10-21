@@ -32,6 +32,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -1486,19 +1487,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-        }
-        if (user_role) {
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role
+          if (this.USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
-
           } else {
             this.ROLE_IS_AGENT = false
           }

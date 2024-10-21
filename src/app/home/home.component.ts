@@ -316,7 +316,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     // this.getAvailableProjectUsersByProjectId();
 
-    this.getUserRole();
+    // this.getUserRole();
     // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
@@ -3314,13 +3314,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
+          this.usersService.user_availability(projectUser[0]);
         }
         if (projectUser[0].role !== undefined) {
           this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
+          this.USER_ROLE = projectUser[0].role;
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
@@ -3410,18 +3410,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // CON getUserRole() AGGIORNO this.USER_ROLE QUANDO LA SIDEBAR, NEL MOMENTO
   // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
   // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+  // getUserRole() {
+  //   this.usersService.project_user_role_bs
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((userRole) => {
 
-        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
-  }
+  //       this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+  //       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+  //       this.USER_ROLE = userRole;
+  //     })
+  // }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
   getAvailableProjectUsersByProjectId() {

@@ -21,6 +21,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
 import { Project } from 'app/models/project-model';
+import { ProjectUser } from 'app/models/project-user';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -319,16 +320,13 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         // this.logger..log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -390,6 +388,8 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.teammateStatus = this.teammateStatus.slice(0)
           this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
+
+
       }
       //  this.teammateStatus = this.teammateStatus.slice(0)
     });
@@ -397,11 +397,13 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getUserUserIsBusy() {
-    this.usersService.user_is_busy$.subscribe((user_isbusy) => {
-      this.IS_BUSY = user_isbusy;
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
       // this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
+      if(projectUser){
+        this.IS_BUSY = projectUser.isBusy;
+      }
     });
   }
 
@@ -426,7 +428,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         if (projectUser[0].user_available !== undefined) {
 
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
+          this.usersService.user_availability(projectUser[0])
 
         }
 
@@ -436,9 +438,6 @@ export class SidebarUserDetailsComponent implements OnInit {
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;
-
-          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
 
         }
       } else {
