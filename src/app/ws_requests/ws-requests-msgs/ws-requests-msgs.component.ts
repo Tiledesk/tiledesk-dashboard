@@ -1827,12 +1827,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by label ', this.request['closed_by_label'])
               } else {
                 this.usersService.getProjectUserByUserId(this.request['closed_by'])
-                  .subscribe((projectUser: any) => {
+                  .subscribe((projectUser: ProjectUser) => {
                     // this.logger.log('projectUser ', projectUser)
-                    if (projectUser && projectUser[0] && projectUser[0].id_user) {
-                      this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'ws-requests-msgs');
+                    if (projectUser && projectUser.id_user) {
+                      this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user, 'ws-requests-msgs');
                       this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
-                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
                     } else {
                       // this.logger.log('[WS-REQUESTS-MSGS] THE REQUEST HAS NOT BEEN CLOSED BY A PROJECT USER');
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + this.request.requester_fullname
@@ -5058,12 +5058,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
-    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser', projectUser)
       if (projectUser) {
-        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser[0]._id);
+        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser._id);
 
-        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser[0]._id]);
+        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser._id]);
       }
     }, (error) => {
       this.logger.error('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - ERROR ', error);

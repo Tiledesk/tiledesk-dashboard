@@ -1,7 +1,7 @@
+import { ProjectUser } from 'app/models/project-user';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user-model';
 import { PendingInvitation } from '../models/pending-invitation-model';
-import { ProjectUser } from '../models/project-user';
 import { Observable , BehaviorSubject} from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
+import { map } from 'rxjs/operators';
 interface NewUser {
   displayName: string;
   email: string;
@@ -63,8 +64,6 @@ export class UsersService {
     private auth: AuthService,
     private usersLocalDbService: LocalDbService,
     private router: Router,
-    private faqKbService: FaqKbService,
-    private botLocalDbService: BotLocalDbService,
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
@@ -521,7 +520,7 @@ export class UsersService {
    * @param user_id 
    * @returns 
    */
-  public getProjectUserByUserId(user_id: string): Observable<ProjectUser[]> {
+  public getProjectUserByUserId(user_id: string): Observable<ProjectUser> {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
     this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
@@ -536,7 +535,7 @@ export class UsersService {
   
 
     return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
+      .get<ProjectUser>(url, httpOptions);
   }
 
 
@@ -640,29 +639,6 @@ export class UsersService {
     }
   }
 
-  // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-  getBotsByProjectIdAndSaveInStorage() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
-      if (bots && bots !== null) {
-
-        bots.forEach(bot => {
-          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT', bot);
-          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT-ID', bot._id);
-          this.botLocalDbService.saveBotsInStorage(bot._id, bot);
-        });
-
-      }
-    }, (error) => {
-      this.logger.error('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - ERROR ', error);
-    }, () => {
-      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE * COMPLETE');
-
-    });
-
-  }
-
-
   // -----------------------------------------------------------------------------------------------------
   // PUBLISH: Project User ID, Availability; Busy - PUBLISH projectUser_id, user_available, isBusy
   // -----------------------------------------------------------------------------------------------------
@@ -675,7 +651,7 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projctUser:ProjectUser) {
+  public setProjectUser(projctUser:ProjectUser) {
     this.logger.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
     this.projectUser_bs.next(projctUser);
   }

@@ -1435,31 +1435,28 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
   getProjectUser() {
     //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
-      if ((projectUser) && (projectUser.length !== 0)) {
-        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+      if (projectUser) {
+        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser._id)
+        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser.user_available)
+        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser.isBusy)
         // this.user_is_available_bs = projectUser.user_available;
 
-        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
-        this.subsTo_WsCurrentUser(projectUser[0]._id)
+        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser._id)
+        this.subsTo_WsCurrentUser(projectUser._id)
 
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0])
-        }
+        this.usersService.setProjectUser(projectUser)
 
         // ADDED 21 AGO
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+        if (projectUser.role !== undefined) {
+          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser.role);
 
-          // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-          this.USER_ROLE = projectUser[0].role;
+          // ASSIGN THE projectUser.role VALUE TO USER_ROLE
+          this.USER_ROLE = projectUser.role;
 
         }
       } else {

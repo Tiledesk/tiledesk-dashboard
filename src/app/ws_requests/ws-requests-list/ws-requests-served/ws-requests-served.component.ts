@@ -613,12 +613,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser ', projectUser)
         if (projectUser) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser[0]._id);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - ERROR ', error);
@@ -876,7 +876,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   _getProjectUserByUserId(member_id) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
           this.logger.log('WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID projectUser id', projectUser);

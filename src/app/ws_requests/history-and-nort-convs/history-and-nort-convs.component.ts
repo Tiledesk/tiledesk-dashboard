@@ -2842,12 +2842,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);

@@ -1359,12 +1359,12 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
 
-    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
-        this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+        this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-        this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser[0]._id]);
+        this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser._id]);
       }
     }, (error) => {
       this.logger.error('[DEPT-EDIT-ADD] GET projectUser by USER-ID - ERROR ', error);
