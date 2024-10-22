@@ -652,7 +652,7 @@ export class UsersService {
    * @param user_isbusy 
    */
   public setProjectUser(projctUser:ProjectUser) {
-    console.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
+    this.logger.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
     this.projectUser_bs.next(projctUser);
   }
 
