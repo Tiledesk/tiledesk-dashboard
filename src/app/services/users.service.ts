@@ -534,8 +534,7 @@ export class UsersService {
     };
   
 
-    return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
+    return this._httpClient.get<ProjectUser>(url, httpOptions).pipe(map((res)=> res[0]));
   }
 
   public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
