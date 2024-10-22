@@ -506,7 +506,6 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       Object.keys(translations).forEach(key => {
         this.translationsMap.set(key, translations[key])
       });
-      
     });
     
 
