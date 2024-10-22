@@ -535,7 +535,7 @@ export class UsersService {
   
 
     return this._httpClient
-      .get<ProjectUser>(url, httpOptions);
+      .get<ProjectUser>(url, httpOptions).pipe(map((res)=> res[0]));
   }
 
 
@@ -652,7 +652,7 @@ export class UsersService {
    * @param user_isbusy 
    */
   public setProjectUser(projctUser:ProjectUser) {
-    this.logger.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
+    console.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
     this.projectUser_bs.next(projctUser);
   }
 
