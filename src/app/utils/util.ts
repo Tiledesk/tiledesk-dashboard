@@ -745,72 +745,113 @@ export const CHANNELS = [
 
 ]
 
-
-
-// interface AsyncGuard extends CanActivate {
-//     canActivate(
-//       route: ActivatedRouteSnapshot,
-//       state: RouterStateSnapshot
-//     ): Observable<boolean | UrlTree>;
-//   }
+export function checkAcceptedFile(fileType, fileUploadAccept ): boolean{
   
-//   export function orderedAsyncGuards(
-//     guards: Array<new () => AsyncGuard>
-//   ): CanActivateFn {
-//     return (route, state) => {
-//       // Instantiate all guards.
-//       const guardInstances = guards.map(inject) as AsyncGuard[];
-//       // Convert an array into an observable.
-//       return from(guardInstances).pipe(
-//         // For each guard, fire canActivate and wait for it
-//         // to complete.
-//         concatMap((guard) => guard.canActivate(route, state)),
-//         // Don't execute the next guard if the current guard's
-//         // result is not true.
-//         takeWhile((value) => value === true, /* inclusive */ true),
-//         // Return the last guard's result.
-//         last()
-//       );
-//     };
-//   }
+    if (fileUploadAccept === '*/*') {
+      return true
+    }
+    // Dividi la stringa fileUploadAccept in un array di tipi accettati
+    const acceptedTypes = fileUploadAccept.split(',');
+  
+    // Verifica se il tipo di file è accettato
+    return acceptedTypes.some((accept) => {
+        accept = accept.trim();
+        // Controlla per i tipi MIME con wildcard, come image/*
+        if (accept.endsWith('/*')) {
+            const baseMimeType = fileType.split('/')[0]; // Ottieni la parte principale del MIME type
+            return accept.replace('/*', '') === baseMimeType;
+        }
 
-export function runSequentialGuards(guards: Array<CanActivateFn>): CanActivateFn {
-    return (route, state) => {
-        const guardInstances = guards.map(inject) as CanActivateFn[];
+        // Controlla se l'accettazione è un MIME type esatto (come image/jpeg)
+        if (accept === fileType) {
+            return true;
+        }
 
-        const observables = guardInstances.map(guard => {
-            const result = guard(route, state);
-            return wrapIntoObservable(result).pipe(first());
-        });
-
-        return concat(...observables).pipe(
-            takeWhile(v => v === true),
-            last()
-        );
+        // Controlla per le estensioni di file specifiche come .pdf o .txt
+        return fileType === getMimeTypeFromExtension(accept);
+    });
+  
+}
+  
+function getMimeTypeFromExtension(extension: string): string {
+    // Rimuovi il punto dall'estensione e ottieni il MIME type
+    const mimeTypes: { [key: string]: string } = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.pdf': 'application/pdf',
+        '.txt': 'text/plain',
+        '.doc': 'application/msword',
+        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        // Aggiungi altri tipi MIME se necessario
     };
+    return mimeTypes[extension] || '';
 }
 
-function wrapIntoObservable<T>(value: T | Promise<T> | Observable<T>): Observable<T> {
-    if (isObservable(value)) {
-      return value; // If it's already an observable, return it directly.
+export function filterImageMimeTypesAndExtensions(fileUploadAccept: string): string[] {
+    
+    if (fileUploadAccept === '*/*') {
+        return ['*/*']
+    }
+    
+    // Lista delle estensioni di immagine comuni
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+  
+    // Dividi la stringa in un array di tipi accettati
+    const acceptedTypes = fileUploadAccept.split(',');
+  
+    // Filtra solo i MIME type che iniziano con "image/" o che sono estensioni di immagine
+    const imageTypesAndExtensions = acceptedTypes
+      .map(type => type.trim().toLowerCase()) // Rimuove gli spazi bianchi e converte a minuscolo
+      .filter(type => type.startsWith('image/') || imageExtensions.includes(type));
+    
+    return imageTypesAndExtensions;
+}
+
+export function isMaliciousURL(url: string): boolean {
+    // Verifica se l'URL ha pattern sospetti
+    const suspiciousPatterns = [
+      /\/\/\d+\.\d+\.\d+\.\d+/, // URL con indirizzi IP
+      /@/,                      // URL con '@' per ingannare la visualizzazione
+      /%00/,                    // Caratteri di null byte
+      /javascript:/i,           // URL con javascript
+      /data:/i,                 // URL con data URI
+      /\.\.\//,                 // Directory traversal
+      /(https?:\/\/)?bit\.ly/i, // URL abbreviati comuni (come bit.ly)
+    ];
+  
+    for (const pattern of suspiciousPatterns) {
+      if (pattern.test(url)) {
+        return true; // URL sospetto
+      }
     }
   
-    if (isPromise(value)) {
-      // Wrap the promise in an observable
-      return from(Promise.resolve(value));
+    // Se l'URL non corrisponde a pattern noti, restituisce false (non malevolo)
+    return false;
+}
+
+
+export function containsXSS(jsonData) {
+    // List of common XSS attack patterns
+    const xssPatterns = [
+        /<script.*?>.*?<\/script.*?>/gi,  // script tags
+        /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
+        /eval\s*\(.*?\)/gi,               // eval calls
+        /javascript\s*:\s*.*/gi,          // javascript protocol
+        /document\.cookie/gi,             // access to cookies
+        /<iframe.*?>.*?<\/iframe.*?>/gi,  // iframe injection
+        /<img.*?src=['"]javascript:.*?['"]/gi,  // img tags with JS in src
+    ];
+
+    // Check if any of the patterns match
+    for (const pattern of xssPatterns) {
+        if (pattern.test(jsonData)) {
+            return true; // XSS detected
+        }
     }
-  
-    // If it's neither, wrap the value in an observable
-    return of(value);
-  }
-
-
-  function isPromise(value: any): value is Promise<any> {
-    return value && typeof value === 'object' && typeof value.then === 'function';
-  }
-
-
-
+    return false; // No XSS detected
+}
 
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'

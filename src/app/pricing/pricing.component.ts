@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
 import {  additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPlanEE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanEE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanEE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
+import { ProjectUser } from 'app/models/project-user';
 
 declare var Stripe: any;
 
@@ -243,19 +244,17 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-
       this.user = user;
     })
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
   getCurrentProject() {

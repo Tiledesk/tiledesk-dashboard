@@ -21,7 +21,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites, checkAcceptedFile, filterImageMimeTypesAndExtensions, isMaliciousURL } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -37,6 +37,7 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -396,6 +397,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
+  fileUploadAccept: string;
 
   constructor(
     private notify: NotifyService,
@@ -459,10 +461,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     });
 
     this.translateTextBaseComp();
-    // this.translateOnlineMsgSuccessNoticationMsg();
-    // this.translateOfflineMsgSuccessNoticationMsg();
-    // this.translateOfficeClosedSuccessNoticationMsg();
-    // this.translateGetTranslationErrorMsg();
     // this.getSectionSelected();
     this.getLabels();
     this.getOSCODE();
@@ -480,6 +478,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.geti118nTranslations();
     this.getBrowserVersion();
     this.getImageStorage();
+
+    this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
   }
 
   getImageStorage() {
@@ -1366,17 +1366,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectUserRole() {
     // const user___role =  this.usersService.project_user_role_bs.value;
     // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
   getLoggedUser() {
@@ -2203,7 +2198,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }, () => {
 
         if (this.HAS_CHANGED_GREETINGS === true) {
-          this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
         }
         this.logger.log('[WIDGET-SET-UP] - saveTranslation * COMPLETE *')
       });
@@ -3183,6 +3178,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     } else {
 
+      let checkMaliciousURL = isMaliciousURL(event)
+      if(checkMaliciousURL){
+        this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+        this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, isMaliciousURL)
+        return;
+      }
+
       if (this.LOGO_IS_ON === true) {
 
         this.verifyImageURL(event, (imageExists) => {
@@ -3222,6 +3224,31 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
     } else {
+
+      const checkMaliciousURL = isMaliciousURL(event)
+      if(checkMaliciousURL){
+        this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+        this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, isMaliciousURL)
+        
+        this.customLauncherURL = null
+        this.hasOwnLauncherBtn = false;
+        this.hasOwnLauncherLogo = false;
+
+        return;
+      }
+
+      // this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
+      // const canUploadFile = checkAcceptedFile('image/' + event.split('.').pop(), this.fileUploadAccept)
+      // if(!canUploadFile){
+      //   this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+      //   this.logger.error('[IMAGE-UPLOAD] dropEvent: can not upload current file type--> NOT ALLOWED', event.split('.').pop(), this.fileUploadAccept)
+        
+      //   this.customLauncherURL = null
+      //   this.hasOwnLauncherBtn = false;
+      //   this.hasOwnLauncherLogo = false;
+      //   return;
+      // }
+      
 
       this.verifyImageURL(event, (imageExists) => {
         // return imageExists
@@ -3866,7 +3893,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
   hasClickedUpdatePrechatformCustomFields() {
-    this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+    this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
   }
 
   savePrechatFormCustomFields() {
@@ -3894,7 +3921,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
         this.widgetService.updateWidgetProject(this.widgetObj)
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('InvalidJSON'), 4, 'report_problem');
       }
     } else {
       this.displayModalNoFieldInCustomPrechatForm();

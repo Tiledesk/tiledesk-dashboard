@@ -14,6 +14,7 @@ export const environment = {
     firebaseAuth: false,
     uploadEngine: 'native', 
     baseImageUrl: "CHANGEIT",
+    fileUploadAccept:"image/*,.pdf,.txt",
     pushEngine: 'none',
     logLevel: 'Info',
     templatesUrl: 'CHANGEIT',

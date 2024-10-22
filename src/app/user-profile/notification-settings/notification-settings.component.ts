@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { LoggerService } from './../../services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 @Component({
   selector: 'appdashboard-notification-settings',
   templateUrl: './notification-settings.component.html',
@@ -119,10 +120,10 @@ export class NotificationSettingsComponent implements OnInit {
   }
 
   checkCurrentStatus() {
-    this.usersService.project_user_id_bs.subscribe((project_user_id) => {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
 
-      this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - CHECK NOTIFICATION checkCurrentStatus: ", project_user_id);
-      this.notificationService.checkNotificationsStatus(project_user_id).subscribe((result: any) => {
+      this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - CHECK NOTIFICATION checkCurrentStatus: ", projectUser._id);
+      this.notificationService.checkNotificationsStatus(projectUser._id).subscribe((result: any) => {
         this.logger.log("[USER-PROFILE][NOTIFICATION-SETTINGS] - CHECK NOTIFICATION STATUS RESULT: ", result);
 
         if (result.settings) {

@@ -13,6 +13,7 @@ import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
+import { ProjectUser } from 'app/models/project-user';
 
 
 @Component({
@@ -82,9 +83,11 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role
-      this.logger.log('[CHATBOT-ALERT] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role
+        this.logger.log('[CHATBOT-ALERT] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
+      }
     })
   }
 
