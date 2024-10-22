@@ -13,5 +13,5 @@ export interface ProjectUser {
     isBusy?: boolean;
     status?: string;
     id_user?: any;
-    __v: any;
+    __v?: any;
 }

@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
 import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -66,7 +67,8 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
 
   ) {
     // super(translate);
@@ -74,6 +76,8 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
   }
 
   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('groups-static')
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();

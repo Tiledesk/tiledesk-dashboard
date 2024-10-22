@@ -23,6 +23,7 @@ import { FaqKb } from 'app/models/faq_kb-model';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -161,7 +162,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     private usersService: UsersService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    public prjctPlanService: ProjectPlanService
+    public prjctPlanService: ProjectPlanService,
+    private roleService: RoleService
   ) {
     super(prjctPlanService, notify);
   }
@@ -270,7 +272,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('dept-edit-add')
     this.getProfileImageStorage();
     this.listenSidebarIsOpened();
 

@@ -170,11 +170,11 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin routeSegments ', routeSegments);
 
       const projectIDGetFromRoute = routeSegments[2]
-      
+
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
-    
+
       this.getProject(projectIDGetFromRoute)
-    
+
 
       this.router.navigate([route]);
 
@@ -207,6 +207,7 @@ export class AutologinComponent implements OnInit {
       }
      
 
+
     }, () => {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
 
@@ -224,7 +225,7 @@ export class AutologinComponent implements OnInit {
     });
   }
 
- 
+
 
 
   getProject(projectIDGetFromRouteIsNumber) {
@@ -242,7 +243,7 @@ export class AutologinComponent implements OnInit {
     })
   }
 
- 
+
 
 
 

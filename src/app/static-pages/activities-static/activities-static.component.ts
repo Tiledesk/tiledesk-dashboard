@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -61,13 +62,16 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
     private usersService: UsersService,
     public logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
   ) {
     // super(translate,);
     super(prjctPlanService, notify);
   }
 
   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('activities-static')
     this.buildActivitiesOptions();
     this.getCurrentProject();
     this.getBrowserLang();

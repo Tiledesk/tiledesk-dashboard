@@ -367,7 +367,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getTag();
     this.getCurrentUrlLoadRequests();
     this.getImageStorageAndChatBaseUrl();
-    // this.auth.checkRoleForCurrentProject();
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
@@ -399,6 +398,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
+    
+  }
+
+  manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
+    console.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
+    if (USER_ROLE === 'agent') {
+      let unservedIndex = this.statusInHistory.findIndex(x => x.id === '100');
+      console.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
+      this.statusInHistory.splice(unservedIndex, 1)
+      let servedIndex = this.statusInHistory.findIndex(x => x.id === '200');
+      console.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan servedIndex', servedIndex)
+      this.statusInHistory.splice(servedIndex, 1)
+      this.statusInHistory =  this.statusInHistory.slice(0)
+    }
 
   }
 
@@ -1342,6 +1355,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               // User Agent
               // -------------------------------------------------------------------
               const user_agent_result = this.parseUserAgent(request.userAgent);
+              // console.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
               const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
@@ -1491,6 +1505,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', projectUser);
         if (projectUser) {
           this.USER_ROLE = projectUser.role
+          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
           if (this.USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
           } else {
@@ -2417,7 +2432,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;

@@ -20,7 +20,7 @@ import { BotsBaseComponent } from '../bots-base/bots-base.component';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, checkAcceptedFile, getColorBck } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_microlanguage_for_dialogflow_images_videos,
@@ -117,9 +117,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   dlgflwSelectedLangCode: any;
   dlgflwKnowledgeBaseID: string;
   uploadedFile: any;
-  updateBotError: string;
-  updateBotSuccess: string;
-  notValidJson: string;
 
   // tparams = brand;
   tparams: any;
@@ -151,8 +148,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   navigation_history = []
   previousPageIsCreateBot: boolean;
 
-  errorDeletingAnswerMsg: string;
-  answerSuccessfullyDeleted: string;
+  // errorDeletingAnswerMsg: string;
+  // answerSuccessfullyDeleted: string;
 
   depts_length: number;
   depts_without_bot_array = [];
@@ -162,7 +159,6 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   selected_dept_id: string;
   selected_dept_name: string;
   dept_id: string;
-  done_msg: string;
   botHasBeenAssociatedWithDept: string;
   DEPTS_HAVE_BOT_BUT_NOT_THIS: boolean
 
@@ -179,6 +175,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   fullText_temp: string;
   queryString: string;
   paginated_answers_count: number;
+
+  fileUploadAccept: string;
+  translationsMap: Map<string, string> = new Map();
 
   @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
   isChromeVerGreaterThan100: boolean;
@@ -209,9 +208,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
-
-    this.logger.log('[FAQ-COMP] »»» HELLO FAQ COMP')
+    console.log('[FAQ-COMP] »»» HELLO FAQ COMP')
 
     this.clearSearchedQuestionStored();
 
@@ -231,12 +228,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getOSCODE();
 
     this.checkBotImageUploadIsComplete();
-    this.getParamsBotType();
+    // this.getParamsBotType();
 
     this.getTranslations();
 
     // this.getDeptsByProjectId();
     this.getBrowserVersion();
+
+    this.fileUploadAccept = 'image/jpg, image/jpeg, image/png'
+    
   }
 
   getBrowserVersion() {
@@ -257,42 +257,29 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
 
   getTranslations() {
-    this.translate.get('UpdateBotError')
-      .subscribe((text: string) => {
-        this.updateBotError = text;
-      });
 
-    this.translate.get('UpdateBotSuccess')
-      .subscribe((text: string) => {
-        this.updateBotSuccess = text;
-      });
+    const keys = [
+      'UpdateBotError',
+      'UpdateBotSuccess',
+      'Not a valid JSON file.',
+      'FaqPage.AnErrorOccurredWhilDeletingTheAnswer',
+      'FaqPage.AnswerSuccessfullyDeleted',
+      'Done',
+      'SorryFileTypeNotSupported'
+    ]
 
-    this.translate.get('Not a valid JSON file.')
-      .subscribe((text: string) => {
-        this.notValidJson = text;
+    this.translate.get(keys).subscribe(translations => {
+      Object.keys(translations).forEach(key => {
+        this.translationsMap.set(key, translations[key])
       });
-
-    this.translate.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer')
-      .subscribe((text: string) => {
-        this.errorDeletingAnswerMsg = text;
-      });
-
-    this.translate.get('FaqPage.AnswerSuccessfullyDeleted')
-      .subscribe((text: string) => {
-        this.answerSuccessfullyDeleted = text;
-      });
-
-    this.translate.get('Done')
-      .subscribe((text: string) => {
-        this.done_msg = text;
-      });
+    });
   }
 
 
   getParamsBotType() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-      // console.log('getParamsBotType params', params) 
+      console.log('FAQ COMP getParamsBotType params', params) 
       if (this.botType && this.botType === 'external') {
         this.botTypeForInput = 'External'
         this.is_external_bot = true
@@ -634,7 +621,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     });
 
     swal({
-      title: this.done_msg + "!",
+      title: this.translationsMap.get('Done') + "!",
       text: this.botHasBeenAssociatedWithDept,
       icon: "success",
       button: "OK",
@@ -654,6 +641,15 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
 
+    const canUploadFile = checkAcceptedFile(event.target.files[0].type, this.fileUploadAccept)
+    if(!canUploadFile){
+      // this.presentToastOnlyImageFilesAreAllowedToDrag()
+      this.notify.showToast(this.translationsMap.get('SorryFileTypeNotSupported'), 4, 'report_problem')
+      this.logger.error('[IMAGE-UPLOAD] detectFiles: can not upload current file type--> NOT ALLOWED', event.target.files[0].type, this.fileUploadAccept)
+      this.showSpinnerInUploadImageBtn = false;
+      return;
+    }
+    
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.uploadBotAvatar(file, this.id_faq_kb);
     } else {
@@ -1105,13 +1101,13 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
         if (this.botType !== 'dialogflow') {
           // =========== NOTIFY ERROR ===========
-          this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
+          this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError'), 4, 'report_problem');
         }
       }, () => {
         this.logger.log('[FAQ-COMP] EDIT BOT - * COMPLETE *');
         if (this.botType !== 'dialogflow' && this.botType !== 'rasa') {
           // =========== NOTIFY SUCCESS===========
-          this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
         }
 
         if (this.botType === 'dialogflow') {
@@ -1168,9 +1164,9 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[BOT-CREATE] UPDATE  - RasaServer - ERROR ', error);
-      this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError'), 4, 'report_problem');
     }, () => {
-      this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
       this.logger.log('[BOT-CREATE] CREATE FAQKB - RasaServer * COMPLETE *');
     });
   }
@@ -1187,16 +1183,16 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // =========== NOTIFY ERROR ===========
       const errorMsg = error['error']['msg']
       if (errorMsg && errorMsg === 'Not a valid JSON file.') {
-        this.notify.showWidgetStyleUpdateNotification(this.updateBotError + ': ' + this.notValidJson, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError') + ': ' + this.translationsMap.get('Not a valid JSON file.'), 4, 'report_problem');
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotError'), 4, 'report_problem');
       }
 
     }, () => {
 
       this.logger.log('[FAQ-COMP]- uploadDialogflowBotCredetial * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
 
     });
 
@@ -1550,11 +1546,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[FAQ-COMP] DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
+      this.notify.showNotification(this.translationsMap.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer'), 4, 'report_problem');
     }, () => {
       this.logger.log('[FAQ-COMP] DELETE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification(this.answerSuccessfullyDeleted, 2, 'done');
+      this.notify.showNotification(this.translationsMap.get('FaqPage.AnswerSuccessfullyDeleted'), 2, 'done');
     });
 
   }

@@ -397,9 +397,13 @@ import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
+import { N8nIntegrationComponent } from './integrations/list/n8n-integration/n8n-integration.component';
+
+
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
+import { RoleService } from './services/role.service';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 
 // import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
@@ -836,6 +840,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OpenaiService,
     PopupService,
     NotificationService,
+    RoleService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

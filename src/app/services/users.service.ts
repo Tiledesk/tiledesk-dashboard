@@ -523,7 +523,27 @@ export class UsersService {
   public getProjectUserByUserId(user_id: string): Observable<ProjectUser> {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
-    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+   console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
+  }
+
+  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+
+    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
+
+    const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
+   console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

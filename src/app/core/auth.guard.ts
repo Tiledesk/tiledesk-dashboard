@@ -340,8 +340,8 @@ export class AuthGuard implements CanActivate {
   // canActivate SSO 
   // ------------------------------------------------------------------------
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
-    // this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
+   console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE !!! AlwaysAuthGuard');
+   console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
 
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
@@ -388,7 +388,7 @@ export class AuthGuard implements CanActivate {
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
 
     const HAS_JWT = stringifed_queryParams.includes('JWT');
-    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
 
     let token = next.queryParams.token
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
@@ -403,9 +403,13 @@ export class AuthGuard implements CanActivate {
       return true;
 
     } else {
-      // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT (2)', HAS_JWT);
+      console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS JWT (2)', HAS_JWT);
+      console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams user (2)', this.user);
       if (!HAS_JWT) {
+
         this.router.navigate(['/login']);
+        // this.auth.signOut('canActivate');
+
         // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
         // this.logger.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         const storedRoute = this.localDbService.getFromStorage('wannago')
@@ -422,7 +426,7 @@ export class AuthGuard implements CanActivate {
           }
         }
       } else {
-        // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
+        console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);
         return false;
       }
@@ -433,7 +437,7 @@ export class AuthGuard implements CanActivate {
   // l'esitente funzionante
   // ------------------------------------------------------------------------
   _canActivate() {
-    this.logger.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
+    console.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
 
     if ((this.user) ||
       (this.is_verify_email_page === true) ||

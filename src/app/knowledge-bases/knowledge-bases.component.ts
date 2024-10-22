@@ -1438,7 +1438,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
+      console.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
       if (body) {
         this.onAddMultiKb(body)
       }
@@ -1455,7 +1455,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
       if (body) {
         this.onAddMultiKb(body)
       }

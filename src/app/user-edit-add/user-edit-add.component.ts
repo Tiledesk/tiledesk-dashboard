@@ -138,6 +138,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   profile_name_for_segment: string;
   appSumoProfile: string;
   public hideHelpLink: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   constructor(
     private router: Router,
@@ -191,6 +192,12 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.getCurrentUrl();
     this.translateTagNotificationMsgs();
     this.getBrowserVersion();
+    this.listenSidebarIsOpened();
+    this.trackPage()
+   
+  }
+
+  trackPage() {
     if (!isDevMode()) {
       if (window['analytics']) {
         try {
@@ -204,6 +211,12 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     }
   }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[USER-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {

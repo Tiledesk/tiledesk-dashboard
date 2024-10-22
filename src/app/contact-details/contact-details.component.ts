@@ -124,8 +124,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
-    // this.auth.checkRoleForCurrentProject();
     this.getRequesterIdParam_AndThenGetRequestsAndContactById();
     this.getCurrentProject();
     this.getCurrentUser();

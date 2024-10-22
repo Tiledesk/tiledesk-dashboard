@@ -14,6 +14,7 @@
   "uploadEngine": "${UPLOAD_ENGINE}",
   "pushEngine": "${PUSH_ENGINE}",
   "baseImageUrl": "${API_BASEIMAGE_URL}",
+  "fileUploadAccept":"${FILE_UPLOAD_ACCEPT}",
   "logLevel": "${LOG_LEVEL}",
   "communityTemplatesUrl": "${COMMUNITY_TEMPLATES_URL}",
   "templatesUrl": "${TEMPLATES_URL}",

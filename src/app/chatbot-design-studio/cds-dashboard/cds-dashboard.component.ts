@@ -113,9 +113,7 @@ export class CdsDashboardComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
-
     this.getTranslations();
-    this.auth.checkRoleForCurrentProject();
     this.getUrlParams();
     this.diplayPopup();
     // this.getFaqKbId();

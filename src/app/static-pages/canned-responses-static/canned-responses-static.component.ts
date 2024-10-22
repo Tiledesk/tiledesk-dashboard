@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
 import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'appdashboard-canned-responses-static',
@@ -63,12 +64,15 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
   ) {
     super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('canned-static')
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();

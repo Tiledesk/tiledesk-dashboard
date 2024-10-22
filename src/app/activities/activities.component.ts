@@ -19,6 +19,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -90,10 +91,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private activitiesService: ActivitiesService,
     public appConfigService: AppConfigService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('activities')
     this.selectedAgentId = '';
     this.getBrowserLanguage();
     this.getCurrentProject();

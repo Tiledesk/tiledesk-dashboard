@@ -18,27 +18,11 @@ export class UploadImageService {
   public attachmentDeleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public imageWasUploaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  public uploadImageErrorMsg: string;
-  public fileNotSupportedMsg: string;
   constructor(
     private logger: LoggerService,
     private notify: NotifyService,
     private translate: TranslateService
   ) {
-    this.getTranslations();
-  }
-
-  getTranslations() {
-    this.translate.get('SorryTheFollowingErrorOccurredWhileUploadingTheImage')
-      .subscribe((text: string) => {
-        this.uploadImageErrorMsg = text;
-        // console.log('[UPLOAD-IMAGE-FB.SERV] - getTranslations - uploadImageError ', text)
-      });
-    this.translate.get('SorryFileTypeNotSupported')
-      .subscribe((text: string) => {
-        this.fileNotSupportedMsg = text;
-        // console.log('[UPLOAD-IMAGE-FB.SERV] - getTranslations - fileNotSupportedMsg ', text)
-      });
   }
 
   // ---------------------------------------------------
@@ -47,9 +31,6 @@ export class UploadImageService {
   public uploadUserAvatar(file: any, user_id: string) {
     this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - FILE ', file)
     this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - FILE > TYPE ', file.type);
-
-    if (file.type === "image/png" || file.type === "image/jpeg") {
-
 
       const file_name = 'photo.jpg';
       this.logger.log('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - FILE NAME ', file_name);
@@ -94,7 +75,6 @@ export class UploadImageService {
         }, (error: any) => {
 
           this.userImageWasUploaded.next(false);
-          this.notify.showToast(this.uploadImageErrorMsg + error, 4, 'report_problem')
           // A full list of error codes is available at
           // https://firebase.google.com/docs/storage/web/handle-errors
           this.logger.error('[UPLOAD-IMAGE-FB.SERV] - UPLOAD USER PHOTO - ERROR ', error)
@@ -119,9 +99,6 @@ export class UploadImageService {
           });
         }
       );
-    } else {
-      this.notify.showToast(this.fileNotSupportedMsg, 4, 'report_problem')
-    }
   }
 
   // ---------------------------------------------------
@@ -308,7 +285,6 @@ export class UploadImageService {
       }, (error: any) => {
 
         //  this.userImageWasUploaded.next(false);
-        this.notify.showToast(this.uploadImageErrorMsg + error, 4, 'report_problem')
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
         // console.error('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - ERROR ', error)

@@ -46,6 +46,7 @@ export class SettingsSidebarComponent implements OnInit {
   ADD_DEPT_ROUTE_IS_ACTIVE: boolean;
   TRIGGER_ROUTE_IS_ACTIVE: boolean;
   TEAMMATES_ROUTE_IS_ACTIVE: boolean;
+  TEAMMATES_ADD_ROUTE_IS_ACTIVE: boolean;
   GROUPS_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
   ADD_GROUP_ROUTE_IS_ACTIVE: boolean;
@@ -53,6 +54,8 @@ export class SettingsSidebarComponent implements OnInit {
   WIDGET_INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   CHATBOT_ROUTE_IS_ACTIVE: boolean;
   PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
+  WEBHOOK_ROUTE_IS_ACTIVE: boolean;
+  SMTP_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   KNOWLEDGE_BASES_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
@@ -569,6 +572,14 @@ export class SettingsSidebarComponent implements OnInit {
       this.logger.log( '[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE)
     }
 
+    if (this.route.indexOf('/user/add') !== -1) {
+      this.TEAMMATES_ADD_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ADD_ROUTE_IS_ACTIVE)
+    } else {
+      this.TEAMMATES_ADD_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - TEAMMATES_ADD_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ADD_ROUTE_IS_ACTIVE)
+    }
+
     if (this.route.indexOf('/groups') !== -1) {
       this.GROUPS_ROUTE_IS_ACTIVE = true
       this.logger.log( '[SETTING-SIDEBAR] - GROUPS_ROUTE_IS_ACTIVE  ',this.GROUPS_ROUTE_IS_ACTIVE)
@@ -647,14 +658,6 @@ export class SettingsSidebarComponent implements OnInit {
       this.logger.log('[SETTING-SIDEBAR] - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE)
     }
 
-    if (this.route.indexOf('/project-settings/') !== -1) {
-      this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true
-      this.logger.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE )
-    } else {
-      this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false
-      this.logger.log( '[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ',  this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE )
-    }
-
     if (this.route.indexOf('/integrations') !== -1) {
       this.INTEGRATIONS_ROUTE_IS_ACTIVE = true
       this.logger.log('[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE)
@@ -678,6 +681,33 @@ export class SettingsSidebarComponent implements OnInit {
       this.TRANSLATIONS_ROUTE_IS_ACTIVE = false
       this.logger.log('[SETTING-SIDEBAR] - TRANSLATIONS_ROUTE_IS_ACTIVE  ', this.TRANSLATIONS_ROUTE_IS_ACTIVE)
     }
+
+
+    if (this.route.indexOf('/project-settings/') !== -1) {
+      this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ', this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE )
+    } else {
+      this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - PROJECT_SETTINGS_ROUTE_IS_ACTIVE  ',  this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE )
+    }
+
+    if (this.route.indexOf('/smtp-settings') !== -1) {
+      this.SMTP_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - SMTP_ROUTE_IS_ACTIVE  ', this.SMTP_ROUTE_IS_ACTIVE)
+    } else {
+      this.SMTP_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - SMTP_ROUTE_IS_ACTIVE  ', this.SMTP_ROUTE_IS_ACTIVE)
+    }
+
+    if (this.route.indexOf('/webhook') !== -1) {
+      this.WEBHOOK_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - WEBHOOK_ROUTE_IS_ACTIVE  ', this.WEBHOOK_ROUTE_IS_ACTIVE)
+    } else {
+      this.WEBHOOK_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - WEBHOOK_ROUTE_IS_ACTIVE  ', this.WEBHOOK_ROUTE_IS_ACTIVE)
+    }
+
+    
 
     
   }

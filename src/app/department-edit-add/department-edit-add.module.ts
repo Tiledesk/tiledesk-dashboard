@@ -11,9 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { PendingChangesGuard } from 'app/core/pending-changes.guard';
 import { MomentModule } from 'ngx-moment';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
-  { path: "", component: DepartmentEditAddComponent, canDeactivate: [PendingChangesGuard]},
+  // { path: "", component: DepartmentEditAddComponent, canDeactivate: [PendingChangesGuard]},
+  { path: "", component: DepartmentEditAddComponent},
 ];
 
 @NgModule({
@@ -31,7 +33,8 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     MomentModule,
-    NgSelectModule
+    NgSelectModule,
+    HttpClientModule
   ]
 })
 export class DepartmentEditAddModule { }
