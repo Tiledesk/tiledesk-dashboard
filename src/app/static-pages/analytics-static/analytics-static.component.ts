@@ -13,6 +13,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
 
@@ -81,6 +82,7 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public location: Location,
+    private roleService: RoleService
   ) {
     super(prjctPlanService, notify);
     // super(translate);
@@ -88,7 +90,8 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('analytics-static');
     this.getProjectUserRole();
     this.getOSCODE();
     this.getCurrentProject();

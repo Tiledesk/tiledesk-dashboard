@@ -7,6 +7,7 @@ import { AuthService } from 'app/core/auth.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { AppConfigService } from '../services/app-config.service';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-canned-responses-list',
   templateUrl: './canned-responses-list.component.html',
@@ -36,11 +37,13 @@ export class CannedResponsesListComponent implements OnInit {
     private auth: AuthService,
     private usersLocalDbService: LocalDbService,
     private usersService: UsersService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public roleService: RoleService
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('canned-list')
     this.getResponses();
     this.translateNotificationMsgs();
     // this.getMainPanelAndSetOverflow();

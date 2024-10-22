@@ -72,9 +72,6 @@ export class WebhookAddEditComponent implements OnInit {
     this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - modalMode ', this.modalMode);
     this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - selectWebhookId ', this.selectWebhookId);
 
-    // MI SERVE?
-    // this.auth.checkRoleForCurrentProject();
-
     if (this.modalMode === 'edit') {
       this.showSkeleton = true;
       this.getWebhookSubscriptionById();

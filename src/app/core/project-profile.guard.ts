@@ -116,6 +116,12 @@ export class ProjectProfileGuard implements CanActivate {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
 
+        // if ((planName !== PLAN_NAME.C && planName !== PLAN_NAME.F && url.indexOf('/notification-email') !== -1)) {
+        //   this.userIsAuthorized = false;
+        //   this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+        //   // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
+        // }
+
 
         // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan type', type, ' - userIsAuthorized ', this.userIsAuthorized);
       }
@@ -204,6 +210,8 @@ export class ProjectProfileGuard implements CanActivate {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
 
         }
+
+        
         // else {
         //   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS email ticketing', url.indexOf('/email') !== -1);
         // }
@@ -213,6 +221,11 @@ export class ProjectProfileGuard implements CanActivate {
           this.userIsAuthorized = false;
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
         }
+
+        // if (( planName === PLAN_NAME.A && url.indexOf('/notification-email') !== -1) ||  (planName === PLAN_NAME.B && url.indexOf('/notification-email') !== -1)  || (planName === PLAN_NAME.D && url.indexOf('/notification-email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/notification-email') !== -1) ||  (planName === PLAN_NAME.EE && url.indexOf('/notification-email') !== -1)) {
+        //   this.userIsAuthorized = false;
+        //   // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+        // }
 
         // PLAN B and PLAN C  AUTHORIZED TO OPERATING CANNED RESPONSES
         if ((planName === PLAN_NAME.B && url.indexOf('/cannedresponses') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/cannedresponses') !== -1)) {

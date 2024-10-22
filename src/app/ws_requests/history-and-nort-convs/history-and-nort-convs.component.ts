@@ -366,7 +366,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getTag();
     this.getCurrentUrlLoadRequests();
     this.getImageStorageAndChatBaseUrl();
-    // this.auth.checkRoleForCurrentProject();
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS

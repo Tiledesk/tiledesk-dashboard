@@ -26,6 +26,8 @@ import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
 import { BrandService } from 'app/services/brand.service'
 import { CacheService } from 'app/services/cache.service'
+// import { ProjectService } from 'app/services/project.service'
+// import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
 
 // import { SsoService } from './sso.service';
@@ -104,7 +106,9 @@ export class AuthService {
     private logger: LoggerService,
     public brandService: BrandService,
     private scriptService: ScriptService,
-    private cacheService:  CacheService
+    private cacheService:  CacheService,
+    // private projectService: ProjectService,
+    // public myapp: AppComponent
     // private prjctPlanService: ProjectPlanService,
   ) // public ssoService: SsoService
   {

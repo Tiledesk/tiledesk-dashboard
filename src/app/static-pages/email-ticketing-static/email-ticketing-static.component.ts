@@ -13,6 +13,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'appdashboard-email-ticketing-static',
@@ -50,14 +51,16 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
   ) {
     // super(translate); 
     super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('email-ticketing-static')
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();

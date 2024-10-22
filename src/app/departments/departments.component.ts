@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'departments',
@@ -80,13 +81,15 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     public notify: NotifyService,
     public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) { 
     super(prjctPlanService, notify);
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('depts')
     this.getOSCODE();
     this.getCurrentProject();
 

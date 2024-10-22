@@ -13,6 +13,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
@@ -71,14 +72,16 @@ export class DepartmentsStaticComponent extends PricingBaseComponent implements 
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    public roleService: RoleService
   ) {
     // super(translate);
     super(prjctPlanService, notify);
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('dept-edit-add-static')
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();

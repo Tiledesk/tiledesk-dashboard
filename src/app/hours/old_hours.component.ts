@@ -181,7 +181,7 @@ export class HoursComponent implements OnInit, OnDestroy {
     this.getCurrentProject();
     this.getOSCODE();
     // this.daysList = this.days
-    this.auth.checkRoleForCurrentProject();
+   
 
     // this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
     // this.logger.log('[HOURS] - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);

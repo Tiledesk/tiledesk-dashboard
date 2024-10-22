@@ -10,6 +10,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
 import { DepartmentService } from 'app/services/department.service';
 import { TranslateService } from '@ngx-translate/core';
+import { RoleService } from 'app/services/role.service';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -58,6 +59,7 @@ export class GroupsComponent implements OnInit {
     public brandService: BrandService,
     public departmentService: DepartmentService,
     private translate: TranslateService,
+    private roleService: RoleService
   ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
@@ -65,6 +67,7 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('groups')
     this.getCurrentProject();
     this.getOSCODE();
     this.getGroupsByProjectId();

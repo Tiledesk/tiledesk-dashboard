@@ -171,12 +171,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-
+    console.log('[BOTS-LIST] - HELLO !!! ')
   }
 
   ngOnInit() {
     this.getBrowserVersion();
-    this.auth.checkRoleForCurrentProject();
+  
     this.getProfileImageStorage();
 
     this.getCurrentProject();
@@ -593,7 +593,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;

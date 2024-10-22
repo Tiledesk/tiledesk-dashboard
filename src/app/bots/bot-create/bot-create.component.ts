@@ -163,8 +163,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
-    this.auth.checkRoleForCurrentProject();
+    console.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
+    
     this.getBrowserVersion();
     this.detectBrowserLang();
     this.getCurrentProject();

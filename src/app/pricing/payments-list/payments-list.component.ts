@@ -29,7 +29,7 @@ export class PaymentsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+   
     this.getProjectPlan();
     this.getBrowserVersion();
     // this.getLanguage()

@@ -135,7 +135,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.getTranslation();
     this.getOSCODE();
-    // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getAllContacts()
     this.getCurrentProject();

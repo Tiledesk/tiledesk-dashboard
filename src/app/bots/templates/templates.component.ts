@@ -365,12 +365,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   getTemplates() {
     this.showSpinner = true;
     this.route = this.router.url
-    this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
+    console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
         this.certfifiedTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res

@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { BrandService } from 'app/services/brand.service';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -36,7 +37,8 @@ export class WebhookComponent implements OnInit {
     private location: Location,
     private logger: LoggerService,
     private auth: AuthService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    public roleService: RoleService
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -44,6 +46,7 @@ export class WebhookComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.roleService.checkRoleForCurrentProject('webhook');
     this.getSubscriptions();
     this.translateNotificationMsgs();
     this.getBrowserVersion() ;

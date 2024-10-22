@@ -35,7 +35,7 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
-import { UsersService } from './services/users.service';
+// import { UsersService } from './services/users.service';
 
 
 
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
-        public usersService: UsersService,
+        // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
         this.router.events.subscribe((event) => {
