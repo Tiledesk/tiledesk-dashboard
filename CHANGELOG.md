@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.36-rc3
+- Handles email verification error messages
+
 ### 2.7.36-rc2
 - Improves role guard
 
