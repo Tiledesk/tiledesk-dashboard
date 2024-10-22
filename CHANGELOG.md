@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.36-rc2
+- Improves role guard
+
 ### 2.7.36-rc1
 - Adds role guard
 - Updates the libraries ua-parser-js, bootstrap and jquery
