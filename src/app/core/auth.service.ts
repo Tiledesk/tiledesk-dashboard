@@ -770,7 +770,7 @@ export class AuthService {
   // ------------------------------------------------------------
   // VERIFY EMAIL
   // ------------------------------------------------------------
-  emailVerify(user_id: string): Observable<User[]> {
+  emailVerify(user_id: string, code: string): Observable<User[]> {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -779,8 +779,8 @@ export class AuthService {
       })
     };
 
-    const url = this.VERIFY_EMAIL_URL + user_id
-    // const url = this.VERIFY_EMAIL_URL + user_id + '/' + code
+    // const url = this.VERIFY_EMAIL_URL + user_id
+    const url = this.VERIFY_EMAIL_URL + user_id + '/' + code
     this.logger.log('[AUTH-SERV] VERIFY EMAIL URL ', url)
     const body = { emailverified: true }
     return this._httpClient

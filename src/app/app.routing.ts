@@ -189,7 +189,7 @@ const routes: Routes = [
   { path: 'autologin/:route/:token', component: AutologinComponent },
 
 
-  { path: 'verify/email/:user_id', component: VerifyEmailComponent },
+  { path: 'verify/email/:user_id/:code', component: VerifyEmailComponent },
 
   // Projects
   { path: '', redirectTo: 'projects', pathMatch: 'full' },

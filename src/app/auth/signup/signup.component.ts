@@ -1036,6 +1036,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   onPasswordStrengthChanged(event: boolean) {
+    console.log('onPasswordStrengthChanged ', event)
     this.strongPassword = event;
   }
 
