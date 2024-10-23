@@ -518,7 +518,7 @@
 
                           <!-- File upload -->
                           <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload
-                            style="display: none;">
+                            style="display: none;" [accept]="fileUploadAccept">
 
                           <div class="file-upload">
                             <button class="btn  pull-left upload-btn" (click)="fileUpload.click()">
@@ -568,7 +568,9 @@
                 <div class="chat-header-footer-wpr-btn">
                   <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
                     [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" 
+                    #tooltip="matTooltip"
+                    [matTooltipDisabled]="request?.status == 1000"
                     matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
                       style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
@@ -2619,7 +2621,6 @@
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
                       <!--  Btn Add Notes (note: is disabled if the current user has agent role and is not among the participants) -->
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
-                      <!-- DISABLE_ADD_NOTE_AND_TAGS  {{DISABLE_ADD_NOTE_AND_TAGS}}  CURRENT_USER_ROLE {{ CURRENT_USER_ROLE }} -->
                       <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
                         style="margin-bottom: 0px;" (click)="addNote()"
                         [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
@@ -3333,7 +3334,7 @@
 
           <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
            
-              <mat-tab-group  mat-align-tabs="center"  *ngIf="actionInModal === 'reassign'">
+              <mat-tab-group  mat-align-tabs="center"  *ngIf="actionInModal === 'reassign'" [ngClass]="{'mat-tab-group-on-panel': CHAT_PANEL_MODE === true}">
                 <mat-tab label="{{'HumanTeammates' | translate }} ( {{projectUsersList?.length}} )"> 
                   <!-- assign-reassign-modal-card-in-accordion -->
                   <div class="card assign-reassign-modal-card"
@@ -3358,12 +3359,12 @@
                             <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
                             <!-- --------------------------------------------------------------------------------------------------- -->
                             <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
-                              <span *ngIf="actionInModal === 'reassign'">
+                              <!-- <span *ngIf="actionInModal === 'reassign'">
                                 <h4 style="font-weight:400"
                                   [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                                   {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
                                 </h4>
-                              </span>
+                              </span> -->
 
                               <span *ngIf="actionInModal === 'invite'">
                                 <h4 style="font-weight:400"
@@ -4035,7 +4036,7 @@
               <mat-expansion-panel  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    {{'Departments' | translate}}  ( {{departments?.length }})
+                    {{'Departments' | translate}}  ( {{departments?.length }} )
                   </mat-panel-title>
                   <!- - <mat-panel-description>
                     2 Currently I am {{panelOpenState ? 'open' : 'closed'}}
