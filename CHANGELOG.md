@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.36-rc4
+- Minor improvements and bug fixing
+
 ### 2.7.36-rc3
 - Handles email verification error messages
 
