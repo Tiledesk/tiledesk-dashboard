@@ -572,7 +572,9 @@
                     matTooltipPosition='below' matTooltipHideDelay="100">
                     <i class="material-icons"
                       style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
-                    <span style="vertical-align: middle"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
+                    <span style="vertical-align: middle">
+                       {{ 'RequestMsgsPage.Enter' | translate }} 
+                    </span>
                   </button>
                 </div>
               </div>
@@ -2450,7 +2452,7 @@
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         <span class="followers-label" [ngClass]="{'followers-label-chat':CHAT_PANEL_MODE === true}">
-                          {{'Followers' | translate}}
+                         {{'Followers' | translate}}
                         </span>
                         <span matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
@@ -2480,9 +2482,13 @@
 
                       <div class="followers">
                         <!-- (change)="getValues($event)" -->
-                        <ng-select class="ticket-followers" [items]="projectTeammates" bindLabel="label"
-                          [multiple]="true" placeholder="Search teammate" [(ngModel)]="selectedFollowers"
-                          (add)="addFollower($event)" (remove)="removeFollower($event)" [hideSelected]="true"
+                        <ng-select class="ticket-followers" [items]="projectTeammates" 
+                          bindLabel="label"
+                          [multiple]="true" placeholder="Search teammate" 
+                          [(ngModel)]="selectedFollowers"
+                          (add)="addFollower($event)" 
+                          (remove)="removeFollower($event)" 
+                          [hideSelected]="true"
                           (clear)="removeAllFollowers($event)">
                         </ng-select>
 
@@ -2613,7 +2619,6 @@
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
                       <!--  Btn Add Notes (note: is disabled if the current user has agent role and is not among the participants) -->
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
-
                       <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
                         style="margin-bottom: 0px;" (click)="addNote()"
                         [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">

@@ -327,7 +327,7 @@ import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.com
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
-import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
+// import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
 // import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component'; // now lazy
 // import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component'; // now lazy
@@ -403,6 +403,7 @@ import { N8nIntegrationComponent } from './integrations/list/n8n-integration/n8n
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
+import { RoleService } from './services/role.service';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 
 // import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
@@ -645,7 +646,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OnboardingWidgetComponent, 
     CommunityTemplateDtlsComponent, 
     HomePromoDesignStudioComponent,
-    PasswordStrengthComponent,
+    // PasswordStrengthComponent,
     CloneBotComponent,
     // ContactsStaticComponent, // now lazy
     // CannedResponsesStaticComponent, // now lazy
@@ -839,6 +840,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OpenaiService,
     PopupService,
     NotificationService,
+    RoleService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

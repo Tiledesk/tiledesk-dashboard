@@ -45,6 +45,7 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -1328,14 +1329,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
-        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.CURRENT_USER_ROLE = userRole;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        if(projectUser){
+          this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', projectUser)
+          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+          this.CURRENT_USER_ROLE = projectUser.role;
+        }
       })
   }
 
@@ -1700,7 +1699,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((wsrequest) => {
+      .subscribe(async(wsrequest) => {
 
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
@@ -1782,12 +1781,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by label ', this.request['closed_by_label'])
               } else {
                 this.usersService.getProjectUserByUserId(this.request['closed_by'])
-                  .subscribe((projectUser: any) => {
+                  .subscribe((projectUser: ProjectUser) => {
                     // this.logger.log('projectUser ', projectUser)
-                    if (projectUser && projectUser[0] && projectUser[0].id_user) {
-                      this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'ws-requests-msgs');
+                    if (projectUser && projectUser.id_user) {
+                      this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user, 'ws-requests-msgs');
                       this.logger.log('WS-REQUESTS-MSGS] GET projectUser by USER-ID projectUser id', projectUser);
-                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                      this.request['closed_by_label'] = this.translate.instant('By') + ' ' + projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
                     } else {
                       // this.logger.log('[WS-REQUESTS-MSGS] THE REQUEST HAS NOT BEEN CLOSED BY A PROJECT USER');
                       this.request['closed_by_label'] = this.translate.instant('By') + ' ' + this.request.requester_fullname
@@ -1922,6 +1921,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // -------------------------------------------------------------------
           this.members_array = this.request.participants;
           this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById PARTICIPANTS_ARRAY ', this.members_array)
+
+          if(!this.CURRENT_USER_ROLE) {
+            this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project) 
+            console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+          }
 
           this.members_array.forEach(member => {
 
@@ -3011,26 +3015,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   addNote() {
     // this.disableMainPanelScroll();
-    this.showSpinnerInAddNoteBtn = true;
-    this.wsRequestsService.createNote(this.new_note, this.id_request)
-      .subscribe((responses: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
-        this.showSpinnerInAddNoteBtn = false;
-      }, () => {
-        this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
-        this.new_note = ''
-        // var panel = <HTMLElement>document.querySelector('.note-panel')
-        // panel.scrollTop = panel.scrollHeight;
-        // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
+    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
+      this.showSpinnerInAddNoteBtn = true;
+      this.wsRequestsService.createNote(this.new_note, this.id_request)
+        .subscribe((responses: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
+          this.showSpinnerInAddNoteBtn = false;
+        }, () => {
+          this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
+          this.new_note = ''
+          // var panel = <HTMLElement>document.querySelector('.note-panel')
+          // panel.scrollTop = panel.scrollHeight;
+          // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
 
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
-        this.showSpinnerInAddNoteBtn = false;
-        // this.enableMainPanelScroll()
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
+          this.showSpinnerInAddNoteBtn = false;
+          // this.enableMainPanelScroll()
 
-      });
+        });
+    }
   }
 
 
@@ -5019,12 +5025,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
-    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser', projectUser)
       if (projectUser) {
-        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser[0]._id);
+        this.logger.log('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - projectUser id', projectUser._id);
 
-        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser[0]._id]);
+        this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser._id]);
       }
     }, (error) => {
       this.logger.error('[WS-REQUESTS-MSGS] GET projectUser by USER-ID & GO TO EDIT PROJECT USER - ERROR ', error);

@@ -541,15 +541,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getProjectUserRole() {
     // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
         // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE user_role ', user_role);
-        if (user_role) {
-          this.CURRENT_USER_ROLE = user_role;
-          if (user_role === 'agent') {
+        if (projectUser) {
+          this.CURRENT_USER_ROLE = projectUser.role;
+          if (this.CURRENT_USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
             this.displayBtnLabelSeeYourRequets = true
 
@@ -1564,7 +1560,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
-          this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
+          // console.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
 
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
 

@@ -20,6 +20,7 @@ declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -173,11 +174,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -1036,6 +1038,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   onPasswordStrengthChanged(event: boolean) {
+    console.log('onPasswordStrengthChanged ', event)
     this.strongPassword = event;
   }
 

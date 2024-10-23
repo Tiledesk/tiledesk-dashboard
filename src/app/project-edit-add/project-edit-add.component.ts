@@ -28,6 +28,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
 import { CacheService } from 'app/services/cache.service';
+import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -280,7 +282,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private _fb: FormBuilder,
     private contactsService: ContactsService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private roleService: RoleService
     // private formGroup: FormGroup
 
   ) {
@@ -301,7 +304,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+
     this.getBrowserVersion()
     this.getCurrentUrlAndSwitchView();
     this.getProjectPlan();
@@ -426,17 +429,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+        if(projectUser.role) {
+          this.USER_ROLE = projectUser.role
         }
-      });
+      }
+    });
   }
 
   translateStrings() {
@@ -855,14 +855,42 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
 
-
+  // 
 
   goToProjectSettings_SmartAssignment() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment');
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.id_project + '/project-settings/smartassignment']);
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE !== 'agent') {
+        if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          // this.logger.log('goToProjectSettings_Security HERE 1 ')
+          if (this.subscription_is_active === true) {
+            // this.logger.log('goToProjectSettings_Security HERE 2 ')
+            this.router.navigate(['project/' + this.id_project + '/project-settings/smartassignment']);
+          } else if (this.subscription_is_active === false) {
+            // this.logger.log('goToProjectSettings_Security HERE 3 ')
+            if (this.profile_name === PLAN_NAME.C) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+            } else if (this.profile_name === PLAN_NAME.F) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            }
+          }
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
+          this.prjct_profile_type === 'free'
+        ) {
+          // this.logger.log('goToProjectSettings_Security HERE 4 ')
+          this.presentModalFeautureAvailableOnlyWithPlanC()
+        }
+      } else {
+        // this.logger.log('goToProjectSettings_Security HERE 5 ')
+        this.presentModalAgentCannotManageAvancedSettings()
+      }
     } else {
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
@@ -983,6 +1011,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   goToCustomizeNotificationEmailPage() {
+    // this.roleService.checkRoleForCurrentProject('notification-email');
     // this.router.navigate(['project/' + this.id_project + '/notification-email'])
     this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
 

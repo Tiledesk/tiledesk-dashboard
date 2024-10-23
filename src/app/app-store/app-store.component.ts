@@ -17,6 +17,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -93,7 +94,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
     this.getApps();
     this.getCurrentProject();
     // this.getToken();
@@ -269,16 +270,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
 
@@ -747,7 +744,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   goToCreateBot(type: string) {
-    //  this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
     if (type !== 'native' && type !== 'tilebot') {
       this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
     } else if (type === 'native') {

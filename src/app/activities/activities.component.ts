@@ -18,6 +18,8 @@ import { ActivitiesService } from './activities-service/activities.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
+import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -89,10 +91,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private activitiesService: ActivitiesService,
     public appConfigService: AppConfigService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('activities')
     this.selectedAgentId = '';
     this.getBrowserLanguage();
     this.getCurrentProject();
@@ -389,12 +393,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                       activity['closed_by_label'] = storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
                     } else {
                       this.usersService.getProjectUserByUserId(activity.actor.id)
-                        .subscribe((projectUser: any) => {
+                        .subscribe((projectUser: ProjectUser) => {
 
-                          if (projectUser && projectUser[0] && projectUser[0].id_user) {
-                            this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'activities');
+                          if (projectUser && projectUser.id_user) {
+                            this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user, 'activities');
                             this.logger.log('ActivitiesComponent] GET projectUser by USER-ID projectUser id', projectUser);
-                            activity['closed_by_label'] = projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
+                            activity['closed_by_label'] = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
                           } else {
 
                             activity['closed_by_label'] = activity.target.object.userFullname

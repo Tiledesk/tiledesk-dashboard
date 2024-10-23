@@ -304,7 +304,7 @@
             </div>
 
             <!-- *ngIf="isVisiblePwsStrengthBar" -->
-            <password-strength *ngIf="isVisiblePwsStrengthBar" [passwordToCheck]="userForm.value.password"
+            <password-strength [passwordToCheck]="userForm.value.password"
               (passwordStrength)="onPasswordStrengthChanged($event)"></password-strength>
 
             <!-- TERMS AND CONDITION -->

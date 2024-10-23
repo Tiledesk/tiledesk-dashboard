@@ -1,5 +1,10 @@
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, RouterStateSnapshot, UrlTree } from '@angular/router';
+
 import { Chatbot } from 'app/models/faq_kb-model';
 import { TooltipOptions } from 'ng2-tooltip-directive';
+import { concat, from, isObservable, Observable, of } from 'rxjs';
+import { concatMap, first, last, takeWhile } from 'rxjs/operators';
 
 export const CutomTooltipOptions: TooltipOptions = {
     'show-delay': 0,
@@ -113,10 +118,10 @@ export function htmlEntities(str) {
     // .replace(/\n/g, '<br>')
 }
 
-export function unescapeHTML (str) {
+export function unescapeHTML(str) {
     return String(str)
-    .replace(/&lt;/g,'<')
-    .replace(/&gt;/g,'>')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
 }
 
 export function replaceEndOfLine(text) {
@@ -297,8 +302,8 @@ export enum APP_SUMO_PLAN_NAME {
 }
 
 export enum APPSUMO_PLAN_SEATS {
-    tiledesk_tier1 = 2, 
-    tiledesk_tier2 = 5, 
+    tiledesk_tier1 = 2,
+    tiledesk_tier2 = 5,
     tiledesk_tier3 = 10,
     tiledesk_tier4 = 20,
 };
@@ -406,7 +411,7 @@ export enum PLAN_NAME {
 
 export enum PLAN_SEATS {
     free = 1, // Sandbox
-    Growth = 4, 
+    Growth = 4,
     Scale = 15,
     Basic = 1,
     Premium = 2,
@@ -416,7 +421,7 @@ export enum PLAN_SEATS {
 
 
 export enum CHATBOT_MAX_NUM {
-    free = 2, 
+    free = 2,
     Basic = 5,
     Premium = 20,
     Team = 50,
@@ -424,7 +429,7 @@ export enum CHATBOT_MAX_NUM {
 };
 
 export enum KB_MAX_NUM {
-    free = 50, 
+    free = 50,
     Basic = 150,
     Premium = 300,
     Team = 1000,
@@ -432,12 +437,12 @@ export enum KB_MAX_NUM {
 };
 
 export const PLANS_LIST = {
-    FREE_TRIAL: { requests: 200,    messages: 0,    tokens: 100000,     email: 200,     chatbots: 20,      namespace: 3,   kbs: 50     }, // same as PREMIUM
-    Sandbox:    { requests: 200,    messages: 0,    tokens: 100000,     email: 200,     chatbots: 2,       namespace: 1,   kbs: 50     },
-    Basic:      { requests: 800,    messages: 0,    tokens: 2000000,    email: 200,     chatbots: 5,       namespace: 1,   kbs: 150    },
-    Premium:    { requests: 3000,   messages: 0,    tokens: 5000000,    email: 200,     chatbots: 20,      namespace: 3,   kbs: 300    },
-    Team:       { requests: 5000,   messages: 0,    tokens: 10000000,   email: 200,     chatbots: 50,      namespace: 10,  kbs: 1000   },
-    Custom:     { requests: 5000,   messages: 0,    tokens: 10000000,   email: 200,     chatbots: 50,      namespace: 10,  kbs: 1000   }
+    FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+    Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
+    Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+    Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+    Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+    Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
 }
 
 // Basic plan
@@ -453,7 +458,7 @@ export const featuresPlanD = [
     'Team Inbox',
     'Make integration',
     "1 Knowledge Base",
-    '150 contents across all Knowledge Bases', 
+    '150 contents across all Knowledge Bases',
     // '150 Contents for Knowledge Base', 
     '2,000,000 AI Tokens'
 ]
@@ -483,7 +488,7 @@ export const featuresPlanE = [
     'Livechat Support',
     'Analytics',
     "3 Knowledge Base",
-    '300 contents across all Knowledge Bases', 
+    '300 contents across all Knowledge Bases',
     '5,000,000 AI Tokens'
     // '250,000 AI Tokens'
 ]
@@ -514,7 +519,7 @@ export const featuresPlanEE = [
     'Livechat Support',
     'Analytics',
     "10 Knowledge Base",
-    '1,000 contents across all Knowledge Bases', 
+    '1,000 contents across all Knowledge Bases',
     '10,000,000 AI Tokens'
 ]
 
@@ -547,7 +552,7 @@ export const featuresPlanF = [
     'Support to host Tiledesk on your Infrastructure',
     'Premium Customer Support',
 ]
-  
+
 // Custom Plan
 export const highlightedFeaturesPlanF = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
@@ -574,34 +579,34 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '5.000 Chat/mo.' }
 ]
-  
 
 
-export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
+
+export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')
-    if(chatBotDate > dateLimit){
+    if (chatBotDate > dateLimit) {
         // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
         let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
         window.open(urlCDS_v2, '_self')
     } else {
-        router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+        router.navigate(['project/' + project_id + '/cds/', chatbot._id, 'intent', '0']);
     }
 }
 
-export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
+export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')
-    if(chatBotDate > dateLimit){
+    if (chatBotDate > dateLimit) {
         // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
         let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/settings?active=bot_detail` //  /intent/0
         window.open(urlCDS_v2, '_self')
     } else {
-        router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+        router.navigate(['project/' + project_id + '/cds/', chatbot._id, 'intent', '0']);
     }
 }
 
@@ -624,16 +629,16 @@ export const botDefaultLanguages = [
     { code: 'es', name: 'Spanish - es' },
     { code: 'sv', name: 'Swedish - sv' },
     { code: 'tr', name: 'Turkish - tr' }
-  ];
+];
 
-  export function getIndexOfbotDefaultLanguages(langcode: string): number {
-    this.logger.log('getIndexOfbotDefaultLanguages langcode ' , langcode) 
-    this.logger.log('getIndexOfbotDefaultLanguages index' , langcode) 
+export function getIndexOfbotDefaultLanguages(langcode: string): number {
+    this.logger.log('getIndexOfbotDefaultLanguages langcode ', langcode)
+    this.logger.log('getIndexOfbotDefaultLanguages index', langcode)
     const index = botDefaultLanguages.findIndex(x => x.code === langcode);
     return index
-  }
+}
 
-  export const dialogflowLanguage = [
+export const dialogflowLanguage = [
     { code: 'zh-cn', name: 'Chinese (Simplified) — zh-cn' },
     { code: 'zh-hk', name: 'Chinese (Hong Kong) — zh-hk' },
     { code: 'zh-tw', name: 'Chinese (Traditional) — zh-tw' },
@@ -657,17 +662,17 @@ export const botDefaultLanguages = [
     { code: 'th', name: 'Thai — th' },
     { code: 'tr', name: 'Turkish — tr' },
     { code: 'uk', name: 'Ukrainian — uk' },
-  ];
+];
 
 
-  export function getIndexOfdialogflowLanguage(langcode: string): number {
+export function getIndexOfdialogflowLanguage(langcode: string): number {
     const index = this.dialogflowLanguage.findIndex(x => x.code === langcode);
     return index
-  }
+}
 
 
-  export function loadTokenMultiplier(ai_models) { 
-    let models_string = ai_models.replace(/ /g,'');
+export function loadTokenMultiplier(ai_models) {
+    let models_string = ai_models.replace(/ /g, '');
 
     let models = {};
     if (!models_string) {
@@ -707,15 +712,15 @@ export const botDefaultLanguages = [
 //     'GPT-4o-mini':{ name: "GPT-4o mini",value: "gpt-4o-mini", status: "active"}
 // }
 
-export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: string, status: "active" | "inactive"}> = [
-    { name: "GPT-3 (DaVinci)",                  value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
-    { name: "GPT-3.5 Turbo",                    value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",            status: "active"    },
-    { name: "GPT-4 (Legacy)",                   value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                    status: "active"    },
-    { name: "GPT-4 Turbo Preview",              value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",      status: "active"    },
-    { name: "GPT-4o",                           value: "gpt-4o",                description: "TYPE_GPT_MODEL.gpt-4o.description",                   status: "active"    },
-    { name: "GPT-4o mini",                      value: "gpt-4o-mini",           description: "TYPE_GPT_MODEL.gpt-4o-mini.description",              status: "active"    },
-    { name: "OpenAI o1-mini",                   value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",                  status: "active"    },
-    { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    }
+export const TYPE_GPT_MODEL: Array<{ name: string, value: string, description: string, status: "active" | "inactive" }> = [
+    { name: "GPT-3 (DaVinci)", value: "text-davinci-003", description: "TYPE_GPT_MODEL.text-davinci-003.description", status: "inactive" },
+    { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description", status: "active" },
+    { name: "GPT-4 (Legacy)", value: "gpt-4", description: "TYPE_GPT_MODEL.gpt-4.description", status: "active" },
+    { name: "GPT-4 Turbo Preview", value: "gpt-4-turbo-preview", description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description", status: "active" },
+    { name: "GPT-4o", value: "gpt-4o", description: "TYPE_GPT_MODEL.gpt-4o.description", status: "active" },
+    { name: "GPT-4o mini", value: "gpt-4o-mini", description: "TYPE_GPT_MODEL.gpt-4o-mini.description", status: "active" },
+    { name: "OpenAI o1-mini", value: "o1-mini", description: "TYPE_GPT_MODEL.o1-mini.description", status: "active" },
+    { name: "OpenAI o1-preview", value: "o1-preview", description: "TYPE_GPT_MODEL.o1-preview.description", status: "active" }
 ]
 export const CHANNELS_NAME = {
     CHAT21: 'chat21',
@@ -729,14 +734,14 @@ export const CHANNELS_NAME = {
 }
 
 export const CHANNELS = [
-    { id: CHANNELS_NAME.CHAT21,         name: 'Chat'                },
-    { id: CHANNELS_NAME.EMAIL,          name: 'Email'               },
-    { id: CHANNELS_NAME.FORM,           name: 'Ticket'              },
-    { id: CHANNELS_NAME.TELEGRAM,       name: 'Telegram'            },
-    { id: CHANNELS_NAME.MESSANGER,      name: 'Facebook Messenger'  },
-    { id: CHANNELS_NAME.WHATSAPP,       name: 'WhatsApp'            },
-    { id: CHANNELS_NAME.VOICE_VXML,     name: 'Voice'               },
-    { id: CHANNELS_NAME.SMS_TWILIO,     name: 'SMS'                 },
+    { id: CHANNELS_NAME.CHAT21, name: 'Chat' },
+    { id: CHANNELS_NAME.EMAIL, name: 'Email' },
+    { id: CHANNELS_NAME.FORM, name: 'Ticket' },
+    { id: CHANNELS_NAME.TELEGRAM, name: 'Telegram' },
+    { id: CHANNELS_NAME.MESSANGER, name: 'Facebook Messenger' },
+    { id: CHANNELS_NAME.WHATSAPP, name: 'WhatsApp' },
+    { id: CHANNELS_NAME.VOICE_VXML, name: 'Voice' },
+    { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
 
 ]
 
@@ -881,8 +886,8 @@ export const URL_install_tiledesk_on_wordpress = 'https://gethelp.tiledesk.com/a
 export const URL_install_tiledesk_on_prestashop = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-prestashop/'
 export const URL_install_tiledesk_on_joomla = 'https://gethelp.tiledesk.com/articles/install-tiledesk-on-joomla/'
 export const URL_install_tiledesk_on_bigcommerce = 'https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-bigcommerce-website/'
-export const URL_install_tiledesk_on_wix ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
-export const URL_install_tiledesk_on_magento ="https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
+export const URL_install_tiledesk_on_wix = "https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-wix-website/"
+export const URL_install_tiledesk_on_magento = "https://gethelp.tiledesk.com/articles/how-to-install-the-tiledesk-live-chat-widget-on-a-magento-website/"
 export const URL_more_info_chatbot_forms = 'https://gethelp.tiledesk.com/articles/tiledesk-chatbot-forms/';
 
 export const URL_AI_model_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#1-ai-models';
@@ -890,4 +895,6 @@ export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advance
 export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
 export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
-export const URL_kb ='https://gethelp.tiledesk.com/categories/knowledge-base/'
+export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
+
+

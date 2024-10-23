@@ -208,9 +208,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
-
-    this.logger.log('[FAQ-COMP] »»» HELLO FAQ COMP')
+    console.log('[FAQ-COMP] »»» HELLO FAQ COMP')
 
     this.clearSearchedQuestionStored();
 
@@ -230,7 +228,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getOSCODE();
 
     this.checkBotImageUploadIsComplete();
-    this.getParamsBotType();
+    // this.getParamsBotType();
 
     this.getTranslations();
 
@@ -281,7 +279,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getParamsBotType() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-      // console.log('getParamsBotType params', params) 
+      console.log('FAQ COMP getParamsBotType params', params) 
       if (this.botType && this.botType === 'external') {
         this.botTypeForInput = 'External'
         this.is_external_bot = true

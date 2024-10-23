@@ -26,6 +26,8 @@ import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
 import { BrandService } from 'app/services/brand.service'
 import { CacheService } from 'app/services/cache.service'
+// import { ProjectService } from 'app/services/project.service'
+// import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
 
 // import { SsoService } from './sso.service';
@@ -104,7 +106,9 @@ export class AuthService {
     private logger: LoggerService,
     public brandService: BrandService,
     private scriptService: ScriptService,
-    private cacheService:  CacheService
+    private cacheService:  CacheService,
+    // private projectService: ProjectService,
+    // public myapp: AppComponent
     // private prjctPlanService: ProjectPlanService,
   ) // public ssoService: SsoService
   {
@@ -262,7 +266,7 @@ export class AuthService {
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
     this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
-    this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
+    console.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
   }
@@ -467,7 +471,7 @@ export class AuthService {
   }
 
   checkRoleForCurrentProject() {
-    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
+   console.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -475,15 +479,15 @@ export class AuthService {
       project_id = this.selected_project_id
     }
     const storedProjectJson = localStorage.getItem(project_id)
-    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
-    this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
+    console.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
+    // console.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
-      this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
+      console.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
       this._user_role = storedProjectObject['role']
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
-          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          console.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role, ' RUN NAVIGATE')
           this.router.navigate([`project/${project_id}/unauthorized`])
           // this.router.navigate(['/unauthorized']);
         } else {
@@ -766,7 +770,7 @@ export class AuthService {
   // ------------------------------------------------------------
   // VERIFY EMAIL
   // ------------------------------------------------------------
-  emailVerify(user_id: string): Observable<User[]> {
+  emailVerify(user_id: string, code: string): Observable<User[]> {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -775,7 +779,8 @@ export class AuthService {
       })
     };
 
-    const url = this.VERIFY_EMAIL_URL + user_id
+    // const url = this.VERIFY_EMAIL_URL + user_id
+    const url = this.VERIFY_EMAIL_URL + user_id + '/' + code
     this.logger.log('[AUTH-SERV] VERIFY EMAIL URL ', url)
     const body = { emailverified: true }
     return this._httpClient

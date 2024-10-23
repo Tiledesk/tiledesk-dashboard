@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
+import { ProjectUser } from 'app/models/project-user';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -77,13 +78,11 @@ export class BotsStaticComponent extends PricingBaseComponent implements OnInit 
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[BOTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+        this.logger.log('[BOTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      }
     });
   }
 

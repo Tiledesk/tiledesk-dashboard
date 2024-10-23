@@ -16,6 +16,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from 'app/services/app-config.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FaqKbService } from 'app/services/faq-kb.service';
 
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
@@ -58,6 +59,7 @@ export class AuthGuard implements CanActivate {
     private usersService: UsersService,
     private logger: LoggerService,
     public localDbService: LocalDbService,
+    private faqKbService: FaqKbService,
     private _snackBar: MatSnackBar,
     public appConfigService: AppConfigService,
     private _httpClient: HttpClient,
@@ -205,7 +207,7 @@ export class AuthGuard implements CanActivate {
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-        this.usersService.getBotsByProjectIdAndSaveInStorage();
+        this.faqKbService.getBotsByProjectIdAndSaveInStorage();
 
       } else {
         this.logger.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO UNAUTHORIZED PAGE ');
@@ -338,8 +340,8 @@ export class AuthGuard implements CanActivate {
   // canActivate SSO 
   // ------------------------------------------------------------------------
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE AlwaysAuthGuard');
-    // this.logger.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
+   console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE !!! AlwaysAuthGuard');
+   console.log('[AUTH-GUARD] - SSO - CAN ACTIVATE user ', this.user);
 
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
@@ -386,7 +388,7 @@ export class AuthGuard implements CanActivate {
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams stringified', stringifed_queryParams);
 
     const HAS_JWT = stringifed_queryParams.includes('JWT');
-    // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
+    console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT', HAS_JWT);
 
     let token = next.queryParams.token
     // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT Token ', token);
@@ -401,9 +403,13 @@ export class AuthGuard implements CanActivate {
       return true;
 
     } else {
-      // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT (2)', HAS_JWT);
+      console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS JWT (2)', HAS_JWT);
+      console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams user (2)', this.user);
       if (!HAS_JWT) {
+
         this.router.navigate(['/login']);
+        // this.auth.signOut('canActivate');
+
         // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
         // this.logger.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         const storedRoute = this.localDbService.getFromStorage('wannago')
@@ -420,7 +426,7 @@ export class AuthGuard implements CanActivate {
           }
         }
       } else {
-        // this.logger.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
+        console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
         this.router.navigate(['/autologin', route, token]);
         return false;
       }
@@ -431,7 +437,7 @@ export class AuthGuard implements CanActivate {
   // l'esitente funzionante
   // ------------------------------------------------------------------------
   _canActivate() {
-    this.logger.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
+    console.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
 
     if ((this.user) ||
       (this.is_verify_email_page === true) ||

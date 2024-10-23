@@ -4,6 +4,9 @@ import { SignupComponent } from './signup.component';
 import { RouterModule ,Routes} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PasswordStrengthComponent } from './password-strength/password-strength.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
   { path: "", component: SignupComponent},
@@ -11,14 +14,17 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    SignupComponent
+    SignupComponent,
+    PasswordStrengthComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule,
+    SatPopoverModule
   ],
   exports: [
     RouterModule

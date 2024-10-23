@@ -15,6 +15,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { ProjectUser } from 'app/models/project-user';
 
 
 
@@ -154,14 +155,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getProfileImageStorage() {
@@ -365,12 +364,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   getTemplates() {
     this.showSpinner = true;
     this.route = this.router.url
-    this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
+    console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
         this.certfifiedTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        console.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res

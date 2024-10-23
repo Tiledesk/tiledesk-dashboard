@@ -16,6 +16,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { DAYS } from './utils';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -62,9 +64,16 @@ export class HoursComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
-  ) { }
+    private roleService: RoleService
+  ) { 
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('hours')
+  }
 
   ngOnInit() {
+    
+    console.log('Hello HOURS on init ' ) 
+    
     this.getCurrentProject();
     this.getUserRole();
     this.getOSCODE();
@@ -95,11 +104,12 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getOSCODE() {
@@ -562,7 +572,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   //   this.getCurrentProject();
   //   this.getOSCODE();
   //   // this.daysList = this.days
-  //   this.auth.checkRoleForCurrentProject();
+
 
   //   // this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
   //   // this.logger.log('[HOURS] - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
