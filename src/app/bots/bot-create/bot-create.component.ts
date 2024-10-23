@@ -269,7 +269,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       'LearnMoreAboutDefaultRoles',
       'AgentsCannotManageChatbots',
       'FiletypeNotSupported',
-      'UploadedFileMayContainsDangerousCode'
+      'UploadedFileMayContainsDangerousCode',
+      'InvalidJSON'
     ]
 
     this.translate.get(keys).subscribe(translations => {
@@ -304,7 +305,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
           resolve(fileJsonToUpload)
         } catch (error) {
-          console.error('Errore nel parsing del JSON:', error);
+          console.error('Error while parsing JSON:', error);
           reject(error)
         }
       };
@@ -329,15 +330,19 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     const file: File = fileList[0];
     this.logger.log('fileChangeUploadChatbotFromJSON',file) 
 
-    let json = await this.readFileAsync(file).catch(e => {console.log('errorrrr', e); return;})
+    // Check for valid JSON
+    let json = await this.readFileAsync(file).catch(e => { return; })
+    if(!json){
+      this.notify.showToast(this.translationMap.get('InvalidJSON'), 4, 'report_problem')
+      return;
+    }
+
     const jsonString = JSON.stringify(json)
     // Check for XSS patterns
     if (containsXSS(jsonString)) {
       console.log("Potential XSS attack detected!");
       this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
       return;
-    } else {
-        console.log("No XSS patterns found.");
     }
   
 

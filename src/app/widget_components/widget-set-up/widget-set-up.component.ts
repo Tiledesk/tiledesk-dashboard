@@ -3182,8 +3182,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     } else {
 
+      
+
       let checkMaliciousURL = isMaliciousURL(event)
       if(checkMaliciousURL){
+        let logoUrlInput = (document.getElementById('change-logo') as HTMLInputElement)
+        logoUrlInput.value  = this.widgetLogoURL
+        this.IMAGE_EXIST = true;
+
         this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
         this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, isMaliciousURL)
         return;
@@ -3219,6 +3225,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   launcherLogoChange(event) {
     // this.logger.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+    let btnSaveFooterBrandAndLauncherBtn = <HTMLButtonElement>document.getElementById('btn-save-footer-brand--launcher-btn');
+    btnSaveFooterBrandAndLauncherBtn.disabled = false
 
     if (event.length === 0) {
 
@@ -3226,14 +3234,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.hasOwnLauncherBtn = false;
       this.hasOwnLauncherLogo = false;
 
+      btnSaveFooterBrandAndLauncherBtn.disabled = false;
 
     } else {
 
       const checkMaliciousURL = isMaliciousURL(event)
       if(checkMaliciousURL){
         this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
-        this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, isMaliciousURL)
-        
+        this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, checkMaliciousURL)
+        this.logoUrl = this.widgetLogoURL
+
+        btnSaveFooterBrandAndLauncherBtn.disabled = true
         this.customLauncherURL = null
         this.hasOwnLauncherBtn = false;
         this.hasOwnLauncherLogo = false;
