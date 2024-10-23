@@ -1688,7 +1688,7 @@
 
 											<div class="col-sm-12">
 
-												<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
+												<button id="btn-save-footer-brand--launcher-btn" class="btn btn-success-no-boxshadow  footerbrand-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveFooterBrandAndLauncherBtn()"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
