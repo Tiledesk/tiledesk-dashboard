@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { AuthService } from './auth.service';
-import { AdminGuard } from './admin.guard';
 import { NotifyService } from './notify.service';
 import { SsoService } from './sso.service';
 
@@ -11,7 +10,6 @@ import { SsoService } from './sso.service';
   providers: [
     AuthService,
     NotifyService,
-    AdminGuard,
     SsoService
   ],
 })

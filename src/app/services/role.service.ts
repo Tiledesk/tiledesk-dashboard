@@ -38,7 +38,7 @@ export class RoleService {
 
       const projectId = currentProject._id
 
-      const projectUserRole = this.usersService.project_user_role_bs.value
+      const projectUserRole = this.usersService.projectUser_bs.value.role
       console.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
       console.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
       if (projectUserRole) {

@@ -487,6 +487,8 @@
     "SupportedFileTypesPdfDocx":"Tipi di file supportati: pdf e docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb":"La dimensione del file supera {{file_size_limit}} Mb.",
     "FileTypeNotSupported":"Tipo di file non supportato",
+    "UploadedFileMayContainsDangerousCode": "Il file caricato potrebbe contenere codice dannoso",
+    "URLTypeNotAllowed": "Risorsa non consentita!",
     "FileSuccessfullyUploaded":"File da {{file_mb}} Mb caricato con successo.",
     "ToUpload": "per caricare",
     "CreateAnswers": "Crea risposte",
@@ -720,7 +722,9 @@
         "YourDetails": "I tuoi dettagli",
         "AddYourOwnPicture": "⚡️ Aggiungi la tua foto per dare alle tue conversazioni un'atmosfera più intima!",
         "AddYourOwnPicture_": "⚡️ Aggiungi la tua foto per dare alle tue conversazioni un'atmosfera più intima, poiché il tuo visitatore può vedere con chi sta parlando!",
-        "PreferredSize": "Dimensione preferita immagine 128x128 px - Formato immagine: .jpeg o .png"
+        "PreferredSize": "Dimensione preferita immagine 128x128 px - Formato immagine: .jpeg o .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Si è verificato un errore durante l'invio del link di verifica",
+        "YourProfileHasBeenUploaded": "il tuo profilo è stato aggiornato con successo"
     },
     "ChangePsw": {
         "ChangePsw": "Cambia password",
