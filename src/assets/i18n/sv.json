@@ -493,6 +493,8 @@
     "FileSizeExceedsFileSizeLimitMb":"Filstorleken överstiger {{file_size_limit}} Mb.",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb-fil har laddats upp.",
     "FileTypeNotSupported":"Filtyp stöds inte",
+    "UploadedFileMayContainsDangerousCode": "Den uppladdade filen kan innehålla skadlig kod",
+    "URLTypeNotAllowed": "Resurs inte tillåten!",
     "ToUpload": "att ladda upp",
     "CreateAnswers": "Skapa svar",
     "CreateAFreeAccount": "Skapa ett gratis konto",
@@ -726,7 +728,9 @@
         "YourDetails": "Dina detaljer",
         "AddYourOwnPicture": "⚡️ Lägg till din egen bild för att ge dina konversationer en mer intim känsla!",
         "AddYourOwnPicture_": "⚡️ Lägg till din egen bild för att ge dina konversationer en mer intim känsla, eftersom din besökare kan se vem de pratar med!",
-        "PreferredSize": "Önskad bildstorlek 128x128 px - Bildformat: .jpeg eller .png"
+        "PreferredSize": "Önskad bildstorlek 128x128 px - Bildformat: .jpeg eller .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Ett fel uppstod när verifieringslänken skickades",
+        "YourProfileHasBeenUploaded": "din profil har uppdaterats"
     },
     "ChangePsw": {
         "ChangePsw": "ändra lösenord",

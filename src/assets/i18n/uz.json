@@ -492,6 +492,8 @@
     "SupportedFileTypesPdfDocx":"Qo'llab-quvvatlanadigan fayl turlari: pdf va docx - {{file_size_limit}} Mb maks.",
     "FileSizeExceedsFileSizeLimitMb":"Fayl hajmi {{file_size_limit}} Mb dan oshadi.",
     "FileTypeNotSupported":"Fayl turi qo'llab-quvvatlanmaydi",
+    "UploadedFileMayContainsDangerousCode": "Yuklangan faylda zararli kod bo'lishi mumkin",
+    "URLTypeNotAllowed": "Resursga ruxsat berilmagan!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb fayl muvaffaqiyatli yuklandi.",
     "ToUpload": "yuklash uchun",
     "CreateAnswers": "Javoblarni yarating",
@@ -725,7 +727,9 @@
         "YourDetails": "Tafsilotlaringiz",
         "AddYourOwnPicture": "⚡️ Suhbatlaringizni yanada samimiy his qilish uchun o'zingizning rasmingizni qo'shing!",
         "AddYourOwnPicture_": "⚡️ Suhbatlaringizni yanada samimiy his qilish uchun oʻz rasmingizni qoʻshing, chunki tashrif buyuruvchingiz kim bilan gaplashayotganini koʻra oladi!",
-        "PreferredSize": "Tanlangan rasm oʻlchami 128x128 px - Rasm formati: .jpeg yoki .png"
+        "PreferredSize": "Tanlangan rasm oʻlchami 128x128 px - Rasm formati: .jpeg yoki .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Tasdiqlash havolasini yuborishda xatolik yuz berdi",
+        "YourProfileHasBeenUploaded": "profilingiz muvaffaqiyatli yangilandi"
     },
     "ChangePsw": {
         "ChangePsw": "Kalit so'zni o'zgartirish",

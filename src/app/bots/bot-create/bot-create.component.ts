@@ -21,7 +21,8 @@ import {
   URL_response_bot_images_buttons_videos_and_more,
   URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
   URL_connect_your_dialogflow_agent,
-  goToCDSVersion, dialogflowLanguage
+  goToCDSVersion, dialogflowLanguage,
+  containsXSS
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -34,6 +35,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'bot-create',
@@ -135,6 +137,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   learnMoreAboutDefaultRoles : string;
   agentsCannotManageChatbots: string;
   public hideHelpLink: boolean;
+
+  translationMap: Map<string, string> = new Map();
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -184,15 +189,12 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -258,6 +260,19 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       .subscribe((translation: any) => {
         this.agentsCannotManageChatbots = translation
       })
+
+    const keys = [
+      'ThereHasBeenAnErrorProcessing',
+      'LearnMoreAboutDefaultRoles',
+      'AgentsCannotManageChatbots',
+      'FiletypeNotSupported',
+      'UploadedFileMayContainsDangerousCode',
+      'InvalidJSON'
+    ]
+
+    this.translate.get(keys).subscribe(translations => {
+      Object.keys(translations).forEach(key => this.translationMap.set(key, translations[key]))
+    })
   }
 
   toggleTabCreateImport(tabcreate) {
@@ -277,27 +292,58 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     }
   }
 
+  private readFileAsync(file: File): Promise<{}> {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+  
+      fileReader.onload = (event: ProgressEvent<FileReader>) => {
+        try {
+          let fileJsonToUpload = JSON.parse(fileReader.result as string);
+          this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+          resolve(fileJsonToUpload)
+        } catch (error) {
+          this.logger.error('Error while parsing JSON:', error);
+          reject(error)
+        }
+      };
+  
+      fileReader.onerror = (e) => {
+        reject(e);
+      };
+  
+      fileReader.readAsText(file);
+    });
+  }
+
+
   // --------------------------------------------------------------------------
   // @ Import chatbot from json 
   // --------------------------------------------------------------------------
-  fileChangeUploadChatbotFromJSON(event) {
+  async fileChangeUploadChatbotFromJSON(event) {
 
-    console.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
-    // let fileJsonToUpload = ''
-    // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
-    const selectedFile = event.target.files[0];
-    const fileReader = new FileReader();
-    fileReader.readAsText(selectedFile, "UTF-8");
-    fileReader.onload = () => {
-     let fileJsonToUpload = JSON.parse(fileReader.result as string)
-      console.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
-    }
-    // fileReader.onerror = (error) => {
-    //   this.logger.log(error);
-    // }
+    this.logger.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
+
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
     this.logger.log('fileChangeUploadChatbotFromJSON',file) 
+
+    // Check for valid JSON
+    let json = await this.readFileAsync(file).catch(e => { return; })
+    if(!json){
+      this.notify.showToast(this.translationMap.get('InvalidJSON'), 4, 'report_problem')
+      return;
+    }
+
+    const jsonString = JSON.stringify(json)
+    // Check for XSS patterns
+    if (containsXSS(jsonString)) {
+      this.logger.log("Potential XSS attack detected!");
+      this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
+      return;
+    }
+  
+
+
 
     const formData: FormData = new FormData();
     formData.set('id_faq_kb', this.id_faq_kb);
@@ -340,7 +386,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
 
-      this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
     }, () => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
@@ -369,7 +415,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentModalAgentCannotManageChatbot() {
-    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalAgentCannotManageChatbot(this.translationMap.get('AgentsCannotManageChatbots'), this.translationMap.get('LearnMoreAboutDefaultRoles'))
   }
 
 
@@ -1023,7 +1069,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       } else {
         this.logger.log('[BOT-CREATE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
 
-        this.notify.showWidgetStyleUpdateNotification(this.filetypeNotSupported, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('FiletypeNotSupported'), 4, 'report_problem');
 
       }
     }

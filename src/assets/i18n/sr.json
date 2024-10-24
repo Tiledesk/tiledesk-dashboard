@@ -492,6 +492,8 @@
     "SupportedFileTypesPdfDocx":"Подржани типови датотека: пдф и доцк - {{file_size_limit}} Мб мак.",
     "FileSizeExceedsFileSizeLimitMb":"Величина датотеке премашује {{file_size_limit}} Мб.",
     "FileTypeNotSupported":"Тип датотеке није подржан",
+    "UploadedFileMayContainsDangerousCode": "Отпремљена датотека можда садржи злонамерни код",
+    "URLTypeNotAllowed": "Ресурс није дозвољен!",
     "FileSuccessfullyUploaded": "{{file_mb}} Мб датотека је успешно отпремљена.",
     "ToUpload": "за уплоад",
     "CreateAnswers": "Креирајте одговоре",
@@ -726,7 +728,9 @@
         "YourDetails": "Ваши детаљи",
         "AddYourOwnPicture": "⚡ Додајте своју слику како бисте својим разговорима дали интимнији осећај!",
         "AddYourOwnPicture_": "⚡ Додајте своју слику како бисте својим разговорима дали интимнији осећај, јер ваш посетилац може да види са ким разговара!",
-        "PreferredSize": "Жељена величина слике 128к128 пк - Формат слике: .јпег или .пнг"
+        "PreferredSize": "Жељена величина слике 128к128 пк - Формат слике: .јпег или .пнг",
+        "AnErrorHasOccurredSendingVerificationLink": "Дошло је до грешке при слању везе за верификацију",
+        "YourProfileHasBeenUploaded": "ваш профил је успешно ажуриран"
     },
     "ChangePsw": {
         "ChangePsw": "Промени лозинку",
