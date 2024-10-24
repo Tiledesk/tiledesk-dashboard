@@ -1259,7 +1259,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.router.navigate(['project/' + this.project._id + '/bots', faqkb._id, _botType]);
     }
 
-    this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', faqkb._id, 'bot type ', faqkb.type);
+    console.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', faqkb._id, 'bot type ', faqkb.type);
   }
 
   goToOldBotDtls(idFaqKb: string, botType: string, botname: string) {

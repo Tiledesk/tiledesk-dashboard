@@ -453,7 +453,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   getParamsBotTypeAndDepts() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-      this.logger.log('[BOT-CREATE] --->  PARAMS', params);
+      console.log('[BOT-CREATE] --->  PARAMS', params);
       //  this.logger.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
       this.template = params.template;
