@@ -331,7 +331,8 @@
 
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
-            <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
+            <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" 
+              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
               <span *ngIf="!showSpinnerInLoginBtn">
                 {{ "GetStarted" | translate}}
               </span>
@@ -392,7 +393,9 @@
                   </g>
                 </svg>
               </div>
-              <div style="padding: 10px 10px 10px 0px; font-weight: 500; width: calc(100% - 91px);">Sign up with Google
+              <div style="padding: 10px 10px 10px 0px; font-weight: 500; width: calc(100% - 91px);">
+                <!-- Sign up with Google -->
+                 {{ 'SignUpWithGoogle' | translate}}
               </div>
             </button>
           </ng-container>
