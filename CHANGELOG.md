@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.36-rc5
+- Fixes the bug: in external bot details some information are missing
+- Fixes the bug: Sign in and sign up pages display detailed errors
+
 ### 2.7.36-rc4
 - Minor improvements and bug fixing
 
