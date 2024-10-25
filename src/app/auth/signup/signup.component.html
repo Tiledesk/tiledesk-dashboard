@@ -305,15 +305,15 @@
 
             <div class="is-danger" *ngIf="passwordFormField?.dirty">
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('^(?=.*[A-Z])')}">
-                At least one uppercase letter. </span>
+                {{'AtLeastOneUppercaseLetter' | translate}} </span>
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[a-z])')}">
-                At least one lowercase letter. </span>
+                {{'AtLeastOneLowercaseLetter' | translate}} </span>
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(.*[0-9].*)')}">
-                At least one digit.</span>
+                {{'AtLeastOnedigit' | translate}} </span>
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[!@#$%^&*])')}">
-                At least one special character. </span>
+                {{'AtLeastOneSpecialCharacter' | translate}} </span>
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('.{8,}')}">
-                At least 8 characters long. </span>
+                {{'AtLeast8CharactersLong' | translate}} </span>
            </div>
 
             <!-- *ngIf="isVisiblePwsStrengthBar" -->
