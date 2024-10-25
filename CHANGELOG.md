@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.36-rc6
+- Implements a security policy for registration password and for the a new password (reset and change)
+
 ### 2.7.36-rc5
 - Fixes the bug: in external bot details some information are missing
 - Fixes the bug: Sign in and sign up pages display detailed errors
