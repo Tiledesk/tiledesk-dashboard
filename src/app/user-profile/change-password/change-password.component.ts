@@ -7,6 +7,8 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PasswordValidation } from 'app/reset-psw/password-validation';
 const swal = require('sweetalert');
 
 @Component({
@@ -33,6 +35,11 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   warning: string;
   selectAProjectToManageNotificationEmails: string;
   isChromeVerGreaterThan100: boolean;
+
+  pswForm: FormGroup;
+  strongPassword = false;
+  isVisiblePsw: boolean = false
+  
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
@@ -40,7 +47,8 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     public auth: AuthService,
     private router: Router,
     private logger: LoggerService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -48,6 +56,48 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     this.getCurrentProject();
     this.translateStrings();
     this.getBrowserVersion()
+    this.buildPswForm();
+  }
+
+  buildPswForm() {
+    this.pswForm = this.fb.group({
+      'oldPassword': ['', Validators.required],
+      'password': ['', [
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
+        Validators.minLength(8),
+        Validators.maxLength(512),
+      ]],
+      'confirmPassword': ['', Validators.required]
+      // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+    },
+      { validator: PasswordValidation.MatchPassword }
+    );
+
+    // this.pswForm.valueChanges.subscribe((data) => this.onPswValueChanged(data));
+    // this.onPswValueChanged(); // reset validation messages
+  }
+
+  get passwordFormField() {
+    return this.pswForm.get('password');
+  }
+
+  onPasswordStrengthChanged(event: boolean) {
+    console.log('[USER-PROFILE][CHANGE-PSW] onPasswordStrengthChanged ', event)
+    this.strongPassword = event;
+  }
+
+  togglePswdVisibility(isVisiblePsw) {
+    console.log('[USER-PROFILE][CHANGE-PSW] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
+    this.isVisiblePsw = isVisiblePsw;
+
+    const pswrdElem = <HTMLInputElement>document.querySelector('#reset-password')
+   
+    console.log('[USER-PROFILE][CHANGE-PSW] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
+    if (isVisiblePsw) {
+      pswrdElem.setAttribute("type", "text");
+    } else {
+      pswrdElem.setAttribute("type", "password");
+    }
   }
 
   getBrowserVersion() {
@@ -139,8 +189,13 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   changePsw() {
-    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW ', this.oldPassword)
-    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW ', this.newPassword)
+    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW ', this.oldPassword)
+    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW ', this.newPassword)
+    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW from FORM', this.pswForm.value.password);
+    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW from FORM', this.pswForm.value.oldPassword)
+
+    this.newPassword = this.pswForm.value.password;
+    this.oldPassword = this.pswForm.value.oldPassword;
 
     this.displayModalChangingPsw = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;

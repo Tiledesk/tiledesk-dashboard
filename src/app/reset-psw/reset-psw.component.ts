@@ -267,8 +267,6 @@ export class ResetPswComponent implements OnInit {
     } else {
       pswrdElem.setAttribute("type", "password");
     }
-
-   
   }
 
   dismissAlert() {
