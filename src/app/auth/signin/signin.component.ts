@@ -329,7 +329,8 @@ export class SigninComponent implements OnInit {
           if (error.status !== 401) {
             this.display = 'block';
 
-            this.signin_errormsg = error['error']['msg']
+            // this.signin_errormsg = error['error']['msg']
+            this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
 
             self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
 
@@ -361,12 +362,14 @@ export class SigninComponent implements OnInit {
         if (error.status === 0) {
 
           this.display = 'block';
-          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          // this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
           this.display = 'block';
 
-          this.signin_errormsg = error['error']['msg']
+          // this.signin_errormsg = error['error']['msg']
+          this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
           // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);

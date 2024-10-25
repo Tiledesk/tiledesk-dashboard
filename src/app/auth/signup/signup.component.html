@@ -298,10 +298,23 @@
                 </svg>
               </button>
             </div>
-
-            <div *ngIf="formErrors.password" class="is-danger" translate style="margin-bottom: 0px;">
+           
+            <!-- <div *ngIf="formErrors.password" class="is-danger" translate style="margin-bottom: 0px;">
               {{ formErrors.password }}
-            </div>
+            </div> -->
+
+            <div class="is-danger" *ngIf="passwordFormField?.dirty">
+              <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('^(?=.*[A-Z])')}">
+                At least one uppercase letter. </span>
+              <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[a-z])')}">
+                At least one lowercase letter. </span>
+              <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(.*[0-9].*)')}">
+                At least one digit.</span>
+              <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[!@#$%^&*])')}">
+                At least one special character. </span>
+              <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('.{8,}')}">
+                At least 8 characters long. </span>
+           </div>
 
             <!-- *ngIf="isVisiblePwsStrengthBar" -->
             <password-strength [passwordToCheck]="userForm.value.password"
@@ -331,6 +344,8 @@
 
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
+
+            <!-- userForm.valid {{userForm.valid}} -->
             <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" 
               class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
               <span *ngIf="!showSpinnerInLoginBtn">

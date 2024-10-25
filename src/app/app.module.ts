@@ -99,7 +99,7 @@ import { GroupService } from './services/group.service';
 // import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component'; // now lazy
 
 import { BotLocalDbService } from './services/bot-local-db.service';
-import { ChangePasswordComponent } from './user-profile//change-password/change-password.component';
+// import { ChangePasswordComponent } from './user-profile//change-password/change-password.component'; // now lazy
 
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
@@ -112,7 +112,7 @@ import { FilterArrayPipe } from './filterarray.pipe';
 
 // import { HoursComponent } from './hours/hours.component'; // now lazy
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ResetPswComponent } from './reset-psw/reset-psw.component';
+// import { ResetPswComponent } from './reset-psw/reset-psw.component';  // now lazy
 import { ResetPswService } from './services/reset-psw.service';
 
 import { UploadImageService } from './services/upload-image.service';
@@ -401,6 +401,7 @@ import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
 import { RoleService } from './services/role.service';
+// import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 
 // import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
@@ -515,9 +516,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MapToIterable,
     // SelectOptionsTranslatePipe, moved in SharedModule
     FilterArrayPipe,
-    ChangePasswordComponent,
+    // ChangePasswordComponent, // now lazy
     // HoursComponent, // now lazy
-    ResetPswComponent,
+    // ResetPswComponent, // now lazy
    // WidgetSetUp, // now lazy
     // HistoryAndNortConvsComponent, // now lazy
     // ContactDetailsComponent, // now lazy
@@ -756,6 +757,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppRoutingModule,
     CoreModule,
     SharedModule,
+    // PasswordStrengthModule,
     UiModule,
     ComponentsModule,
     RouterModule,

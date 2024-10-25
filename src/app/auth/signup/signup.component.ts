@@ -213,7 +213,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
       'password': ['', [
-        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        // Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
+        // Validators.pattern(/[$-/:-?{-~!"^@#`\[\]]/g),
         Validators.maxLength(512),
         Validators.minLength(8),
         Validators.required,
@@ -228,12 +230,20 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.onValueChanged(); // reset validation messages
   }
 
+  get passwordFormField() {
+    
+    return this.userForm.get('password');
+    
+  }
+
   // Updates validation state on form changes.
   onValueChanged(data?: any) {
     if (!this.userForm) {
       return;
     }
     const form = this.userForm;
+
+    
 
     // this.logger.log('[SIGN-UP] onValueChanged  data', data)
     // if (data) {
