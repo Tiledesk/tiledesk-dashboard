@@ -497,6 +497,8 @@
     "SupportedFileTypesPdfDocx":"Поддерживаемые типы файлов: pdf и docx — максимум {{file_size_limit}} МБ.",
     "FileSizeExceedsFileSizeLimitMb":"Размер файла превышает {{file_size_limit}} МБ.",
     "FileTypeNotSupported":"Тип файла не поддерживается",
+    "UploadedFileMayContainsDangerousCode": "Загруженный файл может содержать вредоносный код",
+    "URLTypeNotAllowed": "Ресурс запрещен!",
     "FileSuccessfullyUploaded": "{{file_mb}} Файл в Мб успешно загружен.",
     "ToUpload": "загрузить",
     "CreateAnswers": "Создать ответы",
@@ -730,7 +732,9 @@
         "YourDetails": "Ваши данные",
         "AddYourOwnPicture": "⚡️ Добавьте свою фотографию, чтобы сделать ваши разговоры более интимными!",
         "AddYourOwnPicture_": "⚡️ Добавьте свою фотографию, чтобы придать вашим разговорам более интимный вид, так как ваш посетитель может видеть, с кем он разговаривает!",
-        "PreferredSize": "Предпочтительный размер изображения 128x128 пикселей - Формат изображения: .jpeg или .png"
+        "PreferredSize": "Предпочтительный размер изображения 128x128 пикселей - Формат изображения: .jpeg или .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Произошла ошибка при отправке ссылки для подтверждения.",
+        "YourProfileHasBeenUploaded": "ваш профиль успешно обновлен"
     },
     "ChangePsw": {
         "ChangePsw": "Изменить пароль",

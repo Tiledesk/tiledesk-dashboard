@@ -535,6 +535,8 @@
     "HereTheTutorial": "Budur, chatbotlarınızı {{ BRAND_NAME }}-a necə qoşmaq haqqında təlimat.",
     "HereThe_Tutorial": "Budur dərslik.",
     "FiletypeNotSupported": "fayl növü dəstəklənmir",
+    "UploadedFileMayContainsDangerousCode": "Yüklənmiş faylda zərərli kod ola bilər",
+    "URLTypeNotAllowed": "Resurs icazə verilmir!",
     "ChatLimit": "Söhbət limiti",
     "SuccessfullyUpdated": "Uğurla yeniləndi",
     "AnErrorOccurredWhileUpdating": "Yeniləmə zamanı xəta baş verdi",
@@ -730,7 +732,9 @@
         "YourDetails": "Detallarınız",
         "AddYourOwnPicture": "⚡️ Söhbətlərinizə daha səmimi hisslər bəxş etmək üçün öz şəklinizi əlavə edin!",
         "AddYourOwnPicture_": "⚡️ Söhbətlərinizə daha səmimi hisslər bəxş etmək üçün öz şəklinizi əlavə edin, çünki ziyarətçiniz kiminlə danışdığını görə bilər!",
-        "PreferredSize": "Üstünlük verilən şəkil ölçüsü 128x128 px - Şəkil formatı: .jpeg və ya .png"
+        "PreferredSize": "Üstünlük verilən şəkil ölçüsü 128x128 px - Şəkil formatı: .jpeg və ya .png",
+        "AnErrorHasOccurredSendingVerificationLink": "Doğrulama linki göndərilərkən xəta baş verdi",
+        "YourProfileHasBeenUploaded": "profiliniz uğurla yeniləndi"
     },
     "ChangePsw": {
         "ChangePsw": "Parolu dəyişdirin",

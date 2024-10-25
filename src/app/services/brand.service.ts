@@ -74,7 +74,7 @@ export class BrandService {
     },
     WIDGET: {
       "LOGO_CHAT": "https://tiledesk.com/tiledesk-logo-white.png",
-      "POWERED_BY": "<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>"
+      "POWERED_BY": "<a tabindex='-1' target='_blank href='https://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>"
     },
     CHAT: {
 
