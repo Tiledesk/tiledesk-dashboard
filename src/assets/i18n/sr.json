@@ -1321,6 +1321,7 @@
         "Subject": "Предмет",
         "WasServedBy": "служио је",
         "RequestUnserved": "Преписка није додељена",
+        "RequestAbandoned": "Разговор је прекинут",
         "InternalRequestUnserved": "Карта није додељена",
         "RequestServedBy": "Разговор је додељен",
         "ConversationAssignedPreflight": "Конверзација је додељена (без интеракције корисника)",

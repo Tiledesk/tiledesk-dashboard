@@ -1319,6 +1319,7 @@
         "Subject": "Тақырып",
         "WasServedBy": "қызмет етті",
         "RequestUnserved": "Әңгімелесу тағайындалмады",
+        "RequestAbandoned": "Әңгімелесу тоқтатылды",
         "InternalRequestUnserved": "Билет тағайындалмады",
         "RequestServedBy": "Әңгімелесу тағайындалды",
         "ConversationAssignedPreflight": "Әңгімелесу тағайындалды (пайдаланушы әрекеті жоқ)",

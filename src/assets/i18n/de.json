@@ -1320,6 +1320,7 @@
 		"Subject": "Betreff",
 		"WasServedBy": "wurde bearbeitet von",
 		"RequestUnserved": "Gespräch nicht zugeordnet",
+		"RequestAbandoned": "Konversation abgebrochen",
 		"InternalRequestUnserved": "Ticket nicht zugewiesen",
 		"RequestServedBy": "Gespräch zugewiesen",
 		"ConversationAssignedPreflight": "Konversation zugewiesen (keine Benutzerinteraktion)",

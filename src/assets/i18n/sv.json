@@ -1321,6 +1321,7 @@
         "Subject": "Ämne",
         "WasServedBy": "betjänades av",
         "RequestUnserved": "Konversation har inte tilldelats",
+        "RequestAbandoned": "Konversationen övergavs",
         "InternalRequestUnserved": "Biljetten har inte tilldelats",
         "RequestServedBy": "Konversation tilldelad",
         "ConversationAssignedPreflight": "Konversation tilldelad (ingen användarinteraktion)",

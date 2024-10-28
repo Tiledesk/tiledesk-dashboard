@@ -1320,6 +1320,7 @@
         "Subject": "Предмет",
         "WasServedBy": "обслуживал",
         "RequestUnserved": "Беседа не назначена",
+        "RequestAbandoned": "Разговор прекращен",
         "InternalRequestUnserved": "Билет не назначен",
         "RequestServedBy": "Цепочка назначена",
         "ConversationAssignedPreflight": "Разговор назначен (без взаимодействия с пользователем)",

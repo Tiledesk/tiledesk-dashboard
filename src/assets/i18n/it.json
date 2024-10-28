@@ -1321,6 +1321,7 @@
         "Subject": "Oggetto",
         "WasServedBy": "è stata servita da",
         "RequestUnserved": "Conversazione non assegnata",
+        "RequestAbandoned": "Conversazione abbandonata",
         "InternalRequestUnserved": "Ticket non assegnato",
         "RequestServedBy": "Conversazione assegnata",
         "ConversationAssignedPreflight": "Conversazione assegnata (nessuna interazione dell'utente)",

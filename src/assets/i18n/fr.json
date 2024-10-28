@@ -1319,6 +1319,7 @@
         "Subject": "Sujet",
         "WasServedBy": "était servi par",
         "RequestUnserved": "Conversation non attribuée",
+        "RequestAbandoned": "Conversation abandonnée",
         "InternalRequestUnserved": "Billet non attribué",
         "RequestServedBy": "Conversation attribuée",
         "ConversationAssignedPreflight": "Conversation attribuée (aucune interaction avec l'utilisateur)",

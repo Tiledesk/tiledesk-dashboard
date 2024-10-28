@@ -1321,6 +1321,7 @@
         "Subject": "Ders",
         "WasServedBy": "tarafından servis edildi",
         "RequestUnserved": "Görüşmenin atanması kaldırıldı",
+        "RequestAbandoned": "Konuşma terk edildi",
         "InternalRequestUnserved": "Bilet atanmadı",
         "RequestServedBy": "Konuşma atandı",
         "ConversationAssignedPreflight": "Konuşma atandı (Kullanıcı etkileşimi yok)",
