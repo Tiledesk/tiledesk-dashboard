@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Тағайындалмаған сөйлесулер",
         "ServedRequests": "Тағайындалған сұхбаттар",
         "ActiveRequests": "Белсенді әңгімелер",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Әдепкі",
         "Requester": "Өтініш беруші",
         "Message": "Хабар",
