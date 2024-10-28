@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Atanmamış görüşmeler",
         "ServedRequests": "atanan konuşmalar",
         "ActiveRequests": "Aktif konuşmalar",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Varsayılan",
         "Requester": "Istekte bulunan",
         "Message": "İleti",
