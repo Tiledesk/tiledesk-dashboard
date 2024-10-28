@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Недодељене конверзације",
         "ServedRequests": "Додељени разговори",
         "ActiveRequests": "Активни разговори",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Уобичајено",
         "Requester": "Подносилац захтева",
         "Message": "Порука",
