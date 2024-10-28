@@ -96,6 +96,8 @@
     "Active": "Aktif",
     "Served": "Atandı",
     "Unserved": "Atanmamış",
+    "Abandoned":"Terk Edilen",
+    "AbandonedRequests": "Terkedilmiş Konuşmalar",
     "Closed": "Kapalı",
     "Temporary":"Geçici",
     "CurrentUsage": "Güncel kullanım",

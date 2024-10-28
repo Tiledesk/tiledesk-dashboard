@@ -1252,6 +1252,7 @@
         "UnservedRequests": "Unassigned conversations",
         "ServedRequests": "Assigned conversations",
         "ActiveRequests": "Active conversations",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Default",
         "Requester": "Requester",
         "Message": "Message",

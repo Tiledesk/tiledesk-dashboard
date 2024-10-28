@@ -1253,6 +1253,7 @@
         "UnservedRequests": "Təyin edilməmiş söhbətlər",
         "ServedRequests": "Təyin edilmiş söhbətlər",
         "ActiveRequests": "Aktiv söhbətlər",
+        "AbandonedRequests": "Tərk edilmiş Söhbətlər",
         "Default": "Defolt",
         "Requester": "Müraciət edən",
         "Message": "Mesaj",

@@ -1253,6 +1253,7 @@
         "UnservedRequests": "Tayinlanmagan suhbatlar",
         "ServedRequests": "Belgilangan suhbatlar",
         "ActiveRequests": "Faol suhbatlar",
+        "AbandonedRequests": "Tashlab qo'yilgan suhbatlar",
         "Default": "Standart",
         "Requester": "So'rovchi",
         "Message": "Xabar",
