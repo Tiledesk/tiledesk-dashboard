@@ -44,8 +44,13 @@
                 </span>
 
                 <span *ngIf="requests_status === '100'">
-                  <a>{{ "Unserved" | translate }}</a>
+                  <a> {{ "Unserved" | translate }}</a>
                 </span>
+
+                <span *ngIf="requests_status === '150'">
+                  <a>Abandoned</a>
+                </span>
+
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu" style="min-width: 195px;">
@@ -84,6 +89,17 @@
                     </div>
                     <div class="right" style="flex-grow: 1;">
                       <a class="custom-dropdown-a">{{ "VisitorsPage.UnservedRequests" | translate }}</a>
+                    </div>
+                  </div>
+                </li>
+
+                <li (click)="requestsStatusSelect('150')">
+                  <div class="parent" style="display: flex; align-items: center;">
+                    <div class="left" style="padding:12px 6px">
+                      <input type="radio" id="150" name="status" value="150" [(ngModel)]="requests_status">
+                    </div>
+                    <div class="right" style="flex-grow: 1;">
+                      <a class="custom-dropdown-a">{{'RequestMsgsPage.RequestAbandoned' | translate}}</a>
                     </div>
                   </div>
                 </li>
@@ -1266,6 +1282,17 @@
                       <img style="width: 30px;" src="assets/img/request_icons/status100_internal.svg" class="img-fluid"
                         matTooltipClass="mat-white-tooltip"
                         matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}" #tooltip="matTooltip"
+                        matTooltipPosition='right' matTooltipHideDelay="100">
+
+                    </span>
+                  </span>
+
+                  <span *ngIf="request?.status === 150">
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+
+                      <img style="width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}" #tooltip="matTooltip"
                         matTooltipPosition='right' matTooltipHideDelay="100">
 
                     </span>

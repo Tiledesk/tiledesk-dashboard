@@ -238,6 +238,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   status = [
     { id: '100', name: 'Unserved' },
     { id: '200', name: 'Served' },
+    { id: '150', name: 'Abandoned' },
     { id: 'all', name: 'All' },
   ];
 
@@ -453,6 +454,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
           if (this.queryParams.leftfilter === '200') {
             this.requests_status = '200'
+            this.requestsStatusSelect(this.requests_status)
+          }
+
+          if (this.queryParams.leftfilter === '150') {
+            this.requests_status = '150'
             this.requestsStatusSelect(this.requests_status)
           }
         }
@@ -1131,11 +1137,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getServedRequests();
+
     } else if (request_status === '100') {
       this.requests_status_selected_from_left_filter = '100'
       this.requests_status_selected_from_advanced_option = null
       // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getUnservedRequests();
+
+    } else if (request_status === '150') {
+      this.requests_status_selected_from_left_filter = '150'
+      this.requests_status_selected_from_advanced_option = null
+      // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
+      this.getAbandonedRequests();
+
     } else if (request_status === 'all') {
       this.requests_status_selected_from_left_filter = 'all'
       // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
@@ -1203,8 +1217,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getAllRequests() {
-    // this.operator = '<'
+  //  this.operator = '='
     this.requests_status = 'all'
+    //  this.requests_status = '100,150,200'
     // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
@@ -1219,6 +1234,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getUnservedRequests() {
     this.operator = '='
     this.requests_status = '100'
+    // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getUnservedRequests status ', this.requests_status, 'operator ', this.operator);
+    this.getRequests()
+  }
+
+  getAbandonedRequests() {
+    this.operator = '='
+    this.requests_status = '150'
     // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getUnservedRequests status ', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
@@ -1344,9 +1366,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-    this.logger.log('getRequests queryString', this.queryString)
+   console.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    // this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
+   console.log('getRequests requests_statuses ' , this.requests_statuses) 
+   console.log('getRequests requests_status ' , this.requests_status) 
+  
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
