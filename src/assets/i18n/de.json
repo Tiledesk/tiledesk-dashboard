@@ -37,6 +37,7 @@
 	"FirstName": "Vorname",
 	"LastName": "Nachname",
 	"iAgree": "Ich akzeptiere",
+	"IAccept": "Ich akzeptiere",
 	"TermsAndConditions": "Allgemeine Geschäftsbedingungen",
 	"SomethingWentWrongCreatingYourAccount":"Leider ist bei der Erstellung Ihres Kontos ein Fehler aufgetreten. Versuchen Sie es erneut.",
 	"SignUpWithGoogle": "Registrieren Sie sich bei Google",

@@ -37,6 +37,7 @@
     "FirstName": "Ad",
     "LastName": "Soyad",
     "iAgree": "razıyam",
+    "IAccept": "qəbul edirəm",
     "TermsAndConditions": "Şərtlər və qaydalar",
     "SomethingWentWrongCreatingYourAccount":"Üzr istəyirik, hesabınızı yaratarkən xəta baş verdi. Yenidən cəhd edin.",
     "SignUpWithGoogle": "Google ilə qeydiyyatdan keçin",

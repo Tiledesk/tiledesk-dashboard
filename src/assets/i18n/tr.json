@@ -37,6 +37,7 @@
     "FirstName": "İlk adı",
     "LastName": "Soyadı",
     "iAgree": "Kabul ediyorum",
+    "IAccept": "Kabul ediyorum",
     "TermsAndConditions": "Şartlar & Koşullar",
     "SomethingWentWrongCreatingYourAccount":"Üzgünüz, hesabınızı oluştururken bir sorun oluştu. Lütfen tekrar deneyin.",
     "SignUpWithGoogle": "Google ile kaydolun",

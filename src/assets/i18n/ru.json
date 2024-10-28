@@ -37,6 +37,7 @@
     "FirstName": "Имя",
     "LastName": "Фамилия",
     "iAgree": "Я согласен",
+    "IAccept": "Я принимаю",
     "TermsAndConditions": "Условия",
     "SomethingWentWrongCreatingYourAccount":"Извините, что-то пошло не так при создании вашего аккаунта. Попробуйте еще раз.",
     "SignUpWithGoogle": "Зарегистрироваться через Google",

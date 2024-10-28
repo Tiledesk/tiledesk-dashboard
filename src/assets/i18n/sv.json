@@ -37,6 +37,7 @@
     "FirstName": "Förnamn",
     "LastName": "Efternamn",
     "iAgree": "jag håller med",
+    "IAccept": "Jag accepterar",
     "TermsAndConditions": "Allmänna Villkor",
     "SomethingWentWrongCreatingYourAccount":"Tyvärr, något gick fel när du skapade ditt konto. Försök igen.",
     "SignUpWithGoogle": "Registrera dig med Google",
