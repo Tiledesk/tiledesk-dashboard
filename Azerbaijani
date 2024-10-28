@@ -503,6 +503,8 @@
     "SupportedFileTypesPdfDocx": "Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb": "File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported": "File type not supported",
+    "UploadedFileMayContainsDangerousCode": "The uploaded file may contains malicious code",
+    "URLTypeNotAllowed": "Resource not allowed!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",
     "ToUpload": "yükləmək üçün",
     "CreateAnswers": "Cavablar yaradın",
@@ -752,7 +754,9 @@
         "YourDetails": "Detallarınız",
         "AddYourOwnPicture": "⚡️ Söhbətlərinizə daha səmimi hisslər bəxş etmək üçün öz şəklinizi əlavə edin!",
         "AddYourOwnPicture_": "⚡️ Söhbətlərinizə daha səmimi hisslər bəxş etmək üçün öz şəklinizi əlavə edin, çünki ziyarətçiniz kiminlə danışdığını görə bilər!",
-        "PreferredSize": "Üstünlük verilən şəkil ölçüsü 128x128 px - Şəkil formatı: .jpeg və ya .png"
+        "PreferredSize": "Üstünlük verilən şəkil ölçüsü 128x128 px - Şəkil formatı: .jpeg və ya .png",
+        "AnErrorHasOccurredSendingVerificationLink": "An error has occurred sending verification link",
+        "YourProfileHasBeenUploaded": "your profile has been successfully updated"
     },
     "ChangePsw": {
         "ChangePsw": "Parolu dəyişdirin",
