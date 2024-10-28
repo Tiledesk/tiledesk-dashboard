@@ -503,6 +503,8 @@
     "SupportedFileTypesPdfDocx": "Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb": "File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported": "File type not supported",
+    "UploadedFileMayContainsDangerousCode": "The uploaded file may contains malicious code",
+    "URLTypeNotAllowed": "Resource not allowed!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",
     "ToUpload": "жүктеп салу",
     "CreateAnswers": "Жауаптарды құру",
@@ -752,7 +754,9 @@
         "YourDetails": "Сіздің мәліметтеріңіз",
         "AddYourOwnPicture": "⚡️ Әңгімелесулеріңізге жақынырақ сезім беру үшін өз суретіңізді қосыңыз!",
         "AddYourOwnPicture_": "⚡️ Келуші кіммен сөйлесіп жатқанын көре алатындықтан, әңгімеңізге жақынырақ сезім беру үшін өз суретіңізді қосыңыз!",
-        "PreferredSize": "Таңдаулы кескін өлшемі 128x128 px - Кескін пішімі: .jpeg немесе .png"
+        "PreferredSize": "Таңдаулы кескін өлшемі 128x128 px - Кескін пішімі: .jpeg немесе .png",
+        "AnErrorHasOccurredSendingVerificationLink": "An error has occurred sending verification link",
+        "YourProfileHasBeenUploaded": "your profile has been successfully updated"
     },
     "ChangePsw": {
         "ChangePsw": "Құпия сөзді өзгерту",
