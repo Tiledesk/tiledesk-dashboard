@@ -82,17 +82,17 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   onPasswordStrengthChanged(event: boolean) {
-    console.log('[USER-PROFILE][CHANGE-PSW] onPasswordStrengthChanged ', event)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] onPasswordStrengthChanged ', event)
     this.strongPassword = event;
   }
 
   togglePswdVisibility(isVisiblePsw) {
-    console.log('[USER-PROFILE][CHANGE-PSW] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
     this.isVisiblePsw = isVisiblePsw;
 
     const pswrdElem = <HTMLInputElement>document.querySelector('#reset-password')
    
-    console.log('[USER-PROFILE][CHANGE-PSW] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
     if (isVisiblePsw) {
       pswrdElem.setAttribute("type", "text");
     } else {
@@ -103,7 +103,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -189,10 +189,10 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   changePsw() {
-    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW ', this.oldPassword)
-    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW ', this.newPassword)
-    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW from FORM', this.pswForm.value.password);
-    console.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW from FORM', this.pswForm.value.oldPassword)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW ', this.oldPassword)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW ', this.newPassword)
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - NEW PSW from FORM', this.pswForm.value.password);
+    this.logger.log('[USER-PROFILE][CHANGE-PSW] - CHANGE PSW - OLD PSW from FORM', this.pswForm.value.oldPassword)
 
     this.newPassword = this.pswForm.value.password;
     this.oldPassword = this.pswForm.value.oldPassword;

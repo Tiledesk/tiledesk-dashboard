@@ -251,17 +251,17 @@ export class ResetPswComponent implements OnInit {
   }
 
   onPasswordStrengthChanged(event: boolean) {
-    console.log('[RESET-PSW] onPasswordStrengthChanged ', event)
+    this.logger.log('[RESET-PSW] onPasswordStrengthChanged ', event)
     this.strongPassword = event;
   }
 
   togglePswdVisibility(isVisiblePsw) {
-    console.log('[RESET-PSW] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
+    this.logger.log('[RESET-PSW] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
     this.isVisiblePsw = isVisiblePsw;
 
     const pswrdElem = <HTMLInputElement>document.querySelector('#reset-password')
    
-    console.log('[RESET-PSW] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
+    this.logger.log('[RESET-PSW] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
     if (isVisiblePsw) {
       pswrdElem.setAttribute("type", "text");
     } else {

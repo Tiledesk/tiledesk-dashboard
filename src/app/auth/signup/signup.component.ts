@@ -154,11 +154,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.terms_and_conditions_url = brand['terms_and_conditions_url'];
     this.privacy_policy_url = brand['privacy_policy_url'];
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
-    console.log('display_terms_and_conditions_link',  this.display_terms_and_conditions_link)
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
-    console.log('displaySocialProofContainer',   this.displaySocialProofContainer)
     this.display_dpa = brand['display_dpa_link'];
-    console.log('display_dpa',   this.display_dpa)
     this.dpa_url =  brand['dpa_url'];
     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
@@ -560,7 +557,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
   signup() {
-    console.log('[SIGN-UP] !!!! ')
+    this.logger.log('[SIGN-UP] !!!! ')
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
     this.logger.log('[SIGN-UP] signup  email ', email)
@@ -1048,7 +1045,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   onPasswordStrengthChanged(event: boolean) {
-    console.log('onPasswordStrengthChanged ', event)
+    this.logger.log('onPasswordStrengthChanged ', event)
     this.strongPassword = event;
   }
 

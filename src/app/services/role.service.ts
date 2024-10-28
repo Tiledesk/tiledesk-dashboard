@@ -24,50 +24,50 @@ export class RoleService {
 
 
   async checkRoleForCurrentProject(calledby) {
-    console.log('[ROLE-SERV] checkRoleForCurrentProject is called by ', calledby)
+    this.logger.log('[ROLE-SERV] checkRoleForCurrentProject is called by ', calledby)
     const storedUser = localStorage.getItem('user')
-    // console.log('[ROLE-SERV] storedUser ', storedUser) 
+    // this.logger.log('[ROLE-SERV] storedUser ', storedUser) 
     let userId = ''
     if (storedUser) {
       const storedUserObject = JSON.parse(storedUser)
-      // console.log('[ROLE-SERV] storedUserObject ', storedUserObject)
+      // this.logger.log('[ROLE-SERV] storedUserObject ', storedUserObject)
       userId = storedUserObject._id
-      console.log('[ROLE-SERV] checkRoleForCurrentProject > userId ', userId)
+      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > userId ', userId)
       const currentProject = this.auth.project_bs.value
-      // console.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
+      // this.logger.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
 
       const projectId = currentProject._id
 
       const projectUserRole = this.usersService.project_user_role_bs.value
-      console.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
-      console.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
+      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
+      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
       if (projectUserRole) {
         if (projectUserRole === 'agent') {
-          console.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
+          this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
           this.router.navigate([`project/${projectId}/unauthorized`])
       
         } else {
-          console.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
+          this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
         }
       } else {
-        console.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
+        this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
       }
 
       // if (userId && projectId) {
-      //   console.log('[ROLE-SERV] HERE YES ')
+      //   this.logger.log('[ROLE-SERV] HERE YES ')
 
       //   const projectUserRole = await this.getProjectUser(userId, projectId)
-      //   console.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole 2', projectUserRole)
+      //   this.logger.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole 2', projectUserRole)
       //   if (projectUserRole) {
       //     if (projectUserRole === 'agent') {
-      //       console.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
+      //       this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
       //       this.router.navigate([`project/${projectId}/unauthorized`])
         
       //     } else {
-      //       console.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
+      //       this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
       //     }
       //   } else {
-      //     console.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
+      //     this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
       //   }
 
 

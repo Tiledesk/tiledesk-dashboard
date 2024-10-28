@@ -87,7 +87,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log('[SIGN-IN] ON INIT !!!! ')
+    // this.logger.log('[SIGN-IN] ON INIT !!!! ')
     this.getOSCODE();
     // this.redirectIfLogged();
     // this.widgetReInit()
@@ -99,7 +99,7 @@ export class SigninComponent implements OnInit {
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      // console.log('[SIGN-IN] removeFromStorage swg')
+      // this.logger.log('[SIGN-IN] removeFromStorage swg')
     }
   }
 
@@ -286,7 +286,7 @@ export class SigninComponent implements OnInit {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
         // this.localDbService.removeFromStorage('signedup')
-        // console.log('[SIGN-IN] SSO (Signin) - user', user);
+        // this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
         // this.localDbService.removeFromStorage('hpea');
         
         this.trackSignin(user)

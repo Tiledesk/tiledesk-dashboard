@@ -94,7 +94,7 @@ export class ProjectPlanService {
       if (user) {
         this.TOKEN = user.token
         this.userId = user._id
-       console.log('[PROJECT-PLAN-SERV] - User is signed in userId', this.userId)
+        this.logger.log('[PROJECT-PLAN-SERV] - User is signed in userId', this.userId)
       } else {
         this.logger.log('[PROJECT-PLAN-SERV] - No user is signed in');
       }
@@ -160,7 +160,7 @@ export class ProjectPlanService {
       // this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
       
      
       if (current_prjct) {
@@ -284,7 +284,7 @@ export class ProjectPlanService {
   // ------------------------------------
   public _getProjectById(prjct_id): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-     console.log('[PROJECT-PLAN-SERV] - _GET PROJECT BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', prjct_id);
+      this.logger.log('[PROJECT-PLAN-SERV] - _GET PROJECT BY ID WHITH PROJECT-ID PASSED FROM PROJECT-PROFILE-GUARD ', prjct_id);
       this.projectService.getProjectById(prjct_id).subscribe((project: any) => {
         resolve(project);
       })

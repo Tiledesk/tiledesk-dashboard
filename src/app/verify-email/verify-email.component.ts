@@ -49,7 +49,7 @@ export class VerifyEmailComponent implements OnInit {
   }
   getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
-     console.log('[VERIFY-EMAIL] - LoggedUser ', user);
+      this.logger.log('[VERIFY-EMAIL] - LoggedUser ', user);
 
       if (user) {
         this.userEmail = user.email
@@ -67,8 +67,8 @@ export class VerifyEmailComponent implements OnInit {
   getUserIdAndUpdateVerifiedEmail() {
     this.user_id = this.route.snapshot.params['user_id'];
     this.emailcode = this.route.snapshot.params['code'];
-    console.log('[VERIFY-EMAIL] :: USER ID  ', this.user_id);
-    console.log('[VERIFY-EMAIL] :: CODE  ', this.emailcode);
+    this.logger.log('[VERIFY-EMAIL] :: USER ID  ', this.user_id);
+    this.logger.log('[VERIFY-EMAIL] :: CODE  ', this.emailcode);
     // this.auth.emailVerify('5ae30c95192bba2f25XXXdd5').subscribe((user) => {
     // this.auth.emailVerify('5ae30c95192bba2f25983dd5').subscribe((user) => {
     this.auth.emailVerify(this.user_id, this.emailcode).subscribe((_user) => {
@@ -111,9 +111,9 @@ export class VerifyEmailComponent implements OnInit {
     }, (error) => {
       this.hasError = true
       this.showProcessing = false
-      console.error('[VERIFY-EMAIL] PUT REQUEST - ERROR ', error);
-      console.error('[VERIFY-EMAIL] PUT REQUEST - ERROR error ', error.error);
-      console.error('[VERIFY-EMAIL] PUT REQUEST - ERROR error_code ', error.error.error_code);
+      this.logger.error('[VERIFY-EMAIL] PUT REQUEST - ERROR ', error);
+      this.logger.error('[VERIFY-EMAIL] PUT REQUEST - ERROR error ', error.error);
+      this.logger.error('[VERIFY-EMAIL] PUT REQUEST - ERROR error_code ', error.error.error_code);
       if (error.status === 500) {
         this.errorCode = 500
         this.error_msg_title = 'Sorry, something went wrong!';

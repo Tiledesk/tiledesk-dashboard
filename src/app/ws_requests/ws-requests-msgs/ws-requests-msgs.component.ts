@@ -861,7 +861,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsRequestsService.addFollower(event.value, this.request.request_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
-        console.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
+        this.logger.log('[WS-REQUESTS-MSGS] ADD FOLLOWER  - RES  ', res);
 
       }, (error) => {
 
@@ -875,7 +875,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   removeFollower(event) {
-    console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - event  ', event);
+    this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - event  ', event);
     const projectUserId = event.value.value;
     // this.logger.log('removeFollower projectUserId', projectUserId)
     const userId = event.value.userid;
@@ -887,7 +887,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
 
-        console.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
+        this.logger.log('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - RES  ', res);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] REMOVE FOLLOWER  - ERROR  ', error);
 
@@ -906,7 +906,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
 
-        console.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - RES  ', res);
+        this.logger.log('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - RES  ', res);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] REMOVE ALL FOLLOWERS  - ERROR  ', error);
 
@@ -1380,7 +1380,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        console.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.CURRENT_USER_ROLE = userRole;
       })
@@ -1750,7 +1750,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe(async (wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
        
 
@@ -1972,41 +1972,41 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // Members array
           // -------------------------------------------------------------------
           this.members_array = this.request.participants;
-          console.log('[WS-REQUESTS-MSGS] - *** PARTICIPANTS_ARRAY ', this.members_array)
-          console.log('[WS-REQUESTS-MSGS] - *** currentUserID ', this.currentUserID)
-          console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
-          console.log('[WS-REQUESTS-MSGS] - *** id_project ', this.request.id_project);
+          this.logger.log('[WS-REQUESTS-MSGS] - *** PARTICIPANTS_ARRAY ', this.members_array)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** currentUserID ', this.currentUserID)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          this.logger.log('[WS-REQUESTS-MSGS] - *** id_project ', this.request.id_project);
 
 
           
             // if (!this.CURRENT_USER_ROLE) {
             //   this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project)
-            //   console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+            //   this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
             // }
           if(!this.CURRENT_USER_ROLE) {
             this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project) 
-            console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
           }
 
           this.members_array.forEach(member => {
-            console.log('[WS-REQUESTS-MSGS] - *** member', member)
+            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
 
             // ----------------------------------------------------------------------------------------------
             // disable notes and tags if the current user has agent role and is not among the participants
             // ----------------------------------------------------------------------------------------------
 
-            console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
-            console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
 
             if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-              console.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
-              console.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
             } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
               this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
-              console.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
+              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
             }
 
@@ -2442,7 +2442,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.createRequesterAvatar(this.request.lead);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants, 'this.currentUserID ', this.currentUserID)
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
-          console.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
         }
       }, error => {
         this.logger.error('[WS-REQUESTS-MSGS] - getWsRequestById$ - ERROR ', error)
@@ -3078,7 +3078,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   addNote() {
-    console.log('[WS-REQUESTS-MSGS] - addNote ', this.DISABLE_ADD_NOTE_AND_TAGS);
+    this.logger.log('[WS-REQUESTS-MSGS] - addNote ', this.DISABLE_ADD_NOTE_AND_TAGS);
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
       this.showSpinnerInAddNoteBtn = true;
       this.wsRequestsService.createNote(this.new_note, this.id_request)
@@ -3561,7 +3561,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.projectUsersList.forEach(projectUser => {
 
             projectUser['is_joined_to_request'] = this.currentUserIdIsInParticipants(this.request.participants, projectUser.id_user._id, this.request.request_id);
-            console.log('%%% Ws-REQUESTS-Msgs - PROJECT USERS ID', projectUser.id_user._id, ' is JOINED ', projectUser['is_joined_to_request']);
+            this.logger.log('%%% Ws-REQUESTS-Msgs - PROJECT USERS ID', projectUser.id_user._id, ' is JOINED ', projectUser['is_joined_to_request']);
           });
         }
 

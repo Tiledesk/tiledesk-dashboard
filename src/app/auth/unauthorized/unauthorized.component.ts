@@ -23,7 +23,7 @@ export class UnauthorizedComponent implements OnInit {
       if (project) {
        
         this.projectid = project._id
-        console.log('Unauthorized page projectid', this.projectid) 
+        
       }
       // this.logger.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });

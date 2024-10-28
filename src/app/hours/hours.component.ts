@@ -71,7 +71,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     
-    console.log('Hello HOURS on init ' ) 
+    this.logger.log('Hello HOURS on init ' ) 
     
     this.getCurrentProject();
     this.getUserRole();

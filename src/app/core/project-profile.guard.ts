@@ -21,23 +21,11 @@ export class ProjectProfileGuard implements CanActivate {
     private usersService: UsersService,
     public auth: AuthService,
   ) {
-    console.log('[PROJECT-PROFILE-GUARD] HELLO !!!')
-    // this.getLoggedUser()
+    this.logger.log('[PROJECT-PROFILE-GUARD] HELLO !!!')
+   
   }
 
-  // getLoggedUser() {
-  //   this.auth.user_bs
-  //     .subscribe((user) => {
-  //       console.log('[PROJECT-PROFILE-GUARD] - user ', user)
 
-
-  //       if (user) {
-        
-  //         this.userId = user._id
-  //         console.log('[PROJECT-PROFILE-GUARD] - userId ', this.userId)
-  //       }
-  //     })
-  // }
 
   async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
@@ -62,7 +50,7 @@ export class ProjectProfileGuard implements CanActivate {
 
 
     const project = await this.prjctPlanService._getProjectById(prjct_id);
-    console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** project ****** ', project)
+    this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** project ****** ', project)
 
     // const userRole = await this.prjctPlanService.getProjectUserByUserId(this.userId, prjct_id );
     // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) checkProjectPlan > ****** userRole ****** ', userRole)

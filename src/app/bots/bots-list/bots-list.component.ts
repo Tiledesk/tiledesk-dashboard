@@ -171,7 +171,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-    console.log('[BOTS-LIST] - HELLO !!! ')
   }
 
   ngOnInit() {
@@ -593,7 +592,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
@@ -1259,7 +1258,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.router.navigate(['project/' + this.project._id + '/bots', faqkb._id, _botType]);
     }
 
-    console.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', faqkb._id, 'bot type ', faqkb.type);
+    this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', faqkb._id, 'bot type ', faqkb.type);
   }
 
   goToOldBotDtls(idFaqKb: string, botType: string, botname: string) {

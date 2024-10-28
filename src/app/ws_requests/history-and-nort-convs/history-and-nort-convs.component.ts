@@ -423,13 +423,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
-    console.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
+    this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
     if (USER_ROLE === 'agent') {
       let unservedIndex = this.statusInHistory.findIndex(x => x.id === '100');
-      console.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
+      this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
       this.statusInHistory.splice(unservedIndex, 1)
       let servedIndex = this.statusInHistory.findIndex(x => x.id === '200');
-      console.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan servedIndex', servedIndex)
+      this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan servedIndex', servedIndex)
       this.statusInHistory.splice(servedIndex, 1)
       this.statusInHistory =  this.statusInHistory.slice(0)
     }

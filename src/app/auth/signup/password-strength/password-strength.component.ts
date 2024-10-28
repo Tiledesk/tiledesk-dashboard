@@ -39,9 +39,9 @@ export class PasswordStrengthComponent implements OnInit {
 
     let passedMatches = 0;
     for (const flag of flags) {
-      console.log( 'PSWRD STRENGHT flag ', flag)
+     
       passedMatches += flag === true ? 1 : 0;
-      console.log( 'PSWRD STRENGHT passedMatches', passedMatches)
+     
     }
 
     force += 2 * p.length + ((p.length >= 10) ? 1 : 0);
@@ -61,11 +61,11 @@ export class PasswordStrengthComponent implements OnInit {
 
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     const password = changes.passwordToCheck.currentValue;
-    console.log('PSWRD STRENGHT password' , password) 
+  
     this.setBarColors(4, '#DDD');
     if (password) {
       const c = this.getColor(PasswordStrengthComponent.checkStrength(password));
-      console.log( console.log('PSWRD STRENGHT c' , c) ) 
+     
       this.setBarColors(c.idx, c.col);
 
       const pwdStrength = PasswordStrengthComponent.checkStrength(password);

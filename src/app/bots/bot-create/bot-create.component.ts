@@ -163,7 +163,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
+    this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
     
     this.getBrowserVersion();
     this.detectBrowserLang();
@@ -282,7 +282,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event) {
 
-    console.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
+    this.logger.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
     // let fileJsonToUpload = ''
     // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
@@ -290,7 +290,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     fileReader.readAsText(selectedFile, "UTF-8");
     fileReader.onload = () => {
      let fileJsonToUpload = JSON.parse(fileReader.result as string)
-      console.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+     this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
     }
     // fileReader.onerror = (error) => {
     //   this.logger.log(error);
@@ -453,7 +453,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   getParamsBotTypeAndDepts() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-      console.log('[BOT-CREATE] --->  PARAMS', params);
+      this.logger.log('[BOT-CREATE] --->  PARAMS', params);
       //  this.logger.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
       this.template = params.template;

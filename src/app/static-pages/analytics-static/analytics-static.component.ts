@@ -164,7 +164,7 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
       )
       .subscribe((user_role) => {
         this.USER_ROLE = user_role;
-        console.log('[ANALYTICS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+        this.logger.log('[ANALYTICS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
         // this.hideNavigationElem(this.USER_ROLE)
       });
   }
@@ -172,19 +172,19 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
   hideNavigationElem(USER_ROLE) {
     // Main panel
     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    console.log('[ANALYTICS-STATIC] - elemNavbar: ', elemMainPanel);
+    this.logger.log('[ANALYTICS-STATIC] - elemNavbar: ', elemMainPanel);
 
     // Sidebar
     const elemAppSidebar = <HTMLElement>document.querySelector('.sidebar');
-    console.log('[ANALYTICS-STATIC] - elemAppSidebar: ', elemAppSidebar);
+    this.logger.log('[ANALYTICS-STATIC] - elemAppSidebar: ', elemAppSidebar);
 
     // Navbar
     const elemNavbar = <HTMLElement>document.querySelector('.navbar');
-    console.log('[ANALYTICS-STATIC] - elemNavbar: ', elemNavbar);
+    this.logger.log('[ANALYTICS-STATIC] - elemNavbar: ', elemNavbar);
 
     // Footer
     const elemFooter = <HTMLElement>document.querySelector('footer');
-    console.log('[ANALYTICS-STATIC] - elemFooter: ', elemFooter);
+    this.logger.log('[ANALYTICS-STATIC] - elemFooter: ', elemFooter);
 
     if (USER_ROLE === 'agent') {
       // Adds custom style to main panel

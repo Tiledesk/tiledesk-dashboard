@@ -209,7 +209,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('[FAQ-COMP] »»» HELLO FAQ COMP')
+    this.logger.log('[FAQ-COMP] »»» HELLO FAQ COMP')
 
     this.clearSearchedQuestionStored();
 
@@ -240,7 +240,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -290,7 +290,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   getParamsBotType() {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
-      console.log('FAQ COMP getParamsBotType params', params) 
+      this.logger.log('FAQ COMP getParamsBotType params', params) 
       if (this.botType && this.botType === 'external') {
       
         this.botTypeForInput = 'External'
@@ -978,7 +978,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.showSpinnerInUpdateBotCard = true
 
     this.faqKbService.getFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
-      console.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
 
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
@@ -1221,7 +1221,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     this.logger.log('[FAQ-COMP] ID OF FAQKB ', this.id_faq_kb);
-    // console.log('2 goToEditAddPage_CREATE:   ', this.faqkb_language);
+    // this.logger.log('2 goToEditAddPage_CREATE:   ', this.faqkb_language);
     this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
   }
 
@@ -1319,7 +1319,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.queryString = this.fullText;
     }
     // else {
-    //   console.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.fullText);
+    //   this.logger.log('[FAQ-COMP] - FULL TEXT SEARCH ', this.fullText);
     //   this.fullText_temp = '';
     // }
 
