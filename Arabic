@@ -1268,6 +1268,7 @@
         "UnservedRequests": "المحادثات غير المعينة",
         "ServedRequests": "المحادثات المعينة",
         "ActiveRequests": "محادثات نشطة",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "تقصير",
         "Requester": "مقدم الطلب",
         "Message": "رسالة",
