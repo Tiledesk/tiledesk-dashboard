@@ -503,6 +503,8 @@
     "SupportedFileTypesPdfDocx": "Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb": "File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported": "File type not supported",
+    "UploadedFileMayContainsDangerousCode": "The uploaded file may contains malicious code",
+    "URLTypeNotAllowed": "Resource not allowed!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",
     "ToUpload": "yüklemek",
     "CreateAnswers": "Cevaplar oluşturun",
@@ -752,7 +754,9 @@
         "YourDetails": "Detayların",
         "AddYourOwnPicture": "⚡️ Add your own picture to give your conversations a more intimate feel!",
         "AddYourOwnPicture_": "⚡️ Add your own picture to give your conversations a more intimate feel, as your visitor can see who they are talking to!",
-        "PreferredSize": "Tercih edilen resim boyutu 128x128 piksel - Resim formatı: .jpeg veya .png"
+        "PreferredSize": "Tercih edilen resim boyutu 128x128 piksel - Resim formatı: .jpeg veya .png",
+        "AnErrorHasOccurredSendingVerificationLink": "An error has occurred sending verification link",
+        "YourProfileHasBeenUploaded": "your profile has been successfully updated"
     },
     "ChangePsw": {
         "ChangePsw": "Şifre değiştir",
