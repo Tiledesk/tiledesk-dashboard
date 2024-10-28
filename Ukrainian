@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Непризначені бесіди",
         "ServedRequests": "Призначені бесіди",
         "ActiveRequests": "Активні бесіди",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "За замовчуванням",
         "Requester": "Запитувач",
         "Message": "повідомлення",
