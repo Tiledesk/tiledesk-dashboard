@@ -503,6 +503,8 @@
     "SupportedFileTypesPdfDocx": "Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb": "File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported": "File type not supported",
+    "UploadedFileMayContainsDangerousCode": "The uploaded file may contains malicious code",
+    "URLTypeNotAllowed": "Resource not allowed!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",
     "ToUpload": "щоб завантажити",
     "CreateAnswers": "Створюйте відповіді",
@@ -752,7 +754,9 @@
         "YourDetails": "Ваші дані",
         "AddYourOwnPicture": "⚡️ Додайте власне зображення, щоб ваші розмови були більш інтимними!",
         "AddYourOwnPicture_": "⚡️ Додайте власне зображення, щоб ваші розмови були більш інтимними, оскільки ваш відвідувач може бачити, з ким вони розмовляють!",
-        "PreferredSize": "Бажаний розмір зображення 128x128 пікселів - Формат зображення: .jpeg або .png"
+        "PreferredSize": "Бажаний розмір зображення 128x128 пікселів - Формат зображення: .jpeg або .png",
+        "AnErrorHasOccurredSendingVerificationLink": "An error has occurred sending verification link",
+        "YourProfileHasBeenUploaded": "your profile has been successfully updated"
     },
     "ChangePsw": {
         "ChangePsw": "Змінити пароль",
