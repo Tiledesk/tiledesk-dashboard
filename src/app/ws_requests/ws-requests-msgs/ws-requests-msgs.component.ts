@@ -1,3 +1,4 @@
+import { CHANNELS_NAME, checkAcceptedFile } from './../../utils/util';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -40,8 +41,13 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { BrandService } from 'app/services/brand.service';
+import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
+import { FaqService } from 'app/services/faq.service';
+import { Chatbot } from 'app/models/faq_kb-model';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 // './ws-requests-msgs.component.html',
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -55,11 +61,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   appSumoProfilefeatureAvailableFromBPlan: string;
   featureAvailableFromBPlan: string;
   featureAvailableFromEPlan: string;
-  cancel: string;
   upgradePlan: string;
+  currentUserIsInParticipants: any
 
   objectKeys = Object.keys;
   isVisiblePaymentTab: boolean;
+  overridePay: boolean;
   @ViewChild('scrollMe', { static: false })
   private myScrollContainer: ElementRef;
 
@@ -191,19 +198,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   tagsArray: Array<any>
   diplayAddTagInput = false;
 
-  create_label_success: string;
-  create_label_error: string;
-  delete_label_success: string;
-  delete_label_error: string;
-
-  create_note_success: string;
-  create_note_error: string;
-  delete_note_success: string;
-  delete_note_error: string;
-  notifyProcessingMsg: string;
-
-  subjectUpdatedSuccessfully: string;
-  anErrorHasOccurred: string;
 
   tagsList: Array<any>;
   typeALabelAndPressEnter: string;
@@ -218,19 +212,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   showSpinnerInAddNoteBtn: boolean = false;
   subscription: Subscription;
-  CURRENT_USER_ROLE: string;
+  CURRENT_USER_ROLE: any;
 
-  CHAT_PANEL_MODE: boolean // = true; // nk for test change color
+  CHAT_PANEL_MODE: boolean  // = true; // Nikola for test change color
   dshbrdBaseUrl: string;
   project_name: string;
 
   DISABLE_ADD_NOTE_AND_TAGS = false;
   DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
-
-  request_archived_msg: string;
-  request_archived_err_msg: string;
-  archivingRequestNoticationMsg: string;
-  requestHasBeenArchivedNoticationMsg_part1: string;
 
   isVisibleLBS: boolean;
   isVisibleAPP: boolean;
@@ -240,15 +229,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   jira_issue_types: any
   selectedJiraType: number;
 
-  reassignRequestMsg: string;
-  requestWillBeReassignedToMsg: string;
-  addAgentMsg: string;
-  requestWillBeAssignedToMsg: string;
-  anErrorHasOccurredMsg: string;
-  done_msg: string;
-  areYouSureLbl: string;
-  cancelLbl: string;
-  yesBanVisitorLbl: string;
+
 
   COUNT_OF_VISIBLE_DEPT: number;
 
@@ -260,8 +241,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   browserLang: string;
   // = this.priority[2].name;
   selectedPriority: any;
-  priority_updated_successfully_msg: string;
-  priority_update_failed: string;
   current_selected_prjct: any;
   imageStorage: any;
   tag_name: string;
@@ -303,9 +282,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   CURRENT_USER_IS_A_FOLLOWER: boolean = false;
   displayModalTranscript: string = 'none'
   transcriptDwnldPreference: string;
-  leaveChatTitle: string;
-
-  areYouSureLeftTheChatLabel: string;
+  
   resolutionBotCount: number;
   previousUrl: string;
   hasSearchedBy: string;
@@ -315,12 +292,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   ticketSubjectEditMode: boolean = false;
   ticketSubject: string;
 
-  warningMsg: string;
-  conversationsCannotBeReopened: string;
   bannedVisitorsArray: Array<any>;
   visitorIsBanned: boolean = false;
-  messageCouldNotBeSent: string;
   uploadedFiles: File;
+  fileUploadAccept: string;
 
 
   metadata: any;
@@ -334,17 +309,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   HAS_SELECTED_SEND_AS_PENDING: boolean = false;
   HAS_SELECTED_SEND_AS_SOLVED: boolean = false;
 
-
-  youCannotLeaveTheChat: string;
-  youCannotAddAgents: string;
-
-  addAgentTitle: string;
-
-  youCannotJoinChat: string;
-  joinChatTitle: string;
-  youCannotJoinThisChat: string;
-  thisChatIsAlreadyServedBy: string;
-  visitorAlreadyBanned: string;
 
   is0penDropDown = false
   isOpen: boolean;
@@ -379,24 +343,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     'hide-delay': 22222222220,
     'placement': 'left',
   }
-  convertToOffline: string;
-  smartReassignmentForThisConversationWillBeDisabled: string;
-  convertToOnline: string;
-  smartReassignmentForThisConversationWillBeEnabled: string;
-  tagAlreadyAssigned: string
-  thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string
+
   isOpenChatbotAttributesAccordion: boolean
   profile_name: string;
   subscription_is_active: any;
   trial_expired: any;
   prjct_profile_type: string;
-  agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
   cPlanOnly: string;
   fPlanOnly: string;
-  learnMoreAboutDefaultRoles: string;
-  onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   DASHBORD_BASE_URL: string;
@@ -406,6 +362,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   mailtoBody: any;
   REQUEST_EXIST: boolean = true;
   botLogo: string;
+  scrollYposition: any;
+  storedRequestId: string;
+  requestDuration: any;
+  dialedNumberIdentificationService: string;
+
+  CHANNELS_NAME = CHANNELS_NAME;
+  HIDE_CHATBOT_ATTRIBUTES: boolean;
+
+  panelOpenState = false;
+
+
+  public translationMap: Map<string, string> = new Map();
 
   /**
    * Constructor
@@ -453,7 +421,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private uploadImageNativeService: UploadImageNativeService,
     private prjctPlanService: ProjectPlanService,
     public dialog: MatDialog,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private faqService: FaqService,
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -567,6 +536,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getQueryParams();
     this.getProjectPlan();
 
+    this.fileUploadAccept = this.appConfigService.getConfig().fileUploadAccept
     // this.getClickOutEditContactFullname()
   }
 
@@ -674,8 +644,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
+      this.translationMap.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan'), 
+      this.translationMap.get('LearnMoreAboutDefaultRoles')
+    )
   }
 
   openUpgradePlanDialog(projectid, planName) {
@@ -704,14 +676,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        // this.logger.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        this.logger.log('[WS-REQUESTS-MSGS]  queryParams', params);
         this.queryParams = params
       });
   }
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] params', params)
+      this.logger.log('[WS-REQUESTS-MSGS] params', params)
+
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition
+      }
 
       if (params.isopenadvancedsearch) {
         this.isOpenedAdvancedSearch = params.isopenadvancedsearch
@@ -723,16 +699,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
+        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
       }
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-          this.hasSearchedBy = params.hassearchedby
+          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-          this.hasSearchedBy = params.hassearchedby
+          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        this.hasSearchedBy = params.hassearchedby
+        this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
 
       if (!params.calledby) {
@@ -743,8 +723,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goBack() {
+    this.logger.log('[WS-REQUESTS-MSGS] goBack')
     if (this.previousUrl === 'wsrequests') {
-      this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      if (!this.scrollYposition) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl]);
+      } else if (this.scrollYposition) {
+        this.router.navigate(['project/' + this.id_project + '/' + this.previousUrl + '/' + this.scrollYposition]);
+      }
       // && this.hasSearchedBy
 
       // Called by history with advanced search options opened 
@@ -1135,12 +1120,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   ngOnDestroy() {
-    this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
+    //  this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
     this.unsuscribeRequesterPresence(this.requester_id);
     if (this.id_request) {
+      // this.logger.log('[WS-REQUESTS-MSGS] - ngOnDestroy 2 this.id_request ', this.id_request)
       this.unsuscribeRequestById(this.id_request);
       this.unsuscribeMessages(this.id_request);
     }
@@ -1241,7 +1227,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
-      // this.CHAT_PANEL_MODE = true; // nk for test change color
+
       this.CHAT_PANEL_MODE = false;
       // this.CHAT_PANEL_MODE = true; // Nikola to test chat mode
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
@@ -1286,6 +1272,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+
       if (key.includes("APP")) {
         let app = key.split(":");
         if (app[1] === "F") {
@@ -1307,6 +1303,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePaymentTab = false;
     }
+
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
+
+
   }
 
   // -------------------------------------------------------------
@@ -1362,15 +1364,33 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   findCurrentProjectAmongAll(projectId: string) {
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
-      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // thia.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+      //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      // thia.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.settings) {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
+        if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
+
+          this.HIDE_CHATBOT_ATTRIBUTES = this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden;
+          this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 1', this.HIDE_CHATBOT_ATTRIBUTES);
+
+        } else {
+          this.HIDE_CHATBOT_ATTRIBUTES = false;
+          this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
+        }
+      } else {
+        this.HIDE_CHATBOT_ATTRIBUTES = false;
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
+      }
+
+
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
         // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
       }
+
 
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
     }, error => {
@@ -1383,7 +1403,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getRequesByIdRest(requestid) {
     this.wsRequestsService.getConversationByIDWithRestRequest(requestid)
       .subscribe((request: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
+        //  this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
         if (request) {
           this.REQUEST_EXIST = true
         }
@@ -1406,17 +1426,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
       if (params.requestid) {
         this.getRequesByIdRest(params.requestid)
       }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
-        // this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
-
-        this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
-
-
+        // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId - id_request ', this.id_request);
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -1433,9 +1449,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.id_request = params.requestid;
 
-
-
-      this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
+      // this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
     });
 
     if (this.id_request) {
@@ -1521,6 +1535,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param idrequest 
    */
   unsuscribeRequestById(idrequest) {
+    // this.logger.log('[WS-REQUESTS-MSGS] - unsuscribeRequestById ', idrequest);
     this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
   }
 
@@ -1610,10 +1625,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT - RES: ', data);
       }, (err) => {
         this.logger.error('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT - ERROR: ', err);
-        this.notify.showWidgetStyleUpdateNotification(this.anErrorHasOccurred, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), 4, 'report_problem');
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - UPDATE TICKET SUBJECT * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.subjectUpdatedSuccessfully, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('SubjectUpdatedSuccessfully'), 2, 'done');
         this.ticketSubjectEditMode = false
       });
   }
@@ -1635,19 +1650,92 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   }, 1500);
   // }
 
-  getWsRequestById$() {
+
+  millisToMinutesAndSecondsNoFixedPoint(millis) {
+    let seconds = (millis / 1000).toFixed();
+    let minutes = (millis / (1000 * 60)).toFixed();
+    let hours = (millis / (1000 * 60 * 60)).toFixed();
+    let days = (millis / (1000 * 60 * 60 * 24)).toFixed();
+    if (+seconds < 60) return seconds + " " + this.translate.instant('Analytics.Seconds');
+    else if (+minutes < 60) return minutes + " " + this.translate.instant('Analytics.Minutes');
+    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
+    else return days + " " + this.translate.instant('Analytics.Days');
+
+  }
+
+  millisToMinutesAndSeconds(millis) {
+    // let minutes = Math.floor(millis / 60000);
+    // let seconds = ((millis % 60000) / 1000).toFixed(0);
+    // return minutes + ":" + (+seconds < 10 ? '0' : '') + seconds;
+
+    // const seconds = milliseconds / 1000;
+    // const minutes = seconds / 60;
+    // return minutes;
+
+
+    // let milliseconds = Math.floor((millis % 1000) / 100)
+    // let seconds = Math.floor((millis / 1000) % 60)
+    // let minutes = Math.floor((millis / (1000 * 60)) % 60)
+    // let hours = Math.floor((millis / (1000 * 60 * 60)) % 24)
+
+    // let h = (hours < 10) ? "0" + hours : hours;
+    // let m = (minutes < 10) ? "0" + minutes : minutes;
+    // let s = (seconds < 10) ? "0" + seconds : seconds;
+
+    // return h + ":" + m + ":" + s + "." + milliseconds;
+
+    let seconds = (millis / 1000).toFixed(1);
+    let minutes = (millis / (1000 * 60)).toFixed(1);
+    let hours = (millis / (1000 * 60 * 60)).toFixed(1);
+    let days = (millis / (1000 * 60 * 60 * 24)).toFixed(1);
+    if (+seconds < 60) return seconds + " " + this.translate.instant('Analytics.Seconds');
+    else if (+minutes < 60) return minutes + " " + this.translate.instant('Analytics.Minutes');
+    else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
+    else return days + " " + this.translate.instant('Analytics.Days');
+
+  }
+ 
+
+
+  async  getWsRequestById$() {
     this.wsRequestsService.wsRequest$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((wsrequest) => {
+      .subscribe(async (wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
-
+       
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
+
+          //  this.currentUserIdIsInParticipants this.hasmeInParticipants( this.request.participants)
+
+          // -----------------------------
+          // Request dnis (called number) 
+          // -----------------------------
+          if (this.request.attributes && this.request.attributes.payload && this.request.attributes.payload.dnis) {
+            this.dialedNumberIdentificationService = this.request.attributes.payload.dnis
+          } else if (this.request.attributes && this.request.attributes && this.request.attributes.dnis) {
+            this.dialedNumberIdentificationService = this.request.attributes.dnis
+          } else {
+            this.dialedNumberIdentificationService = "N/A"
+          }
+
+
+          // -----------------------------
+          // Request duration 
+          // -----------------------------
+          if (this.request.duration) {
+            const duration = this.request.duration;
+            this.logger.log('[WS-REQUESTS-MSGS] - duration ', duration)
+            this.requestDuration = this.millisToMinutesAndSecondsNoFixedPoint(duration)
+            this.logger.log('[WS-REQUESTS-MSGS] - requestDuration ', this.requestDuration)
+          } else {
+            this.requestDuration = "N/A"
+          }
 
           if (this.request.subject) {
             this.ticketSubject = this.request.subject
@@ -1805,6 +1893,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // User Agent
           // -------------------------------------------------------------------
           const user_agent_result = this.parseUserAgent(this.request.userAgent);
+          // console.log('user_agent_result  ', user_agent_result)
 
           if (user_agent_result.browser.name) {
             if (user_agent_result.browser.version) {
@@ -1837,24 +1926,41 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // Members array
           // -------------------------------------------------------------------
           this.members_array = this.request.participants;
-          this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById PARTICIPANTS_ARRAY ', this.members_array)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** PARTICIPANTS_ARRAY ', this.members_array)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** currentUserID ', this.currentUserID)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          this.logger.log('[WS-REQUESTS-MSGS] - *** id_project ', this.request.id_project);
+
+
+          
+            // if (!this.CURRENT_USER_ROLE) {
+            //   this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project)
+            //   this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+            // }
+          if(!this.CURRENT_USER_ROLE) {
+            this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project) 
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+          }
 
           this.members_array.forEach(member => {
+            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
 
             // ----------------------------------------------------------------------------------------------
             // disable notes and tags if the current user has agent role and is not among the participants
             // ----------------------------------------------------------------------------------------------
-            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
-            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT_USER_ID ', this.currentUserID);
 
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
 
             if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT USER NOT IN PARTICIPANT AND IS AGENT');
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
+              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
             } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT USER IS IN PARTICIPANT AND IS AGENT');
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
+              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
             }
 
@@ -2264,7 +2370,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // -----------------------------------------------------------------------------------------------------
           // @ Msgs ws-subscription
           // -----------------------------------------------------------------------------------------------------
+          // if (this.CHAT_PANEL_MODE === false)  {
           this.subscribeToWs_MsgsByRequestId(this.id_request);
+          // }
 
           // -----------------------------------------------------------
           // DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
@@ -2286,7 +2394,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] members_array', this.members_array)
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
-          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants , 'this.currentUserID ', this.currentUserID)
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants, 'this.currentUserID ', this.currentUserID)
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
         }
@@ -2384,17 +2492,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
-
   // -----------------------------------------------------------------------------------------------------
   // @ Messages ws-subscription and get msgs from BS subscription
   // -----------------------------------------------------------------------------------------------------
   subscribeToWs_MsgsByRequestId(id_request: string) {
+
     //  this.logger.log('[WS-REQUESTS-MSGS] - subscribe To WS MSGS ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.listenToGotAllMsg()
     this.getWsMsgs$();
+
   }
+
   // .pipe(filter((data) => data !== null))
   listenToGotAllMsg() {
     this.wsMsgsService.wsMsgsGotAllData$
@@ -2513,7 +2622,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((data) => {
         const user = data
-        this.logger.log("[WS-REQUESTS-MSGS] - getWsRequesterPresence user ", user);
+        // this.logger.log("[WS-REQUESTS-MSGS] - getWsRequesterPresence user ", user);
         if (user && user.presence) {
 
           if (user.presence.status === "offline") {
@@ -2606,10 +2715,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
       }, (err) => {
         this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
-        this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
         this.getTagContainerElementHeight()
       });
   }
@@ -2687,7 +2796,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         }, (error) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-          self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+          self.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
         }, () => {
           this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
 
@@ -2702,8 +2811,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalTagAlredyAssigned() {
     swal({
-      title: this.tagAlreadyAssigned,
-      text: this.thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag,
+      title: this.translationMap.get('TagAlreadyAssigned'),
+      text: this.translationMap.get('ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag'),
       icon: "info",
       buttons: 'OK',
       dangerMode: false,
@@ -2731,11 +2840,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - RES: ', data);
         }, (err) => {
           this.logger.error('[WS-REQUESTS-MSGS] - REMOVE TAG - ERROR: ', err);
-          this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['DeleteLabelError'], 4, 'report_problem');
 
         }, () => {
           this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG * COMPLETE *');
-          this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['DeleteLabelSuccess'], 2, 'done');
 
         });
     }
@@ -2795,7 +2904,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
         // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
@@ -2924,13 +3033,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   addNote() {
     // this.disableMainPanelScroll();
+    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
     this.showSpinnerInAddNoteBtn = true;
     this.wsRequestsService.createNote(this.new_note, this.id_request)
       .subscribe((responses: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.create_note_success, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
         this.showSpinnerInAddNoteBtn = false;
       }, () => {
         this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
@@ -2939,16 +3049,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // panel.scrollTop = panel.scrollHeight;
         // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
 
-        this.notify.showWidgetStyleUpdateNotification(this.create_note_success, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
         this.showSpinnerInAddNoteBtn = false;
         // this.enableMainPanelScroll()
 
-      });
+        });
+    }
   }
 
 
   deleteNote(note_id) {
-    this.notify.operationinprogress(this.notifyProcessingMsg);
+    this.notify.operationinprogress(this.translationMap.get('Processing'));
 
     this.wsRequestsService.deleteNote(this.id_request, note_id)
       .subscribe((responses: any) => {
@@ -2957,14 +3068,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS]  - DELETE NOTE - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.delete_note_success, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteError'], 4, 'report_problem');
       }, () => {
 
         var panel = <HTMLElement>document.querySelector('.note-panel')
         // panel.scrollTop = panel.scrollHeight;
         this.logger.log('[WS-REQUESTS-MSGS]  DELETE NOTE * COMPLETE *');
         // this.notify.showWidgetStyleUpdateNotification(this.delete_note_success, 2, 'done');
-        this.notify.operationcompleted(this.delete_note_success);
+        this.notify.operationcompleted(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteSuccess']);
 
         // this.closeModalDeleteNote(); // no more used
       });
@@ -3008,11 +3119,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - onChangeSelectedPriority -UPDATED PRIORITY - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.priority_update_failed, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorOccurredWhileUpdatingTheCnversationPriority'), 4, 'report_problem');
       }, () => {
         // panel.scrollTop = panel.scrollHeight;
         this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority - UPDATED PRIORITY  * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.priority_updated_successfully_msg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('TheConversationPriorityHasBeenSuccessfullyUpdated'), 2, 'done');
 
       });
 
@@ -3358,7 +3469,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // this.addAgentTitle
   presentModalYouCannotAddAgents(agentFullname) {
     swal({
-      title: this.youCannotAddAgents,
+      title: this.translationMap.get('YouCannotAddAgents'),
       text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
       buttons: 'OK',
@@ -3389,6 +3500,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
+
+
+          this.projectUsersList.sort(function compare(a: any, b: any) {
+            if (a['id_user']['firstname'].toLowerCase() < b['id_user']['firstname'].toLowerCase()) {
+              return -1;
+            }
+            if (a['id_user']['firstname'].toLowerCase() > b['id_user']['firstname'].toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
+
           this.projectUsersList.forEach(projectUser => {
 
             projectUser['is_joined_to_request'] = this.currentUserIdIsInParticipants(this.request.participants, projectUser.id_user._id, this.request.request_id);
@@ -3405,6 +3528,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 return false
               }
             })
+
+          this.bots.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['name'].toLowerCase() < b['name'].toLowerCase()) {
+              return -1;
+            }
+            if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
         }
       }, error => {
         this.showSpinner_inModalUserList = false;
@@ -3422,6 +3555,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
       this.logger.log('[WS-REQUESTS-MSGS] - GET DEPTS RESPONSE ', depts);
       this.departments = depts;
+
       let count = 0;
       this.departments.forEach(dept => {
         if (dept.default === false && dept.status === 1) {
@@ -3455,6 +3589,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         }
       });
+
+      this.departments.sort(function compare(a: any, b: any) {
+        if (a['name'].toLowerCase() < b['name'].toLowerCase()) {
+          return -1;
+        }
+        if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      });
+
 
       this.COUNT_OF_VISIBLE_DEPT = count;
       this.logger.log('[WS-REQUESTS-MSGS] - GET DEPTS - COUNT_OF_VISIBLE_DEPT', this.COUNT_OF_VISIBLE_DEPT);
@@ -3558,8 +3703,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentSwalModalReassignConversationToAgent(userid, userfirstname, userlastname) {
     swal({
-      title: this.reassignRequestMsg,
-      text: this.requestWillBeReassignedToMsg + ' ' + userfirstname + ' ' + userlastname,
+      title: this.translationMap.get('VisitorsPage.ReassignRequest'),
+      text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + userfirstname + ' ' + userlastname,
       icon: "info",
       buttons: true,
       dangerMode: false,
@@ -3576,7 +3721,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ReassignConversationToAgent in swal willReassign to User setParticipants - ERROR ', error);
 
-            swal(this.anErrorHasOccurredMsg, {
+            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
               icon: "error",
             });
 
@@ -3584,7 +3729,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent in swal willReassign to User setParticipants * COMPLETE *');
 
             swal({
-              title: this.done_msg + "!",
+              title: this.translationMap.get('Done') + "!",
               icon: "success",
               button: "OK",
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -3604,7 +3749,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
     this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
     swal({
-      title: this.addAgentMsg,
+      title: this.translationMap.get('VisitorsPage.AddAgent'),
       text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', { user: userfirstname + ' ' + userlastname }),
       icon: "info",
       buttons: true,
@@ -3622,7 +3767,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant - ERROR ', error);
 
-            swal(this.anErrorHasOccurredMsg, {
+            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
               icon: "error",
             });
 
@@ -3630,7 +3775,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant * COMPLETE *');
 
             swal({
-              title: this.done_msg + "!",
+              title: this.translationMap.get('Done') + "!",
               icon: "success",
               button: "OK",
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -3654,52 +3799,188 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.userfirstname_selected = botname;
     this.userlastname_selected = '';
     this.useremail_selected = '';
-    // this.displayConfirmReassignmentModal = 'block'
-    this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected)
+    this.displayConfirmReassignmentModal = 'block'
+    let blocks = {}
+    this.faqService.getAllFaqByFaqKbId(botid).subscribe((faqs: any) => {
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      // const intent_display_name_array = []
+
+      if (faqs) {
+
+        let processedItems = 0;
+        faqs.forEach((faq, index) => {
+          processedItems++;
+          blocks[faq.intent_display_name] = faq.intent_display_name
+          // intent_display_name_array.push(block)
+
+          if (processedItems === faqs.length) {
+            this.logger.log('loop finished');
+            this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected, blocks)
+
+          }
+
+        });
+        this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks', blocks);
+        // this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - intent_display_name_array', intent_display_name_array);
+        // this.intent_display_name_array = this.intent_display_name_array.slice(0)
+      }
+    }, (error) => {
+      this.logger.error('[MODAL-CHATBOT-REASSIGNMENT] >> FAQs GOT BY FAQ-KB ID - ERR ', error);
+    }, () => {
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] >> FAQs GOT BY FAQ-KB ID - COMPLETE');
+
+    });
+
+
+  }
+
+  // Select a block that will automatically execute when the chatbot joins the conversation
+  async presentSwalModalReassignConversationToBot(botid, botname, blocks) {
+    this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
+    const { value: block } = await Swal.fire({
+      html: `${this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo')} ${botname} <label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>`,
+      title: this.translationMap.get('VisitorsPage.ReassignRequest'),
+      text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + botname,
+      // icon: "info",
+      showCancelButton: true,
+
+      // buttons: true,
+      // dangerMode: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translationMap.get('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      input: "select",
+      inputAttributes: {
+        id: 'my-input'
+      },
+      inputPlaceholder: this.translate.instant('SelectAblock'), //"Select a block",
+      inputOptions: blocks,
+      inputValidator: (value: any) => {
+        return new Promise((resolve) => {
+          if (value === "") {
+            resolve(this.translate.instant('YouNeedToSelectABlock'));
+          } else {
+            resolve(null);
+          }
+        });
+      }
+    });
+    if (block) {
+      // this.logger.log(`You selected: ${block}`);
+      this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+
+      }, (error) => {
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+        this.sendMessage(block)
+
+
+      })
+
+    }
+    // .then((result) => {
+    //   if (result.isConfirmed) {
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot', result)
+
+
+    //     // this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+
+    //     // }, (error) => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
+
+    //     //  Swal.fire(this.anErrorHasOccurredMsg, {
+    //     //     icon: "error",
+    //     //   });
+
+    //     // }, () => {
+    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
+
+
+
+    //     //   Swal.fire({
+    //     //     title: this.done_msg + "!",
+    //     //     icon: "success",
+    //     //     // button: "OK",
+    //     //     confirmButtonText: this.translate.instant('Ok') ,
+    //     //     confirmButtonColor: "var(--blue-light)",
+    //     //     focusConfirm: true,
+    //     //     // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    //     //   }).then((okpressed) => {
+
+    //     //     this.displayUsersListModal = 'none';
+    //     //     this.presentModalSelectChatbotBlock(botname, botidNoPrefix) 
+    //     //   });
+    //     // });
+    //   } else {
+    //     console.log('swal result', result);
+    //   }
+    // });
+  }
+
+  sendMessage(block) {
+    let message = '/' + block;
+    this.selectedResponseTypeID = 3
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', message);
+    this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
+      .subscribe((msg) => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+      }, (error) => {
+        this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - COMPLETE ');
+        this.selectedResponseTypeID = 1
+        // this.displayUsersListModal = 'none';
+        this.presentDoneDialog()
+      })
+
+  }
+
+  presentDoneDialog() {
+    Swal.fire({
+      title: this.translationMap.get('Done') + "!",
+      icon: "success",
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+    }).then((okpressed) => {
+      this.displayUsersListModal = 'none';
+    })
   }
 
 
-  presentSwalModalReassignConversationToBot(botid, botname) {
-    swal({
-      title: this.reassignRequestMsg,
-      text: this.requestWillBeReassignedToMsg + ' ' + botname,
-      icon: "info",
-      buttons: true,
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    })
-      .then((willReassign) => {
-        if (willReassign) {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot', willReassign)
+  presentModalSelectChatbotBlock(botname, botidNoPrefix) {
+    // const dialogRef = this.dialog.open(ModalChatbotReassignmentComponent, {
+    const dialogRef = this.dialog.open(ModalChatbotReassignmentComponent, {
 
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        chatbot_id: botidNoPrefix,
+        chatbot_name: botname
+      },
+    });
 
-          this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants res ', res)
+    dialogRef.afterClosed().subscribe(res => {
+      // if (editedChatbot) {
+      //   this.logger.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME AFTER CLOSED editedChatbot:`, editedChatbot);
+      //   this.importChatbotFromJSON(editedChatbot)
 
-          }, (error) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants - ERROR ', error);
+      //   this.logger.log(`[CNP-TEMPLATES] DIALOG CHATBOT NAME  AFTER CLOSE selectedNamespace:`, this.selectedNamespace);
+      //   // this.selectedNamespace['name'] = editedChatbot['name']
+      //   let body = { name: editedChatbot['name'] }
+      //   this.updateNamespace(body)
+      // }
+    });
 
-            swal(this.anErrorHasOccurredMsg, {
-              icon: "error",
-            });
-
-          }, () => {
-            this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
-
-            swal({
-              title: this.done_msg + "!",
-              icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-
-              this.displayUsersListModal = 'none';
-            });
-          });
-        } else {
-          this.logger.log('swal willReassign', willReassign);
-        }
-      });
   }
 
   selectDept(deptname: string, deptid: string) {
@@ -3715,8 +3996,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentSwalModalConfirmReassignToDept(deptid, deptname) {
     swal({
-      title: this.reassignRequestMsg,
-      text: this.requestWillBeReassignedToMsg + ' ' + deptname,
+      title: this.translationMap.get('VisitorsPage.ReassignRequest'),
+      text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + deptname,
       icon: "info",
       buttons: true,
       dangerMode: false,
@@ -3732,7 +4013,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept - ERROR ', error);
 
-            swal(this.anErrorHasOccurredMsg, {
+            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
               icon: "error",
             });
 
@@ -3740,7 +4021,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept * COMPLETE *');
 
             swal({
-              title: this.done_msg + "!",
+              title: this.translationMap.get('Done') + "!",
               icon: "success",
               button: "OK",
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -3759,22 +4040,31 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   archiveRequest(requestid) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+    this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
     this.wsRequestsService.closeSupportGroup(requestid)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+
+        this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+        if (requestid === this.storedRequestId) {
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
+        }
       },
         (err) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
 
           //  NOTIFY ERROR 
-          this.notify.showWidgetStyleUpdateNotification(this.request_archived_err_msg, 4, 'report_problem')
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
         }, () => {
 
           this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
           //  NOTIFY SUCCESS
-          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+          this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
 
           let convWokingStatus = ''
           this.updateRequestWorkingStatus(convWokingStatus)
@@ -3824,8 +4114,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalReopenConvIsNotPossible() {
     swal({
-      title: this.warningMsg,
-      text: this.conversationsCannotBeReopened,
+      title: this.translationMap.get('Warning'),
+      text: this.translationMap.get('ConversationsArchivedCannotBeReopened'),
       icon: "warning",
       button: "OK",
       dangerMode: false,
@@ -3873,7 +4163,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalYouCannotJoinChat(agentFullname) {
     swal({
-      title: this.youCannotJoinThisChat,
+      title: this.translationMap.get('RequestMsgsPage.YouCannotJoinThisChat'),
       text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
       buttons: 'OK',
@@ -3926,7 +4216,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // this.leaveChatTitle,
   presentModalYouCannotLeaveTheChat() {
     swal({
-      title: this.youCannotLeaveTheChat,
+      title: this.translationMap.get('YouCannotLeaveTheChat'),
       text: this.translate.instant('EmailAndTicketSupportCannotBeUnserved'),
       icon: "warning",
       buttons: 'OK',
@@ -3937,8 +4227,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalLeaveTheChat() {
     swal({
-      title: this.leaveChatTitle,
-      text: this.areYouSureLeftTheChatLabel,
+      title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
+      text: this.translationMap.get('Done'),
       icon: "info",
       buttons: true,
       dangerMode: false,
@@ -3954,12 +4244,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }, (err) => {
               this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
 
-              swal(this.anErrorHasOccurredMsg, {
+              swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
                 icon: "error",
               });
             }, () => {
               swal({
-                title: this.done_msg + "!",
+                title: this.translationMap.get('Done') + "!",
                 icon: "success",
                 button: "OK",
                 className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -4110,7 +4400,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       (this.profile_name === 'free' && this.trial_expired === true)) {
       if (!this.appSumoProfile) {
 
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -4118,6 +4409,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     } else if ((this.profile_name === PLAN_NAME.D) ||
       (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
       (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
 
@@ -4128,24 +4420,57 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  checkPlanAndPresentModalContactUs() {
+
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
+
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      return false
+
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      return false
+    }
+  }
+
 
 
   displayModalDownloadTranscript() {
-    if (this.isVisiblePaymentTab) {
+    if (!this.overridePay) {
+      if (this.isVisiblePaymentTab) {
 
-      const isAvailable = this.checkPlanAndPresentModal()
-      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
+        const isAvailable = this.checkPlanAndPresentModal()
+        this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
+        if (isAvailable === false) {
+          return
+        }
+
+        this.displayModalTranscript = 'block'
+
+
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    } else {
+
+      const isAvailable = this.checkPlanAndPresentModalContactUs()
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }
 
       this.displayModalTranscript = 'block'
 
-
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
+
 
   closeModalTranscript() {
     this.displayModalTranscript = 'none'
@@ -4334,7 +4659,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.logger.log('displayModalBanVisitor HERE 4 ')
         // this.presentModalFeautureAvailableOnlyWithTier3Plans(this.cPlanOnly)
         this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
-      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE || this.profile_name === 'Sandbox') {
         this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
         this.logger.log('displayModalBanVisitor HERE 5 ')
       }
@@ -4348,7 +4673,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   presentModalOnlyOwnerCanManageAdvancedProjectSettings() {
-    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(
+      this.translationMap.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings'), 
+      this.translationMap.get('LearnMoreAboutDefaultRoles')
+    )
   }
 
   banVisitors(leadid: string, ipaddress: string) {
@@ -4357,9 +4685,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // if (this.visitorIsBanned === false) {
     if (index === -1) {
       swal({
-        title: this.areYouSureLbl + '?',
+        title: this.translationMap.get('AreYouSure') + '?',
         icon: "info",
-        buttons: [this.cancelLbl, this.yesBanVisitorLbl],
+        buttons: [this.translationMap.get('Cancel'), this.translationMap.get('YesBanVisitor')],
         dangerMode: true,
         className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       })
@@ -4373,13 +4701,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }, (error) => {
               // this.logger.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
-              swal(this.anErrorHasOccurredMsg, {
+              swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
                 icon: "error",
               });
             }, () => {
               // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
               swal({
-                title: this.done_msg + "!",
+                title: this.translationMap.get('Done') + "!",
                 icon: "success",
                 button: "OK",
                 className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -4401,23 +4729,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // Download transcript
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName // this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName // this.featureAvailableFromBPlan
+    Swal.fire({
+      title: this.translationMap.get('Pricing.UpgradePlan'),
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translationMap.get('Pricing.UpgradePlan'),
+      cancelButtonText: this.translationMap.get('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // content: el,
+      // buttons: {
+      //   cancel: this.translationMap.get('Cancel'),
+      //   catch: {
+      //     text: this.translationMap.get('Pricing.UpgradePlan'),
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromBPlan value', value)
         // this.router.navigate(['project/' + this.id_project + '/pricing']);
         if (this.isVisiblePaymentTab) {
@@ -4447,23 +4782,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.translationMap.get('Pricing.UpgradePlan'),
+      text: 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translationMap.get('Pricing.UpgradePlan'),
+      cancelButtonText: this.translationMap.get('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // content: el,
+      // buttons: {
+      //   cancel: this.translationMap.get('Cancel'),
+      //   catch: {
+      //     text: this.translationMap.get('Pricing.UpgradePlan'),
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.CURRENT_USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
         } else {
@@ -4476,26 +4818,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // Banned visitors 
   presentModalFeautureAvailableOnlyWithTier3Plans(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName // this.cPlanOnly
-    swal({
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName // this.cPlanOnly
+    Swal.fire({
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      title: this.translationMap.get('Pricing.UpgradePlan'),
+      text: planName,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translationMap.get('Pricing.UpgradePlan'),
+      cancelButtonText: this.translationMap.get('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // content: el,
+      // buttons: {
+      //   cancel: this.translationMap.get('Cancel'),
+      //   catch: {
+      //     text: this.translationMap.get('Pricing.UpgradePlan'),
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
+            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
               // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
@@ -4514,13 +4865,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
+      this.translationMap.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject'), 
+      this.translationMap.get('LearnMoreAboutDefaultRoles')
+    )
   }
 
   presentModalVisitorAlreadyBanned() {
     swal({
-      title: this.warningMsg,
-      text: this.visitorAlreadyBanned,
+      title: this.translationMap.get('Warning'),
+      text: this.translationMap.get('VisitorAlreadyBanned'),
       icon: "warning",
       button: "OK",
       dangerMode: false,
@@ -4631,7 +4985,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goToContactDetails() {
-    this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+    if (this.CHAT_PANEL_MODE === false) {
+      this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+    }
   }
 
   openContactDetailsInNewWindow() {
@@ -4784,204 +5140,59 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Translate strings
   // -----------------------------------------------
   translateNotificationMsgs() {
-    this.translate.get('Tags.NotificationMsgs')
-      .subscribe((translation: any) => {
-        // this.logger.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
-        this.create_label_success = translation.AddLabelSuccess;
-        this.create_label_error = translation.AddLabelError;
-        this.delete_label_success = translation.DeleteLabelSuccess;
-        this.delete_label_error = translation.DeleteLabelError;
-      });
 
-    this.translate.get('Notes.NotificationMsgs')
-      .subscribe((translation: any) => {
-        // this.logger.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
-        this.create_note_success = translation.CreateNoteSuccess;
-        this.create_note_error = translation.CreateNoteError;
-        this.delete_note_success = translation.DeleteNoteSuccess;
-        this.delete_note_error = translation.DeleteNoteError;
-      });
+    let keys= [
+      'Tags.NotificationMsgs',
+      'Notes.NotificationMsgs',
+      'Processing',
+      'TheRequestHasBeenMovedToHistory',
+      'AnErrorHasOccurredArchivingTheRequest',
+      'ArchivingRequestNoticationMsg',
+      'RequestSuccessfullyClosed',
+      'VisitorsPage.ReassignRequest',
+      'VisitorsPage.TheRequestWillBeReassignedTo',
+      'VisitorsPage.AddAgent',
+      'VisitorsPage.TheRequestWillBeAssignedTo',
+      'UserEditAddPage.AnErrorHasOccurred',
+      'Done',
+      'TheConversationPriorityHasBeenSuccessfullyUpdated',
+      'AnErrorOccurredWhileUpdatingTheCnversationPriority',
+      'VisitorsPage.LeaveChat',
+      'VisitorsPage.AreYouSureLeftTheChat',
+      'Warning',
+      'ConversationsArchivedCannotBeReopened',
+      'SubjectUpdatedSuccessfully',
+      'UserEditAddPage.AnErrorHasOccurred',
+      'AreYouSure',
+      'Cancel',
+      'YesBanVisitor',
+      'TheMessageCouldNotBeSent',
+      'YouCannotLeaveTheChat',
+      'YouCannotAddAgents',
+      'VisitorsPage.AddAgent',
+      'YouCannotJoinChat',
+      'RequestMsgsPage.Enter',
+      'RequestMsgsPage.YouCannotJoinThisChat',
+      'VisitorAlreadyBanned',
+      'SmartReassignmentForThisConversationWillBeDisabled',
+      'ConvertToOffline',
+      'ConvertToOnline',
+      'SmartReassignmentForThisConversationWillBeEnabled',
+      'TagAlreadyAssigned',
+      'ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag',
+      'UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject',
+      'LearnMoreAboutDefaultRoles',
+      'OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings',
+      'Pricing.UpgradePlan',
+      'OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan',
+      'SorryFileTypeNotSupported',
+    ]
 
-    this.translate.get('Processing')
-      .subscribe((translation: any) => {
-        // this.logger.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
-        this.notifyProcessingMsg = translation;
-      });
-
-    this.translate.get('TheRequestHasBeenMovedToHistory')
-      .subscribe((translation: any) => {
-        // this.logger.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
-        this.request_archived_msg = translation;
-      });
-
-    this.translate.get('AnErrorHasOccurredArchivingTheRequest')
-      .subscribe((translation: any) => {
-        // this.logger.log('% »»» WebSocketJs WF >>> ws-m  translateNotificationMsgs text', translation)
-        this.request_archived_err_msg = translation;
-      });
-
-
-    this.translate.get('ArchivingRequestNoticationMsg')
-      .subscribe((text: string) => {
-        this.archivingRequestNoticationMsg = text;
-        // this.logger.log('+ + + ArchivingRequestNoticationMsg', text)
-      });
-
-    this.translate.get('RequestSuccessfullyClosed')
-      .subscribe((text: string) => {
-        this.requestHasBeenArchivedNoticationMsg_part1 = text;
-        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
-      });
-
-
-    this.translate.get('VisitorsPage.ReassignRequest')
-      .subscribe((text: string) => {
-        this.reassignRequestMsg = text;
-
-      });
-
-    this.translate.get('VisitorsPage.TheRequestWillBeReassignedTo')
-      .subscribe((text: string) => {
-        this.requestWillBeReassignedToMsg = text;
-
-      });
-
-    this.translate.get('VisitorsPage.AddAgent')
-      .subscribe((text: string) => {
-        this.addAgentMsg = text;
-
-      });
-
-    this.translate.get('VisitorsPage.TheRequestWillBeAssignedTo')
-      .subscribe((text: string) => {
-        this.requestWillBeAssignedToMsg = text;
-
-      });
-
-    this.translate.get('UserEditAddPage.AnErrorHasOccurred')
-      .subscribe((text: string) => {
-        this.anErrorHasOccurredMsg = text;
-      });
-
-    this.translate.get('Done')
-      .subscribe((text: string) => {
-        this.done_msg = text;
-      });
-
-    this.translate.get('TheConversationPriorityHasBeenSuccessfullyUpdated')
-      .subscribe((text: string) => {
-        this.priority_updated_successfully_msg = text;
-      });
-
-    this.translate.get('AnErrorOccurredWhileUpdatingTheCnversationPriority')
-      .subscribe((text: string) => {
-        this.priority_update_failed = text;
-      });
-    this.translate.get('VisitorsPage.LeaveChat')
-      .subscribe((text: string) => {
-        this.leaveChatTitle = text;
-      });
-
-    this.translate.get('VisitorsPage.AreYouSureLeftTheChat')
-      .subscribe((text: string) => {
-        this.areYouSureLeftTheChatLabel = text;
-      });
-
-
-    this.translate.get('Warning').subscribe((text: string) => {
-      this.warningMsg = text;
-      // this.logger.log('+ + + warningMsg', text)
-    });
-
-    this.translate.get('ConversationsArchivedCannotBeReopened').subscribe((text: string) => {
-      this.conversationsCannotBeReopened = text;
-      // this.logger.log('+ + + warningMsg', text)
-    });
-
-
-    this.translate.get('SubjectUpdatedSuccessfully').subscribe((text: string) => {
-      this.subjectUpdatedSuccessfully = text;
-    });
-
-    this.translate.get('UserEditAddPage.AnErrorHasOccurred').subscribe((text: string) => {
-      this.anErrorHasOccurred = text;
-    });
-
-    this.translate.get('AreYouSure').subscribe((text: string) => {
-      this.areYouSureLbl = text;
-    });
-
-    this.translate.get('Cancel').subscribe((text: string) => {
-      this.cancelLbl = text;
-    });
-
-    this.translate.get('YesBanVisitor').subscribe((text: string) => {
-      this.yesBanVisitorLbl = text;
-    });
-
-
-    this.translate.get('TheMessageCouldNotBeSent').subscribe((text: string) => {
-      this.messageCouldNotBeSent = text;
-    });
-
-    this.translate.get('YouCannotLeaveTheChat').subscribe((text: string) => {
-      this.youCannotLeaveTheChat = text;
-    });
-
-    this.translate.get('YouCannotAddAgents').subscribe((text: string) => {
-      this.youCannotAddAgents = text;
-    });
-
-    this.translate.get('VisitorsPage.AddAgent').subscribe((text: string) => {
-      this.addAgentTitle = text;
-    });
-
-    this.translate.get('YouCannotJoinChat').subscribe((text: string) => {
-      this.youCannotJoinChat = text;
-    });
-
-    this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
-      this.joinChatTitle = text;
-    });
-
-    this.translate.get('RequestMsgsPage.YouCannotJoinThisChat').subscribe((text: string) => {
-      this.youCannotJoinThisChat = text;
-    });
-
-
-
-
-    this.translate.get('VisitorAlreadyBanned').subscribe((text: string) => {
-      this.visitorAlreadyBanned = text;
-    });
-
-    this.translate.get('SmartReassignmentForThisConversationWillBeDisabled').subscribe((text: string) => {
-      this.smartReassignmentForThisConversationWillBeDisabled = text;
-    });
-
-    this.translate.get('ConvertToOffline').subscribe((text: string) => {
-      this.convertToOffline = text;
-    });
-
-    this.translate.get('ConvertToOnline').subscribe((text: string) => {
-      this.convertToOnline = text;
-    });
-    this.translate.get('SmartReassignmentForThisConversationWillBeEnabled').subscribe((text: string) => {
-      this.smartReassignmentForThisConversationWillBeEnabled = text;
-    });
-
-    this.translate.get('TagAlreadyAssigned').subscribe((text: string) => {
-      this.tagAlreadyAssigned = text;
-    });
-
-    this.translate.get('ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag').subscribe((text: string) => {
-      this.thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag = text;
-    });
-
-    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
-      .subscribe((translation: any) => {
-        this.agentCannotManageAdvancedOptions = translation;
-      });
+    this.translate.get(keys).subscribe({next: (translation)=>{
+      Object.keys(translation).forEach(key => {
+        this.translationMap.set(key, translation[key])
+      })
+    }})
 
 
     this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
@@ -4994,45 +5205,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.fPlanOnly = translation;
       });
 
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-
-    this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
-      .subscribe((translation: any) => {
-        this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
-      });
-
-
-    this.translate.get('Pricing.UpgradePlan')
-      .subscribe((translation: any) => {
-        this.upgradePlan = translation;
-      });
-
-    this.translate.get('Cancel')
-      .subscribe((translation: any) => {
-        this.cancel = translation;
-      });
-
     this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
       .subscribe((translation: any) => {
         this.featureAvailableFromBPlan = translation;
       });
 
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
-      });
-
-
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
   }
@@ -5094,6 +5275,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.uploadedFiles = $event.target.files[0];
     this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
     if (this.uploadedFiles) {
+
+      // const isAccepted = this.checkAcceptedFile(mimeType)
+      const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
+      if(!canUploadFile){
+        this.uploadedFiles = null;
+        this.presenModalAttachmentFileTypeNotSupported();
+        return;
+      }
 
       const uploadedFilesSize = this.uploadedFiles.size
 
@@ -5159,6 +5348,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         reader.readAsDataURL($event.target.files[0])
 
       } else {
+        console.log('cannnnnnnn is fileeee')
         this.type = 'file'
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -5285,6 +5475,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
     const requestclosedAt = moment(this.request['closed_at']);
     this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
@@ -5426,8 +5617,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presenModalMessageCouldNotBeSent() {
     swal({
-      title: this.warningMsg,
-      text: this.messageCouldNotBeSent,
+      title: this.translationMap.get('Warning'),
+      text: this.translationMap.get('TheMessageCouldNotBeSent'),
+      icon: "warning",
+      button: "OK",
+      dangerMode: false,
+    })
+  }
+
+  presenModalAttachmentFileTypeNotSupported() {
+    swal({
+      title: this.translationMap.get('Warning'),
+      text: this.translationMap.get('SorryFileTypeNotSupported'),
       icon: "warning",
       button: "OK",
       dangerMode: false,
@@ -5463,21 +5664,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    // Note: on mac keyboard "metakey" matches "cmd"
-    if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
-      this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
-      if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
-        //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
-        this.chat_message = this.chat_message + "\r\n"
-        this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-      }
-    }
+  // @HostListener('document:keydown', ['$event'])
+  // handleKeyboardEvent(event: KeyboardEvent) {
+  //   // Note: on mac keyboard "metakey" matches "cmd"
+  //   if (this.CURRENT_USER_ROLE !== 'agent') {
+  //     if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
+  //       this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
+  //       if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
+  //         //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
+  //         this.chat_message = this.chat_message + "\r\n"
+  //         this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+  //       }
+  //     }
 
-    this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement)
-    this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight)
-  }
+  //     this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement)
+  //   this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight)
+  //   }
+  // }
 
   onChangeReplyType(selectedResponseTypeID) {
     // this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
@@ -5504,10 +5707,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   smartAssignmentOff() {
     swal({
-      title: this.areYouSureLbl + '?',
-      text: this.smartReassignmentForThisConversationWillBeDisabled,
+      title: this.translationMap.get('AreYouSure') + '?',
+      text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
       icon: "info",
-      buttons: [this.cancelLbl, this.convertToOffline],
+      buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
       dangerMode: true,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
@@ -5520,7 +5723,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            swal(this.anErrorHasOccurredMsg, {
+            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
               icon: "error",
             });
 
@@ -5528,7 +5731,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
 
             swal({
-              title: this.done_msg + "!",
+              title: this.translationMap.get('Done') + "!",
               icon: "success",
               button: "OK",
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -5546,10 +5749,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   smartAssignmentOn() {
     swal({
-      title: this.areYouSureLbl + '?',
-      text: this.smartReassignmentForThisConversationWillBeEnabled,
+      title: this.translationMap.get('AreYouSure') + '?',
+      text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
       icon: "info",
-      buttons: [this.cancelLbl, this.convertToOnline],
+      buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
       dangerMode: true,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
@@ -5562,7 +5765,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
 
-            swal(this.anErrorHasOccurredMsg, {
+            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
               icon: "error",
             });
 
@@ -5570,7 +5773,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
 
             swal({
-              title: this.done_msg + "!",
+              title: this.translationMap.get('Done') + "!",
               icon: "success",
               button: "OK",
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -5672,7 +5875,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.contactNewFirstName && !this.contactNewLastName) {
 
       const lead_fullname = this.contactNewFirstName
-      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
+      // this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase only contactNewFirstName - lead_fullname', lead_fullname)
       this._createRequesterAvatar(lead_fullname)
 
       this.request.lead.fullname = lead_fullname
@@ -5680,7 +5883,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else if (this.contactNewFirstName && this.contactNewLastName) {
 
       const lead_fullname = this.contactNewFirstName + ' ' + this.contactNewLastName
-      this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
+      // this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName usecase  contactNewFirstName & contactNewLastName - lead_fullname', lead_fullname)
       this.request.lead.fullname = lead_fullname
       this._createRequesterAvatar(lead_fullname)
       this.updateContactName(this.request.lead._id, lead_fullname);

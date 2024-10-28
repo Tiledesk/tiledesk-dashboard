@@ -15,6 +15,7 @@ import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { RoleService } from 'app/services/role.service';
 
 
 @Component({
@@ -113,7 +114,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     private analyticsService: AnalyticsService,
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) {
     this.selected = 'panoramica';//-> default active component
     this.logger.log('[ANALYTICS] !!! »»» HELLO ANALYTICS »»» ');
@@ -232,7 +234,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('analytics');
     // this.buildgraph(); // HEAT MAP GRAPH
     // this.avarageWaitingTimeCLOCK(); // -->clock avg time response
     // this.avgTimeResponsechart(); // --> avg time response bar chart

@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { CHANNELS } from 'app/utils/util';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class ResponseTimesComponent implements OnInit {
   selectedDaysId: number;   // lastdays filter
   selectedDeptId: string;   // department filter
   selectedAgentId: string;  // agent filter
+  selectedChannelId: string;  // channel filter 
 
   subscription: Subscription;
 
@@ -54,6 +56,10 @@ export class ResponseTimesComponent implements OnInit {
   projectUsersList: any;
   projectBotsList: any;
   bots: any;
+  conversationType = [
+    { id: '', name: 'All' },
+    ... CHANNELS
+  ];
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -74,8 +80,9 @@ export class ResponseTimesComponent implements OnInit {
     this.selectedDeptId = '';
     this.selectedDaysId = 7;
     this.selectedAgentId = '';
+    this.selectedChannelId = '';
     this.avarageWaitingTimeCLOCK();
-    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId);
+    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
     this.getDepartments();
     this.getProjectUsersAndBots();
   }
@@ -148,7 +155,7 @@ export class ResponseTimesComponent implements OnInit {
     }
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.avgTimeResponseCHART(value, this.selectedDeptId, this.selectedAgentId);
+    this.avgTimeResponseCHART(value, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
     this.logger.log('[ANALYTICS - RESPONSETIMES] daysSelect REQUEST:', value, this.selectedDeptId, this.selectedAgentId)
   }
 
@@ -156,7 +163,7 @@ export class ResponseTimesComponent implements OnInit {
     this.logger.log('[ANALYTICS - RESPONSETIMES] selectedDeptId', selectedDeptId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.avgTimeResponseCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId)
+    this.avgTimeResponseCHART(this.selectedDaysId, selectedDeptId, this.selectedAgentId, this.selectedChannelId)
     this.logger.log('[ANALYTICS - RESPONSETIMES] depSelected REQUEST:', this.selectedDaysId, selectedDeptId, this.selectedAgentId)
   }
 
@@ -164,8 +171,16 @@ export class ResponseTimesComponent implements OnInit {
     this.logger.log("[ANALYTICS - RESPONSETIMES] selectedAgentId: ", selectedAgentId);
     this.barChart.destroy();
     this.subscription.unsubscribe();
-    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, selectedAgentId, this.selectedChannelId)
     this.logger.log('[ANALYTICS - RESPONSETIMES] selectedAgentId REQUEST:', this.selectedDaysId, this.selectedDeptId, selectedAgentId)
+  }
+
+  conversationTypeSelected(selectedChannelId){
+    this.logger.log("[ANALYTICS - CONVS]  Selected channel: ", selectedChannelId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
+    this.logger.log('[ANALYTICS - RESPONSETIMES] selectedChannelId REQUEST:', this.selectedDaysId, this.selectedDeptId, this.selectedAgentId)
   }
 
   getDepartments() {
@@ -317,8 +332,8 @@ export class ResponseTimesComponent implements OnInit {
     this.responseAVGtime = '0'
   }
 
-  avgTimeResponseCHART(lastdays, depID, participantID) {
-    this.subscription = this.analyticsService.getavarageWaitingTimeDataCHART(lastdays, depID, participantID).subscribe((res: any) => {
+  avgTimeResponseCHART(lastdays, depID, participantID, channelID) {
+    this.subscription = this.analyticsService.getavarageWaitingTimeDataCHART(lastdays, depID, participantID, channelID).subscribe((res: any) => {
       // console.log('[ANALYTICS - RESPONSETIMES] avgTimeResponseCHART chart data:', res);
       if (res) {
 

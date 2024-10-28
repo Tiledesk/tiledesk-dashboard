@@ -337,9 +337,9 @@ td {
 
 ::ng-deep .custom-spinner {
     .sk-fading-circle {
-        width: 20px;
-        height: 20px;
-        margin: 0px;
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0px !important;
     }
 
     .sk-fading-circle .sk-circle:before {
@@ -367,15 +367,14 @@ table {
 }
 
 ::ng-deep .custom-mat-tooltip {
-    background-color: #fff !important;
-    color: #555555 !important;
+    background-color: #2d323e !important;
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins" !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
-    border: 1px solid #e5effe !important;
-}
+    color: #fff !important;
+  }
 
 .show-hide-button {
     cursor: pointer;

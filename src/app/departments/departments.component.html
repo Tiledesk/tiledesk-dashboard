@@ -21,6 +21,14 @@
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+  <div class="page-title--sidebar-settings"
+  [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+    
+    {{'RoutingAndDepts' | translate}} 
+    
+  </div>
+  
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
@@ -337,11 +345,17 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "Departments" | translate }}
-                          <span
-                            *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
-                            class="from-b-plan-badge"> 
-                            {{'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
-                           </span>
+                          <ng-container *ngIf="payIsVisible">
+                            <span *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.B && !subscription_is_active || profile_name === PLAN_NAME.E && !subscription_is_active  || profile_name === PLAN_NAME.EE && !subscription_is_active || profile_name === PLAN_NAME.C && !subscription_is_active || profile_name === PLAN_NAME.F && !subscription_is_active || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
+                              class="from-b-plan-badge"> 
+                                <span *ngIf="!isAppSumo"> 
+                                  {{'AvailableFromThePlans' | translate: tParamsAvailableFromTier2 }}
+                                </span>
+                                <span *ngIf="isAppSumo">  
+                                  {{'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+                                </span>
+                            </span>
+                          </ng-container>
                         </span>
                       </h3>
                     </div>

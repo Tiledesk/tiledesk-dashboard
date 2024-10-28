@@ -43,9 +43,13 @@
             Main Category <span>*</span>
         </label>
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <ng-select class="csd-chatbot-dtls-input" id="select-tag" #ngSelectTags [items]="certifiedTags" bindLabel="name"
-                    [clearable]="true" placeholder="Select a category and press enter" [(ngModel)]="certifiedTag"
-                    (change)="addMainCategory($event)" (keyup.enter)="ngSelectTags.close()">
+            <ng-select class="csd-chatbot-dtls-input" id="select-tag" #ngSelectTags 
+                    [items]="certifiedTags" 
+                    bindLabel="name"
+                    [clearable]="true" placeholder="Select a category and press enter" 
+                    [(ngModel)]="certifiedTag"
+                    (change)="addMainCategory($event)" 
+                    (keyup.enter)="ngSelectTags.close()">
 
                     <ng-template ng-label-tmp let-item="item">
                         {{item.name}}

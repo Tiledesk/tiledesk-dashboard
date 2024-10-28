@@ -1,13 +1,23 @@
+<!-- <div style="color: #000;
+position: relative;
+top: 70px;
+width: 610px;
+background: aliceblue;
+min-width: 610px;
+z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps}} </div>  -->
+
+
+<!-- [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
 <div class="main-content css-create-project">
     <div *ngIf="showSpinner" class="on-bording-spinner"
-        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB}">
         <div class="dot-spinner">
             <div class="dot1"></div>
             <div class="dot2"></div>
         </div>
     </div>
-    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
-
+    <!-- <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
+    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB ||  arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
         <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
         <div class="close-wizard-page">
@@ -35,13 +45,15 @@
     </div>
 
 
-
-    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+   
+    <!-- <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
+    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <div *ngFor="let nameStep of arrayOfSteps; index as i" 
             class="step-page"
             [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
 
             <!-- SET NAME PROJECT -->
+            <!-- nameStep > {{ nameStep }} -->
             <div *ngIf="nameStep === typeStep.NAME_PROJECT" class="type-step fade-in-right"
                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.NAME_PROJECT}">
                 <cnp-project-name 
@@ -114,7 +126,21 @@
 
             </div>
 
-
+            <!-- SELECT TEMPLATES / KB -->
+            <div *ngIf="nameStep === typeStep.SELECT_TEMPLATE_OR_KB" 
+                class="type-step fade-in-right"
+                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB}">
+                <cnp-select-templates-or-kb *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB"
+                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
+                    [segmentAttributes]="segmentIdentifyAttributes"
+                    [updatedProject] = "updatedProject"
+                    (nextPage)="goToTemplatesInstallation($event)"
+                    (createProjectFromTemplates)="createProjectFromTemplates() "
+                    (goToNext)="goToNextQuestion($event)"
+                    (prevPage)="goToPrevStep()"
+                    (userSelection)="userSelection($event)">
+                </cnp-select-templates-or-kb>
+            </div>
 
             <!-- CHATBOT TEMPLATES INSTALLATION -->
             <!-- typeStep  {{ typeStep.TEMPLATES_INSTALLATION }} nameStep {{ nameStep }} -->
@@ -123,6 +149,7 @@
                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION}">
                 <cnp-templates *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION"
                     [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
+                    [hasSelectChatBotOrKb] = "hasSelectChatBotOrKb"
                     [segmentAttributes]="segmentIdentifyAttributes"
                     [updatedProject] = "updatedProject"
                     (nextPage)="goToTemplatesInstallation($event)"
@@ -132,7 +159,10 @@
                 </cnp-templates>
             </div>
 
-                 <!-- CHATBOT WELCOME MESSAGE -->
+
+        
+
+                 <!-- !! Not used -- CHATBOT WELCOME MESSAGE -->
                  <div *ngIf="nameStep === typeStep.WELCOME_MESSAGE" 
                  class="type-step box-welcome-msg"
                  [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WELCOME_MESSAGE}">
@@ -144,8 +174,8 @@
                  </cnp-chatbot-welcome-message>
              </div>
 
-            <!-- WIDGET INSTALLATION -->
-            <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
+            <!-- !! Not used WIDGET INSTALLATION -->
+            <!-- <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
                 class="type-step fade-in-right"
                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WIDGET_INSTALLATION}">
                 <cnp-widget-installation 
@@ -155,7 +185,7 @@
                     (nextPage)="goToSaveProjectAndCreateBot($event)"
                     (prevPage)="goToPrevStep()">
                 </cnp-widget-installation>
-            </div>
+            </div> -->
 
         </div>
 
@@ -190,7 +220,8 @@
     </div>
 
 
-    <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
+    <!-- <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"> -->
+    <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.SELECT_TEMPLATE_OR_KB && arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
         <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
     </div>
 

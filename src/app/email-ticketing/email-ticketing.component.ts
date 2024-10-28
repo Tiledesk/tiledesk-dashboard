@@ -5,6 +5,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { URL_getting_started_with_email_ticketing } from '../utils/util';
 import { BrandService } from 'app/services/brand.service';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-email-ticketing',
   templateUrl: './email-ticketing.component.html',
@@ -30,14 +31,17 @@ export class EmailTicketingComponent implements OnInit {
     private auth: AuthService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private roleService: RoleService
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
-    this.companyName = this.companyName = brand["BRAND_NAME"] 
+    this.companyName = brand["BRAND_NAME"] 
   }
 
   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('email-ticketing')
     this.getCurrentProjectAndBuildTicketingEmail();
     this.getDeptsByProjectId();
     this.getBrowserVersion();

@@ -20,6 +20,7 @@ import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { BrandService } from 'app/services/brand.service';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
@@ -67,6 +68,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   yourTrialHasEnded: string;
   upgradeNowToKeepOurAmazingFeatures: string;
   upgrade: string;
+  displayTemplatesCategory: boolean;
 
   constructor(
     public appConfigService: AppConfigService,
@@ -80,9 +82,13 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     private botLocalDbService: BotLocalDbService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public brandService: BrandService
   ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand();
+    this.displayTemplatesCategory = brand['display_templates_category']
+    this.logger.log('[HOME-CREATE-CHATBOT] displayTemplatesCategory', this.displayTemplatesCategory)
   }
 
   ngOnInit(): void {
@@ -188,7 +194,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        // console.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
+        // this.logger.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
         const filterdres = res.filter((item) => {
           return this.templtId.includes(item._id)
         });
@@ -200,7 +206,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         });
         if (use_case === 'solve_customer_problems') {
           this.templates = this.customerSatisfactionTemplates
-          // console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
+          // this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
         // ---------------------------------------------------------------------
@@ -487,11 +493,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   createBlankTilebot() {
     this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
-
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.countOfChatbots < this.chatBotLimit) {
-          this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: Go to crete chatbot')
           // this.presentModalAddBotFromScratch()
           this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
 
@@ -499,8 +504,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
-        this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+      } else if (this.chatBotLimit === null) {
+        this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: Go to crete chatbot')
         // this.presentModalAddBotFromScratch()
         this.router.navigate(['project/' + this.projectId  + '/bots/create/tilebot/blank']);
       }
@@ -576,7 +581,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
       },
     });
 
@@ -594,7 +600,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   // }
 
   goToMyChatbots() {
-    // console.log('goToMyChatbots')
+    // this.logger.log('goToMyChatbots')
     this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 

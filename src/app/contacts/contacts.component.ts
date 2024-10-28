@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
 declare const $: any;
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-contacts',
@@ -110,6 +111,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   CHAT_BASE_URL: string;
   id_request: string;
   payIsVisible: boolean;
+  overridePay: boolean;
   public_Key: any;
   isChromeVerGreaterThan100: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -133,7 +135,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.getTranslation();
     this.getOSCODE();
-    // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getAllContacts()
     this.getCurrentProject();
@@ -186,18 +187,32 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
         }
       }
+
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
       this.logger.log('[CONTACTS-COMP] - pay isVisible', this.payIsVisible);
     }
+
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
   }
 
 
   getTranslation() {
 
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -635,11 +650,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       const allContacts = res['leads'];
       this.logger.log('[CONTACTS-COMP] - GET ALL LEADS - LEADS  ', allContacts);
       allContacts.forEach(contact => {
-        // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
+        this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact', contact);
         if (contact && contact.tags.length > 0) {
           // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags ', contact.tags);
           contact.tags.forEach((tag: string) => {
-            // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
+            this.logger.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag', tag);
             let index = this.tagsArray.findIndex(x => x.name == tag)
             // console.log('[CONTACTS-COMP] - CONTACTS LIST > contact > tags >  tag index', index);
             if (index === -1) {
@@ -1041,7 +1056,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (!this.appSumoProfile) {
 
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
         return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
@@ -1049,6 +1065,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     } else if ((this.profile_name === PLAN_NAME.D) ||
       (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
       (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
       if (!this.appSumoProfile) {
@@ -1059,51 +1076,93 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  checkPlanAndPresentModalContactUs() {
+    if ((this.profile_name === PLAN_NAME.A) ||
+    (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    (this.profile_name === 'free' && this.trial_expired === true)) {
+
+    this.notify._displayContactUsModal(true, 'upgrade_plan');
+    return false
+
+  } else if ((this.profile_name === PLAN_NAME.D) ||
+    (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+    (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+    (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+    (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+    this.notify._displayContactUsModal(true, 'upgrade_plan');
+    return false
+  }
+  }
+
 
   exportContactsToCsv() {
-    if (this.payIsVisible) {
-      const isAvailable = this.checkPlanAndPresentModal()
-      this.logger.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
+    if (!this.overridePay) {
+      if (this.payIsVisible) {
+        const isAvailable = this.checkPlanAndPresentModal()
+        this.logger.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
+        if (isAvailable === false) {
+          return
+        }
+
+        this.dwnldCSV()
+
+        // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    } else {
+
+      const isAvailable = this.checkPlanAndPresentModalContactUs()
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable, 'overridePay ', this.overridePay)
       if (isAvailable === false) {
         return
       }
-
-      this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
-        if (leads_object) {
-          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-          this.downloadFile(leads_object);
-        }
-      }, (error) => {
-        this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-      }, () => {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-      });
-      // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.dwnldCSV()
     }
+  }
+
+
+  dwnldCSV() {
+    this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+      if (leads_object) {
+        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+        this.downloadFile(leads_object);
+      }
+    }, (error) => {
+      this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+    }, () => {
+      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+    });
   }
 
   // Export CSV
   presentModalFeautureAvailableFromTier2Plan(planName: string) {
-    const el = document.createElement('div')
-    el.innerHTML = planName // this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
 
         if (this.payIsVisible) {
 
@@ -1119,7 +1178,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-              
+
             }
 
           } else {
@@ -1133,23 +1192,30 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
     swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+      title: this.upgradePlan,
+      text: 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {

@@ -13,6 +13,8 @@ export interface Project {
     user_available?: boolean;
     profile_name?: any;
     profile_agents?: any;
+    profile_chatbots?: any;
+    profile_kbs?: any;
     trial_expired?: any;
     trialExpired?: any;
     trial_days_left?: number;
@@ -31,5 +33,12 @@ export interface Project {
     extra2?: string;
     extra3?: string;
     extra4?: string;
+    customization?: {
+        widgetUnbranding?: boolean;
+        smtpSettings?: boolean;
+        whatsAppBusiness?: boolean;
+        facebookMessenger?: boolean;
+        telegram?: boolean;
+    }
     __v?: any;
 }

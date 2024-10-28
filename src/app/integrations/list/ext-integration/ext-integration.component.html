@@ -1,0 +1,9 @@
+<div class="content">
+
+    
+    <iframe allow="camera; microphone" id="i_frame" [src]="URL" style="width: 100%; height: calc(100vh - 160px);" frameBorder="0"
+        allowfullscreen (load)="onIframeLoaded()">
+    </iframe>
+    <loading-spinner class="custom-spinner" *ngIf="showSpinner"></loading-spinner>
+    <!-- [ngStyle]="{ 'height': '500px' }" -->
+</div>

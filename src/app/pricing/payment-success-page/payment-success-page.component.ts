@@ -41,10 +41,10 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // console.log('[PRICING - PAYMENT-SUCCESS] HI !!! ');
+    // this.logger.log('[PRICING - PAYMENT-SUCCESS] HI !!! ');
     this.route.queryParams
       .subscribe(params => {
-        //  console.log('[PRICING - PAYMENT-SUCCESS] GET QUERY PARAMS - params ', params);
+        //  this.logger.log('[PRICING - PAYMENT-SUCCESS] GET QUERY PARAMS - params ', params);
         if (params.session_id) {
           this.getSubriscriptionSessionById(params.session_id)
         }
@@ -152,20 +152,20 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
 
 
     this.projectService.getStripeSessionById(session_id).subscribe((res: any) => {
-      // console.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID res ', res)
+      // this.logger.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID res ', res)
       const clientReferenceId = res.client_reference_id
-      // console.log('[PRICING - PAYMENT-SUCCESS] clientReferenceId ', clientReferenceId)
+      // this.logger.log('[PRICING - PAYMENT-SUCCESS] clientReferenceId ', clientReferenceId)
 
       this.user_id = clientReferenceId.split("_")[0];
-      // console.log('[PRICING - PAYMENT-SUCCESS] stripe user_id:' + this.user_id);
+      // this.logger.log('[PRICING - PAYMENT-SUCCESS] stripe user_id:' + this.user_id);
 
       this.project_id = clientReferenceId.split("_")[1];
-      // console.log('[PRICING - PAYMENT-SUCCESS] stripe project_id: ' + this.project_id);
+      // this.logger.log('[PRICING - PAYMENT-SUCCESS] stripe project_id: ' + this.project_id);
 
       this.findCurrentProjectAmongAll(this.project_id)
 
       this.plan_name = clientReferenceId.split("_")[2];
-      // console.log('[PRICING - PAYMENT-SUCCESS] stripe plan_name: ' + this.plan_name);
+      // this.logger.log('[PRICING - PAYMENT-SUCCESS] stripe plan_name: ' + this.plan_name);
 
       // if (!isDevMode()) {
       if (window['analytics']) {
@@ -181,7 +181,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
     }, (error) => {
       this.logger.error('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID error ', error);
     }, () => {
-      // console.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID  * COMPLETE *');
+      // this.logger.log('[PRICING - PAYMENT-SUCCESS] - GET STRIPE SESSION BY ID  * COMPLETE *');
     });
   }
 
@@ -190,7 +190,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   findCurrentProjectAmongAll(projectId: string) {
     this.projectService.getProjects().subscribe((projects: any) => {
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      //  console.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+       this.logger.log('[PRICING - PAYMENT-SUCCESS] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
 
       const project: Project = {
         _id: current_prjct.id_project.id,
@@ -226,23 +226,24 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   getCurrentProjectAndCurrentUser() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
-        this.id_project = project._id
+        this.id_project = project._id;
+        this.updateProject( this.id_project , project.name) 
         this.logger.log('[PRICING - PAYMENT-SUCCESS] - CurrentProject ID ', this.id_project)
         this.prjctPlanService.planUpdated(this.id_project)
       }
     });
 
     this.auth.user_bs.subscribe((user) => {
-      // console.log('[ActivitiesComponent] - LoggedUser ', user);
+      // this.logger.log('[ActivitiesComponent] - LoggedUser ', user);
       if (user) {
         this.currentUser = user
 
         this.logger.log('[PRICING - PAYMENT-SUCCESS] currentUser email ', this.currentUser.email)
 
         window['rewardful']('ready', () => {
-          // console.log('[PRICING - PAYMENT-SUCCESS] Rewardful Ready!')
-          // console.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.referral', window['rewardful'].referral )
-          // console.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.campaign', window['rewardful'].campaign )
+          // this.logger.log('[PRICING - PAYMENT-SUCCESS] Rewardful Ready!')
+          // this.logger.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.referral', window['rewardful'].referral )
+          // this.logger.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.campaign', window['rewardful'].campaign )
        
           window['rewardful']('convert', { email: this.currentUser.email })
           
@@ -271,6 +272,26 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
       }
     });
 
+  }
+
+  updateProject(projectid, projectname) {
+    this.logger.log('[PRICING - PAYMENT-SUCCESS] - PROJECT ID ', projectid);
+    this.logger.log('[PRICING - PAYMENT-SUCCESS] - PROJECT NAME  ', projectname);
+
+    this.projectService.updateProjectName(this.id_project, projectname)
+      .subscribe((prjct: Project) => {
+        this.logger.log('[PRJCT-EDIT-ADD] - UPDATED PROJECT - RES ', prjct);
+
+
+      }, (error) => {
+        this.logger.error('[PRJCT-EDIT-ADD] UPDATE PROJECT - ERROR ', error);
+
+
+      }, () => {
+        this.logger.log('[PRJCT-EDIT-ADD] UPDATE PROJECT * COMPLETE *');
+      
+
+      });
   }
 
 

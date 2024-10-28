@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, ViewChild, SimpleChanges, AfterViewInit } from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
 import { LocalDbService } from '../../../services/users-local-db.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
@@ -19,9 +19,12 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { BrandService } from 'app/services/brand.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { CHANNELS_NAME, goToCDSVersion } from 'app/utils/util';
+import { MatMenuTrigger } from '@angular/material/menu';
+// import { Location, PopStateEvent } from '@angular/common';
 
 const swal = require('sweetalert');
+import scrollToWithAnimation from 'scrollto-with-animation'
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -29,11 +32,19 @@ const swal = require('sweetalert');
   styleUrls: ['./ws-requests-served.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WsRequestsServedComponent extends WsSharedComponent implements OnInit, OnChanges, OnDestroy {
+export class WsRequestsServedComponent extends WsSharedComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number;
   @Input() current_selected_prjct: any;
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  @Input() requestCountResp: any;
+
+  countRequestsServedByHumanRr: number
+  countRequestsServedByBotRr: number
+  countRequestsUnservedRr: number
 
   CHAT_BASE_URL: string;
   storageBucket: string;
@@ -76,6 +87,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   botLogo: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
+  scrollEl: any;
+  scrollYposition: any;
+  storedRequestId: string
+  CHANNELS_NAME = CHANNELS_NAME;
+  
   /**
    * Constructor
    * @param botLocalDbService 
@@ -107,11 +123,33 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
+    public route: ActivatedRoute,
+
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
-   
+
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] oninit scrollEl', this.scrollEl)
+    this.route.params.subscribe((params) => {
+      // this.projectId = params.projectid
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - GET ROUTE PARAMS ', params);
+      if (params.scrollposition) {
+        this.scrollYposition = params.scrollposition;
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] - scrollYposition', +this.scrollYposition);
+        if (this.scrollEl) {
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] scrollEl scrollTop', this.scrollEl.scrollTop)
+        } else {
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] scrollEl', this.scrollEl)
+        }
+      }
+    })
+
   }
 
   // -------------------------------------------------------------
@@ -127,9 +165,108 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
+  
+
+    // this.router.events.subscribe((event) => { 
+    //   if (event instanceof NavigationEnd || event instanceof NavigationStart) {    
+    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] event', event)
+    //   }
+    // })
 
   }
 
+ 
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      scrollToWithAnimation(
+        this.scrollEl, // element to scroll
+        'scrollTop', // direction to scroll
+        +this.scrollYposition, // target scrollY (0 means top of the page)
+        500, // duration in ms
+        'easeInOutCirc', 
+        // Can be a name of the list of 'Possible easing equations' or a callback
+        // that defines the ease. # http://gizma.com/easing/
+  
+        () => { // callback function that runs after the animation (optional)
+          this.logger.log('done!')
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId',  this.storedRequestId)
+        }
+      );
+    }, 100);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
+    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
+
+    // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
+
+
+    if (this.requestCountResp) {
+      this.countRequestsServedByHumanRr = this.requestCountResp.assigned;
+      this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
+      this.countRequestsUnservedRr = this.requestCountResp.unassigned;
+
+      // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
+      // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
+      // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+    }
+   
+    
+  
+    if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
+      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
+      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
+
+
+      // if (this.wsRequestsServed.length > 0) {
+      //   setTimeout(() => {
+      //     scrollToWithAnimation(
+      //       this.scrollEl, // element to scroll
+      //       'scrollTop', // direction to scroll
+      //       +this.scrollYposition, // target scrollY (0 means top of the page)
+      //       500, // duration in ms
+      //       'easeInOutCirc', 
+      //       // Can be a name of the list of 'Possible easing equations' or a callback
+      //       // that defines the ease. # http://gizma.com/easing/
+       
+      //       () => { // callback function that runs after the animation (optional)
+      //         this.logger.log('done!')
+      //         this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+      //         this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId',  this.storedRequestId)
+      //       }
+      //     );
+      //   }, 100);
+
+      // }
+    }
+  }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  onContextMenu(event: MouseEvent, item) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'item': item };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }
+
+  onContextMenuAction1(item) {
+    alert(`Click on Action 1 for ${item.name}`);
+  }
+
+  onContextMenuAction2(item) {
+    alert(`Click on Action 2 for ${item.name}`);
+  }
 
   overfirstTextGetRequestMsg(request) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] overfirstText request_id', request);
@@ -144,7 +281,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         msgs.forEach((msgs, index) => {
           if ((msgs)) {
             if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-              // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+              // this.logger.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
             } else {
               msgsArray.push(msgs)
             }
@@ -160,7 +297,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           });
         });
       }
-      // console.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
+      // this.logger.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
     }, (err) => {
       this.logger.error('[WS-REQUESTS-LIST][SERVED] - GET REQUESTS MSGS - ERROR: ', err);
 
@@ -170,31 +307,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     });
   }
 
-  ngOnChanges() {
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
-    // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    // if (this.wsRequestsServed && this.wsRequestsServed.length > 0) {
-    //   this.wsRequestsServed.forEach(request => {
-    //      console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //   });
-    // }
-  }
 
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-
-    // if (this.wsRequestsServed.length > 0) {
-    //   this.wsRequestsServed.forEach(request => {
-    //     // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
 
   // unsuscribeRequestById(idrequest) {
   //   this.wsRequestsService.unsubscribeTo_wsRequestById(idrequest);
@@ -225,7 +338,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //           if ((id_request === msgs['recipient'])) {
   //             if ((msgs)) {
   //               if ( (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') ||  (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support') ){
-  //                 // console.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
+  //                 // this.logger.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
   //               } else {
   //                 msgsArray.push(msgs)
   //               }
@@ -233,7 +346,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   //           }
   //         });
-  //         // console.log('[WS-REQUESTS-MSGS] msgsArray ', msgsArray)
+  //         // this.logger.log('[WS-REQUESTS-MSGS] msgsArray ', msgsArray)
 
 
 
@@ -438,6 +551,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   }
   // }
 
+  goToServedNTR() {
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'],{ queryParams: { leftfilter: 200 } });
+  }
 
 
   goToBotProfile(bot, bot_id: string, bot_type: string) {
@@ -516,8 +632,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToRequestMsgs(request_id: string) {
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
     this.logger.log("[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS ")
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages/' + this.scrollEl.scrollTop]);
+    this.usersLocalDbService.setInStorage('last-selection-id', request_id)
   }
 
   // goToWsRequestsNoRealtimeServed() {
@@ -548,7 +666,17 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
     this.wsRequestsService.closeSupportGroup(request_id)
       .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
+       
+       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+       this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+       if (request_id === this.storedRequestId) {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
+       }
+      
       }, (err) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
@@ -556,6 +684,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         //  NOTIFY ERROR 
         this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
       }, () => {
+        this.usersLocalDbService.removeFromStorage('last-selection-id')
         // this.ngOnInit();
         this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
@@ -569,9 +698,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // Join request
   // ------------------------------------------
   joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
-    //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
-    //  console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
-    //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
+    //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
+    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
 
     const participantingagentslength = participantingagents.length
     this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
@@ -677,11 +806,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requestid', requestid);
   //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - openChatInNewWindow - requester_fullanme', requester_fullanme);
   //   const chatTabCount = localStorage.getItem('tabCount')
-  //   console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
+  //   this.logger.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount ', chatTabCount)
 
   //   let url = ''
   //   if (chatTabCount && +chatTabCount > 0) {
-  //     console.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount > 0 - FOCUS')
+  //     this.logger.log('[WS-REQUESTS-LIST][SERVED] openChatInNewWindow chatTabCount > 0 - FOCUS')
   //     url = this.CHAT_BASE_URL + '#/conversation-detail?convselected=' + requestid
   //     // this.focusWin('Tiledesk - Open Source Live Chat')
   //     this.openWindow('Tiledesk - Open Source Live Chat', url)
@@ -775,7 +904,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
       this.allChecked = true;
       for (let request of this.wsRequestsServed) {
-        // console.log('SELECT ALL request ', request)
+        // this.logger.log('SELECT ALL request ', request)
 
 
         const index = this.requests_selected.indexOf(request.request_id);
@@ -789,7 +918,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         if (request['isSelected'] === true) {
           this.logger.log("[WS-REQUESTS-LIST][SERVED] **++ Already selected")
         } else {
-          // console.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
+          // this.logger.log("[WS-REQUESTS-LIST][SERVED] *+*+ Request Selected: ", request.request_id);
 
           request['isSelected'] = true
 
@@ -799,7 +928,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.logger.log('[WS-REQUESTS-LIST][SERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
     } else if (e.target.checked == false) {
       for (let request of this.wsRequestsServed) {
-        // console.log('SELECT ALL request ', request)
+        // this.logger.log('SELECT ALL request ', request)
         // const index = this.requests_selected.indexOf(request.request_id);
         if (request.hasOwnProperty('isSelected')) {
           if (request['isSelected'] === true) {
@@ -879,7 +1008,19 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.requests_selected.forEach((requestid, index) => {
       this.wsRequestsService.closeSupportGroup(requestid)
         .subscribe((data: any) => {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          
+
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
+
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
+   
+          if (requestid === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STORAGE storedRequestId ', this.storedRequestId);
+             this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+
 
           // this.allChecked = false;
           // this.requests_selected = []
@@ -891,6 +1032,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           //  NOTIFY ERROR 
           // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
         }, () => {
+          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
+          this.usersLocalDbService.removeFromStorage('last-selection-id')
           // this.ngOnInit();
           this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
           count = count + 1;
@@ -899,6 +1042,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           const index = this.requests_selected.indexOf(requestid);
           if (index > -1) {
             this.requests_selected.splice(index, 1);
+            
           }
           this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 

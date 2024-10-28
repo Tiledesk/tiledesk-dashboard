@@ -1,5 +1,322 @@
 # tiledesk-dashboard
 
+### 2.7.35
+- Refactors tables in Monitor page 
+- Improves handling of alert windows display
+
+### 2.7.34
+- Adds the ability to select the indexing type for Knowledge Base URL contents
+- Adds to AI models used by knowledge bases the ability to add an advanced context and to visualize the contents sources
+
+### 2.7.33
+- Adds, on the History page, the ability to filter by conversation duration
+
+### 2.7.32
+- Moves the menu item "Apps" from the sidebar to the setting sidebar
+
+### 2.7.31
+- Groups in the conversation reassignment modal window Humans, Chatbots and Departments in tabs
+
+### 2.7.30
+- Minor improvements and bug fixing
+
+### 2.7.29
+- Fixes UI issues due to chrome update
+
+### 2.7.28
+- Fixes UI issues due to chrome update
+
+### 2.7.27
+- Adds the section quotas "Current usage" in the Home page
+- Refactor the quotas "Current usage" panel
+- Adds links to the quotas current usage panel that allow the user to view consumed conversations
+
+### 2.7.26
+- Adds the Help Center page to provide to the end user a complete support option
+
+### 2.7.25
+- Adds the ability to add FAQs as contents of knowledge bases
+
+### 2.7.24
+- Fixes the bug: Operating hours on the "Monitor" page are active even though they are disabled
+
+### 2.7.23
+- Adds the ability to hide the Chatbot Attributes widget from Project Settings > Advanced
+
+### 2.7.22
+- Improves the "Monitor" page
+
+### 2.7.21
+- Fixed the bug: on the "Monitor" page a new conversation causes the page to scroll top
+
+### 2.7.20
+- Fixes the bug: Home page conversations graph not displaying chatbots data
+
+### 2.7.19
+- Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
+- Improves the method to get the number of conversations in the monitor page
+
+### 2.7.18
+- Minor improvements and bug fixing
+
+### 2.7.17
+- Removes the ability to customize the quotas email template
+- Implements the icons for the SMS channel
+
+### 2.7.16
+- Minor improvements and bug fixing
+
+### 2.7.16-rc3
+- Bug fixing
+
+### 2.7.16-rc2
+- Bug fixing
+
+### 2.7.16-rc1
+- Bug fixing
+
+### 2.7.15
+- Improves the Knowledge base preview modal window
+- Minor improvements and bug fixing
+
+### 2.7.14
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.7.12
+- Deploys in production
+- Improves the modal displayed to edit the Knowledge base chatbot
+
+### 2.7.11
+- Deploys in production
+- Adds tooltips and documentation links to the AI ​​settings modal window
+
+### 2.7.10
+- Deploys in production
+- Enables Smart assignment for teammates with Admin role
+
+### 2.7.9
+- Deploys in production
+- Fixes the bug: Knowledge Base page crashes if a content description is too long
+
+### 2.7.8
+- Deploys in production
+- Adds the "Team" plan
+
+### 2.7.7
+- Deploys in production
+- Adds the knowledge base walkthrough on the knowledge base page
+
+### 2.7.6
+- Deploys in production
+- Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
+
+### 2.7.5
+- Deploys in production
+- Fixes the bug: Indicators in the quota usage popup do not update for trial plans
+
+### 2.7.4
+- Added Time Slots in Operating Hours page
+
+### 2.7.3
+- Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
+- Improves the knowledge base page
+
+### 2.7.2
+- Deploys in production
+- Adds GPT-4o mini language model
+
+### 2.7.1
+- Deploys in production
+- Removes Twilio SMS and VXML Voice apps from App-store
+
+### 2.7.0
+- Deploys in production
+- Adds the ability to edit the "Quota checkpoint notification" email template
+- Adds Twilio SMS channel integration  
+
+### 2.6.44
+- Deploys in production
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+- Improvements and bug fixing
+
+### 2.6.43
+- Deploys in production
+- Improves the quota usage widget
+- Minor improvements
+
+### 2.6.42
+- Deploys in production
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
+### 2.6.41
+- Deploys in production
+- Displays information about the Voice channel
+
+### 2.6.40
+- Deploys in production
+- Displays a dialog box that allows to update the plan when the knowledge bases limit is reached
+
+### 2.6.39
+- Deploys in production
+- Adds the ability to create a chatbot connected to a Knowledge base on the Manage your Knowledge bases page
+- Adds the ability to filter charts by channel on the Analytics page
+- Adds the ability on the History page and on the Non-Real Time Conversations page to filter conversations by channel
+
+### 2.6.38
+- Deploys in production
+- Adds the ability to create multiple Knowledge base on the "Manage your contents" page
+- Adds the ability to add file to a Knowledge base
+- Refactors the UI of the "Manage your contents" page
+- Adds environment variable "aiModels"
+
+### 2.6.37
+- Deploys in production
+- Adds the ability to manage the Extreme measures in Project settings > tab General (improvements)
+
+### 2.6.36
+- Deploys in production
+- Adds the ability to manage the Extreme measures in Project settings > tab General
+
+### 2.6.35
+- Deploys in production
+- Fixes translations on Project Settings > Security page
+
+### 2.6.34
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.6.33
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.6.32
+- Deploys in production
+- Fixes the bug: selecting a project from the navbar under the "Other projects" section doesn't work
+
+### 2.6.31
+- Deploys in production
+- Does not allow the deletion of a group linked to a department on the group list page
+- Manages, on the integrations page, the display of the "Pro" badge based on the plan
+- Improves the UI of the department details page
+
+### 2.6.31-rc1
+- Does not allow the deletion of a group linked to a department on the group list page
+- Manages, on the integrations page, the display of the "Pro" badge based on the plan
+- Improves the UI of the department details page
+
+### 2.6.30
+- Deploys in production
+- Fixes the bug: on the conversation detail page "Lead updated" message is displayed even if the contact's email has not been updated
+
+### 2.6.29
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.6.28
+- Deploys in production
+- Improves the info sidebar on the conversation details page
+- Improves the brand service
+
+### 2.6.27
+- Deploys in production
+- Adds a cache service for the projects GET requests
+
+### 2.6.26
+- Deploys in production
+- Improves Knowledge Base UI
+
+### 2.6.25
+- Deploys in production
+- Added support for GPT-4o in Knwoledge Base Preview
+
+### 2.6.24
+- Deploys in production
+- Minor improvements and bug fixing
+
+### 2.6.23
+- Deploys in production
+- Improves the branding service 
+
+### 2.6.22
+- Deploys in production
+- Changes the link that redirect to the installation of WhatsApp on the home page
+
+### 2.6.21
+- Deploys in production
+- Adds, on the Installation page, instructions to install the Tiledesk Live Chat Widget on BigCommerce, WIX and Magento websites
+
+### 2.6.20
+- Deploys in production
+- Implements on the "Monitor" page the scroll position restoration
+- Changes the endpoint of the GET request that retrieve the chatbot attributes
+- Displays, on the "Monitor" page, after restoring the scrolling position, an effect that highlights the previously selected conversation
+
+### 2.6.19
+- Deploys in production
+- Improves the Community page UI
+
+### 2.6.18
+- Deploys in production
+- Hides the External chatbot learn more button if the DOCS key is set to false
+- Fixes the bug: Chatbot limit does not work when set to 0
+- Refactors the home page UI for teammates with agent role
+- Adds the lazy loading to the "HomeGoToChatComponent" and "ChatbotAlertComponent" components
+- Improves chatbots and knowledge bases management set via DB
+- Other improvements and bug fixing
+
+### 2.6.17
+- Deploys in production
+- Fixes the bug: Agents can't edit requester information
+
+### 2.6.16
+- Deploys in production
+- Improves performance and the settings sidebar
+
+### 2.6.15
+- Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.14
+- Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.13
+- Minor improvements
+
+### 2.6.12
+- Deploys in production
+- Adds an alert on the app store page to explain that some apps have been moved to the integrations page
+- Adds the ability to manage the visibility of menu item chatbot and the home chatbot section via DB
+- Handles chatbot limit of zero
+- Moves email ticketing features to "Custom" plan
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents via DB
+- Adds the ability to manage the visibility of menu items widget unbranding, SMTP settings and Knowledge Bases via DB
+
+### 2.6.12-rc2
+- Adds an alert on the app store page to explain that some apps have been moved to the integrations page
+
+### 2.6.12-rc1
+- Adds the ability to manage the visibility of menu item chatbot and the home chatbot section via DB
+- Manages chatbot limit of zero
+
+### 2.6.11
+- Moves email ticketing features to "Custom" plan
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents via DB
+- Adds the ability to manage the visibility of menu items widget unbranding, SMTP settings and Knowledge Bases via DB
+
+### 2.6.10
+- Deploys in production
+- Improves pricing page
+
+### 2.6.9
+- Deploys in production
+- Improves performance
+
+### 2.6.8
+- Deploys in production
+- Improves the app config service
+
 ### 2.6.7
 - Deploys in production
 - Improves bot list page
@@ -8,9 +325,15 @@
 - Deploys in production 
 - Fixes the bug: WordPress section does not open on installations page
 
+### 2.6.6-rc1
+- Move email ticketing features to "Custom" plan
+
 ### 2.6.5
 - Deploys in production
 - Improvements and bug fixing
+
+### 2.6.5-rc1
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
 
 ### 2.6.4
 - Deploys in production
@@ -20,6 +343,15 @@
 - Deploys in production
 - Improves the path to the knowledge bases page on the home page
 
+### 2.6.3-rc3
+- Improves pop-up windows
+
+### 2.6.3-rc2
+- Bug fixing
+
+### 2.6.3-rc1
+- Improvements and bug fixing
+
 ### 2.6.2
 - Deploys in production
 - Improvements and bug fixing
@@ -28,12 +360,33 @@
 - Deploys in production
 - Improves the Get and Save methods used for translation strings
 
+### 2.6.1-rc1
+- Improves get and save methods of translation strings
+- Improves performance
+
 ### 2.6.0
 - Deploys in production
 - Improves Knowledge Bases 
 - Adds the ability to create Knowledge Bases by adding a sitemap
 - Adds the customer.io integration
 - Fixes the bug: app cards are not all the same height
+
+### 2.6.0-rc6
+- Fixes the bug: App cards are not of the same height
+
+### 2.6.0-rc4
+- Improves Knowledge Base
+
+### 2.6.0-rc3
+- Improves Knowledge Base
+
+### 2.6.0-rc2
+- Improves Knowledge Base (added sitemap)
+
+### 2.6.0-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+- Refactors the bot list page
 
 ### 2.5.21
 - Deploys in production
@@ -47,15 +400,6 @@
 - Deploys in production
 - Fixes the bug: not all chatbot images are displayed
 - Fixes the bug: published chatbots is appearing as a draft
-
-### 2.5.18
-- Deploys in production
-- Fixes the bug: in the settings sidebar 'setAttribute' on 'Element' is not a valid attribute name
-- User profile image is called in loop
-
-### 2.5.17
-- Deploys in production
-- Fixes the bug: multiple status call in kb page
 
 ### 2.5.16
 - Deploys in production

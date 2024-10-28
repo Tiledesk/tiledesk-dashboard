@@ -13,8 +13,13 @@
     "display_help_in_installation": false,
     "display_invite_teammate_btn": false,
     "display_contact_us_email": false,
-    "custom_redirect_after_logout": true,
+    "custom_redirect_after_logout": false,
     "after_logout_redirect_URL": "https://www.imagicle.com/en/products/conversational-ai/",
+    "display_chatbots_community": false,
+    "display_templates_category": false,
+    "display_change_pwd": false,
+    "EXTREME_MEASURES": false,
+    "SUPPORT_MENU": false,
     "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": false,
@@ -44,6 +49,10 @@
       "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
     }
   },
+  "WIDGET": {
+    "LOGO_CHAT": "https://smartflows-eu-public.s3.eu-central-1.amazonaws.com/imagicle-resources/SmartflowsLogo-NoText.svg",
+    "POWERED_BY": "<a tabindex='-1' target='_blank href='https://www.imagicle.com/en/products/conversational-ai/'><img src='https://smartflows-eu-public.s3.eu-central-1.amazonaws.com/imagicle-resources/SmartflowsLogo-NoText.svg'/><span> Powered by Conversational AI</span></a>"
+  },
   "CHAT": {
 
   },
@@ -65,9 +74,10 @@
     "COMPANY_SITE_NAME": "imagicle.com",
     "COMPANY_SITE_URL": "https://www.imagicle.com/en/products/conversational-ai/",
     "CONTACT_US_EMAIL": "",
-    "CONTACT_SALES_EMAIL": "",
+    "CONTACT_SALES_EMAIL": "sales@imagicle.com",
     "BRAND_PRIMARY_COLOR": "#00c0f0",
     "BRAND_SECONDARY_COLOR": "#002159",
-    "DOCS": false
+    "DOCS": false,
+    "LOGOUT_ENABLED": false
   }
 }

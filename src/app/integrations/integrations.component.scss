@@ -10,6 +10,12 @@
     // padding: 8px 16px; // nk commented
 }
 
+.spinner-container {
+    width: 100%;
+    height: calc(100vh - 160px);
+    display: flex;
+}
+
 ::-webkit-scrollbar {
     width: 0px;
 }
@@ -53,7 +59,7 @@
 
         img {
             margin-right: 8px;
-            border-radius: 10px;
+            border-radius: 4px;
             width: 20px;
             height: 20px;
         }
@@ -98,9 +104,9 @@ mat-expansion-panel ::ng-deep {
         font-size: 14px;
     }
 
-    .mat-expansion-indicator::after {
-        //color: var(--text-color) !important;
-    }
+    // .mat-expansion-indicator::after {
+    //     //color: var(--text-color) !important;
+    // }
 
     .mat-expansion-panel-header-description,
     .mat-expansion-indicator:after {
@@ -108,10 +114,10 @@ mat-expansion-panel ::ng-deep {
         margin: 5px;
     }
 
-    ::ng-deep .mat-expansion-indicator,
-    .mat-expansion-indicator:after {
-        //color: var(--text-color);
-    }
+    // ::ng-deep .mat-expansion-indicator,
+    // .mat-expansion-indicator:after {
+    //     //color: var(--text-color);
+    // }
 
     .mat-expansion-panel-header.mat-expanded {
         height: 48px;
@@ -183,7 +189,7 @@ mat-expansion-panel ::ng-deep {
     // }
 }
 
-.lock-container {
+.int-lock-container {
 
     width: 100%;
     background-color: transparent;
@@ -191,7 +197,7 @@ mat-expansion-panel ::ng-deep {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    height: calc(100vh - 225px);
     img {
         width: 300px;
         height: auto;
@@ -231,4 +237,12 @@ mat-expansion-panel ::ng-deep {
     &:hover {
         opacity: 1;
     }
+}
+
+.integration-name-and-badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }

@@ -153,14 +153,14 @@
                     <!-- <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
                       <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
                     </button> -->
-                    <li class="divider"></li>
+                    <li *ngIf="logoutBtnVisible" class="divider"></li>
                     <!-- <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
                       {{ 'NavBar.LogOut' | translate }}
                     </button> -->
 
-                    <div class="user-profile-link" (click)="openLogoutModal()">
+                    <div *ngIf="logoutBtnVisible" class="user-profile-link" (click)="openLogoutModal()">
 
-                      <div class="user-profile-link-icon">
+                      <div  class="user-profile-link-icon">
 
                         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                           viewBox="0 0 24 24">
@@ -273,13 +273,16 @@
 
     <div *ngIf="!showSpinner" class="projects-cards">
       <div class="row">
-        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer">
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer"
+        (click)='goToCreateProject()'>
 
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
-          <!-- openCreateModal()  -->
-          <div id="create-prjct-card" class="card prjct-card" (click)='goToCreateProject()'>
-            <div class="card-content" style="height:203px;">
+          <!-- openCreateModal()  style="height:207px;" -->
+
+          <!-- (click)='goToCreateProject()' -->
+          <div id="create-prjct-card" class="card prjct-card" >
+            <div class="card-content" [ngStyle]="{'height':DISPLAY_PROJECT_ID === true ? '213px' : '207px' }">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon"
                 [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
@@ -317,24 +320,26 @@
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
           <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
+        
           <div class="card prjct-card"
             [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
-            (click)='goToHome(
-                project,
-                project?.id_project?._id, 
-                project?.id_project?.name, 
-                project?.id_project?.profile?.name, 
-                project?.id_project?.trialExpired, 
-                project?.id_project?.trialDaysLeft, 
-                project?.id_project?.status, 
-                project?.id_project?.activeOperatingHours)'>
-
+            (click)='goToHome(project, project?.id_project, project?.role, project?.id_project?._id, project?.id_project?.status)'>
+            
+            <div  *ngIf="project?.is_selected === true" class="loading-bar"[ngClass]="{
+              'tier0': project?.plan_badge_background_type === 'free_plan_badge', 
+              'tier1': project?.plan_badge_background_type === 'a_plan_badge',
+              'tier2': project?.plan_badge_background_type === 'b_plan_badge',
+              'tier2A': project?.plan_badge_background_type === 'bb_plan_badge',
+              'tier3': project?.plan_badge_background_type === 'c_plan_badge',
+              'tierX': project?.id_project?.status === 0}">
+            </div> 
 
             <div class="card-content project-card-content">
               <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{
                   'free--plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
                   'a--plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
                   'b--plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                  'bb--plan-badge': project?.plan_badge_background_type === 'bb_plan_badge', 
                   'c--plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
                   'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge',
                   'deleted-project-badge': project?.id_project?.status === 0
@@ -347,9 +352,9 @@
                 {{ project?.id_project?.name }}
               </h3>
 
-              <!-- <p class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+              <p *ngIf="DISPLAY_PROJECT_ID" class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                 {{ project?.id_project?._id }}
-              </p> -->
+              </p>
 
               <div class="role-and-avalibility-wpr">
                 <div class="role-and-avalibility-icon">
@@ -450,16 +455,13 @@
                 </div>
               </div>
 
-
-
-
-              <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
+              <!-- <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
                 <div class="spinner">
                   <div class="bounce1"></div>
                   <div class="bounce2"></div>
                   <div class="bounce3"></div>
                 </div>
-              </div>
+              </div> -->
 
 
 

@@ -10,7 +10,7 @@
     <li class="btn-with-border-effect li-active">
         <a> {{ "UserProfile.Profile" | translate }} </a>
     </li>
-    <li class="btn-with-border-effect border-from-center" (click)="goToChangePsw()">
+    <li *ngIf="displayChangePwd" class="btn-with-border-effect border-from-center" (click)="goToChangePsw()">
         <a>{{ "UserProfile.ChangePsw" | translate }} </a>
     </li>
     <li class="btn-with-border-effect border-from-center" (click)="goToAccountSettings()">
@@ -68,7 +68,7 @@
                                 Avatar
                             </label>
                             <div class="col-sm-10">
-                                <div class="card-avatar" style="padding-bottom:15px; min-height: 85px;">
+                                <div class="card-avatar">
                                     
                                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                                         class="user-img user-profile-image" [src]="getUserProfileImage()"
@@ -93,7 +93,7 @@
 
                                     <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
                                         id="teammate-image-profile" type="file" (change)="upload($event)"
-                                        accept=".jpg, .JPEG, .png" />
+                                        [accept]="fileUploadAccept"/>
                                     <label class="btn btn-white" for="teammate-image-profile"
                                         style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         <span *ngIf="!showSpinnerInUploadImageBtn">
@@ -125,8 +125,9 @@
 
                             </label>
                             <div class="col-sm-10" style="margin-bottom: 12px;">
-                                <span style="display: block;color: #7695a5; font-size: 12px; display: block;"> {{
-                                    "UserProfile.AddYourOwnPicture" | translate }}</span>
+                                <span style="display: block;color: #7695a5; font-size: 12px; display: block;">
+                                    {{ "UserProfile.AddYourOwnPicture" | translate }}
+                                </span>
                                 <span style="color: #7695a5; font-size: 12px; display: block;">
                                     {{ "UserProfile.PreferredSize" | translate }}
                                 </span>

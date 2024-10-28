@@ -8,15 +8,18 @@ import { MarkedPipe } from 'app/marked.pipe';
 import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
 import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
 import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
+import { SettingsSidebarComponent } from 'app/components/settings-sidebar/settings-sidebar.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 
 @NgModule({
   imports: [
-   
+    
     CommonModule,
     TranslateModule,
-    DirectivesModule
+    DirectivesModule,
+    ColorPickerModule
   ],
   declarations: [
     LoadingSpinnerComponent,
@@ -24,6 +27,7 @@ import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
     HtmlEntitiesEncodePipe,
     SanitizeHtmlPipe,
     SelectOptionsTranslatePipe, 
+    // SettingsSidebarComponent,
   ],
   exports: [
     LoadingSpinnerComponent,
@@ -32,7 +36,9 @@ import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
     MarkedPipe,
     HtmlEntitiesEncodePipe,
     SanitizeHtmlPipe,
-    SelectOptionsTranslatePipe
+    SelectOptionsTranslatePipe,
+    // SettingsSidebarComponent,
+    ColorPickerModule
   ]
   ,
   providers: [ 

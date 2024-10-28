@@ -31,6 +31,36 @@ export class WebhookAddEditComponent implements OnInit {
   updateErrorMsg: string;
   response: any;
 
+
+  webHookEvents = [
+    { id: "request.create", name:"Request Create"},
+    { id: "request.update", name:"Request Update"},
+    { id: "request.close", name:"Request Close"},
+    { id: "message.create", name:"Message Create"},
+    { id: "message.create.request.channel.telegram", name:"Message Create (only for Telegram channel)"},
+    { id: "message.create.request.channel.messenger", name:"Message Create (only for Facebook Messenger channel)"},
+    { id: "message.create.request.channel.whatsapp", name:"Message Create (only for WhatsApp channel)"},
+    { id: "message.create.request.channel.voice", name:"Message Create (only for Voice channel)"},
+    { id: "lead.create", name:"Lead Create"},
+    { id: "faq.create", name:"Faq Create"},
+    { id: "faq.update", name:"Faq Update"},
+    { id: "faq.delete", name:"Faq Delete"},
+    { id: "faqbot.create", name:"Faqbot Create"},
+    { id: "faqbot.update", name:"Faqbot Update"},
+    { id: "faqbot.delete", name:"Faqbot Delete"},
+    { id: "department.create", name:"Department Create"},
+    { id: "department.update", name:"Department Update"},
+    { id: "department.delete", name:"Department Delete"},
+    { id: "project_user.invite", name:"Project User Invite"},
+    { id: "project_user.update", name:"Project User Update"},
+    { id: "project_user.delete", name:"Project User Deletee"},
+    { id: "group.create", name:"Group Create"},
+    { id: "group.update", name:"Group Update"},
+    { id: "group.delete", name:"Group Delete"},
+    { id: "operator.select", name:"Operator Selection"},
+    { id: "event.emit", name:"Event Emit"},
+  ]
+
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
@@ -41,9 +71,6 @@ export class WebhookAddEditComponent implements OnInit {
   ngOnInit() {
     this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - modalMode ', this.modalMode);
     this.logger.log('[WEBHOOK][WEBHOOK-ADD-EDIT] - selectWebhookId ', this.selectWebhookId);
-
-    // MI SERVE?
-    // this.auth.checkRoleForCurrentProject();
 
     if (this.modalMode === 'edit') {
       this.showSkeleton = true;

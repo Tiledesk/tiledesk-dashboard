@@ -29,21 +29,21 @@ import { AppConfigService } from '../../services/app-config.service';
 // import { public_Key } from '../../utils/util';
 // import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators'
+import { filter, takeUntil, throttleTime } from 'rxjs/operators'
 import { Subscription } from 'rxjs'
 
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { ThemePalette} from '@angular/material/core';
+import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
-import { APP_SUMO_PLAN_NAME, PLANS_LIST, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 
 const swal = require('sweetalert');
-
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'app-navbar',
@@ -92,7 +92,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   notify: any;
   private shown_requests = {};
   private shown_my_requests = {};
-
+  salesEmail: string;
 
   project: Project;
   projectUser_id: string;
@@ -135,7 +135,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   subscription_is_active: boolean;
   HOME_ROUTE_IS_ACTIVE: boolean;
   projects: any;
-  isVisible: boolean;
+  // isVisible: boolean;
 
   storageBucket: string;
   baseUrl: string;
@@ -162,16 +162,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tlangparams: any;
 
   // QUOTES
+  isVisibleQuoteBtn: boolean;
+  isVisiblePay: boolean
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
   requests_count = 0;
   requests_perc = 0;
   requests_limit = 0;
-  
+
   messages_count = 0;
   messages_perc = 0;
   messages_limit = 0;
-  
+
   email_count = 0;
   email_perc = 0;
   email_limit = 0;
@@ -179,6 +181,25 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_count = 0;
   tokens_perc = 0;
   tokens_limit = 0;
+
+  requestsPieStroke: string;
+  requestsPieGreenStroke: boolean;
+  requestsPieYellowStroke: boolean;
+  requestsPieOrangeStroke: boolean;
+  requestsPieRedStroke: boolean;
+
+  project_limits: any;
+  isOpenCurrentUsageMenu: boolean = false;
+
+  openedConversations: number = 0;
+  closedConversations: number = 0;
+
+  conversationsRunnedOut: boolean = false;
+  emailsRunnedOut: boolean = false;
+  tokensRunnedOut: boolean = false;
+
+  startSlot: string;
+  endSlot: string;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -203,11 +224,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   ) {
 
     super(prjctPlanService, notifyService);
-    
+
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.location = location;
     this.sidebarVisible = false;
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     // this.unservedRequestCount = 0
 
     this.logger.log('[NAVBAR] IS DEV MODE ', isDevMode());
@@ -266,16 +288,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.getChatUrl();
     this.getOSCODE();
-
-
     this.setNotificationSound();
     this.getTestSiteUrl();
-
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
+    // this.listenToQuotasReachedInHome()
 
- 
-
+    // this.listenToWSRequestsDataCallBack()
   } // OnInit
 
 
@@ -286,36 +305,123 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.unsubscribe$.complete();
   }
 
+
+  getCurrentProject() {
+    // this.project = this.auth.project_bs.value;
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+        this.project = project
+        this.logger.log('[NAVBAR] - project from $ubscription ', this.project);
+        if (project.name) {
+
+          this.projectId = project._id;
+          this.projectName = project.name;
+          // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.getProjectQuotes();
+          // this.getQuotasCount()
+          // this.getQuotes();
+          // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+        }
+
+        this.getProjects()
+      }
+    });
+  }
+
+  onOpenQuoteMenu() {
+    this.isOpenCurrentUsageMenu = true
+    // console.log('[NAVBAR] - on open quotes menu' )
+    // console.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+    this.getProjectQuotes();
+    this.getQuotasCount()
+    this.getQuotes();
+    const currentURL = this.router.url;
+    this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);
+    if (currentURL.indexOf('/home') !== -1) {
+      this.logger.log('[NAVBAR] - currentURL 2 ', currentURL);
+      this.quotesService.hasOpenedNavbarQuotasMenu()
+    }
+
+
+  }
+
+
+  onQuotasMenuClosed() {
+    this.isOpenCurrentUsageMenu = false
+    // console.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+  }
+
+  getProjectQuotes() {
+    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
+      this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
+      this.logger.log("getProjectQuotes: ", response);
+      this.project_limits = response;
+    }).catch((err) => {
+      this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
+    })
+  }
+
+
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
+
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+    }, (error) => {
+      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+
+
+
+  // listenToWSRequestsDataCallBack() {
+  //   // .pipe(throttleTime(0))
+  //   console.log("[NAVBAR] listenToWSRequestsDataCallBack ");
+  //   this.wsRequestsService.wsConvData$
+
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((wsConv) => {
+  //       // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
+  //       this.getQuotes()
+  //     })
+  // }
+
+  // listenToQuotasReachedInHome() {
+  //   console.log("[NAVBAR] listenToQuotasReachedInHome ", )
+
+  //   if (this.projectId)  {
+  //     console.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
+  //     this.getQuotes()
+  //   }
+  // }
+
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("quotes retrieved: ", resp)
+      this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
 
-      // let profile_name = this.project.profile_name;
-      this.logger.log('[NAVBAR] project ', this.project)
-      // this.logger.log('[NAVBAR] project > profile_name ', profile_name)
-      this.logger.log('[NAVBAR] prjct_profile_name ', this.prjct_profile_name)
-      this.logger.log('[NAVBAR] profile_name ', this.profile_name)
+      this.logger.log("project_limits: ", this.project_limits)
+      this.logger.log("resp.quotes: ", resp.quotes)
+      if (this.project_limits) {
 
-
-      switch(this.profile_name) {
-        case PLAN_NAME.A:
-          this.profile_name = PLAN_NAME.D;
-          break;
-        case PLAN_NAME.B:
-          this.profile_name = PLAN_NAME.E
-          break;
-        case PLAN_NAME.C:
-          this.profile_name = PLAN_NAME.F
-          break;
+        this.messages_limit = this.project_limits.messages;
+        this.requests_limit = this.project_limits.requests;
+        this.email_limit = this.project_limits.email;
+        this.tokens_limit = this.project_limits.tokens;
       }
-
-      this.logger.log('[NAVBAR] PLANS_LIST ', PLANS_LIST)
-      this.logger.log('[NAVBAR] PLANS_LIST[profile_name] ', PLANS_LIST[this.profile_name])
-      this.logger.log('[NAVBAR] PLANS_LIST[profile_name].requests ', PLANS_LIST[this.profile_name].requests)
-      this.requests_limit = PLANS_LIST[this.profile_name].requests;
-      this.messages_limit = PLANS_LIST[this.profile_name].messages;
-      this.email_limit = PLANS_LIST[this.profile_name].email;
-      this.tokens_limit = PLANS_LIST[this.profile_name].tokens;
 
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;
@@ -329,26 +435,80 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (resp.quotes.tokens.quote === null) {
         resp.quotes.tokens.quote = 0;
       }
-      
-      this.requests_perc = Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100);
-      this.messages_perc = Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100);
-      this.email_perc = Math.floor((resp.quotes.email.quote / this.email_limit) * 100);
-      this.tokens_perc = Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100);
 
-      // this.requests_count = this.getformat(resp.quotes.requests.quote, null);
-      // this.messages_count = this.getformat(resp.quotes.messages.quote, null);
-      // this.email_count = this.getformat(resp.quotes.email.quote, null);
-      // this.tokens_count = this.getformat(resp.quotes.tokens.quote, null)
+      this.logger.log('[NAVBAR] used requests', resp.quotes.requests.quote)
+      this.logger.log('[NAVBAR] requests_limit', this.requests_limit)
+
+      this.logger.log('[NAVBAR] used email', resp.quotes.email.quote)
+      this.logger.log('[NAVBAR] email_limit', this.email_limit)
+
+
+      this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
+      this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
+
+      if (resp.quotes.requests.quote >= this.requests_limit) {
+        this.conversationsRunnedOut = true;
+        this.logger.log('[NAVBAR] conversationsRunnedOut', this.conversationsRunnedOut)
+      } else {
+        this.conversationsRunnedOut = false;
+        this.logger.log('[NAVBAR] conversationsRunnedOut', this.conversationsRunnedOut)
+      }
+
+      if (resp.quotes.email.quote >= this.email_limit) {
+        this.emailsRunnedOut = true;
+        this.logger.log('[NAVBAR] emailsRunnedOut', this.emailsRunnedOut)
+      } else {
+        this.emailsRunnedOut = false;
+        this.logger.log('[NAVBAR] emailsRunnedOut', this.emailsRunnedOut)
+      }
+
+      if (resp.quotes.tokens.quote >= this.tokens_limit) {
+        this.tokensRunnedOut = true;
+        this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
+      } else {
+        this.tokensRunnedOut = false;
+        this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
+      }
+
+
+      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
+      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
+      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
+      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+
+      this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
+      if (this.requests_perc <= 25) {
+        this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
+        this.requestsPieGreenStroke = true; // 0% a 25%
+        this.requestsPieYellowStroke = false;
+        this.requestsPieOrangeStroke = false
+        this.requestsPieRedStroke = false
+      } else if (this.requests_perc <= 50) {
+        this.requestsPieGreenStroke = false;
+        this.requestsPieYellowStroke = true; // 26% a 50%
+        this.requestsPieOrangeStroke = false
+        this.requestsPieRedStroke = false
+      } else if (this.requests_perc <= 75) {
+        this.requestsPieGreenStroke = false;
+        this.requestsPieYellowStroke = false;
+        this.requestsPieOrangeStroke = true; // 51% a 75%
+        this.requestsPieRedStroke = false
+      } else {
+        this.requestsPieGreenStroke = false;
+        this.requestsPieYellowStroke = false;
+        this.requestsPieOrangeStroke = false;
+        this.requestsPieRedStroke = true; // 76% a 100%
+      }
+
+
+
+
+
 
       this.requests_count = resp.quotes.requests.quote;
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
-
-      // this.requests_limit = this.getformat(this.requests_limit, true);
-      // this.messages_limit = this.getformat(this.messages_limit, true);
-      // this.tokens_limit = this.getformat(this.tokens_limit, true);
-      // this.email_limit = this.getformat(this.email_limit, true);
 
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
@@ -357,38 +517,54 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     })
   }
 
-  getformat(number, intg: Boolean | null){
-    if(number == 0) {
+
+  goToHistoryOpenedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
+  }
+
+
+  goToHistoryClosedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
+  }
+
+  goToHistoryAllConvs() {
+    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
+  }
+
+  getformat(number, intg: Boolean | null) {
+    if (number == 0) {
       return 0;
     }
-    else
-    {        
+    else {
       // hundreds
-      if(number <= 999){
-        return number ;
+      if (number <= 999) {
+        return number;
       }
       // thousands
-      else if(number >= 1000 && number <= 999999){
+      else if (number >= 1000 && number <= 999999) {
         if (intg) {
-          return (number / 1000).toFixed(0) + 'K';  
+          return (number / 1000).toFixed(0) + 'K';
         }
         return (number / 1000).toFixed(1) + 'K';
       }
       // millions
-      else if(number >= 1000000 && number <= 999999999){
+      else if (number >= 1000000 && number <= 999999999) {
         if (intg) {
           return (number / 1000000).toFixed(0) + 'M';
         }
         return (number / 1000000).toFixed(1) + 'M';
       }
       else
-        return number ;
-      }
+        return number;
     }
+  }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      //  this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+      this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -417,7 +593,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
 
         this.currentUserId = this.user._id;
-        this.getProjects();
+
       }
     });
   }
@@ -479,7 +655,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
+        this.logger.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
@@ -513,20 +689,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
     keys.forEach(key => {
-      // this.logger.log('NavbarComponent public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisible = false;
-          // this.logger.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
-        } else {
-          this.isVisible = true;
-          // this.logger.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
-        }
-      }
-
+     
       if (key.includes("MTT")) {
         // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
         let mt = key.split(":");
@@ -539,16 +702,52 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
         }
       }
+
+      if (key.includes("QIN")) {
+        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
+        let qt = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+        if (qt[1] === "F") {
+          this.isVisibleQuoteBtn = false;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        } else {
+          this.isVisibleQuoteBtn = true;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        }
+      }
+
+      if (key.includes("PAY")) {
+        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+        if (pay[1] === "F") {
+          this.isVisiblePay = false;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        } else {
+          this.isVisiblePay = true;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        }
+      }
+
+
     });
 
     if (!this.public_Key.includes("MTT")) {
       this.MT = false;
       // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
     }
+    if (!this.public_Key.includes("QIN")) {
+      this.isVisibleQuoteBtn = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn', this.isVisibleQuoteBtn);
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePay = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisiblePay', this.isVisiblePay);
+    }
   }
 
   getProjects() {
-    this.logger.log('[NAVBAR] calling getProjects ... ');
+    // this.logger.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
 
@@ -742,7 +941,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
     this.router.events.subscribe((val) => {
-      
+
       if (this.location.path() !== '') {
         this.route = this.location.path();
         // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
@@ -765,9 +964,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/projects-for-panel') !== -1) ||
           (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
           (this.route.indexOf('/desktop-access') !== -1) ||
+          (this.route.indexOf('/desktop--access') !== -1) ||
           (this.route.indexOf('/onboarding-templates') !== -1) ||
           (this.route.indexOf('/onboarding') !== -1)
-          
+
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
           // this.DETECTED_PROJECT_PAGE = true;
@@ -791,7 +991,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         //   }
         // }
 
-       
+
 
 
         // if (this.route === '/login') {
@@ -814,7 +1014,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       }
     });
 
-   
+
   }
 
   /**
@@ -856,36 +1056,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE = false;
           // this.logger.log('[NAVBAR] route detected - IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE  ', this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE);
         }
-
-
-
       }
     });
   }
 
-  getCurrentProject() {
-    // this.project = this.auth.project_bs.value;
-    this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        if (project.name) {
-          this.project = project
-          // this.logger.log('[NAVBAR] project from AUTH service subscription ', this.project);
-          this.projectId = project._id;
-          this.projectName = project.name;
-          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          // this.getQuotes();
-          this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
-        }
-    
-        this.getProjects()
-      }
-    });
-  }
 
-  onOpenQuoteMenu() {
-    this.logger.log('[NAVBAR] - on open quotes menu' )
-   this.getQuotes();
-  }
 
   getTrialLeft() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -894,10 +1069,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
-       
-     
-      
-
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
           // this.logger.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
@@ -958,28 +1129,76 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   openModalSubsExpired() {
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
-        this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+    if (this.isVisiblePay) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+          this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
 
 
-  goToPricing() {
+  goToPricingPlanFree() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
-     
+
       this.router.navigate(['project/' + this.projectId + '/pricing']);
     } else {
 
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
+  }
+
+  goToPricing() {
+    this.logger.log('[WSREQUEST-STATIC] - goToPricing projectId ', this.projectId);
+    if (this.isVisiblePay) {
+      if (this.USER_ROLE === 'owner') {
+        // && this.subscription_is_active === false
+        if (this.prjct_profile_type === 'payment') {
+          // this.notify._displayContactUsModal(true, 'upgrade_plan');
+          this.presentModalIncreaseMonltlResource()
+
+        }
+        else {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      // this.presentModalIncreaseMonltlResource()
+    }
+  }
+
+
+  presentModalIncreaseMonltlResource() {
+    Swal.fire({
+      title: this.translate.instant('Pricing.UpgradePlan'),
+      text: "Contact us to increase your monthly resources quotas",
+      // html: `contentText`,
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      confirmButtonColor: "var(--blue-light)",
+      // cancelButtonColor: "var(--red-color)",
+      focusConfirm: false,
+      // reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.salesEmail}?subject=Increase quotas`);
+      }
+    });
   }
 
   // presentModalUpgradePlan() {
@@ -1078,35 +1297,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
   goToHome(
+    prjct_user: any,
     project: any,
-    id_project: string,
-    project_name: string,
-    project_profile_name: string,
-    project_trial_expired: string,
-    project_trial_days_left: number,
-    activeOperatingHours: boolean) {
-    // this.logger.log('!NAVBAR  goToHome prjct ', project)
-    this.logger.log('[NAVBAR] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
-    localStorage.setItem('last_project', JSON.stringify(project))
+    project_role,
+    id_project: string,) {
+    this.logger.log('[NAVBAR] goToHome prjct ', project)
+    this.logger.log('[NAVBAR] goToHome project_role ', project_role)
+    this.logger.log('[NAVBAR] goToHome id_project ', id_project)
+
+    project['role'] = project_role
+    localStorage.setItem('last_project', JSON.stringify(prjct_user))
+
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
     if (id_project !== this.projectId) {
-      // this.subscription.unsubscribe();
-      // this.unsubscribe$.next();
-      // this.unsubscribe$.complete();
 
-      this.router.navigate([`/project/${id_project}/home`]);
-
-      // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
-      const project: Project = {
-        _id: id_project,
-        name: project_name,
-        profile_name: project_profile_name,
-        trial_expired: project_trial_expired,
-        trial_days_left: project_trial_days_left,
-        operatingHours: activeOperatingHours
-      }
       this.auth.projectSelected(project, 'navbar')
-      this.logger.log('[NAVBAR] !!! GO TO HOME - PROJECT ', project)
+      this.router.navigate([`/project/${id_project}/home`]);
+      // console.log('[NAVBAR] goToHome prjct ', project )  
     }
   }
 
@@ -1127,9 +1334,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
 
-  goToOperatingHours() {
-    this.router.navigate(['project/' + this.projectId + '/hours']);
-  }
+  // goToOperatingHours() {
+  //   this.router.navigate(['project/' + this.projectId + '/hours']);
+  // }
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';
@@ -1140,7 +1347,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     const simulateVisitorBtnElem = <HTMLElement>document.querySelector('.simulate-visitor-btn');
     simulateVisitorBtnElem.blur();
     // + '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + encodeURIComponent(this.projectName) + '&role=' + this.USER_ROLE
     window.open(url, '_blank');
   }
 
@@ -1643,14 +1850,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sidebarVisible = false;
     body.classList.remove('nav-open');
 
-    try {
-      if (window && window['tiledesk_widget_show']) {
-        this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
-        window['tiledesk_widget_show']();
-      }
-    } catch (e) {
-      this.logger.error('tiledesk_widget_show ERROR', e)
-    }
+    // try {
+    //   if (window && window['tiledesk_widget_show']) {
+    //     this.logger.log('[NAV] - SHOW WIDGET - HERE 1')
+    //     window['tiledesk_widget_show']();
+    //   }
+    // } catch (e) {
+    //   this.logger.error('tiledesk_widget_show ERROR', e)
+    // }
 
   };
 

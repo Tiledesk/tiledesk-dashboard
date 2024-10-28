@@ -543,6 +543,26 @@ export class UsersService {
       .get<ProjectUser[]>(url, httpOptions)
   }
 
+  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+
+    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
+
+    const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
+  }
+
 
   /**
    * GET PROJECT-USER BY ID (PROJECT USER DETAIL)
@@ -854,31 +874,31 @@ export class UsersService {
     this.project_user_role_bs.next(projectUser_role);
 
     // COMPARE THE STORED ROLE WITH THE USER ROLE PUBLISHED
-    const storedProjectJson = localStorage.getItem(this.project_id);
-    if (storedProjectJson) {
-      const projectObject = JSON.parse(storedProjectJson);
-      const storedUserRole = projectObject['role'];
-      const storedProjectName = projectObject['name'];
-      const storedProjectId = projectObject['_id'];
-      const storedProjectOH = projectObject['operatingHours'];
-      this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
-      this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
-      this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
+    // const storedProjectJson = localStorage.getItem(this.project_id);
+    // if (storedProjectJson) {
+    //   const projectObject = JSON.parse(storedProjectJson);
+    //   const storedUserRole = projectObject['role'];
+    //   const storedProjectName = projectObject['name'];
+    //   const storedProjectId = projectObject['_id'];
+    //   const storedProjectOH = projectObject['operatingHours'];
+    //   this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
+    //   this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
+    //   this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
 
-      if (storedUserRole !== projectUser_role) {
-        this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
+      // if (storedUserRole !== projectUser_role) {
+      // this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
 
-        const projectForStorage: Project = {
-          _id: storedProjectId,
-          name: storedProjectName,
-          role: projectUser_role,
-          operatingHours: storedProjectOH
-        }
+      //   // const projectForStorage: Project = {
+      //   //   _id: storedProjectId,
+      //   //   name: storedProjectName,
+      //   //   role: projectUser_role,
+      //   //   operatingHours: storedProjectOH
+      //   // }
 
-        // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
-        localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
-      }
-    }
+      //   // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
+      //   localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
+      // }
+    // }
   }
 
 

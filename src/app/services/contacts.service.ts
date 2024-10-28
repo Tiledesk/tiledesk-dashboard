@@ -265,6 +265,9 @@ export class ContactsService {
   // @ Update lead Email
   // ---------------------------------------------
   public updateLeadEmail(leadid: string, lead_email: string) {
+    if (lead_email === undefined) {
+      lead_email = ""
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

@@ -21,6 +21,8 @@ import { HomeCustomizeWidgetComponent } from 'app/home-components/home-customize
 import { HomeCreateTeammateComponent } from 'app/home-components/home-create-teammate/home-create-teammate.component';
 import { HomeKbComponent } from 'app/home-components/home-kb/home-kb.component';
 import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.component';
+import { HomeGoToChatComponent } from 'app/home-components/home-go-to-chat/home-go-to-chat.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 const routes: Routes = [
   { path: "", component: HomeComponent},
 ];
@@ -38,7 +40,8 @@ const routes: Routes = [
     HomeCustomizeWidgetComponent,
     HomeCreateTeammateComponent,
     HomeKbComponent,
-    HomeCdsComponent
+    HomeCdsComponent,
+    HomeGoToChatComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -50,7 +53,8 @@ const routes: Routes = [
     MatIconModule,
     MatCheckboxModule,
     SatPopoverModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     RouterModule

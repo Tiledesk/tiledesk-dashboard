@@ -1,0 +1,60 @@
+<!-- <p>DELETE KNOWLEDGE BASE MODAL - START</p> -->
+<!-- DELETE KNOWLEDGE BASE MODAL - START -->
+<div class="modal" tabindex="-1" role="dialog" style="background-color: rgba(90,90,90,0.5); display:block">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header" style="padding-bottom: 24px; background: #f44336;color: #fff;">
+                <button style="color: #fff;" type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                    <span style="vertical-align: middle;">
+                        {{ 'KbPage.DeleteKb' | translate }}
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div *ngIf="kbsList?.length > 0" class="form-container">
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespaceContents' | translate: {namespace_name: selectedNamespace.name}"> </p>
+                </div>
+                <div *ngIf="kbsList?.length === 0" class="form-container">
+                    <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: selectedNamespace.name}"> </p>
+                </div>
+
+                <div *ngIf="!selectedNamespace.default" class="delete-namespace-section">
+                    <div  *ngIf="kbsList?.length > 0" class="checkbox">
+                        <label [ngClass]="{'active--label': deleteAlsoNamespace}">
+                            <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">
+                           
+                            <!-- Also delete the namespace -->
+                            {{ 'KbPage.AlsoDeleteTheNamespace' | translate }}
+                        </label>
+                    </div>
+                    <div class="col-sm-10">
+                        <label for="delete-namespace-input"  [ngStyle]="{'color':deleteAlsoNamespace === true ? '#3c4858' : '#00000042' }">
+                            <!-- To delete the Namespace type the namespace name -->
+                            {{ 'KbPage.ToDeleteTheNamespaceTypeTheNamespaceName' | translate }}
+                        </label>
+                        <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder=" {{ 'KbPage.NamespaceName' | translate }}" [disabled]="!deleteAlsoNamespace">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer" style="text-align: center;background: unset;">
+                <button class="btn btn-white" style="margin-right: 10px;font-size: 14px;" (click)="onCloseModal()">
+                    {{ 'Cancel' | translate }}
+                </button>
+                <button id="addkb-btn" style="margin-left: 10px;font-size: 14px;" class="btn btn-danger" (click)="onDeleteNamespace()"
+                [disabled]="deleteAlsoNamespace && !namespacenameMatch">
+                    {{ 'Delete' | translate }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- DELETE KNOWLEDGE BASE MODAL - END -->

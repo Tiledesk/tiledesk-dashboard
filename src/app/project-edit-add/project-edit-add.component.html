@@ -14,6 +14,12 @@
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+   
+    <div class="page-title--sidebar-settings"
+        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+        {{ 'ProjectSettings' | translate }}
+    </div>
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
     <ng-container *ngIf="isVisiblePaymentTab">
       <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" class="row">
@@ -82,9 +88,9 @@
               </li>
 
 
-              <li *ngIf="isVisibleAdvancedTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_Advanced()"
+              <li *ngIf="isVisibleSmartAssignmentTab && USER_ROLE !== 'agent'" (click)="goToProjectSettings_SmartAssignment()"
                 class="btn-with-border-effect"
-                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
+                [ngClass]="{ 'li-active' : PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE === false }">
                 <a> {{ "SmartAssign" | translate }}</a>
               </li>
 
@@ -96,7 +102,7 @@
 
               <li *ngIf="isVisibleSecurityTab" (click)="goToProjectSettings_Security()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_SECURITY_ROUTE, 'border-from-center': PROJECT_SETTINGS_SECURITY_ROUTE === false }">
-                <a> Security </a>
+                <a> {{ "ProjectEditPage.Security.Security" | translate }}</a>
 
 
               </li>
@@ -106,11 +112,17 @@
                 <a> {{'BannedVisitors' | translate }} </a>
               </li>
 
+              <li (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+                [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
+                <a> {{'ProjectEditPage.Advanced' | translate }} </a>
+              </li>
+
             </ul>
           </div>
         </div>
 
-        <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE && hideHelpLink" class="row link-to-automatic-assignment-doc-wpr">
+        <!-- <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE && hideHelpLink" class="row link-to-automatic-assignment-doc-wpr"> -->
+        <div *ngIf="PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE && hideHelpLink" class="row link-to-automatic-assignment-doc-wpr">
           <div class="col-xs-12 link-to-automatic-assignment-doc">
             <div class="link-to-doc-icon-wpr">
                 <svg  aria-hidden="true" focusable="false"
@@ -125,6 +137,7 @@
                 {{'SettingUpAutomaticAssignment' | translate}}
               </span>
               <!-- profile_name !== PLAN_NAME?.C  -->
+              <!-- isTier3Plans  {{isTier3Plans}} -->
               <span *ngIf="!isTier3Plans" class="c-plan--only--badge">
                 {{'OnlyWithPlan'| translate: tParamsFeatureAvailableWith}}
               </span>
@@ -139,7 +152,9 @@
               <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
               <div *ngIf="!showSpinner" class="card-content">
-
+                <!-- ---------------------------------------------- -->
+                <!-- General Tab -->
+                <!-- ---------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_ROUTE">
 
                   <div class="row">
@@ -190,7 +205,47 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <!-- ------------------------------------ -->
+                  <!-- Display Support Widget in project -->
+                  <!-- ------------------------------------ -->
+                  <!-- <div class="row" style="margin-top: 44px;margin-bottom: 24px ">
+                    <div class="col-md-6">
+                      <h3 class="card_title__underlined">
+                        <span class="card_title__underline">
+                          Display support widget in project
+                        </span>
+                      </h3>
+                    </div>
+
+                    <!- - SWITCH BUTTON - ->
+                    <div class="col-md-6">
+                      <h3 class="card-title onoffswitch_container_first_line">
+
+                        <div class="onoffswitch">
+                          <input (change)="toggleSupportWidgetVisibility($event)"
+                            [checked]="displaySupportWidget === true" type="checkbox" name="display_support_widget_onoffswitch"
+                            class="onoffswitch-checkbox" id="display_support_widget_onoffswitch">
+                          <label class="onoffswitch-label" for="display_support_widget_onoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
+                      </h3>
+                    </div>
+
+                    <!- - SUBTITLE - ->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p style="margin-top: -10px;">
+                        Hide / Display the support widget in the project</p>
+                    </div>
+                  </div>  -->
+
+
+                  <!-- --------------------------- -->
+                  <!-- Delete ptoject -->
+                  <!-- --------------------------- -->
+                  <div *ngIf="displayExtremeMeasures" class="row">
                     <div class="col-md-12">
                       <h3 class="card_title__underlined" style="margin-top: 30px;">
                         <span class="card_title__underline">
@@ -203,7 +258,7 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div *ngIf="displayExtremeMeasures" class="row">
                     <div class="col-md-12">
                       <button id="delete-project-btn" class="btn btn-danger" style="margin-top:0px"
                         (click)="openDeleteModal()">
@@ -218,7 +273,7 @@
                 <!-- /. PROJECT_SETTINGS_ROUTE -->
 
                 <!-- -------------------------------------------------------- -->
-                <!-- Payments -->
+                <!-- Payments (i.e. Subscription) -->
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
 
@@ -544,9 +599,11 @@
                              <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
                     
                                 <span *ngIf="isSripeSub"> 
+                                  <!-- {{ subscription_creation_date }} -->
                                   {{ subscription_creation_date * 1000 | amDateFormat: 'LL' }}
                                 </span>
                                 <span  *ngIf="!isSripeSub"> 
+                                 
                                   {{subscription_creation_date | amDateFormat: 'LL'}}
                                 </span> 
                               </span> 
@@ -823,7 +880,7 @@
 
 
                 <!-- -------------------------------------------------------- -->
-                <!-- Authentication -->
+                <!-- Authentication  (i.e. Developer TAB)-->
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
                   <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
@@ -913,12 +970,12 @@
                       </div>
 
                       <div class="upgrade-for-webhook" *ngIf="DISPLAY_ADVANCED_TAB === false">
-                        <div class="from--a-plan-badge">
+                        <div *ngIf="isVisiblePaymentTab"  class="from--a-plan-badge">
                           {{'AvailableFromThePlan' | translate: t_params }}
                         </div>
                         <div class="upgrade-btn-wpr">
-                          <button class="btn btn-get-feature-no-boxshadow pull-left"
-                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
+                          <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
+                              [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                               (click)="goToPricing()" 
                               matTooltipClass="custom-mat-tooltip-in-widget-setup"
                               matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
@@ -972,7 +1029,7 @@
                       <div class="col-xs-12">
                         <button (click)="goToWidgetTestPage()" class="btn btn-primary test-widget-api-btn"
                           style="margin-top:5px; padding:6px 15px ">
-                          {{ "WidgetTest" | translate | translate }}
+                          {{ "WidgetTest" | translate }}
                         </button>
                       </div>
                     </div>
@@ -981,304 +1038,11 @@
 
 
 
-                <!-- -------------------------------------------------------- -->
-                <!-- Advanced -->
-                <!-- -------------------------------------------------------- -->
-                <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
-                  <!-- -------------------------------------------------------- -->
-                  <!-- Automatic Assignment -->
-                  <!-- -------------------------------------------------------- -->
-                  <div class="row">
-                    <div class="col-md-6">
-                      <h3 class="card_title__underlined">
-                        <span class="card_title__underline">
-                          {{ "ProjectEditPage.AutomaticAssignment" | translate }}
-                        </span>
-                      </h3>
-                    </div>
-
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
-
-                        <div class="onoffswitch">
-                          <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
-                            name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch"
-                            [disabled]="advancedSettingBtnDisabled === true">
-                          <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-                      </h3>
-                    </div>
-
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                    </div>
-                  </div>
-
-                  <div class="input-wrapper" style="max-width: 992px;">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                          <span style="display: flex;">
-                            <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;"
-                              class="material-icons">info
-                            </i>
-                            <span style="vertical-align: middle; display: inline-flex;">
-                              {{ "ProjectEditPage.IfYouActivateTheAutomaticAssignmentOption" | translate: tparams }}
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <!-- -------------------------------------------------------- -->
-                  <!-- Chat limit -->
-                  <!-- -------------------------------------------------------- -->
-                  <div class="row">
-                    <div class="col-md-12">
-                      <h3 class="card_title__underlined" style="margin-top: 30px;">
-                        <span class="card_title__underline">
-                          {{ "ProjectEditPage.ChatLimit" | translate }}
-                        </span>
-                      </h3>
-                    </div>
-
-
-
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                    </div>
-                  </div>
-                  <div class="input-wrapper" style="max-width: 992px;"
-                    [ngClass]="{'section-disabled' : chat_limit_on === false}">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <div class="alert"
-                          style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                          <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
-                            class="material-icons">info
-                          </i>
-                          <span style="vertical-align: middle; display: inline-flex;">
-                            {{ "ProjectEditPage.LimitChatsNumber" | translate }}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                        {{ 'ProjectEditPage.MaximumChats' | translate}}
-                      </label>
-                      <div class="col-xs-12 col-sm-10">
-
-
-                        <!--  -------------------------------------------------------- -->
-                        <!--  Maximum chats input -->
-                        <!--  -------------------------------------------------------- -->
-                        <div class="chat-limit">
-                          <input type="number" [(ngModel)]="max_agent_assigned_chat"
-                            (ngModelChange)="onChangeMaximum_chats($event)" class="input" id="chat_limit"
-                            name="chat_limit" min="1" max="10000000" style="margin-bottom: 1px;"
-                            [disabled]="chat_limit_on === false">
-                        </div>
-
-
-                        <div *ngIf="maximum_chats_has_minimum_error === true" class="error-message"
-                          style="color: #f6303a;font-size: 14px">
-                          {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
-                        </div>
-                        <div *ngIf="maximum_chats_has_maximum_error === true" class="error-message"
-                          style="color: #f6303a;font-size: 14px">
-                          {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
-                        </div>
-
-                        <span
-                          style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                          {{ "ProjectEditPage.ThisChatLimitWillAppliedToAllAgents" | translate }}
-                        </span>
-                        <span
-                          style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px; max-width: 415px;margin-top: 5px;">
-                          {{ "ProjectEditPage.YouCanSpecifyAgentsIndividualChatLimit" | translate }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <!-- -------------------------------------------------------- -->
-                  <!-- Reassigment -->
-                  <!-- -------------------------------------------------------- -->
-                  <div class="row">
-                    <div class="col-md-6">
-                      <h3 class="card_title__underlined" style="margin-top:30px">
-                        <span class="card_title__underline">
-                          {{ "ProjectEditPage.Reassignment" | translate }}
-                        </span>
-                      </h3>
-                    </div>
-
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container">
-                        <div class="onoffswitch">
-                          <input (change)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
-                            name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on"
-                            [disabled]="advancedSettingBtnDisabled === true">
-                          <label class="onoffswitch-label" for="reassignment_on">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-                      </h3>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                    </div>
-                  </div>
-
-
-                  <div class="input-wrapper" style="max-width: 992px;"
-                    [ngClass]="{'section-disabled' : reassignment_on === false}">
-
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <div class="alert"
-                          style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                          <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
-                            class="material-icons">info
-                          </i>
-                          <span style="vertical-align: middle; display: inline-flex;">
-                            {{ "ProjectEditPage.ReassignChatIf" | translate }}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
-                        {{ "ProjectEditPage.ReassignmentTimeout" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-10">
-
-                        <div class="chat-limit">
-                          <!-- -------------------------------------------------------- -->
-                          <!-- Reassignment Timeout input -->
-                          <!-- -------------------------------------------------------- -->
-                          <input type="number" [(ngModel)]="reassignment_delay"
-                            (ngModelChange)="onChangeReassignment_timeout($event)" class="input"
-                            id="reassignment_timeout" name="reassignment_timeout" min="1" max="10000000"
-                            style="margin-bottom: 1px;" [disabled]="reassignment_on === false">
-
-                          <div *ngIf="reassignment_timeout_has_minimum_error === true" class="error-message"
-                            style="color: #f6303a;font-size: 14px">
-                            {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
-                          </div>
-                          <div *ngIf="reassignment_timeout_has_maximum__error === true" class="error-message"
-                            style="color: #f6303a;font-size: 14px">
-                            {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
-                          </div>
-
-                          <span
-                            style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                            {{ "ProjectEditPage.TimeWithNoResponse" | translate }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <!-- -------------------------------------------------------- -->
-                  <!-- Automatic Unavailable Status -->
-                  <!-- -------------------------------------------------------- -->
-                  <div class="row">
-                    <div class="col-md-6">
-                      <h3 class="card_title__underlined" style="margin-top:30px">
-                        <span class="card_title__underline">
-                          {{ "ProjectEditPage.AutomaticUnavailableStatus" | translate }}
-                        </span>
-                      </h3>
-                    </div>
-
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container">
-
-                        <div class="onoffswitch">
-                          <input (change)="toggleUnavailable_status_on($event)"
-                            [checked]="automatic_unavailable_status_on === true" type="checkbox"
-                            name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
-                            id="unavailable_status_on" [disabled]="reassignment_on === false">
-                          <label class="onoffswitch-label" for="unavailable_status_on">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-
-                      </h3>
-                    </div>
-
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                    </div>
-                  </div>
-
-
-                  <div class="input-wrapper" style="max-width: 992px;"
-                    [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false || reassignment_on === false}">
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <div class="alert"
-                          style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                          <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
-                            class="material-icons">info
-                          </i>
-                          <span style="vertical-align: middle; display: inline-flex;">
-                            {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
-                        {{ "ProjectEditPage.ChatsReassigned" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-10">
-
-                        <div class="chat-limit">
-
-
-                          <!-- -------------------------------------------------------- -->
-                          <!-- Automatic Unavailable Status input -->
-                          <!-- -------------------------------------------------------- -->
-                          <input type="number" [(ngModel)]="automatic_idle_chats"
-                            (ngModelChange)="onChangeAutomaticUnavailable($event)" class="input"
-                            id="automatic_idle_chats" name="automatic_idle_chats" style="margin-bottom: 1px;"
-                            style="margin-bottom: 1px;max-width: 93px;"
-                            [disabled]="automatic_unavailable_status_on === false || reassignment_on === false">
-
-                          <div *ngIf="automatic_idle_chats_has_minimum_error === true" class="error-message"
-                            style="color: #f6303a;font-size: 14px">
-                            {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
-                          </div>
-                          <div *ngIf="automatic_idle_chats_has_maximum__error === true" class="error-message"
-                            style="color: #f6303a;font-size: 14px">
-                            {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
-                          </div>
-
-                          <span
-                            style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
-                            {{ "ProjectEditPage.NumberOfChatsReassignedBefore" | translate }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </span> <!-- /. ADVANCED ROUTE -->
+               
 
 
                 <!-- -------------------------------------------------------- -->
-                <!-- Notification -->
+                <!-- Notifications -->
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_NOTIFICATION_ROUTE">
 
@@ -1395,12 +1159,13 @@
                       <div class="col-xs-12 col-sm-10" style="margin-bottom: 12px;">
 
                         <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="DISPLAY_ADVANCED_TAB === false">
-                          <div class="from--a-plan-badge" >
+                          <div *ngIf="isVisiblePaymentTab" class="from--a-plan-badge" >
                             {{'AvailableFromThePlan' | translate: t_params }}
                           </div>
                           <div class="upgrade-btn-wpr">
                             <button class="btn btn-get-feature-no-boxshadow pull-left"
-                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;" (click)="goToPricing()"
+                              [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}" 
+                              (click)="goToPricing()"
                               matTooltipClass="custom-mat-tooltip-in-widget-setup"
                               matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
                               matTooltipPosition='below' 
@@ -1446,12 +1211,12 @@
 
                     <div class="col-xs-12">
                       <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="!isTier3Plans">
-                        <div class="c-plan-only-badge">
+                        <div *ngIf="isVisiblePaymentTab" class="c-plan-only-badge">
                           {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
                         </div>
                         <div class="upgrade-btn-wpr">
-                          <button class="btn btn-get-feature-no-boxshadow pull-left"
-                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
+                          <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
+                              [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                               (click)="goToPricing()" 
                               matTooltipClass="custom-mat-tooltip-in-widget-setup"
                               matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
@@ -1491,18 +1256,19 @@
                     <div class="col-xs-12">
                       <button (click)="goToManageEmailSettings()" class="btn btn-primary"
                         style="margin-top:5px; padding:6px 15px ">
-                        {{ "ProjectEditPage.ManageSMTPSettings" | translate }}
+                       {{ "ProjectEditPage.ManageSMTPSettings" | translate }}
                       </button>
                     </div>
 
                     <div class="col-xs-12">
                       <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="!isTier3Plans">
-                        <div class="c-plan-only-badge">
+                        <div *ngIf="isVisiblePaymentTab" class="c-plan-only-badge">
                           {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
                         </div>
+                        
                         <div class="upgrade-btn-wpr">
-                          <button class="btn btn-get-feature-no-boxshadow pull-left"
-                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
+                          <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
+                              [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
                               (click)="goToPricing()" 
                               matTooltipClass="custom-mat-tooltip-in-widget-setup"
                               matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
@@ -1530,9 +1296,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="security-section-title" style="width: calc((100% / 3) + 372px); margin-bottom: 16px;">
-                        You can restrict access to Tiledesk to only those users within a range of IP addresses.
-                        For example, to restrict access to users in your company, add the IP addresses of your company.
-                        You can also allow your customers to bypass the restriction
+                        {{'ProjectEditPage.Security.SecurityDescription' | translate:tparams }}
                       </div>
 
                     </div>
@@ -1542,7 +1306,7 @@
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          Enable IP restrictions
+                          {{'ProjectEditPage.Security.EnableIPRestriction' | translate }}
                         </span>
                       </h3>
                     </div>
@@ -1567,11 +1331,11 @@
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
                       <p style="margin-top: -10px;margin-bottom: 2px;">
-                        This will affects:
+                        {{'ProjectEditPage.Security.ThisWillAffects' | translate }}
                       </p>
                       <ul>
                         <li>
-                          Sign in for all Tiledesk products
+                          {{'ProjectEditPage.Security.SignInForAllTiledeskProducts' | translate:tparams }}
                         </li>
                         <!-- <li>
                             Access to functionality within Support, Guide, Talk and Explore
@@ -1590,19 +1354,19 @@
                           font-family: 'Poppins','Roboto', 'Arial', sans-serif;
                           margin-left: 15px;
                           margin-bottom: 0px; margin-bottom: 3px;">
-                          Allowed IP ranges
+                           {{'ProjectEditPage.Security.AllowedIpRanges' | translate }}
                         </h3>
 
                         <!-- style="width: calc((100% / 3) + 372px); -->
                         <div class="security-section-title" style="margin-bottom: 16px; margin-left: 15px;">
-                          Add the IP ranges that need Tildesk access. Separate multiple IP with comma.
-                          Use <span style="font-weight: 500;"> n.n.n.n </span> or<span style="font-weight: 500;">
-                            n.n.n/n </span> syntax where n is a number
+                          {{'ProjectEditPage.Security.AddIpRanges' | translate:tparams }}
+                          {{'ProjectEditPage.Security.Use' | translate }} <span style="font-weight: 500;"> n.n.n.n </span> {{ 'Or' | translate }}<span style="font-weight: 500;">
+                            n.n.n/n </span> {{'ProjectEditPage.Security.AllowedIpRanges'  | translate }}
 
                           <!--[disabled]="!ip_restrictions_on" -->
                           <input style="margin-top: 6px;" [(ngModel)]="allowedIPs"
                             (ngModelChange)="allowedIPsChanged($event)" type="text"
-                            placeholder="example: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx" [disabled]="!ip_restrictions_on">
+                            placeholder="{{'ProjectEditPage.Security.RangesPlaceholder' | translate }}" [disabled]="!ip_restrictions_on">
                         </div>
                       </div>
                     </div>
@@ -1621,8 +1385,7 @@
                               style="vertical-align: middle; display: inline-flex;  color:rgb(161, 99, 0); margin-right: 3px;font-size: 20px;">report_problem
                             </i>
                             <span style="vertical-align: middle; display: inline-flex;">
-                              Enabling IP-based access restrictions can break third-party integrations. Allow all
-                              external IPs that need to access your account via Tiledesk API.
+                              {{'ProjectEditPage.Security.EnableIpBasedAccessRestrictions' | translate:tparams }}
                             </span>
                           </span>
                         </div>
@@ -1645,7 +1408,7 @@
                               <tr>
 
                                 <!-- -------------------------------------- -->
-                                <!-- ------- User Avatar ------- -->
+                                <!--  User Avatar -->
                                 <!-- -------------------------------------- -->
                                 <th>
                                   <span class="column-th-span">
@@ -1656,22 +1419,17 @@
                                   </span> -->
                                 </th>
 
-
-
                                 <!-- -------------------------------------- -->
-                                <!-- ------- User Email ------- -->
+                                <!--  User Email -->
                                 <!-- -------------------------------------- -->
-
                                 <th>
                                   <span class="column-th-span">
                                     Email
                                   </span>
                                 </th>
 
-
-
                                 <!-- -------------------------------------- -->
-                                <!-- ------- Actions ------- -->
+                                <!--  Actions  -->
                                 <!-- -------------------------------------- -->
                                 <th>
                                   <span class="column-th-span">
@@ -1683,7 +1441,7 @@
                             </thead>
                             <tbody>
                               <!-- -------------------------------------- -->
-                              <!-- ------- IF THERE ISN'T CONTACTS ------- -->
+                              <!--  IF THERE ISN'T CONTACTS  -->
                               <!-- -------------------------------------- -->
                               <tr *ngIf="projectObject?.bannedVisitors && projectObject?.bannedVisitors?.length === 0">
                                 <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
@@ -1697,7 +1455,7 @@
                               <tr *ngFor="let visitor of projectObject?.bannedVisitors">
                                 <!-- <tr *ngFor="let visitor of projectObject?.bannedUsers"> -->
                                 <!-- -------------------------------------- -->
-                                <!-- ------- User NAME ------- -->
+                                <!--  User NAME  -->
                                 <!-- -------------------------------------- -->
                                 <!-- (click)='goToContactDetails(visitor?.id)' -->
                                 <td style="cursor:pointer" (click)='goToContactDetails(visitor?.requesterId)'>
@@ -1708,19 +1466,15 @@
                                   <span class="column-td" style="margin-left: 10px;">
                                     {{ visitor?.fullname }}
                                   </span>
-
-
                                   <!-- <span class="column-td" >
                                       {{ visitor?.id }}
                                     </span>  -->
-
                                 </td>
 
-
-
-                                <!-- ========== CONTACT EMAIL ========== -->
+                                <!-- -------------------------------------- -->
+                                <!--  CONTACT EMAIL  -->
+                                <!-- -------------------------------------- -->
                                 <td>
-
                                   <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
                                     {{ visitor?.leademail }}
                                   </p>
@@ -1761,9 +1515,6 @@
                                     </span>
                                   </button>
                                 </td>
-
-
-
                               </tr>
                             </tbody>
                           </table>
@@ -1773,8 +1524,411 @@
                     </div>
                   </div>
                 </span>
-
                 <!-- ./ Banned visitors -->
+
+                 
+                <!-- -------------------------------------------------------- -->
+                <!-- Smart assign -->
+                <!-- -------------------------------------------------------- -->
+                <!-- <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE"> -->
+                  <span *ngIf="PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE">
+                    <!-- -------------------------------------------------------- -->
+                    <!-- Automatic Assignment -->
+                    <!-- -------------------------------------------------------- -->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            {{ "ProjectEditPage.AutomaticAssignment" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-6">
+                        <h3 class="card-title onoffswitch_container_first_line">
+  
+                          <div class="onoffswitch">
+                            <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
+                              name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch"
+                              [disabled]="advancedSettingBtnDisabled === true">
+                            <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+  
+                    <div class="input-wrapper" style="max-width: 992px;">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <span style="display: flex;">
+                              <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;"
+                                class="material-icons">info
+                              </i>
+                              <span style="vertical-align: middle; display: inline-flex;">
+                                {{ "ProjectEditPage.IfYouActivateTheAutomaticAssignmentOption" | translate: tparams }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+  
+                    <!-- -------------------------------------------------------- -->
+                    <!-- Chat limit -->
+                    <!-- -------------------------------------------------------- -->
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h3 class="card_title__underlined" style="margin-top: 30px;">
+                          <span class="card_title__underline">
+                            {{ "ProjectEditPage.ChatLimit" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+                    <div class="input-wrapper" style="max-width: 992px;"
+                      [ngClass]="{'section-disabled' : chat_limit_on === false}">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div class="alert"
+                            style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
+                              class="material-icons">info
+                            </i>
+                            <span style="vertical-align: middle; display: inline-flex;">
+                              {{ "ProjectEditPage.LimitChatsNumber" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row">
+                        <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                          {{ 'ProjectEditPage.MaximumChats' | translate}}
+                        </label>
+                        <div class="col-xs-12 col-sm-10">
+  
+  
+                          <!--  -------------------------------------------------------- -->
+                          <!--  Maximum chats input -->
+                          <!--  -------------------------------------------------------- -->
+                          <div class="chat-limit">
+                            <input type="number" [(ngModel)]="max_agent_assigned_chat"
+                              (ngModelChange)="onChangeMaximum_chats($event)" class="input" id="chat_limit"
+                              name="chat_limit" min="1" max="10000000" style="margin-bottom: 1px;"
+                              [disabled]="chat_limit_on === false">
+                          </div>
+  
+  
+                          <div *ngIf="maximum_chats_has_minimum_error === true" class="error-message"
+                            style="color: #f6303a;font-size: 14px">
+                            {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
+                          </div>
+                          <div *ngIf="maximum_chats_has_maximum_error === true" class="error-message"
+                            style="color: #f6303a;font-size: 14px">
+                            {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
+                          </div>
+  
+                          <span
+                            style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                            {{ "ProjectEditPage.ThisChatLimitWillAppliedToAllAgents" | translate }}
+                          </span>
+                          <span
+                            style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px; max-width: 415px;margin-top: 5px;">
+                            {{ "ProjectEditPage.YouCanSpecifyAgentsIndividualChatLimit" | translate }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+  
+  
+                    <!-- -------------------------------------------------------- -->
+                    <!-- Reassigment -->
+                    <!-- -------------------------------------------------------- -->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h3 class="card_title__underlined" style="margin-top:30px">
+                          <span class="card_title__underline">
+                            {{ "ProjectEditPage.Reassignment" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-6">
+                        <h3 class="card-title onoffswitch_container">
+                          <div class="onoffswitch">
+                            <input (change)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
+                              name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on"
+                              [disabled]="advancedSettingBtnDisabled === true">
+                            <label class="onoffswitch-label" for="reassignment_on">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </h3>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+  
+  
+                    <div class="input-wrapper" style="max-width: 992px;"
+                      [ngClass]="{'section-disabled' : reassignment_on === false}">
+  
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div class="alert"
+                            style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
+                              class="material-icons">info
+                            </i>
+                            <span style="vertical-align: middle; display: inline-flex;">
+                              {{ "ProjectEditPage.ReassignChatIf" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row">
+                        <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
+                          {{ "ProjectEditPage.ReassignmentTimeout" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-10">
+  
+                          <div class="chat-limit">
+                            <!-- -------------------------------------------------------- -->
+                            <!-- Reassignment Timeout input -->
+                            <!-- -------------------------------------------------------- -->
+                            <input type="number" [(ngModel)]="reassignment_delay"
+                              (ngModelChange)="onChangeReassignment_timeout($event)" class="input"
+                              id="reassignment_timeout" name="reassignment_timeout" min="1" max="10000000"
+                              style="margin-bottom: 1px;" [disabled]="reassignment_on === false">
+  
+                            <div *ngIf="reassignment_timeout_has_minimum_error === true" class="error-message"
+                              style="color: #f6303a;font-size: 14px">
+                              {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
+                            </div>
+                            <div *ngIf="reassignment_timeout_has_maximum__error === true" class="error-message"
+                              style="color: #f6303a;font-size: 14px">
+                              {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
+                            </div>
+  
+                            <span
+                              style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                              {{ "ProjectEditPage.TimeWithNoResponse" | translate }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+  
+                    <!-- -------------------------------------------------------- -->
+                    <!-- Automatic Unavailable Status -->
+                    <!-- -------------------------------------------------------- -->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h3 class="card_title__underlined" style="margin-top:30px">
+                          <span class="card_title__underline">
+                            {{ "ProjectEditPage.AutomaticUnavailableStatus" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-6">
+                        <h3 class="card-title onoffswitch_container">
+  
+                          <div class="onoffswitch">
+                            <input (change)="toggleUnavailable_status_on($event)"
+                              [checked]="automatic_unavailable_status_on === true" type="checkbox"
+                              name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
+                              id="unavailable_status_on" [disabled]="reassignment_on === false">
+                            <label class="onoffswitch-label" for="unavailable_status_on">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+  
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+  
+  
+                    <div class="input-wrapper" style="max-width: 992px;"
+                      [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false || reassignment_on === false}">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div class="alert"
+                            style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
+                              class="material-icons">info
+                            </i>
+                            <span style="vertical-align: middle; display: inline-flex;">
+                              {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row">
+                        <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
+                          {{ "ProjectEditPage.ChatsReassigned" | translate }}
+                        </label>
+                        <div class="col-xs-12 col-sm-10">
+  
+                          <div class="chat-limit">
+  
+  
+                            <!-- -------------------------------------------------------- -->
+                            <!-- Automatic Unavailable Status input -->
+                            <!-- -------------------------------------------------------- -->
+                            <input type="number" [(ngModel)]="automatic_idle_chats"
+                              (ngModelChange)="onChangeAutomaticUnavailable($event)" class="input"
+                              id="automatic_idle_chats" name="automatic_idle_chats" style="margin-bottom: 1px;"
+                              style="margin-bottom: 1px;max-width: 93px;"
+                              [disabled]="automatic_unavailable_status_on === false || reassignment_on === false">
+  
+                            <div *ngIf="automatic_idle_chats_has_minimum_error === true" class="error-message"
+                              style="color: #f6303a;font-size: 14px">
+                              {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
+                            </div>
+                            <div *ngIf="automatic_idle_chats_has_maximum__error === true" class="error-message"
+                              style="color: #f6303a;font-size: 14px">
+                              {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
+                            </div>
+  
+                            <span
+                              style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                              {{ "ProjectEditPage.NumberOfChatsReassignedBefore" | translate }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </span> <!-- /. Smart Assignmen ROUTE -->
+
+                <!-- -------------------------------------------------------- -->
+                <!-- Advanced -->
+                <!-- -------------------------------------------------------- -->
+                <!-- <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE"> -->
+                  <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
+                   
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            <!-- Agents can only see their own conversations -->
+                            {{'ProjectEditPage.TeammatesCanOnlySeeTheirOwnConvs' | translate}}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-6">
+                        <h3 class="card-title onoffswitch_container_first_line">
+  
+                          <div class="onoffswitch">
+                            <!--  [disabled]="advancedSettingBtnDisabled === true"-->
+                            <input (change)="toggleAgentViewOnlyOwnConv($event)"  type="checkbox"
+                              name="agent_view_only_own_conv" class="onoffswitch-checkbox" id="agent_view_only_own_conv"
+                              [checked]="agents_can_see_only_own_convs">
+                            <label class="onoffswitch-label" for="agent_view_only_own_conv">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+  
+                    <div class="input-wrapper" style="max-width: 992px;">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <span style="display: flex;">
+                              <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;"
+                                class="material-icons">info
+                              </i>
+                              <span style="vertical-align: middle; display: inline-flex;">
+                                {{'ProjectEditPage.EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs' | translate}}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <!-- ----------------------------------- -->
+                    <!-- Hide / display Chatbot attributes -->
+                    <!-- ----------------------------------- -->
+                    <div class="row" style="margin-top: 40px;">
+                      <div class="col-md-6">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            
+                            {{'HideChatbotAttributesWidget' | translate}}
+                          </span>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-6">
+                        <h3 class="card-title onoffswitch_container_first_line">
+  
+                          <div class="onoffswitch">
+                            
+                            <input (change)="toggleVisibilityOfChatbotAttributes($event)"  type="checkbox"
+                              name="are_hide_chatbot_attributes_card_in_conv_dtls" class="onoffswitch-checkbox" id="are_hide_chatbot_attributes_card_in_conv_dtls"
+                              [checked]="areHideChatbotAttributesInConvDtls">
+                            <label class="onoffswitch-label" for="are_hide_chatbot_attributes_card_in_conv_dtls">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </h3>
+                      </div>
+  
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      </div>
+                    </div>
+  
+                    <div class="input-wrapper" style="max-width: 992px;">
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <div style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                            <span style="display: flex;">
+                              <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5; margin-right: 3px;"
+                                class="material-icons">info
+                              </i>
+                              <span style="vertical-align: middle; display: inline-flex;">
+                                {{'EnablingThisOptionHidesChatbotAttributes' | translate }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </span> <!-- /. Advanced ROUTE -->
 
               </div>
               <!-- ./ card-content -->
@@ -1792,9 +1946,11 @@
               </span>
 
               <!-- -------------------------------------------------------- -->
-              <!-- Save btn displayed only for the tab 'Advanced' -->
+              <!-- Save btn displayed only for the tab 'Smart assignment' -->
               <!-- -------------------------------------------------------- -->
-              <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
+              <!-- <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE"> -->
+              <span *ngIf="PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE">
+                
                 <div class="card-footer" style="border-color: #e8f0f5 !important;">
 
                   <button class="btn btn-primary btn_edit_advanced_settings" (click)="updateAdvancedSettings()"
@@ -2197,7 +2353,7 @@
             <div class="row">
               <div class="col-sm-8">
                 <label class="change-card-label" for="expirationDate">{{'ExpirationDate' | translate }}</label>
-                <input #ccExpdate id="cc-exp-date" placeholder="MM / YY" formControlName="expirationDate"
+                <input #ccExpdate id="cc-exp-date" placeholder="MM / YYYY" formControlName="expirationDate"
                   name="expirationDate" type="tel" autocomplete="off" ccExp minlength="7" maxlength="7">
               </div>
               <div class="col-sm-4">

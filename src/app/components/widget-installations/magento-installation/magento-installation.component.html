@@ -1,0 +1,76 @@
+<div class="master card-widget-installation card--no-border">
+    <div class="card-content">
+
+        <div class="install-widget-instructions">
+            <div class="install-widget-steps">
+                <span class="install-widget-step-number-wrapper">
+                    <span class="install-widget-step-number">
+                        1
+                    </span>
+                </span>
+                <span class="install-widget-step-text">
+                    {{'WidgetInstallations.GenericStep1' | translate }}
+                </span>
+                <br>
+
+                <appdashboard-code-installation></appdashboard-code-installation>
+
+                <span class="install-widget-step-number-wrapper">
+                    <span class="install-widget-step-number">
+                        2
+                    </span>
+                </span>
+                <span class="install-widget-step-text">
+                    {{'WidgetInstallations.MagentoStep2' | translate }}
+                </span>
+                <br>
+
+                <span class="install-widget-step-number-wrapper">
+                    <span class="install-widget-step-number">
+                        3
+                    </span>
+                </span>
+                <span class="install-widget-step-text">
+                    {{'WidgetInstallations.MagentoStep3' | translate }}
+                </span>
+                <br>
+
+                <span class="install-widget-step-number-wrapper">
+                    <span class="install-widget-step-number">
+                        4
+                    </span>
+                </span>
+                <span class="install-widget-step-text">
+                    {{'WidgetInstallations.MagentoStep4' | translate }}
+                </span>
+                <br>
+
+                <span class="install-widget-step-number-wrapper">
+                    <span class="install-widget-step-number">
+                        5
+                    </span>
+                </span>
+                <span class="install-widget-step-text">
+                    {{'WidgetInstallations.MagentoStep5' | translate }}
+                </span>
+            </div>
+
+            <div *ngIf="hideHelpLink" class="code-help">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                    <g fill="none" fill-rule="evenodd">
+                        <path d="M1 1h18v18H1z"></path>
+                        <path stroke="#3ea9f5" stroke-width="2"
+                            d="M10 1.5c4.692 0 8.5 3.808 8.5 8.5s-3.808 8.5-8.5 8.5A8.503 8.503 0 0 1 1.5 10c0-4.692 3.808-8.5 8.5-8.5z">
+                        </path>
+                        <path fill="#3ea9f5" fill-rule="nonzero"
+                            d="M10.75 13.75h-1.5v-4.5h1.5zM10.75 7.75h-1.5v-1.5h1.5z"></path>
+                    </g>
+                </svg>
+                <a href="{{URL_install_tiledesk_on_magento}}" target="_blank"> {{'SeeDetailsHere' | translate}}</a>
+            </div>
+
+
+
+        </div> <!-- /. install-with-code -->
+    </div> <!-- /. card content -->
+</div> <!-- /. card -->

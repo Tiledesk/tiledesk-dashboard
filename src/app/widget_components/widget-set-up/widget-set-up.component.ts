@@ -20,21 +20,23 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
+import { startWith, takeUntil } from 'rxjs/operators';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites, checkAcceptedFile, filterImageMimeTypesAndExtensions, isMaliciousURL } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 
-
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -387,8 +389,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public user: any;
   public hideHelpLink: boolean;
   public companyNametParams: any;
+  public widgetLogoURL: string;
+  public defaultFooter: string;
+  isAppSumo: boolean;
+  // public widgetLauncherButtonPlaceholder: string;
+
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
+  fileUploadAccept: string;
 
   constructor(
     private notify: NotifyService,
@@ -410,6 +418,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
+    public localDbService: LocalDbService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -417,13 +426,23 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     this.companyNametParams = { 'BRAND_NAME': this.company_name }
+    // this.widgetLogoURL = brand['widget_logo_URL']
+    // this.defaultFooter = brand['widget_default_footer'];
+
+    this.widgetLogoURL = brand['WIDGET']['LOGO_CHAT'];
+    // this.logger.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
+
+    this.defaultFooter = brand['WIDGET']['POWERED_BY'];
+    // this.logger.log('[[WIDGET-SET-UP] defaultFooter ', this.defaultFooter)
+
+    // this.logger.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
     this.getProjectPlan()
     this.getProjectUserRole();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false
@@ -441,15 +460,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     });
 
     this.translateTextBaseComp();
-    // this.translateOnlineMsgSuccessNoticationMsg();
-    // this.translateOfflineMsgSuccessNoticationMsg();
-    // this.translateOfficeClosedSuccessNoticationMsg();
-    // this.translateGetTranslationErrorMsg();
     // this.getSectionSelected();
     this.getLabels();
     this.getOSCODE();
     this.getTestSiteUrl();
-    this.getAndManageAccordionInstallWidget();
+    // this.getAndManageAccordionInstallWidget();
     this.getAndManageAccordion();
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
@@ -462,6 +477,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.geti118nTranslations();
     this.getBrowserVersion();
     this.getImageStorage();
+
+    this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
   }
 
   getImageStorage() {
@@ -599,6 +616,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
+          // this.getOSCODE(projectProfileData);
+          this.manageWidgetUnbrandingVisibility(projectProfileData)
+
+
+
           if (projectProfileData.extra3) {
             this.logger.log('[WIDGET-SET-UP] projectProfileData.extra3 ', projectProfileData.extra3)
             this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
@@ -617,11 +639,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             if (projectProfileData.trial_expired === false) {
               // Trial active
               if (this.profile_name === 'free') {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
-                this.prjct_profile_name  = PLAN_NAME.B + " plan (trial)"
+                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
                 this.logger.log('[WIDGET-SET-UP] n0 ')
                 this.featureIsAvailable = true;
               } else if (this.profile_name === 'Sandbox') {
+                this.isAppSumo = false
                 this.logger.log('[WIDGET-SET-UP] n1 ')
                 this.featureIsAvailable = true;
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan (trial)"
@@ -631,16 +655,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             } else {
               // Trial expired
               if (this.profile_name === 'free') {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = "Free plan";
                 this.prjct_profile_name = "Free plan";
                 this.logger.log('[WIDGET-SET-UP] n2 ')
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
               } else if (this.profile_name === 'Sandbox') {
-
+                this.isAppSumo = false
                 this.logger.log('[WIDGET-SET-UP] n3 ')
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 this.prjct_profile_name_for_segment = "Sandbox plan";
@@ -656,13 +682,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
                 // Growth sub active
                 if (!this.appSumoProfile) {
+                  this.isAppSumo = false
                   this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
                   this.prjct_profile_name = PLAN_NAME.A + " plan";
                   this.featureIsAvailable = false;
-                  this.t_params = { 'plan_name': PLAN_NAME.B }
+                  // this.t_params = { 'plan_name': PLAN_NAME.B }
+                  this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
 
                   // Growth AppSumo sub active
                 } else {
+                  this.isAppSumo = true
                   this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
                   this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
                   this.featureIsAvailable = false;
@@ -671,37 +700,50 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 // Scale sub active
                 if (!this.appSumoProfile) {
+                  this.isAppSumo = false
                   this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
                   this.prjct_profile_name = PLAN_NAME.B + " plan";
                   this.featureIsAvailable = true;
                   // Scale AppSumo sub active
                 } else {
+                  this.isAppSumo = true
                   this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   this.featureIsAvailable = true;
                 }
                 // Plus sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.featureIsAvailable = true;
 
                 // Basic sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.D + " plan";
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Premium sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan";
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 this.featureIsAvailable = true;
 
+                // Team sub active
+              } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+                this.isAppSumo = false
+                this.prjct_profile_name_for_segment = PLAN_NAME.EE + " plan";
+                this.prjct_profile_name = PLAN_NAME.EE + " plan";
+                this.featureIsAvailable = true;
+
                 // Custom sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                this.isAppSumo = false
                 this.prjct_profile_name_for_segment = PLAN_NAME.F + " plan";
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 this.featureIsAvailable = true;
@@ -710,38 +752,58 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             } else if (this.subscription_is_active === false) {
               // Growth sub expired
               if (projectProfileData.profile_name === PLAN_NAME.A) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.A + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Scale sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.B + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Plus sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.C + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.B }
+                // this.t_params = { 'plan_name': PLAN_NAME.B }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Basic sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.D + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Premium sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.E + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
+                this.featureIsAvailable = false;
+
+                // Team sub expired
+              } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+                this.isAppSumo = false
+                this.prjct_profile_name = PLAN_NAME.EE + " plan"
+                // this.t_params = { 'plan_name': PLAN_NAME.EE }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
                 // Custom sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                this.isAppSumo = false
                 this.prjct_profile_name = PLAN_NAME.F + " plan"
-                this.t_params = { 'plan_name': PLAN_NAME.E }
+                // this.t_params = { 'plan_name': PLAN_NAME.E }
+                this.t_params = { 'plan_name_1': PLAN_NAME.E, 'plan_name_2': PLAN_NAME.EE }
                 this.featureIsAvailable = false;
 
               }
@@ -757,7 +819,157 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       });
   }
 
- 
+  getWunValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key type of', typeof this.public_Key);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  this.public_Key.includes("WUN") ', this.public_Key.includes("WUN"));
+    // let substring = this.public_Key.substring(this.public_Key.indexOf('WUN'));
+    let parts = this.public_Key.split('-');
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
+
+    let wun = parts.find((part) => part.startsWith('WUN'));
+    this.logger.log('[WIDGET-SET-UP] getAppConfig  wun ', wun);
+    let wunParts = wun.split(':');
+    this.logger.log('[WIDGET-SET-UP] getAppConfig  wunParts ', wunParts);
+    let wunValue = wunParts[1]
+    this.logger.log('[WIDGET-SET-UP] getAppConfig  wunValue ', wunValue);
+    if (wunValue === 'T') {
+      return true
+    } else if (wunValue === 'F') {
+      return false
+    }
+
+  }
+
+  manageWidgetUnbrandingVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      this.logger.log('[WIDGET-SET-UP] USECASE EXIST customization > widgetUnbranding (1)', projectProfileData['customization']['widgetUnbranding'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] !== undefined) {
+      this.logger.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & widgetUnbranding', projectProfileData['customization']['widgetUnbranding'])
+
+      if (projectProfileData['customization']['widgetUnbranding'] === true) {
+        this.isVisibleWidgetUnbranding = true;
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      } else if (projectProfileData['customization']['widgetUnbranding'] === false) {
+
+        this.isVisibleWidgetUnbranding = false;
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] === undefined) {
+      this.logger.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT widgetUnbranding IS', projectProfileData['customization']['widgetUnbranding'])
+
+      if (this.public_Key.includes("WUN")) {
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
+
+        this.isVisibleWidgetUnbranding = this.getWunValue()
+        this.logger.log('[WIDGET-SET-UP]  this.isVisibleWidgetUnbranding from FT ', this.isVisibleWidgetUnbranding)
+        // if (key.includes("WUN")) {
+        //   // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+        //   let wun = key.split(":");
+        //   //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+        //   if (wun[1] === "F") {
+        //     this.isVisibleWidgetUnbranding = false;
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   } else {
+        //     this.isVisibleWidgetUnbranding = true;
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   }
+        // }
+      } else if (!this.public_Key.includes("WUN")) {
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) -  EXIST WUN ', this.public_Key.includes("WUN"));
+        this.isVisibleWidgetUnbranding = false;
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      }
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'], 'get value foem FT')
+      if (this.public_Key.includes("WUN")) {
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
+
+        this.isVisibleWidgetUnbranding = this.getWunValue()
+        this.logger.log('[WIDGET-SET-UP]  this.isVisibleWidgetUnbranding from FT ', this.isVisibleWidgetUnbranding)
+        // if (key.includes("WUN")) {
+        //   // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+        //   let wun = key.split(":");
+        //   //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+        //   if (wun[1] === "F") {
+        //     this.isVisibleWidgetUnbranding = false;
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   } else {
+        //     this.isVisibleWidgetUnbranding = true;
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   }
+        // }
+      } else if (!this.public_Key.includes("WUN")) {
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) -  EXIST WUN ', this.public_Key.includes("WUN"));
+        this.isVisibleWidgetUnbranding = false;
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      }
+
+    }
+  }
+
+  getOSCODE() {
+    this.logger.log('[WIDGET-SET-UP] getOSCODE')
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("MTL")) {
+        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt', key);
+        let mlt = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt key&value', mlt);
+        if (mlt[1] === "F") {
+          this.isVisible = false;
+        } else {
+          this.isVisible = true;
+        }
+      }
+
+      if (key.includes("PAY")) {
+        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
+        }
+      }
+
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.payIsVisible = false;
+    }
+
+    // if (!this.public_Key.includes("WUN")) {
+    //   // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+    //   this.isVisibleWidgetUnbranding = false;
+    // }
+
+    if (!this.public_Key.includes("MTL")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisible = false;
+    }
+  }
+
+
+
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
 
@@ -788,20 +1000,27 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         } else if (this.prjct_profile_type === 'payment') {
           if (this.subscription_is_active) {
             if (this.profile_name === PLAN_NAME.A) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.D) {
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             }
           } else if (!this.subscription_is_active) {
             if (this.profile_name === PLAN_NAME.A) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.B) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.C) {
-              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.D) {
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.E) {
+              this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
+            } else if (this.profile_name === PLAN_NAME.EE) {
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
             } else if (this.profile_name === PLAN_NAME.F) {
               this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromEPlan)
@@ -817,27 +1036,37 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
       }
 
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
   presentModalFeautureAvailableFromTier2(planName) {
-    const el = document.createElement('div')
-    el.innerHTML = planName
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = planName
+    Swal.fire({
+      title: this.upgradePlan,
+      text: planName,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan ,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+    
+      // content: el,
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         // this.logger.log('featureAvailableFromPlanC value', value)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
@@ -872,7 +1101,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     });
   }
 
-  
+
 
 
   // presentModalContactUsToUpgradePlan() {
@@ -969,7 +1198,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.featureAvailableFromBPlan = translation;
       });
 
-      this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E,  plan_name_2: PLAN_NAME.EE})
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -1256,37 +1485,62 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   getAndManageAccordion() {
+    this.logger.log('[WIDGET-SET-UP] ACCORDION id_project', this.id_project)
     var acc = document.getElementsByClassName("widget-section-accordion");
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
-    var i: number;
+    let i: number;
     // #widget-all-settings-form > button:nth-child(7)
     for (i = 0; i < acc.length; i++) {
-      this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
+      // this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
-      var firstAccordion = acc[0];
-      // this.logger.log('firstAccordion' , firstAccordion)
-      var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-      // this.logger.log('firstPanel' , firstPanel)
-      // this.logger.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
+      let firstAccordion = acc[0];
 
-      setTimeout(() => {
-        firstAccordion.classList.add("active");
-        firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
-      }, 2000);
+      let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
+      this.logger.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
 
+      const hasClosedFirstAccordion = this.localDbService.getFromStorage(`hasclosedfirstaccordion-${this.id_project}`)
+      this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+      if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
+        // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
+        setTimeout(() => {
+          firstAccordion.classList.add("active");
+          firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
 
+          var arrow_icon_div = firstAccordion.children[1];
+          this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+    
+          var arrow_icon = arrow_icon_div.children[0]
+          // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
+          arrow_icon.classList.add("arrow-up");
+        }, 2000);
+      }
 
-      var arrow_icon_div = firstAccordion.children[1];
-
-
+      // var arrow_icon_div = firstAccordion.children[1];
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
-      var arrow_icon = arrow_icon_div.children[0]
-      // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
-      arrow_icon.classList.add("arrow-up");
+      // var arrow_icon = arrow_icon_div.children[0]
+      // // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
+      // arrow_icon.classList.add("arrow-up");
+      
       const self = this
       acc[i].addEventListener("click", function () {
+        let firstAccordion = acc[0];
+        // this.logger.log('firstAccordion', firstAccordion)
+        let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
+        // this.logger.log('firstPanel', firstPanel)
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
+
+        setTimeout(() => {
+          // this.logger.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+
+          if (firstAccordion.classList.contains('active')) {
+            self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'false')
+          } else if (!firstAccordion.classList.contains('active')) {
+            self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'true')
+          }
+        }, 2000);
         self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
         // this.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
@@ -1315,68 +1569,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] getAppConfig [WIDGET-SET-UP] TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 
-  getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
 
-    let keys = this.public_Key.split("-");
-    this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('NavbarComponent public_Key key', key)
-      if (key.includes("MTL")) {
-        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt', key);
-        let mlt = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt key&value', mlt);
-        if (mlt[1] === "F") {
-          this.isVisible = false;
-        } else {
-          this.isVisible = true;
-        }
-      }
-
-      if (key.includes("PAY")) {
-        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.payIsVisible = false;
-          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
-        } else {
-          this.payIsVisible = true;
-          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
-        }
-      }
-
-      // Widget unbranding
-      if (key.includes("WUN")) {
-        // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
-        let wun = key.split(":");
-        //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
-        if (wun[1] === "F") {
-          this.isVisibleWidgetUnbranding = false;
-          // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
-        } else {
-          this.isVisibleWidgetUnbranding = true;
-          // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
-        }
-      }
-    });
-
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.payIsVisible = false;
-    }
-
-    if (!this.public_Key.includes("WUN")) {
-      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.isVisibleWidgetUnbranding = false;
-    }
-
-    if (!this.public_Key.includes("MTL")) {
-      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.isVisible = false;
-    }
-  }
 
   getLabels() {
     this.widgetService.getLabels().subscribe((labels: any) => {
@@ -1603,16 +1796,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         // @ Welcome title and company intro
         // ---------------------------------------------------------------
-        this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
-        this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
+        // this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
+        // this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
 
         this.welcomeTitle = this.selected_translation["WELCOME_TITLE"];
-        if (this.selected_translation.hasOwnProperty("WELLCOME_TITLE") ) {
+        if (this.selected_translation.hasOwnProperty("WELLCOME_TITLE")) {
           this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
         }
 
         this.welcomeMsg = this.selected_translation["WELCOME_MSG"];
-        if (this.selected_translation.hasOwnProperty("WELLCOME_MSG") ) {
+        if (this.selected_translation.hasOwnProperty("WELLCOME_MSG")) {
           this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
         }
 
@@ -1678,7 +1871,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.LABEL_PRECHAT_USER_FULLNAME = this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"]
         // this.logger.log('getCurrentTranslation this.LABEL_PRECHAT_USER_FULLNAME ', this.LABEL_PRECHAT_USER_FULLNAME)
 
-       
+
         this.LABEL_PRECHAT_USER_EMAIL = this.selected_translation["LABEL_PRECHAT_USER_EMAIL"]
         this.LABEL_PRECHAT_USER_PHONE = this.selected_translation["LABEL_PRECHAT_USER_PHONE"]
         this.LABEL_PRECHAT_FIRST_MESSAGE = this.selected_translation["LABEL_PRECHAT_FIRST_MESSAGE"]
@@ -2009,7 +2202,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }, () => {
 
         if (this.HAS_CHANGED_GREETINGS === true) {
-          this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
         }
         this.logger.log('[WIDGET-SET-UP] - saveTranslation * COMPLETE *')
       });
@@ -2157,7 +2350,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
           // this.calloutTimerSecondSelected = -1;
 
-          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>';
+          // this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>';
+          this.footerBrand = this.defaultFooter
         }
 
         // -------------------------------------------
@@ -2191,8 +2385,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
-        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -2204,8 +2398,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // case logoChat = 'nologo' > no logo is displayed
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
-          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -2219,10 +2413,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
           // ------------------------------------------------------------------------
         } else {
-          // this.logoUrl = 'tiledesklogo'
-          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+
+          this.logoUrl = this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
-          this.LOGO_IS_ON = true
+          this.LOGO_IS_ON = true;
 
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
         }
@@ -2420,8 +2614,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ LogoChat
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        // this.logoUrl = 'tiledesklogo'
-        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+        this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
@@ -2468,8 +2661,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
 
-        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
-
+        // this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
+        this.footerBrand = this.defaultFooter
 
         // -----------------------------------------------------------------------
         // @ Single conversation
@@ -2989,6 +3182,19 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     } else {
 
+      
+
+      let checkMaliciousURL = isMaliciousURL(event)
+      if(checkMaliciousURL){
+        let logoUrlInput = (document.getElementById('change-logo') as HTMLInputElement)
+        logoUrlInput.value  = this.widgetLogoURL
+        this.IMAGE_EXIST = true;
+
+        this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+        this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, isMaliciousURL)
+        return;
+      }
+
       if (this.LOGO_IS_ON === true) {
 
         this.verifyImageURL(event, (imageExists) => {
@@ -3019,6 +3225,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   launcherLogoChange(event) {
     // this.logger.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+    let btnSaveFooterBrandAndLauncherBtn = <HTMLButtonElement>document.getElementById('btn-save-footer-brand--launcher-btn');
+    btnSaveFooterBrandAndLauncherBtn.disabled = false
 
     if (event.length === 0) {
 
@@ -3026,8 +3234,36 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.hasOwnLauncherBtn = false;
       this.hasOwnLauncherLogo = false;
 
+      btnSaveFooterBrandAndLauncherBtn.disabled = false;
 
     } else {
+
+      const checkMaliciousURL = isMaliciousURL(event)
+      if(checkMaliciousURL){
+        this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+        this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, checkMaliciousURL)
+        this.logoUrl = this.widgetLogoURL
+
+        btnSaveFooterBrandAndLauncherBtn.disabled = true
+        this.customLauncherURL = null
+        this.hasOwnLauncherBtn = false;
+        this.hasOwnLauncherLogo = false;
+
+        return;
+      }
+
+      // this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
+      // const canUploadFile = checkAcceptedFile('image/' + event.split('.').pop(), this.fileUploadAccept)
+      // if(!canUploadFile){
+      //   this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+      //   this.logger.error('[IMAGE-UPLOAD] dropEvent: can not upload current file type--> NOT ALLOWED', event.split('.').pop(), this.fileUploadAccept)
+        
+      //   this.customLauncherURL = null
+      //   this.hasOwnLauncherBtn = false;
+      //   this.hasOwnLauncherLogo = false;
+      //   return;
+      // }
+      
 
       this.verifyImageURL(event, (imageExists) => {
         // return imageExists
@@ -3082,8 +3318,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     } else if ($event.target.checked === true) {
 
-      // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+      this.logoUrl = this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
       this.LOGO_IS_ON = true;
       this.logger.log('[WIDGET-SET-UP] LOGO_IS_ON ', this.LOGO_IS_ON)
       this.hasOwnLogo = false;
@@ -3138,8 +3373,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
-      // if (this.logoUrl !== 'tiledesklogo') {
-      if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+      // if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') { 
+      if (this.logoUrl !== this.widgetLogoURL) {
         this.hasOwnLogo = true;
         this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
       } else {
@@ -3160,9 +3395,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // if is not defined logoUrl remove the property logoChat
       // *** REMOVE PROPERTY
       delete this.widgetObj['logoChat'];
-
-      // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+      this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
       this.hasOwnLogo = false;
       this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
     }
@@ -3675,7 +3908,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
   hasClickedUpdatePrechatformCustomFields() {
-    this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+    this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
   }
 
   savePrechatFormCustomFields() {
@@ -3703,7 +3936,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
         this.widgetService.updateWidgetProject(this.widgetObj)
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.invalidJSON_ErrorMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('InvalidJSON'), 4, 'report_problem');
       }
     } else {
       this.displayModalNoFieldInCustomPrechatForm();
@@ -3857,7 +4090,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToWidgetMultilanguage() {
-    this.router.navigate(['project/' + this.id_project + '/widget/translations']);
+    this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
   }
 
   goToInstallWithTagManagerDocs() {
@@ -3880,7 +4113,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
     // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
     // '&isOpen=true'
-    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&role=' + this.USER_ROLE
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + encodeURIComponent(this.projectName) + '&role=' + this.USER_ROLE
 
     this.logger.log('[WIDGET-SET-UP] - TEST WIDGET URL ', url);
     window.open(url, '_blank');

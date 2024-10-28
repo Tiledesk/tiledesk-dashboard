@@ -104,7 +104,7 @@
 
 
                   <input #fileInputBotProfileImage class="inputfile" name="uploadbotimage" id="uploadbotimage"
-                    type="file" (change)="upload($event)" accept=".jpg, .JPEG, .png" />
+                    type="file" (change)="upload($event)" [accept]="fileUploadAccept" />
                   <label class="btn btn-white upload-image-btn" for="uploadbotimage"
                     style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
 
@@ -138,6 +138,7 @@
             <!-- ------------------------------------------------------------------------------------------- -->
             <!-- Bot type (for external & native) -->
             <!-- ------------------------------------------------------------------------------------------- -->
+            botType  {{botType }}
             <section *ngIf="botType !== 'dialogflow'">
 
               <!-- ------------------------------------------------------------------------------------------- -->

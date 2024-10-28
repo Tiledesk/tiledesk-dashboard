@@ -91,3 +91,22 @@
 .kb-reedemed-number:hover {
     text-decoration: underline;
 }
+
+#hc-chatbot-count-btn {
+    margin-top: 0px;
+    max-height: 45px;
+    min-width: 270px;
+    font-size: 16px;
+  }
+  
+  #hc-chatbot-count-btn>.btn-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #hc-chatbot-count-btn>.btn-content>.btn--bot-count {
+    min-width: 18px;
+    text-align: center;
+  }

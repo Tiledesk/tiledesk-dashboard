@@ -36,6 +36,14 @@ import { KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { INFO_MENU_ITEMS } from 'app/support/support-utils';
+
+import { ShepherdService } from 'angular-shepherd';
+import { getSteps as defaultSteps, defaultStepOptions } from './sidebar.tour.config';
+
+import Step from 'shepherd.js/src/types/step';
+import { environment } from 'environments/environment';
 
 declare const $: any;
 
@@ -71,9 +79,12 @@ declare interface RouteInfo {
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
-
-  // tparams = brand;
+  INFO_MENU_ITEMS = INFO_MENU_ITEMS;
+  public version: string = environment.VERSION;
+  test: Date = new Date();
  
+  // tparams = brand;
+
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
   tparams: any;
   sidebarLogoWhite_Url: string;
@@ -185,15 +196,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
+  CONV_DEMO_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
+  CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
-    // Chatbot sidebar
+  BOTS_DEMO_ROUTE_IS_ACTIVE: boolean;
+  // Chatbot sidebar
   MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
@@ -203,6 +217,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
   OLD_KB_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
+  CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
+  SUPPORT_ROUTE_IS_ACTIVE: boolean;
+  NORT_CONV_ROUTE_IS_ACTIVE: boolean;
 
 
   prjct_profile_name: string;
@@ -236,7 +253,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   plan_type: string;
   prjct_name: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
-  current_selected_prjct: any;
+
   new_messages_count: number;
 
   NOTIFICATION_SOUND: string;
@@ -249,6 +266,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   companyName: string;
   dialogRef: MatDialogRef<any>;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  areVisibleChatbot: boolean;
+  currentProjectUser: any;
+  isVisibleSupportMenu: boolean
 
   constructor(
     private router: Router,
@@ -257,7 +277,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private projectService: ProjectService,
     private auth: AuthService,
     private usersService: UsersService,
-    private usersLocalDbService: LocalDbService,
     private notify: NotifyService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
@@ -269,7 +288,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private sanitizer: DomSanitizer,
     private faqKbService: FaqKbService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private prjctPlanService: ProjectPlanService,
+    private shepherdService: ShepherdService,
+    public localDbService: LocalDbService,
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -279,7 +301,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (brand) {
       this.companyLogoNoText = brand['COMPANY_LOGO_NO_TEXT'];
       this.companySiteUrl = brand["COMPANY_SITE_URL"]
-      this.companyName = brand["COMPANY_NAME"] 
+      this.companyName = brand["COMPANY_NAME"]
+      this.isVisibleSupportMenu = brand["SUPPORT_MENU"]
+
     }
   }
 
@@ -309,13 +333,90 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.listenSoundPreference();
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
-    
+    // this.getProjectPlan()
+    this.getBaseUrlAndThenProjectPlan()
+  }
+
+  ngAfterViewInit() { }
+
+
+  getBaseUrlAndThenProjectPlan() {
+    const href = window.location.href;
+
+    // For test in local host
+    // const href= "https://panel.tiledesk.com/v3/dashboard/#/project/63a075485f117f0013541e32/bots/templates/community"
+
+    this.logger.log('[SIDEBAR] href ', href)
+
+    const hrefArray = href.split('/#/');
+    const dshbrdBaseUrl = hrefArray[0]
+
+    this.logger.log('[SIDEBAR] dshbrdBaseUrl ', dshbrdBaseUrl)
+    this.logger.log('[SIDEBAR]  dshbrdBaseUrl includes tiledesk.com', dshbrdBaseUrl.includes('tiledesk.com'));
+
+    if (dshbrdBaseUrl.includes('tiledesk.com')) {
+      this.areVisibleChatbot = true;
+    }
+
+    if (!dshbrdBaseUrl.includes('tiledesk.com')) {
+      this.getProjectPlan()
+    }
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[SIDEBAR] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
+          this.manageChatbotVisibility(projectProfileData)
+        }
+      }, error => {
+
+        this.logger.error('[SIDEBAR] - getProjectPlan - ERROR', error);
+      }, () => {
+        this.logger.log('[SIDEBAR] - getProjectPlan * COMPLETE *')
+      });
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+    if (projectProfileData['customization']) {
+      this.logger.log('[SIDEBAR] USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[SIDEBAR] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      //this.logger.log('[SIDEBAR] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'], ' areVisibleChatbot ', this.areVisibleChatbot)
+
+    } else if (projectProfileData['customization'] === undefined) {
+      //this.logger.log('[SIDEBAR] USECASE C customization is  ', projectProfileData['customization'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE C customization is  ', projectProfileData['customization'], ' areVisibleChatbot ', this.areVisibleChatbot)
+
+    }
   }
 
 
-  presentDialogResetBusy(){
+
+
+  presentDialogResetBusy() {
     this.logger.log('[SIDEBAR] presentDialogResetBusy ')
-    if(this.dialogRef) {
+    if (this.dialogRef) {
       this.dialogRef.close();
       return
     }
@@ -324,7 +425,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       data: {
-       
+
       },
     });
 
@@ -618,6 +719,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.isVisibleINT = true;
         }
       }
+
+
+
     });
 
     if (!this.public_Key.includes("INT")) {
@@ -645,16 +749,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (!this.public_Key.includes("CNT")) {
       this.isVisibleCNT = false;
     }
-
-
-
   }
 
 
   getCurrentRoute() {
     this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationEnd) {
-        this.logger.log('[SIDEBAR] NavigationEnd event.url' , event.url.substring(event.url.lastIndexOf('/') + 1)) 
+        this.logger.log('[SIDEBAR] NavigationEnd event.url', event.url.substring(event.url.lastIndexOf('/') + 1))
         if (event.url.indexOf('/request-for-panel') !== -1) {
           this.IS_REQUEST_FOR_PANEL_ROUTE = true;
           // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
@@ -842,7 +943,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
         }
-       
+
         // Chatbot sidebar
         if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
@@ -852,7 +953,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1 ) {
+        if (event.url.indexOf('/bots-demo') !== -1) {
+          this.BOTS_DEMO_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.BOTS_DEMO_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
           this.MY_BOTS_IS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
         } else {
@@ -860,7 +969,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1 ) {
+        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
           this.MY_BOTS_CS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
         } else {
@@ -868,7 +977,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/all') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/all') !== -1) {
           this.TMPLT_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
         } else {
@@ -876,7 +985,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/community') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/community') !== -1) {
           this.TMPLT_CMNT_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
         } else {
@@ -884,7 +993,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/increase-sales') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/increase-sales') !== -1) {
           this.TMPLT_IS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
         } else {
@@ -892,7 +1001,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1) {
           this.TMPLT_CS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
         } else {
@@ -997,6 +1106,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/wsrequests-demo') !== -1) {
+          this.CONV_DEMO_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONV_DEMO_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+
+
         if (event.url.indexOf('/contact/edit/') !== -1) {
           this.CONTACT_EDIT_ROUTE_IS_ACTIVE = true;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
@@ -1012,6 +1131,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/contacts-demo') !== -1) {
+          this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+
 
         if (event.url.indexOf('/integrations') !== -1) {
           this.INTEGRATIONS_ROUTE_IS_ACTIVE = true;
@@ -1045,29 +1174,74 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
+
+
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
-        if(event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre' ) {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
           this.OLD_KB_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          //  this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         } else {
           this.OLD_KB_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          //  this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         }
 
 
         // if (event.url.match('/knowledge-bases')) {
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
+        // if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
+        if (event.url.indexOf('/knowledge-bases') !== -1) {
           this.KB_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          //  this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         } else {
           this.KB_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/bots/create/tilebot/blank') !== -1) {
+          this.CREATE_BOT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+        } else {
+          this.CREATE_BOT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - CREATE_BOT_ROUTE_IS_ACTIVE ', this.CREATE_BOT_ROUTE_IS_ACTIVE);
+        }
 
-        
+        if (event.url.indexOf('/all-conversations') !== -1) {
+          this.NORT_CONV_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - NORT_CONV_ROUTE_IS_ACTIVE ', this.NORT_CONV_ROUTE_IS_ACTIVE);
+        } else {
+          this.NORT_CONV_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - NORT_CONV_ROUTE_IS_ACTIVE ', this.NORT_CONV_ROUTE_IS_ACTIVE);
+        }
+
+
+        if (event.url.indexOf('/support') !== -1) {
+          this.SUPPORT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE; ', this.SUPPORT_ROUTE_IS_ACTIVE);
+        } else {
+          this.SUPPORT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/home') !== -1) { 
+          this.presentHelpCenterPopup() 
+        }
       }
     });
+  }
+
+  presentHelpCenterPopup() {
+    const sidebarTourShowed = this.localDbService.getFromStorage(`sidebar-tour-showed-${this.currentUserId}`)
+     
+    if (!sidebarTourShowed) {
+      setTimeout(() => {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+        this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+        this.shepherdService.start();
+        this.localDbService.setInStorage(`sidebar-tour-showed-${this.currentUserId}`, 'true')
+      }, 1500);
+    }
   }
 
 
@@ -1409,31 +1583,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
   getCurrentProjectProjectUsersProjectBots() {
-    this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
+    // this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      // this.logger.log('[SIDEBAR] project from AUTH service subscription  ', this.project)
-      if (this.project) {
 
+
+      if (project) {
+        this.project = project
 
         this.projectId = this.project._id
-        this.getProjectUserRole(this.projectId);
-        this.findCurrentProjectAmongAll(this.projectId)
+        this.logger.log('[SIDEBAR] project $ubscription  ', this.project)
 
-        this.prjct_profile_name = this.project.profile_name;
-        this.prjct_trial_expired = this.project.trial_expired;
-        this.prjc_trial_days_left = this.project.trial_days_left;
-        // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-        this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
-
-        // this.prjc_trial_days_left_percentage IT IS 
-        // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
-        const perc = 100 + this.prjc_trial_days_left_percentage
-        // this.logger.log('[SIDEBAR] project perc ', perc)
+        this.projectService.getProjects().subscribe((projects: any) => {
+          this.logger.log('[SIDEBAR] getProjects projects ', projects)
+          if (projects) {
+            this.currentProjectUser = projects.find(prj => prj.id_project.id === this.projectId);
+            this.logger.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+          }
+        });
 
 
-        this.prjc_trial_days_left_percentage = this.round5(perc)
-        // this.logger.log('[SIDEBAR] project trial days left % rounded', this.prjc_trial_days_left_percentage);
+        this.getProjectUserRole();
 
         this.getProjectUser();
         // this.getFaqKbByProjectId()
@@ -1446,20 +1615,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
-      if( kbSettings && kbSettings.kbs) {
+      if (kbSettings && kbSettings.kbs) {
         if (kbSettings.kbs.length === 0) {
           this.kbService.areNewwKb(true)
-        } else if  (kbSettings.kbs.length > 0) {
+        } else if (kbSettings.kbs.length > 0) {
           this.kbService.areNewwKb(false)
         }
 
+      } else {
+        this.kbService.areNewwKb(true)
       }
-     
+
     }, (error) => {
       this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
     }, () => {
       this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
-    
+
     })
   }
 
@@ -1477,105 +1648,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getProjectUserRole(projectId) {
-    // this.logger.log('[SIDEBAR] - PROJECT USER ROLE projectId ', projectId);
-    const storedProjectJson = localStorage.getItem(projectId);
-    if (storedProjectJson) {
-      const projectObject = JSON.parse(storedProjectJson);
-      this.USER_ROLE = projectObject['role'];
-      // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from storage ', this.USER_ROLE);
-    } else {
-
-      this.usersService.project_user_role_bs.subscribe((user_role) => {
-        this.USER_ROLE = user_role;
-        this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-        if (this.USER_ROLE) {
-          // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
-          if (this.USER_ROLE === 'agent') {
-            this.SHOW_SETTINGS_SUBMENU = false;
-          }
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      this.USER_ROLE = user_role;
+      this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+      if (this.USER_ROLE) {
+        // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+        if (this.USER_ROLE === 'agent') {
+          this.SHOW_SETTINGS_SUBMENU = false;
         }
-
-      });
-    }
-  }
-
-
-
-  findCurrentProjectAmongAll(projectId: string) {
-    this.projectService.getProjects().subscribe((projects: any) => {
-      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
-
-      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[SIDEBAR] - GET PROJECTS - _current_selected_prjct ', this.current_selected_prjct);
-
-
-      if (this.current_selected_prjct) {
-        this.logger.log('[SIDEBAR] PROJECT PROFILE TYPE', this.current_selected_prjct.id_project.profile.type);
-        this.logger.log('[SIDEBAR] PROJECT PROFILE NAME', this.current_selected_prjct.id_project.profile.name);
-        this.logger.log('[SIDEBAR] PROJECT TRIAL EXPIRED', this.current_selected_prjct.id_project.trialExpired);
-        this.logger.log('[SIDEBAR] PROJECT SUBSCRIPTION IS ACTIVE', this.current_selected_prjct.id_project.isActiveSubscription);
-        this.plan_subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
-        this.plan_name = this.current_selected_prjct.id_project.profile.name;
-        this.plan_type = this.current_selected_prjct.id_project.profile.type;
-        this.prjct_name = this.current_selected_prjct.id_project.name;
-        // if (this.current_selected_prjct.id_project.profile.type === 'free') {
-        //     if (this.current_selected_prjct.id_project.trialExpired === false) {
-        //         if (this.isVisiblePAY) {
-        //             this.getProPlanTrialTranslation();
-        //         } else {
-        //             this.getUnavailablePlanProfile()
-        //         }
-        //     } else {
-        //         if (this.isVisiblePAY) {
-        //             this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-        //         } else {
-        //             this.getUnavailablePlanProfile()
-        //         }
-        //     }
-        // } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
-        //     if (this.isVisiblePAY) {
-        //         this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-        //     } else {
-        //         this.getUnavailablePlanProfile()
-        //     }
-        // }
       }
-      this.logger.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
-    }, error => {
-      this.logger.error('[SIDEBAR] - GET PROJECTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[SIDEBAR] - GET PROJECTS * COMPLETE * ');
+
     });
+    // }
   }
-
-  // getProPlanTrialTranslation() {
-  //     this.translate.get('ProPlanTrial')
-  //         .subscribe((translation: any) => {
-  //             this._prjct_profile_name = translation;
-
-  //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //         });
-  // }
-
-  // getPaidPlanTranslation(project_profile_name) {
-  //     this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-  //         .subscribe((text: string) => {
-  //             this._prjct_profile_name = text;
-  //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //         });
-  // }
-
-  // getUnavailablePlanProfile() {
-  //     this.translate.get('ProfileNotAvailable')
-  //         .subscribe((text: string) => {
-  //             this._prjct_profile_name = text;
-  //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-  //         });
-  // }
-
-
 
   round5(x) {
     // const percentageRounded = Math.ceil(x / 5) * 5;
@@ -1584,9 +1670,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
   }
 
-  ngAfterViewInit() {
 
-  }
 
 
   isMobileMenu() {
@@ -1710,12 +1794,33 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/project/' + this.projectId + '/home']);
   }
 
-  goToAllMyChatbot() {
-    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+  onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string }) {
+    this.logger.log('[SIDEBAR] onMenuOptionFN', item)
+    switch (item.key) {
+      case 'FEEDBACK':
+      case 'CHANGELOG':
+        window.open(item.src, '_blank')
+        break;
+      case 'SUPPORT':
+        this.goToSuppotPage()
+      // this.router.navigate(['./support'], {relativeTo: this.route})
+      // this.onClickItemList.emit(SIDEBAR_PAGES.SUPPORT)
+      // window.open(item.src, '_self')
+    }
   }
 
+  goToSuppotPage() {
+    this.router.navigate(['/project/' + this.projectId + '/support']);
+  }
 
-
+  goToAllMyChatbot() {
+    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    // if (this.areVisibleChatbot) {
+    //   this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+    // } else {
+    //   this.router.navigate(['/project/' + this.projectId + '/bots-demo']);
+    // }
+  }
 
   goToWidgetSetUpOrToCannedResponses() {
     if (this.USER_ROLE !== 'agent') {
@@ -1795,12 +1900,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.logger.log('[SIDEBAR] - calling openLogoutModal - PROJRCT ID ', this.projectId);
     this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
-
-    // if (this.projectId !== undefined) {
-    //     this.usersService.logout_btn_clicked_from_mobile_sidebar(true);
-    // } else {
-    //     this.usersService.logout_btn_clicked_from_mobile_sidebar_project_undefined(true);
-    // }
   }
 
   onCloseModal() {
@@ -1830,11 +1929,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   openChat() {
     this.elementRef.nativeElement.blur();
     this.notify.publishHasClickedChat(true);
-    // this.logger.log('SIDEBAR openChat ' )
+    this.logger.log('SIDEBAR openChat project ', this.project)
 
     // --- new 
-    if (this.current_selected_prjct) {
-      localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    if (this.project) {
+      this.project['role'] = this.USER_ROLE
+      localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
     }
     // let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     // let url = baseUrl
@@ -1871,7 +1971,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // --------------------------------------------------------------------
     if ((event.target.id.startsWith('openchat') && event.which === 3) || (event.target.id.startsWith('openchat') && event.which === 1)) {
       this.logger.log('SIDEBAR openChat HAS CLIKED ON OPEN CHAT WITH THE RIGHT BTN')
-      localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+      this.project['role'] = this.USER_ROLE
+      localStorage.setItem('last_project', JSON.stringify(this.currentProjectUser))
     }
 
   }

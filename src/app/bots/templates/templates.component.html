@@ -1,9 +1,43 @@
-<p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
+<!-- <p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
     [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
     Chatbot
-</p>
+</p> -->
+
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+  
+    <div class="chatbot-svg-icon"> 
+      <svg   version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;width: 29px;height: 29px;" xml:space="preserve">
+        <style type="text/css">
+          .cb--0{fill:#3C4858;}
+        </style>
+        <g>
+          <path class="cb--0" d="M24.6,12.6c-0.1,0-0.2,0-0.3,0c-1.6-2.9-4.5-5.8-9.2-5.8s-7.6,2.9-9.2,5.8c-0.2,0-0.4-0.1-0.6-0.1
+            c-2,0-3.5,2.3-3.5,5c0,2.8,1.6,5,3.5,5c0.1,0,0.3,0,0.4,0c2.3,3.6,7,3.9,9.4,3.9c2.3,0,6.9-0.5,9.2-3.9c0.1,0,0.1,0,0.2,0
+            c2,0,3.5-2.3,3.5-5C28.1,14.8,26.6,12.6,24.6,12.6z M22,21.1c0,0-7.8,2.3-14.3-0.1c0,0-0.8-4.1-0.5-7.2c0,0,8.1-3.2,15.6,0.3
+            C22.8,14.1,23.3,19.1,22,21.1z"/>
+          <ellipse class="cb--0" cx="11.9" cy="17.4" rx="0.7" ry="1.4"/>
+          <ellipse class="cb--0" cx="18.1" cy="17.4" rx="0.7" ry="1.4"/>
+          <path class="cb--0" d="M14.5,5.3v1.1h1V5.3C15.8,5.1,16,4.8,16,4.5c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
+            C14.1,4.8,14.2,5.1,14.5,5.3z"/>
+        </g>
+        </svg>
+
+    </div>
+
+  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Chatbots </span>
+
+</span>
 
 <div class="main-content" style="padding-top:0px;padding-left:0px; padding-right:0px">
+
+    <div class="page-title--sidebar-settings"
+	[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+        {{pageTitle}}
+	</div>
+
     <div class="container-fluid" style="padding-left: 10px;padding-right: 5px;">
 
 
@@ -13,7 +47,8 @@
                 [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
                 [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
                 [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
-                [increaseSalesBotsCount]="increaseSalesBotsCount">
+                [increaseSalesBotsCount]="increaseSalesBotsCount"
+                [kbCount]="kbCount">
             </appdashboard-bots-sidebar>
 
 
@@ -22,8 +57,9 @@
                 <!-- -------------------------------------------------------------------- -->
                 <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
                 <!-- -------------------------------------------------------------------- -->
-                <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit" ></appdashboard-chatbot-alert>
-
+                <ng-container *ngIf="chatBotLimit || chatBotLimit === 0 " > 
+                    <appdashboard-chatbot-alert *ngIf="chatBotCount > chatBotLimit && isVisiblePAY" ></appdashboard-chatbot-alert>
+                </ng-container>
                 <div class="row button-row">
                     <div class="col-sm-12">
                         <div class="t--btn-wpr">
@@ -94,9 +130,9 @@
 
                 <div class="page-content--wpr">
                     <div class="template-page-title">
-                        <span *ngIf="COMMUNITY_TEMPLATE">
+                        <div *ngIf="COMMUNITY_TEMPLATE" style="text-align: center;">
                             Community
-                        </span>
+                        </div>
                         <!-- <div class="t--btn-wpr" *ngIf="!COMMUNITY_TEMPLATE">
                             <button type="button" class="btn btn-new btn-size-m btn--primary"
                                 (click)="createBlankTilebot()">
@@ -209,7 +245,8 @@
                                                     [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
                                                     *ngFor="let tag of template.certifiedTags">
                                                     <p weight="normal" class="template-tag-name">
-                                                        {{tag.name }} </p>
+                                                        {{tag.name }} 
+                                                    </p>
 
                                                 </span>
 
@@ -257,7 +294,7 @@
                         <!-- @ Community tempates -->
                         <!-- ------------------------------------------------------------ -->
                         <!-- Search bar -->
-                        <div *ngIf="COMMUNITY_TEMPLATE" class="css-1m7jc8x cmnty-tmplt-search-bar-container">
+                        <!-- <div *ngIf="COMMUNITY_TEMPLATE" class="css-1m7jc8x cmnty-tmplt-search-bar-container">
                             <div class="css-t94b1v cmnty-tmplt-search-bar-wpr">
                                 <div class="css-vm1iz7 cmnty-tmplt-search-bar">
                                     <div class="css-1wp4ooc cmnty-tmplt-search-bar-input-and-icon-wpr">
@@ -295,9 +332,9 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div *ngIf="COMMUNITY_TEMPLATE">
+                        <!-- <div *ngIf="COMMUNITY_TEMPLATE">
                             <div class="css-ph3dp7 no-search-result-main" *ngIf="THERE_ARE_RESULTS === false">
                                 <div class="css-18ajwok no-search-result-content-wpr">
                                     <div class="css-ph3dp7 no-search-result-content">
@@ -312,12 +349,26 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-
+                        
                         <!-- Community tempaltes   -->
-                        <div *ngIf="COMMUNITY_TEMPLATE" class="css-ph3dp7 cmnty-tmplt-list--wpr">
-                            <div class="css-18ajwok cmnty-tmplt-list">
+                        <div  *ngIf="COMMUNITY_TEMPLATE" class="css-ph3dp7 cmnty-tmplt-list--wpr">
+                            <div class="cmnty-img-wpr">
+                                <img class="cmnty-img" src="assets/img/logos/Tiledesk_community_v2.svg" />
+                            </div>
+                            <div class="cmnty-text">
+                                Explore a world of possibilities in our Community, where you'll discover a vast array of ready-to-use chatbots and automation ideas. Get support directly from the creators and import your favorites with just one click!
+                            </div>
+
+                            <div class="cmnty-btn">
+                                <button type="button" class="btn btn-new btn-size-xl btn--primary"
+                                (click)="goToExternalCommunity()">
+                                <span>Chatbots Community</span>
+                            </button>
+                            </div>
+
+                            <div style="display: none;" class="css-18ajwok cmnty-tmplt-list">
                                 <div class="css-ph3dp7 cmnty-tmplt-list--wpr">
                                     <div class="css-18ajwok cmnty-tmplt-list">
                                         <div class="css-nghpcj cmnty-tmplt" *ngFor="let template of templates"

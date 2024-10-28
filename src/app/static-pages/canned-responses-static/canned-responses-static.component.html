@@ -17,6 +17,11 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
+    <div class="page-title--sidebar-settings"
+      [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+      {{'CannedResponses.CannedResponses' | translate}}
+    </div>
+    
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
@@ -26,7 +31,7 @@
           <div class="col-md-5 left-side-in-col-container">
 
             <div class="left-div-padding">
-              <div class="row">
+              <div class="row" *ngIf="payIsVisible">
                 <div class="col-sm-12">
                   <h2 class="demopage-title">
 

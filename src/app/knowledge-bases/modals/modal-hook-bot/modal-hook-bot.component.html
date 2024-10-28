@@ -1,0 +1,107 @@
+<h1 mat-dialog-title> 
+    {{ 'HookTheBot' | translate }} 
+
+</h1>
+
+<div mat-dialog-content>
+    
+    
+    <!-- <div class="accordion-instructions"> Follow these simple instructions to activate it on your website </div>  -->
+
+    <div class="mat-accordion-wpr"> 
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false" style="box-shadow: unset;
+                             border: 1px solid #ccc;">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{'Installation' | translate}}
+                    </mat-panel-title>
+                    <!-- <mat-panel-description> -->
+                    <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}} -->
+                    <!-- </mat-panel-description>  -->
+                </mat-expansion-panel-header>
+                <div class="widget--script-copy-instructions">
+                    <!-- Copy the following script and insert it into the HTML source between the head tags. -->
+                    {{'Resourcepage.CopyTheFollowingScript...' | translate }}
+                        <code><em>&lt;head&gt;</em></code> tags.
+            
+                </div>
+                <pre class="widget--script">
+                    <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+                    <span>   window.tiledeskSettings=</span>
+                    <span>   {{'{'}}</span>
+                    <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+                    <span>   {{'};'}}</span>
+                    <span>   (function(d, s, id) {{'{'}}</span>
+                    <span>      var w=window; var d=document; var i=function(){{'{'}}i.c(arguments);{{'};'}} </span>
+                    <span>      i.q=[]; i.c=function(args){{'{'}}i.q.push(args);{{'};'}} w.Tiledesk=i; </span>
+                    <span>      var js, fjs=d.getElementsByTagName(s)[0];  </span>
+                    <span>      if (d.getElementById(id)) return; </span>
+                    <span>      js=d.createElement(s); </span>
+                    <span>      js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;</span>
+                    <span>      fjs.parentNode.insertBefore(js, fjs);</span>
+                    <span>   {{'}'}}(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));</span>
+                    <span>&lt;/script&gt;</span>	
+                </pre>
+            
+            </mat-expansion-panel>
+        </mat-accordion>
+        <span (click)="copyToClipboard()" *ngIf="panelOpenState === true" class="material-icons-outlined widget-content-copy">
+            content_copy
+        </span>
+        <div class="copied--to--clipboard--tooltip"
+              [ngClass]="{'has--copied--text' : has_copied}" >
+              {{ 'Copied' | translate }}
+        </div>
+    </div>
+
+    <textarea  name="exampleClipboard" class="textarea" readonly rows="20" value="" type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
+        &lt;script type=&quot;application/javascript&quot;&gt;
+            window.tiledeskSettings= 
+            {
+                projectid: &quot;{{ projectId }}&quot;
+            };
+            (function(d, s, id) { 
+                var w=window; var d=document; var i=function(){i.c(arguments);};
+                i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;                
+                var js, fjs=d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js=d.createElement(s); 
+                js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));
+        &lt;/script&gt;
+      </textarea>
+
+
+    <h4 [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: {bot_name: chatbotName} "> </h4>
+
+  
+
+
+    <ng-select [items]="depts_without_bot_array" 
+        appendTo="body"
+        bindValue="id"
+        bindLabel="name"
+        placeholder="{{'SelectDepartment'|translate}}" 
+        [(ngModel)]="selectedDeptId"
+        (change)="onSelectDeptId()">
+    </ng-select>
+
+   
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    <!-- [disabled]="!selectedDeptId" -->
+    <button  class="mat-dialog-ok-btn" mat-button 
+        (click)="onActivateBotPresssed()">
+        
+        {{ "ActivateBot" | translate }}
+        
+    </button>
+</div>

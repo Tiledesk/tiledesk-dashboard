@@ -1,11 +1,14 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { map, shareReplay } from 'rxjs/operators';
+import { CacheService } from './cache.service';
+
 @Injectable()
 export class ProjectService {
 
@@ -16,18 +19,21 @@ export class ProjectService {
   user: any;
   currentUserID: string;
   projectID: string;
- 
+
   APP_SUMO_API_BASE_URL = "https://tiledesk-sumo.tiledesk.repl.co/"
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(
+  // cachedProjects$: Observable<Project[]>;
+  cachedProjects$: any;
 
+  constructor(
     public auth: AuthService,
     public _httpclient: HttpClient,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private cacheService: CacheService
   ) {
 
     this.user = auth.user_bs.value
@@ -81,9 +87,9 @@ export class ProjectService {
   }
 
   // ------------------------------------------------------
-  // READ (GET ALL PROJECTS)
+  // READ (GET ALL PROJECTS) No cache
   // ------------------------------------------------------
-  public getProjects(): Observable<Project[]> {
+  public _getProjects(): Observable<Project[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -96,6 +102,37 @@ export class ProjectService {
     return this._httpclient
       .get<Project[]>(url, httpOptions)
   }
+
+  // ------------------------------------------------------
+  // READ (GET ALL PROJECTS) with cache
+  // ------------------------------------------------------
+   public getProjects(): Observable<Project[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
+
+    let projects$ = this.cacheService.getValue();
+    this.logger.log('[PROJECT-SERV] - GET  projects$ from cacheService');
+
+    if (!projects$) {
+      const url = this.PROJECTS_URL;
+      this.logger.log('[PROJECT-SERV] - GET PROJECTS URL', url);
+      projects$ = this._httpclient.get(url, httpOptions)
+      .pipe( // Chains RxJS operators
+        map((response: any) => response), // Maps the response to itself. In this case, it's necessary because the response is expected to be an array of Project objects. 
+        shareReplay(1) // Shares the response with all subscribers and replays it for new subscribers. 1 indicates it keeps the latest emitted value and replays it for new subscribers.
+      );
+      this.logger.log('[PROJECT-SERV] - GET  projects$ from HTTP REQUEST  projects$');
+      this.cacheService.setValue(projects$);
+    }
+
+    return  projects$;
+  }
+
 
   /**
    * DELETE PROJECT
@@ -146,7 +183,7 @@ export class ProjectService {
    * @param id_user
    */
   public createProject(name: string, calledBy) {
-    this.logger.log('[PROJECT-SERV] CREATE calledBy ', calledBy);
+    this.logger.log('[PROJECT-SERV] CREATE PROJECT calledBy ', calledBy);
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -294,34 +331,47 @@ export class ProjectService {
   // ----------------------------------------------------------
 
 
-    // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
   // Used to update the project name - todo from post to patch
   // -----------------------------------------------------------------
   public updateAppSumoProject(
-    proiectid: string, 
-    projectProfileName: string, 
+    proiectid: string,
+    projectProfileName: string,
     agentNumber: number,
-    activationemail: string, 
-    licenseproductkeyuuid: string, 
-    plan_id: string, 
+    activationemail: string,
+    licenseproductkeyuuid: string,
+    plan_id: string,
     invoice_item_uuid: string) {
     // 'Authorization': this.TOKEN
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        
+
       })
     };
 
-    let url = this.APP_SUMO_API_BASE_URL+ 'updateproject';
+    let url = this.APP_SUMO_API_BASE_URL + 'updateproject';
     this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
 
-    const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid};
+    const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid };
     this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
 
     return this._httpclient
       .post(url, body, httpOptions)
+  }
+
+  public updateProject(id: string, project: Object) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.PROJECTS_URL + id;
+    return this._httpclient.put(url, project, httpOptions);
   }
 
   // -----------------------------------------------------------------
@@ -734,6 +784,29 @@ export class ProjectService {
     })
     return promise;
   }
+
+  // --------------------------------------------------------------------------------------
+  // ENABLE/DISABLE WIDGET VISIBILITY - IS IN THE TAB GENERAL OF PROJECT SETTINGS
+  // --------------------------------------------------------------------------------------
+  enableDisableSupportWidgetVisibility(status) {
+    let promise = new Promise((resolve, reject) => {
+
+      // this.logger.log("[PROJECT-SERV] ENABLE/DISABLE WIDGET VISIBILITY status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.displayWidget": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
   // --------------------------------------------------------------------------------------
   // ENABLE/DISABLE UNASSIGNED NOTIFICATION - IS IN THE TAB NOTIFICATION OF PROJECT SETTINGS
   // --------------------------------------------------------------------------------------
@@ -746,6 +819,49 @@ export class ProjectService {
       })
 
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.email.notification.conversation.pooled": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+  // --------------------------------------------------------------------------------------
+  // ENABLE/DISABLE Agents can only see their own conversations
+  // --------------------------------------------------------------------------------------
+  agentViewOnlyOwnConv(status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV]  ENABLE/DISABLE Agents can only see their own conversations status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.current_agent_my_chats_only": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+
+  // --------------------------------------------------------------------------------------
+  // HIDE/DISPLAY Chatbot attributes card in monitor page 
+  // --------------------------------------------------------------------------------------
+  switchChatbotAttributesVisibility (status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV] HIDE/DISPLAY Chatbot attributes status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.chatbots_attributes_hidden": status }, { headers: headers })
         .toPromise().then((res) => {
           resolve(res)
         }).catch((err) => {
@@ -866,7 +982,7 @@ export class ProjectService {
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
-    const body = {oneStepWizard: oneStepWizard}
+    const body = { oneStepWizard: oneStepWizard }
     this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
@@ -1112,7 +1228,7 @@ export class ProjectService {
       .get<[any]>(url, httpOptions)
   }
 
-    // --------------------------------
+  // --------------------------------
   //  APPSUMO TEST 
   // --------------------------------
   public activateAppSumoTier() {
@@ -1121,7 +1237,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 
@@ -1139,7 +1255,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 
@@ -1157,7 +1273,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 
@@ -1175,7 +1291,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 

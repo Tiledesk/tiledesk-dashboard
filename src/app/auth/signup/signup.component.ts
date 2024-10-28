@@ -19,6 +19,7 @@ import { TitleCasePipe } from '@angular/common';
 declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
+import { UsersService } from 'app/services/users.service';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -45,6 +46,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   terms_and_conditions_url: string;
   privacy_policy_url: string;
   display_terms_and_conditions_link: boolean;
+  display_dpa: boolean;
+  dpa_url: string;
   queryParams: any;
 
   showSpinnerInLoginBtn = false;
@@ -84,6 +87,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   selectedTranslationCode: string;
   displaySocialProofContainer: string;
   hideGoogleAuthBtn: string;
+  USER_ROLE: string;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -131,7 +135,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     private localDbService: LocalDbService,
     private projectService: ProjectService,
     public titleCasePipe: TitleCasePipe,
-    private widgetService: WidgetService
+    private widgetService: WidgetService,
+    private usersService: UsersService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -150,6 +155,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.privacy_policy_url = brand['privacy_policy_url'];
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
+    this.display_dpa = brand['display_dpa_link'];
+    this.dpa_url =  brand['dpa_url'];
     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
@@ -160,6 +167,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.getOSCODE();
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
     this.getReCaptchaSiteKey()
+    this.getUserRole()
 
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
@@ -168,7 +176,13 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
   }
 
-
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((userRole) => {
+        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
 
   ngAfterViewInit() {
     const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
@@ -203,7 +217,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
       'password': ['', [
-        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        // Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
+        // Validators.pattern(/[$-/:-?{-~!"^@#`\[\]]/g),
         Validators.maxLength(512),
         Validators.minLength(8),
         Validators.required,
@@ -218,12 +234,20 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.onValueChanged(); // reset validation messages
   }
 
+  get passwordFormField() {
+    
+    return this.userForm.get('password');
+    
+  }
+
   // Updates validation state on form changes.
   onValueChanged(data?: any) {
     if (!this.userForm) {
       return;
     }
     const form = this.userForm;
+
+    
 
     // this.logger.log('[SIGN-UP] onValueChanged  data', data)
     // if (data) {
@@ -303,8 +327,6 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         }
       })
   }
-
-
 
   segmentRecordPageAndIdentify(queryParams?: any) {
     if (!isDevMode()) {
@@ -513,21 +535,23 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   signUp() {
-    if (window && window['grecaptcha']) {
-      this.logger.log('[SIGN-UP] window grecaptcha', window['grecaptcha'])
-      this.logger.log('[SIGN-UP] signup with recaptcha', window['grecaptcha'])
-      grecaptcha.ready(() => {
-        grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
-          // Add your logic to submit to your backend server here.
-          this.logger.log('[SIGN-UP] grecaptcha ', token)
-          if (token) {
-            this.signup()
-          }
+    if (this.userForm.valid) {
+      if (window && window['grecaptcha']) {
+        this.logger.log('[SIGN-UP] window grecaptcha', window['grecaptcha'])
+        this.logger.log('[SIGN-UP] signup with recaptcha', window['grecaptcha'])
+        grecaptcha.ready(() => {
+          grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
+            // Add your logic to submit to your backend server here.
+            this.logger.log('[SIGN-UP] grecaptcha ', token)
+            if (token) {
+              this.signup()
+            }
+          });
         });
-      });
-    } else {
-      this.logger.log('[SIGN-UP] signup without recaptcha' )
-      this.signup()
+      } else {
+        this.logger.log('[SIGN-UP] signup without recaptcha')
+        this.signup()
+      }
     }
   }
 
@@ -581,70 +605,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           // Hide pending email alert if the user sign up (will be displayed when the userr signin)
           // this.localDbService.setInStorage('hpea', true);
-
-          if (!isDevMode()) {
-            if (window['analytics']) {
-              let userFullname = ''
-              if (signupResponse.user.firstname && signupResponse.user.lastname) {
-                userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
-              } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
-                userFullname = signupResponse.user.firstname
-              }
-
-              try {
-                window['analytics'].identify(signupResponse.user._id, {
-                  name: userFullname,
-                  email: signupResponse.user.email,
-                  logins: 5,
-                });
-              } catch (err) {
-                this.logger.error('identify signup event error', err);
-              }
-              let utm_source_value = undefined;
-              let su: any = 'Signed up';
-              var size = Object.keys(this.queryParams).length;
-              // this.logger.log('queryParams size ', size)
-              // let event = ''
-              if (size > 0) {
-
-                for (const [key, value] of Object.entries(this.queryParams)) {
-                  // this.logger.log(`${key}: ${value}`);
-                  // event = "Signed Up button clicked" + ' ' + key + '=' + value
-                  if (key === 'utm_source') {
-                    utm_source_value = value
-                  }
-                  if (key === 'su') {
-                    su = value
-                  }
-                }
-              } else if (size === 0 && this.templateName) {
-                su = this.templateName
-              }
-              // } else {
-              //   event = "Signed Up button clicked"
-              // }
-              // this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
-
-
-
-
-              try {
-                window['analytics'].track("Signed Up", {
-                  "type": "organic",
-                  "utm_source": utm_source_value,
-                  "button": su,
-                  "first_name": signupResponse.user.firstname,
-                  "last_name": signupResponse.user.lastname,
-                  "email": signupResponse.user.email,
-                  "username": userFullname,
-                  'userId': signupResponse.user._id,
-                  'method': "Email and Password"
-                });
-              } catch (err) {
-                this.logger.error('track signup event error', err);
-              }
-            }
-          }
+          this.trackSignup(signupResponse)
 
           this.autoSignin(userEmail, signupResponse);
 
@@ -654,22 +615,27 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
           this.display = 'block';
 
           if (signupResponse['code'] === 11000) {
-            if (this.currentLang === 'it') {
-              this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
 
-              this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
-            } else if (this.currentLang === 'en') {
-              this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
-              this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+            
+            this.notify.showToast(this.translate.instant('SomethingWentWrongCreatingYourAccount'), 4, 'report_problem')
+           
 
-            } else if (this.currentLang !== 'en' && this.currentLang !== 'it') {
-              this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
-              this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+            // if (this.currentLang === 'it') {
+            //   this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
 
-            }
+            //   this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+            // } else if (this.currentLang === 'en') {
+            //   this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
+            //   this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+
+            // } else if (this.currentLang !== 'en' && this.currentLang !== 'it') {
+            //   this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
+            //   this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+
+            // }
           } else {
-            this.signin_errormsg = signupResponse['errmsg'];
-            this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+            // this.signin_errormsg = signupResponse['errmsg'];
+            this.notify.showToast(this.translate.instant('SomethingWentWrongCreatingYourAccount'), 4, 'report_problem')
           }
         }
       }, (error) => {
@@ -678,15 +644,15 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         this.showSpinnerInLoginBtn = false;
         this.display = 'block';
         this.logger.error('[SIGN-UP] CREATE NEW USER - POST REQUEST ERROR STATUS', error.status);
+        this.notify.showToast(this.translate.instant('SomethingWentWrongCreatingYourAccount'), 4, 'report_problem')
+        // if (error.status === 422) {
+        //   this.signin_errormsg = 'Form validation error. Please fill in every fields.';
+        //   this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
 
-        if (error.status === 422) {
-          this.signin_errormsg = 'Form validation error. Please fill in every fields.';
-          this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
-
-        } else {
-          this.signin_errormsg = 'An error occurred while creating the account';
-          this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
-        }
+        // } else {
+        //   this.signin_errormsg = 'An error occurred while creating the account';
+        //   this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+        // }
       }, () => {
         this.logger.log('[SIGN-UP] CREATE NEW USER  - POST REQUEST COMPLETE ');
       });
@@ -701,19 +667,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
       // this.logger.log('autoSignin: ', error);
       if (!error) {
-        // --------------------------------------------
-        // Run widget login
-        // --------------------------------------------
-        if (window && window['tiledesk_widget_login']) {
-          window['tiledesk_widget_login']();
-        }
-        // self.widgetReInit();
-        // --------------------------------------------
-        // Run widget login
-        // --------------------------------------------
-        if (window && window['tiledesk_widget_login']) {
-          window['tiledesk_widget_login']();
-        }
+       
 
         // this.logger.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
         // this.logger.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
@@ -737,6 +691,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
             if (self.areActivePay) {
               self.router.navigate(['/onboarding']);
+
             } else if (!self.areActivePay) {
               // self.router.navigate(['/create-new-project']);
               self.createNewProject(signupResponse)
@@ -762,6 +717,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     });
   }
 
+
+
   createNewProject(signupResponse) {
     let projectName = ''
     const email = this.userForm.value['email']
@@ -784,29 +741,39 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.logger.log('[SIGN-UP] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', projectName);
 
     this.projectService.createProject(projectName, 'signup')
-      .subscribe((project) => {
+      .subscribe((project: Project) => {
         this.logger.log('[SIGN-UP] POST DATA PROJECT RESPONSE ', project);
         if (project) {
-          this.new_project = project
-          // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
-          // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-          const newproject: Project = {
-            _id: project['_id'],
-            name: project['name'],
-            operatingHours: project['activeOperatingHours'],
-            profile_type: project['profile'].type,
-            profile_name: project['profile'].name,
-            trial_expired: project['trialExpired']
-          }
+          this.new_project = project;
+          this.logger.log('[SIGN-UP] new_project ', this.new_project);
+          this.new_project['role'] = 'owner';
+          this.logger.log('[SIGN-UP] role ', this.new_project['role']);
+
+          this.auth.projectSelected(this.new_project, 'sign-up')
+          localStorage.setItem(this.new_project._id, JSON.stringify(project));
+          this.router.navigate(['/projects']);
+
+
+
+          // // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
+          // // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
+          // const newproject: Project = {
+          //   _id: project['_id'],
+          //   name: project['name'],
+          //   operatingHours: project['activeOperatingHours'],
+          //   profile_type: project['profile'].type,
+          //   profile_name: project['profile'].name,
+          //   trial_expired: project['trialExpired']
+          // }
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-          this.auth.projectSelected(newproject, 'sign-up')
-          this.logger.log('[SIGN-UP] CREATED PROJECT ', newproject)
+          // this.auth.projectSelected(newproject, 'sign-up')
+          // this.logger.log('[SIGN-UP] CREATED PROJECT ', newproject)
 
-          this.id_project = newproject._id
+          // this.id_project = newproject._id
           // this.router.navigate([`/project/${this.id_project}/configure-widget`]);
           // this.router.navigate(['/create-new-project']);
-          this.router.navigate(['/projects']);
+
         }
 
 
@@ -818,7 +785,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         this.logger.log('[SIGN-UP] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
         this.projectService.newProjectCreated(true);
 
-
+        this.getProjectsAndSaveLastProject(this.new_project._id)
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
@@ -826,17 +793,87 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
         this.trackCreateProject(signupResponse, trialStarDate, trialEndDate)
-
-
         // setTimeout(() => {
         //   this.DISPLAY_SPINNER = false;
         // }, 2000);
 
         // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
         // of the new project resolve the bug  'the auth service not find the project in the storage'
-        this.getProjectsAndSaveInStorage();
+        // this.getProjectsAndSaveInStorage();
         this.addWidgetDefaultLanguage()
       });
+  }
+
+  trackSignup(signupResponse) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        let userFullname = ''
+        if (signupResponse.user.firstname && signupResponse.user.lastname) {
+          userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
+        } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
+          userFullname = signupResponse.user.firstname
+        }
+
+        try {
+          window['analytics'].identify(signupResponse.user._id, {
+            name: userFullname,
+            email: signupResponse.user.email,
+            logins: 5,
+          });
+        } catch (err) {
+          this.logger.error('identify signup event error', err);
+        }
+        let utm_source_value = undefined;
+        let su: any = 'Signed up';
+        var size = Object.keys(this.queryParams).length;
+        // this.logger.log('queryParams size ', size)
+        // let event = ''
+        if (size > 0) {
+
+          for (const [key, value] of Object.entries(this.queryParams)) {
+            // this.logger.log(`${key}: ${value}`);
+            // event = "Signed Up button clicked" + ' ' + key + '=' + value
+            if (key === 'utm_source') {
+              utm_source_value = value
+            }
+            if (key === 'su') {
+              su = value
+            }
+          }
+        } else if (size === 0 && this.templateName) {
+          su = this.templateName
+        }
+
+
+        try {
+          window['analytics'].track("Signed Up", {
+            "type": "organic",
+            "utm_source": utm_source_value,
+            "button": su,
+            "first_name": signupResponse.user.firstname,
+            "last_name": signupResponse.user.lastname,
+            "email": signupResponse.user.email,
+            "username": userFullname,
+            'userId': signupResponse.user._id,
+            'method': "Email and Password"
+          });
+        } catch (err) {
+          this.logger.error('track signup event error', err);
+        }
+      }
+    }
+
+  }
+
+  getProjectsAndSaveLastProject(project_id) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[SIGN-UP] getProjects projects ', projects)
+      if (projects) {
+        const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
+        this.logger.log('[SIGN-UP] currentProjectUser ', populateProjectUser)
+        localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
+      }
+    });
   }
 
   addWidgetDefaultLanguage() {
@@ -883,34 +920,34 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.logger.log('[SIGN-UP] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
   }
 
-  getProjectsAndSaveInStorage() {
-    this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  // getProjectsAndSaveInStorage() {
+  //   this.projectService.getProjects().subscribe((projects: any) => {
+  //     this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
 
-      if (projects) {
-        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
-        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
-        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
-        projects.forEach(project => {
-          this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
-          if (project.id_project) {
-            const prjct: Project = {
-              _id: project.id_project._id,
-              name: project.id_project.name,
-              role: project.role,
-              operatingHours: project.id_project.activeOperatingHours
-            }
+  //     if (projects) {
+  //       // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+  //       // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+  //       // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+  //       projects.forEach(project => {
+  //        this.logger.log('[SIGN-UP] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+  //         if (project.id_project) {
+  //           // const prjct: Project = {
+  //           //   _id: project.id_project._id,
+  //           //   name: project.id_project.name,
+  //           //   role: project.role,
+  //           //   operatingHours: project.id_project.activeOperatingHours
+  //           // }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
-          }
-        });
-      }
-    }, error => {
-      this.logger.error('[SIGN-UP] getProjectsAndSaveInStorage - ERROR ', error)
-    }, () => {
-      this.logger.log('[SIGN-UP] getProjectsAndSaveInStorage - COMPLETE')
-    });
-  }
+  //           localStorage.setItem(project.id_project._id, JSON.stringify(project.id_project));
+  //         }
+  //       });
+  //     }
+  //   }, error => {
+  //     this.logger.error('[SIGN-UP] getProjectsAndSaveInStorage - ERROR ', error)
+  //   }, () => {
+  //     this.logger.log('[SIGN-UP] getProjectsAndSaveInStorage - COMPLETE')
+  //   });
+  // }
 
   trackCreateProject(signupResponse, trialStarDate, trialEndDate) {
     if (!isDevMode()) {
@@ -1008,6 +1045,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   onPasswordStrengthChanged(event: boolean) {
+    this.logger.log('onPasswordStrengthChanged ', event)
     this.strongPassword = event;
   }
 

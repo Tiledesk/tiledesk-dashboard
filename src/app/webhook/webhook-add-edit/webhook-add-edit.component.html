@@ -55,32 +55,7 @@
             </label>
             <div class="col-xs-9">
               <ng-select placeholder="{{'Webhook.SelectEvent' | translate}}" [(ngModel)]="subscriptionEvent">
-                <ng-option [value]="'request.create'">Request Create</ng-option>
-                <ng-option [value]="'request.update'">Request Update</ng-option>
-                <ng-option [value]="'request.close'">Request Close</ng-option>
-                <ng-option [value]="'message.create'">Message Create</ng-option>
-                <ng-option [value]="'message.create.request.channel.telegram'">Message Create (only for Telegram channel)</ng-option>
-                <ng-option [value]="'message.create.request.channel.messenger'">Message Create (only for Facebook Messenger channel)</ng-option>
-                <ng-option [value]="'message.create.request.channel.whatsapp'">Message Create (only for WhatsApp channel)</ng-option>
-                <ng-option [value]="'lead.create'">Lead Create</ng-option>
-                <ng-option [value]="'faq.create'">Faq Create</ng-option>
-                <ng-option [value]="'faq.update'">Faq Update</ng-option>
-                <ng-option [value]="'faq.delete'">Faq Delete</ng-option>
-                <ng-option [value]="'faqbot.create'">Faqbot Create</ng-option>
-                <ng-option [value]="'faqbot.update'">Faqbot Update</ng-option>
-                <ng-option [value]="'faqbot.delete'">Faqbot Delete</ng-option>
-                <ng-option [value]="'department.create'">Department Create</ng-option>
-                <ng-option [value]="'department.update'">Department Update</ng-option>
-                <ng-option [value]="'department.delete'">Department Delete</ng-option>
-                <ng-option [value]="'project_user.invite'">Project User Invite</ng-option>
-                <ng-option [value]="'project_user.update'">Project User Update</ng-option>
-                <ng-option [value]="'project_user.delete'">Project User Delete</ng-option>
-                <ng-option [value]="'group.create'">Group Create</ng-option>
-                <ng-option [value]="'group.update'">Group Update</ng-option>
-                <ng-option [value]="'group.delete'">Group Delete</ng-option>
-                <ng-option [value]="'operator.select'">Operator Selection</ng-option>
-                <ng-option [value]="'event.emit'">Event Emit</ng-option>
-                <!-- <ng-option [value]="'event.create'">Event Emit (EVENT_NAME)</ng-option> -->
+                <ng-option [value]="webhook.id" *ngFor="let webhook of webHookEvents">{{webhook.name}}</ng-option>
               </ng-select>
             </div>
 

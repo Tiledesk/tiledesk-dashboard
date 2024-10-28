@@ -8,6 +8,7 @@ import { AuthService } from './../../core/auth.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { LoggerService } from './../../services/logger/logger.service';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'appdashboard-notification-settings',
   templateUrl: './notification-settings.component.html',
@@ -27,6 +28,7 @@ export class NotificationSettingsComponent implements OnInit {
   updateSuccessMsg: string;
   updateErrorMsg: string;
   isChromeVerGreaterThan100: boolean;
+  displayChangePwd: boolean;
   constructor(
     private _location: Location,
     private auth: AuthService,
@@ -37,9 +39,13 @@ export class NotificationSettingsComponent implements OnInit {
     private usersService: UsersService,
     private translate: TranslateService,
     private notify: NotifyService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public brandService: BrandService
     ) 
-    { }
+    { 
+      const brand = brandService.getBrand(); 
+      this.displayChangePwd = brand['display_change_pwd']
+    }
 
   ngOnInit() {
     this.getUserIdFromRouteParams();
@@ -65,7 +71,7 @@ export class NotificationSettingsComponent implements OnInit {
    */
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS  RES', projects);
+      // console.log('[USER-PROFILE][NOTIFICATION-SETTINGS] - GET PROJECTS  RES', projects);
 
       if (projects) {
         this.projects_length = projects.length;

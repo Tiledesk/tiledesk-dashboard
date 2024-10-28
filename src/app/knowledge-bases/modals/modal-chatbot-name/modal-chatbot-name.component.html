@@ -1,0 +1,36 @@
+<h1 mat-dialog-title> 
+    <!-- {{ 'CreateChatbot' | translate }} -->
+    <!-- Choose a name for your chatbot -->
+    <!-- {{ 'ChooseNameForYourChatbot' | translate }} -->
+    {{ 'ChooseNameForYourAIAgent' | translate }}
+</h1>
+
+<div mat-dialog-content>
+
+    <mat-form-field appearance="fill" class="cc-mat-form-field">
+        <mat-label>
+            <!-- Chatbot name -->
+            <!-- {{ "ChatbotName" | translate }} -->
+            <!-- My assistant name -->
+            <!-- {{'MyAssistantName' | translate}} -->
+            {{'MyAIAgentName' | translate}}
+            
+
+        </mat-label>
+        <input placeholder="{{'MyAIAgentName' | translate}}" matInput [(ngModel)]="chatbotName" (ngModelChange)="onChangeChatbotName($event)">
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button [disabled]="chatbotName?.length < 2" class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPresssed(chatbotName)" cdkFocusInitial>
+        
+        {{ "Create" | translate }}
+        
+    </button>
+</div>

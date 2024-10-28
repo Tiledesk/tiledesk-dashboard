@@ -53,7 +53,7 @@ import { ContactsService } from './services/contacts.service';
 // import { ContactDetailsComponent } from './contact-details/contact-details.component'; // now lazy
 
 import { DepartmentService } from './services/department.service';
-import { DepartmentsComponent } from './departments/departments.component';
+// import { DepartmentsComponent } from './departments/departments.component'; // now lazy
 
 import { FaqService } from './services/faq.service';
 import { UrlService } from './services/shared/url.service';
@@ -61,12 +61,12 @@ import { UrlService } from './services/shared/url.service';
 // import { ProjectsComponent } from './projects/projects.component'; // now lazy
 // import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
 
-import { UsersComponent } from './users/users.component';
+// import { UsersComponent } from './users/users.component'; // now lazy
 
 
 // BOTS & FAQ
 import { FaqKbService } from './services/faq-kb.service';
-import { BotListComponent } from './bots/bots-list/bots-list.component';
+// import { BotListComponent } from './bots/bots-list/bots-list.component'; // // now lazy
 import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
@@ -75,13 +75,13 @@ import { FaqTestComponent } from './bots/faq-test/faq-test.component';
 import { FaqTestTrainBotComponent } from './bots/faq-test/faq-test-train-bot/faq-test-train-bot.component';
 import { FaqSidebarComponent } from './bots/faq/faq-sidebar/faq-sidebar.component'; // fake comp used for a demo
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
-import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
+// import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component'; // now lazy
+// import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component'; // now lazy
 
 import { ProjectService } from './services/project.service';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
@@ -91,33 +91,30 @@ import { ProjectService } from './services/project.service';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
+// import { UserEditAddComponent } from './user-edit-add/user-edit-add.component'; // now lazy
 import { LocalDbService } from './services/users-local-db.service';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { GroupService } from './services/group.service';
-import { GroupsComponent } from './groups/groups.component';
-import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
+// import { GroupsComponent } from './groups/groups.component'; // now lazy
+// import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component'; // now lazy
 
 import { BotLocalDbService } from './services/bot-local-db.service';
-import { ChangePasswordComponent } from './user-profile//change-password/change-password.component';
+// import { ChangePasswordComponent } from './user-profile//change-password/change-password.component'; // now lazy
 
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
-import { SortByPipe } from './sortby.pipe';
+// import { SortByPipe } from './sortby.pipe'; // now lazy
 import { SortByDesPipe } from './sortbydes.pipe';
 import { MapToIterable } from './map-to-iterable-pipe';
 // import { SelectOptionsTranslatePipe } from './selectOptionsTranslate.pipe';
 import { FilterArrayPipe } from './filterarray.pipe';
 // import { MarkedPipe } from './marked.pipe'; // moved in SharedModule
 
-import { HoursComponent } from './hours/hours.component';
-
-
-
+// import { HoursComponent } from './hours/hours.component'; // now lazy
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ResetPswComponent } from './reset-psw/reset-psw.component';
+// import { ResetPswComponent } from './reset-psw/reset-psw.component';  // now lazy
 import { ResetPswService } from './services/reset-psw.service';
-import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component';
+
 import { UploadImageService } from './services/upload-image.service';
 import { UploadImageNativeService } from './services/upload-image-native.service';
 
@@ -127,8 +124,8 @@ import { WidgetService } from './services/widget.service';
 
 import { ActivitiesComponent } from './activities/activities.component';
 
-import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
-import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
+// import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy
+// import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -146,8 +143,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { RealtimeComponent } from './analytics/realtime/realtime.component'; // now lazy
 
 
-import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
-import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
+// import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component'; // now lazy
+// import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component'; // now lazy
 import { ProjectPlanService } from './services/project-plan.service';
 import { TriggerComponent } from './trigger/trigger.component';
 import { BasetriggerComponent } from './trigger/basetrigger/basetrigger.component';
@@ -159,9 +156,9 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 /* PRIVATE */
 // import { PricingModule } from './pricing/pricing.module'; // lazy loading
 
-import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
+// import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component'; // deleted
 
-import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
+// import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component'; // now lazy
 
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
@@ -182,8 +179,8 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
 // import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';  // now removed
 import { WebSocketJs } from './services/websocket/websocket-js';
-import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
-import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
+import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';  // now lazy
+// import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component'; // now lazy
 import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
 import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 // import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component'; // now lazy
@@ -191,21 +188,21 @@ import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widg
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
-import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
-import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component';
+// import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component'; // now lazy
+// import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component'; // now lazy
 import { CannedResponsesService } from './services/canned-responses.service';
 import { TagsService } from './services/tags.service';
-import { TagsComponent } from './tags/tags.component';
-import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
-import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
-import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
+// import { TagsComponent } from './tags/tags.component'; // now lazy
+// import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component'; // now lazy
+// import { TagsEditComponent } from './tags/tags-edit/tags-edit.component'; // now lazy
+// import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component'; // now lazy
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 
 
 
 
 // import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
-import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component'; // now lazy
+// import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component'; // now lazy
 import { AutologinComponent } from './auth/autologin/autologin.component';
 // APP
 // import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
@@ -220,22 +217,24 @@ import { ScriptService } from './services/script/script.service';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
-import { WidgetHomeComponent } from './widget-home-preview/widget-home.component';
-import { WidgetCalloutComponent } from './widget-callout/widget-callout.component';
-import { WidgetChatComponent } from './widget-chat/widget-chat.component';
+
+// import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component'; // now lazy
+// import { WidgetHomeComponent } from './widget-home-preview/widget-home.component'; // now lazy
+// import { WidgetCalloutComponent } from './widget-callout/widget-callout.component'; // now lazy
+// import { WidgetChatComponent } from './widget-chat/widget-chat.component'; // now lazy
+// import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component'; // now lazy
 
 
-
-import { WebhookComponent } from './webhook/webhook.component';
-import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
+// import { WebhookComponent } from './webhook/webhook.component'; // now lazy
+// import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component'; // now lazy
 import { WebhookService } from './services/webhook.service';
 
 
 
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
-import { CreateGroupComponent } from './department-edit-add/create-group/create-group.component';
-import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.component';
+// import { CreateGroupComponent } from './department-edit-add/create-group/create-group.component'; // now lazy
+// import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.component'; // now lazy
 
 
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
@@ -245,13 +244,9 @@ import { SafeHtmlPipe } from './safe-html.pipe'; // used to sanitize email
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 
 // import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';  // moved in SharedModule
-import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
-import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
-import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
-
-
-import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component';
-
+// import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component'; now lazy
+// import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component'; // now lazy
+// import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
 
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
 import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
@@ -262,14 +257,14 @@ import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-s
 import { TilebotSidebarComponent } from './bots/tilebot-sidebar/tilebot-sidebar.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
-import { TemplatesComponent } from './bots/templates/templates.component';
+// import { TemplatesComponent } from './bots/templates/templates.component'; // now lazy
 
-import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
+// import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 
 import { CutomTooltipOptions } from './utils/util';
 // import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component'; // now lazy
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
-import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
+// import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
 import { AutofocusDirective } from './_directives/autofocus.directive';
 
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
@@ -278,7 +273,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { ColorPickerModule } from 'ngx-color-picker';
+// import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 
@@ -301,22 +296,15 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-// Removed libraries
-// import { ColorPickerModule } from 'ngx-color-picker'; -- ColorPickerModule v12.0.1 (was v6.7.0) -| widget-set-up.component.ts |--|
-// import { MyDatePickerModule } from 'mydatepicker'; -- replaced with MatDatepickerModule -| activities.componet.ts |--| history-and-nort-convs.component.ts |--| activities-static.component.ts
-// import { SlideshowModule } from 'ng-simple-slideshow'; --  replaced with npm i ng-image-slider -| analytics-static.component |--| departments-static |--|  groups-static
-
-// import { AmazingTimePickerModule } from 'amazing-time-picker'; -- ngx-mat-timepicker -| hours.component.ts |--| // see https://stackblitz.com/edit/ngx-mat-timepicker?file=src%2Fapp%2Fapp.component.ts
-// import { MomentModule } from 'angular2-moment';
 
 // Custom component widget installation //
-import { CodeInstallationComponent } from './components/widget-installations/code-installation/code-installation.component';
-import { JsInstallationComponent } from './components/widget-installations/js-installation/js-installation.component';
-import { GoogleTagManagerInstallationComponent } from './components/widget-installations/google-tag-manager-installation/google-tag-manager-installation.component'
-import { ShopifyInstallationComponent } from './components/widget-installations/shopify-installation/shopify-installation.component';
-import { WordpressInstallationComponent } from './components/widget-installations/wordpress-installation/wordpress-installation.component';
-import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component';
-import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component';
+// import { CodeInstallationComponent } from './components/widget-installations/code-installation/code-installation.component'; // now lazy
+// import { JsInstallationComponent } from './components/widget-installations/js-installation/js-installation.component'; // now lazy
+// import { GoogleTagManagerInstallationComponent } from './components/widget-installations/google-tag-manager-installation/google-tag-manager-installation.component' // now lazy
+// import { ShopifyInstallationComponent } from './components/widget-installations/shopify-installation/shopify-installation.component'; // now lazy
+// import { WordpressInstallationComponent } from './components/widget-installations/wordpress-installation/wordpress-installation.component'; // now lazy
+// import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component'; //no lazy
+// import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component'; //no lazy
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { TilebotFormComponent } from './bots/tilebot/tilebot-form/tilebot-form.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -331,7 +319,7 @@ import { SidebarClaimsComponent } from './create-project-wizard/onboarding/sideb
 import { NetworkOfflineComponent } from './network-offline/network-offline.component';
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
 import { TemplateDetailComponent } from './bots/templates/template-detail/template-detail.component';
-import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component';
+// import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component'; // now lazy
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 // import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module'; // now lazy
@@ -339,19 +327,19 @@ import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.com
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
-import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
+// import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
-import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
-import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
+// import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component'; // now lazy
+// import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component'; // now lazy
 import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
-import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
-import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+// import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component'; // now lazy
+// import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component'; // now lazy
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
 import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/cnp-project-name.component';
 import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
 import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
 import { CnpChatbotWelcomeMessageComponent } from './create-new-project/cnp-chatbot-welcome-message/cnp-chatbot-welcome-message.component';
-import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component';
+// import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component'; // no more used
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { LoadingSectionComponent } from './create-new-project/loading-section/loading-section.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
@@ -362,56 +350,64 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 
 
 import { OpenaiService } from './services/openai.service';
-// import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/home-kb-modal.component';
 import { HomeCreateChatbotModalComponent } from './home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
 import { HomeInviteTeammateErrorModalComponent } from './home-components/home-create-teammate/home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
-import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component';
+// import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component'; // now lazy
 import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-modal.component';
-import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component';
-import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+// import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component'; // now lazy
+// import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component'; // now lazy
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
-import { AutomationsComponent } from './automations/automations.component';
+// import { AutomationsComponent } from './automations/automations.component'; // now lazy
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { HomeCdsComponent } from './home-components/home-cds/home-cds.component'; // now lazy
-import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
+// import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component'; // now lazy
 // import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
 // import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
 
-import { IntegrationsComponent } from './integrations/integrations.component';
-import { OpenaiIntegrationComponent } from './integrations/list/openai-integration/openai-integration.component';
-import { QaplaIntegrationComponent } from './integrations/list/qapla-integration/qapla-integration.component';
-import { CustomerioIntegrationComponent } from './integrations/list/customerio-integration/customerio-integration.component';
-import { HubspotIntegrationComponent } from './integrations/list/hubspot-integration/hubspot-integration.component';
-import { BrevoIntegrationComponent } from './integrations/list/brevo-integration/brevo-integration.component';
-import { GsheetsIntegrationComponent } from './integrations/list/gsheets-integration/gsheets-integration.component';
-import { MakeIntegrationComponent } from './integrations/list/make-integration/make-integration.component';
-import { IntegrationHeaderComponent } from './integrations/base-components/integration-header/integration-header.component';
+// import { IntegrationsComponent } from './integrations/integrations.component'; // now lazy
+// import { OpenaiIntegrationComponent } from './integrations/list/openai-integration/openai-integration.component'; // now lazy
+// import { QaplaIntegrationComponent } from './integrations/list/qapla-integration/qapla-integration.component'; // now lazy
+// import { CustomerioIntegrationComponent } from './integrations/list/customerio-integration/customerio-integration.component'; // now lazy
+// import { HubspotIntegrationComponent } from './integrations/list/hubspot-integration/hubspot-integration.component'; // now lazy
+// import { BrevoIntegrationComponent } from './integrations/list/brevo-integration/brevo-integration.component'; // now lazy
+// import { GsheetsIntegrationComponent } from './integrations/list/gsheets-integration/gsheets-integration.component'; // now lazy
+// import { MakeIntegrationComponent } from './integrations/list/make-integration/make-integration.component'; // now lazy
+// import { IntegrationHeaderComponent } from './integrations/base-components/integration-header/integration-header.component'; // now lazy
 
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { ModalPageUrlComponent } from './knowledge-bases/modals/modal-page-url/modal-page-url.component';
-import { ModalSiteMapComponent } from './knowledge-bases/modals/modal-site-map/modal-site-map.component';
-import { ModalTextFileComponent } from './knowledge-bases/modals/modal-text-file/modal-text-file.component';
-import { ModalGptKeyComponent } from './knowledge-bases/modals/modal-gpt-key/modal-gpt-key.component';
-import { ModalDeleteKnowledgeBaseComponent } from './knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
-import { ModalPreviewKnowledgeBaseComponent } from './knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
-import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
-import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
-import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component';
-import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
-import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
-import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component';
+// import { ModalPageUrlComponent } from './knowledge-bases/modals/modal-page-url/modal-page-url.component'; // now lazy
+// import { ModalSiteMapComponent } from './knowledge-bases/modals/modal-site-map/modal-site-map.component'; // now lazy
+// import { ModalTextFileComponent } from './knowledge-bases/modals/modal-text-file/modal-text-file.component'; // now lazy
+// import { ModalGptKeyComponent } from './knowledge-bases/modals/modal-gpt-key/modal-gpt-key.component'; // now lazy
+// import { ModalDeleteKnowledgeBaseComponent } from './knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component'; // now lazy
+// import { ModalPreviewKnowledgeBaseComponent } from './knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component'; // now lazy
+// import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component'; // now lazy
+// import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component'; // now lazy
+// import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component'; // now lazy
+// import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component'; // now lazy
+// import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component'; // now lazy
+// import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component'; // now lazy
 import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
-import { N8nIntegrationComponent } from './integrations/list/n8n-integration/n8n-integration.component';
+// import { N8nIntegrationComponent } from './integrations/list/n8n-integration/n8n-integration.component'; // now lazy
+import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
+import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
+import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
+import { RoleService } from './services/role.service';
+// import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
+// import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 
+// import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
+// import { ModalUploadFileComponent } from './knowledge-bases/modals/modal-upload-file/modal-upload-file.component';
+// import { ModalChatbotNameComponent } from './knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 
 
 
@@ -426,7 +422,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 const appInitializerFn = (appConfig: AppConfigService, brandService: BrandService) => {
   return async () => {
     // console.log('APP INITIALIZED')
-    // localStorage.setItem('isLoading', 'false')
+    
     let loggingLevel = ''
     if (typeof appConfig.getConfig().logLevel === 'string') {
       loggingLevel = appConfig.getConfig().logLevel.toUpperCase()
@@ -497,40 +493,40 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HomeComponent, // now lazy
     // ContactsComponent, // now lazy
     ChatComponent,
-    DepartmentsComponent,
+    // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy
-    UsersComponent,
-    BotListComponent,
+    // UsersComponent, // now lazy
+    // BotListComponent, // now lazy
     BotCreateComponent,
     FaqEditAddComponent,
-    DepartmentEditAddComponent,
-    ProjectEditAddComponent,
+    // DepartmentEditAddComponent, // now lazy
+    // ProjectEditAddComponent, // now lazy
     // RequestsListHistoryComponent,
     // SigninComponent, // now lazy
     // SignupComponent, // now lazy
     UnauthorizedComponent,
     FaqTestComponent,
-    UserEditAddComponent,
+    // UserEditAddComponent, // now lazy
     VerifyEmailComponent,
-    GroupsComponent,
-    GroupEditAddComponent,
+    // GroupsComponent, // now lazy
+    // GroupEditAddComponent, // now lazy
     GroupNamePipe,
-    SortByPipe,
+    // SortByPipe, // now lazy
     SortByDesPipe,
     MapToIterable,
     // SelectOptionsTranslatePipe, moved in SharedModule
     FilterArrayPipe,
-    ChangePasswordComponent,
-    HoursComponent,
-    ResetPswComponent,
-    WidgetSetUp,
+    // ChangePasswordComponent, // now lazy
+    // HoursComponent, // now lazy
+    // ResetPswComponent, // now lazy
+   // WidgetSetUp, // now lazy
     // HistoryAndNortConvsComponent, // now lazy
     // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
     ActivitiesComponent,
-    AnalyticsStaticComponent,
-    ActivitiesStaticComponent,
+    // AnalyticsStaticComponent, // now lazy
+    // ActivitiesStaticComponent, // now lazy
     FaqTestTrainBotComponent,
     // AnalyticsComponent, // now lazy
     // ConvsDurationComponent,  // now lazy
@@ -544,10 +540,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // VisitorsAnalyticsComponent, // now lazy
     // PanoramicaComponent, // now lazy
     // RealtimeComponent, // now lazy
-    HoursStaticComponent,
-    DepartmentsStaticComponent,
-    StaticPageBaseComponent,
-    GroupsStaticComponent,
+    // HoursStaticComponent, // now lazy
+    // DepartmentsStaticComponent, // now lazy
+    // StaticPageBaseComponent, //deleted
+    // GroupsStaticComponent, // now lazy
     TriggerComponent,
     TriggerAddComponent,
     TriggerEditComponent,
@@ -560,8 +556,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WsRequestsMsgsComponent, // now lazy
     WsSharedComponent,
     // WsTrainBotComponent, // now removed
-    WidgetMultilanguageComponent,
-    BaseTranslationComponent,
+    // WidgetMultilanguageComponent,   // now lazy
+    // BaseTranslationComponent, // now lazy
     WidgetSharedComponent,
     WidgetSetUpBaseComponent,
     // WsRequestsServedComponent, // now lazy
@@ -570,12 +566,12 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     LoadingPageComponent,
     BotTypeSelectComponent,
     BotsBaseComponent,
-    CannedResponsesListComponent,
-    CannedResponsesAddEditComponent,
-    TagsComponent,
-    TagsDeleteComponent,
-    TagsEditComponent,
-    TriggerStaticComponent,
+    // CannedResponsesListComponent, // now lazy
+    // CannedResponsesAddEditComponent, // now lazy
+    // TagsComponent, // now lazy
+    // TagsDeleteComponent, // now lazy
+    // TagsEditComponent, // now lazy
+    // TriggerStaticComponent, // now lazy
     AccountSettingsComponent,
     // ProjectsForPanelComponent, // removed
     // WsRequestsUnservedForPanelComponent, // now lazy
@@ -588,36 +584,34 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     DocsUrlRowComponent,
     VisitorsComponent,
     EventsComponent,
-    WidgetHomeComponent,
-    WidgetCalloutComponent,
+    // WidgetHomeComponent, // now lazy
+    // WidgetCalloutComponent, // now lazy
     ConfigureWidgetComponent,
-    WidgetChatComponent,
-    WebhookComponent,
-    WebhookAddEditComponent,
+    // WidgetChatComponent, // now lazy
+    // WebhookComponent, // now lazy
+    // WebhookAddEditComponent,
     // MapRequestComponent, // now lazy
-    WebhookComponent,
-    WebhookAddEditComponent,
     NotificationSettingsComponent,
-    CreateGroupComponent,
-    CreateBotComponent,
+    // CreateGroupComponent, // now lazy
+    // CreateBotComponent, // now lazy
     UnauthorizedForPricingComponent,
     // MarkedPipe, // moved in SharedModule
     // HtmlEntitiesEncodePipe, // moved in SharedModule
     // SanitizeHtmlPipe, // moved in SharedModule
     SafeHtmlPipe,
     UnauthorizedForProjectComponent,
-    NotificationEmailComponent,
-    SmtpSettingsComponent,
-    SettingsSidebarComponent,
-    WidgetPrechatFormComponent,
+    // NotificationEmailComponent, // now lazy
+    // SmtpSettingsComponent, // now lazy
+    // SettingsSidebarComponent,
+    // WidgetPrechatFormComponent, // now lazy
     NativeBotSidebarComponent,
     NativeBotComponent,
     NativeBotSelectTypeComponent,
-    EmailTicketingComponent,
+    // EmailTicketingComponent, // now lazy
     // WsSidebarAppsComponent, // now lazy
     RasaBotComponent,
     ImageViewerComponent,
-    WidgetInstallationComponent,
+    // WidgetInstallationComponent,  // now lazy
     AutofocusDirective,
     TilebotSelectTypeComponent,
     TilebotSidebarComponent,
@@ -627,13 +621,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatbotConfigurationComponent,
     HumanConfigurationComponent,
     ErrorResultComponent,
-    CodeInstallationComponent,
-    JsInstallationComponent,
-    GoogleTagManagerInstallationComponent,
-    ShopifyInstallationComponent,
-    WordpressInstallationComponent,
-    PrestashopInstallationComponent,
-    JoomlaInstallationComponent,
+    // CodeInstallationComponent, // now lazy
+    // JsInstallationComponent, // now lazy
+    // GoogleTagManagerInstallationComponent, // now lazy
+    // ShopifyInstallationComponent, // now lazy
+    // WordpressInstallationComponent, // now lazy
+    // PrestashopInstallationComponent, // now lazy
+    // JoomlaInstallationComponent, // now lazy
     TilebotFormComponent, 
     ModalDeleteComponent, 
     TilebotAddEditFormComponent, 
@@ -642,34 +636,34 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
     HomePromoBannerComponent, 
-    TemplatesComponent, 
+    // TemplatesComponent, // now lazy
     TemplateDetailComponent, 
-    BotsSidebarComponent, 
+    // BotsSidebarComponent,  // now lazy
     GetStartChatbotForkComponent, 
     InstallTemplateComponent, 
     CreateChatbotComponent,
     OnboardingWidgetComponent, 
     CommunityTemplateDtlsComponent, 
     HomePromoDesignStudioComponent,
-    PasswordStrengthComponent,
+    // PasswordStrengthComponent,
     CloneBotComponent,
-    ContactsStaticComponent,
-    CannedResponsesStaticComponent,
+    // ContactsStaticComponent, // now lazy
+    // CannedResponsesStaticComponent, // now lazy
     UpgradePlanModalComponent,
-    WsrequestsStaticComponent,
-    EmailTicketingStaticComponent,
+    // WsrequestsStaticComponent, // now lazy
+    // EmailTicketingStaticComponent, // now lazy
     OnboardingContentComponent,
     CnpProjectNameComponent,
     CnpQuestionSelectComponent,
     CnpQuestionButtonComponent,
     CnpChatbotWelcomeMessageComponent,
-    CnpWidgetInstallationComponent,
+    // CnpWidgetInstallationComponent, // no more used
     LoadingSectionComponent,
     ActivateAppsumoProductComponent,
     ContactCustomPropertiesComponent,
     // ContactInfoComponent, ContactInfoComponent
     CreateProjectGsComponent, // now lazy
-    KnowledgeBasesComponent,
+    // KnowledgeBasesComponent, // now lazy
     // HomeConvsGraphComponent, // now lazy
     // HomeWhatsappAccountComponent, // now lazy
     // HomeCreateChatbotComponent, // now lazy
@@ -685,41 +679,47 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeCreateChatbotModalComponent,
     HomeInviteTeammateModalComponent,
     HomeInviteTeammateErrorModalComponent,
-    HomeGoToChatComponent,
+    // HomeGoToChatComponent, // now lazy
     ChatbotModalComponent,
-    ChatbotAlertComponent,
+    // ChatbotAlertComponent, // now lazy
     CnpTemplatesComponent,
     OnboardingWelcomeComponent,
     HomeNewsFeedModalComponent,
-    AutomationsComponent,
+    // AutomationsComponent, // now lazy
     // HomeCdsComponent, // now lazy
-    AutomationStaticComponent,
+    // AutomationStaticComponent, // now lazy
     // KbModalComponent,
     // KbAlertComponent,
-    IntegrationsComponent,
-    OpenaiIntegrationComponent,
-    QaplaIntegrationComponent,
-    CustomerioIntegrationComponent,
-    HubspotIntegrationComponent,
-    MakeIntegrationComponent,
-    BrevoIntegrationComponent,
-    GsheetsIntegrationComponent,
-    IntegrationHeaderComponent,
-    ModalPageUrlComponent,
-    ModalSiteMapComponent,
-    ModalTextFileComponent,
-    ModalGptKeyComponent,
-    ModalDeleteKnowledgeBaseComponent,
-    ModalPreviewKnowledgeBaseComponent,
-    ModalDetailKnowledgeBaseComponent,
-    KnowledgeBaseTableComponent,
-    ModalErrorComponent,
-    KnowledgeBasesPreviousComponent,
-    ModalUrlsKnowledgeBaseComponent,
-    AddContentMenuComponent,
+    // IntegrationsComponent, // now lazy
+    // OpenaiIntegrationComponent, // now lazy
+    // QaplaIntegrationComponent, // now lazy
+    // CustomerioIntegrationComponent, // now lazy
+    // HubspotIntegrationComponent, // now lazy
+    // MakeIntegrationComponent, // now lazy
+    // BrevoIntegrationComponent, // now lazy
+    // GsheetsIntegrationComponent, // now lazy
+    // IntegrationHeaderComponent, // now lazy
+    // ModalPageUrlComponent, // now lazy
+    // ModalSiteMapComponent, // now lazy
+    // ModalTextFileComponent, // now lazy
+    // ModalGptKeyComponent, // now lazy
+    // ModalDeleteKnowledgeBaseComponent, // now lazy
+    // ModalPreviewKnowledgeBaseComponent, // now lazy
+    // ModalDetailKnowledgeBaseComponent, // now lazy
+    // KnowledgeBaseTableComponent, // now lazy
+    // ModalErrorComponent, // now lazy
+    // KnowledgeBasesPreviousComponent, // now lazy
+    // ModalUrlsKnowledgeBaseComponent, // now lazy
+    // AddContentMenuComponent, // now lazy
     UserModalComponent,
     MessagesStatsModalComponent,
-    N8nIntegrationComponent
+    // N8nIntegrationComponent,
+    KnowledgeBasesAlertComponent,
+    CnpSelectTemplatesOrKbComponent,
+    // ModalChatbotReassignmentComponent,
+    // ModalAddNamespaceComponent,
+    // ModalUploadFileComponent,
+    // ModalChatbotNameComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -729,7 +729,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NgImageSliderModule,
     MomentModule,
     NgxMatTimepickerModule,
-    ColorPickerModule,
+    // ColorPickerModule, // moved in WidgetSetUpModule
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -759,6 +759,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppRoutingModule,
     CoreModule,
     SharedModule,
+    // PasswordStrengthModule,
     UiModule,
     ComponentsModule,
     RouterModule,
@@ -768,7 +769,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // CreditCardDirectivesModule,
     // MomentModule,
     // AmazingTimePickerModule,
-    // ColorPickerModule,
     // MyDatePickerModule,
     // SlideshowModule,
     NgSelectModule,
@@ -783,6 +783,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    // { provide: HTTP_INTERCEPTORS, useClass: LogRequestsInterceptor, multi: true },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -840,6 +841,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OpenaiService,
     PopupService,
     NotificationService,
+    RoleService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

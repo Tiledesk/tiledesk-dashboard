@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -20,8 +19,8 @@ import { Location } from '@angular/common';
   templateUrl: './contacts-static.component.html',
   styleUrls: ['./contacts-static.component.scss']
 })
-// extends StaticPageBaseComponent
-export class ContactsStaticComponent extends  PricingBaseComponent implements OnInit, OnDestroy {
+
+export class ContactsStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
   imageObject = [
@@ -51,7 +50,7 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
   PLAN_NAME = PLAN_NAME;
-  public_Key:any;
+  public_Key: any;
   payIsVisible: boolean;
 
   constructor(
@@ -64,7 +63,7 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public location: Location
-  ) { 
+  ) {
     super(prjctPlanService, notify);
   }
 
@@ -88,13 +87,13 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      })
   }
 
   getOSCODE() {
@@ -129,13 +128,13 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[CNTCTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.USER_ROLE = user_role;
+        this.logger.log('[CNTCTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      });
   }
 
   getBrowserLang() {
@@ -144,34 +143,35 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
-      // this.logger.log('[DEPTS-STATIC] - project ', project)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        // this.logger.log('[DEPTS-STATIC] - project ', project)
 
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('[CNTCTS-STATIC] - project Id ', this.projectId)
-      }
-    });
+        if (project) {
+          this.projectId = project._id
+          this.logger.log('[CNTCTS-STATIC] - project Id ', this.projectId)
+        }
+      });
   }
 
   presentModalsOnInit() {
+    // console.log('presentModalsOnInit prjct_profile_type ',this.prjct_profile_type,  'subscription_is_active ', this.subscription_is_active)
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        if (this.USER_ROLE === 'owner') {
+          if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      if (this.USER_ROLE === 'owner') {
-        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+          } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+          }
         }
       }
     }
-
   }
 
 
@@ -183,7 +183,7 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-         
+
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

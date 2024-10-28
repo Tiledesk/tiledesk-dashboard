@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'departments',
@@ -57,6 +58,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
   COUNT_OF_VISIBLE_DEPT: number;
 
   isVisibleDEP: boolean;
+  payIsVisible: boolean;
   public_Key: string;
 
   prjct_profile_type: string;
@@ -79,13 +81,15 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     public notify: NotifyService,
     public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) { 
     super(prjctPlanService, notify);
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('depts')
     this.getOSCODE();
     this.getCurrentProject();
 
@@ -137,11 +141,27 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         }
       }
 
+      if (key.includes("PAY")) {
+        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+  
+        } else {
+          this.payIsVisible = true;
+       
+        }
+      }
+
     });
 
     if (!this.public_Key.includes("DEP")) {
       // this.logger.log('[DEPTS] PUBLIC-KEY - key.includes("DEP")', this.public_Key.includes("DEP"));
       this.isVisibleDEP = false;
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.payIsVisible = false;
     }
   }
 
@@ -339,38 +359,39 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
     this.logger.log('DEPTS subscription_is_active ', this.subscription_is_active) 
     this.logger.log('DEPTS trial_expired ', this.trial_expired) 
     
+    this.router.navigate(['project/' + this.project._id + '/department/create']);
 
+    // if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
+    //   this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+    // } else {
+    //   this.router.navigate(['project/' + this.project._id + '/department/create']);
+    // }
 
-    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
-      this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-    } else {
-      this.router.navigate(['project/' + this.project._id + '/department/create']);
-    }
-
-    if (
-      (this.profile_name === PLAN_NAME.A) ||
-      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-      (this.profile_name === 'free' && this.trial_expired === true) ||  
-      (this.profile_name === PLAN_NAME.D) ||
-      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-      (this.profile_name === 'Sandbox' && this.trial_expired === true)
-      ) {
-        this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-      // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
-    } else if (
-      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-      (this.profile_name === 'free' && this.trial_expired === false) ||
-      (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
-      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
-      (this.profile_name === 'Sandbox' && this.trial_expired === false)
+    // if (
+    //   (this.profile_name === PLAN_NAME.A) ||
+    //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    //   (this.profile_name === 'free' && this.trial_expired === true) ||  
+    //   (this.profile_name === PLAN_NAME.D) ||
+    //   (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+    //   (this.profile_name === PLAN_NAME.EE && this.subscription_is_active === false) ||
+    //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+    //   (this.profile_name === 'Sandbox' && this.trial_expired === true)
+    //   ) {
+    //     this.router.navigate(['project/' + this.project._id + '/departments-demo']);
+    //   // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
+    // } else if (
+    //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+    //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+    //   (this.profile_name === 'free' && this.trial_expired === false) ||
+    //   (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
+    //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
+    //   (this.profile_name === 'Sandbox' && this.trial_expired === false)
      
-      ) {
-        this.router.navigate(['project/' + this.project._id + '/department/create']);
-        // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
-      }
+    //   ) {
+    //     this.router.navigate(['project/' + this.project._id + '/department/create']);
+    //     // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
+    //   }
   }
 
   /**

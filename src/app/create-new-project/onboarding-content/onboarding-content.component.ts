@@ -19,6 +19,8 @@ import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqService } from 'app/services/faq.service';
 import { WidgetService } from 'app/services/widget.service';
+import { AppConfigService } from 'app/services/app-config.service';
+import { UsersService } from 'app/services/users.service';
 
 
 export enum TYPE_STEP {
@@ -26,6 +28,7 @@ export enum TYPE_STEP {
   CUSTOM_STEP = "customStep",
   WELCOME_MESSAGE = "welcomeMessage",
   WIDGET_INSTALLATION = "widgetInstallation",
+  SELECT_TEMPLATE_OR_KB = 'selectTemplateOrKb',
   TEMPLATES_INSTALLATION = "templateInstallation"
 
 }
@@ -86,6 +89,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   isMobile: boolean = true;
   updatedProject: any;
   showSpinner: boolean = false;
+  public_Key: string;
+  isMTT: boolean;
+  USER_ROLE: string;
+  hasSelectChatBotOrKb: string
 
   constructor(
     private auth: AuthService,
@@ -97,16 +104,17 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     public translate: TranslateService,
     private httpClient: HttpClient,
     private projectService: ProjectService,
-    private urlService: UrlService,
     private faqService: FaqService,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     private widgetService: WidgetService,
+    public appConfigService: AppConfigService,
+    private usersService: UsersService
   ) {
     super(translate);
     const brand = brandService.getBrand();
- 
+
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
     this.botid = this.route.snapshot.params['botid'];
@@ -132,8 +140,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.detectMobile();
   }
 
-  onInitWindowHeight(): any {
 
+  onInitWindowHeight(): any {
     this.logger.log('[ONBOARDING-CONTENT] ACTUAL WIDTH ', window.innerWidth);
 
     if (window.innerWidth < 452) {
@@ -165,8 +173,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   }
 
-
-
   // CUSTOM FUNCTIONS //
   private getCurrentTranslation() {
     let langDashboard = 'en';
@@ -186,29 +192,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       }
     });
   }
-
-
-  // private checkCurrentUrlAndHideCloseBtn() {
-  //   if (this.router.url.startsWith('/create-project-itw/')) {
-  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true;
-  //     this.browser_lang = this.translate.getBrowserLang();
-  //     if (tranlatedLanguage.includes(this.browser_lang)) {
-  //       const langName = this.getLanguageNameFromCode(this.browser_lang);
-  //       this.temp_SelectedLangName = langName;
-  //       this.temp_SelectedLangCode = this.browser_lang;
-  //     } else {
-  //       this.temp_SelectedLangName = 'English';
-  //       this.temp_SelectedLangCode = 'en';
-  //     }
-  //   }  else if (this.router.url === '/create-project') {
-  //     this.CLOSE_BTN_IS_HIDDEN = true;
-  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-  //   } else if (this.router.url === '/create-new-project') {
-  //     this.CLOSE_BTN_IS_HIDDEN = false;
-  //     // this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = false;
-  //   }
-  // }
-
 
 
   private setProjectName() {
@@ -240,16 +223,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[ONBOARDING-CONTENT] projects ', projects) 
+     this.logger.log('[ONBOARDING-CONTENT] projects ', projects)
+     this.logger.log('[ONBOARDING-CONTENT] projects length ', projects.length)
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
       }
       if (projects.length > 0) {
         this.isFirstProject = false; // the good one
-        // this.isFirstProject = true; // for test without sign up
+        // this.isFirstProject = true; // for test onbording without sign up
+        this.logger.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
       }
-      // console.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
+      this.logger.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
       this.getLoggedUser();
     }, (error) => {
       this.logger.error('[ONBOARDING-CONTENT] - GET PROJECTS ', error);
@@ -272,30 +257,57 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   });
   }
 
+  getMTTValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+    let parts = this.public_Key.split('-');
+  
+
+    let mtt = parts.find((part) => part.startsWith('MTT'));
+    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mtt ', mtt);
+    let mttParts = mtt.split(':');
+    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mttParts ', mttParts);
+    let mttValue = mttParts[1]
+    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mttValue ', mttValue);
+    if (mttValue === 'T') {
+      return true
+    } else if (mttValue === 'F') {
+      return false
+    }
+
+  }
+
   private getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
         this.user = user;
         this.userFullname = user.displayName ? user.displayName : user.firstname;
-        // this.logger.log('getLoggedUser:: ', user);
+        this.logger.log('[ONBOARDING-CONTENT] getLoggedUser:: ', user);
         // this.projectName = this.setProjectName();
         // this.logger.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
-
+        this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject);
         if (this.isFirstProject) {
 
           this.projectName = this.setProjectName();
           if (!this.projectName) {
-            // console.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
+            this.logger.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
 
-          // console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
-          this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
-          // console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps)
-          // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+          this.isMTT = this.getMTTValue()
+          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
+          if (this.isMTT) {
+            this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
 
+            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
+          } else  if (this.isMTT === false) {
+            this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT)
+            this.router.navigate(['/unauthorized']);
+          }
+          // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
           // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
         }
 
@@ -305,7 +317,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private setFirstStep() {
-    // console.log('setFirstStep:: ');
+    // this.logger.log('setFirstStep:: ');
     // if(this.previousUrl.endsWith('/signup')){
     let lang = "en";
     if (this.translate.currentLang) {
@@ -329,7 +341,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    // this.logger.log('loadJsonOnboardingConfig:: ',onboardingConfig);
+    this.logger.log('loadJsonOnboardingConfig:: ', onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -352,8 +364,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
       // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
+
+      // this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
+      this.arrayOfSteps.push(TYPE_STEP.SELECT_TEMPLATE_OR_KB);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      // console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
     });
   }
@@ -369,7 +384,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private nextNumberStep() {
 
     this.activeTypeStepNumber++;
-    // console.log('[ONBOARDING-CONTENT] nextNumberStep activeTypeStepNumber', this.activeTypeStepNumber)
+    // this.logger.log('[ONBOARDING-CONTENT] nextNumberStep activeTypeStepNumber', this.activeTypeStepNumber)
     this.translateY = 'translateY(' + (-(this.activeTypeStepNumber + 1) * 20 + 20) + 'px)';
   }
 
@@ -412,13 +427,13 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   goToSetProjectName($event) {
     this.projectName = $event;
     this.nextNumberStep();
-    // console.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
-    this.createNewProject();
+    this.logger.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
+    this.createNewProject('goToSetProjectName output of cnp-project-name');
   }
 
   goToNextQuestion($event) {
     this.segmentIdentifyAttributes = $event;
-    // console.log('[ONBOARDING-CONTENT] goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
+    // this.logger.log('[ONBOARDING-CONTENT] goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
     this.checkQuestions();
   }
 
@@ -429,10 +444,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.checkQuestions();
       this.activeQuestionNumber = 0;
       this.activeQuestion = this.activeStep.questions[0];
-      // console.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
+      // this.logger.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
       this.goToNextStep();
     } else {
-      // console.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
+      // this.logger.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
       this.goToNextStep();
     }
   }
@@ -458,26 +473,22 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   goToNextStep() {
 
     // this.DISPLAY_SPINNER_SECTION = false;  
-    // console.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
+    // this.logger.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
 
     if (this.segmentIdentifyAttributes && this.segmentIdentifyAttributes["solution_channel"] === "whatsapp_fb_messenger") {
-      // console.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
+      this.logger.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.WIDGET_INSTALLATION) {
 
-      // console.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
+      // this.logger.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
 
       this.arrayOfSteps = this.arrayOfSteps.filter(item => item !== TYPE_STEP.WIDGET_INSTALLATION);
-      // console.log('[ONBOARDING-CONTENT] goToNextStep (2): ', this.arrayOfSteps)
+      this.logger.log('[ONBOARDING-CONTENT] goToNextStep (2): ', this.arrayOfSteps)
 
       // this.arrayOfSteps.splice((this.arrayOfSteps.length - 2), 1);
       // } 
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
     }
-    // if (this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
-    //   this.createNewProject();
-    //   return
-
-    // }
+   
     this.nextNumberStep();
     this.checkPrevButton();
     // else {
@@ -498,7 +509,16 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   createProjectFromTemplates() {
-    this.createNewProject()
+    this.logger.log('[ONBOARDING-CONTENT] createProjectFromTemplates arrayOfSteps: ', this.arrayOfSteps)
+    this.logger.log('[ONBOARDING-CONTENT] createProjectFromTemplates this.arrayOfSteps.includes(nameProject) ', this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT))
+    if (!this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT)) {
+      this.createNewProject('createProjectFromTemplates')
+    }
+  }
+
+  userSelection(event) {
+    this.logger.log('[ONBOARDING-CONTENT] userSelection event: ', event)
+   this.hasSelectChatBotOrKb = event
   }
 
   goToTemplatesInstallation($event) {
@@ -507,13 +527,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToSaveProjectAndCreateBot($event) {
     this.goToNextStep()
-
-    // this.createNewProject();
-    // if(this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT){
-    //   this.createNewProject();
-    // } else {
-    //   this.createBot();
-    // }
   }
 
   goBack() {
@@ -523,30 +536,37 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   /** 
    * SERVICES  
-   * create project and bot 
+   * create project 
    * */
-  private createNewProject() {
+  private createNewProject(calledBy) {
+    this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - calledBy ', calledBy);
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
-    this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project) => {
-      // console.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
+    this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project: Project) => {
+      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
       if (project) {
+        this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - USER_ROLE ', this.USER_ROLE);
+        this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
+        project['role'] = 'owner';
+        this.auth.projectSelected(project, 'onboarding-content')
+        localStorage.setItem(project._id, JSON.stringify(project));
+        this.newProject = project;
 
-        this.newProject = project
+        
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-        const newproject: Project = {
-          _id: project['_id'],
-          name: project['name'],
-          operatingHours: project['activeOperatingHours'],
-          profile_type: project['profile'].type,
-          profile_name: project['profile'].name,
-          trial_expired: project['trialExpired']
-        }
+        // const newproject: Project = {
+        //   _id: project['_id'],
+        //   name: project['name'],
+        //   operatingHours: project['activeOperatingHours'],
+        //   profile_type: project['profile'].type,
+        //   profile_name: project['profile'].name,
+        //   trial_expired: project['trialExpired']
+        // }
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-        this.auth.projectSelected(newproject, 'onboarding-content')
+        // this.auth.projectSelected(project, 'onboarding-content')
         // this.logger.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
-        this.projectID = newproject._id
+        // this.projectID = newproject._id
       }
       /* 
         * !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
@@ -555,127 +575,126 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       */
     }, (error) => {
       this.DISPLAY_SPINNER = false;
-      this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
+      this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - ERROR ', error);
     }, () => {
-      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT * COMPLETE *');
       this.projectService.newProjectCreated(true);
       const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-
-
-
-      // let segmentPageName = "Wizard, Create project";
-      // let segmentTrackName = "Trial Started";
-      // let segmentTrackAttr = {
-      //   "userId": this.user._id,
-      //   "trial_start_date": trialStarDate,
-      //   "trial_end_date": trialEndDate,
-      //   "trial_plan_name": "Pro (trial)",
-      //   "context": {
-      //     "groupId": this.newProject._id
-      //   }
-      // }
-      // this.segment(segmentPageName, segmentTrackName,segmentTrackAttr);
-
-      if (!isDevMode()) {
-        if (window['analytics']) {
-          try {
-            window['analytics'].page("Wizard, Create project", {
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create project page error', err);
-          }
-
-          let userFullname = ''
-          if (this.user.firstname && this.user.lastname) {
-            userFullname = this.user.firstname + ' ' + this.user.lastname
-          } else if (this.user.firstname && !this.user.lastname) {
-            userFullname = this.user.firstname
-          }
-
-          try {
-            window['analytics'].identify(this.user._id, {
-              name: userFullname,
-              email: this.user.email,
-              logins: 5,
-              plan: "Premium (trial)"
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create project identify error', err);
-          }
-          try {
-            window['analytics'].track('Trial Started', {
-              "userId": this.user._id,
-              "trial_start_date": trialStarDate,
-              "trial_end_date": trialEndDate,
-              "trial_plan_name": "Premium (trial)",
-              "context": {
-                "groupId": this.newProject._id
-              }
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create track Trial Started event error', err);
-          }
-          try {
-            window['analytics'].group(this.newProject._id, {
-              name: this.newProject.name,
-              plan: "Premium (trial)",
-            });
-          } catch (err) {
-            this.logger.error('Wizard Create project group error', err);
-          }
-        }
-      }
-      // setTimeout(() => {
-      //   if(auto == true){
-      //     this.DISPLAY_SPINNER_SECTION = false;
-      //   }
-      //   this.DISPLAY_SPINNER = false;
-      // }, 2000);
-      this.getProjectsAndSaveInStorage();
+      this.trackNewProjectCreated(trialStarDate, trialEndDate)
+      
+      this.projectService.newProjectCreated(true);
+      this.getProjectsAndSaveLastProject(this.newProject._id)
+      
+      // this.getProjectsAndSaveInStorage();
       this.callback('createNewProject');
     });
   }
 
+  getProjectsAndSaveLastProject(project_id) {
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[ONBOARDING-CONTENT] getProjects projects ', projects)
+      if (projects) {
+        const populateProjectUser = projects.find(prj => prj.id_project.id === project_id);
+        this.logger.log('[ONBOARDING-CONTENT] currentProjectUser ', populateProjectUser)
+        localStorage.setItem('last_project', JSON.stringify(populateProjectUser))
+      }
+    });
+  }
 
   /** 
    *  GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   
    * */
-  getProjectsAndSaveInStorage() {
-    this.projectService.getProjects().subscribe((projects: any) => {
-      // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
-      if (projects) {
-        this.projects = projects;
-        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
-        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
-        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
-        this.projects.forEach(project => {
-          // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
-          if (project.id_project) {
-            const prjct: Project = {
-              _id: project.id_project._id,
-              name: project.id_project.name,
-              role: project.role,
-              operatingHours: project.id_project.activeOperatingHours
-            }
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
-          }
-        });
-      } else {
+  // getProjectsAndSaveInStorage() {
 
+  //   this.projectService.getProjects().subscribe((projects: any) => {
+  //     // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     this.logger.log('[ONBOARDING-CONTENT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+  //     if (projects) {
+  //       this.projects = projects;
+  //       // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+  //       // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+  //       // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+  //       this.projects.forEach(project => {
+  //         // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+  //         if (project.id_project) {
+  //           const prjct: Project = {
+  //             _id: project.id_project._id,
+  //             name: project.id_project.name,
+  //             role: project.role,
+  //             operatingHours: project.id_project.activeOperatingHours
+  //           }
+  //           localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+  //         }
+  //       });
+  //     } else {
+
+  //     }
+  //   }, error => {
+  //     this.logger.error('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - ERROR ', error)
+  //   }, () => {
+  //     this.logger.log('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - COMPLETE')
+  //   });
+  // }
+
+
+  trackNewProjectCreated(trialStarDate, trialEndDate) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Wizard, Create project", {
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project page error', err);
+        }
+
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname) {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: userFullname,
+            email: this.user.email,
+            logins: 5,
+            plan: "Premium (trial)"
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project identify error', err);
+        }
+        try {
+          window['analytics'].track('Trial Started', {
+            "userId": this.user._id,
+            "trial_start_date": trialStarDate,
+            "trial_end_date": trialEndDate,
+            "trial_plan_name": "Premium (trial)",
+            "context": {
+              "groupId": this.newProject._id
+            }
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create track Trial Started event error', err);
+        }
+        try {
+          window['analytics'].group(this.newProject._id, {
+            name: this.newProject.name,
+            plan: "Premium (trial)",
+          });
+        } catch (err) {
+          this.logger.error('Wizard Create project group error', err);
+        }
       }
-    }, error => {
-      this.logger.error('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - ERROR ', error)
-    }, () => {
-      this.logger.log('[ONBOARDING-CONTENT] getProjectsAndSaveInStorage - COMPLETE')
-    });
+    }
   }
 
 
   // -----------------  FUNCTION CALLBACK   ------------------------ //
   callback(step: string, variable?: any) {
-    // console.log('[ONBOARDING-CONTENT] callback HRE YESSSSS step ', step)
-    // console.log('[ONBOARDING-CONTENT] callback: ', this.arrayOfSteps)
+    // this.logger.log('[ONBOARDING-CONTENT] callback HRE YESSSSS step ', step)
+    this.logger.log('[ONBOARDING-CONTENT] callback: ', this.arrayOfSteps)
     if (step === 'createNewProject') {
 
       //   this.createBot();
@@ -712,7 +731,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      // console.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -723,11 +742,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // for new home
   saveUserPreferences(segmentIdentifyAttributes) {
-    // console.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
+    console.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 
-        // console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
         this.updatedProject = res
 
       }, error => {
@@ -737,9 +756,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // this.goToExitOnboarding();
         // this.goToOnbordingTemplates()
         if (this.arrayOfSteps.length === 1) {
+          this.logger.log('[ONBOARDING-D] - this.arrayOfSteps ', this.arrayOfSteps);
           this.goToHome()
         }
-        
+
       });
   }
 

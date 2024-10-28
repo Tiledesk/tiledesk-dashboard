@@ -176,7 +176,7 @@
           <!-- ------------------------------------------------ -->
           <!-- USECASE Increase sales when no user preferences  -->
           <!-- ------------------------------------------------ -->
-          <div *ngIf="templates === undefined" class="suggested-templates-card increase-sales"
+          <div *ngIf="templates === undefined && displayTemplatesCategory" class="suggested-templates-card increase-sales"
             (click)="goToIncreaseSalesTemplates()">
 
             <div class="button-card-content">
@@ -196,7 +196,7 @@
           <!-- -------------------------------------------------- -->
           <!-- USECASE  Customer Satisfaction when no user preferences -->
           <!-- -------------------------------------------------- -->
-          <div *ngIf="templates === undefined" class="suggested-templates-card customer-satisfaction"
+          <div *ngIf="templates === undefined && displayTemplatesCategory" class="suggested-templates-card customer-satisfaction"
             (click)="goToCustomerSatisfactionTemplates()">
 
             <div class="button-card-content">
@@ -218,7 +218,8 @@
           <!-- -------------------------------------------------- -->
           <!-- USECASE All templates when no user preferences -->
           <!-- -------------------------------------------------- -->
-          <div *ngIf="templates === undefined" class="suggested-templates-card all-template" (click)="goToTemplates()">
+          <div *ngIf="templates === undefined" class="suggested-templates-card all-template" (click)="goToTemplates()"
+           [ngClass]="{'no-category-tempalte': displayTemplatesCategory === false }">
             <div class="button-card-content">
               <div class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
@@ -282,7 +283,7 @@
     <!-- ./ New -->
   </div>
 
-  <div class="chatbots-created" *ngIf="chatBotLimit && areActivePay">
+  <div class="chatbots-created" *ngIf="(chatBotLimit || chatBotLimit === 0) && areActivePay">
     <span class="chatbots-created-num" 
       matTooltipClass="h-custom-mat-tooltip" 
       matTooltip="View detail in Chatbots list"

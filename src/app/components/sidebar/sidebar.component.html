@@ -69,7 +69,7 @@
         matTooltipHideDelay="100">
         <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
           (click)="openChat()" style="cursor: pointer; text-align: center;height: 40px;">
-          <span id="openchat-span" style="position: relative;top: 3px;vertical-align: middle;">
+          <div id="openchat-span">
             <svg id="openchat-svg" version="1.1" xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 21"
               style="enable-background:new 0 0 23 21;" xml:space="preserve"
@@ -78,7 +78,7 @@
               c5.7,0,10.2-4.5,10.2-10S17.2,0.5,11.5,0.5z M11.5,17.2c-2.5,0-4.6-1.3-5.7-2.6c0.6-0.2,0.8-0.8,1.4-1c0.7,0.9,2.5,2.1,4.4,2.1
               c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z" />
             </svg>
-          </span>
+          </div>
           <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
             class="new-messages-count">{{new_messages_count}} </span>
         </a>
@@ -105,18 +105,9 @@
       <!-- ---------------------------------- -->
       <!-- Bot -->
       <!-- ---------------------------------- -->
-
-            <!--  -->
-     <!-- <div style="color: #fff"> ALL_BOTS {{MY_BOTS_ALL_ROUTE_IS_ACTIVE}} </div> 
-     <div style="color: #fff"> IS_BOTS {{MY_BOTS_IS_ROUTE_IS_ACTIVE}} </div> 
-     <div style="color: #fff"> CS_BOTS {{MY_BOTS_CS_ROUTE_IS_ACTIVE}} </div>
-     <div style="color: #fff"> TMPLT_ALL {{ TMPLT_ALL_ROUTE_IS_ACTIVE}} </div> 
-     <div style="color: #fff"> CMNT_TMPLT {{TMPLT_CMNT_ROUTE_IS_ACTIVE}} </div>
-     <div style="color: #fff"> IS_TMPLT {{TMPLT_IS_ROUTE_IS_ACTIVE}} </div>
-     <div style="color: #fff"> CS_TMPLT {{TMPLT_CS_ROUTE_IS_ACTIVE}} </div> -->
-     <!-- routerLinkActive="active" -->
      <!-- routerLink="project/{{ project._id }}/bots/my-chatbots/all" -->
-      <ng-container *ngIf="USER_ROLE !== 'agent'">
+     <!--  -->
+      <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
         <li id="bot-anchor-wpr" *ngIf="project"  
           matTooltipClass="sb-mat-tooltip"
           matTooltip="Bots" 
@@ -128,13 +119,15 @@
             'active': 
             MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
             MY_BOTS_IS_ROUTE_IS_ACTIVE || 
+            BOTS_DEMO_ROUTE_IS_ACTIVE || 
             MY_BOTS_CS_ROUTE_IS_ACTIVE, 
             'menu_item_active': 
             TMPLT_ALL_ROUTE_IS_ACTIVE || 
             TMPLT_CMNT_ROUTE_IS_ACTIVE ||
             TMPLT_IS_ROUTE_IS_ACTIVE ||
             TMPLT_CS_ROUTE_IS_ACTIVE ||
-            KB_ROUTE_IS_ACTIVE} ">
+            KB_ROUTE_IS_ACTIVE ||
+            CREATE_BOT_ROUTE_IS_ACTIVE} ">
           <a id="bot-anchor" #botbtn class="customAncor" (click)="goToAllMyChatbot()"  
             style="height: 40px;">
             <span class="bot-icon-wpr">
@@ -167,7 +160,7 @@
           #tooltip="matTooltip" 
           matTooltipPosition='right' 
           matTooltipHideDelay="100"
-          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center; height: 50px !important;">
+          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE}" style="text-align: center; height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
 
           <!-- <a class="customAncor" routerLink="project/{{ project._id }}/all-conversations" style="height: 40px;"> -->
@@ -213,14 +206,14 @@
       <!-- CONTACTS (LEADS)  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleCNT">
-        <li id="contacts" *ngIf="project" routerLinkActive="active" 
+        <li class="sb-bottom-items" id="contacts" *ngIf="project" routerLinkActive="active" 
           matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Contacts' | translate }}" 
           #tooltip="matTooltip" 
           matTooltipPosition='right'
           matTooltipHideDelay="100" 
           style="height: 50px !important;"
-          [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE}">
+          [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE}">
           <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
             <i class="material-icons sidebar-icons">contacts</i>
           </a>
@@ -228,9 +221,9 @@
       </ng-container>
 
       <!-- ----------------------------- -->
-      <!-- APPS  -->
+      <!-- APPS  moved in settings sidebar -->
       <!-- ----------------------------- -->
-      <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
+      <!-- <ng-container *ngIf="isVisibleAPP && USER_ROLE !== 'agent'">
         <li id="apps" *ngIf="project" routerLinkActive="active" 
           matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Apps' | translate }}" 
@@ -243,15 +236,15 @@
 
           </a>
         </li>
-      </ng-container>
+      </ng-container> -->
 
       <!-- ----------------------------- -->
       <!-- ANALYTICS -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="isVisibleANA">
-        <li id="analytics" *ngIf="project && USER_ROLE !== 'agent'" 
+        <li id="analytics"  *ngIf="project && USER_ROLE !== 'agent'" 
           routerLinkActive="active"
-          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}" 
+          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true, 'sb-bottom-items': !isVisibleCNT}" 
           (click)="stopScroll()"
           matTooltipClass="sb-mat-tooltip" 
           matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}"
@@ -270,7 +263,7 @@
       <ng-container *ngIf="isVisibleACT">
         <li id="activities" *ngIf="project && USER_ROLE !== 'agent'" 
           routerLinkActive="active"
-          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}" 
+          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true, 'sb-bottom-items': !isVisibleCNT || !isVisibleANA }" 
           (click)="stopScroll()"
           matTooltipClass="sb-mat-tooltip" 
           matTooltip="{{ 'Activities' | translate }}" 
@@ -295,37 +288,38 @@
         #tooltip="matTooltip"
         matTooltipPosition='right' 
         matTooltipHideDelay="100" 
+        [ngClass]="{'sb-bottom-items': !isVisibleCNT || !isVisibleANA || !isVisibleACT}"
         style="height: 50px !important;">
         <a class="customAncor" routerLink="project/{{ project._id }}/history">
           <i class="material-icons sidebar-icons">history</i>
         </a>
       </li>
 
-      <!-- && USER_ROLE !== 'agent' -->
       <li id="settings" *ngIf="project && USER_ROLE !== 'agent'" [ngClass]="{'active': 
-      TRIGGER_ROUTE_IS_ACTIVE || 
-      TAG_ROUTE_IS_ACTIVE || 
-      CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
-      DEPTS_ROUTE_IS_ACTIVE || 
-      TEAMMATES_ROUTE_IS_ACTIVE || 
-      GROUPS_ROUTE_IS_ACTIVE || 
-      WIDGET_SETUP_ROUTE_IS_ACTIVE ||
-      PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
-      OPERATING_HOURS_ROUTE_IS_ACTIVE ||
-      ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ||
-      ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ||
-      PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE || 
-      PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ||
-      INVITE_TEAMMATE_ROUTE_IS_ACTIVE ||
-      EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
-      EDIT_DEPT_ROUTE_IS_ACTIVE ||
-      CREATE_GROUP_ROUTE_IS_ACTIVE ||
-      EDIT_GROUP_ROUTE_IS_ACTIVE ||
-      INSTALLATION_ROUTE_IS_ACTIVE ||
-      EMAIL_TICKETING_ROUTE_IS_ACTIVE ||
-      AUTOMATIONS_ROUTE_IS_ACTIVE ||
-      OLD_KB_ROUTE_IS_ACTIVE ||
-      INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUpOrToCannedResponses()"
+        TRIGGER_ROUTE_IS_ACTIVE || 
+        TAG_ROUTE_IS_ACTIVE || 
+        CANNED_RESPONSES_ROUTE_IS_ACTIVE || 
+        DEPTS_ROUTE_IS_ACTIVE || 
+        TEAMMATES_ROUTE_IS_ACTIVE || 
+        GROUPS_ROUTE_IS_ACTIVE || 
+        WIDGET_SETUP_ROUTE_IS_ACTIVE ||
+        PROJECT_SETTINGS_ROUTE_IS_ACTIVE ||
+        OPERATING_HOURS_ROUTE_IS_ACTIVE ||
+        ENTERPRISE_NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE ||
+        ENTERPRISE_SMTP_SETTINGS_ROUTE_IS_ACTIVE ||
+        PRJCT_SETTINGS_WEBHOOK_ROUTE_IS_ACTIVE || 
+        PRJCT_SETTINGS_PAYMENTS_ROUTE_IS_ACTIVE ||
+        INVITE_TEAMMATE_ROUTE_IS_ACTIVE ||
+        EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ||
+        EDIT_DEPT_ROUTE_IS_ACTIVE ||
+        CREATE_GROUP_ROUTE_IS_ACTIVE ||
+        EDIT_GROUP_ROUTE_IS_ACTIVE ||
+        INSTALLATION_ROUTE_IS_ACTIVE ||
+        EMAIL_TICKETING_ROUTE_IS_ACTIVE ||
+        AUTOMATIONS_ROUTE_IS_ACTIVE ||
+        OLD_KB_ROUTE_IS_ACTIVE ||
+        APPS_ROUTE_IS_ACTIVE ||
+        INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUpOrToCannedResponses()"
         style="cursor:pointer; height: 50px !important;" 
         matTooltipClass="sb-mat-tooltip"
         matTooltip="{{ 'Settings' | translate }}" 
@@ -337,180 +331,48 @@
           <i class="material-icons sidebar-icons">settings</i>
         </a>
       </li>
-
-      <li class="tiledesk-logo" 
+      <!-- ----------------------------- -->
+      <!-- @ Support   matTooltip="{{companyName}}" -->
+      <li class="sb-last-item" [ngClass]="{'active': SUPPORT_ROUTE_IS_ACTIVE}"
+        id="support"
         matTooltipClass="sb-mat-tooltip" 
-        matTooltip="{{companyName}}" 
+        [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )  "
         #tooltip="matTooltip"
         matTooltipPosition='right' 
-        matTooltipHideDelay="100">
-        <a class="customAncor" [href]="companySiteUrl" target="_blank">
-          <img [src]="companyLogoNoText" class="img-fluid" style="width: 25px; height: auto; margin-bottom: 5px;" />
+        matTooltipHideDelay="100"
+        routerLinkActive="active" 
+        (click)="stopScroll()">
+
+        <a id="support-anchor" *ngIf="isVisibleSupportMenu" class="customAncor" [matMenuTriggerFor]="menuSupport" style="cursor: pointer;">
+          <i class="material-icons sidebar-icons">support</i>
+        </a>
+        <a *ngIf="!isVisibleSupportMenu"  class="customAncor" [href]="companySiteUrl" target="_blank">
+          <img [src]="companyLogoNoText" class="img-fluid" style="width: 25px; height: auto; margin-bottom: 5px; margin-left: 2px;" />
         </a>       
       </li>
 
+      <!-- SIDEBAR MENU OPTIONS-->
+      <mat-menu #menuSupport="matMenu" class="menuElementSupport" xPosition="before">
+        <ng-template matMenuContent>
 
+          <!-- {{ INFO_MENU_ITEMS | json}} -->
+        <ng-container *ngFor="let item of INFO_MENU_ITEMS"> 
+          <button *ngIf="item.status === 'active'" mat-menu-item   (click)="onMenuOptionFN(item)">
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.label | translate}}  </span>
+          </button>
+        </ng-container>
+          <div class="mat-menu-footer">
+            &copy; {{test | date: 'yyyy'}} {{companyName}} ver {{version}}
+          </div>
+            <!-- <cds-menu
+                [items]="INFO_MENU_ITEMS"
+                [menuType]="'sidebar'"
+                (onMenuOption)="onMenuOptionFN($event)">
+            </cds-menu> -->
+        </ng-template>
+      </mat-menu>
 
-
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Canned responses -->
-      <!-- ------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleCAR">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/cannedresponses">
-            <i class="material-icons sidebar-icons" style="font-size:24px !important">
-              bolt
-            </i>
-            <p class="onBlackBckgrnd">
-              <!-- <span class="sidebar-mini">
-                {{'CannedResponses.CR' | translate}}
-              </span> -->
-              {{'CannedResponses.CannedResponses' | translate}}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-
-      <!-- -------------------------------------------------------------  -->
-      <!-- Tags (menu item name 'Labels' then renamend tags 26gen21)  -->
-      <!-- ------------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleLBS">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
-            <p class="onBlackBckgrnd">
-              <i class="fa fa-tag sidebar-icons" style="font-size: 18px !important;"></i>
-              {{'Tags.Tags' | translate}}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-      <!-- ------------------------------------------------------- -->
-      <!-- New: MERGE ROUTING / DEPT - Routing & depts -->
-      <!-- ------------------------------------------------------- -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
-          <i class="fa fa-university sidebar-icons" style="font-size:16px !important"></i>
-          <p class="onBlackBckgrnd">
-
-            <span *ngIf="isVisibleDEP"> {{'RoutingAndDepts' | translate}} </span>
-            <span *ngIf="!isVisibleDEP"> Routing </span>
-
-          </p>
-        </a>
-      </li>
-
-
-      <!-- ------------------------------------------------------- -->
-      <!-- TRIGGER -->
-      <!-- ------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleTRI">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
-
-            <i class="material-icons sidebar-icons" style="
-            font-size:23px; position:relative; left:1px">
-              generating_tokens
-            </i>
-            <span class="_badge" style="font-size: 9px;"
-              [ngClass]="{'change-badge-bckgrnd' : TRIGGER_ROUTE_IS_ACTIVE === true}">BETA</span>
-            <p class="onBlackBckgrnd">
-              {{ 'Trigger.Trigger' | translate }}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Teammates & Groups -->
-      <!-- ------------------------------------------------------- -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
-          <i class="material-icons sidebar-icons">
-            groups
-          </i>
-          <p class="onBlackBckgrnd">
-            <span *ngIf="isVisibleGRO">
-              <!-- <span class="sidebar-mini">{{'UsersAndGroupsInitials' | translate}} </span> -->
-              {{ 'UsersAndGroups' | translate }}
-            </span>
-            <span *ngIf="!isVisibleGRO">
-              <!-- <span class="sidebar-mini">{{'TeammateInitial' | translate }} </span>  -->
-              <span style="text-transform: capitalize;"> {{ 'Teammates' | translate }} </span>
-            </span>
-          </p>
-        </a>
-      </li>
-
-
-      <!-- ------------------------------------------------------- -->
-      <!-- Chatbot -->
-      <!-- ------------------------------------------------------- -->
-      <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
-          <i class="material-icons sidebar-icons">
-            smart_toy
-          </i>
-          <p class="onBlackBckgrnd">
-            Bots
-          </p>
-        </a>
-      </li>
-
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Widget  -->
-      <!-- -------------------------------------------------------- -->
-      <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
-        (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget-set-up">
-          <i class="material-icons sidebar-icons">
-            chat_bubble
-          </i>
-
-          <p class="onBlackBckgrnd">
-            Widget
-          </p>
-        </a>
-      </li>
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Operatinf Hours  -->
-      <!-- -------------------------------------------------------- -->
-      <ng-container *ngIf="isVisibleOPH">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
-          <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/hours">
-            <i class="material-icons sidebar-icons">
-              watch_later
-            </i>
-            <p class="onBlackBckgrnd">
-              {{ 'Hours' | translate }}
-            </p>
-          </a>
-        </li>
-      </ng-container>
-
-
-      <!-- -------------------------------------------------------- -->
-      <!--  Project Settings  -->
-      <!-- -------------------------------------------------------- -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
-        <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
-
-          <i class="material-icons sidebar-icons">
-            construction
-          </i>
-          <p class="onBlackBckgrnd">
-
-            {{ 'ProjectSettings' | translate }}
-          </p>
-
-
-        </a>
-      </li>
     </ul>
   </div>
 </div>

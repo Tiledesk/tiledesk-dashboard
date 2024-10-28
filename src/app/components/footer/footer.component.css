@@ -2,16 +2,16 @@
    fill: #269ef4
 }
 
-.x-twitter > svg {
+/* .x-twitter > svg {
     position: relative;
     top: 2px;
- }
+ } */
 
  
- .followus-on-youtube > svg {
+ /* .followus-on-youtube > svg {
    position: relative;
    top: 3px;
-}
+} */
 
 .followus-on-youtube:hover > svg {
    fill: #269ef4
@@ -33,6 +33,16 @@
  .star-us-on-github-text {
     font-size: 12px;
     font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+ }
+
+ .footer-content {
+   display: flex;
+    flex-direction: row;
+    align-items: center;
  }
 
 

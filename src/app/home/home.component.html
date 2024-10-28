@@ -19,7 +19,7 @@
             <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
               <div class="flex flex-auto items-center min-w-0">
                 <div class="flex-0 w-16 h-16  overflow-hidden">
-               
+
                   <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
@@ -30,16 +30,17 @@
                     </g>
                     <g class="running">
                       <path [ngClass]="{
-                        'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
-                        'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
-                        'b-plan-badge': current_prjct?.plan_badge_background_type === 'b_plan_badge', 
-                        'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
-                        'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                        'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                        'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                        'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                        'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge',
+                        'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+                        'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
                         }" d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
 		                    C58,24.9,57.1,25.7,56.1,25.7" />
                     </g>
                   </svg>
-                 
+
                   <div *ngIf="!isVisiblePay && !custom_company_home_logo" class="logo-no--text">
                     <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
                   </div>
@@ -66,31 +67,28 @@
                 <div class="flex flex-col min-w-0 ml-4">
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
-                    <span style="font-family: 'Poppins', Arial, sans-serif;"> 
-                      {{ prjct_name }} 
+                    <span style="font-family: 'Poppins', Arial, sans-serif;">
+                      {{ prjct_name }}
                     </span>
-                    <span class="material-icons home-edit-project-name-icon" 
-                      (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" 
-                      matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" 
-                      matTooltipPosition='below'
-                      matTooltipHideDelay="100">
-                        mode_edit
+                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      mode_edit
                     </span>
                   </div>
                   <!-- (click)="goToSubscriptionOrOpenModalSubsExpired()" -->
                   <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
                     (click)="goToSubscription()">
                     <div class="home-project-plan-badge" [ngClass]="{
-                      'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
-                      'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
-                      'b-plan-badge': current_prjct?.plan_badge_background_type === 'b_plan_badge', 
-                      'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
-                      'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                      'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                      'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                      'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge', 
+                      'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
                       }">
-                      <span style="border-bottom: 1px dotted #3ea9f5;"> 
-                        {{ prjct_profile_name }} 
+                      <span style="border-bottom: 1px dotted #3ea9f5;">
+                        {{ prjct_profile_name }}
                       </span>
                     </div>
                   </div>
@@ -139,7 +137,7 @@
 
                           <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
                             <!-- {{'Hours' | translate}} -->
-                            Operating Hours
+                            General Operating Hours
                           </div>
 
                           <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
@@ -197,18 +195,19 @@
                       (change)="switchAnalyticsIndicators($event.checked)">
                     </mat-checkbox>
 
-                    <span>Analitcs Overview</span>
+                    <span>Analytics Overview</span>
                   </button>
 
                   <!-- --------------------- -->
                   <!-- From here -->
                   <!-- --------------------- -->
-                  <!-- <button mat-menu-item (click)="$event.stopPropagation()">
+                  <!-- 
+                   <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
                       (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
                     <span>Connect WhatsApp </span>
-                  </button>
-                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    </button>
+                   <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayCreateChatbot"
                       (change)="switchCreateChatbot($event.checked)"></mat-checkbox>
                     <span>Create Chatbot</span>
@@ -242,70 +241,242 @@
                 </mat-menu>
               </div>
             </div>
-            <!-- -------------------------------------- -->
-            <!-- New Menu to change project !! display none  -->
-            <!-- -------------------------------------- -->
-            <div style="display: none !important; " aria-haspopup="true" matripple=""
-              class="change-project-menu-wpr mat-ripple mat-menu-trigger relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default">
-              <div [matMenuTriggerFor]="projectsMenu" class="flex items-center"
-                style="align-items: center !important;display: flex !important;">
-                <div class="overflow-hidden" style="    overflow: hidden !important;">
-                  <div class="font-medium leading-6 truncate" style="    line-height: 1.5rem !important; font-weight: 500 !important;    overflow: hidden !important;
-                  text-overflow: ellipsis !important;
-                  white-space: nowrap !important;">{{ project.name }}</div>
-                </div>
-                <div class="flex items-center justify-center pl-2"
-                  style="    padding-left: 0.5rem !important; justify-content: center !important; align-items: center !important; display: flex !important">
-                  <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
-                    ng-reflect-svg-icon="heroicons_solid:chevron-down" data-mat-icon-type="svg"
-                    data-mat-icon-name="chevron-down" data-mat-icon-namespace="heroicons_solid"><svg
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit="" height="100%"
-                      width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                      <path fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                    </svg>
-                  </mat-icon>
-                </div>
-              </div>
-              <mat-menu #projectsMenu="matMenu" xPosition="after">
-                <button mat-menu-item (click)="goToProjects()">
-                  <mat-icon>view_list</mat-icon>
-                  <span>{{ 'NavBar.ViewAllProjects' | translate }}</span>
-                </button>
-                <button mat-menu-item (click)="goToCreateProject()">
-                  <mat-icon>add_circle_outline</mat-icon>
-                  <span>{{ 'AddProject' | translate }}</span>
-                </button>
-                <button mat-menu-item [matMenuTriggerFor]="recentProjects"> {{ 'RecentProjects' | translate }}</button>
-              </mat-menu>
-
-              <mat-menu #recentProjects="matMenu">
-                <button *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" mat-menu-item (click)="goToHome(
-                  prjct,
-                  prjct?.id_project?._id, prjct?.id_project?.name,
-                  prjct?.id_project?.profile?.name, 
-                  prjct?.id_project?.trialExpired, 
-                  prjct?.id_project?.trialDaysLeft, 
-                  prjct?.id_project?.activeOperatingHours)">
-                  {{ prjct?.id_project?.name }}
-                </button>
-              </mat-menu>
-              <mat-menu #otherProjects="matMenu" *ngIf="projects?.length > 5">
-                <button *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" mat-menu-item (click)="goToHome(
-                  prjct,
-                  prjct?.id_project?._id, prjct?.id_project?.name,
-                  prjct?.id_project?.profile?.name, 
-                  prjct?.id_project?.trialExpired, 
-                  prjct?.id_project?.trialDaysLeft, 
-                  prjct?.id_project?.activeOperatingHours)">
-                  {{ prjct?.id_project?.name }}
-                </button>
-              </mat-menu>
-
-            </div>
           </div>
         </div> <!-- ./ bg-card -->
+
+        <!-- QUOTA Banner -->
+        <!--  *ngIf="!displayQuotaSkeleton"-->
+        <!-- <div class="test">  -->
+        <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
+          [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
+
+          <!-- <div class="home-quota-banner-title-wpr">
+
+            <div class="home-quota-banner-title-no-alert" [ngClass]="{'home-quota-banner-title-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
+              Current usage
+            </div>
+          </div> -->
+
+          <div class="home-quota-wpr">
+            <!-- -------------------------- -->
+            <!-- Conversations  -->
+            <!-- -------------------------- -->
+            <div class="home-quote-container"
+              [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
+
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title link" (click)="goToHistoryAllConvs()" matTooltipClass="custom-mat-tooltip"
+                  matTooltip="Current usage" #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                  Conversations
+                </p>
+                <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
+                  You run out of converations
+                </div>
+              </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="requests_perc"
+                  [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-conversations-runned-out': conversationsRunnedOut}">
+                  {{ requests_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                </div>
+              </div>
+            </div>
+            <!-- -------------------------- -->
+            <!-- AI Tokens -->
+            <!-- -------------------------- -->
+            <div class="home-quote-container" [ngClass]="{'home-quote-container-tokens-runned-out': tokensRunnedOut}">
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                  AI Tokens
+                </p>
+                <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
+                  You run out of AI Tokens
+                </div>
+              </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="tokens_perc"
+                  [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-token-runned-out': tokensRunnedOut}">
+                  {{ tokens_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- -------------------------- -->
+            <!-- Email -->
+            <!-- -------------------------- -->
+            <div class="home-quote-container" [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
+
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                  Email
+                </p>
+                <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
+                  You run out of Email
+                </div>
+              </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="email_perc"
+                  [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
+                  {{ email_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
+            <div class="home-quota-banner-icon">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                  d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+              </svg>
+            </div>
+            <!-- prjct_profile_type > {{prjct_profile_type}} subscription_is_active {{subscription_is_active}} -->
+            <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+
+              <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                {{ 'Pricing.SubscriptionPaymentProblem' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
+              </span>
+              <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
+                {{ 'Pricing.ThePlanHasExpired' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
+              </span>
+            </span>
+            <span
+              *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true || prjct_profile_type === 'free'">
+              ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
+              quotas,
+              <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+            </span>
+          </div>
+        </div>
+        <!--  *ngIf="displayQuotaSkeleton" -->
+        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 68px;">
+
+          <!-- <div class="quota-skeleton-title">
+              <div class="quota--fake--box"></div>
+            </div> -->
+          <div class="quota-skeleton-container">
+
+            <div class="quota-skeleton-wpr">
+              <div class="quota--fake--box"></div>
+              <div class="quota--fake--circle"></div>
+            </div>
+            <div class="quota-skeleton-wpr">
+              <div class="quota--fake--box"></div>
+              <div class="quota--fake--circle"></div>
+            </div>
+            <div class="quota-skeleton-wpr">
+              <div class="quota--fake--box"></div>
+              <div class="quota--fake--circle"></div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> // test div -->
+        <!-- .\ QUOTA Banner  -->
+
+
+
+        <!-- -------------------- -->
+        <!-- <div class="css-1ae9jt6 emzqq8l0">
+          <div class="css-1i8g5ql e1tmijxs2">
+            <div class="css-1tiye3v e15c8v5c0">
+              <h2 class="css-g9kwll eimqq0f0">Customer service</h2>
+              <span class="css-1mjafm2 e1qlbays0">Free</span>
+            </div>
+            <div class="css-1gcxp0x e15c8v5c0">
+              <div class="css-144jxd7 e1tfsndr0" style="width: 24px; height: 24px;">
+                <svg class="svg-pi"
+                  style="width: 24px; height: 24px;">
+                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"></circle>
+                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"
+                    stroke-dasharray="56.548667764616276" stroke-dashoffset="56.548667764616276" stroke-linecap="round">
+                  </circle>
+                </svg>
+                <div class="svg-pi-label"></div>
+              </div>
+              <div class="css-u49bkm e15c8v5c0">
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">0</h2>
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">&nbsp;/&nbsp;</h2>
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">50</h2>
+              </div>
+            </div>
+            <div class="css-1839bav e1tmijxs0"><a class="css-7zud1g e1y2rc4y0"
+                href="/panel/settings/live-chat/installation">Install Chat Widget to see this</a></div>
+          </div>
+          <div class="css-1i8g5ql e1tmijxs2">
+            <div class="css-1tiye3v e15c8v5c0">
+              <h2 class="css-g9kwll eimqq0f0">Lyro AI Chatbot</h2><span class="css-1mjafm2 e1qlbays0">Free</span>
+            </div>
+            <div class="css-1gcxp0x e15c8v5c0">
+              <div class="css-144jxd7 e1tfsndr0" style="width: 24px; height: 24px;"><svg class="svg-pi"
+                  style="width: 24px; height: 24px;">
+                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"></circle>
+                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"
+                    stroke-dasharray="56.548667764616276" stroke-dashoffset="56.548667764616276" stroke-linecap="round">
+                  </circle>
+                </svg>
+                <div class="svg-pi-label"></div>
+              </div>
+              <div class="css-u49bkm e15c8v5c0">
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">0</h2>
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">&nbsp;/&nbsp;</h2>
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">50</h2>
+              </div>
+            </div>
+            <div class="css-1839bav e1tmijxs0"><a class="css-7zud1g e1y2rc4y0" href="/panel/lyro-ai/configure">Set up
+                Lyro AI Chatbot</a></div>
+          </div>
+          <div class="css-1i8g5ql e1tmijxs2">
+            <div class="css-1tiye3v e15c8v5c0">
+              <h2 class="css-g9kwll eimqq0f0">Flows</h2><span class="css-1mjafm2 e1qlbays0">Free</span>
+            </div>
+            <div class="css-1gcxp0x e15c8v5c0">
+              <div class="css-144jxd7 e1tfsndr0" style="width: 24px; height: 24px;"><svg class="svg-pi"
+                  style="width: 24px; height: 24px;">
+                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#dce9ff" stroke-width="3"></circle>
+                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#0566ff" stroke-width="3"
+                    stroke-dasharray="56.548667764616276" stroke-dashoffset="56.548667764616276" stroke-linecap="round">
+                  </circle>
+                </svg>
+                <div class="svg-pi-label"></div>
+              </div>
+              <div class="css-u49bkm e15c8v5c0">
+                <h2 class="css-10gqelt eimqq0f0">0</h2>
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">&nbsp;/&nbsp;</h2>
+                <h2 color="disabled" class="css-1v24s3u eimqq0f0">100</h2>
+              </div>
+            </div>
+            <div class="css-1839bav e1tmijxs0">
+              <p color="subdued" class="css-1yjik4h eimqq0f0">100 visitors reached</p>
+            </div>
+          </div>
+        </div> -->
+
+
+
+        <!-- ----------------------------- -->
 
         <div class="home-blocks-wpr">
 
@@ -313,13 +484,26 @@
           <!-- // Skeleton START   -->
           <div *ngIf="showskeleton" class="skeleton">
 
-            <div class="first-card is-loading">
+            <!-- Skeleton for chatbot hero section -->
+            <!-- *ngIf="areVisibleChatbot"  -->
+            <!-- <ng-container *ngIf="!displayKbHeroSection"> -->
+            <div style="min-height: 286px;" class="first-card is-loading">
               <div class="fake--circle"></div>
               <div class="fake--box"></div>
               <div class="sm--fake--box"></div>
               <div class="fake--btn"></div>
-
             </div>
+            <!-- </ng-container> -->
+
+            <!-- Skeleton for kb hero section -->
+            <!-- <ng-container *ngIf="displayKbHeroSection">
+              <div style="min-height: 286px;" *ngIf="isVisibleKNB" class="first-card is-loading">
+                <div class="fake--circle"></div>
+                <div class="fake--box"></div>
+                <div class="sm--fake--box"></div>
+                <div class="fake--btn"></div>
+              </div>
+            </ng-container> -->
 
             <!-- // CARD 1 -->
             <mat-card class="card mat-elevation-z3 is-loading">
@@ -424,13 +608,31 @@
 
 
           <ng-container *ngIf="!showskeleton ">
-            <span *ngIf="USER_ROLE !== 'agent'">
-              <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
-              <home-cds 
-                (goToCreateChatbot)="goToCreateChatbot()" 
-                [chatbots] = "chatbots"> </home-cds>
 
-              <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
+
+
+            <span *ngIf="USER_ROLE !== 'agent'">
+
+
+
+              <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
+              <!-- for chatbot hero section -->
+              <ng-container *ngIf="areVisibleChatbot">
+                <home-cds (goToCreateChatbot)="goToCreateChatbot()" (dismissKbSkeleton)="dismissKbSkeleton($event)"
+                  [chatbots]="chatbots" [displayKbHeroSection]="displayKbHeroSection" [isVisibleKNB]="isVisibleKNB">
+                </home-cds>
+              </ng-container>
+
+              <!-- for kb hero section -->
+              <!-- <ng-container *ngIf="displayKbHeroSection">
+                <home-cds *ngIf="isVisibleKNB"
+                  (goToCreateChatbot)="goToCreateChatbot()" 
+                  (dismissKbSkeleton)="dismissKbSkeleton($event)"
+                  [chatbots] = "chatbots"
+                  [displayKbHeroSection]="displayKbHeroSection" > </home-cds>
+              </ng-container> -->
+
+              <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order" style="margin-top:18px ;">
 
                 <!-- ----------------------- -->
                 <!-- Child 1 Convs Graph -->
@@ -483,7 +685,7 @@
                 <!-- ----------------------- -->
                 <!-- Child 5 Create Chatbot -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child5'">
+                <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
                     [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
                     [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
@@ -493,20 +695,34 @@
                   </appdashboard-home-create-chatbot>
                 </ng-container>
 
-                <!-- ----------------------- -->
-                <!-- Child 6 Create Teammate -->
-                <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child6'">
-                  <appdashboard-home-create-teammate *ngIf="displayInviteTeammate">
-                  </appdashboard-home-create-teammate>
-                </ng-container>
+
 
                 <!-- ----------------------- -->
                 <!-- Child 7 KB -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child7' && isVisibleKNB">
-                  <appdashboard-home-kb *ngIf="displayKnowledgeBase" (trackUserAction)="trackUserAction($event)">
-                  </appdashboard-home-kb>
+                <!-- *ngIf="displayKnowledgeBase" -->
+                <ng-container *ngIf="areVisibleChatbot">
+                  <ng-container *ngIf="item.type === 'child7' && isVisibleKNB && !displayKbHeroSection">
+                    <appdashboard-home-kb (trackUserAction)="trackUserAction($event)">
+                    </appdashboard-home-kb>
+                  </ng-container>
+                </ng-container>
+
+                <!-- <ng-container  *ngIf="areVisibleChatbot">
+                  <ng-container *ngIf="item.type === 'child6' && isVisibleKNB">
+                    <appdashboard-home-kb (trackUserAction)="trackUserAction($event)">
+                    </appdashboard-home-kb>
+                  </ng-container>
+                </ng-container> -->
+
+
+
+                <!-- ----------------------- -->
+                <!-- Child 6 Create Teammate -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child7'">
+                  <appdashboard-home-create-teammate *ngIf="displayInviteTeammate">
+                  </appdashboard-home-create-teammate>
                 </ng-container>
 
                 <!-- ----------------------- -->
@@ -523,19 +739,18 @@
             <span *ngIf="USER_ROLE === 'agent'">
               <div class="home--blocks">
 
-                <!-- *ngIf="displayAnalyticsConvsGraph" -->
-                <!-- style="min-width: 834px; display: block;" -->
-                <appdashboard-home-convs-graph *ngIf="isVisibleANA"
+
+                <!-- <appdashboard-home-convs-graph *ngIf="isVisibleANA"
                   [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
                   [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-convs-graph>
+                </appdashboard-home-convs-graph> -->
 
-                <!-- *ngIf="displayAnalyticsIndicators" -->
-                <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
+
+                <!-- <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
                   [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-analytics-indicator>
+                </appdashboard-home-analytics-indicator> -->
 
-                <!-- *ngIf="displayInviteTeammate" -->
+
                 <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
 
                 <appdashboard-home-go-to-chat></appdashboard-home-go-to-chat>
@@ -546,7 +761,7 @@
           </ng-container>
         </div>
 
-        <ng-container *ngIf="displayNewsAndDocumentation"> 
+        <ng-container *ngIf="displayNewsAndDocumentation && USER_ROLE !== 'agent'">
           <div *ngIf="!showsNewsFeedSkeleton" class="news-feed-wpr">
             <!-- [showskeleton]="showskeleton" -->
             <appdashboard-home-news-feed *ngIf="displayNewsFeed"></appdashboard-home-news-feed>

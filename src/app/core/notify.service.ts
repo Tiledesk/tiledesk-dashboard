@@ -130,9 +130,11 @@ export class NotifyService {
         showCancelButton: false,
         confirmButtonText: this.translate.instant('ContactUs'),
         confirmButtonColor: "var(--blue-light)",
-        // cancelButtonColor: "var(--red-color)",
         focusConfirm: false,
         // reverseButtons: true,
+        // cancelButtonColor: "var(--red-color)",
+        
+        
       }).then((result) => { 
         if (result.isConfirmed) {
           this.logger.log('[NOTIFY-SERVICE] displaySubscripionHasExpiredModal result.isConfirmed',  result.isConfirmed) 
@@ -333,9 +335,6 @@ export class NotifyService {
       this.showSubtitleAllOperatorsSeatsUsed = false;
       this.showSubtitleAllChatbotUsed = true;
     }
-
-
-
   }
 
   closeGoToPricingModal() {
@@ -914,15 +913,19 @@ export class NotifyService {
     } else {
       el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+      html: el,
       icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+   
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
   }
 

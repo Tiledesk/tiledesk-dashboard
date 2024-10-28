@@ -9,8 +9,10 @@
 }
 
 .card-app-store {
-    box-shadow: unset;
-    border: 1px solid #e5effe;
+    box-shadow: 0 0 #0000,0 0 #0000,0 1px 3px #0000001a,0 1px 2px -1px #0000001a !important ;
+    // border: 1px solid #e5effe;
+    margin-top: 15px !important;
+    border-radius: 12px !important;
     // transition: border 0s,box-shadow 0.4s ease-out,transform 0.4s ease-out,opacity 0.4s ease-out;
     // transition-delay: 0.1s;
     // transform: translateZ(0);
@@ -84,12 +86,14 @@
 .app-installed-wpr {
     background-color: #7aeb8d;
     height: 41px;
+    border-bottom-right-radius: 12px;
 }
 
 .app-not-installed-wpr {
     background-color: #e4e6eb;
     pointer-events: none;
 }
+
 .app-installed-wpr:hover {
     background-color: #00a11b;
 }
@@ -137,13 +141,15 @@
     font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
+    color: #fff !important;
 }
 
 
 .div-disabled {
-    pointer-events:none;
+    pointer-events: none;
     background: #eee;
 }
+
 .card-create-app-icon-wpr {
     color: #f0806f;
     text-align: center;
@@ -188,3 +194,42 @@
 .hide-paid-app {
     display: none;
 }
+
+.app-alert>div {
+    background: #f44336;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    top: 60px;
+    padding: 15px;
+    font-size: 16px;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif
+}
+
+.app-alert>div>.link-to-integrations { 
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.available-from-b-plan-badge {
+    position: relative;
+   
+}
+
+.b--plan-badge-color {
+    color: #00a1c2;
+    background: rgba(0, 161, 194, .3);
+    width: fit-content;
+    padding: 0px 3px;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 12px;
+    position: absolute;
+    top: -23px;
+}
+
+// .app-alert>div>.link-to-integrations:hover { 
+//     font-weight: 600;
+//     text-decoration: underline;
+// }

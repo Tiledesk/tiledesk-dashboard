@@ -1,0 +1,201 @@
+<div class="m-header">
+    <h1 mat-dialog-title> 
+        <!-- Chatbot <b> {{ chatbotName }} </b> -->
+        {{'ChatbotAndChatbotName' | translate: {chat_bot_name: chatbotName} }}
+        <!-- {{ 'EditChatbot' | translate: {chat_bot_name: chatbotName} }} -->
+    </h1>
+    <div class="m-top-right-icon">
+        <span class="material-icons-outlined" (click)="onNoClick()">
+            close
+        </span>
+    </div>
+</div>
+
+<div mat-dialog-content>
+
+
+    <div class="back-to-btns" *ngIf="hasClickedInstallBtn || hasClickedEditBtn" (click)="hasClickedBackFromInstall()">
+        <span class="material-icons-outlined" >
+            chevron_left
+        </span>
+        <span class="back-to-btns-back-text"> 
+        {{'Back' | translate }}
+        </span>
+    </div>
+    <div class="heading-row">
+        <!-- What do you want to do? -->
+        {{'WhatDoYouWantToDo' | translate }}
+    </div>
+
+    <div class="mat-dialog-content-row">
+        
+
+        <div class="mat-dialog-content-item" (click)="hasClickedInstall()"
+         [ngClass]="{'expand-install-column': hasClickedInstallBtn , 'collapse-install-column': hasClickedEditBtn, 'mat-dialog-content-item-first-state': !hasClickedInstallBtn}">
+
+         
+            <div class="mat-dialog-content-item-title" *ngIf="!hasClickedInstallBtn"> 
+                {{'Install' | translate}} 
+            </div>
+            <div class="mat-dialog-content-item-desc" *ngIf="!hasClickedInstallBtn"> 
+                <!-- Install on your website -->
+                {{'InstallOnYourWebsite' | translate}}
+            </div>
+
+            <div class="mat-dialog-content-item-desc" style="position: relative;" *ngIf="hasClickedInstallBtn"> 
+
+                <div class="widget--script-copy-instructions">
+                    <div class="copy-script-title"> Javascript {{'Installation' | translate}} </div>  
+                    <!-- Copy the following script and insert it into the HTML source between the head tags. -->
+                    {{'Resourcepage.CopyTheFollowingScript...' | translate }}
+                        <code><em>&lt;head&gt;</em></code> tags.
+            
+                </div>
+                <pre class="widget--script">
+                    <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+                    <span>   window.tiledeskSettings=</span>
+                    <span>   {{'{'}}</span>
+                    <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+                    <span>   {{'};'}}</span>
+                    <span>   (function(d, s, id) {{'{'}}</span>
+                    <span>      var w=window; var d=document; var i=function(){{'{'}}i.c(arguments);{{'};'}} </span>
+                    <span>      i.q=[]; i.c=function(args){{'{'}}i.q.push(args);{{'};'}} w.Tiledesk=i; </span>
+                    <span>      var js, fjs=d.getElementsByTagName(s)[0];  </span>
+                    <span>      if (d.getElementById(id)) return; </span>
+                    <span>      js=d.createElement(s); </span>
+                    <span>      js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;</span>
+                    <span>      fjs.parentNode.insertBefore(js, fjs);</span>
+                    <span>   {{'}'}}(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));</span>
+                    <span>&lt;/script&gt;</span>	
+                </pre>
+
+                <span (click)="copyToClipboard()" class="material-icons-outlined widget-content-copy">
+                    content_copy
+                </span>
+                <div class="copied--to--clipboard--tooltip"
+                      [ngClass]="{'has--copied--text' : has_copied}" >
+                      {{ 'Copied' | translate }}
+                </div>
+            </div>
+        </div>
+        <!-- (click)="onOkPresssed()" -->
+        <div *ngIf="!hasClickedEditBtn" class="mat-dialog-content-item" (click)="hasClickedEdit()"
+            [ngClass]="{'collapse-edit-column': hasClickedInstallBtn, 'expand-edit-column': hasClickedEditBtn, 'mat-dialog-content-item-first-state': !hasClickedInstallBtn }">
+
+            <div  class="mat-dialog-content-item-title"> {{'Edit' | translate}} </div> 
+            <div  class="mat-dialog-content-item-desc" [ngClass]="{'mat-dialog-content-item-desc-center-text': !hasClickedInstallBtn }"> 
+                <!-- Edit your chatbot with the powerful Chatbot Design Studio if you want to add features as buttons, human handoff, advanced AI etc.  -->
+                <!-- {{'ModifyYourChatbotWithThePowerfulCDS'| translate}} -->
+                {{'ModifyYourChatbotWithThePowerfulCDS_v2'| translate}}
+                 <!-- <span class="edit-text-wpr"> 
+                    <span class="link-to-cds" (click)="goToCDSBlock()"> {{ 'ModifyTheWelcomeMessage' | translate }} </span> <span>  {{'ChangeYourChatbot' | translate }} </span> <span class="link-to-cds" (click)="goToCDSSettings()"> {{'NameOrIcon' | translate }} </span>  <span>  {{'AddButtonsOrEnhanceYourAIWithChatbotDesign' | translate }} </span>
+                </span> -->
+            </div>
+        </div>
+
+        <div class="mat-dialog-content-item-desc" style="position: relative;width: 100%;padding-bottom: 26px;" *ngIf="hasClickedEditBtn"> 
+           <div class="edit-btn-wpr">
+                <div class="edit-btn" (click)="goToCDSBlock()"> 
+                    <!-- Modify the welcome message -->
+                    {{ 'ModifyTheWelcomeMessage' | translate }}
+
+                </div>
+                <div class="edit-btn" (click)="goToCDSSettings()"> 
+                    {{'ChangeNameOrIconOfYourChatbot' | translate }}
+                </div>
+           </div>
+            
+
+        </div>
+    </div>
+    
+    
+    <!-- <div class="accordion-instructions"> Follow these simple instructions to activate it on your website </div>  -->
+
+    <!-- <div class="mat-accordion-wpr"> 
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false" style="box-shadow: unset;
+                             border: 1px solid #ccc;">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{'Installation' | translate}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="widget--script-copy-instructions">
+                    {{'Resourcepage.CopyTheFollowingScript...' | translate }}
+                        <code><em>&lt;head&gt;</em></code> tags.
+            
+                </div>
+                <pre class="widget--script">
+                    <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+                    <span>   window.tiledeskSettings=</span>
+                    <span>   {{'{'}}</span>
+                    <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+                    <span>   {{'};'}}</span>
+                    <span>   (function(d, s, id) {{'{'}}</span>
+                    <span>      var w=window; var d=document; var i=function(){{'{'}}i.c(arguments);{{'};'}} </span>
+                    <span>      i.q=[]; i.c=function(args){{'{'}}i.q.push(args);{{'};'}} w.Tiledesk=i; </span>
+                    <span>      var js, fjs=d.getElementsByTagName(s)[0];  </span>
+                    <span>      if (d.getElementById(id)) return; </span>
+                    <span>      js=d.createElement(s); </span>
+                    <span>      js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;</span>
+                    <span>      fjs.parentNode.insertBefore(js, fjs);</span>
+                    <span>   {{'}'}}(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));</span>
+                    <span>&lt;/script&gt;</span>	
+                </pre>
+            
+            </mat-expansion-panel>
+        </mat-accordion>
+        <span (click)="copyToClipboard()" *ngIf="panelOpenState === true" class="material-icons-outlined widget-content-copy">
+            content_copy
+        </span>
+        <div class="copied--to--clipboard--tooltip"
+              [ngClass]="{'has--copied--text' : has_copied}" >
+              {{ 'Copied' | translate }}
+        </div>
+    </div> -->
+
+    <!-- <textarea  name="exampleClipboard" class="w-s-in-modal-confirm-goto-cds" readonly rows="20" value="" type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
+        &lt;script type=&quot;application/javascript&quot;&gt;
+            window.tiledeskSettings= 
+            {
+                projectid: &quot;{{ projectId }}&quot;
+            };
+            (function(d, s, id) { 
+                var w=window; var d=document; var i=function(){i.c(arguments);};
+                i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;                
+                var js, fjs=d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js=d.createElement(s); 
+                js.id=id; js.async=true; js.src=&quot;{{WIDGET_URL}}&quot;;
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document,&#39;script&#39;,&#39;tiledesk-jssdk&#39;));
+        &lt;/script&gt;
+      </textarea> -->
+
+
+    <!-- <h4 [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: {bot_name: chatbotName} "> </h4> -->
+    <!-- <h4 style="text-align: center;font-weight: 400;">
+        {{'AreYouSureYouWantToEditTheChatbot' | translate:{chat_bot_name: chatbotName} }}
+    </h4> -->
+
+    <div *ngIf="hasClickedInstallBtn" class="link-to-installations" (click)="goToWidgetInstallation()"> 
+        <!-- Other integrations are available on Installations page -->
+        {{ 'OtherIntegrationsAreAvailableOnInstallationsPage' | translate}}
+    </div>
+   
+</div>
+
+<!-- <div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+   
+
+    <button  class="mat-dialog-ok-btn" mat-button 
+        (click)="onOkPresssed()">
+        {{ "YesImSure" | translate }}
+    </button>
+</div> -->

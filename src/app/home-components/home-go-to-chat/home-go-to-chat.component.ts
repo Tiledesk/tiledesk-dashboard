@@ -40,11 +40,11 @@ export class HomeGoToChatComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        // this.logger.log('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.findCurrentProjectAmongAll(project._id)
-         
+
         }
       }, (error) => {
         this.logger.error('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
@@ -57,12 +57,11 @@ export class HomeGoToChatComponent implements OnInit {
   findCurrentProjectAmongAll(projectId: string) {
 
     this.projectService.getProjects().subscribe((projects: any) => {
- 
+      this.logger.log('[HOME-GO-TO-CHAT] getProjects projects ', projects);
       if (projects) {
-       
 
-       projects = projects.filter((project: any) => {
-    
+        projects = projects.filter((project: any) => {
+
           return project.id_project.status === 100;
 
         });
@@ -70,8 +69,8 @@ export class HomeGoToChatComponent implements OnInit {
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
+      // this.logger.log('[HOME-GO-TO-CHAT] - Find Current Project Among All current_prjct: ',  this.current_prjct);
 
-      
     }, error => {
       this.logger.error('[HOME-GO-TO-CHAT] - Find Current Project Among All: ', error);
     }, () => {
@@ -96,7 +95,7 @@ export class HomeGoToChatComponent implements OnInit {
     let url = baseUrl
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
- 
+
 
   }
 

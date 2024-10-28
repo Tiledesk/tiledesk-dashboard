@@ -66,6 +66,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   public form: FormGroup;
   CURRENT_USER_ROLE: string;
+  hasEditedEmail: boolean = false;
+  onFocusEmail: string 
 
   constructor(
     public router: Router,
@@ -286,31 +288,54 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
   // @ Lead Email
   // -----------------------------------------------------
-  emailChange(event) {
+  emailChange(event?: any) {
+    this.logger.log('[CONTACT-INFO] ON EMAIL CHANGE event ', event)
+   
+    if (event && event.length > 0) {
+      this.logger.log('[CONTACT-INFO] ON EMAIL CHANGE event length', event.length)
+      this.hasEditedEmail = true
+    } else if (!event) {
+      this.hasEditedEmail = false
+    }
+    
     this.EMAIL_IS_VALID = this.validateEmail(event)
     this.logger.log('[CONTACT-INFO] ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
   }
+  
 
   validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
 
-  editContactEmail() {
-    this.logger.log('[CONTACT-INFO] editContactEmail contactNewEmail', this.contactNewEmail)
-    if (this.EMAIL_IS_VALID && this.contactNewEmail !== undefined) {
+  contactEmailOnFocus() {
+    let emailInputElement = <HTMLInputElement>document.querySelector('#lead-email');
+    let emailinputValue = emailInputElement.value;
+  
+    this.logger.log('[CONTACT-INFO] contactEmailOnFocus emailinputValue', emailinputValue)
+    if(emailinputValue === this.contactNewEmail) {
+      this.hasEditedEmail = false
+    }
+  }
+
+  editContactEmailOnBlur() {
+   this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur contactNewEmail', this.contactNewEmail)
+
+   this.logger.log('[CONTACT-INFO] > editContactEmailOnBlur hasEditedEmail', this.hasEditedEmail)
+
+    if ((this.EMAIL_IS_VALID && this.contactNewEmail !== undefined && this.hasEditedEmail)) {
+      this.logger.log('[CONTACT-INFO] editContactEmailOnBlur HERE UPDATES CONTACT EMAIL')
       this.updateContactemail(this.contact_details._id, this.contactNewEmail);
       this.contactEmailChanged.emit(this.contactNewEmail)
     }
   }
 
   removeEmailAnUpdateContact() {
-    this.contactNewEmail = ''
+    this.contactNewEmail = undefined
     this.logger.log('[CONTACT-INFO] removeEmailAnUpdateContact contactNewEmail', this.contactNewEmail)
     this.updateContactemail(this.contact_details._id, this.contactNewEmail);
     this.contactEmailChanged.emit(this.contactNewEmail)
   }
-
 
 
   updateContactemail(contatid: string, contatemail: string) {
@@ -327,6 +352,45 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
         // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
       });
   }
+
+  // -----------------------------------------------------
+  // @ Lead Phone
+  // -----------------------------------------------------
+  editContactPhoneOnBlur() {
+    if (this.contactPhone !== undefined && this.contactPhone.length > 0) {
+      this.logger.log('[CONTACT-INFO] editContactEmailOnBlur HERE UPDATES CONTACT PHONE')
+      this.updateContactPhone(this.contact_details._id, this.contactPhone)
+    }
+  }
+
+
+  removePhoneAnUpdateContact() {
+    this.contactPhone = ""
+    this.updateContactPhone(this.contact_details._id, this.contactPhone)
+  }
+
+  updateContactPhone(contactid, contactphone) {
+    this.contactsService.updateLeadPhone(
+      contactid,
+      contactphone
+    ).subscribe((contact) => {
+      this.logger.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
+
+    }, (error) => {
+
+      this.logger.error('[CONTACT-INFO] - UPDATE CONTACT updateContactPhone - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+
+    }, () => {
+      this.logger.log('[CONTACT-INFO] - UPDATE CONTACT updateContactPhone - COMPLETED ');
+      // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
+    })
+
+  }
+
+
 
   // -----------------------------------------------------
   // @ Lead Company
@@ -364,20 +428,15 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   // -----------------------------------------------------
-  // @ Lead Phone
+  // @ Lead Note
   // -----------------------------------------------------
 
-  editContactPhone() {
-    if (this.contactPhone !== undefined && this.contactPhone.length > 0) {
-      this.updateContactPhone(this.contact_details._id, this.contactPhone)
+  editContactNote() {
+    this.toggleContactNote()
+    this.logger.log('editContactNote ', this.contactNote)
+    if (this.contactNote !== undefined) {
+      this.updateContactNote(this.contact_details._id, this.contactNote)
     }
-  }
-
-
-
-  removePhoneAnUpdateContact() {
-    this.contactPhone = ""
-    this.updateContactPhone(this.contact_details._id, this.contactPhone)
   }
 
   removeNoteAnUpdateContact() {
@@ -385,30 +444,6 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.updateContactNote(this.contact_details._id, this.contactNote)
   }
 
-  updateContactPhone(contactid, contactphone) {
-    this.contactsService.updateLeadPhone(
-      contactid,
-      contactphone
-    ).subscribe((contact) => {
-      this.logger.log('[CONTACT-INFO] - UPDATED CONTACT updateContactPhone', contact);
-
-    }, (error) => {
-
-      this.logger.error('[CONTACT-INFO] - UPDATE CONTACT updateContactPhone - ERROR ', error);
-      // =========== NOTIFY ERROR ===========
-      // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-      // this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
-
-    }, () => {
-      this.logger.log('[CONTACT-INFO] - UPDATE CONTACT updateContactPhone - COMPLETED ');
-      // this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done')
-    })
-
-  }
-
-  // -----------------------------------------------------
-  // @ Lead Note
-  // -----------------------------------------------------
   updateContactNote(contactid, contactnote) {
     this.logger.log('updateContactNote contactid', contactid)
     this.contactsService.updateLeadNote(
@@ -431,13 +466,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   }
 
-  editContactNote() {
-    this.toggleContactNote()
-    this.logger.log('editContactNote ', this.contactNote)
-    if (this.contactNote !== undefined) {
-      this.updateContactNote(this.contact_details._id, this.contactNote)
-    }
-  }
+ 
 
   // -----------------------------------------------------
   // @ Lead Tags
@@ -509,12 +538,12 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   createNewTag = (newTag: string) => {
     let self = this;
-    // self.this.logger.log("Create New TAG Clicked : " + newTag)
-    this.logger.log("Create New TAG Clicked : " + newTag)
+    
+    // self.logger.log("Create New TAG Clicked : " + newTag)
     let newTagTrimmed = newTag.trim()
     self.contactTags.push(newTagTrimmed)
     // self.this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
-    this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
+    // this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     self.updateContactTag(self.requester_id, self.contactTags)
      const tag_selected_color = '#43B1F2'
     self.addTagsToThePresetList(newTag, tag_selected_color)

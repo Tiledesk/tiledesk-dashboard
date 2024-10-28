@@ -1,3 +1,7 @@
+.modal {
+    font-family: 'Poppins';
+}
+
 .modal-header {
     .modal-title {
         font-weight: 400;
@@ -24,7 +28,7 @@
 .fake-input {
     height: 37px;
     border-radius: 6px;
-    border: solid 2px #c6cdd4;
+    border:  1px solid #ccc;
     display: flex;
     align-items: center;
     padding: 12px;
@@ -101,7 +105,7 @@
     min-height: 37px;
     max-height: auto;
     border-radius: 6px;
-    border: solid 2px #c6cdd4;
+    border:  1px solid #ccc;
     padding: 6px 12px 20px;
     cursor: text;
     overflow: hidden;
@@ -128,7 +132,7 @@
         width: 100%;
         height: 37px;
         border-radius: 6px;
-        border: 2px solid #c6cdd4;
+        border: 1px solid #ccc;
         padding: 0px 15px;
         color: #22272d;
         line-height: 35px;
@@ -136,7 +140,7 @@
         margin-bottom: 10px;
         // letter-spacing: 0.5px;
         &.invalid {
-            border: 2px solid red !important;
+            border: 1px solid red !important;
             outline: 0px solid red !important;
             transition: border 0.3s;
         }
@@ -147,7 +151,7 @@
         scrollbar-width: none;
         min-height: 150px;
         border-radius: 6px;
-        border: 2px solid #c6cdd4;
+        border: 1px solid #ccc;
         padding: 10px 15px;
         color: #22272d;
         // line-height: 35px;
@@ -217,8 +221,17 @@
 
 
 .input-label {
+    font-family: 'Poppins';
     font-weight: 400;
-    font-size: 12px; 
+    font-size: 13px;
+    font-weight: normal;
+    padding-bottom: 0;
+}
+
+.textarea-label {
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 14px; 
     font-weight: normal;
     margin-top: 6px;
     padding-bottom: 0;
@@ -226,4 +239,107 @@
 
 .input-label-error {
     color: #c62445;
+}
+
+.mat-dialog-close-btn {
+    background-color: #647491;
+    color: #fff;
+  }
+
+  .mat-dialog-ok-btn {
+    background-color: var(--blue-light);
+    color: #fff;
+
+}
+
+.mat-button-disabled {
+    opacity: 0.8;
+    color: #e4e4e4 !important;
+    cursor: not-allowed;
+}
+
+.custom--expansion-panel {
+    //background-color: transparent !important;
+    margin-top: 12px;
+    box-shadow: none;
+    // background-color: transparent;
+    // box-shadow: none;
+    //color: white;
+}
+
+.expansion-panel-content {
+    display: flex;
+}
+
+// .option-box {
+//     // margin-right: 12px;
+//     // padding: 0px 10px 10px 10px;
+// }
+
+mat-expansion-panel ::ng-deep {
+    background-color: transparent !important;
+
+    .mat-expansion-panel-header {
+        background-color: transparent !important;
+        padding: 0 2px;
+         &:hover {
+            background-color: blueviolet;
+         }
+    }
+
+    .mat-expansion-panel-header.mat-expanded {
+        height: 48px;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 4px !important;
+    }
+    
+    .disable_ripple:hover {
+        background: transparent !important;
+    }
+
+}
+
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: .25em 0;
+    padding-bottom: 4px;
+}
+
+
+::ng-deep .mat-chip-list-wrapper {
+    max-height: 100px; 
+    overflow: scroll;
+
+    .mat-standard-chip {
+        border-radius: 10px;
+        background-color: transparent;
+        border: solid 1px #b9b9b9;
+    }
+}
+
+::ng-deep.ng-select.scrape-types-select .ng-select-container {
+    // height: 48px !important;
+    margin-top: 4px;
+    border-radius: 5px;
+    border: solid 1px #e4e4e4 !important;
+    box-shadow: none;
+ }
+
+
+::ng-deep.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    box-shadow: none;
+}
+
+// ::ng-deep.custom--expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
+//     background: rgba(0, 0, 0, .04) !important;
+// }
+
+::ng-deep.custom--expansion-panel:not(.mat-expanded) {
+    background: rgba(0, 0, 0, .04) !important;
+}
+
+::ng-deep.custom--expansion-panel {
+    padding: 0px 10px;
 }

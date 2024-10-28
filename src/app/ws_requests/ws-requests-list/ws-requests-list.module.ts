@@ -16,6 +16,7 @@ import { MomentModule } from 'ngx-moment';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MapRequestComponent } from 'app/map-request/map-request.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 const routes: Routes = [
@@ -42,7 +43,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MomentModule,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule
   ]
 })
 export class WsRequestsListModule { }

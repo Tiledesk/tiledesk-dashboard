@@ -153,7 +153,6 @@ export class CDSDetailCommunityComponent implements OnInit {
       }
 
       self.selectedChatbot.tags = this.tagsList
-      // self.updateChatbot(self.selectedChatbot)
 
     } else {
       this.logger.log("Create New TAG Clicked - Tag already exist ")

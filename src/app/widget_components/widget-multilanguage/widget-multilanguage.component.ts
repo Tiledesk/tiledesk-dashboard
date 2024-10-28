@@ -6,6 +6,7 @@ import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
+import { ActivatedRoute } from '@angular/router';
 const swal = require('sweetalert');
 
 @Component({
@@ -47,13 +48,16 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   deleteMsg: string;
   cancelMsg: string;
   isChromeVerGreaterThan100: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean; 
+  callingPage: string;
   constructor(
     public location: Location,
     public widgetService: WidgetService,
     private notify: NotifyService,
     private translate: TranslateService,
     public auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public route: ActivatedRoute
   ) {
     super();
   }
@@ -65,14 +69,36 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     this.getEnDefaultTranslation();
     // this.getLabels();
     this.getBrowserVersion()
+    this.listenSidebarIsOpened();
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      this.logger.log('[MULTILANGUAGE] - GET ROUTE PARAMS ', params);
+      if (params.calledby && params.calledby === 'w') {
+        this.callingPage = 'widgetsetup'
+        this.logger.log('[MULTILANGUAGE] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      } else if (!params.calledby) {
+        this.callingPage = 'settingsb'
+        this.logger.log('[MULTILANGUAGE] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      }
+    })
   }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    //   this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
    }
+
+   listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('Multilanguage (widget-multilanguage) isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    })
+  }
 
 
 
@@ -272,12 +298,23 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
           if (translation.lang.toLowerCase() === this.selectedTranslationCode) {
             this.logger.log('Multilanguage (widget-multilanguage) _selectTranslationTab traslation selected ', translation['data'])
 
-            for (let [key, value] of Object.entries(translation['data'])) {
-              // this.logger.log(`Multilanguage (widget-multilanguage) selectTranslationTab key : ${key} - value ${value}`);
+            // for (let [key, value] of Object.entries(translation['data'])) {
+            //   // this.logger.log(`Multilanguage (widget-multilanguage) selectTranslationTab key : ${key} - value ${value}`);
+
+            //   let enLabel = this.engTraslationClone[key]
+
+            //   let entry = { "labelName": enLabel, "labelValue": value }
+            //   this.selected_translation.push(entry);
+            //   // this.selected_translation['labelValue'] = value
+
+            // }
+
+            for (let [key, value] of Object.entries(this.engTraslationClone)) {
+              this.logger.log(`Multilanguage (widget-multilanguage) selectTranslationTab key : ${key} - value ${value}`);
 
               let enLabel = this.engTraslationClone[key]
 
-              let entry = { "labelName": enLabel, "labelValue": value }
+              let entry = { "labelName": enLabel, "labelValue": translation['data'][key] ? translation['data'][key] :  enLabel}
               this.selected_translation.push(entry);
               // this.selected_translation['labelValue'] = value
 
@@ -387,7 +424,9 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     } else {
       isdefault = false
     }
-
+    this.currentTraslationClone['WELLCOME_TITLE'] = this.currentTraslationClone['WELCOME_TITLE']
+    this.currentTraslationClone['WELLCOME_MSG'] = this.currentTraslationClone['WELCOME_MSG']
+    this.currentTraslationClone['WELLCOME'] = this.currentTraslationClone['WELCOME']
     this.widgetService.editLabels(this.selectedTranslationCode.toUpperCase(), isdefault, this.currentTraslationClone)
       .subscribe((labels: any) => {
         this.logger.log('Multilanguage (widget-multilanguage) - editLang RES ', labels);
@@ -441,7 +480,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
 
   presentSwalModalDeleteLanguage() {
-    // console.log('Multilanguage deleteLang selected Translation Label', this.selectedTranslationLabel)
+    //  this.logger.log('Multilanguage deleteLang selected Translation Label', this.selectedTranslationLabel)
     swal({
       title: this.areYouSureMsg + '?',
       text: this.translate.instant('TheLanguageWillBeRemovedFromYourProject', {language_name: this.selectedTranslationLabel }),
@@ -452,9 +491,9 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       .then((WillDelete) => {
         if (WillDelete) {
           this.deleteLang();
-          // console.log('[Multilanguage] swal WillDelete ', WillDelete)
+          //  this.logger.log('[Multilanguage] swal WillDelete ', WillDelete)
         } else {
-          // console.log('[Multilanguage] swal WillDelete (else)', swal)
+          //  this.logger.log('[Multilanguage] swal WillDelete (else)', swal)
         }
       });
   }

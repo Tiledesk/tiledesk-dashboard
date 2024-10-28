@@ -167,7 +167,7 @@
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
 
     <!-- (click)=logout() -->
-    <section class="user-details-footer-section"
+    <section *ngIf="logoutBtnVisible" class="user-details-footer-section"
         [ngClass]="{'footer-margin-top-pricing-no-visible': isVisiblePAY ===false }">
         <!-- <i class="material-icons user-details-logout-icon">
             logout

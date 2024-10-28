@@ -14,6 +14,7 @@ import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
 
@@ -36,6 +37,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   certfifiedTemplates: Array<any>;
   allTemplatesCount: number;
   allCommunityTemplatesCount: number;
+  kbCount: number;
 
   customerSatisfactionTemplates: Array<any>
   customerSatisfactionTemplatesCount: number;
@@ -62,6 +64,10 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   public USER_ROLE: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
+  isVisiblePAY: boolean;
+  public_Key: string;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
+  pageTitle: string;
  
   constructor(
     private auth: AuthService,
@@ -74,6 +80,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     public notify: NotifyService,
     public usersService: UsersService,
     private translate: TranslateService,
+    private kbService: KnowledgeBaseService,
   ) { 
     super(prjctPlanService, notify);
   }
@@ -85,12 +92,15 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getTemplates()
     this.getCommunityTemplates()
     this.getCurrentProject()
+    this.getAllNamespaces()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
     this.getRoutes();
     this.getProfileImageStorage();
     this.getProjectPlan();
-    this.getUserRole()
+    this.getUserRole();
+    this.getOSCODE()
+    this.getCurreURL()
   }
 
 
@@ -99,13 +109,57 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
+  getCurreURL() {
+    const currentUrl = this.router.url;
+    this.logger.log('[BOTS-TEMPLATES] - current URL »»» ', currentUrl)
+    const currentUrlLastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    this.logger.log('[BOTS-TEMPLATES] - current URL last segment ',  currentUrlLastSegment);
+    if (currentUrlLastSegment === 'all') {
+      this.pageTitle = "All templates"
+    } else if (currentUrlLastSegment === 'community') {
+      this.pageTitle = "Community templates"
+    } else if (currentUrlLastSegment === 'increase-sales') {
+      this.pageTitle = "Increase sales templates "
+    } else if (currentUrlLastSegment === 'customer-satisfaction') {
+      this.pageTitle = "Customer Satisfaction templates "
+    }
+  }
+
+
+
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    // this.logger.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+        } else {
+          this.isVisiblePAY = true;
+        }
+      }
+    })
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+
+  }
+
   getUserRole() {
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -144,6 +198,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   // Pre-sale -> #00699e
   //  Support -> #25833e
   // Self-serve -> #0049bd
+  // Internal-Processes -> #a613ec
 
   // certified: true
   // mainCategory
@@ -227,6 +282,22 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     })
   }
 
+  getAllNamespaces() {
+    this.kbService.getAllNamespaces().subscribe((res: any) => {
+      if (res) {
+        this.kbCount = res.length
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL NAMESPACES', res);
+        
+      }
+    }, (error) => {
+      this.logger.error('[BOTS-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
+
+    }, () => {
+      this.logger.log('[BOTS-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
+      
+    });
+  }
+
 
   getCommunityTemplates() {
     this.showSpinner = true;
@@ -299,7 +370,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
       if (res) {
         this.certfifiedTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES COUNT', this.certfifiedTemplates);
+        this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES ', this.certfifiedTemplates);
 
         this.doShortDescription(this.certfifiedTemplates)
         // this.templates = res
@@ -399,6 +470,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
             tagbckgnd = 'rgba(204,241,213, 1)'
           } else if (tag.color === "#0049bd" || tag.color === "#0049BD") {
             tagbckgnd = 'rgba(220,233,255, 1)'
+          } else if (tag.color === "#a613ec" || tag.color === "#A613EC") {
+            tagbckgnd = 'rgba(166, 19, 236, 0.2)'
           } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
 
             tagbckgnd = this.hexToRgba(tag.color)
@@ -441,7 +514,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
     this.logger.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
+      if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
           this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
@@ -450,7 +523,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
-      } else if (!this.chatBotLimit) {
+      } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN NAVIGATE')
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       }
@@ -473,7 +546,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
       },
     });
 
@@ -485,6 +559,11 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   goToCommunityTemplateDetail(templateid) {
     this.logger.log('[BOTS-TEMPLATES]  GO TO COMMUNITY TEMPLATE DTLS -  templateid ', templateid);
     this.router.navigate(['project/' + this.project._id + '/template-details/' + templateid]);
+  }
+
+  goToExternalCommunity() {
+   const url = "https://tiledesk.com/community/"
+   window.open(url, '_blank');
   }
 
 

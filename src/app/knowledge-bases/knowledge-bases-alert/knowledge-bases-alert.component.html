@@ -1,0 +1,40 @@
+<div class="kb-alert-content">
+
+    <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(prjct_profile_type === 'free') && (kbsListCount > kbLimit)">
+      <span class="msg-alert">
+        {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+      </span>
+      <!-- (click)=" openModalTrialExpired()  " -->
+      <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+        <button class="upgrade--plan-btn" (click)="presentGoToPricingModal()">
+          {{ "Pricing.UpgradePlan" | translate }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(subscription_is_active && prjct_profile_type === 'payment') && (kbsListCount > kbLimit)">
+      <span class="msg-alert">
+        {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+      </span>
+      <!-- (click)=" openModalTrialExpired" -->
+      <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+        <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
+          {{ "Pricing.UpgradePlan" | translate }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (kbsListCount > kbLimit)">
+      <span class="msg-alert" style="display: block;">{{ "Pricing.SubscriptionPaymentProblem" | translate}} </span>
+      <span class="msg-alert">
+        {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+      </span>
+      <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+        <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+          {{ "Pricing.UpgradePlan" | translate }}
+        </button>
+      </div>
+  
+    </div>
+  
+  </div>

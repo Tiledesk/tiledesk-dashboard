@@ -21,12 +21,17 @@
 </span> -->
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+	<div class="page-title--sidebar-settings"
+	[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+		{{ 'WidgetSetUp' | translate }}
+	</div>
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
 		<div class="content-wpr" style="display: flex;">
 
 			<appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
-			
+
 			<div class="teplate-content" style="flex: 1 1 auto;">
 				<!-- ------------------------------- -->
 				<!--  Widget Set Up  HEADER -->
@@ -34,13 +39,13 @@
 				<div class="row">
 					<div class="col-xs-12 widget-set-up-col">
 
-						<div class="widget-set-up-text">
+						<!-- <div class="widget-set-up-text">
 							{{ 'WidgetSetUp' | translate }}
-						</div>
+						</div> -->
 
 						<!-- <div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
-					Setting up the Widget for visitors lets you chat with people when they're on your website.
-				</div> -->
+							Setting up the Widget for visitors lets you chat with people when they're on your website.
+						</div> -->
 
 						<div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
 							<span>
@@ -53,7 +58,7 @@
 									</path>
 								</svg>
 							</span>
-							<span  class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
+							<span class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
 								{{'LearnAboutAdvancedWidgetConfiguration'| translate}}
 							</span>
 						</div>
@@ -62,16 +67,16 @@
 				</div>
 				<!--  ./ end Widget Set Up  HEADER -->
 
-				<div class="row" style="display: none;">
+				<!-- <div class="row" style="display: none;">
 					<div class="col-xs-12">
 						<div
 							style="margin-left: 20px;font-size: 18px;font-weight: 600;	margin-bottom: 6px;line-height: 28px;">
 							{{ 'TileDeskChatWidgetInstallation' | translate: tparams }}
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<div class="widget-all-settings-wrap" role="main" style="margin-bottom:36px; display: none;">
+				<!-- <div class="widget-all-settings-wrap" role="main" style="margin-bottom:36px; display: none;">
 					<div class="row no-gap" style="margin-left: 0; margin-right: 0;">
 						<div class="col-xs-12" style="padding: 0px 20px 0px 20px;">
 							<button class="accordion-install-widget" (click)="close_panel_install_widget()">
@@ -163,7 +168,7 @@
 
 												<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE || HAS_SELECT_INSTALL_WITH_GTM"
 													class="install-widget-instructions">
-													<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
+												
 													<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE"
 														class="install-widget-steps">
 														<span class="install-widget-step-number-wrapper">
@@ -196,10 +201,10 @@
 													</div>
 
 
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
-													<!-- REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
-													<!-- !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA -->
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
+													<!- - REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG - ->
+													<!- - !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA - ->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
 													<div class="script-wrap"
 														style="padding-left: 46px;padding-right: 20px;">
 														<pre class="widget-design-pre"
@@ -241,10 +246,10 @@
 													</div>
 
 
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
-													<!-- REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
-													<!-- !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE -->
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
+													<!- - REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG - ->
+													<!- - !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE - ->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
 													<textarea name="exampleClipboard" class="textarea" readonly
 														id="hidden-texarea" rows="20" value="" type="text"
 														style="opacity: .01;height:0; position:absolute; z-index: -1;">
@@ -265,7 +270,7 @@
     &lt;/script&gt;</textarea>
 
 
-													<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
+												
 													<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE"
 														class="install-widget-steps">
 														<span class="install-widget-step-number-wrapper">
@@ -280,17 +285,7 @@
 														</span>
 													</div>
 
-													<!-- <div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-widget-steps">
-												<span class="install-widget-step-number-wrapper">
-													<span class="install-widget-step-number">
-														3
-													</span>
-												</span>
-												<span class="install-widget-step-text">
-													Once you’ve completed your changes, open your website. Your Widget
-													should appear in the bottom right corner.
-												</span>
-											</div> -->
+							
 
 													<div *ngIf="HAS_SELECT_INSTALL_WITH_GTM"
 														class="install-widget-steps">
@@ -322,15 +317,15 @@
 														</span>
 													</div>
 
-												</div> <!-- /. install-with-code -->
-											</div> <!-- /. card content -->
-										</div> <!-- /. card -->
+												</div> 
+											</div> 
+										</div> 
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="row">
 					<div class="col-xs-12">
@@ -1044,8 +1039,8 @@
 													<!-- [items]="widget_status_on_page_change | selectOptionsTranslate" -->
 													<ng-select id="desktop_widget_status" [clearable]="false"
 														[(ngModel)]="desktopWidgetStatus"
-														[items]="widget_status_on_page_change"
-														bindLabel="name" bindValue="id" appendTo="body"
+														[items]="widget_status_on_page_change" bindLabel="name"
+														bindValue="id" appendTo="body"
 														(change)="onSelectDesktopWidgetStatus()"
 														[disabled]="!desktop_widget_is_visible">
 													</ng-select>
@@ -1286,137 +1281,163 @@
 								<!-- @ Unbranding SECTION -->
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- <ng-container *ngIf="payIsVisible"> -->
-									<button [ngClass]="{'hide-unbranding': !isVisibleWidgetUnbranding}" id="unbranding-btn" type="button" class="widget-section-accordion widget-section-header">
 
-										<div class="widget-section-title">
-											<div class="widget-setting-icon-wrap">
-												<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
-													viewBox="0 0 512 512">
-													<title>Sparkles</title>
-													<path
-														d="M259.92 262.91L216.4 149.77a9 9 0 00-16.8 0l-43.52 113.14a9 9 0 01-5.17 5.17L37.77 311.6a9 9 0 000 16.8l113.14 43.52a9 9 0 015.17 5.17l43.52 113.14a9 9 0 0016.8 0l43.52-113.14a9 9 0 015.17-5.17l113.14-43.52a9 9 0 000-16.8l-113.14-43.52a9 9 0 01-5.17-5.17zM108 68L88 16 68 68 16 88l52 20 20 52 20-52 52-20-52-20zM426.67 117.33L400 48l-26.67 69.33L304 144l69.33 26.67L400 240l26.67-69.33L496 144l-69.33-26.67z"
-														fill="none" stroke="currentColor" stroke-linecap="round"
-														stroke-linejoin="round" stroke-width="32" />
-												</svg>
-											</div>
-											<h4 class="widget-section-header__title-underlined">
-												Unbranding
-												<span class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
-													{{'AvailableFromThePlan' | translate: t_params }}
+								<button [ngClass]="{'hide-unbranding': !isVisibleWidgetUnbranding}" id="unbranding-btn"
+									type="button" class="widget-section-accordion widget-section-header">
+
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<title>Sparkles</title>
+												<path
+													d="M259.92 262.91L216.4 149.77a9 9 0 00-16.8 0l-43.52 113.14a9 9 0 01-5.17 5.17L37.77 311.6a9 9 0 000 16.8l113.14 43.52a9 9 0 015.17 5.17l43.52 113.14a9 9 0 0016.8 0l43.52-113.14a9 9 0 015.17-5.17l113.14-43.52a9 9 0 000-16.8l-113.14-43.52a9 9 0 01-5.17-5.17zM108 68L88 16 68 68 16 88l52 20 20 52 20-52 52-20-52-20zM426.67 117.33L400 48l-26.67 69.33L304 144l69.33 26.67L400 240l26.67-69.33L496 144l-69.33-26.67z"
+													fill="none" stroke="currentColor" stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											Unbranding
+											<ng-container *ngIf="payIsVisible">
+												<span  class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
+													<span *ngIf="!isAppSumo">  
+														{{'AvailableFromThePlans' | translate: t_params }}
+													</span>
+													<span *ngIf="isAppSumo">  
+														{{'AvailableFromThePlan' | translate: t_params }}
+													</span>
 												</span>
-											</h4>
-										</div>
-										<div class="widget-section-arrow">
-											<i class="material-icons widget-section-arrow-icon">
-												keyboard_arrow_down
-											</i>
-										</div>
-									</button>
-									
-									<div class="widget-section-container"
-										[ngClass]="{'feature-not-available' : featureIsAvailable === false}"
-										style="height: auto; transition-duration: 0.613s;">
-										<div class="section-offset">
-											<!-- ---------------------------------------------	 -->
-											<!-- Upgrade plan to get Unbranding features -->
-											<!-- ---------------------------------------------	 -->
-											<div class="form-group"
-												style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											</ng-container>
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
 
-								
-												<div class="col-xs-12">
-													<button class="btn btn-get-feature-no-boxshadow pull-right"
-														style="margin-bottom: 0px;"  
-														*ngIf="featureIsAvailable === false"
-														(click)="goToPricing()"
-														matTooltipClass="custom-mat-tooltip-in-widget-setup"
-														matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
-														#tooltip="matTooltip" 
-														matTooltipPosition='below'
-														matTooltipHideDelay="100">
-														<span
-															class="material-icons-outlined get-feature-upgrade-plan-icon">
-															upgrade
-														</span>
-														<span>
-															{{ 'Pricing.UpgradePlan' | translate }}
-														</span>
-													</button>
-												</div>
+								<div class="widget-section-container"
+									[ngClass]="{'feature-not-available' : featureIsAvailable === false}"
+									style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+										<!-- ---------------------------------------------	 -->
+										<!-- Upgrade plan to get Unbranding features -->
+										<!-- ---------------------------------------------	 -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+
+
+											<div class="col-xs-12">
+												<button class="btn btn-get-feature-no-boxshadow pull-right"
+													style="margin-bottom: 0px;" *ngIf="featureIsAvailable === false"
+													(click)="goToPricing()"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<span class="material-icons-outlined get-feature-upgrade-plan-icon">
+														upgrade
+													</span>
+													<span>
+														{{ 'Pricing.UpgradePlan' | translate }}
+													</span>
+												</button>
 											</div>
-											<!-- ------------------------------- -->
-											<!-- Widget  Footer Branding -->
-											<!-- -------------------------------  -->
-											<div class="form-group"
-												style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-												<label
-													class="col-xs-12 control-label  widget-settings-control-head-label">
-													{{ "WidgetFooterBranding" | translate}}
-													<span style="cursor: pointer;"
-														matTooltipClass="custom-mat-tooltip-in-widget-setup"
-														matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
-														#tooltip="matTooltip" matTooltipPosition='below'
-														matTooltipHideDelay="100">
-														<i class="material-icons" style="font-size: 18px;
+										</div>
+										<!-- ------------------------------- -->
+										<!-- Widget  Footer Branding -->
+										<!-- -------------------------------  -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-xs-12 control-label  widget-settings-control-head-label">
+												{{ "WidgetFooterBranding" | translate}}
+												<span style="cursor: pointer;"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'ToCustomizeTheWidgetFooterWithYourBrand' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<i class="material-icons" style="font-size: 18px;
 														color: #566787;
 														cursor: pointer;
 														vertical-align: middle;">
-															help_outline
-														</i>
-													</span>
-												</label>
+														help_outline
+													</i>
+												</span>
+											</label>
 
-												<!-- [disabled]="(profile_name === PLAN_NAME.A) || 
+											<!-- [disabled]="(profile_name === PLAN_NAME.A) || 
 												(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
 												(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
 												(prjct_profile_type === 'free' && prjct_trial_expired === true)" -->
-												<div class="col-sm-12">
-													<textarea (focus)="onFocusFooterBranding()"
-														[(ngModel)]="footerBrand"
-														(ngModelChange)="onChangeFooterBrand($event)" rows="3"
-														class="widget-setup-texarea" [disabled]="!featureIsAvailable">	</textarea>
-													<!-- <div *ngIf="footerBrand?.length <= 0"
+											<div class="col-sm-12">
+												<textarea (focus)="onFocusFooterBranding()" [(ngModel)]="footerBrand"
+													(ngModelChange)="onChangeFooterBrand($event)" rows="3"
+													class="widget-setup-texarea"
+													[disabled]="!featureIsAvailable">	</textarea>
+												<!-- <div *ngIf="footerBrand?.length <= 0"
 													style="font-size: 11px; color: #f44336;">
 													{{ 'RequiredField' | translate}}
 												</div> -->
-												</div>
 											</div>
+										</div>
 
-											<!-- ---------------------------------------- -->
-											<!-- Custom launcher -->
-											<!-- ---------------------------------------- -->
-											<div class="form-group"
-												style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 12px!important;"
-												[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
-												<label
-													class="col-xs-12 control-label widget-settings-control-head-label"
-													style="white-space: nowrap;">
+										<!-- ---------------------------------------- -->
+										<!-- Custom launcher -->
+										<!-- ---------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 12px!important;"
+											[ngClass]="{'custom-launcher-feature-not-available' : prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true}">
+											<label class="col-xs-12 control-label widget-settings-control-head-label"
+												style="white-space: nowrap;">
 
-													{{'CustomLauncherButton' | translate }}
-													<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
-														matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
-														#tooltip="matTooltip" matTooltipPosition='below'
-														matTooltipHideDelay="100">
-														<i class="material-icons" style="font-size: 18px;
+												{{'CustomLauncherButton' | translate }}
+												<span matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip=" {{'CustomizeTheWidgetLaunchButtonWithYourLogo' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='below'
+													matTooltipHideDelay="100">
+													<i class="material-icons" style="font-size: 18px;
 														color: #566787;
 														cursor: pointer;
 														vertical-align: middle;">
-															help_outline
-														</i>
-													</span>
-												</label>
+														help_outline
+													</i>
+												</span>
+											</label>
 
-												<div class="col-sm-12">
-													<div class="wrapper-custom-launcher" style="margin-top: 3px;">
-														<!-- ------------------------------------------- -->
-														<!-- CUSTOMIZE LAUNCER BUTTON VIA URL  *ngIf="hasOwnLauncherBtn" -->
-														<!-- ------------------------------------------- -->
-														<div class="row">
-															<div class="col-xs-12 col-sm-2">
-																<div *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false"
-																	id="custom-launcher-button-placeholder">
+											<div class="col-sm-12">
+												<div class="wrapper-custom-launcher" style="margin-top: 3px;">
+													<!-- ------------------------------------------- -->
+													<!-- CUSTOMIZE LAUNCER BUTTON VIA URL  *ngIf="hasOwnLauncherBtn" -->
+													<!-- ------------------------------------------- -->
+													<div class="row">
+														<div class="col-xs-12 col-sm-2">
+															<div *ngIf="hasOwnLauncherBtn === false || featureIsAvailable === false"
+																id="custom-launcher-button-placeholder">
+																<!-- <img class="bot-type-logo" [src]="widgetLauncherButtonPlaceholder"/> -->
+																<svg version="1.1" id="Livello_1"
+																	xmlns="http://www.w3.org/2000/svg"
+																	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+																	y="0px" viewBox="0 0 53.9 53.9"
+																	style="enable-background:new 0 0 53.9 53.9;"
+																	xml:space="preserve">
+																	<style type="text/css">
+																		.st0 {
+																			fill: #143448;
+																		}
 
-																	<svg version="1.1" id="Livello_1"
+																		.st1 {
+																			fill: #506A7B;
+																		}
+																	</style>
+																	<g>
+																		<path class="st0"
+																			d="M51.9,26.9c0,13.8-11.2,25-25,25s-25-11.2-25-25s11.2-25,25-25S51.9,13.1,51.9,26.9" />
+																		<path class="st1" d="M19.3,17.2c-1.7,0-3,1.4-3,3v15.1c0,0.7,0.6,1.3,1.3,1.3c0.3,0,0.7-0.1,0.9-0.4l2-2c0,0,0.1-0.1,0.1-0.1h13.9
+																			c1.7,0,3-1.4,3-3c0,0,0,0,0,0V20.2c0-1.7-1.4-3-3-3H19.3z" />
+																	</g>
+																</svg>
+																<!-- <svg version="1.1" id="Livello_1"
 																		xmlns="http://www.w3.org/2000/svg"
 																		xmlns:xlink="http://www.w3.org/1999/xlink"
 																		x="0px" y="0px" viewBox="0 0 60 60"
@@ -1485,200 +1506,198 @@
 																				d="M42.5,26.6h-9.3c-0.5,0-1-0.4-1-0.9v-8.8c0-0.5,0.4-0.9,1-0.9h9.3c0.5,0,1,0.4,1,0.9v8.8
 																			C43.5,26.1,43,26.6,42.5,26.6" />
 																		</g>
-																	</svg>
-																</div>
-																<!-- ---------------------------------------------- -->
-																<!-- Custom launcher button IMG of the end-user  -->
-																<!-- ----------------------------------------------  -->
-																<ng-container *ngIf="featureIsAvailable === true">
-																	<div *ngIf="hasOwnLauncherBtn === true"
-																		id="custom-launcher-button-in-widget-setup">
-																		<img alt="custom-launcher-logo"
-																			[src]="customLauncherURL"
-																			style="height: 60px; width: 60">
-																	</div>
-																</ng-container>
+																	</svg> -->
 															</div>
-
-															<div class="col-xs-12 col-sm-10">
-																<div class="row">
-																	<div class="col-xs-12">
-																		<label
-																			class="control-label widget-settings-control-label launcher-button-label">
-																			{{'LauncherButtonURL' | translate}}
-																		</label>
-																	</div>
-																	<div class="col-xs-12">
-																		<!-- ------------------------------------------------------  -->
-																		<!-- Input to enter the URL of the custom launcher button  -->
-																		<!-- ------------------------------------------------------  -->
-																		<input class="custom-input"
-																			id="change-launcher-logo"
-																			(focus)="onFocuCustomLauncherURLInput()"
-																			(ngModelChange)="launcherLogoChange($event)"
-																			[(ngModel)]="customLauncherURL"
-																			style="font-weight: 400;max-width: 100% !important;"
-																			[ngClass]="{'image-not-exist-input-border' : CUSTOM_LAUNCHER_LOGO_EXIST === false}"
-																			placeholder="{{ 'EnterTheURLOfTheLauncherButtonImage' | translate }}"
-																			[disabled]="featureIsAvailable === false">
-
-																		<span *ngIf="IMAGE_EXIST === false"
-																			style="color:#f44336; display: block;font-size: 12px;">
-																			{{ "LogoImageNotFound" | translate}}
-																		</span>
-																	</div>
-
+															<!-- ---------------------------------------------- -->
+															<!-- Custom launcher button IMG of the end-user  -->
+															<!-- ----------------------------------------------  -->
+															<ng-container *ngIf="featureIsAvailable === true">
+																<div *ngIf="hasOwnLauncherBtn === true"
+																	id="custom-launcher-button-in-widget-setup">
+																	<img alt="custom-launcher-logo"
+																		[src]="customLauncherURL"
+																		style="height: 60px; width: 60">
 																</div>
+															</ng-container>
+														</div>
+
+														<div class="col-xs-12 col-sm-10">
+															<div class="row">
+																<div class="col-xs-12">
+																	<label
+																		class="control-label widget-settings-control-label launcher-button-label">
+																		{{'LauncherButtonURL' | translate}}
+																	</label>
+																</div>
+																<div class="col-xs-12">
+																	<!-- ------------------------------------------------------  -->
+																	<!-- Input to enter the URL of the custom launcher button  -->
+																	<!-- ------------------------------------------------------  -->
+																	<input class="custom-input"
+																		id="change-launcher-logo"
+																		(focus)="onFocuCustomLauncherURLInput()"
+																		(ngModelChange)="launcherLogoChange($event)"
+																		[(ngModel)]="customLauncherURL"
+																		style="font-weight: 400;max-width: 100% !important;"
+																		[ngClass]="{'image-not-exist-input-border' : CUSTOM_LAUNCHER_LOGO_EXIST === false}"
+																		placeholder="{{ 'EnterTheURLOfTheLauncherButtonImage' | translate }}"
+																		[disabled]="featureIsAvailable === false">
+
+																	<span *ngIf="IMAGE_EXIST === false"
+																		style="color:#f44336; display: block;font-size: 12px;">
+																		{{ "LogoImageNotFound" | translate}}
+																	</span>
+																</div>
+
 															</div>
 														</div>
-														<!-- ------------------------------------------- -->
-														<!-- CUSTOMIZE LAUNCER BUTTON VIA UPLOAD LOGO -->
-														<!-- ------------------------------------------- -->
-														<div class="row" style="display: none;">
-															<div class="col-xs-2">
-																<div *ngIf="hasOwnLauncherLogo === false || featureIsAvailable === false"
-																	id="custom-launcher-logo-placeholder">
+													</div>
+													<!-- ------------------------------------------- -->
+													<!-- CUSTOMIZE LAUNCER BUTTON VIA UPLOAD LOGO -->
+													<!-- ------------------------------------------- -->
+													<div class="row" style="display: none;">
+														<div class="col-xs-2">
+															<div *ngIf="hasOwnLauncherLogo === false || featureIsAvailable === false"
+																id="custom-launcher-logo-placeholder">
 
-																	<svg version="1.1" id="Livello_1"
-																		xmlns="http://www.w3.org/2000/svg"
-																		xmlns:xlink="http://www.w3.org/1999/xlink"
-																		x="0px" y="0px" viewBox="0 0 60 60"
-																		style="enable-background:new 0 0 60 60;"
-																		xml:space="preserve">
-																		<style type="text/css">
-																			.lb-st0 {
-																				fill: none;
-																				stroke: #FDFEFF;
-																				stroke-width: 2;
-																				stroke-miterlimit: 10;
-																			}
+																<svg version="1.1" id="Livello_1"
+																	xmlns="http://www.w3.org/2000/svg"
+																	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+																	y="0px" viewBox="0 0 60 60"
+																	style="enable-background:new 0 0 60 60;"
+																	xml:space="preserve">
+																	<style type="text/css">
+																		.lb-st0 {
+																			fill: none;
+																			stroke: #FDFEFF;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																		}
 
-																			.lb-st1 {
-																				fill: none;
-																				stroke: #FFFFFF;
-																				stroke-width: 2;
-																				stroke-miterlimit: 10;
-																			}
+																		.lb-st1 {
+																			fill: none;
+																			stroke: #FFFFFF;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																		}
 
-																			.lb-st2 {
-																				fill: none;
-																				stroke: #FCFCFC;
-																				stroke-width: 2;
-																				stroke-miterlimit: 10;
-																			}
+																		.lb-st2 {
+																			fill: none;
+																			stroke: #FCFCFC;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																		}
 
-																			.lb-st3 {
-																				fill: #143448;
-																			}
+																		.lb-st3 {
+																			fill: #143448;
+																		}
 
-																			.lb-st4 {
-																				fill: #506A7B;
-																			}
+																		.lb-st4 {
+																			fill: #506A7B;
+																		}
 
-																			.lb-st5 {
-																				fill: none;
-																				stroke: #FFFFFF;
-																				stroke-width: 2;
-																				stroke-miterlimit: 10;
-																				stroke-dasharray: 4, 4;
-																			}
-																		</style>
-																		<polyline class="lb-st0"
-																			points="31,29 31,31 29,31 " />
-																		<polyline class="lb-st1"
-																			points="31,31 29,31 29,29 " />
-																		<polyline class="lb-st2"
-																			points="29,31 29,29 31,29 " />
-																		<polyline class="lb-st0"
-																			points="29,29 31,29 31,31 " />
+																		.lb-st5 {
+																			fill: none;
+																			stroke: #FFFFFF;
+																			stroke-width: 2;
+																			stroke-miterlimit: 10;
+																			stroke-dasharray: 4, 4;
+																		}
+																	</style>
+																	<polyline class="lb-st0"
+																		points="31,29 31,31 29,31 " />
+																	<polyline class="lb-st1"
+																		points="31,31 29,31 29,29 " />
+																	<polyline class="lb-st2"
+																		points="29,31 29,29 31,29 " />
+																	<polyline class="lb-st0"
+																		points="29,29 31,29 31,31 " />
+																	<g>
+																		<path class="lb-st3"
+																			d="M55,30c0,13.8-11.2,25-25,25S5,43.8,5,30S16.2,5,30,5S55,16.2,55,30" />
 																		<g>
-																			<path class="lb-st3"
-																				d="M55,30c0,13.8-11.2,25-25,25S5,43.8,5,30S16.2,5,30,5S55,16.2,55,30" />
-																			<g>
-																				<path class="lb-st4" d="M38.8,29h-7.6c-0.7,0-1.2-0.5-1.2-1.1v-7.1c0-0.6-0.5-1.1-1.2-1.1h-7.6c-0.7,0-1.2,0.5-1.2,1.1v8.3v8.3
+																			<path class="lb-st4" d="M38.8,29h-7.6c-0.7,0-1.2-0.5-1.2-1.1v-7.1c0-0.6-0.5-1.1-1.2-1.1h-7.6c-0.7,0-1.2,0.5-1.2,1.1v8.3v8.3
 																				c0,0.6,0.5,1.1,1.2,1.1h-0.5h1.4c0.3,0,0.5,0.1,0.7,0.3l0.9,0.8l0.8,0.7c0.3,0.2,0.7,0.2,1,0l0.8-0.7l0.9-0.8
 																				c0.2-0.1,0.4-0.3,0.7-0.3h10.9c0.7,0,1.2-0.5,1.2-1.1v-7.1C40,29.5,39.4,29,38.8,29" />
-																				<path class="lb-st4" d="M39.3,27.5h-6.9c-0.4,0-0.7-0.3-0.7-0.7v-6.5c0-0.4,0.3-0.7,0.7-0.7h6.9c0.4,0,0.7,0.3,0.7,0.7v6.5
+																			<path class="lb-st4" d="M39.3,27.5h-6.9c-0.4,0-0.7-0.3-0.7-0.7v-6.5c0-0.4,0.3-0.7,0.7-0.7h6.9c0.4,0,0.7,0.3,0.7,0.7v6.5
 																				C40,27.1,39.6,27.5,39.3,27.5" />
-																			</g>
 																		</g>
-																		<rect x="15" y="15" class="lb-st5" width="30"
-																			height="30" />
-																	</svg>
+																	</g>
+																	<rect x="15" y="15" class="lb-st5" width="30"
+																		height="30" />
+																</svg>
 
-																</div>
-																<!-- ---------------------------------------------- -->
-																<!-- Custom launcher button IMG of the end-user  -->
-																<!-- ----------------------------------------------  -->
-																<ng-container *ngIf="featureIsAvailable === true">
-																	<div *ngIf="hasOwnLauncherLogo === true"
-																		id="custom-launcher-logo-in-widget-setup">
-																		<img alt="custom-launcher-logo"
-																			[src]="getLauncherLogoUrl()"
-																			style="height: 60px; width: 60px; object-fit: cover;">
-																	</div>
-																</ng-container>
 															</div>
+															<!-- ---------------------------------------------- -->
+															<!-- Custom launcher button IMG of the end-user  -->
+															<!-- ----------------------------------------------  -->
+															<ng-container *ngIf="featureIsAvailable === true">
+																<div *ngIf="hasOwnLauncherLogo === true"
+																	id="custom-launcher-logo-in-widget-setup">
+																	<img alt="custom-launcher-logo"
+																		[src]="getLauncherLogoUrl()"
+																		style="height: 60px; width: 60px; object-fit: cover;">
+																</div>
+															</ng-container>
+														</div>
 
-															<div class="col-xs-10">
-																<div class="row">
-																	<div class="col-xs-12">
-																		<input #fileInputLauncherBtnlogo
-																			class="inputfile"
-																			name="upload-launcher-button-logo"
-																			id="upload-launcher-button-logo" type="file"
-																			(change)="uploadLauncherButtonLogo($event)"
-																			accept=".jpg, .JPEG, .png, .svg"
-																			[disabled]="hasOwnLauncherBtn" />
-																		<!-- [matTooltipDisabled]="hasOwnLauncherBtn" -->
-																		<label class="btn btn-white upload-launcher-btn"
-																			for="upload-launcher-button-logo"
-																			matTooltipClass="custom-mat-tooltip"
-																			matTooltip="Edit App"
-																			#tooltip="matTooltip"
-																			matTooltipPosition='above'
-																			matTooltipHideDelay="100"
-																			[matTooltipDisabled]="!hasOwnLauncherBtn">
-																			<span class="material-icons">
-																				file_upload
-																			</span>
-																			{{'UploadYourLogo' | translate}}
-																		</label>
+														<div class="col-xs-10">
+															<div class="row">
+																<div class="col-xs-12">
+																	<input #fileInputLauncherBtnlogo class="inputfile"
+																		name="upload-launcher-button-logo"
+																		id="upload-launcher-button-logo" type="file"
+																		(change)="uploadLauncherButtonLogo($event)"
+																		accept=".jpg, .JPEG, .png, .svg"
+																		[disabled]="hasOwnLauncherBtn" />
+																	<!-- [matTooltipDisabled]="hasOwnLauncherBtn" -->
+																	<label class="btn btn-white upload-launcher-btn"
+																		for="upload-launcher-button-logo"
+																		matTooltipClass="custom-mat-tooltip"
+																		matTooltip="Edit App" #tooltip="matTooltip"
+																		matTooltipPosition='above'
+																		matTooltipHideDelay="100"
+																		[matTooltipDisabled]="!hasOwnLauncherBtn">
+																		<span class="material-icons">
+																			file_upload
+																		</span>
+																		{{'UploadYourLogo' | translate}}
+																	</label>
 
-																		<button
-																			class="btn btn-white delete-custom-launcher-logo"
-																			(click)="deleteCustomLauncherLogo()">
-																			<span class="material-icons"
-																				style="font-size: 24px;">
-																				delete_forever
-																			</span>
-																		</button>
-																	</div>
+																	<button
+																		class="btn btn-white delete-custom-launcher-logo"
+																		(click)="deleteCustomLauncherLogo()">
+																		<span class="material-icons"
+																			style="font-size: 24px;">
+																			delete_forever
+																		</span>
+																	</button>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
+										</div>
 
-											<!-- ------------------------------------- -->
-											<!-- Save -->
-											<!-- ------------------------------------- -->
-											<div class="form-group"
-												style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+										<!-- ------------------------------------- -->
+										<!-- Save -->
+										<!-- ------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
-												<div class="col-sm-12">
+											<div class="col-sm-12">
 
-													<button class="btn btn-success-no-boxshadow  footerbrand-save-btn"
-														style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
-														(click)="saveFooterBrandAndLauncherBtn()"
-														[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
-														{{ 'UpdateWidget' | translate }}
-													</button>
-												</div>
+												<button id="btn-save-footer-brand--launcher-btn" class="btn btn-success-no-boxshadow  footerbrand-save-btn"
+													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+													(click)="saveFooterBrandAndLauncherBtn()"
+													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
+													{{ 'UpdateWidget' | translate }}
+												</button>
 											</div>
 										</div>
 									</div>
+								</div>
 								<!-- </ng-container> -->
 								<!-- / end Unbranding section -->
 
@@ -2885,7 +2904,7 @@
 											<h5 style="color:#687882; font-size:14px; font-weight: 400;">
 												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
 												<span class="add-languages-link" (click)="goToWidgetMultilanguage()">
-													- {{ 'AddLanguages' | translate }}
+													- {{ 'ManageAndEditTranslations' | translate }}
 												</span>
 
 											</h5>
@@ -2969,16 +2988,11 @@
 									<div style="width: 437px;">
 
 										<appdashboard-widget-home *ngIf="DISPLAY_WIDGET_HOME"
-											[primaryColorGradiend]="primaryColorGradiend" 
-											[LOGO_IS_ON]="LOGO_IS_ON"
-											[hasOwnLogo]="hasOwnLogo" 
-											[logoUrl]="logoUrl"
-											[secondaryColor]="secondaryColor" 
-											[welcomeTitle]="welcomeTitle"
-											[welcomeMsg]="welcomeMsg" 
-											[primaryColorBorder]="primaryColorBorder"
-											[company_name]="company_name" 
-											[primaryColor]="primaryColor"
+											[primaryColorGradiend]="primaryColorGradiend" [LOGO_IS_ON]="LOGO_IS_ON"
+											[hasOwnLogo]="hasOwnLogo" [logoUrl]="logoUrl"
+											[secondaryColor]="secondaryColor" [welcomeTitle]="welcomeTitle"
+											[welcomeMsg]="welcomeMsg" [primaryColorBorder]="primaryColorBorder"
+											[company_name]="company_name" [primaryColor]="primaryColor"
 											[selected_translation]="selected_translation"
 											[company_site_url]="company_site_url"
 											[hasSelectedRightAlignment]="hasSelectedRightAlignment"
@@ -2986,11 +3000,9 @@
 											[C21_BODY_HOME]="C21_BODY_HOME"
 											[waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
 											[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
-											[waitingTimeFoundMsg]="waitingTimeFoundMsg" 
-											[currentUserId]="currentUserId"
+											[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" 
-											[newConversation]="newConversation"
+											[imageUrl]="imageUrl" [newConversation]="newConversation"
 											[noConversation]="noConversation"
 											[HAS_SELECT_DYMANIC_REPLY_TIME_MSG]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
 											[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG"
@@ -3000,8 +3012,7 @@
 											[hasOwnLauncherBtn]="hasOwnLauncherBtn"
 											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
 											[customLauncherURL]="customLauncherURL"
-											[featureIsAvailable]="featureIsAvailable" 
-											[id_project]="id_project"
+											[featureIsAvailable]="featureIsAvailable" [id_project]="id_project"
 											[imageStorage]="imageStorage">
 										</appdashboard-widget-home>
 

@@ -9,6 +9,7 @@ import { PasswordValidation } from './password-validation';
 import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 
+
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
 
@@ -26,7 +27,7 @@ export class ResetPswComponent implements OnInit {
   companyLogo: string;
   contact_us_email: string;
   company_site_url: string;
-
+  strongPassword = false;
 
   emailForm: FormGroup;
   pswForm: FormGroup;
@@ -75,6 +76,7 @@ export class ResetPswComponent implements OnInit {
   ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR: boolean;
   OTHER_ERROR_MSG: string;
   primaryBrandColor: string;
+  isVisiblePsw: boolean = false
   constructor
     (
       private fb: FormBuilder,
@@ -183,9 +185,9 @@ export class ResetPswComponent implements OnInit {
   buildPswForm() {
     this.pswForm = this.fb.group({
       'password': ['', [
-        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-        Validators.minLength(6),
-        Validators.maxLength(25),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
+        Validators.minLength(8),
+        Validators.maxLength(512),
       ]],
       'confirmPassword': ['', Validators.required]
       // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
@@ -195,6 +197,10 @@ export class ResetPswComponent implements OnInit {
 
     this.pswForm.valueChanges.subscribe((data) => this.onPswValueChanged(data));
     this.onPswValueChanged(); // reset validation messages
+  }
+
+  get passwordFormField() {
+    return this.pswForm.get('password');
   }
 
   // Updates validation state on form changes.
@@ -241,6 +247,25 @@ export class ResetPswComponent implements OnInit {
           }
         }
       }
+    }
+  }
+
+  onPasswordStrengthChanged(event: boolean) {
+    this.logger.log('[RESET-PSW] onPasswordStrengthChanged ', event)
+    this.strongPassword = event;
+  }
+
+  togglePswdVisibility(isVisiblePsw) {
+    this.logger.log('[RESET-PSW] togglePswdVisibility isVisiblePsw ', isVisiblePsw)
+    this.isVisiblePsw = isVisiblePsw;
+
+    const pswrdElem = <HTMLInputElement>document.querySelector('#reset-password')
+   
+    this.logger.log('[RESET-PSW] togglePswdVisibility pswrdElem (use case type password) ', pswrdElem)
+    if (isVisiblePsw) {
+      pswrdElem.setAttribute("type", "text");
+    } else {
+      pswrdElem.setAttribute("type", "password");
     }
   }
 

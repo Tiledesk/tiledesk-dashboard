@@ -42,6 +42,7 @@
               "src/dashboard-pre-config-nofb.json",
               "src/dashboard-mqtt.json",
               "src/dashboard-pre-mqtt-engine-config.json",
+              "src/environments/externalenv.json",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",
@@ -62,7 +63,8 @@
               "node_modules/material-icons/iconfont/material-icons.css",
               "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
               "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "node_modules/@ctrl/ngx-emoji-mart/picker.css"
+              "node_modules/@ctrl/ngx-emoji-mart/picker.css",
+              "node_modules/shepherd.js/dist/css/shepherd.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

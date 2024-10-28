@@ -577,6 +577,16 @@ button.close {
   background: var(--card-background-color) !important;
 }
 
+.assign-reassign-modal-card-in-accordion { 
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  border-radius: 0px !important;
+  border-top: 1px solid #e5effe !important;
+  border-bottom: unset !important;
+  border-left: unset !important;
+  border-right: unset !important;
+}
+
 .assign-reassign-modal-text-col1 {
   font-size: 14px;
   font-weight: 400;
@@ -672,6 +682,8 @@ button.close {
 
 .modal-card-chat-panel-mode {
   box-shadow: unset !important;
+  padding: 0px 5px !important;
+  margin-top: 5px !important;
   // margin-left: -4px !important;
 }
 
@@ -2707,6 +2719,7 @@ span .conv-svg-icon {
 .user-img-in-msg-list {
   vertical-align: middle;
   width: 36px;
+  min-width: 36px;
   height: 36px;
   border-radius: 50%;
   border: 1px solid #eee;
@@ -2899,6 +2912,17 @@ span .conv-svg-icon {
 //   padding-bottom: 8px !important;
 //   border: 1px solid #e5effe !important;
 // }
+
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  color: #fff !important;
+}
+
 
 #chat-wpr {
   // height: 500px;
@@ -3679,6 +3703,10 @@ span .conv-svg-icon {
   z-index: 20;
 }
 
+.dropdown__menu-form-chat-mode {
+  left: -37px !important;
+}
+
 .dropdown__content-form {
   background-color: var(--conv-details-edit-contact-fullname-form-background-color);
   border-radius: var(--conv-details-edit-contact-fullname-form-border-radius);
@@ -4327,9 +4355,11 @@ label {
 
 /* tab0-card1B
 /* ***************************************** */
+/*
 .tab0-card1B-ticket {
   min-height: 191px !important;
 }
+*/
 
 /* Second card - tab 1
 /* ***************************************** */
@@ -5645,4 +5675,39 @@ label {
   font-size: 12px;
   line-height: 16px;
   letter-spacing: -0.01em;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #0566ff;
+}
+
+
+::ng-deep .mat-tab-header {
+  top: 0;
+  z-index: 1000; 
+  position: sticky !important;
+  position: -webkit-sticky !important; /* macOS/iOS Safari */  
+  background: #fff;  
+}
+
+.close---round-btn {
+  border: none !important;
+  float: right !important;
+  border-radius: 50%;
+  // color: rgb(235, 234, 235);
+  height: 36px;
+  width: 36px;
+  background-color: transparent;
+  
+}
+// .close---round-btn:hover>span {
+.close---round-btn:hover {
+  // color: rgba(60, 72, 88, .6) !important;
+  // opacity: .6;
+  background-color: var(--btn-background-color)
+}
+
+.close---round-btn>span {
+  font-size: 31px;
+  color: var(--btn-color) !important;
 }

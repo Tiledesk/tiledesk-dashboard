@@ -57,7 +57,6 @@ export class TagsComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    // this.auth.checkRoleForCurrentProject();
     this.getTag();
     this.translateNotificationMsgs();
     this.getImageStorage();

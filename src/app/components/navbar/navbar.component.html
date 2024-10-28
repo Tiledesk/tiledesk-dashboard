@@ -53,45 +53,79 @@
         <!-- Quote - usage stats  indicator -->
         <!-- -------------------------------------------- -->
         <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
-        <!-- <ng-container *ngIf="project">
+        <ng-container *ngIf="project && isVisibleQuoteBtn">
           <li id="usage-stats">
 
-            <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn"
-              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
+            <!-- mat-mini-fab -->
+            <button mat-button aria-label="trend icon" [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
+              class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
               (click)="onOpenQuoteMenu()">
-              <mat-icon style="color: #555555">
+              <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
+              <mat-icon class="data-usage-icon" >
                 data_usage
               </mat-icon>
+              <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
+              <mat-icon style="color: #555555"
+                [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
+                arrow_drop_down
+              </mat-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
+            <!--  -->
+            <mat-menu #menu="matMenu" class="quotas-usage-menu" xPosition="before"
+              style="margin-top: 6px !important; width: 280px !important;">
 
               <div class="menu-container">
-                <p class="menu-title">Usage</p>
-                <div class="quotes-container">
+                <!-- <p class="menu-title">{{'Usage' | translate}}</p> -->
+                <!-- <div class="quotes-container">
 
                   <div class="quote-container">
 
-                    <div>
-                      <p class="quote-title">Convesations</p>
-                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                    <div class="quota-wpr">
+
+                      <div class="quota-header-section">
+                        <p class="quote-title">Conversations</p>
+                        <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit |
+                          number:'1.0-0'}}</div>
+                      </div>
+
+                      <div class="convs-count-container">
+                        <div class="convs-count-wpr">
+                          <div class="convs-count-label">Opened </div>
+                          <div class="convs-count-value" (click)="goToHistoryOpenedConvs()"> {{openedConversations}}
+                          </div>
+                        </div>
+                        <div class="convs-count-wpr">
+                          <div class="convs-count-label">Closed </div>
+                          <div class="convs-count-value" (click)="goToHistoryClosedConvs()"> {{closedConversations}}
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
+
                     <div class="quote">
+
                       <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
                         [mode]="'determinate'" [value]="requests_perc">
                       </mat-progress-spinner>
 
                       <div class="percentage">{{ requests_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                      </div>
                     </div>
+
 
                   </div>
 
                   <div class="quote-container">
 
-                    <div>
-                      <p class="quote-title">AI Tokens</p>
-                      <div class="quote-count">{{tokens_count}} / {{tokens_limit}}</div>
+                    <!- - // number:'1.0-1' to diplay minimun 0 and manximum 1 digit after the comma - ->
+                    <div class="quota-wpr">
+                      <div class="quota-header-section">
+                        <p class="quote-title">AI Tokens</p>
+                        <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}
+                        </div>
+                      </div>
                     </div>
 
                     <div class="quote">
@@ -100,19 +134,25 @@
                       </mat-progress-spinner>
 
                       <div class="percentage">{{ tokens_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                      </div>
                     </div>
 
                   </div>
 
                   <div class="quote-container">
 
-                    <div>
-                      <p class="quote-title">Email</p>
-                      <div class="quote-count">{{email_count}} / {{email_limit}}</div>
+                    <div class="quota-wpr">
+                      <div class="quota-header-section">
+                        <p class="quote-title">Email</p>
+                        <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}
+                        </div>
+
+                      </div>
                     </div>
 
                     <div class="quote">
+              
                       <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
                         [mode]="'determinate'" [value]="email_perc">
                       </mat-progress-spinner>
@@ -121,24 +161,178 @@
                           style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
                     </div>
                   </div>
+                </div> -->
+
+                <!-- ------- -->
+                <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
+                  <div class="quotas-usage-container">
+                    <div aria-label="Usage limit for Conversations" class="quota-section-main">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">
+                                <!-- Conversations -->
+                                {{'Conversations' | translate}}
+                              </h2>
+                              <!-- <span  class="quota-plan-badge">Free</span> -->
+                            </div>
+                            <!-- <p class="quota-partial-count-link" (click)="goToHistoryOpenedConvs()"> <span style="text-transform: lowercase;"> {{'OpenConvsCount' | translate: {conv_num: openedConversations}  }}</span></p>
+                            <p class="quota-partial-count-link" (click)="goToHistoryClosedConvs()"><span style="text-transform: lowercase;"> {{'ClosedConvsCount' | translate: {conv_num: closedConversations} }}</span></p> -->
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <p class="quota-right-title link"(click)="goToHistoryAllConvs()">
+                                <!-- Total conversations usage -->
+                                {{'TotalConversationsUsage' | translate}}
+                              </p>
+                              <div class="quota-limit-wpr">
+                                <p  class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
+                                <!-- <p  class="quota-limit">{{openedConversations + closedConversations}} /&nbsp;</p> -->
+                                <p  class="quota-limit">{{requests_limit | number:'1.0-0'}}</p>
+                              </div>
+                            </div>
+                            <div class="quota-pie" style="width: 50px; height: 50px;">
+                              <!-- <svg class="svg-pi"
+                                style="width: 32px; height: 32px;">
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3">
+                                </circle>
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3"
+                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
+                                  stroke-linecap="round">
+                                </circle>
+                              </svg> -->
+                              <!-- [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}" -->
+                              <!-- <svg width="0" height="0">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color: green; stop-opacity: 1;" />
+                                        <stop offset="50%" style="stop-color: yellow; stop-opacity: 1;" />
+                                        <stop offset="75%" style="stop-color: orange; stop-opacity: 1;" />
+                                        <stop offset="100%" style="stop-color: red; stop-opacity: 1;" />
+                                    </linearGradient>
+                                </defs>
+                            </svg> -->
+                            <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
+                              <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="requests_perc" [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                              </mat-progress-spinner>
+                              <div class="quota-pie-label">
+                                {{ requests_perc }}%
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <a class="css-2jls5z e1y2rc4y0" href="/panel/settings/live-chat/installation">Install Chat
+                          Widget to see this
+                        </a> -->
+                      </div>
+                    </div>
+                    <div aria-label="Usage limit for AI Tokens" class="quota-section-main">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">AI Tokens</h2>
+                              <!-- <span  class="quota-plan-badge">Free</span> -->
+                            </div>
+                            
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <p class="quota-right-title">
+                                <!-- Total AI Tokens usage -->
+                                {{'TotalAITokensUsage' | translate}}
+                              </p>
+                              <div class="quota-limit-wpr">
+                                <p  class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p  class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
+                              </div>
+                            </div>
+                            <div class="quota-pie" style="width: 50px; height: 50px;">
+                              <!-- <svg class="svg-pi"
+                                style="width: 32px; height: 32px;">
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3">
+                                </circle>
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3"
+                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
+                                  stroke-linecap="round"></circle>
+                              </svg> -->
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="tokens_perc" 
+                                [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
+                              </mat-progress-spinner>
+                              <div class="quota-pie-label">{{ tokens_perc }}%</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    
+                    <div aria-label="Usage limit for Email" class="quota-section-main last">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">{{'Email' | translate}}</h2>
+                              <!-- <span class="quota-plan-badge">Free</span> -->
+                            </div>
+                            <!-- <p  class="quota-resets">Quota resets on 19 Sep 2024</p> -->
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <p class="quota-right-title">
+                                <!-- Total email usage -->
+                                {{'TotalEmailUsage' | translate}}
+                              </p>
+                              <div class="quota-limit-wpr">
+                                <p class="quota-limit">{{email_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p class="quota-limit">{{email_limit | number:'1.0-0'}}</p>
+                              </div>
+                            </div>
+                            <div class="quota-pie" style="width: 50px; height: 50px;">
+                              <!-- <svg class="svg-pi"
+                                style="width: 32px; height: 32px;">
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#dce9ff" stroke-width="3">
+                                </circle>
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#0566ff" stroke-width="3"
+                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
+                                  stroke-linecap="round"></circle>
+                              </svg> -->
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="email_perc"
+                                [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                              </mat-progress-spinner>
+                              <div class="quota-pie-label">{{ email_perc }}% </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
 
-                <button mat-flat-button class="upgrade-btn" (click)="goToPricing()">
-                  <span class="material-icons-outlined">bolt</span>
-                  {{ "Pricing.UpgradePlan" | translate }}
-                </button>
+                <!-- ------------ -->
+
+                <div class="quotas-upgrade-btn-wpr">  
+                  <button *ngIf="isVisiblePay" mat-flat-button class="quotas-upgrade-btn" (click)="goToPricing()">
+                    <span class="material-icons-outlined">bolt</span>
+                    {{ "Pricing.UpgradePlan" | translate }}
+                  </button>
+                </div>
 
               </div>
 
             </mat-menu>
           </li>
-        </ng-container> -->
+        </ng-container>
 
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
-        <ng-container *ngIf="isVisible">
+        <ng-container *ngIf="isVisiblePay">
           <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
 
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
@@ -199,9 +393,9 @@
         <!--  ------------------------------------------------ -->
         <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisible">
+        <ng-container *ngIf="isVisiblePay">
           <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
+            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
         </ng-container>
 
@@ -209,7 +403,8 @@
         <!--  ------------------------------------------------ -->
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisible">
+        <!-- *ngIf="isVisiblePay" -->
+        <ng-container >
           <li
             [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
             id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
@@ -218,8 +413,7 @@
               <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
               <!--  ------------------------------------------------ -->
               <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
-                (click)="openModalSubsExpired()" 
-                  class="expired__Tooltip">
+                (click)="openModalSubsExpired()" class="expired__Tooltip">
                 <i class="material-icons"
                   style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
                   error_outline
@@ -360,14 +554,9 @@
             let prjct of projects?.reverse()
             -->
             <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
+
             <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
-              <a (click)="goToHome(
-              prjct,
-              prjct?.id_project?._id, prjct?.id_project?.name,
-              prjct?.id_project?.profile?.name, 
-              prjct?.id_project?.trialExpired, 
-              prjct?.id_project?.trialDaysLeft, 
-              prjct?.id_project?.activeOperatingHours)"
+              <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)"
                 [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
                 <span> {{ prjct?.id_project?.name }} </span>
@@ -384,23 +573,11 @@
 
               <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
               <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
-                <a (click)="goToHome(
-                  prjct,
-                  prjct?.id_project?._id, prjct?.id_project?.name,
-                  prjct?.id_project?.profile?.name, 
-                  prjct?.id_project?.trialExpired, 
-                  prjct?.id_project?.trialDaysLeft, 
-                  prjct?.id_project?.activeOperatingHours)">
+                <a (click)="goToHome(prjct, prjct?.id_project, prjct?.role, prjct?.id_project?._id)">
                   {{ prjct?.id_project?.name }}
                 </a>
               </li>
             </ng-container>
-
-            <!-- <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
-                    <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
-                      {{ prjct?.id_project?.name }}    
-                    </a>
-                </li> -->
 
           </ul>
         </li>

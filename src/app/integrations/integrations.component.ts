@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, N8nIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,10 +10,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
-import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
-import { ProjectService } from 'app/services/project.service';
+import { AppStoreService } from 'app/services/app-store.service';
+import { environment } from 'environments/environment';
+
 
 const swal = require('sweetalert');
 
@@ -23,21 +24,25 @@ const swal = require('sweetalert');
   styleUrls: ['./integrations.component.scss']
 })
 
-// extends PricingBaseComponent
+
 export class IntegrationsComponent implements OnInit, OnDestroy {
   project: any;
+  projectID: string;
   project_plan: any;
   profile_name: string;
+  customization: string;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   panelOpenState = true;
   integrationSelectedName: string = "none";
+  integrationSelectedType: string = "none";
 
   integrations = [];
   selectedIntegration: any;
   selectedIntegrationModel: null;
   integrationLocked: boolean = false;
   intName: string;
+  integrationListReady: boolean = false;
 
   INT_KEYS = INTEGRATIONS_KEYS;
   INTEGRATIONS = INTEGRATION_LIST_ARRAY;
@@ -54,6 +59,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   translateparams: any;
   showSpinner: boolean = true;
+  showInIframe: boolean = false;
+  renderUrl: string;
+  availableApps = [];
+
+  isVisibleTelegram: boolean;
+  trialExpired: boolean
+  subscriptionIsActive: boolean;
+  profileType: string;
 
   constructor(
     private auth: AuthService,
@@ -66,9 +79,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private brand: BrandService,
     public prjctPlanService: ProjectPlanService,
-    private projectService: ProjectService,
+    private projectPlanService: ProjectPlanService,
+    private appService: AppStoreService
   ) {
-
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
@@ -76,22 +89,19 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.getProjectPlan();
     this.getCurrentProject();
+
+    this.getProjectPlan();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
-    // this.getAllIntegrations().then(() => {
-    //   this.intName = this.route.snapshot.queryParamMap.get('name');
-    //   console.log("[INTEGRATION-COMP] intName: ", this.intName);
-    //   if (this.intName) {
-    //     this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-    //   }
-
-    // })
-
   }
+
+
+  /**
+   * UTILS FUNCTIONS - START
+   */
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -105,76 +115,50 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((projectProfileData: any) => {
-  //       console.log('[INTEGRATION-COMP] - getProjectPlan - project Profile Data', projectProfileData)
-  //       if (projectProfileData) {
-
-  //         this.profile_name = projectProfileData.profile_name;
-  //         console.log('[INTEGRATION-COMP] - getProjectPlan -profile_name ', this.profile_name)
-
-
-  //       }
-  //     }, error => {
-
-  //       this.logger.error('[INTEGRATION-COMP] - getProjectPlan - ERROR', error);
-  //     }, () => {
-
-  //       this.logger.log('[INTEGRATION-COMP] - getProjectPlan - COMPLETE')
-
-
-  //     });
-  // }
-
   getCurrentProject() {
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.project = project
-        this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
-        // this.project_plan = this.project.profile_name;
-        // console.log("Current project plan: ", this.project_plan);
-        // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
-        //   this.plan_expired = true;
-        // }
-        this.getProjectById(this.project._id);
+        if (project) {
+          this.project = project
+          this.projectID = project._id
+          this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
+        }
       });
   }
 
-  getProjectById(projectId) {
-    this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+  getProjectPlan() {
+    this.projectPlanService.projectPlan$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(async (projectProfileData: any) => {
+        if (projectProfileData) {
+          this.logger.log('[INTEGRATION-COMP] projectProfileData ', projectProfileData)
+          this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
 
-      this.profile_name = project.profile.name;
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
+          this.profile_name = projectProfileData.profile_name;
+          this.trialExpired = projectProfileData.trial_expired
+          this.trialExpired = projectProfileData.trial_expired
+          this.profileType = projectProfileData.profile_type
+          this.subscriptionIsActive = projectProfileData.subscription_is_active
 
-    }, error => {
-      this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
-    }, () => {
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID * COMPLETE * ');
-      this.getIntegratons()
-    });
+          this.customization = projectProfileData.customization;
+
+          this.INTEGRATIONS.forEach(integration => {
+            this.manageProBadgeVisibility(integration, projectProfileData)
+          });
+
+          await this.getApps();
+          //this.manageTelegramVisibility(projectProfileData);
+          this.logger.log("[INTEGRATION-COMP] app retrieved")
+          this.manageAppVisibility(projectProfileData)
+          this.getIntegrations();
+        }
+      }, (error) => {
+        this.logger.error("[INTEGRATION-COMP] err: ", error);
+      })
   }
-
-  getIntegratons() {
-    this.getAllIntegrations().then(() => {
-      this.intName = this.route.snapshot.queryParamMap.get('name');
-      this.logger.log("[INTEGRATION-COMP] intName: ", this.intName);
-      if (this.intName) {
-        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-      }
-      
-    })
-  }
-
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -184,15 +168,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    // const user___role =  this.usersService.project_user_role_bs.value;
-    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-      //  console.log("[INTEGRATION-COMP] user is ", user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
@@ -205,12 +185,28 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * UTILS FUNCTIONS - END
+   */
+  getIntegrations() {
+    this.getAllIntegrations().then(() => {
+      this.intName = this.route.snapshot.queryParamMap.get('name');
+      this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
+      this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
+      
+      if (this.intName) {
+        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
+        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
+      }
+    })
+  }
+
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
         this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
-        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
+
         this.showSpinner = false
         resolve(true);
       }, (error) => {
@@ -221,18 +217,142 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     })
   }
 
+  async getApps() {
+
+    return new Promise((resolve) => {
+      this.appService.getApps().subscribe((response: any) => {
+
+        let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
+        if (environment['whatsappConfigUrl']) {
+          if (whatsappApp) {
+            whatsappApp.runURL = environment['whatsappConfigUrl'];
+            whatsappApp.channel = "whatsapp";
+          } else {
+            whatsappApp = {
+              runURL: environment['whatsappConfigUrl'],
+              channel: "whatsapp"
+            }
+          }
+        } else {
+          if (whatsappApp) {
+            whatsappApp.channel = "whatsapp";
+          }
+        }
+        this.availableApps.push(whatsappApp);
+
+        let messengerApp = response.apps.find(a => (a.title === APPS_TITLE.MESSENGER && a.version === "v2"));
+        if (environment['messengerConfigUrl']) {
+          if (messengerApp) {
+            messengerApp.runURL = environment['messengerConfigUrl'];
+            messengerApp.channel = "messenger";
+          } else {
+            messengerApp = {
+              runURL: environment['messengerConfigUrl'],
+              channel: "messenger"
+            }
+          }
+        }
+        else {
+          if (messengerApp) {
+            messengerApp.channel = "messenger";
+          }
+        }
+        this.availableApps.push(messengerApp);
+
+        let telegramApp = response.apps.find(a => (a.title === APPS_TITLE.TELEGRAM && a.version === "v2"));
+        if (environment['telegramConfigUrl']) {
+          if (telegramApp) {
+            telegramApp.runURL = environment['telegramConfigUrl'];
+            telegramApp.channel = "telegram";
+          } else {
+            telegramApp = {
+              runURL: environment['telegramConfigUrl'],
+              channel: "telegram"
+            }
+          }
+        }
+        else {
+          if (telegramApp) {
+            telegramApp.channel = "telegram";
+          }
+        }
+        this.availableApps.push(telegramApp);
+
+        let smsApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_SMS && a.version === "v2"));
+        if (environment['smsConfigUrl']) {
+          if (smsApp) {
+            smsApp.runURL = environment['smsConfigUrl'];
+            smsApp.channel = "sms";
+          } else {
+            telegramApp = {
+              runURL: environment['smsConfigUrl'],
+              channel: "sms"
+            }
+          }
+        }
+        else {
+          if (smsApp) {
+            smsApp.channel = "sms";
+          }
+        }
+        this.availableApps.push(smsApp);
+
+        let voiceApp = response.apps.find(a => (a.title === APPS_TITLE.VXML_VOICE && a.version === "v2"));
+        if (environment['voiceConfigUrl']) {
+          if (voiceApp) {
+            voiceApp.runURL = environment['voiceConfigUrl'];
+            voiceApp.channel = "voice";
+          } else {
+            voiceApp = {
+              voiceApp: environment['voiceConfigUrl'],
+              channel: "voice"
+            }
+          }
+        }
+        else {
+          if (voiceApp) {
+            voiceApp.channel = "voice";
+          }
+        }
+        this.availableApps.push(voiceApp);
+
+        resolve(true);
+
+      }, (error) => {
+        this.logger.error("--> error getting apps: ", error)
+      })
+    })
+  }
 
   onIntegrationSelect(integration) {
+    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+    this.integrationSelectedType = 'none'
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key )
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations )
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration )
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
+      }
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category , ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
+      if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
+        // this.integrationSelectedName = "external";
+        
+        this.integrationSelectedType = "external";
+        this.showInIframe = true;
+        this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType , ' showInIframe ', this.showInIframe)
+        let app = this.availableApps.find(a => a.channel === integration.key);
+        this.renderUrl = app.runURL;
+      } else {
+        this.showInIframe = false;
       }
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
     }).catch(() => {
+      this.showInIframe = false;
       this.integrationLocked = true;
       this.plan_require = integration.plan;
       this.integrationSelectedName = integration.key;
@@ -261,9 +381,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // } else {
       //   this.notify.showWidgetStyleUpdateNotification("Saved but not verified", 3, 'priority_high');
       // }
-    
+
       this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');
-      
+
     }, (error) => {
       this.logger.error("[INTEGRATION-COMP] Save integration error: ", error);
     })
@@ -271,12 +391,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   integrationDeletedEvent(integration) {
     this.presentDeleteConfirmModal(integration);
-    // this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
-    //   this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
-    //   this.reloadSelectedIntegration(integration);
-    // }, (error) => {
-    //   this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
-    // })
   }
 
   reloadSelectedIntegration(integration) {
@@ -334,7 +448,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         //   swal("Deleted" + "!", "You will no longer use this integration", {
         //     icon: "success",
         //   }).then((okpressed) => {
-        //     console.log("ok pressed")
+        //     this.logger.log("ok pressed")
         //   });
         //   this.reloadSelectedIntegration(integration);
 
@@ -352,14 +466,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   changeRoute(key) {
     this.logger.log("[INTEGRATION-COMP] change route in ", key);
-    this.router.navigate(['project/' + this.project._id + '/integrations/'], { queryParams: { name: key } })
+    this.router.navigate(['project/' + this.projectID + '/integrations/'], { queryParams: { name: key } })
   }
 
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
       // this.presentModalUpgradePlan()
-      this.router.navigate(['project/' + this.project._id + '/pricing']);
+      this.router.navigate(['project/' + this.projectID + '/pricing']);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
@@ -407,29 +521,240 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  manageProBadgeVisibility(integration: any, projectProfileData: any) {
+    if (this.profileType === 'free') {
+      this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+      
+      if (projectProfileData.trial_expired === true) {
+       
+        this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
+        if (integration.plan === 'Sandbox') {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.D) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        if (integration.plan === PLAN_NAME.EE) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        if (integration.plan === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+       
+      } else if (projectProfileData.trial_expired === false) {
+        this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
+
+      
+        if (integration.plan === "Sandbox") {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+     
+        if (integration.plan === PLAN_NAME.D) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.EE) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = false
+        }
+        if (integration.plan === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        // }
+
+
+
+      }
+    } else if (this.profileType === 'payment') {
+      if (this.subscriptionIsActive === true) {
+        this.logger.log('[INTEGRATION-COMP] USE CASE PROFILE TYPE ', this.profileType, ' SUB ACTIVE ', this.subscriptionIsActive)
+        if (projectProfileData.profile_name === PLAN_NAME.A || projectProfileData.profile_name === PLAN_NAME.D) {
+
+          this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+          // BASIC
+          if (integration.plan === PLAN_NAME.D) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // PREMIUM
+          if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+          // Team
+          if (integration.plan === PLAN_NAME.EE) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+          // CUSTOM
+          if (integration.plan === PLAN_NAME.F) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+
+        } else if (projectProfileData.profile_name === PLAN_NAME.B || projectProfileData.profile_name === PLAN_NAME.E || projectProfileData.profile_name === PLAN_NAME.EE) {
+          this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+          // BASIC
+          if (integration.plan === PLAN_NAME.D) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // PREMIUM
+          if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+
+           // TEAM
+           if (integration.plan === PLAN_NAME.EE) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+          // CUSTOM
+          if (integration.plan === PLAN_NAME.F) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = true
+          }
+        } else if (projectProfileData.profile_name === PLAN_NAME.C || projectProfileData.profile_name === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
+          // BASIC
+          if (integration.plan === PLAN_NAME.D) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+
+        
+          // PREMIUM
+          if (integration.plan === PLAN_NAME.E) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+
+            // TEAM
+            if (integration.plan === PLAN_NAME.EE) {
+              this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+              integration['displayBadge'] = false
+            }
+
+          // CUSTOM
+          if (integration.plan === PLAN_NAME.F) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
+        }
+      } else if (this.subscriptionIsActive === false) {
+        // BASIC
+        if (integration.plan === PLAN_NAME.D) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        // PREMIUM
+        if (integration.plan === PLAN_NAME.E) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+        // CUSTOM
+        if (integration.plan === PLAN_NAME.F) {
+          this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+          integration['displayBadge'] = true
+        }
+
+      }
+
+    }
+
+
+    this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
+  }
+
   checkPlan(integration_plan) {
-    this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+    // this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
+     
       // FREE or SANDBOX PLAN
-      if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
+      // if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
+      //   if (integration_plan !== 'Sandbox') {
+      //     reject(false);
+      //   }
+      //   resolve(true)
+      // }
+
+       // FREE or SANDBOX PLAN - Trial expired // nk
+       if ((this.profile_name === 'free' && this.trialExpired) || (this.profile_name === 'Sandbox' && this.trialExpired)) {
         if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)
       }
 
+       // FREE or SANDBOX PLAN - Trial // nk 
+       if ((this.profile_name === 'free' && !this.trialExpired) || (this.profile_name === 'Sandbox' && !this.trialExpired)) {
+        if (integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
+        resolve(true)
+      }
+
+      
+
       // BASIC PLAN
-      else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
-        if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.F) {
+      // else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
+      //   if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.EE || integration_plan === PLAN_NAME.F) {
+      //     reject(false);
+      //   }
+      //   resolve(true)
+      // }
+
+       // BASIC PLAN ubscription Is Active // nk
+       else if ((this.profile_name === PLAN_NAME.A && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && this.subscriptionIsActive)) {
+        if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.EE || integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
+        resolve(true)
+      }
+
+       // BASIC PLAN ubscription Is Not Active // nk
+       else if ((this.profile_name === PLAN_NAME.A && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && !this.subscriptionIsActive)) {
+        if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)
       }
 
       // PREMIUM PLAN
-      else if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E) {
+      // else if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
+      //   if (integration_plan === PLAN_NAME.F) {
+      //     reject(false);
+      //   }
+      //   resolve(true)
+      // }
+
+      // PREMIUM PLAN subscription Is Active // nk
+      else if ((this.profile_name === PLAN_NAME.B && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && this.subscriptionIsActive )) {
         if (integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
+        resolve(true)
+      }
+      // PREMIUM PLAN subscription Is Not Active // nk
+      else if ((this.profile_name === PLAN_NAME.B && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.C && !this.subscriptionIsActive)  || (this.profile_name === PLAN_NAME.F && !this.subscriptionIsActive)) {
+        if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)
@@ -441,6 +766,50 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
     })
 
+  }
+
+  manageAppVisibility(projectProfileData) {
+
+    if (projectProfileData && projectProfileData.customization) {
+
+      if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (projectProfileData.customization[this.INT_KEYS.TELEGRAM] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TELEGRAM);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (projectProfileData.customization[this.INT_KEYS.MESSENGER] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.MESSENGER);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (projectProfileData.customization[this.INT_KEYS.TWILIO_SMS] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
+
+      let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
+      if (index === -1) {
+        let idx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.CHANNEL);
+        if (idx != -1) {
+          this.CATEGORIES.splice(idx, 1);
+        }
+      }
+
+    } else {
+
+      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      
+    }
+
+    this.integrationListReady = true;
   }
 
 }

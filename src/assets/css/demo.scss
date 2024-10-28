@@ -816,11 +816,11 @@ my-app .main-panel .main-content .card {
   }
 }
 
-/*
-// ---------------------------------------------------------------------------
-// inline avatars (used in conversation - history - no real-time conversation)
-// --------------------------------------------------------------------------- 
-*/
+
+/* ---------------------------------------------------------------------------
+/* inline avatars (used in conversation - history - no real-time conversation)
+/* ---------------------------------------------------------------------------  */
+
 .served-by-desktop-a {
   display: flex;
   -webkit-box-align: center;
@@ -905,6 +905,110 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: -3px;
 }
+
+/* ---------------------------------------------------------------------------
+/* inline bot used in kb component 
+/* ---------------------------------------------------------------------------  */
+.served-by-cb-a {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  /* // margin-top: 12px; */
+}
+
+.served-by-cb-b {
+  /* // margin-right: 6px; */
+  display: flex;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.served-by-cb-c {
+  padding: 0px;
+  display: inline-block;
+  flex: 1 1 32px;
+  // margin-left: 5px;
+  cursor: pointer;
+}
+
+.disable-link-if-is-agent {
+  cursor: not-allowed !important;
+}
+
+.first-served-by {
+  margin-left: 0px !important;
+}
+
+.served-by-cb-d {
+  position: relative;
+  text-align: center
+}
+
+.served-by-cb-e {
+  margin: 0px auto;
+  // border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 28px;
+}
+
+.served-by-cb-e img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+
+.served-by-cb-name {
+  // font-size: 12px;
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // width: 40px;
+  width: 60px;
+  font-weight: 500;
+}
+
+.served-by-cb-e .altenative-avatar-wrap {
+  width: 32px;
+  height: 32px;
+  // border-radius: 50%;
+  border: 2px solid #eee;
+  /* // margin-top: 2px; */
+  position: relative;
+  top: 2px;
+}
+
+.altenative-avatar {
+  color: #ffffff;
+  line-height: 30px;
+  margin: auto;
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  /* // padding-left: 10px; */
+  text-align: center;
+}
+
+.current-user-member-border {
+  /* // border-color: #4caf50 !important; */
+  box-shadow: 0 0 0 2px #1877f2;
+}
+
+.served-by-cb-e:hover {
+  position: relative;
+  top: -3px;
+}
+
+
+/* ---------------------------------------------------------------------------  */
+
 
 .bot---avatar {
   cursor: pointer;
@@ -1142,22 +1246,7 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
 //   z-index: 0 !important;
 // }
 
-// Custom angular material tooltip style
-// ::ng-deep .custom-mat-tooltip {
-//   background-color: #2d323e;
-//   font-size: 12px;
-// }
 
-// ::-webkit-scrollbar {
-//   width: 6px;
-// }
-// ::-webkit-scrollbar-track {
-//   background-color: #1c2b45;
-// }
-// ::-webkit-scrollbar-thumb {
-//   background-color: #3c485b;
-//   border-radius: 3px;
-// }
 
 // -----
 .main-panel-chat-panel-mode::-webkit-scrollbar {
@@ -1213,6 +1302,40 @@ span.navbar-brand-title {
   margin-top: 8px;
   margin-left: 4px;
 }
+
+.page-title--sidebar-settings {
+  position: absolute;
+  top: 21px;
+  z-index: 1050;
+  font-size: 18px;
+}
+
+.page-title--sidebar-settings_opened {
+  left: 253px;
+}
+
+.page-title--sidebar-settings_closed {
+  left: 78px;
+}
+
+// ---------------------------------------------
+// For chatbot sidebar 
+// ---------------------------------------------
+
+.navbar-brand-sidebar-settings>.chatbot-svg-icon {
+  width: 29px;
+  position: relative;
+  top: -5px;
+}
+
+.navbar-brand-sidebar-settings>.chatbot-sidebar-title {
+  position: absolute;
+  margin-left: 39px;
+  top: 16px;
+}
+
+
+// --------------------------------------------------------
 
 .tag-input-wrap .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: rgba(0, 0, 0, 0.87) !important;
@@ -1704,6 +1827,21 @@ footer ul {
   // width: 503px;
 }
 
+.ng-select.custom-input .ng-select-container {
+  border: none;
+}
+
+.ng-select.custom--input .ng-select-container  {
+  box-shadow: 0 0 4px #c7c7c7 !important;
+  border: unset !important;
+  border-radius: 12px !important;
+} 
+
+.ng-select-container {
+    height: 36px !important;
+}
+
+
 .ng-select.ng-select-tags .ng-dropdown-panel.ng-select-bottom {
   margin-top: 0px !important;
   margin-left: 0px !important;
@@ -1721,6 +1859,11 @@ footer ul {
   border-right: 1px solid $icon-color;
   border-bottom: 1px solid $icon-color;
   outline: 1px solid $icon-color;
+}
+
+// Used 
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 4.64px 0px 10px 0px !important;
 }
 
 // ::ng-deep
@@ -1776,9 +1919,9 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 //   height: 48px !important;
 // }
 
-appdashboard-app-store>div>div>div>div>.card-app-store {
-  height: 269px;
-}
+// appdashboard-app-store>div>div>div>div>.card-app-store {
+//   height: 269px;
+// }
 
 .b-plan-badge-color {
   color: $plan-b-color;
@@ -2480,6 +2623,24 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
   color: #4caf50;
 }
 
+
+.error-snackbar {
+  font-weight: 400;
+  color: #fff !important;
+  min-width: fit-content !important;
+}
+
+.error-snackbar>div>div>simple-snack-bar>span {
+  margin-left: 22px;
+}
+
+.error-snackbar::before {
+  font-family: "FontAwesome";
+  content: "\f06a";
+  position: absolute;
+  color: #f44336;
+}
+
 /*
 /* Settings sidebar / Bot sidebar 
 /* ---------------------------------------------- */
@@ -2488,7 +2649,7 @@ appdashboard-settings-sidebar {
   min-height: calc(100vh - 160px);
 }
 
-appdashboard-bots-sidebar  {
+appdashboard-bots-sidebar {
   border-right: 1px solid #e5effe !important;
   min-height: calc(100vh - 160px);
 }
@@ -2728,6 +2889,147 @@ li.active-item a i.settings-sidebar-icons {
   background: var(--settings-sidebar-toggle-icon-hover-background-color);
 }
 
+
+
+
+mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+
+.mat-menu-panel.ai-settings-menu {
+  margin-top: -65px;
+  left: 138px;
+  width: 300px;
+}
+
+.mat-menu-panel.second-add-contents-menu {
+  left: 27px;
+}
+
+
+
+/*
+ * Shepherd
+/* ********************************** */
+
+.shepherd-element {
+  padding: 8px;
+}
+
+.shepherd-arrow:before {
+  background-color: #fff !important;
+}
+
+.shepherd-header {
+  background: #fff !important;
+  padding: 8px !important;
+}
+
+.shepherd-header>button {
+  position: absolute;
+  top: 1px;
+  right: 8px;
+}
+
+.shepherd-title {
+  font-size: 16px !important;
+  font-family: var(--header-font-family) !important;
+  color: #000 !important;
+  margin-top: 12px !important;
+  flex: auto !important;
+}
+
+.shepherd-text {
+  font-size: 14px !important;
+  padding: 0px 8px 24px !important;
+  font-weight: 400 !important;
+  color: #000 !important;
+}
+
+.shepherd-footer {
+  border-top: unset !important;
+}
+
+
+.shepherd-button {
+  font-weight: 400;
+}
+
+.next-button {
+  color: #fff !important;
+}
+
+.shepherd-progress {
+  position: absolute;
+  left: 15px;
+  bottom: 20px;
+  color: #727272;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+
+.custom-class-shepherd-bottom {
+  margin-top: 12px !important;
+  max-width: 300px !important;
+}
+
+.custom-class-shepherd-bottom-l {
+  margin-top: 12px !important;
+}
+
+.step-with-image .shepherd-content .shepherd-header {
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container {
+  height: 197px;
+  text-align: center;
+}
+
+.step-with-image .shepherd-content .shepherd-text .tour-text-container .image-container img {
+  max-width: 345px !important;
+}
+
+.padding-4 {
+  padding: 0px !important;
+}
+
+// .padding-4 .shepherd-content .shepherd-text {
+//   padding: 0 8px 8px !important
+// }
+
+
+.step-with-gif .shepherd-content .shepherd-text .image-container img {
+  max-width: 369px !important;
+  margin-top: 6px;
+}
+
+.custom-cancel-button .shepherd-content .shepherd-footer .cancel-button {
+
+  background: #3288e6 !important;
+  color: #FFF;
+  font-weight: 400;
+}
+
+.custom-cancel-button .shepherd-content .shepherd-footer .cancel-button:hover {
+  color: #FFF;
+  background: #196fcc !important;
+}
+
+/* ********************************** */
+
+.overlay-backdrop {
+  background: #191d2285;
+}
+
+
+
+/* ********************************** */
+
 /*
  * Sweet Alert 2 
 /* ********************************** */
@@ -2740,8 +3042,28 @@ li.active-item a i.settings-sidebar-icons {
   font-family: var(--header-font-family) !important;
   font-weight: 500 !important;
 }
+
 .swal2-close:focus {
   box-shadow: unset !important;
+}
+
+.swal2-html-container label {
+  display: block;
+  margin-top: 16px;
+}
+
+.swal2-html-container .swal2-select {
+  margin-top: 0px !important;
+
+}
+
+div:where(.swal2-container) .swal2-select { 
+  margin-top: 0px !important;
+
+  // appearance: none;
+  // border: 1px solid #ccc;
+  // background-color: #fff;
+  // border-radius: 4px;
 }
 
 // .swal2-html-container {
@@ -2757,4 +3079,56 @@ li.active-item a i.settings-sidebar-icons {
 // }
 // .swal2-icon > .swal2-icon-content {
 //   font-size: 2.75em !important;
+// }
+
+// footer  
+// footer {
+//   border-top: 1px solid #e7e7e7;
+//   position: absolute;
+//   width: 100%;
+//   bottom: 0;
+// }
+
+.mat-progress-spinner {
+  position: absolute;
+  box-shadow: 0 0 0 4px #e8e9ed inset;
+  // box-shadow: 0 0 0 10px #e8e9ed inset;
+  border-radius: 50%;
+}
+
+.mat-progress-spinner::ng-deep circle {
+  // background-color: #2196F2 !important;
+  stroke: #2196F2 !important;
+}
+
+.mat-dialog-container {
+  font-family: 'Poppins' !important;
+}
+
+.mat-expansion-panel-header {
+  font-family: 'Poppins' !important;
+  font-size: 14px !important;
+}
+
+.mat-form-field-infix {
+  font-family: 'Poppins' !important;
+}
+
+.mat-select {
+  font-family: 'Poppins' !important;
+}
+
+.mat-option {
+  font-family: 'Poppins' !important;
+}
+
+// .mat-form-field-appearance-outline .mat-form-field-outline {
+//   transition: border-color 0.3s ease; /* Smooth transition */
+// }
+
+// .mat-form-field-flex:hover .mat-form-field-outline {
+
+//   .mat-form-field-outline-start {
+//     border: 1px solid #ccc !important; /* Change to your desired hover color */
+//   }
 // }

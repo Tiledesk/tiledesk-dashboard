@@ -3,7 +3,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
-import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, KB_MAX_NUM, PLAN_NAME, PLAN_SEATS } from 'app/utils/util';
+import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, KB_MAX_NUM, PLANS_LIST, PLAN_NAME, PLAN_SEATS } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-pricing-base',
@@ -18,6 +18,7 @@ import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, KB_MAX_NUM, PL
 export class PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
+  PLANS_LIST = PLANS_LIST;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
   CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
@@ -43,6 +44,7 @@ export class PricingBaseComponent implements OnInit {
   profile_name_for_segment: string;
   areActivePay: boolean;
 
+
   // Plan limit
   public seatsLimit: any;
   public chatBotLimit: any;
@@ -63,6 +65,7 @@ export class PricingBaseComponent implements OnInit {
   public tParamsAvailableFromTier2: any; // i.e. Scale or Premium
   public tParamsAvailableFromAppSumoTier3: any;
   public tprojectprofilemane: any;
+  isAppSumo: boolean
 
   constructor(
     public prjctPlanService: ProjectPlanService,
@@ -114,12 +117,14 @@ export class PricingBaseComponent implements OnInit {
           // console.log('[P-BASE]  - GET PROJECT PROFILE - areActivePay ', this.areActivePay);
 
           if (projectProfileData && projectProfileData.extra3) {
+            
             // console.log('[P-BASE] Find Current Project Among All extra3 ', projectProfileData.extra3)
             this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3],
               this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
             // console.log('[P-BASE] Find Current Project appSumoProfile ', this.appSumoProfile)
             this.tParamsAvailableFromAppSumoTier3 = { plan_name: this.appSumoProfilefeatureAvailableFromBPlan }
             if (projectProfileData.extra3 === 'tiledesk_tier1' || projectProfileData.extra3 === 'tiledesk_tier2') {
+              
               this.tParamsAvailableFromTier2 = { plan_name: this.appSumoProfilefeatureAvailableFromBPlan }
             }
           }
@@ -131,7 +136,7 @@ export class PricingBaseComponent implements OnInit {
               // USECASE: Free Plan (TRIAL ACTIVE i.e. Scale trial)
               // ------------------------------------------------------------------------
               if (this.profile_name === 'free') {
-
+               
                 this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
                 this.profile_name_for_segment = this.prjct_profile_name
                 if (this.areActivePay === true) {
@@ -143,24 +148,29 @@ export class PricingBaseComponent implements OnInit {
 
                   // Chatbot limit
                   this.chatBotLimit = null
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  // console.log('[P-BASE] - SCALE TRIAL PLAN - CB LIMIT ', this.chatBotLimit)
 
                   // KB limit
-                  this.kbLimit = 3
-                  // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
+                  this.kbLimit = null;
+                  // console.log('[P-BASE] - SCALE TRIAL PLAN - KB LIMIT ', this.kbLimit)
 
                   // Translate params
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
 
                 } else if (this.areActivePay === false) {
+                  
                   // console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  this.kbLimit = null;
+
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = false;
                   // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
                   // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
@@ -170,6 +180,7 @@ export class PricingBaseComponent implements OnInit {
                 // USECASE: Sandbox Plan (new FREE PLAN - TRIAL ACTIVE i.e. Premium trial)
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === 'Sandbox') {
+                
                 this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', this.trial_expired)
                 this.profile_name_for_segment = this.prjct_profile_name
@@ -181,17 +192,33 @@ export class PricingBaseComponent implements OnInit {
                   // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                   // Chatbot limit
-                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                  // this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                  this.chatBotLimit = projectProfileData.profile_chatbots;
+                  // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                  if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
+                    this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                    // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                  }
+
                   this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                   // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
 
-                  // Kb Limit
-                  this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                  // Kb contents Limit
+                  // this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                  this.kbLimit = projectProfileData.profile_kbs;
+                  // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                  if (this.kbLimit === null || this.kbLimit === undefined) {
+                    this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                    // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                  }
+
+
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                   // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
                   // Translate params 
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
@@ -199,7 +226,10 @@ export class PricingBaseComponent implements OnInit {
                   // console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  this.kbLimit = null;
+
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
@@ -213,68 +243,80 @@ export class PricingBaseComponent implements OnInit {
               // ------------------------------------------------------------------------
               if (this.profile_name === 'free') {
                 this.prjct_profile_name = "Free plan";
-
+               
                 if (this.areActivePay === true) {
                   // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', this.trial_expired)
-          
+
                   // Seats limit
                   this.seatsLimit = PLAN_SEATS.free
-                   // Chatbot limit
-                  // this.chatBotLimit = null;
-                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                  
-
                   this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
                   // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
-                 
-                 
-                 
+
+                  // Chatbot limit
+                  // this.chatBotLimit = null;
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
                   this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  // console.log('[P-BASE] - FREE PLAN (TRIAL EXPIRED) - CB LIMIT ', this.chatBotLimit)
+
+                  // this.kbLimit = null
+                  this.kbLimit = KB_MAX_NUM.free
+                  this.kbLimit = projectProfileData.profile_kbs;
+                  // if (this.kbLimit === null) {
+                  //   this.kbLimit = KB_MAX_NUM.free
+                  // console.log('[P-BASE] - FREE PLAN (TRIAL EXPIRED)- KB DEFAULT LIMIT   ', this.kbLimit)
+                  // }
+                  this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
 
                   this.profile_name_for_segment = this.prjct_profile_name
-                  // KB limit
-                  // this.kbLimit = 3;
-                  this.kbLimit = KB_MAX_NUM.free;
-                  this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                  // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
-                  
+
                   // --------------------------------------------------------------------------------
                   // @ Translate params for static page (Upgrade plan names reference old plan names)
                   // --------------------------------------------------------------------------------
-                  this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
-                 
+                  // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                  // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                  // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                  // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                  // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+
 
                   // --------------------------------------------------------------------------------
                   // @ Translate params for static page (Upgrade plan names reference new plan names)
                   // --------------------------------------------------------------------------------
-                  // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                  // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                  // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D}
-                  // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                  // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D}
+                  this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
 
-                  this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                  // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                  // this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
+                  // this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+
+                  this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+
+
                   
 
                   this.dispayBadgeAvaibleFromInAppStore = true;
+
                 } else if (this.areActivePay === false) {
+                  
                   // console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  this.kbLimit = null;
+                  // console.log('[P-BASE] - FREE PLAN (TRIAL EXPIRED - on premise)- CB  LIMIT ', this.chatBotLimit)
+                  // console.log('[P-BASE] - FREE PLAN (TRIAL EXPIRED - on premise)- KB  LIMIT ', this.kbLimit)
 
-                  this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
-                  this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+
+                  this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
 
@@ -287,6 +329,7 @@ export class PricingBaseComponent implements OnInit {
                 // USECASE: Sandbox Plan (TRIAL EXPIRED)
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === 'Sandbox') {
+                
                 this.prjct_profile_name = "Sandbox plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', this.trial_expired)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -299,10 +342,16 @@ export class PricingBaseComponent implements OnInit {
                   // Chatbot limit
                   this.chatBotLimit = CHATBOT_MAX_NUM.free;
                   this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  // console.log('[P-BASE] - SANDBOX PLAN (TRIAL EXPIRED) - CB LIMIT ', this.chatBotLimit)
 
                   // KB limit
-                  this.kbLimit = KB_MAX_NUM.free;
+                  this.kbLimit = KB_MAX_NUM.free
+                  // this.kbLimit = projectProfileData.profile_kbs;
+                  // if (this.kbLimit === null) {
+                  //   this.kbLimit = KB_MAX_NUM.free
+                  // console.log('[P-BASE] - SANDBOX (TRIAL EXPIRED)- KB DEFAULT LIMIT   ', this.kbLimit)
+                  // }
+
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                   // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
                   // --------------------------------------------------------------------------------
@@ -312,26 +361,32 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                  this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                  // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                  this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else if (this.areActivePay === false) {
                   // console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
+                 
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  this.kbLimit === null
+                  // console.log('[P-BASE] - SANDBOX (TRIAL EXPIRED ON PREMISE)- CB LIMIT   ', this.chatBotLimit)
+                  // console.log('[P-BASE] - SANDBOX (TRIAL EXPIRED ON PREMISE)- KB LIMIT   ', this.kbLimit)
+
                   this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                  this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                  // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                 this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = true;
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
-                  // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+                
                 }
               }
             }
@@ -340,10 +395,12 @@ export class PricingBaseComponent implements OnInit {
             if (this.subscription_is_active === true) {
 
               if (this.profile_name === PLAN_NAME.A) {
+                
                 // ------------------------------------------------------------------------
                 // USECASE: Growth Plan (SUB ACTIVE)
                 // ------------------------------------------------------------------------
                 if (!this.appSumoProfile) {
+                  this.isAppSumo = false;
                   this.prjct_profile_name = PLAN_NAME.A + " plan";
                   // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                   this.profile_name_for_segment = this.prjct_profile_name;
@@ -356,19 +413,23 @@ export class PricingBaseComponent implements OnInit {
 
                   // Chatbot limit
                   this.chatBotLimit = null;
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                  // console.log('[P-BASE] - GROWTH PLAN (SUB ACTIVE) - CB LIMIT ', this.chatBotLimit);
 
                   // KB limit
-                  this.kbLimit = 3;
+                  this.kbLimit = null;
+                  // console.log('[P-BASE] - GROWTH PLAN (SUB ACTIVE) - KB LIMIT ', this.kbLimit);
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
-                  // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
 
                   // Translate params for static page
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                  this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                  // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                  this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
 
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else {
+                  this.isAppSumo = true
                   // ------------------------------------------------------------------------
                   // USECASE: Growth Plan AppSumo (SUB ACTIVE)
                   // ------------------------------------------------------------------------
@@ -384,21 +445,28 @@ export class PricingBaseComponent implements OnInit {
 
                   // Chatbot limit
                   this.chatBotLimit = null;
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                  // console.log('[P-BASE] - Growth Plan AppSumo - CB LIMIT ', this.chatBotLimit);
 
                   // KB limit
-                  this.kbLimit = 3;
+                  this.kbLimit = null;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
-                  // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                  // console.log('[P-BASE] - Growth Plan AppSumo - KB LIMIT ', this.kbLimit);
 
                   // Translate params for static page
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+
+                  this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+                  this.tParamsAvailableFromAppSumoTier3 = { plan_name: this.appSumoProfilefeatureAvailableFromBPlan }
+                  // this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                 }
               } else if (this.profile_name === PLAN_NAME.B) {
+               
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB ACTIVE)
                 // ------------------------------------------------------------------------
                 if (!this.appSumoProfile) {
+                  this.isAppSumo = false;
                   this.prjct_profile_name = PLAN_NAME.B + " plan";
                   // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                   this.profile_name_for_segment = this.prjct_profile_name;
@@ -411,21 +479,25 @@ export class PricingBaseComponent implements OnInit {
 
                   // Chatbot limit
                   this.chatBotLimit = null;
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                  // console.log('[P-BASE] -  Scale Plan - CB LIMIT ', this.chatBotLimit);
 
                   // KB limit
-                  this.kbLimit = 3;
+                  // this.kbLimit = 3;
+                  this.kbLimit = null;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
-                  // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                  // console.log('[P-BASE] -  Scale Plan- KB LIMIT ', this.kbLimit);
 
                   // Translate params for static page
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
                 } else {
                   // ------------------------------------------------------------------------
                   // USECASE: Scale Plan AppSumo (SUB ACTIVE)
                   // ------------------------------------------------------------------------
+                  this.isAppSumo = true;
                   this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                   this.profile_name_for_segment = this.prjct_profile_name;
@@ -438,21 +510,27 @@ export class PricingBaseComponent implements OnInit {
 
                   // Chatbot limit
                   this.chatBotLimit = null;
-                  // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                  // console.log('[P-BASE] - Scale Plan AppSumo - CB LIMIT ', this.chatBotLimit);
 
                   // KB limit
-                  this.kbLimit = 3;
+                  // this.kbLimit = 3;
+                  this.kbLimit = null;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
-                  // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                  // console.log('[P-BASE] - Scale Plan AppSumo - KB LIMIT ', this.kbLimit);
 
                   // Translate params for static page
-                  
+
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+
+                  // this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+                  // this.tParamsAvailableFromAppSumoTier3 = { plan_name: this.appSumoProfilefeatureAvailableFromBPlan }
                 }
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB ACTIVE)
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.C) {
+                
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -465,18 +543,20 @@ export class PricingBaseComponent implements OnInit {
 
                 // Chatbot limit
                 this.chatBotLimit = null;
-                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                // console.log('[P-BASE] - Plus Plan (SUB ACTIVE) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = 3;
+                // this.kbLimit = 3;
+                this.kbLimit = null;
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // console.log('[P-BASE] - Plus Plan (SUB ACTIVE) - KB LIMIT ', this.kbLimit);
 
                 this.dispayBadgeAvaibleFromInAppStore = false;
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB ACTIVE) new for Growth Plan
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.D) {
+               
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -488,20 +568,30 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - BASIC PLAN (SUB ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
+                  // console.log('[P-BASE] - BASIC PLAN  (SUB ACTIVE) CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
-                // KB limit
-                this.kbLimit = KB_MAX_NUM[PLAN_NAME.D]
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - BASIC PLAN (SUB ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined) {
+                  this.kbLimit = KB_MAX_NUM[PLAN_NAME.D]
+                  // console.log('[P-BASE] - BASIC PLAN (SUB ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
+
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
-                
+
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page
                 // --------------------------------------------------------------------------------
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
@@ -509,6 +599,7 @@ export class PricingBaseComponent implements OnInit {
                 // USECASE: Premium Plan (SUB ACTIVE) new for Scale Plan
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.E) {
+               
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -520,22 +611,81 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                // this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - PREMIUM  PLAN (SUB ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                  // console.log('[P-BASE] - PREMIUM PLAN (SUB ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
+
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit };
                 // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                // this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - PREMIUM  (SUB ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined) {
+                  this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                  // console.log('[P-BASE] - PREMIUM  (SUB ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                this.dispayBadgeAvaibleFromInAppStore = false;
+                // ------------------------------------------------------------------------
+                // USECASE: Team Plan (SUB ACTIVE)
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.EE) {
+                
+                this.prjct_profile_name = PLAN_NAME.EE + " plan";
+                // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile: this.prjct_profile_name }
+
+                // Seats limit
+                this.seatsLimit = projectProfileData.profile_agents;
+                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.EE, allowed_seats_num: this.seatsLimit };
+                // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
+
+                // Chatbot limit
+                // this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - PREMIUM  PLAN (SUB ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.EE]
+                  // console.log('[P-BASE] - PREMIUM PLAN (SUB ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
+
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit };
+                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                // this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - PREMIUM  (SUB ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined) {
+                  this.kbLimit = KB_MAX_NUM[PLAN_NAME.EE]
+                  // console.log('[P-BASE] - PREMIUM  (SUB ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = false;
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB ACTIVE) new for Plus Plan
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.F) {
+                
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -547,12 +697,25 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
 
                 // Chatbot limit CHATBOT_MAX_NUM[PLAN_NAME.F]
-                this.chatBotLimit = null
+                // this.chatBotLimit = null;
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - CUSTOM PLAN (SUB ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.F]
+                  // console.log('[P-BASE] - CUSTOM PLAN (SUB ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                // this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - CUSTOM  (SUB ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined) {
+                  this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                  // console.log('[P-BASE] - CUSTOM (SUB ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
                 this.dispayBadgeAvaibleFromInAppStore = false;
@@ -565,6 +728,7 @@ export class PricingBaseComponent implements OnInit {
               // USECASE: Growth Plan (SUB EXPIRED)
               // ------------------------------------------------------------------------
               if (this.profile_name === PLAN_NAME.A) {
+                
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -579,40 +743,42 @@ export class PricingBaseComponent implements OnInit {
                 // this.chatBotLimit = null;
                 this.chatBotLimit = CHATBOT_MAX_NUM.free
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                // console.log('[P-BASE] - GROWTH PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
                 // this.kbLimit = 3;
                 this.kbLimit = KB_MAX_NUM.free
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // console.log('[P-BASE] - GROWTH PLAN (SUB EXPIRED)- KB LIMIT ', this.kbLimit);
 
 
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page (Upgrade plan names reference old plan names)
                 // --------------------------------------------------------------------------------
-                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
 
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page (Upgrade plan names reference new plan names)
                 // --------------------------------------------------------------------------------
-                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
 
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.B) {
+                
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -621,7 +787,7 @@ export class PricingBaseComponent implements OnInit {
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+                // console.log('[P-BASE] - SCALE PLAN (SUB EXPIRED) - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
                 // this.chatBotLimit = null;
@@ -633,33 +799,35 @@ export class PricingBaseComponent implements OnInit {
                 // this.kbLimit = 3;
                 this.kbLimit = KB_MAX_NUM.free
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // console.log('[P-BASE] - SCALE PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
 
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page (Upgrade plan names reference old plan names)
                 // --------------------------------------------------------------------------------
-                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
 
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page (Upgrade plan names reference new plan names)
                 // --------------------------------------------------------------------------------
-                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
 
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.C) {
+                
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active);
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -674,40 +842,42 @@ export class PricingBaseComponent implements OnInit {
                 // this.chatBotLimit = null;
                 this.chatBotLimit = CHATBOT_MAX_NUM.free;
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                // console.log('[P-BASE] - PLUS PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
                 // this.kbLimit = 3;
                 this.kbLimit = KB_MAX_NUM.free
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // console.log('[P-BASE] - PLUS PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
 
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page (Upgrade plan names reference old plan names)
                 // --------------------------------------------------------------------------------
-                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
-                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
 
 
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page (Upgrade plan names reference new plan names)
                 // --------------------------------------------------------------------------------
-                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
-                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
 
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB EXPIRED) new for Growth
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.D) {
+                
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -719,14 +889,26 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                  // console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                // console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM.free;
+                // this.kbLimit = KB_MAX_NUM.free;
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - BASIC  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  // console.log('[P-BASE] - BASIC (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // console.log('[P-BASE] - BASIC PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
 
 
                 // Translate params for static page
@@ -734,8 +916,9 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
@@ -743,6 +926,7 @@ export class PricingBaseComponent implements OnInit {
                 // USECASE: Premium Plan (SUB EXPIRED) new for Scale
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.E) {
+                
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -751,25 +935,86 @@ export class PricingBaseComponent implements OnInit {
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                  // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM.free;
+                // this.kbLimit = KB_MAX_NUM.free;
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - PREMIUM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  // console.log('[P-BASE] - PREMIUM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
 
                 // Translate params for static page
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.dispayBadgeAvaibleFromInAppStore = true;
+
+                // ------------------------------------------------------------------------
+                // USECASE: Team Plan (SUB EXPIRED) 
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.EE) {
+               
+                this.prjct_profile_name = PLAN_NAME.EE + " plan";
+                // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile: this.prjct_profile_name }
+
+                // Seats limit
+                this.seatsLimit = PLAN_SEATS.free
+                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                  // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                // this.kbLimit = KB_MAX_NUM.free;
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - PREMIUM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  // console.log('[P-BASE] - PREMIUM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                // console.log('[P-BASE] - PREMIUM PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
+
+                // Translate params for static page
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
@@ -777,6 +1022,7 @@ export class PricingBaseComponent implements OnInit {
                 // USECASE: Custom Plan (SUB EXPIRED) new for Plus
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === PLAN_NAME.F) {
+              
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 // console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
                 this.profile_name_for_segment = this.prjct_profile_name;
@@ -788,22 +1034,43 @@ export class PricingBaseComponent implements OnInit {
                 // console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                // // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CB LIMIT ', this.chatBotLimit);
+
+                // // KB limit
+                // this.kbLimit = KB_MAX_NUM.free;
+                // this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - KB LIMIT ', this.kbLimit);
+
+                this.chatBotLimit = projectProfileData.profile_chatbots;
+                // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                if (this.chatBotLimit === null || this.chatBotLimit === undefined || this.chatBotLimit > CHATBOT_MAX_NUM.free) {
+                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                  // console.log('[P-BASE] - CUSTOM PLAN (SUB EXPIRED) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                }
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = KB_MAX_NUM.free;
+                // this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                // Kb contents Limit
+                this.kbLimit = projectProfileData.profile_kbs;
+                // console.log('[P-BASE] - CUSTOM  (SUB EXPIRED) - KB LIMIT FROM DB  ', this.kbLimit)
+                if (this.kbLimit === null || this.kbLimit === undefined || this.kbLimit > KB_MAX_NUM.free) {
+                  this.kbLimit = KB_MAX_NUM.free;
+                  // console.log('[P-BASE] - CUSTOM (SUB EXPIRED) - KB DEFAULT LIMIT   ', this.kbLimit)
+                }
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
                 // Translate params for static page
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                // this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 

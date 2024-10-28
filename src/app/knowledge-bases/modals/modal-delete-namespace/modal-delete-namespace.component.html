@@ -1,0 +1,49 @@
+<h1 mat-dialog-title> {{ 'KbPage.DeleteKb' | translate }} </h1>
+
+<div mat-dialog-content>
+
+    <div *ngIf="kbsList?.length > 0" class="form-container">
+        <p [innerHTML]="'KbPage.SureToDeleteNamespaceContents' | translate: {namespace_name: selectedNamespace.name}"> </p>
+    </div>
+    <div *ngIf="kbsList?.length === 0" class="form-container">
+        <p [innerHTML]="'KbPage.SureToDeleteNamespace' | translate: {namespace_name: selectedNamespace.name}"> </p>
+    </div>
+
+
+    <div *ngIf="!selectedNamespace.default" class="delete-namespace-section">
+        <div  *ngIf="kbsList?.length > 0" class="checkbox">
+            <label [ngClass]="{'active--label': deleteAlsoNamespace}">
+                <input type="checkbox" name="optionsCheckboxes" (change)="hasSelectedDeleteNamespace($event)">
+               
+                <!-- Also delete the namespace -->
+                {{ 'KbPage.AlsoDeleteTheNamespace' | translate }}
+            </label>
+        </div>
+        <div class="delete-namespace-input-wpr">
+            <label for="delete-namespace-input"  [ngStyle]="{'color':deleteAlsoNamespace === true ? '#3c4858' : '#00000042' }">
+                <!-- To delete the Namespace type the namespace name -->
+                {{ 'KbPage.ToDeleteTheNamespaceTypeTheNamespaceName' | translate }}
+            </label>
+            <input type="text" [(ngModel)]="namespaceTyped" (input)="checkNamespaceTyped()" placeholder=" {{ 'KbPage.NamespaceName' | translate }}" [disabled]="!deleteAlsoNamespace">
+        </div>
+    </div>
+
+ 
+
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onCloseModal()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    
+    <button [disabled]="!namespacenameMatch && deleteAlsoNamespace" class="mat-dialog-ko-btn" mat-button (click)="onDeleteNamespace()" cdkFocusInitial>
+        
+        {{ 'Delete' | translate }}
+        
+    </button>
+</div>
+
+

@@ -12,6 +12,8 @@ const swal = require('sweetalert');
 @Injectable()
 export class BrandService {
 
+
+
   // "brandSrc":"https://tiledeskbrand.nicolan74.repl.co/mybrand",
 
   public brand: any;
@@ -27,6 +29,8 @@ export class BrandService {
       "privacy_policy_url": "https://www.tiledesk.com/privacy.html",
       "display_terms_and_conditions_link": true,
       "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
+      "display_dpa_link": true,
+      "dpa_url": "https://tiledesk.com/dpa/",
       "contact_us_email": "support@tiledesk.com",
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,
@@ -35,6 +39,14 @@ export class BrandService {
       "display_contact_us_email": true,
       "custom_redirect_after_logout": false,
       "after_logout_redirect_URL": "",
+      "display_chatbots_community": true,
+      "display_templates_category": true,
+      "display_change_pwd": true,
+      "EXTREME_MEASURES": true,
+      "SUPPORT_MENU": true,
+      // "widget_logo_URL":"https://tiledesk.com/tiledesk-logo-white.png",
+      // "widget_default_footer" :"<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>",
+      // "widget_launcher_button_placeholder": "assets/img/logos/custom-launcher-button-placeholder_v2.svg",
       "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": true,
@@ -62,6 +74,10 @@ export class BrandService {
         "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
       },
     },
+    WIDGET: {
+      "LOGO_CHAT": "https://tiledesk.com/tiledesk-logo-white.png",
+      "POWERED_BY": "<a tabindex='-1' target='_blank href='https://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>"
+    },
     CHAT: {
 
     },
@@ -86,8 +102,8 @@ export class BrandService {
       CONTACT_SALES_EMAIL: "sales@tiledesk.com",
       BRAND_PRIMARY_COLOR: "#f0806f",
       BRAND_SECONDARY_COLOR: "#f0806f",
-      DOCS: true
-
+      DOCS: true,
+      LOGOUT_ENABLED: true
     }
   }
 
@@ -103,7 +119,7 @@ export class BrandService {
     private logger: LoggerService
   ) {
     this.getTranslations()
-
+    // console.log('[BRAND-SERV] HELLO !!!!!!! ');
   }
 
   getTranslations() {
@@ -156,7 +172,7 @@ export class BrandService {
       }
     } else {
       const res = await this.httpClient.get(environment['remoteConfigUrl']).toPromise();
-      this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
+      // console.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 
 
       const remoteConfigData = res
@@ -173,9 +189,10 @@ export class BrandService {
 
 
         } else {
-          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
+          // console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
 
           this.brand = this._brand;
+          // console.log('[BRAND-SERV] this.brand', this.brand )
         }
 
       } else {
@@ -222,7 +239,7 @@ export class BrandService {
   // }
   getBrand() {
     this.logger.log('BrandService getBrand has been called - brand: ', this.brand);
-    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'] };
+    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'], ...{WIDGET: this.brand['WIDGET']} };
 
   }
 

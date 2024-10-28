@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { CHANNELS, CHANNELS_NAME, avatarPlaceholder, getColorBck } from '../../utils/util';
 import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -107,15 +107,25 @@ export class WsSharedComponent implements OnInit {
   openChatToTheSelectedConversation(CHAT_BASE_URL: string, requestid: string, requester_fullanme: string) {
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requestid', requestid);
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - requester_fullanme', requester_fullanme);
+    let _requester_fullanme = ""
+    if (requester_fullanme.indexOf("#") !== -1) {
+      this.logger.log("requester_fullanme contains #");
+      _requester_fullanme = requester_fullanme.replace(/#/g, "%23")
+
+    } else {
+      this.logger.log("String does not contain #");
+      _requester_fullanme = requester_fullanme
+    }
     this.logger.log('[WS-SHARED] - openChatToTheSelectedConversation - CHAT_BASE_URL', CHAT_BASE_URL);
     const chatTabCount = localStorage.getItem('tabCount')
     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
 
     let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + requestid + '/' + requester_fullanme.trim() + '/active'
+    let url = baseUrl + requestid + '/' + _requester_fullanme.trim() + '/active'
     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
+
     // if (chatTabCount) {
     //   if (+chatTabCount > 0) {
     //     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount > 0 ')
@@ -472,6 +482,23 @@ export class WsSharedComponent implements OnInit {
   }
 
 
+  async getProjectUserInProject(currentUserId,prjct_id): Promise<string>{
+    return new Promise((resolve, reject)=> {
+      this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe( (projectUser) => {
+        resolve(projectUser[0]['role'])
+        // if (projectUser[0]['role'] === 'agent') {
+        //   resolve(true)
+        // } else {
+        //   resolve(false)
+        // }
+      },  (error)=> {
+          this.logger.error('[ROLE-GUARD] getProjectUserRole --> ERROR:', error)
+          resolve(error)
+      })
+    
+    })
+  }
+
   currentUserIdIsInParticipants(participants: any, currentUserID: string, request_id): boolean {
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST][WS-REQUESTS-MSGS] - currentUserIdIsInParticipants participants ', participants, ' currentUserID ', currentUserID)
     let currentUserIsJoined = false
@@ -496,45 +523,16 @@ export class WsSharedComponent implements OnInit {
     this.conversationTypeInRequests = [];
     ws_requests.forEach(request => {
     // console.log('[WS-SHARED] getConversationTypeInRequests request ', request)
-      let channelObjct = {}
-      // (request.channel.name !== '' || request.channel.name !== '' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21')
-    
-  
-      if (request.channel.name === 'chat21') {
-        channelObjct['id'] =  "chat21";
-        channelObjct['name'] =  "Chat";
-      }
-      if (request.channel.name === 'whatsapp') {
-        channelObjct['id'] =  "whatsapp";
-        channelObjct['name'] =  "WhatsApp";
-      }
-      if (request.channel.name === 'messenger') {
-        channelObjct['id'] =  "messenger";
-        channelObjct['name'] =  "Messenger";
-      }
-      if (request.channel.name === 'telegram') {
-        channelObjct['id'] =  "telegram";
-        channelObjct['name'] =  "Telegram";
-      }
 
-      if (request.channel.name === 'email') {
-        channelObjct['id'] =  "email";
-        channelObjct['name'] =  "Email";
-      }
-
-      if (request.channel.name === 'form') {
-        channelObjct['id'] =  "form";
-        channelObjct['name'] =  "Ticket";
-      }
-
-      const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
-      // if (this.conversationTypeInRequests.indexOf(request.channel.name) === -1) {
+      let channelObjct = CHANNELS.find((el => el.id === request.channel.name ))
+      if(channelObjct){
+        const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
         if (index === -1) {
-        this.conversationTypeInRequests.push(channelObjct)
-      } else {
-      //  console.log('[WS-SHARED] the element already exist')
+          this.conversationTypeInRequests.push(channelObjct)
+        }
       }
-    })
+
+    });
     // console.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
   }
 
@@ -555,6 +553,7 @@ export class WsSharedComponent implements OnInit {
         // I CREATE AN ARRAY OF IDS OF PARTICIPANTS:  participantsId
         // IF THE ID OF THE PARTICIPANT DOES NOT EXISTS IN THE "ARRAY participantsId" THE FOR CYCLE PROCEEDS BUILDING 
         // THE ARRAY participantsInRequests
+       
 
         if (participantsId.indexOf(participant) === -1) {
 

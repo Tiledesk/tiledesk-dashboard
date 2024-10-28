@@ -208,10 +208,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
 
   }
 
-
-
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
     this.getCurrentRoute();
     this.clearSearchedQuestionStored();
     this.getParamsBotIdAndThenInit();

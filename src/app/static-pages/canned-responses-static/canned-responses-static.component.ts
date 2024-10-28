@@ -1,7 +1,6 @@
-import { Component,OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -14,13 +13,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 
 @Component({
   selector: 'appdashboard-canned-responses-static',
   templateUrl: './canned-responses-static.component.html',
   styleUrls: ['./canned-responses-static.component.scss']
 })
-// extends StaticPageBaseComponent
+
 export class CannedResponsesStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   // tparams: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -63,12 +63,15 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
-  ) { 
+    public location: Location,
+    private roleService: RoleService
+  ) {
     super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('canned-static')
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();
@@ -87,13 +90,13 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      })
   }
 
   listenSidebarIsOpened() {
@@ -135,13 +138,13 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[CANNED-RES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.USER_ROLE = user_role;
+        this.logger.log('[CANNED-RES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      });
   }
 
 
@@ -161,16 +164,17 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
   }
 
   presentModalsOnInit() {
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        if (this.USER_ROLE === 'owner') {
+          if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      if (this.USER_ROLE === 'owner') {
-        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+          } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+          }
         }
       }
     }
@@ -185,7 +189,7 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-      
+
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

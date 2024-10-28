@@ -1,14 +1,12 @@
 import { Component, isDevMode, OnInit } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
 import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { LocalDbService } from 'app/services/users-local-db.service';
-import { CreateProjectComponent } from '../create-project/create-project.component';
 import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -19,6 +17,7 @@ import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { CacheService } from 'app/services/cache.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -43,7 +42,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   public templateImg: string;
   public templateNameOnSite: string;
   public projects: Project[];
-  public activeProjects : Project[];
+  public activeProjects: Project[];
   public botid: string;
   public selectedProjectId: string;
   public projectname: string;
@@ -77,10 +76,11 @@ export class GetStartChatbotForkComponent implements OnInit {
     public notify: NotifyService,
     public dialog: MatDialog,
     private translate: TranslateService,
+    private cacheService: CacheService
   ) {
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     // this.company_name = brand['BRAND_NAME'];
     // this.company_site_url = brand['COMPANY_SITE_URL'];
   }
@@ -93,15 +93,20 @@ export class GetStartChatbotForkComponent implements OnInit {
     // this.getCurrentProject();
     this.getUserRole();
     this.traslateString()
+    this.clearCache()
+  }
+
+  clearCache() {
+    this.cacheService.clearCache()
   }
 
   getLoggedUser() {
-    // console.log('[GET START CHATBOT FORK] getLoggedUser called') 
+    this.logger.log('[GET START CHATBOT FORK] getLoggedUser called')
     this.auth.user_bs
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          // console.log('[GET START CHATBOT FORK]  - user ', this.user)
+          // this.logger.log('[GET START CHATBOT FORK]  - user ', this.user)
         }
       });
   }
@@ -135,15 +140,15 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   getTemplate() {
     // const storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
+    // this.logger.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
 
-    const storedRoute = decodeURIComponent(this.router.url);
-    // console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+  const storedRoute = decodeURIComponent(this.router.url);
+   this.logger.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
       // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
 
-      // console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
+      this.logger.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
       let secondStoredRouteSegment = storedRouteSegments[2]
 
       // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
@@ -152,9 +157,9 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         const secondStoredRouteSegments = storedRouteSegments[2].split('?tn=')
 
-        // console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
+        // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
-        // console.log('[GET START CHATBOT FORK] botid ', this.botid)
+        this.logger.log('[GET START CHATBOT FORK] botid ', this.botid)
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
           this.templateNameOnSite = decodeURI(_templateNameOnSite)
@@ -166,10 +171,10 @@ export class GetStartChatbotForkComponent implements OnInit {
     }
 
     this.faqKbService.getChatbotTemplateById(this.botid).subscribe((res: any) => {
-      // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
+     this.logger.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
       if (res) {
         this.selectedTemplate = res
-        // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - selectedTemplate ', this.selectedTemplate)
+        // this.logger.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - selectedTemplate ', this.selectedTemplate)
         this.botname = res['name']
 
         if (this.selectedTemplate && this.selectedTemplate['bigImage']) {
@@ -195,45 +200,46 @@ export class GetStartChatbotForkComponent implements OnInit {
       if (projects) {
         this.projects = projects;
 
-        this.activeProjects = this.projects.filter( (project) => {
+        this.activeProjects = this.projects.filter((project) => {
           return project.id_project.status === 100
         });
 
         if (this.activeProjects && this.activeProjects.length === 1) {
-          // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
+          this.logger.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
           this.projectName = this.activeProjects[0].id_project.name
           this.selectedProjectId = this.activeProjects[0].id_project._id
-          // console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
+          this.logger.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
           this.project = this.activeProjects[0].id_project;
-          // console.log('[GET START CHATBOT FORK] this.project ', this.project)
+          // this.logger.log('[GET START CHATBOT FORK] this.project ', this.project)
           this.getProjectBotsByPassingProjectId(this.selectedProjectId);
           this.getProjectPlan(this.project)
           this.trackGroup(this.selectedProjectId)
         }
         if (projectid) {
-          // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1' , projectid)
+
           if (this.activeProjects && this.activeProjects.length > 1) {
-            // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
+            this.logger.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
             this.activeProjects.forEach(project => {
               if (project.id_project.id === projectid) {
                 this.project = project.id_project
-                // console.log('[GET START CHATBOT FORK] this.project ', this.project)
+                this.logger.log('[GET START CHATBOT FORK] this.project ', this.project)
                 this.projectPlan = project.id_project.profile.name
                 this.projectName = project.id_project.name;
                 this.selectedProjectId = projectid
 
 
-
-                const selectedProject: Project = {
-                  _id: this.project['_id'],
-                  name: this.project['name'],
-                  operatingHours: this.project['activeOperatingHours'],
-                  profile_type: this.project['profile'].type,
-                  profile_name: this.project['profile'].name,
-                  trial_expired: this.project['trialExpired']
-                }
-                this.auth.projectSelected(selectedProject, 'get-start-chatbot-fork')
-
+                const _project = this.project
+                _project['role'] = project['role']
+                // const selectedProject: Project = {
+                //   _id: this.project['_id'],
+                //   name: this.project['name'],
+                //   operatingHours: this.project['activeOperatingHours'],
+                //   profile_type: this.project['profile'].type,
+                //   profile_name: this.project['profile'].name,
+                //   trial_expired: this.project['trialExpired']
+                // }
+                this.auth.projectSelected(_project, 'get-start-chatbot-fork')
+                localStorage.setItem('last_project', JSON.stringify(project))  
 
                 this.getProjectBots();
 
@@ -338,6 +344,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         projectProfile: this.prjct_profile_name,
         callingPage: "getStartChatbotFork",
         projectId: this.project._id,
+
         // subscriptionIsActive: this.subscription_is_active,
         // prjctProfileType: this.prjct_profile_type,
         // trialExpired: this.trial_expired
@@ -351,7 +358,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   presentModalAgentCannotManageChatbotAndGoToHome() {
     const el = document.createElement('div')
-    if (this.hideHelpLink ) {
+    if (this.hideHelpLink) {
       el.innerHTML = this.agentsCannotManageChatbots + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
     } else {
       el.innerHTML = this.agentsCannotManageChatbots + '. '
@@ -391,10 +398,11 @@ export class GetStartChatbotForkComponent implements OnInit {
 
 
   forkTemplate() {
-    // console.log('[GET START CHATBOT FORK] selectedTemplate ',this.selectedTemplate._id)
-    // console.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedProjectId)
+    // this.logger.log('[GET START CHATBOT FORK] selectedTemplate ',this.selectedTemplate._id)
+    this.logger.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedProjectId)
+    this.logger.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedTemplate)
     this.faqKbService.installTemplate(this.selectedTemplate._id, this.selectedProjectId, true, this.selectedTemplate._id).subscribe((res: any) => {
-      // console.log('[GET START CHATBOT FORK] - FORK TEMPLATE RES', res);
+      // this.logger.log('[GET START CHATBOT FORK] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -413,7 +421,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   getFaqKbById(botid) {
     this.faqKbService.getFaqKbByIdAndProjectId(this.selectedProjectId, botid).subscribe((faqkb: any) => {
-      // console.log('[GET START CHATBOT FORK] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
+      // this.logger.log('[GET START CHATBOT FORK] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
 
       this.botLocalDbService.saveBotsInStorage(botid, faqkb);
       this.goToBotDetails(faqkb)
@@ -443,9 +451,9 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.logger.error('Wizard Get start chatbot fork page error', err);
         }
         if (!this.user) {
-          // console.log('[GET START CHATBOT FORK] this.user',  this.user)
+          // this.logger.log('[GET START CHATBOT FORK] this.user',  this.user)
           this.user = localStorage.getItem('user');
-          // console.log('[GET START CHATBOT FORK] stored user',  this.user)
+          // this.logger.log('[GET START CHATBOT FORK] stored user',  this.user)
         }
 
         let userFullname = ''
@@ -546,7 +554,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project ', project)
     if (project.profile.extra3) {
       this.appSumoProfile = APP_SUMO_PLAN_NAME[project.profile.extra3]
-      // console.log('[GET START CHATBOT FORK] Find Current Project appSumoProfile ', this.appSumoProfile)
+      // this.logger.log('[GET START CHATBOT FORK] Find Current Project appSumoProfile ', this.appSumoProfile)
     }
 
     if (project.profile.type === 'free') {
@@ -622,20 +630,25 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 
         } else if (project.profile.name === PLAN_NAME.D) {
-          this.prjct_profile_name = PLAN_NAME.C + " plan";
+          this.prjct_profile_name = PLAN_NAME.D + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 
         }
         else if (project.profile.name === PLAN_NAME.E) {
-          this.prjct_profile_name = PLAN_NAME.C + " plan";
+          this.prjct_profile_name = PLAN_NAME.E + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
+        }
 
+        else if (project.profile.name === PLAN_NAME.EE) {
+          this.prjct_profile_name = PLAN_NAME.EE + " plan";
+          this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.EE]
+          this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
         }
 
         else if (project.profile.name === PLAN_NAME.F) {
-          this.prjct_profile_name = PLAN_NAME.C + " plan";
+          this.prjct_profile_name = PLAN_NAME.F + " plan";
           this.chatBotLimit = null
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 
@@ -671,7 +684,11 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.prjct_profile_name = PLAN_NAME.E + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM.free
           this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
-
+        }
+        else if (project.profile.name === PLAN_NAME.EE) {
+          this.prjct_profile_name = PLAN_NAME.EE + " plan";
+          this.chatBotLimit = CHATBOT_MAX_NUM.free
+          this.logger.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
         }
         else if (project.profile.name === PLAN_NAME.F) {
           this.prjct_profile_name = PLAN_NAME.F + " plan";

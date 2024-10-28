@@ -27,8 +27,11 @@ import { appSumoHighlightedFeaturesPlanATier1, appSumoHighlightedFeaturesPlanATi
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
+import { CacheService } from 'app/services/cache.service';
+import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 type UserFields = 'creditCard' | 'expirationDate' | 'cvc';
 type FormErrors = { [u in UserFields]: string };
@@ -67,6 +70,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
   PROJECT_SETTINGS_ADVANCED_ROUTE: boolean;
+  PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE: boolean;
   PROJECT_SETTINGS_NOTIFICATION_ROUTE: boolean;
   PROJECT_SETTINGS_SECURITY_ROUTE: boolean;
   PROJECT_SETTINGS_BANNED_VISITORS_ROUTE: boolean;
@@ -126,6 +130,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   isVisiblePaymentTab: boolean;
   isVisibleAdvancedTab: boolean;
+  isVisibleSmartAssignmentTab: boolean;
   isVisibleDeveloperTab: boolean;
   isVisibleNotificationTab: boolean;
   isVisibleSecurityTab: boolean;
@@ -151,13 +156,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   reassignment_timeout_has_maximum__error = false;
   automatic_idle_chats_has_minimum_error = false;
   automatic_idle_chats_has_maximum__error = false;
-
   chat_limit_on: boolean;
-
   reassignment_on: boolean;
-
   automatic_unavailable_status_on: boolean;
+  agents_can_see_only_own_convs: boolean;
+  areHideChatbotAttributesInConvDtls: boolean;
+
   // unavailable_status_on: boolean;
+
 
   is_disabled_chat_limit_section: boolean;
   is_disabled_reassignment_section: boolean;
@@ -173,6 +179,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isUNIS: boolean = false;
 
   assigned_conv_on: boolean;
+  displaySupportWidget: boolean;
   unassigned_conv_on: boolean;
   ip_restrictions_on: boolean;
   USER_ROLE: string;
@@ -221,6 +228,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isSripeSub: boolean;
   salesEmail: string;
   public hideHelpLink: boolean;
+  public displayExtremeMeasures: boolean;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -272,16 +280,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private logger: LoggerService,
     private _fb: FormBuilder,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
+    private cacheService: CacheService,
+    private roleService: RoleService
     // private formGroup: FormGroup
 
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     if (brand) {
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
       this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+      this.displayExtremeMeasures = brand['EXTREME_MEASURES']
+      // this.logger.log('[PRJCT-EDIT-ADD] displayExtremeMeasures ',  this.displayExtremeMeasures)
     }
     // this.translationParams = { plan_name: PLAN_NAME.B } // Scale
     this.translationParams = { plan_name: PLAN_NAME.E } // Premium
@@ -291,7 +303,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+
     this.getBrowserVersion()
     this.getCurrentUrlAndSwitchView();
     this.getProjectPlan();
@@ -311,193 +323,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.buildCreditCardForm()
   }
 
-  getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
-    let keys = this.public_Key.split("-");
-    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('NavbarComponent public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisiblePaymentTab = false;
-        } else {
-          this.isVisiblePaymentTab = true;
-        }
-      }
 
-      if (key.includes("PSA")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let psa = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
-        if (psa[1] === "F") {
-          this.isVisibleAdvancedTab = false;
-        } else {
-          this.isVisibleAdvancedTab = true;
-        }
-      }
-
-      if (key.includes("DEV")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let dev = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
-        if (dev[1] === "F") {
-          this.isVisibleDeveloperTab = false;
-        } else {
-          this.isVisibleDeveloperTab = true;
-        }
-      }
-
-      if (key.includes("NOT")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let not = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
-        if (not[1] === "F") {
-          this.isVisibleNotificationTab = false;
-        } else {
-          this.isVisibleNotificationTab = true;
-        }
-      }
-
-      if (key.includes("IPS")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let ips = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (ips[1] === "F") {
-          this.isVisibleSecurityTab = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
-        } else {
-          this.isVisibleSecurityTab = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
-        }
-      }
-      // Customize the notification email template
-      if (key.includes("PET")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let pet = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (pet[1] === "F") {
-          this.isVisibleCustomizeEmailTemplate = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
-        } else {
-          this.isVisibleCustomizeEmailTemplate = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
-        }
-      }
-      // SMTP settings
-      if (key.includes("MTS")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let mts = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (mts[1] === "F") {
-          this.isVisibleSMTPsettings = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
-        } else {
-          this.isVisibleSMTPsettings = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
-        }
-      }
-
-      if (key.includes("BAN")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let mts = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (mts[1] === "F") {
-          this.isVisibleBannedVisitor = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
-        } else {
-          this.isVisibleBannedVisitor = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
-        }
-      }
-
-      // Auto send transcript by email 
-      if (key.includes("AST")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let mts = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (mts[1] === "F") {
-          this.isVisibleAutoSendTranscript = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
-        } else {
-          this.isVisibleAutoSendTranscript = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
-        }
-      }
-
-      if (key.includes("VAU")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let vau = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (vau[1] === "F") {
-          this.isVisibleVisitorAuthentication = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
-        } else {
-          this.isVisibleVisitorAuthentication = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
-        }
-      }    
-    });
-
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.isVisiblePaymentTab = false;
-    }
-
-    if (!this.public_Key.includes("VAU")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("VAU")', this.public_Key.includes("VAU"));
-      this.isVisibleVisitorAuthentication = false;
-    }
-
-    if (!this.public_Key.includes("PSA")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
-      this.isVisibleAdvancedTab = false;
-    }
-
-    if (!this.public_Key.includes("DEV")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
-      this.isVisibleDeveloperTab = false;
-    }
-
-    if (!this.public_Key.includes("NOT")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
-      this.isVisibleNotificationTab = false;
-    }
-
-    if (!this.public_Key.includes("IPS")) {
-      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
-      this.isVisibleSecurityTab = false;
-    }
-
-    if (!this.public_Key.includes("PET")) {
-      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PET")', this.public_Key.includes("PET"));
-      this.isVisibleCustomizeEmailTemplate = false;
-    }
-
-    if (!this.public_Key.includes("MTS")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
-      this.isVisibleSMTPsettings = false;
-    }
-
-    if (!this.public_Key.includes("BAN")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("BAN")', this.public_Key.includes("BAN"));
-      this.isVisibleBannedVisitor = false;
-    }
-
-    if (!this.public_Key.includes("AST")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("AST")', this.public_Key.includes("AST"));
-      this.isVisibleAutoSendTranscript = false;
-    }
-  }
 
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -709,15 +541,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.learnMoreAboutDefaultRoles = translation;
       });
 
-      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+    this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageAdvancedProjectSettings = translation;
       });
 
 
-    
-      
+
+
     // this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
     //   .subscribe((translation: any) => {
     //     this.cPlanOnly = translation;
@@ -771,6 +603,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
     this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/advanced'));
     this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SETTINGS_NOTIFICATION ', currentUrl.indexOf('/project-settings/notification'));
+    this.logger.log('[PRJCT-EDIT-ADD] - PROJECT_SMARTASSIGNMENT ', currentUrl.indexOf('/project-settings/smartassignment'));
 
     const url_segments = currentUrl.split('/');
     this.logger.log('[PRJCT-EDIT-ADD] - url_segments ', url_segments);
@@ -784,165 +617,219 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       this.isUNIS = true;
 
-      // this.isVisibleAdvancedTab = true;
       // this.DISPLAY_ADVANCED_TAB = true;
       this.logger.log('[PRJCT-EDIT-ADD] - isUNIS ', this.isUNIS);
     } else {
       this.isUNIS = false;
       this.logger.log('[PRJCT-EDIT-ADD] - isUNIS ', this.isUNIS);
-      // this.isVisibleAdvancedTab = false;
+
       // this.DISPLAY_ADVANCED_TAB = false;
     }
 
 
-    /** THE ACTIVE ROUTE IS /project-settings */
+    /** THE ACTIVE ROUTE IS /project-settings/general */
     if (
       (currentUrl.indexOf('/project-settings/general') !== -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
-      (currentUrl.indexOf('/project-settings/banned') === -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.logger.log('%ProjectEditAddComponent router.url', this.router.url);
 
       this.PROJECT_SETTINGS_ROUTE = true;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_NOTIFICATION ', this.PROJECT_SETTINGS_NOTIFICATION_ROUTE);
       this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_SECURITY_ROUTE ', this.PROJECT_SETTINGS_SECURITY_ROUTE);
-      /** THE ACTIVE ROUTE IS /project-settings/payments */
+
+      /** THE ACTIVE ROUTE IS /project-settings/payments (i.e. Subcsription) */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') !== -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
-      (currentUrl.indexOf('/project-settings/banned') === -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
-
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
       /** THE ACTIVE ROUTE IS project-settings/auth */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') !== -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
-      (currentUrl.indexOf('/project-settings/banned') === -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = true;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
-
+    /** THE ACTIVE ROUTE IS project-settings/smartassignment */
     else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') !== -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') !== -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
-      (currentUrl.indexOf('/project-settings/banned') === -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = true;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
-      // this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] - is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
 
+    /** THE ACTIVE ROUTE IS project-settings/notification */
     else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') !== -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
-      (currentUrl.indexOf('/project-settings/banned') === -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = true;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
-
+    /** THE ACTIVE ROUTE IS project-settings/security */
     else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') !== -1) &&
-      (currentUrl.indexOf('/project-settings/banned') === -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = true;
       this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+    }
+    /** THE ACTIVE ROUTE IS project-settings/banned */
+    else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
+      (currentUrl.indexOf('/project-settings/notification') === -1) &&
+      (currentUrl.indexOf('/project-settings/security') === -1) &&
+      (currentUrl.indexOf('/project-settings/banned') !== -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
+      this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
+      this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = true;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
 
     else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
       (currentUrl.indexOf('/project-settings/auth') === -1) &&
-      (currentUrl.indexOf('/project-settings/advanced') === -1) &&
+      (currentUrl.indexOf('/project-settings/smartassignment') === -1) &&
       (currentUrl.indexOf('/project-settings/notification') === -1) &&
       (currentUrl.indexOf('/project-settings/security') === -1) &&
-      (currentUrl.indexOf('/project-settings/banned') !== -1)
+      (currentUrl.indexOf('/project-settings/banned') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') !== -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
-      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE = false;
       this.PROJECT_SETTINGS_NOTIFICATION_ROUTE = false;
       this.PROJECT_SETTINGS_SECURITY_ROUTE = false;
-      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = true;
+      this.PROJECT_SETTINGS_BANNED_VISITORS_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE ', this.PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE);
+      this.logger.log('[PRJCT-EDIT-ADD] is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
   }
 
+
+  goToProjectSettings_General() {
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_General ');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/general']);
+  }
+
+  // i.e. Subscription TAB
   goToProjectSettings_Payments() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Payments USER_ROLE ', this.USER_ROLE);
     if (this.USER_ROLE === 'owner') {
@@ -962,37 +849,297 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
+
+  // i.e. Developer TAB
+  goToProjectSettings_Auth() {
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Auth ');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/auth']);
+  }
+
+
+  // 
+
+  goToProjectSettings_SmartAssignment() {
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment');
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE !== 'agent') {
+        if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          // this.logger.log('goToProjectSettings_Security HERE 1 ')
+          if (this.subscription_is_active === true) {
+            // this.logger.log('goToProjectSettings_Security HERE 2 ')
+            this.router.navigate(['project/' + this.id_project + '/project-settings/smartassignment']);
+          } else if (this.subscription_is_active === false) {
+            // this.logger.log('goToProjectSettings_Security HERE 3 ')
+            if (this.profile_name === PLAN_NAME.C) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+            } else if (this.profile_name === PLAN_NAME.F) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            }
+          }
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
+          this.prjct_profile_type === 'free'
+        ) {
+          // this.logger.log('goToProjectSettings_Security HERE 4 ')
+          this.presentModalFeautureAvailableOnlyWithPlanC()
+        }
+      } else {
+        // this.logger.log('goToProjectSettings_Security HERE 5 ')
+        this.presentModalAgentCannotManageAvancedSettings()
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+
+  goToProjectSettings_Notification() {
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Notification');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
+  }
+
+  goToProjectSettings_Security() {
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          // this.logger.log('goToProjectSettings_Security HERE 1 ')
+          if (this.subscription_is_active === true) {
+            // this.logger.log('goToProjectSettings_Security HERE 2 ')
+            this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
+          } else if (this.subscription_is_active === false) {
+            // this.logger.log('goToProjectSettings_Security HERE 3 ')
+            if (this.profile_name === PLAN_NAME.C) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+            } else if (this.profile_name === PLAN_NAME.F) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            }
+          }
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
+          this.prjct_profile_type === 'free'
+        ) {
+          // this.logger.log('goToProjectSettings_Security HERE 4 ')
+          this.presentModalFeautureAvailableOnlyWithPlanC()
+        }
+      } else {
+        // this.logger.log('goToProjectSettings_Security HERE 5 ')
+        this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+
+
+  goToProjectSettings_BannedVisitors() {
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          // this.logger.log('displayModalBanVisitor HERE 1 ')
+          if (this.subscription_is_active === true) {
+            // this.logger.log('displayModalBanVisitor HERE 2 ')
+            this.router.navigate(['project/' + this.id_project + '/project-settings/banned'])
+          } else if (this.subscription_is_active === false) {
+            // this.logger.log('displayModalBanVisitor HERE 3 ')
+            if (this.profile_name === PLAN_NAME.C) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+            } else if (this.profile_name === PLAN_NAME.F) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            }
+          }
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
+          this.prjct_profile_type === 'free'
+        ) {
+          // this.logger.log('displayModalBanVisitor HERE 4 ')
+          this.presentModalFeautureAvailableOnlyWithPlanC()
+        }
+      } else {
+        // this.logger.log('displayModalBanVisitor HERE 5 ')
+        this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+
+  }
+
+  goToProjectSettings_Advanced() {
+    if (this.isVisiblePaymentTab) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          // this.logger.log('displayModalBanVisitor HERE 1 ')
+          if (this.subscription_is_active === true) {
+            // this.logger.log('displayModalBanVisitor HERE 2 ')
+            this.router.navigate(['project/' + this.id_project + '/project-settings/advanced'])
+          } else if (this.subscription_is_active === false) {
+            // this.logger.log('displayModalBanVisitor HERE 3 ')
+            if (this.profile_name === PLAN_NAME.C) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+            } else if (this.profile_name === PLAN_NAME.F) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            }
+          }
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
+          this.prjct_profile_type === 'free'
+        ) {
+          // this.logger.log('displayModalBanVisitor HERE 4 ')
+          this.presentModalFeautureAvailableOnlyWithPlanC()
+        }
+      } else {
+        // this.logger.log('displayModalBanVisitor HERE 5 ')
+        this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+  }
+
+
+  goToCustomizeNotificationEmailPage() {
+    // this.roleService.checkRoleForCurrentProject('notification-email');
+    // this.router.navigate(['project/' + this.id_project + '/notification-email'])
+    this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
+
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        // this.logger.log('goToCustomizeNotificationEmailPage HERE 1 ')
+        if (this.subscription_is_active === true) {
+          // this.logger.log('goToCustomizeNotificationEmailPage HERE 2 ')
+          this.router.navigate(['project/' + this.id_project + '/notification-email'])
+        } else if (this.subscription_is_active === false) {
+          // this.logger.log('goToCustomizeNotificationEmailPage HERE 3 ')
+          if (this.profile_name === PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            // -----------------------------
+            // For withe labelling
+            // -----------------------------
+            if (this.isVisiblePaymentTab) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            } else {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            }
+          }
+        }
+      } else if (
+        this.profile_name === PLAN_NAME.A ||
+        this.profile_name === PLAN_NAME.B ||
+        this.profile_name === PLAN_NAME.D ||
+        this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
+        this.prjct_profile_type === 'free'
+      ) {
+        // this.logger.log('goToCustomizeNotificationEmailPage HERE 4 ')
+
+        this.presentModalFeautureAvailableOnlyWithPlanC()
+      }
+    } else {
+      // this.logger.log('goToCustomizeNotificationEmailPage HERE 5 ')
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
+    }
+  }
+
+  goToManageEmailSettings() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        // this.logger.log('goToManageEmailSettings HERE 1 ')
+        if (this.subscription_is_active === true) {
+          // this.logger.log('goToManageEmailSettings HERE 2 ')
+          this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
+        } else if (this.subscription_is_active === false) {
+          this.logger.log('goToManageEmailSettings HERE 3 isVisiblePaymentTab ', this.isVisiblePaymentTab, 'profile_name ', this.profile_name)
+          if (this.profile_name === PLAN_NAME.C) {
+            this.logger.log('goToManageEmailSettings HERE 4  PLAN_NAME', this.profile_name)
+            // -----------------------------
+            // For withe labelling
+            // -----------------------------
+            if (this.isVisiblePaymentTab) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+            } else {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            }
+          } else if (this.profile_name === PLAN_NAME.F) {
+            if (this.isVisiblePaymentTab) {
+              this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            } else {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            }
+          }
+        }
+      } else if (
+        this.profile_name === PLAN_NAME.A ||
+        this.profile_name === PLAN_NAME.B ||
+        this.profile_name === PLAN_NAME.D ||
+        this.profile_name === PLAN_NAME.E ||
+        this.profile_name === PLAN_NAME.EE ||
+        this.prjct_profile_type === 'free'
+      ) {
+        // this.logger.log('goToManageEmailSettings HERE 4 ')
+        this.presentModalFeautureAvailableOnlyWithPlanC()
+      }
+    } else {
+      // this.logger.log('goToManageEmailSettings HERE 5 ')
+      this.presentModalOnlyOwnerCanManageTSMTPsettings()
+    }
+  }
+
+
   presentModalFeautureAvailableOnlyWithPlanC() {
-    // console.log('here presentModalFeautureAvailableOnlyWithPlanC')
-    const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // this.logger.log('here presentModalFeautureAvailableOnlyWithPlanC')
+    // const el = document.createElement('div')
+    // el.innerHTML = this.cPlanOnly
+    Swal.fire({
+      // content: el,
+      title: this.upgradePlan,
+      text: this.cPlanOnly,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancel,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
+
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // this.logger.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
         if (this.isVisiblePaymentTab) {
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
-                // console.log('HERE Y')
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
+                // this.logger.log('HERE Y')
                 this.notify._displayContactUsModal(true, 'upgrade_plan');
               }
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
-                // console.log('HERE Y')
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.EE) {
+                // this.logger.log('HERE Y')
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
               }
 
@@ -1018,172 +1165,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
   }
 
   presentModalOnlyOwnerCanManageAdvancedProjectSettings() {
     this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
 
-
-
-  goToProjectSettings_General() {
-    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_General ');
-    this.router.navigate(['project/' + this.id_project + '/project-settings/general']);
-  }
-
-  goToProjectSettings_Auth() {
-    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Auth ');
-    this.router.navigate(['project/' + this.id_project + '/project-settings/auth']);
-  }
-
-  goToProjectSettings_Advanced() {
-    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
-    if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.id_project + '/project-settings/advanced']);
-    } else {
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
-    }
-  }
-
-  goToProjectSettings_Notification() {
-    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Notification');
-    this.router.navigate(['project/' + this.id_project + '/project-settings/notification'])
-  }
-
-  goToProjectSettings_Security() {
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        // console.log('goToProjectSettings_Security HERE 1 ')
-        if (this.subscription_is_active === true) {
-          // console.log('goToProjectSettings_Security HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
-        } else if (this.subscription_is_active === false) {
-          // console.log('goToProjectSettings_Security HERE 3 ')
-          if (this.profile_name === PLAN_NAME.C) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
-          } else if (this.profile_name === PLAN_NAME.F) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
-          }
-        }
-      } else if (
-        this.profile_name === PLAN_NAME.A ||
-        this.profile_name === PLAN_NAME.B ||
-        this.profile_name === PLAN_NAME.D ||
-        this.profile_name === PLAN_NAME.E ||
-        this.prjct_profile_type === 'free'
-      ) {
-        // console.log('goToProjectSettings_Security HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
-      }
-    } else {
-      // console.log('goToProjectSettings_Security HERE 5 ')
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
-    }
-  }
-
   presentModalAgentCannotManageAvancedSettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
 
-  goToProjectSettings_BannedVisitors() {
+  presentModalAgentCannotManageSmartAssigment() { }
 
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        // console.log('displayModalBanVisitor HERE 1 ')
-        if (this.subscription_is_active === true) {
-          // console.log('displayModalBanVisitor HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/project-settings/banned'])
-        } else if (this.subscription_is_active === false) {
-          // console.log('displayModalBanVisitor HERE 3 ')
-          if (this.profile_name === PLAN_NAME.C) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
-          } else if (this.profile_name === PLAN_NAME.F) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
-          }
-        }
-      } else if (
-        this.profile_name === PLAN_NAME.A ||
-        this.profile_name === PLAN_NAME.B ||
-        this.profile_name === PLAN_NAME.D ||
-        this.profile_name === PLAN_NAME.E ||
-        this.prjct_profile_type === 'free'
-      ) {
-        // console.log('displayModalBanVisitor HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
-      }
-    } else {
-      // console.log('displayModalBanVisitor HERE 5 ')
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
-    }
-  }
-
-  goToCustomizeNotificationEmailPage() {
-    // this.router.navigate(['project/' + this.id_project + '/notification-email'])
-    this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
-
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        // console.log('goToCustomizeNotificationEmailPage HERE 1 ')
-        if (this.subscription_is_active === true) {
-          // console.log('goToCustomizeNotificationEmailPage HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/notification-email'])
-        } else if (this.subscription_is_active === false) {
-          // console.log('goToCustomizeNotificationEmailPage HERE 3 ')
-          if (this.profile_name === PLAN_NAME.C) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
-          } else if (this.profile_name === PLAN_NAME.F) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
-          }
-        }
-      } else if (
-        this.profile_name === PLAN_NAME.A ||
-        this.profile_name === PLAN_NAME.B ||
-        this.profile_name === PLAN_NAME.D ||
-        this.profile_name === PLAN_NAME.E ||
-        this.prjct_profile_type === 'free'
-      ) {
-        // console.log('goToCustomizeNotificationEmailPage HERE 4 ')
-
-        this.presentModalFeautureAvailableOnlyWithPlanC()
-      }
-    } else {
-      // console.log('goToCustomizeNotificationEmailPage HERE 5 ')
-      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
-    }
-  }
-
-  goToManageEmailSettings() {
-
-    if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        // console.log('goToManageEmailSettings HERE 1 ')
-        if (this.subscription_is_active === true) {
-          // console.log('goToManageEmailSettings HERE 2 ')
-          this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
-        } else if (this.subscription_is_active === false) {
-          // console.log('goToManageEmailSettings HERE 3 ')
-          if (this.profile_name === PLAN_NAME.C) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
-          } else if (this.profile_name === PLAN_NAME.F) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
-          }
-        }
-      } else if (
-        this.profile_name === PLAN_NAME.A ||
-        this.profile_name === PLAN_NAME.B ||
-        this.profile_name === PLAN_NAME.D ||
-        this.profile_name === PLAN_NAME.E ||
-        this.prjct_profile_type === 'free'
-      ) {
-        // console.log('goToManageEmailSettings HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
-      }
-    } else {
-      // console.log('goToManageEmailSettings HERE 5 ')
-      this.presentModalOnlyOwnerCanManageTSMTPsettings()
-    }
-  }
   presentModalOnlyOwnerCanManageTSMTPsettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings, this.learnMoreAboutDefaultRoles)
   }
@@ -1210,10 +1203,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // let planName = ""
     //   if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
     //     planName = PLAN_NAME.C
-    //     console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 1 planName ', planName) 
+    //     this.logger.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 1 planName ', planName) 
     //   } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
     //     planName = PLAN_NAME.F
-    //     console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 2 planName ', planName) 
+    //     this.logger.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 2 planName ', planName) 
     //   }
     this.translate.get('AvailableWithThePlan', { plan_name: planName })
       .subscribe((translation: any) => {
@@ -1222,9 +1215,84 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       });
   }
 
+  SMTPsettingsValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key type of', typeof this.public_Key);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  this.public_Key.includes("WUN") ', this.public_Key.includes("WUN"));
+    // let substring = this.public_Key.substring(this.public_Key.indexOf('WUN'));
+    let parts = this.public_Key.split('-');
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
+
+    let mts = parts.find((part) => part.startsWith('MTS'));
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mts ', mts);
+    let mtsParts = mts.split(':');
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsParts ', mtsParts);
+    let mtsValue = mtsParts[1]
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsValue ', mtsValue);
+    if (mtsValue === 'T') {
+      return true
+    } else if (mtsValue === 'F') {
+      return false
+    }
+
+  }
+
+  manageSmtpSettingsVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE EXIST customization > SMTPsettings (1)', projectProfileData['customization']['smtpSettings'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] !== undefined) {
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE A EXIST customization ', projectProfileData['customization'], ' & smtpSettings', projectProfileData['customization']['smtpSettings'])
+
+      if (projectProfileData['customization']['smtpSettings'] === true) {
+        this.isVisibleSMTPsettings = true;
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
+      } else if (projectProfileData['customization']['smtpSettings'] === false) {
+
+        this.isVisibleSMTPsettings = false;
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] === undefined) {
+      this.logger.log('PRJCT-EDIT-ADD] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT smtpSettings IS', projectProfileData['customization']['smtpSettings'])
+
+      if (this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
+
+        this.isVisibleSMTPsettings = this.SMTPsettingsValue()
+        this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
+
+      } else if (!this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
+        this.isVisibleSMTPsettings = false;
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+      }
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE C customization is  ', projectProfileData['customization'], 'get value foem FT')
+      if (this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
+
+        this.isVisibleSMTPsettings = this.SMTPsettingsValue()
+        this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
+
+      } else if (!this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
+        this.isVisibleSMTPsettings = false;
+        this.logger.log('[WPRJCT-EDIT-ADD] WSMTP Settings  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleSMTPsettings);
+      }
+
+    }
+  }
+
+
+
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      //  this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
@@ -1249,6 +1317,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_profile_type', this.prjct_profile_type)
+
+        // this.getOSCODE(projectProfileData)
+
+        this.manageSmtpSettingsVisibility(projectProfileData)
 
         if (projectProfileData.subscription_creation_date) {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
@@ -1340,7 +1412,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               this.translationParams = { plan_name: PLAN_NAME.B } // Scale
-   
+
 
             } else if (this.profile_name === 'Sandbox') {
               this.prjct_profile_name = "Sandbox";
@@ -1373,7 +1445,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit };
                 this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
                 this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-                // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
               } else {
                 this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
                 this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
@@ -1383,26 +1455,33 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.C + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.D) {
               this.prjct_profile_name = PLAN_NAME.D + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.E) {
               this.prjct_profile_name = PLAN_NAME.E + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+
+            } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+              this.prjct_profile_name = PLAN_NAME.EE + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.EE, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             }
 
           } else if (this.subscription_is_active === false) {
@@ -1413,7 +1492,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
             } else if (projectProfileData.profile_name === PLAN_NAME.B) {
               this.prjct_profile_name = PLAN_NAME.B + " plan";
@@ -1421,7 +1500,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
             } else if (projectProfileData.profile_name === PLAN_NAME.C) {
               this.prjct_profile_name = PLAN_NAME.C + " plan";
@@ -1429,12 +1508,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.D) {
               this.prjct_profile_name = PLAN_NAME.D + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
             } else if (projectProfileData.profile_name === PLAN_NAME.E) {
@@ -1443,14 +1522,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.EE) {
+              this.prjct_profile_name = PLAN_NAME.EE + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.EE, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
-              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             }
           }
         }
@@ -1493,19 +1579,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           if (projectProfileData.trial_expired === false) {
             this.DISPLAY_ADVANCED_TAB = true;
             this.isTier3Plans = false
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           } else {
             this.DISPLAY_ADVANCED_TAB = false;
             if (this.profile_name === 'Sandbox') {
               this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
             } else if (this.profile_name === 'free') {
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
             }
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           }
         } else if (projectProfileData.profile_type === 'payment') {
           if (projectProfileData.subscription_is_active === true) {
@@ -1531,31 +1617,35 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
               this.isTier3Plans = false
 
+            } else if (this.profile_name === PLAN_NAME.EE) {
+
+              this.isTier3Plans = false
+
             } else if (this.profile_name === PLAN_NAME.F) {
 
               this.isTier3Plans = true
 
             }
 
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           } else if (projectProfileData.subscription_is_active === false) {
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
+            // this.logger.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             this.DISPLAY_ADVANCED_TAB = false;
 
             if (this.profile_name === PLAN_NAME.A) {
 
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.B) {
 
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.C) {
 
-              this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.D) {
@@ -1568,6 +1658,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.t_params = { 'plan_name': PLAN_NAME.D }
               this.isTier3Plans = false
 
+            } else if (this.profile_name === PLAN_NAME.EE) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+              this.isTier3Plans = false
+
             } else if (this.profile_name === PLAN_NAME.F) {
 
               this.t_params = { 'plan_name': PLAN_NAME.D }
@@ -1575,7 +1670,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
             }
 
-            // console.log('[WS-REQUESTS-MSGS] DISPLAY_ADVANCED_TAB', this.DISPLAY_ADVANCED_TAB)
+            // this.logger.log('[WS-REQUESTS-MSGS] DISPLAY_ADVANCED_TAB', this.DISPLAY_ADVANCED_TAB)
           }
         }
 
@@ -1600,6 +1695,196 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.isVisiblePaymentTab = false;
+        } else {
+          this.isVisiblePaymentTab = true;
+        }
+      }
+
+      if (key.includes("PSA")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let psa = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.isVisibleSmartAssignmentTab = false;
+        } else {
+          this.isVisibleSmartAssignmentTab = true;
+        }
+      }
+
+      if (key.includes("DEV")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let dev = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
+        if (dev[1] === "F") {
+          this.isVisibleDeveloperTab = false;
+        } else {
+          this.isVisibleDeveloperTab = true;
+        }
+      }
+
+      if (key.includes("NOT")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let not = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
+        if (not[1] === "F") {
+          this.isVisibleNotificationTab = false;
+        } else {
+          this.isVisibleNotificationTab = true;
+        }
+      }
+
+      if (key.includes("IPS")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let ips = key.split(":");
+        //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (ips[1] === "F") {
+          this.isVisibleSecurityTab = false;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        } else {
+          this.isVisibleSecurityTab = true;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        }
+      }
+      // Customize the notification email template
+      if (key.includes("PET")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let pet = key.split(":");
+        //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (pet[1] === "F") {
+          this.isVisibleCustomizeEmailTemplate = false;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
+        } else {
+          this.isVisibleCustomizeEmailTemplate = true;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
+        }
+      }
+      // SMTP settings
+      // if (this.public_Key.includes("MTS")) {
+      //   this.logger.log('[PROJECT-EDIT-ADD] - includes MTS ');
+      //   if (key.includes("MTS")) {
+      //     // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+      //     let mts = key.split(":");
+      //     //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+      //     if (mts[1] === "F") {
+      //       this.isVisibleSMTPsettings = false;
+      //       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+      //     } else {
+      //       this.isVisibleSMTPsettings = true;
+      //       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+      //     }
+      //   }
+      // } else if (!this.public_Key.includes("MTS")) {
+      //   this.logger.log('[PROJECT-EDIT-ADD] - NOT includes MTS ');
+      //   this.isVisibleSMTPsettings = false;
+      // }
+
+
+      if (key.includes("BAN")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleBannedVisitor = false;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
+        } else {
+          this.isVisibleBannedVisitor = true;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
+        }
+      }
+
+      // Auto send transcript by email 
+      if (key.includes("AST")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleAutoSendTranscript = false;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
+        } else {
+          this.isVisibleAutoSendTranscript = true;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
+        }
+      }
+
+      if (key.includes("VAU")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let vau = key.split(":");
+        //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (vau[1] === "F") {
+          this.isVisibleVisitorAuthentication = false;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
+        } else {
+          this.isVisibleVisitorAuthentication = true;
+          // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisiblePaymentTab = false;
+    }
+
+    if (!this.public_Key.includes("VAU")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("VAU")', this.public_Key.includes("VAU"));
+      this.isVisibleVisitorAuthentication = false;
+    }
+
+    if (!this.public_Key.includes("PSA")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      this.isVisibleSmartAssignmentTab = false;
+    }
+
+    if (!this.public_Key.includes("DEV")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
+      this.isVisibleDeveloperTab = false;
+    }
+
+    if (!this.public_Key.includes("NOT")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
+      this.isVisibleNotificationTab = false;
+    }
+
+    if (!this.public_Key.includes("IPS")) {
+      //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
+      this.isVisibleSecurityTab = false;
+    }
+
+    if (!this.public_Key.includes("PET")) {
+      //  this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PET")', this.public_Key.includes("PET"));
+      this.isVisibleCustomizeEmailTemplate = false;
+    }
+
+    // if (!this.public_Key.includes("MTS")) {
+    //   // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
+    //   this.isVisibleSMTPsettings = false;
+    // }
+
+    if (!this.public_Key.includes("BAN")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("BAN")', this.public_Key.includes("BAN"));
+      this.isVisibleBannedVisitor = false;
+    }
+
+    if (!this.public_Key.includes("AST")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("AST")', this.public_Key.includes("AST"));
+      this.isVisibleAutoSendTranscript = false;
+    }
+  }
+
   changeAppSumoProduct() {
     const el = document.createElement('div')
     el.innerHTML = "Hi Sumo-ling! After managing your subscription in AppSumo, refresh the page to see plan updates",
@@ -1619,7 +1904,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         dangerMode: false,
       }).then((value) => {
         if (value === 'catch') {
-          // console.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
+          // this.logger.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
 
           if (this.USER_ROLE === 'owner') {
             const url = `https://appsumo.com/account/redemption/${this.appSumoInvoiceUUID}#change-plan`
@@ -1667,8 +1952,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
           this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
-          
-          if  (subscriptionPayment.stripe_event === "checkout.session.completed") {
+
+          if (subscriptionPayment.stripe_event === "checkout.session.completed") {
             this.subscription_creation_date = subscriptionPayment.object.start_date
             this.logger.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (checkout.session.completed) > subscription creation date ', this.subscription_creation_date);
           }
@@ -1754,7 +2039,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               }
             } else if (this.customer_default_payment_method_id === null) {
               if (paymentmethod.card) {
-                // console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
+                // this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer > NO default paymentMethod OT deafult source - CARD', paymentmethod.card);
                 this.default_card_brand_name = paymentmethod.card.brand;
                 this.card_last_four_digits = paymentmethod.card.last4;
               }
@@ -1787,7 +2072,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     if (this.ccNumberField) {
       const creditCardInput = this.ccNumberField.nativeElement;
-      // console.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
+      // this.logger.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
       setTimeout(() => {
         creditCardInput.focus()
       }, 200);
@@ -1876,9 +2161,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   onSubmit(form) {
+    this.logger.log('onSubmit form', form)
     this.submitted = true;
     this.logger.log('onSubmit form', form);
-    if (form.expirationDate !== '') {
+    if (form.expirationDate && form.expirationDate !== '') {
       const expirationDateSegment = form.expirationDate.split('/');
       this.logger.log('onSubmit expirationDateSegment', expirationDateSegment);
       const expirationDateMonth = expirationDateSegment[0].trim()
@@ -1904,16 +2190,28 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
     }, (error) => {
-      // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error ', error);  
-      // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
+      // this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error ', error);  
+      // this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
 
       const error_body = error
       this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
-      this.credit_card_error_msg = error_body.msg.raw.message;
-      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
-      this.CARD_HAS_ERROR = true;
-      this.SPINNER_IN_ADD_CARD_MODAL = false
-      this.DISPLAY_ADD_CARD_COMPLETED = false
+      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg ', error_body.msg);
+
+      if (error_body && error_body.msg) {
+        this.credit_card_error_msg = error_body.msg.raw.message;
+        this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg > raw ', error_body.msg.raw);
+        this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
+        this.CARD_HAS_ERROR = true;
+        this.SPINNER_IN_ADD_CARD_MODAL = false
+        this.DISPLAY_ADD_CARD_COMPLETED = false
+      } else if (error_body && !error_body.msg) {
+        if (error_body && error_body.error && error_body.error && error_body.error.msg.code) {
+          this.credit_card_error_msg = error_body.error.msg.code;
+          this.CARD_HAS_ERROR = true;
+          this.SPINNER_IN_ADD_CARD_MODAL = false
+          this.DISPLAY_ADD_CARD_COMPLETED = false
+        }
+      }
     }, () => {
       this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER * COMPLETE * ');
       this.CARD_HAS_ERROR = false;
@@ -1943,24 +2241,24 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   // createCardToken() {
   //   this.projectService.createCardToken().subscribe((token: any) => {
-  //     console.log('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN - token ', token);
+  //     this.logger.log('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN - token ', token);
   //     if (token) {
   //       this.card_id = token.card.id
-  //       console.log('[PRJCT-EDIT-ADD] -  CREATE CARD TOKEN card_id ', this.card_id);
+  //       this.logger.log('[PRJCT-EDIT-ADD] -  CREATE CARD TOKEN card_id ', this.card_id);
   //     }
 
   //   }, (error) => {
   //     this.logger.error('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN error ', error);
 
   //   }, () => {
-  //     console.log('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN * COMPLETE * ');
+  //     this.logger.log('[PRJCT-EDIT-ADD] - CREATE CARD TOKEN * COMPLETE * ');
 
   //   });
   // }
 
   // createCustomerPortal() {
   //   this.projectService.createCustomerPortal().subscribe((customer: any) => {
-  //     console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER - customer ', customer);
+  //     this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER - customer ', customer);
   //     // if (customer ) {
   //     //   const customerId = 
   //     // }
@@ -1969,7 +2267,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   //     this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
 
   //   }, () => {
-  //     console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
+  //     this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
 
   //   });
   // }
@@ -2061,6 +2359,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.profile_name === PLAN_NAME.B ||
           this.profile_name === PLAN_NAME.D ||
           this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE ||
           this.prjct_profile_type === 'free'
 
         ) {
@@ -2168,13 +2467,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
       if (project) {
         this.projectObject = project;
         this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', this.projectObject);
 
         this.projectObject['bannedUsers'].forEach(bannedUser => {
-          // console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
+          // this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - bannedUser: ', bannedUser);
           this.getAllLeads(this.projectObject)
 
         });
@@ -2183,9 +2482,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         if (project.ipFilter) {
           let IP_filterArrayToString = project.ipFilter.toString()
-          // console.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToString);
+          // this.logger.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToString);
           let IP_filterArrayToStringSpaced = IP_filterArrayToString.replace(/,/g, ', ');
-          // console.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToStringSpaced);
+          // this.logger.log('[PRJCT-EDIT-ADD] - IP FILTER ARRAY : ', IP_filterArrayToStringSpaced);
           this.allowedIPs = IP_filterArrayToStringSpaced
         }
 
@@ -2196,6 +2495,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.project_name = project.name;
 
         if (project.settings) {
+          this.logger.log('[PRJCT-EDIT-ADD] -  project.settings ', project.settings);
+          this.logger.log('[PRJCT-EDIT-ADD] -  project.settings displayWidget ', project.settings.displayWidget);
+          this.logger.log('[PRJCT-EDIT-ADD] -  project.settings .hasOwnProperty(displayWidget) ', project.settings.hasOwnProperty('displayWidget'));
+          if (project.settings.hasOwnProperty('displayWidget')) {
+
+            if (project.settings.displayWidget === true) {
+              this.displaySupportWidget = true
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
+            } else if (project.settings.displayWidget === false) {
+              this.displaySupportWidget = false;
+              this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget);
+            }
+
+          } else if (!project.settings.hasOwnProperty('displayWidget')) {
+            this.displaySupportWidget = true
+            this.logger.log('[PRJCT-EDIT-ADD] - ON INIT displaySupportWidget IS ', project.settings.displayWidget, 'so set to true displaySupportWidget ', this.displaySupportWidget);
+          }
 
           if (project.settings.email) {
 
@@ -2243,6 +2559,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
         } else {
+          this.displaySupportWidget = true
           this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
           this.assigned_conv_on = true;
           this.unassigned_conv_on = true;
@@ -2289,6 +2606,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.reassignment_on = false;
           }
 
+          if (project.settings.current_agent_my_chats_only) {
+            this.agents_can_see_only_own_convs = project.settings.current_agent_my_chats_only
+          } else {
+            this.agents_can_see_only_own_convs = false;
+          }
+
+          if (project.settings.chatbots_attributes_hidden) {
+            this.areHideChatbotAttributesInConvDtls = project.settings.chatbots_attributes_hidden
+          } else {
+            this.areHideChatbotAttributesInConvDtls = false;
+          }
+
+
+
           // Automatic unavailable status
           if (project.settings.automatic_idle_chats) {
             this.automatic_idle_chats = project.settings.automatic_idle_chats
@@ -2309,7 +2640,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.automatic_idle_chats = 3;
           this.chat_limit_on = false;
           this.reassignment_on = false;
-          this.automatic_unavailable_status_on = false;;
+          this.automatic_unavailable_status_on = false;
+          this.agents_can_see_only_own_convs = false;
+          this.areHideChatbotAttributesInConvDtls = false;
         }
       }
 
@@ -2353,7 +2686,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleUnavailable_status_on($event) {
-
     if ($event.target.checked) {
 
       this.automatic_unavailable_status_on = true;
@@ -2363,7 +2695,46 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.automatic_unavailable_status_on = false;
       this.logger.log('[PRJCT-EDIT-ADD] - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
     }
+  }
 
+  toggleAgentViewOnlyOwnConv(event) {
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleCurrentAgentViewOnlyOwnConv event', event.target.checked);
+    this.agents_can_see_only_own_convs = event.target.checked;
+    this.projectService.agentViewOnlyOwnConv(this.agents_can_see_only_own_convs).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleCurrentAgentViewOnlyOwnConv RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+
+  toggleVisibilityOfChatbotAttributes(event) {
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleVisibilityOfChatbotAttributes', event.target.checked);
+    this.areHideChatbotAttributesInConvDtls = event.target.checked;
+    this.projectService.switchChatbotAttributesVisibility(this.areHideChatbotAttributesInConvDtls).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleVisibilityOfChatbotAttributes RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  toggleSupportWidgetVisibility($event) {
+    // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
+    this.displaySupportWidget = $event.target.checked;
+    // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility displaySupportWidget: ", this.displaySupportWidget);
+
+    this.projectService.enableDisableSupportWidgetVisibility(this.displaySupportWidget).then((result) => {
+      // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+    }).catch((err) => {
+      // this.logger.error("[PRJCT-EDIT-ADD] - Toggle Widget Visibility ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
   }
 
   toggleProjectAssignedConversation($event) {
@@ -2397,7 +2768,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   allowedIPsChanged($event) {
-    // console.log("[PRJCT-EDIT-ADD] allowedIPsChanged $event ", $event)
+    // this.logger.log("[PRJCT-EDIT-ADD] allowedIPsChanged $event ", $event)
   }
 
   saveIPranges() {
@@ -2412,7 +2783,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       allowedIPsArray = allowedIPsTrimmed.split(',')
       this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges split ", allowedIPsArray)
       // if (allowedIPsArray.length === 0) {
-      //   console.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges is empty ")
+      //   this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPranges is empty ")
       // }
     } else {
       this.logger.log("[PRJCT-EDIT-ADD] SAVE IP RANGES - allowedIPs is empty ")
@@ -2500,53 +2871,54 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.logger.log('[PRJCT-EDIT-ADD] - PROJECT NAME WHEN EDIT IS PRESSED ', this.projectName_toUpdate);
 
     this.projectService.updateProjectName(this.id_project, this.projectName_toUpdate)
-      .subscribe((prjct) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
+      .subscribe((prjct: Project) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] - UPDATE PROJECT - RESPONSE ', prjct);
 
         if (prjct) {
           if (prjct['name'] === this.projectName_toUpdate) {
             this.DISABLE_UPDATE_BTN = true;
           }
 
-          // WHEN THE USER UPDATE THE PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT RE-PUBLISHES IT
-          const project: Project = {
-            _id: this.id_project,
-            name: prjct['name'],
-          }
-          this.auth.projectSelected(project, 'project-edit-add update-project-name')
 
-          const storedProjectJson = localStorage.getItem(this.id_project);
-          this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
+          prjct['role'] = this.USER_ROLE
+          this.auth.projectSelected(prjct, 'project-edit-add update-project-name')
+          localStorage.setItem(prjct._id, JSON.stringify(prjct));
+          this.projectService.newProjectCreated(true);
 
-          if (storedProjectJson) {
-            const projectObject = JSON.parse(storedProjectJson);
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ ', projectObject);
+          // const storedProjectJson = localStorage.getItem(this.id_project);
+          // this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
 
-            const storedUserRole = projectObject['role'];
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
+          // if (storedProjectJson) {
+          //   const projectObject = JSON.parse(storedProjectJson);
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ ', projectObject);
 
-            const storedProjectName = projectObject['name'];
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
+          //   const storedUserRole = projectObject['role'];
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
 
-            const storedProjectId = projectObject['_id'];
-            this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
+          //   const storedProjectName = projectObject['name'];
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
 
-            const storedProjectOH = projectObject['operatingHours'];
+          //   const storedProjectId = projectObject['_id'];
+          //   this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
 
-            if (storedProjectName !== prjct['name']) {
+          //   const storedProjectOH = projectObject['operatingHours'];
 
-              const updatedProjectForStorage: Project = {
-                _id: storedProjectId,
-                name: prjct['name'],
-                role: storedUserRole,
-                operatingHours: storedProjectOH
-              }
+          //   if (storedProjectName !== prjct['name']) {
 
-              // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
-              localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
 
-            }
-          }
+
+          //     // const updatedProjectForStorage: Project = {
+          //     //   _id: storedProjectId,
+          //     //   name: prjct['name'],
+          //     //   role: storedUserRole,
+          //     //   operatingHours: storedProjectOH
+          //     // }
+
+          //     // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
+          //     localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
+
+          // }
+          // }
         }
 
       }, (error) => {
@@ -2582,6 +2954,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   updateAdvancedSettings() {
+    // if (this.advancedSettingBtnDisabled) {}
     const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
     this.logger.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
@@ -2592,22 +2965,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
     this.projectService.updateAdvancedSettings(this.max_agent_assigned_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
-      .subscribe((prjct) => {
-        this.logger.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
+      .subscribe((prjct: Project) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] UPDATE ADVANCED SETTINGS - RES ', prjct);
 
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // I call "this.auth.projectSelected" so that the project is republished and can have the updated data of the advanced options (smart assign) in the conversation list
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        const _project: Project = {
-          _id: prjct['_id'],
-          name: prjct['name'],
-          profile_name: prjct['profile'].name,
-          trial_expired: prjct['trialExpired'],
-          trial_days_left: prjct['trialDaysLeft'],
-          operatingHours: prjct['activeOperatingHours']
-        }
-
-        this.auth.projectSelected(_project, 'project-edit-add update-advanced-settings')
+        // const _project: Project = {
+        //   _id: prjct['_id'],
+        //   name: prjct['name'],
+        //   profile_name: prjct['profile'].name,
+        //   trial_expired: prjct['trialExpired'],
+        //   trial_days_left: prjct['trialDaysLeft'],
+        //   operatingHours: prjct['activeOperatingHours']
+        // }
+        prjct['role'] = this.USER_ROLE
+        this.auth.projectSelected(prjct, 'project-edit-add update-advanced-settings')
+        localStorage.setItem(prjct._id, JSON.stringify(prjct));
 
 
       }, (error) => {
@@ -2771,7 +3145,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }, 1500);
     });
     // } else {
-    //   console.log('[PRJCT-EDIT-ADD] - deleteProject > project profile type' , this.prjct_profile_type );
+    //   this.logger.log('[PRJCT-EDIT-ADD] - deleteProject > project profile type' , this.prjct_profile_type );
     // }
   }
 
@@ -2794,112 +3168,127 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToWebhookPage() {
     this.logger.log("[PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE > ProjectID: ", this.id_project);
-    // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE prjct_profile_type: ', this.prjct_profile_type)
-    // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE prjct_profile_name: ', this.prjct_profile_name)
-    // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE PLAN_NAME.A : ', PLAN_NAME.A)
-    // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE PLAN_NAME.B : ', PLAN_NAME.B)
-    // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE PLAN_NAME.C : ', PLAN_NAME.C)
-    // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE subscription_is_active: ', this.subscription_is_active)
+
 
     if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B TRIAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B TRIAL ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
     if (this.profile_name == PLAN_NAME.A && this.subscription_is_active === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN A ACTIVE ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN A ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
     if (this.profile_name == PLAN_NAME.B && this.subscription_is_active === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B ACTIVE ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
     if (this.profile_name == PLAN_NAME.C && this.subscription_is_active === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
     if (this.profile_name == PLAN_NAME.D && this.subscription_is_active === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
     if (this.profile_name == PLAN_NAME.E && this.subscription_is_active === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+    }
+    if (this.profile_name == PLAN_NAME.EE && this.subscription_is_active === true) {
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
     }
     if (this.profile_name == PLAN_NAME.F && this.subscription_is_active === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN f ACTIVE ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN f ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
 
 
     } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN FREE FOREVER - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN FREE FOREVER - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.A && this.subscription_is_active === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN A EXPIRED - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN A EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.B && this.subscription_is_active === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B EXPIRED - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.C && this.subscription_is_active === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.D && this.subscription_is_active === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.E && this.subscription_is_active === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.EE && this.subscription_is_active === false) {
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.F && this.subscription_is_active === false) {
-      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      // this.logger.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     }
   }
 
   // GoTo Weebhook
   presentModalFeautureAvailableOnlyWithPaidPlans() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableOnlyWithPaidPlans
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('presentModalFeautureAvailableOnlyWithPaidPlans value', value)
-        // this.router.navigate(['project/' + this.projectId + '/pricing']);
-        if (this.isVisiblePaymentTab) {
+    // const el = document.createElement('div')
+    // el.innerHTML = this.featureAvailableOnlyWithPaidPlans
+    if (this.isVisiblePaymentTab) {
+      Swal.fire({
 
-          if (this.USER_ROLE === 'owner') {
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
-                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+        // content: el,
+        title: this.upgradePlan,
+        text: this.featureAvailableOnlyWithPaidPlans,
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.upgradePlan,
+        cancelButtonText: this.cancel,
+        confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
+
+        // buttons: {
+        //   cancel: this.cancel,
+        //   catch: {
+        //     text: this.upgradePlan,
+        //     value: "catch",
+        //   },
+        // },
+        // dangerMode: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // this.logger.log('presentModalFeautureAvailableOnlyWithPaidPlans value', value)
+          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+          if (this.isVisiblePaymentTab) {
+
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+                if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+                  this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+                } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+                  this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+                }
+
+                this.logger.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name)
+              } else if (this.profile_name === 'free' && this.prjct_trial_expired === true || this.profile_name === 'Sandbox' && this.prjct_trial_expired === true) {  //
+
+                this.router.navigate(['project/' + this.projectId + '/pricing']);
+
               }
 
-              this.logger.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name) 
-            } else if (this.profile_name === 'free' && this.prjct_trial_expired === true || this.profile_name === 'Sandbox' && this.prjct_trial_expired === true) {  //
-               
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
-             
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
             }
-
           } else {
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
           }
-        } else {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
-      }
-    });
+      });
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
   }
 
   getTestSiteUrl() {

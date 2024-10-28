@@ -1,0 +1,17 @@
+<div class="unauthorized-token">
+
+    <div class="unauthorized-token-title">
+       {{ 'Oops' | translate}}!
+    </div>
+
+    <div class="unauthorized-token-subtitle">
+
+        <div> {{ 'YourAuthTokenHasBeenInvalidated' | translate}}.</div>
+        <div> {{ 'PleaseTrySigningInAgain' | translate}}.</div>
+    </div>
+
+    <div class="unauthorized-token-redirect-to-login" (click)="goToLoginPage()">
+
+        {{ 'ReturnToLoginPage' | translate}}
+    </div>
+</div>

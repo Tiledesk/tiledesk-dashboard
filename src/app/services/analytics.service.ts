@@ -64,13 +64,17 @@ export class AnalyticsService {
     }
   }
 
-  requestsByDay(lastdays, department_id?, participant_id?): Observable<[any]> {
+  requestsByDay(lastdays, department_id?, participant_id?, channel?): Observable<[any]> {
     if (!department_id) {
       department_id = ''
     }
 
     if (!participant_id) {
       participant_id = ''
+    }
+
+    if (!channel) {
+      channel = ''
     }
     this.logger.log("[ANALYTICS-SERV] requestsByDay DEPT-ID", department_id);
     this.logger.log("[ANALYTICS-SERV] requestsByDay  PARTICIPANT-ID", participant_id);
@@ -83,17 +87,22 @@ export class AnalyticsService {
       .set('lastdays', lastdays)
       .set('department_id', department_id)
       .set('participant', participant_id)
+      .set('channel', channel)
 
     return this.httpClient
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/aggregate/day', { headers: headers, params: params })
   }
 
-  requestsByDayBotServed(lastdays, department_id?, participant_id?): Observable<[any]> {
+  requestsByDayBotServed(lastdays, department_id?, participant_id?, channel?): Observable<[any]> {
     if (!department_id) {
       department_id = ''
     }
     if (!participant_id) {
       participant_id = ''
+    }
+
+    if (!channel) {
+      channel = ''
     }
 
     this.logger.log("[ANALYTICS-SERV] requestsByDayBotServed DEPT-ID", department_id);
@@ -107,6 +116,7 @@ export class AnalyticsService {
       .set('lastdays', lastdays)
       .set('department_id', department_id)
       .set('participant', participant_id)
+      .set('channel', channel)
 
     return this.httpClient
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/aggregate/hasBot/day', { headers: headers, params: params })
@@ -146,7 +156,7 @@ export class AnalyticsService {
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/publicanalytics/waiting/current', httpOptions);
   }
 
-  getavarageWaitingTimeDataCHART(lastdays, department_id?, participant_id?): Observable<[any]> {
+  getavarageWaitingTimeDataCHART(lastdays, department_id?, participant_id?, channel?): Observable<[any]> {
     this.logger.log("[ANALYTICS-SERV] getavarageWaitingTimeDataCHART PARAM", lastdays, department_id, participant_id);
 
     if (!department_id) {
@@ -155,6 +165,11 @@ export class AnalyticsService {
     if (!participant_id) {
       participant_id = ''
     }
+
+    if (!channel) {
+      channel = ''
+    }
+
     this.logger.log("[ANALYTICS-SERV] getavarageWaitingTimeDataCHART DEPT-ID", department_id);
     this.logger.log("[ANALYTICS-SERV] getavarageWaitingTimeDataCHART PARTICIPANT-ID", participant_id);
 
@@ -165,7 +180,8 @@ export class AnalyticsService {
     let params = new HttpParams()
       .set('lastdays', lastdays)
       .set('department_id', department_id)
-      .set('participant', participant_id);
+      .set('participant', participant_id)
+      .set('channel', channel);
 
     return this.httpClient
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/waiting/day', { headers: headers, params: params });
@@ -184,7 +200,7 @@ export class AnalyticsService {
   }
 
 
-  getDurationConversationTimeDataCHART(lastdays, department_id?, participant_id?): Observable<[any]> {
+  getDurationConversationTimeDataCHART(lastdays, department_id?, participant_id?, channel?): Observable<[any]> {
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART PARAM", lastdays, department_id, participant_id);
     if (!department_id) {
       department_id = ''
@@ -192,8 +208,13 @@ export class AnalyticsService {
     if (!participant_id) {
       participant_id = ''
     }
+
+    if (!channel) {
+      channel = ''
+    }
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART DEP-ID", department_id);
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART PARTICIPANT-ID", participant_id);
+    this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART CHANNEL-ID", channel);
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART TOKEN", this.TOKEN);
 
     let headers = new HttpHeaders({
@@ -206,6 +227,7 @@ export class AnalyticsService {
       .set('lastdays', lastdays)
       .set('department_id', department_id)
       .set('participant', participant_id)
+      .set('channel', channel)
 
     this.logger.log("[ANALYTICS-SERV] getDurationConversationTimeDataCHART params", params);
 
@@ -290,9 +312,13 @@ export class AnalyticsService {
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/project_users/aggregate/month', { headers: headers })
   }
 
-  getMessagesByDay(lastdays, sender_id?): Observable<[any]> {
+  getMessagesByDay(lastdays, sender_id?, channel?): Observable<[any]> {
     if (!sender_id) {
       sender_id = ""
+    }
+
+    if (!channel) {
+      channel = ""
     }
 
     this.logger.log("[ANALYTICS-SERV] getMessagesByDay SENDER-ID", sender_id);
@@ -303,6 +329,7 @@ export class AnalyticsService {
     let params = new HttpParams()
       .set('lastdays', lastdays)
       .set('sender', sender_id)
+      .set('channel', channel)
 
     return this.httpClient
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/messages/aggregate/day', { headers: headers, params: params })
@@ -327,7 +354,7 @@ export class AnalyticsService {
     return promise;
   }
 
-  getSatisfactionByDay(lastdays, department_id?, participant_id?): Observable<[any]> {
+  getSatisfactionByDay(lastdays, department_id?, participant_id?, channel?): Observable<[any]> {
     this.logger.log("[ANALYTICS-SERV] getSatisfactionByDay PARAM", lastdays, department_id, participant_id);
     if (!department_id) {
       department_id = ''
@@ -335,8 +362,12 @@ export class AnalyticsService {
     if (!participant_id) {
       participant_id = ''
     }
+    if (!channel) {
+      channel = ''
+    }
     this.logger.log("[ANALYTICS-SERV] getSatisfactionByDay DEP-ID", department_id);
     this.logger.log("[ANALYTICS-SERV] getSatisfactionByDay PARTICIPANT-ID", participant_id);
+    this.logger.log("[ANALYTICS-SERV] getSatisfactionByDay CHANNEL-ID", participant_id);
 
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -346,6 +377,7 @@ export class AnalyticsService {
       .set('lastdays', lastdays)
       .set('department_id', department_id)
       .set('participant', participant_id)
+      .set('channel', channel)
 
     return this.httpClient
     .get<[any]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/satisfaction/day', { headers: headers, params: params })

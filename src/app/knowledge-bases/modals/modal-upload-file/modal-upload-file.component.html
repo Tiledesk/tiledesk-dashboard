@@ -1,0 +1,101 @@
+<h1 mat-dialog-title> {{ "KbPage.ImportFile" | translate }} </h1>
+
+
+<div mat-dialog-content>
+
+
+    <div [class.is-hidden]="hideDropZone === true" class="drop-container dropzone" (drop)="drop($event)"
+        (dragover)="allowDrop($event)" (dragleave)="drag($event)" [class.hovering]="isHovering">
+
+        <div class="drag-text"> 
+            <!-- Drag yor file here or -->
+            {{ "DragYuorFileHereOr" | translate }}
+        </div>
+        <!-- , .txt -->
+        <label class="upload-button">
+            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx"
+                name="uploadprivatekey" type="file">
+
+            <div role="button" class="browse--btn">{{ 'Browse' | translate }}</div>
+        </label>
+
+        <!-- <span style="color: rgba(0,0,0,.54);font-weight: 400;"> {{ 'ToUpload' | translate }} </span> -->
+    </div>
+    <div [class.is-hidden]="hideDropZone === true" class="supported-file-text"> 
+        <span *ngIf="!fileSizeExceeds && fileSupported">
+            
+            <!-- {{'SupportedFileTypesPdfTxtDocx' | translate: tparams}} -->
+            {{'SupportedFileTypesPdfDocx' | translate: tparams}}
+            
+        </span>
+        <span class="file-size-exceeds" *ngIf="fileSizeExceeds">
+            <!-- File size exceeds 10 Mb. -->
+            {{'FileSizeExceedsFileSizeLimitMb' | translate: tparams}}
+            
+        </span>
+        <span class="file-type-not-supported" *ngIf="!fileSupported">
+            <!-- File types not supported -->
+             {{'FileTypeNotSupported' | translate: tparams}}
+        </span>
+    </div>
+
+    <!-- [class.is-visible]="hideProgressBar === false" -->
+    <!-- || uploadCompleted === true -->
+    <div [class.is-hidden]="hideDropZone === false" class="file-preview">
+        <div class="file-preview-container">
+            <div class="file-preview-icon">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#e8eaed"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg> -->
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M320 464c8.8 0 16-7.2 16-16V160H256c-17.7 0-32-14.3-32-32V48H64c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320zM0 64C0 28.7 28.7 0 64 0H229.5c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64z"/></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                    <path
+                        d="M416 221.25V416a48 48 0 01-48 48H144a48 48 0 01-48-48V96a48 48 0 0148-48h98.75a32 32 0 0122.62 9.37l141.26 141.26a32 32 0 019.37 22.62z"
+                        fill="none" stroke="#c0c4c7" stroke-linejoin="round" stroke-width="32" />
+                    <path d="M256 56v120a32 32 0 0032 32h120" fill="none" stroke="#c0c4c7" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="32" />
+                </svg>
+                <!-- <img id="img-preview" style="max-width: 80px;     margin-bottom: 12px;" class="center" src="data:image/png;base64,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"> -->
+            </div>
+            <div class="file-preview-exention">
+                {{file_extension}}
+            </div>
+        </div>
+
+        <div class="file-preview-file-name">
+            <!-- {{ uploadedFileName }} -->
+            {{file_name_ellipsis_the_middle}}
+        </div>
+
+        <!-- <div class="progress" style="margin-bottom: 0px;height: 8px!important;">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                        aria-valuemax="100" [ngStyle]="{'width': percentLoaded + '%'}">
+                        <span class="sr-only">{{ percentLoaded }} Complete</span>
+                      </div>
+                    </div> -->
+
+    </div>
+    <!-- " -->
+    <div [class.is-hidden]="hideDropZone === false" class="file-preview-uploading ">
+        
+            
+        <div *ngIf="!uploadCompleted" class="uploading">Uploading<span>.</span><span>.</span><span>.</span></div>
+        
+        <div class="successfully-uploaded" *ngIf="uploadCompleted" >
+            <!-- {{file_size_in_mb}} Mb file successfully uploaded. -->
+            {{'FileSuccessfullyUploaded' | translate: { file_mb: file_size_in_mb   } }}
+        </div>
+        
+    </div>
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+        <!-- Cancel -->
+    </button>
+    <!-- cdkFocusInitial -->
+
+    <button [disabled]="!uploadCompleted" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()" >
+        {{ "Import" | translate }}
+    </button>
+</div>

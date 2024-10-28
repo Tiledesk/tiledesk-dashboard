@@ -14,6 +14,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -48,7 +49,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
   isChromeVerGreaterThan100: boolean;
   currentUser: any;
   project: any;
-  
+  displayChangePwd: boolean;
   constructor(
     public notify: NotifyService,
     private _location: Location,
@@ -60,8 +61,11 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
     private logger: LoggerService,
     private translate: TranslateService,
     public prjctPlanService: ProjectPlanService,
+    public brandService: BrandService
   ) { 
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand(); 
+    this.displayChangePwd = brand['display_change_pwd']
   }
 
   ngOnInit() {
@@ -80,7 +84,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
 
       if (user) {
         this.currentUser = user;
-        // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - LoggedUser', this.currentUser)
+        // this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - LoggedUser', this.currentUser)
       }
     });
   }
@@ -88,7 +92,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 

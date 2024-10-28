@@ -1,4 +1,52 @@
-<div class="main-content onboarding-templt-page">
+
+
+
+<div *ngIf="hasSelectChatBotOrKb === 'kb'" class="main-content onboarding-templt-page">
+    <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
+    <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
+
+    <div class="scrollable-list">
+        <div class="scrollable-list-content-container">
+            <div class="scrollable-list-wpr" no-prevent-default="true">
+
+                <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
+                
+                  
+                   <!-- Get AI to respond using your Knowledge Base -->
+                   {{'OnboardPage.GetAIToRespondUsingYourKB' | translate}}
+                </h2>
+                <h4 class="create-new-kb-assistant-description_one"
+                        [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
+                
+                        <!-- This advanced chatbot solution allows you to integrate multiple content types, ensuring that users receive timely and precise answers to their questions.  -->
+                        <!-- Create your advanced AI chatbot and connect it to your contents to ensure your users receive timely and precice answers to their questions. -->
+                        {{'OnboardPage.CreateYourAdvancedAIChatbot' | translate}}
+                </h4>
+                
+
+                <div class="create-new-kb-assistant-wpr"> 
+                    
+
+                    <button [ngStyle]="{ 'min-width': createChatbotBtnWidth }" id="create-kb-assistant-btn" class="create-kb-assistant-btn"
+                        (click)="createChatbotfromKbOfficialResponderTemplate()" [disabled]="spinnerInBtn">
+                        <!-- Create your chatbot -->
+                        <span *ngIf="!spinnerInBtn"> 
+                            {{ 'CreateYourChatbot' | translate}}
+                        </span>
+                        
+
+                        <span *ngIf="spinnerInBtn"> 
+                            
+                             <i class="fa fa-spinner fa-spin"></i> &nbsp; {{'ProcessingNoDot' | translate}}
+                        </span>
+                    </button>
+                </div> 
+            </div> 
+        </div>
+    </div>
+</div>
+<!--  -->
+<div *ngIf="hasSelectChatBotOrKb === 'templates'" class="main-content onboarding-templt-page">
 
     <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
     <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
@@ -8,7 +56,10 @@
 
             <div class="scrollable-list-wpr" no-prevent-default="true">
                 <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
-                    {{'OnboardPage.WhereWouldYouLikeToStart' | translate}}
+                    
+                    <!-- Select a pre-built chatbot automation template. -->
+                    {{'OnboardPage.SelectAPreBuiltChatbotAutomationTemplate' | translate}}
+
                 </h2>
                 <h4 class="onboarding-templt-page-description"
                     [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
@@ -18,6 +69,9 @@
                     <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === true">
                         {{'OnboardPage.ChooseYourChatbotFromOurTemplates' | translate }}
                     </span>
+                    <!-- <span [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
+                        These templates are designed to cater to different use cases, providing a solid foundation that can be tailored to meet your unique requirements, ensuring a seamless and efficient user experience.
+                    </span> -->
                 </h4>
                 <div class="tmplt-btns-container">
                     <div *ngIf="isLoading" class="tmplt-list-wpr" [ngClass]="{'tmplt-list-wpr-mobile': isMobile}">
@@ -140,68 +194,16 @@
                         </div>
                     </div>
 
-                    <!-- ------------------------------------------- -->
-                    <!-- Old preview card -->
-                    <!-- ------------------------------------------- -->
-                    <div style="display: none;" class="tmplt-card-wpr">
-                        <div id="109c8544-130c-4516-8b26-4c58b77701e5-tabpanel" class="tmplt-card">
-
-                            <img *ngIf="templateid === '651a87648cb2c70013d80d8b'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png">
-
-                            <img *ngIf="templateid === '651e66be6717f500135f41b9'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png">
-
-                            <img *ngIf="templateid === '6529582c23034f0013ee1af6'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png">
-
-                            <img *ngIf="templateid === '651ecc5749598e0013305876'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png">
-
-                            <img *ngIf="templateid === '651fc9ef8c10e70013b6e240'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png">
-
-                            <img *ngIf="templateid === '651ad6c1bfdf310013ca90d7'"
-                                src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png">
-
-                            <!-- <video *ngIf="templateid === '651a87648cb2c70013d80d8b'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4"
-                                    type="video/mp4">
-                            </video>
-                            <video *ngIf="templateid === '651e66be6717f500135f41b9'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/pujds7Bw/product-cards.mp4"
-                                    type="video/mp4">
-                            </video>
-                            <video *ngIf="templateid === '6529582c23034f0013ee1af6'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/miWQ0mBX/lead-gen.mp4" type="video/mp4">
-                            </video>
-
-                            <video *ngIf="templateid === '651ecc5749598e0013305876'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/VJfeGCBw/priority-gpt-bot.mp4"
-                                    type="video/mp4">
-                            </video>
-
-                            <video *ngIf="templateid === '651fc9ef8c10e70013b6e240'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/f1mIA27P/gpt-powered-kb.mp4"
-                                    type="video/mp4">
-                            </video>
-
-                            <video *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" width="682" height="454" controls>
-                                <source src="https://videos.files.wordpress.com/o3etQXZJ/customer-service.mp4"
-                                    type="video/mp4">
-                            </video> -->
-                        </div>
-                    </div>
                 </div>
 
 
                 <div *ngIf="isMobile" class="row--navigation">
                     <div class="navigation--btn">
                         <button class="btn btn-lg btn-primary btn-let-start" (click)="forkTemplate()">
-                            Import template
+                            {{ 'ImportChatbot' | translate}}
                         </button>
                         <button class="btn btn-lg btn-primary btn-let-start" (click)="presentModalAddBotFromScratch()">
-                            Start from scratch
+                            {{ 'StartFromScratch' | translate}}
                         </button>
                     </div>
                 </div>
@@ -210,3 +212,27 @@
         </div>
 
     </div>
+
+</div>
+
+
+<div class="row--navigation" style="padding-bottom: 61px;">
+    <div class="navigation--btn">
+
+        <button type="button" class="btn-back" (click)="goToPrevPage()" style="width: unset; max-width: unset; ">
+            <svg viewBox="0 0 24 24" focusable="false" class="chakra-icon css-abioxt" role="presentation"
+                aria-hidden="true">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
+            </svg>
+
+            <span class="onbording-btn-back-text"> 
+                {{'Back' | translate }}
+            </span>
+        </button>
+
+        <!-- <button class="btn btn-lg btn-primary" (click)="goToNextPage()">
+            {{'OnboardPage.Next' | translate}}
+        </button> -->
+
+    </div>
+</div>

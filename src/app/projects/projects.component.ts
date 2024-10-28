@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, HostListener, OnDestroy, AfterContentInit } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
@@ -80,7 +80,8 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
   prjct_profile_name: string;
-
+  DISPLAY_PROJECT_ID: boolean = false;
+  public logoutBtnVisible: boolean;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -94,9 +95,10 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     public wsRequestsService: WsRequestsService,
     private logger: LoggerService,
     private translate: TranslateService,
+    private route: ActivatedRoute
   ) {
     const brand = brandService.getBrand();
-
+    this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
     this.tparams = brand;
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
@@ -106,7 +108,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
     this.company_brand_color = brand['BRAND_PRIMARY_COLOR'];
-    // console.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
+    // this.logger.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
 
     this.logger.log('[PROJECTS] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
@@ -127,12 +129,13 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     // this.getStorageBucket();
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
+    this.getRouteParams();
   }
 
   ngAfterContentInit(): void {
     if (this.company_brand_color) {
       this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
-      // console.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
+      // this.logger.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
       // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-icon').style.setProperty('--brandColor' , this.company_brand_color)
       // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-text').style.setProperty('--brandColor' , this.company_brand_color)
     }
@@ -153,12 +156,23 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  getRouteParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
+      if (params.showid) {
+        this.logger.log('[PROJECTS] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.showid)
+        if (params.showid === 'y') {
+          this.DISPLAY_PROJECT_ID = true;
+        }
+      }
+    });
+  }
 
   getLoggedUserAndCheckProfilePhoto() {
-    // console.log('window.opener.location ', window.opener.location )
+    // this.logger.log('window.opener.location ', window.opener.location )
 
     this.auth.user_bs.subscribe((user) => {
-      // console.log('[PROJECTS] - USER  ', user)
+      // this.logger.log('[PROJECTS] - USER  ', user)
       this.user = user;
 
       if (user) {
@@ -167,38 +181,38 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
         const stored_preferred_lang = localStorage.getItem(this.currentUserId + '_lang')
-        // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+        // this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         if (stored_preferred_lang) {
           this.dsbrd_lang = stored_preferred_lang;
           this.getLangTranslation(this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/" + stored_preferred_lang + ".png"
           this.translate.use(this.dsbrd_lang);
-          // console.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
+          // this.logger.log('[PROJECTS] flag_url (from stored_preferred_lang) ', this.flag_url)
 
-          // console.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
+          // this.logger.log('[PROJECTS] stored_preferred_lang ', stored_preferred_lang)
         } else {
           this.browserLang = this.translate.getBrowserLang();
           this.dsbrd_lang = this.browserLang;
           this.getLangTranslation(this.dsbrd_lang)
-          // console.log('[PROJECTS] - browser_lang ', this.browserLang)
+          // this.logger.log('[PROJECTS] - browser_lang ', this.browserLang)
           this.flag_url = "assets/img/language_flag/" + this.browserLang + ".png"
           this.translate.use(this.dsbrd_lang);
-          // console.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
+          // this.logger.log('[PROJECTS] flag_url (from browser_lang) ', this.flag_url)
         }
 
 
         if (!tranlatedLanguage.includes(this.dsbrd_lang)) {
-          // console.log('dsbrd_lang', this.dsbrd_lang)
-          // console.log('tranlatedLanguage', tranlatedLanguage)
-          // console.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang))
+          // this.logger.log('dsbrd_lang', this.dsbrd_lang)
+          // this.logger.log('tranlatedLanguage', tranlatedLanguage)
+          // this.logger.log('[PROJECTS] - browser_lang includes', tranlatedLanguage.includes(this.dsbrd_lang))
 
           this.logger.log('[PROJECTS] - browser_lang', this.dsbrd_lang)
           this.flag_url = "assets/img/language_flag/en.png"
           this.languageNotSupported = true;
-          // console.log('languageNotSupported', this.languageNotSupported)
+          // this.logger.log('languageNotSupported', this.languageNotSupported)
         } else {
           this.languageNotSupported = false;
-          // console.log('languageNotSupported', this.languageNotSupported)
+          // this.logger.log('languageNotSupported', this.languageNotSupported)
         }
 
 
@@ -289,42 +303,42 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("MTT")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
         let mt = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt key&value', mt);
 
         if (mt[1] === "F") {
           this.MT = false;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
         } else {
           this.MT = true;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - mt is', this.MT);
         }
       }
 
 
       if (key.includes("PPB")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
         let ppb = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
 
         if (ppb[1] === "F") {
           this.project_plan_badge = false;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
         } else {
           this.project_plan_badge = true;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
         }
       }
 
 
       if (!this.public_Key.includes("MTT")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST - key.includes("MTT")', this.public_Key.includes("MTT"));
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST - key.includes("MTT")', this.public_Key.includes("MTT"));
         this.MT = false;
       }
 
       if (!this.public_Key.includes("PPB")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
         this.project_plan_badge = false;
       }
 
@@ -402,18 +416,17 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   //   this.logger.log('[PROJECTS] !!! GO TO HOME >  display_loading - loadingInProjectCardEle ', loadingInProjectCardEle)
   //   loadingInProjectCardEle.style.color = "red";
   // }
-
+ 
   goToHome(
+    project_user: any,
     project: any,
+    role: string,
     project_id: string,
-    project_name: string,
-    project_profile_name: string,
-    project_trial_expired: string,
-    project_trial_days_left: number,
     project_status: number,
-    activeOperatingHours: boolean) {
+    ) {
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
-    // localStorage.setItem('last_project', JSON.stringify(project))
+    
+    localStorage.setItem('last_project', JSON.stringify(project_user))
     // window.top.postMessage('hasChangedProject', '*')
 
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
@@ -434,19 +447,32 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
 
-      // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
-      const project: Project = {
-        _id: project_id,
-        name: project_name,
-        profile_name: project_profile_name,
-        trial_expired: project_trial_expired,
-        trial_days_left: project_trial_days_left,
-        operatingHours: activeOperatingHours
+      // // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
+      // const project: Project = {
+      //   _id: project_id,
+      //   name: project_name,
+      //   profile_name: project_profile_name,
+      //   trial_expired: project_trial_expired,
+      //   trial_days_left: project_trial_days_left,
+      //   operatingHours: activeOperatingHours
+      // }
+
+      project['role'] = role
+      this.auth.projectSelected(project, 'PROJECTS')
+      localStorage.setItem(project_id, JSON.stringify(project));
+     
+      
+      const storedProjectJson = localStorage.getItem(project_id);
+
+      if (storedProjectJson === null) {
+        this.getProjectFromRemotePublishAndSaveInStorage(project_id, role);
       }
+      this.logger.log('[PROJECTS] - GO TO HOME - storedProjectJson ', storedProjectJson)
 
-      this.auth.projectSelected(project, 'projects')
-      this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+      localStorage.setItem('project', JSON.stringify(project)); // ?? serve
 
+
+      this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project.id_project)
       setTimeout(() => {
         this.router.navigate([`/project/${project_id}/home`]);
       }, 0);
@@ -454,7 +480,21 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
      * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
-    // localStorage.setItem('project', JSON.stringify(project));
+    
+  }
+
+  getProjectFromRemotePublishAndSaveInStorage(project_id, role){
+    this.projectService.getProjectById(project_id).subscribe((prjct: any) => {
+      this.logger.log('[PROJECTS] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjct)
+      prjct[role] = role
+      this.auth.projectSelected(prjct, 'PROJECTS');
+      localStorage.setItem(project_id, JSON.stringify(prjct));
+    }, (error) => {
+      this.logger.error('[PROJECTS] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[PROJECTS] - GET PROJECT BY ID - COMPLETE ');
+
+    });
   }
 
   // GO TO  PROJECT-EDIT-ADD COMPONENT
@@ -507,7 +547,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[PROJECTS] - GET PROJECTS ', projects);
+      this.logger.log('[PROJECTS] - GET PROJECTS ', projects);
 
       this.showSpinner = false;
 
@@ -520,7 +560,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          // console.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
+          // this.logger.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
           project['is_selected'] = false
 
           if (project.id_project && project.id_project.profile.type === 'free') {
@@ -581,6 +621,10 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.E + " plan";
               project['prjct_profile_name'] = this.prjct_profile_name;
               project['plan_badge_background_type'] = 'b_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.EE) {
+                this.prjct_profile_name = PLAN_NAME.EE + " plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'bb_plan_badge'
             } else if (project.id_project.profile.name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
               project['prjct_profile_name'] = this.prjct_profile_name;
@@ -591,10 +635,11 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               project.id_project.profile.name !== PLAN_NAME.C &&
               project.id_project.profile.name !== PLAN_NAME.D &&
               project.id_project.profile.name !== PLAN_NAME.E &&
+              project.id_project.profile.name !== PLAN_NAME.EE &&
               project.id_project.profile.name !== PLAN_NAME.F
             ) {
               this.prjct_profile_name = project.id_project.profile.name + ' plan (UNSUPPORTED)'
-              // console.log('project.id_project.profile.name' ,project.id_project.profile.name)
+              // this.logger.log('project.id_project.profile.name' ,project.id_project.profile.name)
               project['prjct_profile_name'] = this.prjct_profile_name;
               project['plan_badge_background_type'] = 'unsupported_plan_badge'
             }
@@ -604,17 +649,20 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
           }
           if (project.id_project) {
-            const prjct: Project = {
-              _id: project.id_project._id,
-              name: project.id_project.name,
-              role: project.role,
-              profile_name: project.id_project.profile.name,
-              trial_expired: project.id_project.trialExpired,
-              trial_days_left: project.id_project.trialDaysLeft,
-              profile_type: project.id_project.profile.type,
-              subscription_is_active: project.id_project.isActiveSubscription,
-              operatingHours: project.id_project.activeOperatingHours
-            }
+            // this.logger.log( '[PROJECTS] project.id_project',  project.id_project) 
+            // this.logger.log( '[PROJECTS] project',  project) 
+
+            // const prjct: Project = {
+            //   _id: project.id_project._id,
+            //   name: project.id_project.name,
+            //   role: project.role,
+            //   profile_name: project.id_project.profile.name,
+            //   trial_expired: project.id_project.trialExpired,
+            //   trial_days_left: project.id_project.trialDaysLeft,
+            //   profile_type: project.id_project.profile.type,
+            //   subscription_is_active: project.id_project.isActiveSubscription,
+            //   operatingHours: project.id_project.activeOperatingHours
+            // }
 
             // this.subsTo_WsCurrentUser( project.id_project._id)
             // this.getProjectUsersIdByCurrentUserId(project.id_project._id)
@@ -635,7 +683,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
               countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
             }
 
-            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+            localStorage.setItem(project.id_project._id, JSON.stringify(project.id_project));
           }
         });
         this.logger.log('[PROJECTS] - GET PROJECTS AFTER', projects);
@@ -653,7 +701,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   changeAvailabilityState(projectid, selectedStatusValue) {
-    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    // this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
 
     // available = !available
     let IS_AVAILABLE = null
@@ -661,28 +709,28 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     if (selectedStatusValue === 'available') {
 
       IS_AVAILABLE = true
-      // console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus) 
+      // this.logger.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus) 
     } else if (selectedStatusValue === 'unavailable') {
       IS_AVAILABLE = false
-      // console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
+      // this.logger.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
 
     } else if (selectedStatusValue === 'inactive') {
       IS_AVAILABLE = false
       profilestatus = 'inactive'
-      // console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
+      // this.logger.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
     }
-    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    // this.logger.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
     this.usersService.updateCurrentUserAvailability(projectid, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
 
-      //  console.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
+      //  this.logger.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       // this.usersService.availability_btn_clicked(true)
       this.projects.forEach(project => {
         if (project.id_project._id === projectUser.id_project) {
-          // console.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
+          // this.logger.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
           project['ws_projct_user_available'] = projectUser.user_available;
-          // console.log('[PROJECTS] - changeAvailabilityState  projectUser.user_available',  projectUser.user_available);
-          // console.log('[PROJECTS] - changeAvailabilityState  projectUser.profileStatus',  projectUser.profileStatus);
+          // this.logger.log('[PROJECTS] - changeAvailabilityState  projectUser.user_available',  projectUser.user_available);
+          // this.logger.log('[PROJECTS] - changeAvailabilityState  projectUser.profileStatus',  projectUser.profileStatus);
           project['ws_projct_user_profileStatus'] = projectUser.profileStatus
           // project['ws_projct_user_isBusy'] = projectUser['isBusy']
         }
@@ -703,15 +751,15 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+        // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
         this.projects.forEach(project => {
           if (project.id_project._id === projectUser['id_project']) {
             project['ws_projct_user_available'] = projectUser['user_available'];
             project['ws_projct_user_isBusy'] = projectUser['isBusy']
             if (projectUser['profileStatus']) {
-              // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
+              // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
               project['ws_projct_user_profileStatus'] = projectUser['profileStatus']
-              // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo) projectUser[profileStatus]', projectUser['profileStatus']);
+              // this.logger.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo) projectUser[profileStatus]', projectUser['profileStatus']);
             }
           }
         });
@@ -766,14 +814,14 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
     elemAppSidebar.setAttribute('style', 'display:none;');
 
-    try {
-      if (window && window['tiledesk_widget_show']) {
-        this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
-        window['tiledesk_widget_show']();
-      }
-    } catch (e) {
-      this.logger.error('tiledesk_widget_show ERROR', e)
-    }
+    // try {
+    //   if (window && window['tiledesk_widget_show']) {
+    //     this.logger.log('[PROJECTS] - SHOW WIDGET - HERE 1')
+    //     window['tiledesk_widget_show']();
+    //   }
+    // } catch (e) {
+    //   this.logger.error('tiledesk_widget_show ERROR', e)
+    // }
   };
   sidebarToggle() {
     // const toggleButton = this.toggleButton;
@@ -833,6 +881,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
   goToCreateProject() {
+    this.logger.log('[PROJECTS] - GO TO CREATE  PROJECT')
     this.router.navigate(['/create-new-project']);
   }
 

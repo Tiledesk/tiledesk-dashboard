@@ -8,6 +8,12 @@ import { LoggerService } from '../services/logger/logger.service';
 import { URL_creating_groups } from '../utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
+import { DepartmentService } from 'app/services/department.service';
+import { TranslateService } from '@ngx-translate/core';
+import { RoleService } from 'app/services/role.service';
+const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -36,8 +42,12 @@ export class GroupsComponent implements OnInit {
   name_group_to_delete: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public_Key: any;
-  isVisibleGRO
+  isVisibleGRO: any
   isChromeVerGreaterThan100: boolean;
+
+  disassociateTheGroup: string;
+  warning: string;
+
   public hideHelpLink: boolean;
   constructor(
     private auth: AuthService,
@@ -46,28 +56,33 @@ export class GroupsComponent implements OnInit {
     private notify: NotifyService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    public departmentService: DepartmentService,
+    private translate: TranslateService,
+    private roleService: RoleService
   ) {
-    const brand = brandService.getBrand(); 
-    this.hideHelpLink= brand['DOCS'];
-   }
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('groups')
     this.getCurrentProject();
     this.getOSCODE();
     this.getGroupsByProjectId();
     this.listenSidebarIsOpened();
     this.getOSCODE();
     this.getBrowserVersion()
+    this.getTranslations();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
-   }
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -147,10 +162,63 @@ export class GroupsComponent implements OnInit {
   }
 
   openDeleteModal(id_group: string, group_name: string) {
-    this.displayDeleteModal = 'block';
+    // this.displayDeleteModal = 'block';
     this.id_group_to_delete = id_group;
     this.name_group_to_delete = group_name;
     this.logger.log('[GROUPS] OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
+    this.getDepartments(this.id_group_to_delete)
+
+  }
+
+  getDepartments(selectedGrouId?: string) {
+    this.logger.log('[GROUPS] getDepartmentsL - ID OF THE GROUP OF DELETE ', selectedGrouId)
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
+
+      const deptsArrayWithAssociatedGroup = _departments.filter((obj: any) => {
+        return obj.id_group === selectedGrouId;
+      });
+
+      if (deptsArrayWithAssociatedGroup.length === 0) {
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP NOT ASSOCIATED');
+        this.displayDeleteModal = 'block'; 
+      } else {
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - GROUP !!! ASSOCIATED');
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsArrayWithAssociatedGroup', deptsArrayWithAssociatedGroup);
+
+        const deptsNameAssociatedToGroup = []
+
+        deptsArrayWithAssociatedGroup.forEach(dept => {
+          deptsNameAssociatedToGroup.push(dept.name)
+        });
+
+        this.logger.log('[GROUPS] ON MODAL DELETE OPEN - deptsNameAssociatedToGroup ', deptsNameAssociatedToGroup);
+
+        if (deptsArrayWithAssociatedGroup.length === 1) {
+          Swal.fire({
+            title: this.warning,
+            text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithTheDepartment', { depts_name: deptsNameAssociatedToGroup.join(', ') }) + '. ' + this.disassociateTheGroup,
+            icon: "warning",
+            showCloseButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "var(--blue-light)",
+            focusConfirm: false
+          })
+        }
+
+        if (deptsArrayWithAssociatedGroup.length > 1) {
+          Swal.fire({
+            title: this.warning,
+            text: this.translate.instant('GroupsPage.TheGroupIsAssociatedWithDepartments', { depts_name: deptsNameAssociatedToGroup.join(', ') }) +'. ' + this.disassociateTheGroup,
+            icon: "warning",
+            showCloseButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "var(--blue-light)",
+            focusConfirm: false,
+          })
+        }
+      }
+    })
   }
 
   onCloseDeleteModal() {
@@ -163,17 +231,37 @@ export class GroupsComponent implements OnInit {
 
       this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE ', group);
     }, (error) => {
-        this.logger.error('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while deleting the group', 4, 'report_problem');
-      }, () => {
-        this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
+      this.logger.error('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification('An error occurred while deleting the group', 4, 'report_problem');
+    }, () => {
+      this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
 
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('group successfully deleted', 2, 'done');
-        // UPDATE THE GROUP LIST
-        this.ngOnInit()
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showNotification('group successfully deleted', 2, 'done');
+      // UPDATE THE GROUP LIST
+      this.ngOnInit()
+    });
+  }
+
+
+  getTranslations() {
+    this.translate.get('GroupsPage')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        this.logger.log('[GROUPS] getTranslations GroupsPage : ', text)
+        this.disassociateTheGroup = text['DisassociateTheGroup'];
       });
+
+
+    this.translate.get('Warning')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        // this.logger.log('+ + + BotsPage translation: ', text)
+        this.warning = text;
+      });
+
+  
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -14,12 +13,13 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-automation-static',
   templateUrl: './automation-static.component.html',
   styleUrls: ['./automation-static.component.scss']
 })
-// extends StaticPageBaseComponent 
+
 export class AutomationStaticComponent extends PricingBaseComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
   public_Key: any
@@ -63,7 +63,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
   ) {
     // super(translate)
     super(prjctPlanService, notify);
@@ -71,6 +72,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   }
 
   ngOnInit(): void {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('automation')
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();
@@ -168,16 +171,17 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   }
 
   presentModalsOnInit() {
+    if (this.payIsVisible) {
+      if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        if (this.USER_ROLE === 'owner') {
+          if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      if (this.USER_ROLE === 'owner') {
-        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+          } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+          }
         }
       }
     }
@@ -196,7 +200,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          
+
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

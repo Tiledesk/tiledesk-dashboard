@@ -45,17 +45,17 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    //   this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target)', event.target)
-    //  this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target.id)', event.target.id)
-    //  this.logger.log('[SIDEBAR-USER-DETAILS] clickout event.target.className)', event.target.classList)
+    //   this.logger.log('[PANEL-ACTIONS] clickout event.target)', event.target)
+    //  this.logger.log('[PANEL-ACTIONS] clickout event.target.id)', event.target.id)
+    //  this.logger.log('[PANEL-ACTIONS clickout event.target.className)', event.target.classList)
     const clicked_element_id = event.target.id
     this.logger.log("clicked_element_id: ", clicked_element_id);
     if (this.eRef.nativeElement.contains(event.target)) {
       // this.logger.log("clicked inside")
     } else {
       // const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
-      // this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
-      //this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
+      // this.logger.log('[PANEL-ACTIONS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
+      //this.logger.log('[PANEL-ACTIONS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // && (!event.target.classList.contains('ng-option'))
       // clicked_element_id !== 'a0da04ac7772' && 
       this.logger.log("clicked_element_id.startsWith(actions-btns-wpr)", clicked_element_id.startsWith("actions-btns-wpr"))
