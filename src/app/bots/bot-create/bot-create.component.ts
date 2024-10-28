@@ -35,7 +35,6 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
-import { error } from 'console';
 
 @Component({
   selector: 'bot-create',
@@ -305,7 +304,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
           resolve(fileJsonToUpload)
         } catch (error) {
-          console.error('Error while parsing JSON:', error);
+          this.logger.error('Error while parsing JSON:', error);
           reject(error)
         }
       };

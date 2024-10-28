@@ -1366,10 +1366,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-   console.log('getRequests queryString', this.queryString)
+    this.logger.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-   console.log('getRequests requests_statuses ' , this.requests_statuses) 
-   console.log('getRequests requests_status ' , this.requests_status) 
+    this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
+    this.logger.log('getRequests requests_status ' , this.requests_status) 
   
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {

@@ -5348,7 +5348,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         reader.readAsDataURL($event.target.files[0])
 
       } else {
-        console.log('cannnnnnnn is fileeee')
+        this.logger.log('cannnnnnnn is fileeee')
         this.type = 'file'
         const reader = new FileReader()
         reader.onloadend = () => {
