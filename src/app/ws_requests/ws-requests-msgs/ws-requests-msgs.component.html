@@ -906,6 +906,17 @@
                               </svg>
 
 
+                              <!-- ------------------------------------- -->
+                              <!-- IF IS AN INTERNAL ABANDONED REQUEST  -->
+                              <!-- ------------------------------------- -->
+                              <img *ngIf="request?.status === 150" class="header-conv-svg-icon" 
+                                src="assets/img/request_icons/status150_abandoned.svg"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}"
+                                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100"
+                                style="width: 24px;">
+
+                           
 
 
                               <!-- ------------------------------------- -->
