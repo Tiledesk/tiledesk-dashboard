@@ -5,6 +5,7 @@ import { SmtpSettingsComponent } from './smtp-settings.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 
 const routes: Routes = [
   { path: "", component: SmtpSettingsComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
     TranslateModule,
     SharedModule,
     FormsModule,
+    SettingsSidebarModule,
   ]
 })
 export class SmtpSettingsModule { }

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
 import { AuthService } from '../../core/auth.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-canned-responses-add-edit',
   templateUrl: './canned-responses-add-edit.component.html',
@@ -48,16 +49,19 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
     public translate: TranslateService,
     private notify: NotifyService,
     private auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) { }
 
   // 
 
   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('canned')
     this.logger.log('[CANNED-RES-EDIT-CREATE] - modalMode ', this.modalMode);
     this.logger.log('[CANNED-RES-EDIT-CREATE] - selectCannedResponseId ', this.selectCannedResponseId);
 
-    this.auth.checkRoleForCurrentProject();
+    
 
     if (this.modalMode === 'edit') {
 

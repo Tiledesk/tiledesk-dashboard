@@ -62,6 +62,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   featureAvailableFromBPlan: string;
   featureAvailableFromEPlan: string;
   upgradePlan: string;
+  currentUserIsInParticipants: any
 
   objectKeys = Object.keys;
   isVisiblePaymentTab: boolean;
@@ -211,7 +212,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   showSpinnerInAddNoteBtn: boolean = false;
   subscription: Subscription;
-  CURRENT_USER_ROLE: string;
+  CURRENT_USER_ROLE: any;
 
   CHAT_PANEL_MODE: boolean  // = true; // Nikola for test change color
   dshbrdBaseUrl: string;
@@ -1307,7 +1308,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.overridePay = false;
     }
 
-    
+
   }
 
   // -------------------------------------------------------------
@@ -1692,22 +1693,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     else if (+hours < 24) return hours + " " + this.translate.instant('Analytics.Hours');
     else return days + " " + this.translate.instant('Analytics.Days');
 
-
   }
+ 
 
-  getWsRequestById$() {
+
+  async  getWsRequestById$() {
     this.wsRequestsService.wsRequest$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((wsrequest) => {
+      .subscribe(async (wsrequest) => {
 
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
-
+       
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
+
+          //  this.currentUserIdIsInParticipants this.hasmeInParticipants( this.request.participants)
 
           // -----------------------------
           // Request dnis (called number) 
@@ -1889,6 +1893,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // User Agent
           // -------------------------------------------------------------------
           const user_agent_result = this.parseUserAgent(this.request.userAgent);
+          // console.log('user_agent_result  ', user_agent_result)
 
           if (user_agent_result.browser.name) {
             if (user_agent_result.browser.version) {
@@ -1921,24 +1926,41 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // Members array
           // -------------------------------------------------------------------
           this.members_array = this.request.participants;
-          this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById PARTICIPANTS_ARRAY ', this.members_array)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** PARTICIPANTS_ARRAY ', this.members_array)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** currentUserID ', this.currentUserID)
+          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          this.logger.log('[WS-REQUESTS-MSGS] - *** id_project ', this.request.id_project);
+
+
+          
+            // if (!this.CURRENT_USER_ROLE) {
+            //   this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project)
+            //   this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+            // }
+          if(!this.CURRENT_USER_ROLE) {
+            this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project) 
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+          }
 
           this.members_array.forEach(member => {
+            this.logger.log('[WS-REQUESTS-MSGS] - *** member', member)
 
             // ----------------------------------------------------------------------------------------------
             // disable notes and tags if the current user has agent role and is not among the participants
             // ----------------------------------------------------------------------------------------------
-            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
-            this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT_USER_ID ', this.currentUserID);
 
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ID ', this.currentUserID);
+            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 3 ', this.CURRENT_USER_ROLE);
 
             if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT USER NOT IN PARTICIPANT AND IS AGENT');
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER NOT IN PARTICIPANT AND IS AGENT currentUserID', this.currentUserID);
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
+              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
             } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
-              this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById CURRENT USER IS IN PARTICIPANT AND IS AGENT');
+              this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT USER IS IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
+              this.logger.log('[WS-REQUESTS-MSGS] - *** DISABLE_ADD_NOTE_AND_TAGS ', this.DISABLE_ADD_NOTE_AND_TAGS);
               this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
             }
 
@@ -3011,6 +3033,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   addNote() {
     // this.disableMainPanelScroll();
+    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
     this.showSpinnerInAddNoteBtn = true;
     this.wsRequestsService.createNote(this.new_note, this.id_request)
       .subscribe((responses: any) => {
@@ -3030,7 +3053,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.showSpinnerInAddNoteBtn = false;
         // this.enableMainPanelScroll()
 
-      });
+        });
+    }
   }
 
 

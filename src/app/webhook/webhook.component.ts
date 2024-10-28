@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { BrandService } from 'app/services/brand.service';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -27,6 +28,8 @@ export class WebhookComponent implements OnInit {
   subscriptionIDToDelete: string;
   isChromeVerGreaterThan100: boolean;
   public hideHelpLink: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
@@ -34,7 +37,8 @@ export class WebhookComponent implements OnInit {
     private location: Location,
     private logger: LoggerService,
     private auth: AuthService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    public roleService: RoleService
   ) { 
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -42,9 +46,18 @@ export class WebhookComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.roleService.checkRoleForCurrentProject('webhook');
     this.getSubscriptions();
     this.translateNotificationMsgs();
-    this.getBrowserVersion() 
+    this.getBrowserVersion() ;
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[USER-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getBrowserVersion() {

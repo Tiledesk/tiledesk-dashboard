@@ -171,12 +171,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-
   }
 
   ngOnInit() {
     this.getBrowserVersion();
-    this.auth.checkRoleForCurrentProject();
+  
     this.getProfileImageStorage();
 
     this.getCurrentProject();

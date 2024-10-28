@@ -13,6 +13,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
 
@@ -81,6 +82,7 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     public location: Location,
+    private roleService: RoleService
   ) {
     super(prjctPlanService, notify);
     // super(translate);
@@ -88,6 +90,9 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
   }
 
   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('analytics-static');
+    this.getProjectUserRole();
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();
@@ -160,10 +165,55 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
       .subscribe((user_role) => {
         this.USER_ROLE = user_role;
         this.logger.log('[ANALYTICS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+        // this.hideNavigationElem(this.USER_ROLE)
       });
   }
 
+  hideNavigationElem(USER_ROLE) {
+    // Main panel
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[ANALYTICS-STATIC] - elemNavbar: ', elemMainPanel);
 
+    // Sidebar
+    const elemAppSidebar = <HTMLElement>document.querySelector('.sidebar');
+    this.logger.log('[ANALYTICS-STATIC] - elemAppSidebar: ', elemAppSidebar);
+
+    // Navbar
+    const elemNavbar = <HTMLElement>document.querySelector('.navbar');
+    this.logger.log('[ANALYTICS-STATIC] - elemNavbar: ', elemNavbar);
+
+    // Footer
+    const elemFooter = <HTMLElement>document.querySelector('footer');
+    this.logger.log('[ANALYTICS-STATIC] - elemFooter: ', elemFooter);
+
+    if (USER_ROLE === 'agent') {
+      // Adds custom style to main panel
+      elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+
+      // Hide Sidebar
+      elemAppSidebar.setAttribute('style', 'display:none;')
+
+      // Hide Navbar
+      elemNavbar.setAttribute('style', 'display:none;');
+
+      // Hide Footer
+      elemFooter.setAttribute('style', 'display:none;');
+    } else {
+
+      // Remove custom style to main panel
+      elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
+
+      // Show Sidebar
+      elemAppSidebar.setAttribute('style', 'display:block;');
+
+      // Show Navbar
+      elemNavbar.setAttribute('style', 'display:block;');
+
+      // Show Footer
+      elemFooter.setAttribute('style', '');
+
+    }
+  }
 
   getCurrentProject() {
     this.auth.project_bs
@@ -199,7 +249,7 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
           }
         }
       }
-    } 
+    }
     // else {
     //   this.notify._displayContactUsModal(true, 'upgrade_plan');
     // }

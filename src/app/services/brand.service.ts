@@ -29,6 +29,8 @@ export class BrandService {
       "privacy_policy_url": "https://www.tiledesk.com/privacy.html",
       "display_terms_and_conditions_link": true,
       "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
+      "display_dpa_link": true,
+      "dpa_url": "https://tiledesk.com/dpa/",
       "contact_us_email": "support@tiledesk.com",
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,

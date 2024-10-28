@@ -442,7 +442,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
     this.getProjectPlan()
     this.getProjectUserRole();
     // this.HAS_SELECT_INSTALL_WITH_CODE = false

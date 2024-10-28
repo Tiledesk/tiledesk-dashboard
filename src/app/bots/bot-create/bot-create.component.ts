@@ -169,7 +169,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   ngOnInit() {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
-    this.auth.checkRoleForCurrentProject();
+    
     this.getBrowserVersion();
     this.detectBrowserLang();
     this.getCurrentProject();
@@ -325,7 +325,18 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   async fileChangeUploadChatbotFromJSON(event) {
 
     this.logger.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
-
+    // let fileJsonToUpload = ''
+    // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsText(selectedFile, "UTF-8");
+    fileReader.onload = () => {
+     let fileJsonToUpload = JSON.parse(fileReader.result as string)
+     this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
+    }
+    // fileReader.onerror = (error) => {
+    //   this.logger.log(error);
+    // }
     const fileList: FileList = event.target.files;
     const file: File = fileList[0];
     this.logger.log('fileChangeUploadChatbotFromJSON',file) 

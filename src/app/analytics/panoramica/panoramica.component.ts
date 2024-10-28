@@ -24,6 +24,7 @@ import {
   ApexStroke
 } from "ng-apexcharts";
 import { AnalyticsService } from 'app/services/analytics.service';
+import { RoleService } from 'app/services/role.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -92,7 +93,8 @@ export class PanoramicaComponent implements OnInit {
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) {
 
     this.lang = this.translate.getBrowserLang();
@@ -108,7 +110,8 @@ export class PanoramicaComponent implements OnInit {
 
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('panoramica');
     this.getRequestByLast7Day();
 
     this.avarageWaitingTimeCLOCK();

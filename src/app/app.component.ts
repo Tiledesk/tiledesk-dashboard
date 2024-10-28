@@ -35,7 +35,7 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
-import { UsersService } from './services/users.service';
+// import { UsersService } from './services/users.service';
 
 
 
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     route: string;
     LOGIN_PAGE: boolean;
-    USER_ROLE: string;
+    // USER_ROLE: string;
     userIsSignedIn: boolean;
     IS_REQUEST_X_PANEL_ROUTE: boolean;
     IS_PROJECTS_FOR_PANEL: boolean;
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
-        public usersService: UsersService,
+        // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
         this.router.events.subscribe((event) => {
@@ -338,26 +338,29 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getCurrentUserAndConnectToWs();
 
         this.listenToSwPostMessage();
-        this.getCurrentProject()
+        // this.getCurrentProject()
     }
 
 
 
-    getCurrentProject() {
-        this.auth.project_bs.subscribe((project) => {
-            if (project) {
-                this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
-                // this.current_selected_prjct = project
-                this.projectService.getProjects().subscribe((projects: any) => {
-                    this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
-                    if (projects) {
-                        this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-                        this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
-                    }
-                })
-            }
-        });
-    }
+    // getCurrentProject() {
+    //     this.auth.project_bs.subscribe((project) => {
+    //         if (project) {
+    //             this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
+    //             // this.current_selected_prjct = project
+    //             this.projectService.getProjects().subscribe((projects: any) => {
+    //                 console.log('[APP-COMPONENT] getProjects projects ', projects)
+    //                 if (projects) {
+    //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
+    //                     console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+                       
+    //                     this.USER_ROLE = this.current_selected_prjct_user.role
+    //                     console.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
+    //                 }
+    //             })
+    //         }
+    //     });
+    // }
 
     listenToSwPostMessage() {
         this.logger.log('[APP-COMPONENT] listenToNotificationCLick - CALLED: ')
@@ -857,10 +860,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1) ||
-                    (this.route.indexOf('/desktop--access') !== -1)
+                    (this.route.indexOf('/desktop--access') !== -1) 
 
                 ) {
-
+                    // && this.USER_ROLE === 'agent' 
+            
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
                     // margin-top: -70px

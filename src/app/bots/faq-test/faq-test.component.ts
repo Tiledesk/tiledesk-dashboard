@@ -50,7 +50,6 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
     this.getSearchedQuestionFromStorage();
 
     this.getCurrentProject();

@@ -62,7 +62,6 @@ export class RasaBotComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
     this.getBrowserVersion();
     this.getCurrentProject()
   }

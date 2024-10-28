@@ -1,29 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangePasswordComponent } from './change-password.component';
 import { RouterModule, Routes } from '@angular/router';
-import { UserEditAddComponent } from './user-edit-add.component';
+import { PasswordStrengthModule } from 'app/auth/signup/password-strength/password-strength.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  { path: "", component: UserEditAddComponent},
+  { path: "", component: ChangePasswordComponent},
 ];
 
 @NgModule({
   declarations: [
-    UserEditAddComponent
+    ChangePasswordComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
+    PasswordStrengthModule,
     TranslateModule,
-    SettingsSidebarModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
-    NgSelectModule,
-    FormsModule
   ]
 })
-export class UserEditAddModule { }
+export class ChangePasswordModule { }

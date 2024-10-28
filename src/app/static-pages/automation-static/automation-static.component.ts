@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 @Component({
   selector: 'appdashboard-automation-static',
   templateUrl: './automation-static.component.html',
@@ -62,7 +63,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
   ) {
     // super(translate)
     super(prjctPlanService, notify);
@@ -70,6 +72,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   }
 
   ngOnInit(): void {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('automation')
     this.getOSCODE();
     this.getCurrentProject();
     this.getProjectPlan();
