@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Неназначенные разговоры",
         "ServedRequests": "Назначенные разговоры",
         "ActiveRequests": "Активные разговоры",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Дефолт",
         "Requester": "Заявитель",
         "Message": "Сообщение",
