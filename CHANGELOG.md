@@ -1,5 +1,37 @@
 # tiledesk-dashboard
 
+### 2.7.36
+- Adds the ability to filter for abandoned conversations in the "Non-real-time conversations" page
+- Adds "Guard Role"
+- Updates the libraries ua-parser-js, bootstrap and jquery
+- Adds the ability to integrate Brevo CRM and the N8N platform to the integrations page
+- Adds a link to the DPA documentation on the sign up page
+- Add checks to validate user uploads
+- Fixes the bug: Sign in and sign up pages display detailed errors
+- Handles email verification error messages
+- Implements a security policy for registration password and for the a new password (reset and change)
+
+### 2.7.36-rc6
+- Implements a security policy for registration password and for the a new password (reset and change)
+
+### 2.7.36-rc5
+- Fixes the bug: in external bot details some information are missing
+- Fixes the bug: Sign in and sign up pages display detailed errors
+
+### 2.7.36-rc4
+- Minor improvements and bug fixing
+
+### 2.7.36-rc3
+- Handles email verification error messages
+
+### 2.7.36-rc2
+- Improves role guard
+
+### 2.7.36-rc1
+- Adds role guard
+- Updates the libraries ua-parser-js, bootstrap and jquery
+- Adds checks to validate user uploads (user profile, inport chatbot, widget settings, conversation detail)
+
 ### 2.7.35
 - Refactors tables in Monitor page 
 - Improves handling of alert windows display
