@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Conversaciones sin asignar",
         "ServedRequests": "Conversaciones asignadas",
         "ActiveRequests": "Conversaciones activas",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Por defecto",
         "Requester": "Solicitante",
         "Message": "Mensaje",
