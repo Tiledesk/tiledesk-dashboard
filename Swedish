@@ -1268,6 +1268,7 @@
         "UnservedRequests": "Ej tilldelade konversationer",
         "ServedRequests": "Tilldelade konversationer",
         "ActiveRequests": "Aktiva samtal",
+        "AbandonedRequests": "Abandoned Conversations",
         "Default": "Standard",
         "Requester": "Förfrågare",
         "Message": "Meddelande",
