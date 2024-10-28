@@ -46,6 +46,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   terms_and_conditions_url: string;
   privacy_policy_url: string;
   display_terms_and_conditions_link: boolean;
+  display_dpa: boolean;
+  dpa_url: string;
   queryParams: any;
 
   showSpinnerInLoginBtn = false;
@@ -152,7 +154,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.terms_and_conditions_url = brand['terms_and_conditions_url'];
     this.privacy_policy_url = brand['privacy_policy_url'];
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
+    console.log('display_terms_and_conditions_link',  this.display_terms_and_conditions_link)
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
+    console.log('displaySocialProofContainer',   this.displaySocialProofContainer)
+    this.display_dpa = brand['display_dpa_link'];
+    console.log('display_dpa',   this.display_dpa)
+    this.dpa_url =  brand['dpa_url'];
     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 

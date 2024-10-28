@@ -257,8 +257,9 @@ input:-webkit-autofill {
   // z-index: 1050;
   // position: relative;
   // color: #e8eaed;
-  font-size: 22px;
-  font-family: Poppins,Roboto,Arial,sans-serif;
+  // font-size: 22px;
+  font-size: 28px;
+  font-family: var(--header-font-family);
   font-weight: 600;
   line-height: 1.3;
   padding: 98px 26px 12px 26px;
@@ -267,7 +268,7 @@ input:-webkit-autofill {
   color: #222;
 }
 
-.welcome-text-subtitle {
+.welcome-text-subtitle-wpr {
   // padding-left: 80px;
   // padding-right: 80px;
   padding: 30px 26px 0px 26px;
@@ -281,6 +282,10 @@ input:-webkit-autofill {
   display: flex;
   flex-direction: row;
   gap: 6px;
+}
+
+.welcome-text-subtitle {
+  font-family: var(--header-font-family);
 }
 
 label {
@@ -319,14 +324,15 @@ label {
 }
 
 // start CHECKBOX TERMS AND CONDITIONS
-/* Customize the label (the container) */
-.container {
+/* Customize the label */
+.i-accept-label {
   display: block;
   position: relative;
   padding-left: 35px;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 14px;
+  font-size: 13px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -335,8 +341,12 @@ label {
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
+.i-accept-label > a:hover {
+  text-decoration: underline;
+}
+
 /* Hide the browser's default checkbox */
-.container input {
+.i-accept-label input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -360,7 +370,7 @@ label {
 // }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked~.checkmark {
+.i-accept-label input:checked~.checkmark {
   background-color: var(--blue-light);
 }
 
@@ -372,12 +382,12 @@ label {
 }
 
 /* Show the checkmark when checked */
-.container input:checked~.checkmark:after {
+.i-accept-label input:checked~.checkmark:after {
   display: block;
 }
 
 /* Style the checkmark/indicator */
-.container .checkmark:after {
+.i-accept-label .checkmark:after {
   left: 9px;
   top: 5px;
   width: 5px;
