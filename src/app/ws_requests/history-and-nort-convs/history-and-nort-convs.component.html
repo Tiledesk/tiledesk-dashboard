@@ -48,7 +48,7 @@
                 </span>
 
                 <span *ngIf="requests_status === '150'">
-                  <a>Abandoned</a>
+                  <a>{{ "Abandoned" | translate }}</a>
                 </span>
 
                 <b class="caret"></b>
@@ -99,7 +99,7 @@
                       <input type="radio" id="150" name="status" value="150" [(ngModel)]="requests_status">
                     </div>
                     <div class="right" style="flex-grow: 1;">
-                      <a class="custom-dropdown-a">{{'RequestMsgsPage.RequestAbandoned' | translate}}</a>
+                      <a class="custom-dropdown-a">{{'VisitorsPage.AbandonedRequests' | translate}}</a>
                     </div>
                   </div>
                 </li>
@@ -1345,6 +1345,9 @@
                       </span>
                       <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject">
                         {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 150">
+                        {{ 'RequestMsgsPage.RequestAbandoned' | translate }}
                       </span>
                       <span class="ng2-tooltip-badge--resolved" *ngIf="request?.status === 1000 && !request?.subject">
                         {{ 'RequestMsgsPage.RequestResolved' | translate }}
