@@ -503,6 +503,8 @@
     "SupportedFileTypesPdfDocx": "Supported file types: pdf and docx - {{file_size_limit}} Mb max.",
     "FileSizeExceedsFileSizeLimitMb": "File size exceeds {{file_size_limit}} Mb.",
     "FileTypeNotSupported": "File type not supported",
+    "UploadedFileMayContainsDangerousCode": "The uploaded file may contains malicious code",
+    "URLTypeNotAllowed": "Resource not allowed!",
     "FileSuccessfullyUploaded": "{{file_mb}} Mb file successfully uploaded.",
     "ToUpload": "للتحميل",
     "CreateAnswers": "أنشئ إجابات",
@@ -752,7 +754,9 @@
         "YourDetails": "تفاصيلك",
         "AddYourOwnPicture": "⚡️ أضف صورتك الخاصة لإضفاء طابع أكثر حميمية على محادثاتك!",
         "AddYourOwnPicture_": "⚡️ أضف صورتك الخاصة لإضفاء طابع أكثر حميمية على محادثاتك ، حيث يمكن للزائر معرفة من يتحدثون إليه!",
-        "PreferredSize": "حجم الصورة المفضل 128 × 128 بكسل - تنسيق الصورة: .jpeg أو .png"
+        "PreferredSize": "حجم الصورة المفضل 128 × 128 بكسل - تنسيق الصورة: .jpeg أو .png",
+        "AnErrorHasOccurredSendingVerificationLink": "An error has occurred sending verification link",
+        "YourProfileHasBeenUploaded": "your profile has been successfully updated"
     },
     "ChangePsw": {
         "ChangePsw": "تغيير كلمة المرور",
