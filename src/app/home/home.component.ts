@@ -3734,16 +3734,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // NOT YET USED
-  superUserAuth() {
-    if (!this.auth.superUserAuth(this.currentUserEmailgetFromStorage)) {
-      this.logger.log('[HOME] +++ CURRENT U IS NOT SUPER USER ', this.currentUserEmailgetFromStorage);
-      this.IS_SUPER_USER = false;
-    } else {
-      this.logger.log('[HOME] +++ !! CURRENT U IS SUPER USER ', this.currentUserEmailgetFromStorage);
-      this.IS_SUPER_USER = true;
+  // superUserAuth() {
+  //   if (!this.auth.superUserAuth(this.currentUserEmailgetFromStorage)) {
+  //     this.logger.log('[HOME] +++ CURRENT U IS NOT SUPER USER ', this.currentUserEmailgetFromStorage);
+  //     this.IS_SUPER_USER = false;
+  //   } else {
+  //     this.logger.log('[HOME] +++ !! CURRENT U IS SUPER USER ', this.currentUserEmailgetFromStorage);
+  //     this.IS_SUPER_USER = true;
 
-    }
-  }
+  //   }
+  // }
 
   // displayCheckListModal() {
   //   this.notify.showCheckListModal(true);

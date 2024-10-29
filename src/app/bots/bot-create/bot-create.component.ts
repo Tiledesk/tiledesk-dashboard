@@ -350,7 +350,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     const jsonString = JSON.stringify(json)
     // Check for XSS patterns
     if (containsXSS(jsonString)) {
-      console.log("Potential XSS attack detected!");
+      // console.log("Potential XSS attack detected!");
       this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
       return;
     }

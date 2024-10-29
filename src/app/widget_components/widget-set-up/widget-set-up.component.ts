@@ -21,7 +21,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites, checkAcceptedFile, filterImageMimeTypesAndExtensions, isMaliciousURL } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites, checkAcceptedFile, filterImageMimeTypesAndExtensions, isMaliciousHTML, isMaliciousURL } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -1936,8 +1936,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onChangeFooterBrand(event) {
+    let btnSaveFooterBrandAndLauncherBtn = (document.getElementById('btn-save-footer-brand--launcher-btn') as HTMLInputElement)
+    btnSaveFooterBrandAndLauncherBtn.disabled = false
     this.footerBrand = event;
     this.logger.log('[WIDGET-SET-UP] - FOOTER BRAND CHANGE: ', this.footerBrand);
+
+    let checkMaliciousHTML = isMaliciousHTML(event)
+    if(checkMaliciousHTML){
+      
+      btnSaveFooterBrandAndLauncherBtn.disabled = true
+      // this.footerBrand = this.defaultFooter
+
+      this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+      this.logger.error('[WIDGET-SET-UP] onChangeFooterBrand: can not set current url--> MALICIOUS HTML DETECTED', event, isMaliciousHTML)
+      return;
+    }
   }
 
   onChangeOfficeClosedMsg(event) {

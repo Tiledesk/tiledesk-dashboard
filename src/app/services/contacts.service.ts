@@ -478,7 +478,7 @@ export class ContactsService {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
-  // curl -v -X PATCH -H 'Content-Type:application/json' -u andrea.leo@frontiere21.it:258456td -d '{"a1":"a2", "b1":"b2"}' http://localhost:3000/6307a210f6c98c2d6c9c74ef/leads/630e19bf8ddb5f633abfedbf/properties
+  
 
   updateLeadCustomProperties(contactid, contactCustomPropertiesObjct) {
     const httpOptions = {

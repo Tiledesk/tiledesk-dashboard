@@ -836,7 +836,8 @@ export function containsXSS(jsonData) {
     // List of common XSS attack patterns
     const xssPatterns = [
         /<script.*?>.*?<\/script.*?>/gi,  // script tags
-        /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
+        // /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
+        /on[a-z]+=/gi,
         /eval\s*\(.*?\)/gi,               // eval calls
         /javascript\s*:\s*.*/gi,          // javascript protocol
         /document\.cookie/gi,             // access to cookies
@@ -852,6 +853,27 @@ export function containsXSS(jsonData) {
     }
     return false; // No XSS detected
 }
+
+export function isMaliciousHTML(input) {
+    // List of common XSS attack patterns
+    const xssPatterns = [
+        /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, // Script tags
+        /on\w+="[^"]*"/gi,                                    // Event handlers
+        /javascript:[^'"]*/gi,                               // JavaScript URLs
+        /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, // Iframe tags
+        /data:text\/html;base64,[A-Za-z0-9+/=]+/gi          // Base64 encoded scripts
+    ];
+
+
+    // Check if any of the patterns match
+    for (const pattern of xssPatterns) {
+        if (pattern.test(input)) {
+            return true; // XSS detected
+        }
+    }
+    return false; // No XSS detected
+}
+
 
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'

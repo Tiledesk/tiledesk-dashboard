@@ -41,8 +41,7 @@ export class UploadImageNativeService {
     });
   }
 
-  // curl -v -X PUT -u andrea.leo@frontiere21.it:258456td \
-  // -F "file=@/Users/andrealeo/dev/chat21/tiledesk-server-dev-org/test.jpg" \
+ 
   //   https://tiledesk-server-pre.herokuapp.com/images/users/photo
 
   // returns:
@@ -98,8 +97,7 @@ export class UploadImageNativeService {
 
   // @nicola_74 when you upload by bot (or otherwise not the current user) you have to use this: 
 
-  // curl -v -X PUT -u andrea.leo@frontiere21.it:258456td   -F "file=@/Users/andrealeo/dev/chat21/tiledesk-server-dev-org/test.jpg"  
-  // https://tiledesk-server-pre.herokuapp.com/images/users/photo?user_id=bot_IDBOT
+  
 
   uploadBotPhotoProfile_Native(file: File, id: string): Observable<any> {
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD BOT PHOTO PROFILE NATIVE file ', file)
@@ -140,7 +138,7 @@ export class UploadImageNativeService {
       }))
   }
 
-  // curl -v -X DELETE  -u andrea.leo@frontiere21.it:258456td \
+ 
   // https://tiledesk-server-pre.herokuapp.com/images/users/?path=uploads%2Fusers%2F5aaa99024c3b110014b478f0%2Fimages%2Fphoto.jpg
   deletePhotoProfile_Native(id, calledfor: string) {
     this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] CALLING DELETE - ID (OF USER OR BOT) ', id);
