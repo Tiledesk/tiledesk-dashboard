@@ -238,6 +238,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   status = [
     { id: '100', name: 'Unserved' },
     { id: '200', name: 'Served' },
+    { id: '150', name: 'Abandoned' },
     { id: 'all', name: 'All' },
   ];
 
@@ -366,7 +367,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.getTag();
     this.getCurrentUrlLoadRequests();
     this.getImageStorageAndChatBaseUrl();
-    // this.auth.checkRoleForCurrentProject();
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
@@ -398,6 +398,42 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
+    
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role
+          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
+        }
+        if (user_role) {
+          if (user_role === 'agent') {
+            this.ROLE_IS_AGENT = true
+
+          } else {
+            this.ROLE_IS_AGENT = false
+          }
+        }
+      });
+  }
+
+  manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
+    this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
+    if (USER_ROLE === 'agent') {
+      let unservedIndex = this.statusInHistory.findIndex(x => x.id === '100');
+      this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan unservedIndex', unservedIndex)
+      this.statusInHistory.splice(unservedIndex, 1)
+      let servedIndex = this.statusInHistory.findIndex(x => x.id === '200');
+      this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan servedIndex', servedIndex)
+      this.statusInHistory.splice(servedIndex, 1)
+      this.statusInHistory =  this.statusInHistory.slice(0)
+    }
 
   }
 
@@ -418,6 +454,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
           if (this.queryParams.leftfilter === '200') {
             this.requests_status = '200'
+            this.requestsStatusSelect(this.requests_status)
+          }
+
+          if (this.queryParams.leftfilter === '150') {
+            this.requests_status = '150'
             this.requestsStatusSelect(this.requests_status)
           }
         }
@@ -1096,11 +1137,19 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getServedRequests();
+
     } else if (request_status === '100') {
       this.requests_status_selected_from_left_filter = '100'
       this.requests_status_selected_from_advanced_option = null
       // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
       this.getUnservedRequests();
+
+    } else if (request_status === '150') {
+      this.requests_status_selected_from_left_filter = '150'
+      this.requests_status_selected_from_advanced_option = null
+      // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
+      this.getAbandonedRequests();
+
     } else if (request_status === 'all') {
       this.requests_status_selected_from_left_filter = 'all'
       // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - requestsStatusSelect requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter);
@@ -1168,8 +1217,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getAllRequests() {
-    // this.operator = '<'
+  //  this.operator = '='
     this.requests_status = 'all'
+    //  this.requests_status = '100,150,200'
     // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
@@ -1184,6 +1234,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getUnservedRequests() {
     this.operator = '='
     this.requests_status = '100'
+    // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getUnservedRequests status ', this.requests_status, 'operator ', this.operator);
+    this.getRequests()
+  }
+
+  getAbandonedRequests() {
+    this.operator = '='
+    this.requests_status = '150'
     // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getUnservedRequests status ', this.requests_status, 'operator ', this.operator);
     this.getRequests()
   }
@@ -1311,7 +1368,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getRequests() {
     this.logger.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    // this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
+    this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
+    this.logger.log('getRequests requests_status ' , this.requests_status) 
+  
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -1341,6 +1400,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               // User Agent
               // -------------------------------------------------------------------
               const user_agent_result = this.parseUserAgent(request.userAgent);
+              // console.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
               const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
@@ -1485,26 +1545,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - detectMobile IS MOBILE ', this.isMobile);
   }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-        }
-        if (user_role) {
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-
-          } else {
-            this.ROLE_IS_AGENT = false
-          }
-        }
-      });
-  }
+  
 
 
   // requestWillBePermanentlyDeleted

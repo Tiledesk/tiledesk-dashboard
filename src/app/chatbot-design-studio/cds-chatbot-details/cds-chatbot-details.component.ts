@@ -70,7 +70,6 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   ) { super(); }
 
   ngOnInit(): void {
-    this.auth.checkRoleForCurrentProject();
     // this.getParamsBotIdAndThenInit();
     this.getOSCODE();
     this.getCurrentProject();

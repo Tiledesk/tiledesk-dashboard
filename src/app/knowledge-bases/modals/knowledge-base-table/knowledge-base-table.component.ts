@@ -104,7 +104,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.isLoading = true;
     this.numberPage++;
     this.searchParams.page = this.numberPage;//Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
-    // console.log('[KB TABLE] emit loadPage searchParams', this.searchParams) 
+    // this.logger.log('[KB TABLE] emit loadPage searchParams', this.searchParams) 
     this.loadPage.emit(this.searchParams);
   }
 

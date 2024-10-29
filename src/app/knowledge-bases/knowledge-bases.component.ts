@@ -2010,7 +2010,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        console.log('here 2 this.kbLimit ', this.kbLimit,  'error ', error)
+        this.logger.log('here 2 this.kbLimit ', this.kbLimit,  'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,

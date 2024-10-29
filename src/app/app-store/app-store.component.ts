@@ -93,7 +93,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
     this.getApps();
     this.getCurrentProject();
     // this.getToken();
@@ -747,7 +747,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   goToCreateBot(type: string) {
-    //  this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
     if (type !== 'native' && type !== 'tilebot') {
       this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
     } else if (type === 'native') {

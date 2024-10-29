@@ -742,7 +742,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // for new home
   saveUserPreferences(segmentIdentifyAttributes) {
-    this.logger.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
+    console.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 

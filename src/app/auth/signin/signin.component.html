@@ -131,7 +131,10 @@
                 </g>
               </svg>
             </div>
-            <div style="padding: 10px 10px 10px 0px; font-weight: 500; width: calc(100% - 91px);">Sign in with Google</div>
+            <div style="padding: 10px 10px 10px 0px; font-weight: 500; width: calc(100% - 91px);">
+              <!-- Sign in with Google -->
+              {{ 'SignInWithGoogle' | translate}}
+            </div>
           </button>
   
           <div *ngIf="hideGoogleAuthBtn" class="auth---divider"><span>&nbsp;&nbsp;or&nbsp;&nbsp;</span></div>

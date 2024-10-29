@@ -13,6 +13,7 @@
   "firebaseAuth": "${FIREBASE_AUTH}",
   "uploadEngine": "${UPLOAD_ENGINE}",
   "baseImageUrl": "${API_BASEIMAGE_URL}",
+  "fileUploadAccept":"${FILE_UPLOAD_ACCEPT}",
   "pushEngine": "${PUSH_ENGINE}",
   "logLevel": "${LOG_LEVEL}",
   "communityTemplatesUrl": "${COMMUNITY_TEMPLATES_URL}",

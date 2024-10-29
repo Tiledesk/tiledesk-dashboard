@@ -29,6 +29,8 @@ export class BrandService {
       "privacy_policy_url": "https://www.tiledesk.com/privacy.html",
       "display_terms_and_conditions_link": true,
       "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
+      "display_dpa_link": true,
+      "dpa_url": "https://tiledesk.com/dpa/",
       "contact_us_email": "support@tiledesk.com",
       "display-news-and-documentation": true,
       "display_google_auth_btn": true,
@@ -74,7 +76,7 @@ export class BrandService {
     },
     WIDGET: {
       "LOGO_CHAT": "https://tiledesk.com/tiledesk-logo-white.png",
-      "POWERED_BY": "<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>"
+      "POWERED_BY": "<a tabindex='-1' target='_blank href='https://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>"
     },
     CHAT: {
 

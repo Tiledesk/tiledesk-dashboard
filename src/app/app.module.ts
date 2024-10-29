@@ -99,7 +99,7 @@ import { GroupService } from './services/group.service';
 // import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component'; // now lazy
 
 import { BotLocalDbService } from './services/bot-local-db.service';
-import { ChangePasswordComponent } from './user-profile//change-password/change-password.component';
+// import { ChangePasswordComponent } from './user-profile//change-password/change-password.component'; // now lazy
 
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
@@ -112,7 +112,7 @@ import { FilterArrayPipe } from './filterarray.pipe';
 
 // import { HoursComponent } from './hours/hours.component'; // now lazy
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ResetPswComponent } from './reset-psw/reset-psw.component';
+// import { ResetPswComponent } from './reset-psw/reset-psw.component';  // now lazy
 import { ResetPswService } from './services/reset-psw.service';
 
 import { UploadImageService } from './services/upload-image.service';
@@ -327,7 +327,7 @@ import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.com
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
-import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
+// import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
 // import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component'; // now lazy
 // import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component'; // now lazy
@@ -397,9 +397,12 @@ import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
+// import { N8nIntegrationComponent } from './integrations/list/n8n-integration/n8n-integration.component'; // now lazy
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
+import { RoleService } from './services/role.service';
+// import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 
 // import { ModalAddNamespaceComponent } from './knowledge-bases/modals/modal-add-namespace/modal-add-namespace.component';
@@ -514,9 +517,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MapToIterable,
     // SelectOptionsTranslatePipe, moved in SharedModule
     FilterArrayPipe,
-    ChangePasswordComponent,
+    // ChangePasswordComponent, // now lazy
     // HoursComponent, // now lazy
-    ResetPswComponent,
+    // ResetPswComponent, // now lazy
    // WidgetSetUp, // now lazy
     // HistoryAndNortConvsComponent, // now lazy
     // ContactDetailsComponent, // now lazy
@@ -642,7 +645,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OnboardingWidgetComponent, 
     CommunityTemplateDtlsComponent, 
     HomePromoDesignStudioComponent,
-    PasswordStrengthComponent,
+    // PasswordStrengthComponent,
     CloneBotComponent,
     // ContactsStaticComponent, // now lazy
     // CannedResponsesStaticComponent, // now lazy
@@ -710,6 +713,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // AddContentMenuComponent, // now lazy
     UserModalComponent,
     MessagesStatsModalComponent,
+    // N8nIntegrationComponent,
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
     // ModalChatbotReassignmentComponent,
@@ -755,6 +759,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppRoutingModule,
     CoreModule,
     SharedModule,
+    // PasswordStrengthModule,
     UiModule,
     ComponentsModule,
     RouterModule,
@@ -836,6 +841,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OpenaiService,
     PopupService,
     NotificationService,
+    RoleService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

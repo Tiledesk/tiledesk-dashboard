@@ -9,6 +9,7 @@ import { NotifyService } from '../../core/notify.service';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { TranslateService } from '@ngx-translate/core';
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -71,7 +72,8 @@ export class SigninComponent implements OnInit {
     private notify: NotifyService,
     public brandService: BrandService,
     private logger: LoggerService,
-    private localDbService: LocalDbService
+    private localDbService: LocalDbService,
+    public translate: TranslateService,
   ) {
     const brand = brandService.getBrand();
 
@@ -85,7 +87,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log('[SIGN-IN] ON INIT !!!! ')
+    // this.logger.log('[SIGN-IN] ON INIT !!!! ')
     this.getOSCODE();
     // this.redirectIfLogged();
     // this.widgetReInit()
@@ -97,7 +99,7 @@ export class SigninComponent implements OnInit {
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      // console.log('[SIGN-IN] removeFromStorage swg')
+      // this.logger.log('[SIGN-IN] removeFromStorage swg')
     }
   }
 
@@ -284,48 +286,11 @@ export class SigninComponent implements OnInit {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
         // this.localDbService.removeFromStorage('signedup')
-        // console.log('[SIGN-IN] SSO (Signin) - user', user);
+        // this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
         // this.localDbService.removeFromStorage('hpea');
-        if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].page("Auth Page, Signin", {
-
-              });
-            } catch (err) {
-              this.logger.error('Signin page error', err);
-            }
-
-            let userFullname = ''
-            if (user.firstname && user.lastname) {
-              userFullname = user.firstname + ' ' + user.lastname
-            } else if (user.firstname && !user.lastname) {
-              userFullname = user.firstname
-            }
-
-            try {
-              window['analytics'].identify(user._id, {
-                name: userFullname,
-                email: user.email,
-                logins: 5,
-
-              });
-            } catch (err) {
-              this.logger.error('identify signin event error', err);
-            }
-            // Segments
-            try {
-              window['analytics'].track('Signed In', {
-                "username": userFullname,
-                "userId": user._id,
-                'button': 'Login',
-                'method': "Email and Password"
-              });
-            } catch (err) {
-              this.logger.error('track signin event error', err);
-            }
-          }
-        }
+        
+        this.trackSignin(user)
+      
 
         if (!this.EXIST_STORED_ROUTE) {
           this.router.navigate(['/projects']);
@@ -338,9 +303,9 @@ export class SigninComponent implements OnInit {
         // --------------------------------------------
         // Run widget login
         // --------------------------------------------
-        if (window && window['tiledesk_widget_login']) {
-          window['tiledesk_widget_login']();
-        }
+        // if (window && window['tiledesk_widget_login']) {
+        //   window['tiledesk_widget_login']();
+        // }
 
 
       } else {
@@ -351,7 +316,8 @@ export class SigninComponent implements OnInit {
         if (error.status === 0) {
 
           this.display = 'block';
-          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          // this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
 
@@ -363,7 +329,8 @@ export class SigninComponent implements OnInit {
           if (error.status !== 401) {
             this.display = 'block';
 
-            this.signin_errormsg = error['error']['msg']
+            // this.signin_errormsg = error['error']['msg']
+            this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
 
             self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
 
@@ -395,12 +362,14 @@ export class SigninComponent implements OnInit {
         if (error.status === 0) {
 
           this.display = 'block';
-          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          // this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
           this.display = 'block';
 
-          this.signin_errormsg = error['error']['msg']
+          // this.signin_errormsg = error['error']['msg']
+          this.signin_errormsg = this.translate.instant('WeHadTroubleLoggingYouIn')
           this.notify.showToast(self.signin_errormsg, 4, 'report_problem')
           // this.logger.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // this.logger.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
@@ -412,6 +381,49 @@ export class SigninComponent implements OnInit {
       // debugger
     });
 
+  }
+
+  trackSignin(user) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Auth Page, Signin", {
+
+          });
+        } catch (err) {
+          this.logger.error('Signin page error', err);
+        }
+
+        let userFullname = ''
+        if (user.firstname && user.lastname) {
+          userFullname = user.firstname + ' ' + user.lastname
+        } else if (user.firstname && !user.lastname) {
+          userFullname = user.firstname
+        }
+
+        try {
+          window['analytics'].identify(user._id, {
+            name: userFullname,
+            email: user.email,
+            logins: 5,
+
+          });
+        } catch (err) {
+          this.logger.error('identify signin event error', err);
+        }
+        // Segments
+        try {
+          window['analytics'].track('Signed In', {
+            "username": userFullname,
+            "userId": user._id,
+            'button': 'Login',
+            'method': "Email and Password"
+          });
+        } catch (err) {
+          this.logger.error('track signin event error', err);
+        }
+      }
+    }
   }
 
   widgetReInit() {

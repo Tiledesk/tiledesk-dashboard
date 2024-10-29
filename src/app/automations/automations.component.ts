@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AutomationsService } from 'app/services/automations.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -42,10 +43,15 @@ export class AutomationsComponent implements OnInit {
     private auth: AuthService,
     private logger: LoggerService,
     private automationsService: AutomationsService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private roleService: RoleService
+  ) { 
+   
+  }
 
   ngOnInit(): void {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('automations')
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.showSpinner = true;

@@ -34,11 +34,11 @@ export class UnauthorizedForProjectComponent implements OnInit {
   //   this.CHAT_PANEL_MODE = false
   //   if (this.router.url.indexOf('/request-for-panel') !== -1) {
   //     this.CHAT_PANEL_MODE = true;
-  //     console.log('[UNAUTHORIZED-FOR-PROJECT] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+  //     this.logger.log('[UNAUTHORIZED-FOR-PROJECT] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
 
   //   } else {
   //     this.CHAT_PANEL_MODE = false;
-  //     console.log('[UNAUTHORIZED-FOR-PROJECT] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
+  //     this.logger.log('[UNAUTHORIZED-FOR-PROJECT] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
 
   //   }
   // }

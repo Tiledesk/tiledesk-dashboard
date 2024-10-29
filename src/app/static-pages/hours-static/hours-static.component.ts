@@ -13,6 +13,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { RoleService } from 'app/services/role.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -50,7 +51,8 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    public location: Location
+    public location: Location,
+    private roleService: RoleService
   ) {
     // super(translate); 
     // this.tparams = {plan_name: PLAN_NAME.A}
@@ -59,6 +61,8 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
   }
 
   ngOnInit() {
+    // this.auth.checkRoleForCurrentProject();
+    this.roleService.checkRoleForCurrentProject('hours')
     this.getOSCODE();
     this.getCurrentProject();
     this.getBrowserLang();

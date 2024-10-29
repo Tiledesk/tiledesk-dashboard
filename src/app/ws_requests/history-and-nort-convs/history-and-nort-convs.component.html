@@ -44,8 +44,13 @@
                 </span>
 
                 <span *ngIf="requests_status === '100'">
-                  <a>{{ "Unserved" | translate }}</a>
+                  <a> {{ "Unserved" | translate }}</a>
                 </span>
+
+                <span *ngIf="requests_status === '150'">
+                  <a>{{ "Abandoned" | translate }}</a>
+                </span>
+
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu" style="min-width: 195px;">
@@ -84,6 +89,17 @@
                     </div>
                     <div class="right" style="flex-grow: 1;">
                       <a class="custom-dropdown-a">{{ "VisitorsPage.UnservedRequests" | translate }}</a>
+                    </div>
+                  </div>
+                </li>
+
+                <li (click)="requestsStatusSelect('150')">
+                  <div class="parent" style="display: flex; align-items: center;">
+                    <div class="left" style="padding:12px 6px">
+                      <input type="radio" id="150" name="status" value="150" [(ngModel)]="requests_status">
+                    </div>
+                    <div class="right" style="flex-grow: 1;">
+                      <a class="custom-dropdown-a">{{'VisitorsPage.AbandonedRequests' | translate}}</a>
                     </div>
                   </div>
                 </li>
@@ -868,9 +884,12 @@
                   <!-- ---------------------------------------------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" #tooltip="matTooltip"
-                      matTooltipPosition='below' matTooltipHideDelay="100">
+                      (click)="archiveSelected()" 
+                      matTooltipClass="mat-white-tooltip"
+                      matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
+                      #tooltip="matTooltip"
+                      matTooltipPosition='below' 
+                      matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
@@ -1267,6 +1286,17 @@
 
                     </span>
                   </span>
+
+                  <span *ngIf="request?.status === 150">
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+
+                      <img style="width: 30px;" src="assets/img/request_icons/status150_abandoned.svg" class="img-fluid"
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{ 'RequestMsgsPage.RequestAbandoned' | translate }}" #tooltip="matTooltip"
+                        matTooltipPosition='right' matTooltipHideDelay="100">
+
+                    </span>
+                  </span>
                 </td>
 
                 <!-- ===== REQUEST ID ===== -->
@@ -1315,6 +1345,9 @@
                       </span>
                       <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject">
                         {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
+                      </span>
+                      <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 150">
+                        {{ 'RequestMsgsPage.RequestAbandoned' | translate }}
                       </span>
                       <span class="ng2-tooltip-badge--resolved" *ngIf="request?.status === 1000 && !request?.subject">
                         {{ 'RequestMsgsPage.RequestResolved' | translate }}
@@ -2201,20 +2234,30 @@
                 <!-- Action Delete and Reopen if IS_HERE_FOR_HISTORY -->
                 <!-- --------------------------------------------------- -->
                 <td class="td-actions text-right" *ngIf="IS_HERE_FOR_HISTORY">
-                  <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
-                    (click)='deleteArchivedRequest(request?.request_id)' [disabled]="USER_ROLE !== 'owner'">
+                  <button type="button" class="btn btn-danger btn-simple btn-xs"
+                    (click)='deleteArchivedRequest(request?.request_id)' [disabled]="USER_ROLE !== 'owner'"
+                    matTooltipClass="mat-white-tooltip"
+                    matTooltip="{{ 'Delete' | translate }}" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100">
 
                     <i class="material-icons">delete_forever</i>
 
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'Delete' | translate }} </span>
                       <i></i>
-                    </span>
+                    </span> -->
 
                   </button>
-
-                  <button type="button" class="btn btn-danger btn-simple btn-xs tool_tip"
-                    (click)='reopenArchivedRequest(request, request?.request_id)' [disabled]="USER_ROLE === 'agent'">
+                 <!-- {{ request['currentUserIsJoined'] }}  -->
+                  <button type="button" class="btn btn-danger btn-simple btn-xs"
+                    (click)='reopenArchivedRequest(request, request?.request_id)' [disabled]="USER_ROLE === 'agent' && !request['currentUserIsJoined']"
+                      matTooltipClass="mat-white-tooltip"
+                      matTooltip="{{ 'Reopen' | translate }}" 
+                      #tooltip="matTooltip"
+                      matTooltipPosition='above' 
+                      matTooltipHideDelay="100">
 
 
                     <i class="material-icons" style="color: #3ea9f5; transform: rotate(180deg);">archive</i>
@@ -2226,10 +2269,10 @@
                       </path>
                     </svg> -->
 
-                    <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
+                    <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
                       <span style="text-transform: capitalize;"> {{ 'Reopen' | translate }} </span>
                       <i></i>
-                    </span>
+                    </span> -->
 
                   </button>
                 </td>

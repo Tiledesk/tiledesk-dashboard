@@ -34,6 +34,8 @@ export class SmtpSettingsComponent implements OnInit {
   public authenticationFailedMsg: string;
   public anErrorHasOccurredMsg: string;
   isChromeVerGreaterThan100: boolean
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  
   constructor(
     public projectService: ProjectService,
     private auth: AuthService,
@@ -46,7 +48,15 @@ export class SmtpSettingsComponent implements OnInit {
   ngOnInit() {
     this.subscribeToCurrentProjectAndGetProjectById();
     this.getTranslations();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.listenSidebarIsOpened();
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[USER-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getBrowserVersion() {

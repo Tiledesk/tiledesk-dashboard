@@ -10,6 +10,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from '../users-local-db.service';
 import { map } from 'rxjs/operators';
+import { CodeInstallationModule } from 'app/components/widget-installations/code-installation/code-installation.module';
 export interface Message {
   action: string;
   payload: {
@@ -1258,14 +1259,20 @@ export class WsRequestsService implements OnDestroy {
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - _preflight  ', _preflight);
     this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE Get REQUEST - pagenumber  ', pagenumber);
 
+    if (status === 'all') {
+      status = '100,150,200'
+      operator = '='
+     } 
+
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      if (status === '100' || status === '200' || status === '1000' || status === '50' ||  status ==="1000,100,200" || statuses?.length>0) {
+      if (status === '100' || status === '200' || status === '1000' || status === '50' ||  status ==="1000,100,200" || status ==="100,150,200" || statuses?.length>0) {
         _querystring = '&' + querystring
         this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {
         _querystring = querystring + '&'
-        this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 2');
+      
+        this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 2', _querystring);
       } else {
         this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 3');
       }
@@ -1284,7 +1291,7 @@ export class WsRequestsService implements OnDestroy {
       this.logger.log('url status all ' ,url )
     }
 
-  //  console.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
+  //  this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - GET REQUESTS URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

@@ -6,8 +6,9 @@
       <!-- <p style="margin-top:0px; padding-left:30px; cursor:pointer" class="navbar-brand" (click)="goToTileDeskDotCom()">
         <img style="width:250px; margin-left: 50px" src="assets/img/tiledesk-logo.svg"/>
       </p>  -->
-      <a style="margin-top:0px; padding-left:30px;z-index: 1050;position: relative;" class="navbar-brand" [href]="company_site_url" target="_blank">
-        <img class="img-responsive" style="width:50%; margin-left: 30px" [src]="company_logo_black"/>
+      <a style="margin-top:0px; padding-left:30px;z-index: 1050;position: relative;" class="navbar-brand"
+        [href]="company_site_url" target="_blank">
+        <img class="img-responsive" style="width:50%; margin-left: 30px" [src]="company_logo_black" />
       </a>
     </div>
     <div class="col-sm-6" style="margin-top: 15px; text-align: right !important; ">
@@ -16,16 +17,18 @@
   </div>
 </div>
 <!-- margin-top:-70px; -->
-<div class="main-content" style="background-color: #ffffff; padding: 0 !important; min-height: calc(100% - 63px)!important;  margin-top: 0px;">
+<div class="main-content"
+  style="background-color: #ffffff; padding: 0 !important; min-height: calc(100% - 63px)!important;  margin-top: 0px;">
 
-  <div class="container-fluid"  style="background-color: #ffffff;">
+  <div class="container-fluid" style="background-color: #ffffff;">
 
 
     <div style="text-align: center; padding-top: 70px;">
       <a [href]="company_site_url" target="_blank">
-        <img class="img-responsive" style="height: 136px; margin-top: 35px; display: inline" [src]="company_logo_black" alt="company-logo">
+        <img class="img-responsive" style="height: 136px; margin-top: 35px; display: inline" [src]="company_logo_black"
+          alt="company-logo">
       </a>
-    </div>	
+    </div>
 
 
 
@@ -40,41 +43,61 @@
     <!-- margin-right:100px; margin-left:100px; -->
     <div class="row">
       <div class="col-md-12" style="text-align: center">
-        <!-- <h3 style="padding-left:15px; margin-top:0px; margin-bottom: 5px; text-align: center" >
-          Verify email
-        </h3> -->
+
 
         <!-- IF ERROR -->
-        <span *ngIf="error_msg_title">
-          <!-- <h3 style="text-align: center"> {{ error_msg_title }}</h3> -->
-          <i class="material-icons" style="vertical-align: middle; color: #ff5252;">report_problem</i>
-          <span style="text-align: center; color: #ff5252;font-weight: 400; letter-spacing: .056em; font-size: 20px; vertical-align: middle; padding-left:8px "> 
-            
-            <!-- <span style="vertical-align: middle; padding-left:8px"> -->
-                <!-- {{ error_msg_subtitle }} -->
-                {{ "VerifyEmailPage.EmailVerificationFailed" | translate }}
-            <!-- </span> -->
-          </span>
-        </span>
+        <!-- <span *ngIf="error_msg_title"> -->
+        <div class="msgs--wpr" *ngIf="!showProcessing">
+          <div class="verification-email-error-wpr" *ngIf="hasError">
+            <div class="verification-email-error" *ngIf="errorCode !== 10005">
+              <!-- {{ error_msg_subtitle }} -->
+              {{ "VerifyEmailPage.EmailVerificationFailed" | translate }}
 
-        <!-- IF SUCCESS -->
-        <span *ngIf="success_msg" style="text-align: center">
-          
-          <i class="material-icons" style="vertical-align: middle; color: #3ecf8e;">done</i>
-          <span style="text-align: center; color: #3ecf8e; font-weight: 400; letter-spacing: .056em; font-size: 20px; vertical-align: middle; padding-left:8px"> 
-          <!-- <span style="vertical-align: middle; padding-left:8px"> -->
-              <!-- {{ success_msg }} -->
-              {{ "VerifyEmailPage.YourEmailHasSuccess" | translate }}
-          <!-- </span> -->
-          </span>
+              <div class="verification-email-error-msg" *ngIf="errorCode === 10006">
+                {{ error_msg_subtitle }}
+              </div>
 
-          <div style="text-align: center;margin-top: 25px; background: #fff; margin-left: -32px; margin-right: -32px;"> 
-            <button type="button" class="btn btn-success btn-lg" (click)="getUserAndGoToLoginOrProjects()">
-              {{ "VerifyEmailPage.GoToCONSOLE" |  translate }}
-            </button>
+            </div>
+
+
+            <div class="verification-email-error" *ngIf="errorCode === 10005">
+              <!-- <span style="vertical-align: middle; padding-left:8px"> -->
+              {{ error_msg_subtitle }}
+
+              <div class="resend--verification--email" (click)="resendVerificationEmail()">
+
+                {{ "UserProfile.ClickHereToResend" | translate }}
+
+              </div>
+            </div>
           </div>
 
-        </span>
+          <!-- IF SUCCESS -->
+          <span *ngIf="!hasError" style="text-align: center">
+
+            <i class="material-icons" style="vertical-align: middle; color: #3ecf8e;">done</i>
+            <span
+              style="text-align: center; color: #3ecf8e; font-weight: 400; letter-spacing: .056em; font-size: 20px; vertical-align: middle; padding-left:8px">
+              <!-- <span style="vertical-align: middle; padding-left:8px"> -->
+              <!-- {{ success_msg }} -->
+              {{ "VerifyEmailPage.YourEmailHasSuccess" | translate }}
+              <!-- </span> -->
+            </span>
+
+            <div
+              style="text-align: center;margin-top: 25px; background: #fff; margin-left: -32px; margin-right: -32px;">
+              <button type="button" class="btn btn-success btn-lg" (click)="getUserAndGoToLoginOrProjects()">
+                {{ "VerifyEmailPage.GoToCONSOLE" | translate }}
+              </button>
+            </div>
+
+          </span>
+        </div>
+
+        <div class="msgs--wpr" *ngIf="showProcessing"> 
+          <div class="verification-email-processing"> 
+            Processing
+        </div>
       </div>
 
     </div>

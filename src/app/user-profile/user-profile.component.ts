@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
-import { tranlatedLanguage, avatarPlaceholder, getColorBck, PLAN_NAME, APP_SUMO_PLAN_NAME } from 'app/utils/util';
+import { tranlatedLanguage, avatarPlaceholder, getColorBck, PLAN_NAME, APP_SUMO_PLAN_NAME, filterImageMimeTypesAndExtensions, checkAcceptedFile } from 'app/utils/util';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -58,15 +58,12 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   baseUrl: string;
   showSpinnerInUploadImageBtn = false;
   userRole: string;
-  profilePhotoWasUploaded: string;
   browser_lang: string;
   selected_dashboard_language: any
   flag_url: string;
   display_msg_please_select_language: boolean = false;
   display_msg_refresh_page_for_browser_lang: boolean = false;
   display_msg_refresh_page_for_selected_lang: boolean = false;
-  warning: string;
-  selectAProjectToManageNotificationEmails: string;
   hasSelectedBrowserLangRadioBtn: boolean;
   hasSelectedPreferredLangRadioBtn: boolean;
   // used to unsuscribe from behaviour subject
@@ -81,6 +78,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
   @ViewChild('fileInputUserProfileImage', { static: false }) fileInputUserProfileImage: any;
 
+  fileUploadAccept: string;
+  translationsMap: Map<string, string> = new Map();
 
   dashboard_languages = [
     {
@@ -204,7 +203,9 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     });
     this.getBrowserVersion();
     this.getProjectPlan();
-    this.trackPage()
+    this.trackPage();
+
+    this.fileUploadAccept = 'image/jpg, image/jpeg, image/png'
   }
 
 
@@ -488,22 +489,26 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   translateStrings() {
-    this.translate.get('YourProfilePhotoHasBeenUploadedSuccessfully')
-      .subscribe((text: string) => {
-        this.profilePhotoWasUploaded = text;
+
+    const keys = [
+      'YourProfilePhotoHasBeenUploadedSuccessfully',
+      'Warning',
+      'ItIsNecessaryToSelectAProjectToManageNotificationEmails',
+      'SorryFileTypeNotSupported',
+      'AnErrorHasOccurred',
+      'UserProfile.AnErrorHasOccurredSendingVerificationLink',
+      'UserProfile.YourProfileHasBeenUploaded',
+      'UserProfile.AnErrorHasOccurred'
+      
+    ];
+
+    this.translate.get(keys).subscribe(translations => {
+      Object.keys(translations).forEach(key => {
+        this.translationsMap.set(key, translations[key])
       });
+    });
+    
 
-    this.translate.get('Warning')
-      .subscribe((text: string) => {
-
-        this.warning = text;
-      });
-
-    this.translate.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails')
-      .subscribe((text: string) => {
-
-        this.selectAProjectToManageNotificationEmails = text;
-      });
   }
 
   getProjectUserRole() {
@@ -539,6 +544,16 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.logger.log('[USER-PROFILE] IMAGE upload')
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
+
+    const canUploadFile = checkAcceptedFile(event.target.files[0].type, this.fileUploadAccept)
+    if(!canUploadFile){
+      // this.presentToastOnlyImageFilesAreAllowedToDrag()
+      this.notify.showToast(this.translationsMap.get('SorryFileTypeNotSupported'), 4, 'report_problem')
+      this.logger.error('[IMAGE-UPLOAD] detectFiles: can not upload current file type--> NOT ALLOWED', event.target.files[0].type, this.fileUploadAccept)
+      this.showSpinnerInUploadImageBtn = false;
+      return;
+    }
+
     // Firebase upload
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.uploadUserAvatar(file, this.userId)
@@ -594,6 +609,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           this.logger.log('[USER-PROFILE] stored_user', stored_user)
           stored_user['hasImage'] = true;
           this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
+        }else if (image_exist === false){
+          this.notify.showToast(this.translationsMap.get('UserProfile.AnErrorHasOccurred'), 4, 'report_problem')
         }
       });
     } else {
@@ -768,13 +785,13 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.UPDATE_USER_ERROR = false;
         this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('your profile has been successfully updated', 2, 'done');
+        this.notify.showNotification(this.translationsMap.get('YourProfileHasBeenUploaded'), 2, 'done');
 
       } else if (response === 'error') {
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = true;
         // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error has occurred updating your profile', 4, 'report_problem')
+        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurred'), 4, 'report_problem')
       }
     });
   }
@@ -850,7 +867,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       const error_body = JSON.parse(error._body);
       this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
       if (error_body['success'] === false) {
-        this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
+        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
       }
     }, () => {
       this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');
@@ -892,8 +909,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
   presentModalSelectAProjectToManageEmailNotification() {
     swal({
-      title: this.warning,
-      text: this.selectAProjectToManageNotificationEmails,
+      title: this.translationsMap.get('Warning'),
+      text: this.translationsMap.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails'),
       icon: "warning",
       button: "Ok",
       dangerMode: false,

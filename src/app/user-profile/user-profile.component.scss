@@ -302,6 +302,13 @@ button.close {
 }
 // - end - BOTTOM NAVBAR  //
 
+.card-avatar{
+  padding-bottom:15px; 
+  min-height: 85px;
+  display: flex;
+  align-items: center;
+}
+
 .user-profile-image {
   vertical-align: middle;
   width: 80px;
