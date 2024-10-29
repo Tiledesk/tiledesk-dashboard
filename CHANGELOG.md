@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.37
+- Adds checks to validate Widget footer branding
+
 ### 2.7.36
 - Adds the ability to filter for abandoned conversations in the "Non-real-time conversations" page
 - Adds "Guard Role"
