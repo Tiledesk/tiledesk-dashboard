@@ -267,6 +267,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   dialogRef: MatDialogRef<any>;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   areVisibleChatbot: boolean;
+  isVisibleKNB: boolean;
+  ARE_NEW_KB: boolean;
+  kbNameSpaceid : string = '';
   currentProjectUser: any;
   isVisibleSupportMenu: boolean
 
@@ -323,7 +326,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.subscribeToMyAvailibilityCount();
     this.getCurrentRoute();
     this.getOSCODE();
-
+    // this.getDahordBaseUrlThenOSCODE()
     this.brandLog();
     // this.getHasOpenBlogKey()
     this.getChatUrl();
@@ -334,7 +337,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
     // this.getProjectPlan()
-    this.getBaseUrlAndThenProjectPlan()
+    this.getBaseUrlAndThenProjectPlan();
+    this.listenToKbVersion()
   }
 
   ngAfterViewInit() { }
@@ -356,10 +360,36 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     if (dshbrdBaseUrl.includes('tiledesk.com')) {
       this.areVisibleChatbot = true;
+      this.isVisibleKNB = true;
     }
 
     if (!dshbrdBaseUrl.includes('tiledesk.com')) {
       this.getProjectPlan()
+
+      // FOR KB MOVED HERE FROM BOTS-SIDEBAR
+      this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+      if (this.public_Key.includes("KNB")) {
+        let parts = this.public_Key.split('-');
+        // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
+
+        let kbn = parts.find((part) => part.startsWith('KNB'));
+        this.logger.log('[SIDEBAR] kbn from FT', kbn);
+        let kbnParts = kbn.split(':');
+        this.logger.log('[SIDEBAR] kbnParts from FT', kbnParts);
+        let kbnValue = kbnParts[1]
+        this.logger.log('[SIDEBAR] kbnValue from FT', kbnValue);
+
+        if (kbnValue === 'T') {
+          this.getProjectPlan()
+        
+        } else if (kbnValue === 'F') {
+          this.isVisibleKNB = false;
+        }
+
+      } else {
+        this.isVisibleKNB = false;
+        this.logger.log('[BOTS-SIDEBAR] this.public_Key.includes("KNB")', this.public_Key.includes("KNB"))
+      }
     }
   }
 
@@ -371,7 +401,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       .subscribe((projectProfileData: any) => {
         this.logger.log('[SIDEBAR] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
-          this.manageChatbotVisibility(projectProfileData)
+          this.manageChatbotVisibility(projectProfileData);
+          this.manageknowledgeBasesVisibility(projectProfileData)
         }
       }, error => {
 
@@ -409,6 +440,98 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.logger.log('[SIDEBAR] manageChatbotVisibility USECASE C customization is  ', projectProfileData['customization'], ' areVisibleChatbot ', this.areVisibleChatbot)
 
     }
+  }
+
+  manageknowledgeBasesVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE EXIST customization > knowledgeBases (1)', projectProfileData['customization']['knowledgeBases'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] !== undefined) {
+      this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE A EXIST customization ', projectProfileData['customization'], ' & knowledgeBases', projectProfileData['customization']['knowledgeBases'])
+
+      if (projectProfileData['customization']['knowledgeBases'] === true) {
+        this.isVisibleKNB = true;
+        this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE A isVisibleKNB', this.isVisibleKNB)
+      } else if (projectProfileData['customization']['knowledgeBases'] === false) {
+
+        this.isVisibleKNB = false;
+        this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE A isVisibleKNB', this.isVisibleKNB)
+      }
+
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] === undefined) {
+      this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE B EXIST customization ', projectProfileData['customization'], ' BUT knowledgeBases IS', projectProfileData['customization']['knowledgeBases'])
+
+      // if (this.public_Key.includes("KNB")) {
+      this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+
+      this.isVisibleKNB = this.getKnbValue()
+      this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+      // if (key.includes("KNB")) {
+      //   // this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - key', key);
+      //   let wun = key.split(":");
+      //   //  this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - ips key&value', ips);
+      //   if (wun[1] === "F") {
+      //     this.isVisibleKNB = false;
+      //     this.logger.log('[BOTS-SIDEBAR] Widget unbranding USECASE B  (from FT) isVisibleKNB', this.isVisibleKNB);
+      //     // this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - isVisibleKNB', this.isVisibleAutoSendTranscript);
+      //   } else {
+      //     this.isVisibleKNB = true;
+      //     this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B  (from FT) isVisibleKNB', this.isVisibleKNB);
+      //     // this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - isVisibleKNB', this.isVisibleAutoSendTranscript);
+      //   }
+      // }
+      // } else if (!this.public_Key.includes("KNB")) {
+      //   this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility isVisibleKNB  USECASE B (from FT) -  EXIST KNB ', this.public_Key.includes("KNB"));
+      //   this.isVisibleKNB = false;
+      //   this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility isVisibleKNB  USECASE B (from FT) ', this.isVisibleKNB);
+      // }
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE C customization is  ', projectProfileData['customization'], 'get value from FT')
+      // if (this.public_Key.includes("KNB")) {
+        // this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+
+        this.isVisibleKNB = this.getKnbValue()
+        this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+
+    }
+  }
+
+  getKnbValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  public_Key', this.public_Key);
+    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  public_Key type of', typeof this.public_Key);
+    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  this.public_Key.includes("KNB") ', this.public_Key.includes("KNB"));
+    // let substring = this.public_Key.substring(this.public_Key.indexOf('KNB'));
+    let parts = this.public_Key.split('-');
+    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
+
+    let kbn = parts.find((part) => part.startsWith('KNB'));
+    this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  kbn ', kbn);
+    let kbnParts = kbn.split(':');
+    this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  kbnParts ', kbnParts);
+    let kbnValue = kbnParts[1]
+    this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  kbnValue ', kbnValue);
+    if (kbnValue === 'T') {
+      return true
+    } else if (kbnValue === 'F') {
+      return false
+    }
+
+  }
+
+  listenToKbVersion() {
+    this.kbService.newKb
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((newKb) => {
+        this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
+        this.ARE_NEW_KB = newKb;
+      })
   }
 
 
@@ -750,6 +873,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.isVisibleCNT = false;
     }
   }
+
+  
 
 
   getCurrentRoute() {
@@ -1590,6 +1715,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       if (project) {
         this.project = project
 
+        // FOR KB
+        const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
+        this.logger.log('[BOTS-SIDEBAR] storedNamespace', storedNamespace);
+        if(storedNamespace) {
+          let storedNamespaceObjct = JSON.parse(storedNamespace)
+          this.logger.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
+          this.kbNameSpaceid= storedNamespaceObjct.id
+        }
+
         this.projectId = this.project._id
         this.logger.log('[SIDEBAR] project $ubscription  ', this.project)
 
@@ -1820,6 +1954,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // } else {
     //   this.router.navigate(['/project/' + this.projectId + '/bots-demo']);
     // }
+  }
+
+  goToNewKnowledgeBases() {
+    if (this.kbNameSpaceid !== '') {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
+    }
   }
 
   goToWidgetSetUpOrToCannedResponses() {

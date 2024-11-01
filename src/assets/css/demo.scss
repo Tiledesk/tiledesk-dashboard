@@ -1274,16 +1274,18 @@ span.navbar-brand-sidebar-settings {
   z-index: 1050;
   position: relative;
   margin-top: 6px;
-
   border-right: 1px solid #e5effe;
+  padding-left: 25px;  // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings.is_opened {
-  width: 226px;
+  // width: 226px; 
+  width: 236px; // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings.is_closed {
-  width: 51px;
+  // width: 51px;
+  width: 61px; // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings>i {
@@ -2868,11 +2870,13 @@ li.active-item a i.settings-sidebar-icons {
 }
 
 .toggle-setting-sidebar-icon-wpr.is_opened {
-  left: 215px;
+  // left: 215px; 
+  left: 225px; // increased fro the new sidebar width
 }
 
 .toggle-setting-sidebar-icon-wpr.is_closed {
-  left: 40px;
+  // left: 40px;
+  left: 50px; // increased fro the new sidebar width
 }
 
 .toggle-setting-sidebar-icon {

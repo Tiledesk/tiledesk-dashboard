@@ -27,7 +27,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 70px;
+  width: 60px;
   z-index: 4;
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
@@ -44,51 +44,20 @@
   flex-direction: column;
 
   > div {
-    // &:hover {
-    //   background-color: var(--sidebar-bckgrnd-item-hover); 
-    // }
-    // height: 50px;
-    // width: 50px;
+    height: 50px;
+    width: 60px;
     margin-top: 5px;
     margin-bottom: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    > a {
-      &:hover {
-        background-color: var(--sidebar-bckgrnd-item-hover); 
-      }
-      height: 50px;
-      width: 50px;
-      border-radius: var(--sidebar-bckgrnd-item-border-radius);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-    }
+    cursor: pointer;
+
     span{
       display: flex;
-      
     }
   }
-}
 
-.nav-custom > div:hover > a > span > svg > path {
- fill:  var(--sidebar-hover-icon-color);
-}
-
-.nav-custom > div > #openchat-a > span > svg > g > path {
-  stroke: var(--sidebar-icon-color);
-}
-
-.nav-custom > div:hover > #openchat-a > span > svg > g > path {
-  stroke: var(--sidebar-hover-icon-color);
-}
-
-
-div.item-active > a  {
-  background-color: var(--sidebar-bckgrnd-item-hover);
 }
 
 svg path,
@@ -101,23 +70,12 @@ div > a > i {
   // float: left;
   // margin-right: 15px;
   // line-height: 30px;
-  // width: 60px;
+  width: 60px;
   text-align: center;
   // color: #a9afbb;
   color: var(--sidebar-icon-color);
 }
 
-.sidebar-separator > svg > path {
-  fill: var(--sidebar-inactive-icon);
-}
-
-.sidebar-separator:hover > svg > path {
-  fill: var(--sidebar-inactive-icon);
-}
-
-// .sidebar-separator >  svg {
-//   color: var(--sidebar-icon-color);
-// }
 
 
 svg:hover path,
@@ -132,7 +90,6 @@ div:hover > a > i {
 div.item-active > a > i {
   color: var(--sidebar-active-icon) !important;
 }
-
 
 .item-active svg path,
 .item-active svg ellipse{
@@ -488,7 +445,7 @@ button.close {
   background-color: #2d323e !important;
   padding-bottom: 5px;
   min-height: 60px;
-  width: 70px; // for SMALL SIDEBAR
+  width: 60px; // for SMALL SIDEBAR
 }
 
 .logo-img-wpr {
@@ -669,12 +626,11 @@ button.close {
   border-radius: 3px;
 }
 
-// #user-details.active {
-//   transform: translate(0);
-//   display: block;
-//   // left: 60px;
-//   left: 70px;
-// }
+#user-details.active {
+  transform: translate(0);
+  display: block;
+  left: 60px;
+}
 
 /* NK end CUSTOM SCROLL BAR */
 

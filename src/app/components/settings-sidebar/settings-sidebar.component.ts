@@ -61,6 +61,7 @@ export class SettingsSidebarComponent implements OnInit {
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   APPS_ROUTE_IS_ACTIVE: boolean;
   TRANSLATIONS_ROUTE_IS_ACTIVE: boolean;
+  NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE: boolean;
   public_Key: string;
   USER_ROLE: any;
   CHAT_BASE_URL: string;
@@ -682,6 +683,18 @@ export class SettingsSidebarComponent implements OnInit {
       this.TRANSLATIONS_ROUTE_IS_ACTIVE = false
       this.logger.log('[SETTING-SIDEBAR] - TRANSLATIONS_ROUTE_IS_ACTIVE  ', this.TRANSLATIONS_ROUTE_IS_ACTIVE)
     }
+
+
+    if (this.route.indexOf('/notification-email') !== -1) {
+      this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE  ', this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE)
+    } else {
+      this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE  ', this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE)
+    }
+
+
+    
 
 
     if (this.route.indexOf('/project-settings/') !== -1) {

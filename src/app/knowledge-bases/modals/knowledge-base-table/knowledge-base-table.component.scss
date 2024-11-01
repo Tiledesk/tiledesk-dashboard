@@ -333,8 +333,8 @@ td {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    // margin-top: 200px;
-    height: calc(100vh - 380px);
+
+    // height: calc(100vh - 380px);
 
     img {
         width: 300px;
@@ -346,7 +346,7 @@ td {
         // font-size: 28px;
         // font-weight: 500;
         // margin-bottom: 20px;
-        font-size: 16px;
+        font-size: 24px;
         font-weight: 600;
         margin-bottom: 6px;
         display: block;
@@ -356,6 +356,7 @@ td {
         font-size: 16px;
         margin-bottom: 10px;
         max-width: 500px;
+        font-weight: 400;
         text-align: center;
         display: block;
         line-height: 1.5;
@@ -395,6 +396,7 @@ td {
     // font-family: "Poppins";
     margin-top: 25px;
     text-align: center;
+    width: 100%;
 }
 
 .btn-size-m {
@@ -621,10 +623,10 @@ td {
     margin-top: 8px;
 }
 
-.kb-welcome-msg {  
+.kb-welcome-msg {
     font-size: 24px;
     font-weight: 400;
-    margin-bottom:21px;
+    margin-bottom: 21px;
 }
 
 .kb-welcome-sub-msg {
@@ -640,6 +642,103 @@ td {
     align-items: center;
 }
 
-.getting-started-add-content .getting-started-add-content-text{
+.getting-started-add-content .getting-started-add-content-text {
     font-size: 21px;
+}
+
+.add-content-container {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 42px 120px;
+    border-radius: 4px;
+    // border: 1px solid rgb(226, 232, 239);
+}
+
+.span-8 {
+    display: block;
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
+    min-height: 8px;
+}
+
+.span-12 {
+    display: block;
+    width: 12px;
+    min-width: 12px;
+    height: 12px;
+    min-height: 12px;
+}
+
+.span-32 {
+    display: block;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+}
+
+.add-content-cards-wpr {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+    gap: 20px;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.add-content-card-wpr {
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    // border: 1px solid rgb(226, 232, 239);
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
+    outline: none;
+    cursor: pointer;
+    min-height: 162px;
+    pointer-events: auto;
+}
+.add-content-card-wpr:hover {
+    box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
+}
+
+.add-content-card-content {
+    padding: 20px;
+}
+
+.add-content-card-content-icon-wpr {
+    text-align: left;
+}
+
+.add-content-card-content-icon-wpr > span > svg  {
+ fill: var(--sidebar-inactive-icon);
+}
+
+.add-content-card-wpr:hover > .add-content-card-content .add-content-card-content-icon-wpr > span > svg {
+    fill: var(--icon-hover-color);
+}
+
+.add-content-card-content-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.add-content-card-content-subtitle {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+    color: rgb(100, 116, 145);
+    text-align: left;
 }

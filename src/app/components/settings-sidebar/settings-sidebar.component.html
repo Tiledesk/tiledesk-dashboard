@@ -326,7 +326,8 @@
       <li [ngClass]="{'active-item': 
         PROJECT_SETTINGS_ROUTE_IS_ACTIVE || 
         SMTP_ROUTE_IS_ACTIVE || 
-        WEBHOOK_ROUTE_IS_ACTIVE } " 
+        WEBHOOK_ROUTE_IS_ACTIVE ||
+        NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE } " 
       (click)="goToProjectSettings()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'ProjectSettings' | translate }}"
         #tooltip="matTooltip" 
