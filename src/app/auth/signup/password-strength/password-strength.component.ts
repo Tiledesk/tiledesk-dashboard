@@ -26,8 +26,8 @@ export class PasswordStrengthComponent implements OnInit {
 
   private static checkStrength(p) {
     let force = 0;
-    // const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+    const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
+    // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
     // const regex = /^[!@#$%^&*]+$/;
 
     const lowerLetters = /[a-z]+/.test(p);
