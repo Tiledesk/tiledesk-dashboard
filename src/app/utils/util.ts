@@ -836,7 +836,8 @@ export function containsXSS(jsonData) {
     // List of common XSS attack patterns
     const xssPatterns = [
         /<script.*?>.*?<\/script.*?>/gi,  // script tags
-        /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
+        // /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
+        /on[a-z]+=/gi,                    // event handlers like onload, onclick
         /eval\s*\(.*?\)/gi,               // eval calls
         /javascript\s*:\s*.*/gi,          // javascript protocol
         /document\.cookie/gi,             // access to cookies
