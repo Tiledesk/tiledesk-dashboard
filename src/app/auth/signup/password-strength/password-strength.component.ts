@@ -22,16 +22,13 @@ export class PasswordStrengthComponent implements OnInit {
   msg = '';
   messageColor: string;
 
-  lowerLettersIsOk: boolean;
-  upperLettersIsOk: boolean;
-  numbersIsOk: boolean;
-  symbolsIsOk: boolean;
+  regexSymbols  = /[$-/:-?{-~!"^@#`\[\]]/
 
 
   private colors = ['darkred', 'orangered', 'orange', 'yellowgreen'];
 
   private static checkStrength(p) {
-    console.log('checkStrength p ', p)
+    // console.log('checkStrength p ', p)
     let force = 0;
     const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
     // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
@@ -49,8 +46,8 @@ export class PasswordStrengthComponent implements OnInit {
 
     let passedMatches = 0;
     for (const flag of flags) {
-      console.log('flag ', flag)
-      console.log('flags ', flags)
+      // console.log('flag ', flag)
+      // console.log('flags ', flags)
 
       passedMatches += flag === true ? 1 : 0;
 
