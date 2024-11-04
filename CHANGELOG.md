@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.38-rc2
+- Fix chatbot import validation from json
+
 ### 2.7.36-rc6
 - Implements a security policy for registration password and for the a new password (reset and change)
 
