@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.39
+- Improves password strength bar
+
 ### 2.7.38-rc1
-- Improves passwword strngth
+- Improves password strength
 
 ### 2.7.38
 - Updates the link to the system status on the Support page
