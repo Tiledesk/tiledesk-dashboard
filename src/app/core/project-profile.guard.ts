@@ -278,7 +278,7 @@ export class ProjectProfileGuard implements CanActivate {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
       } else if (isActiveSubscription === false) {
-       console.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
+        this.logger.log('[PROJECT-PROFILE-GUARD] -> (NEW WF) isActiveSubscription 2', isActiveSubscription);
         this.userIsAuthorized = false;
 
         if (( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) ||  (planName === PLAN_NAME.E && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.EE && url.indexOf('/email') !== -1) ||  (planName === PLAN_NAME.F && url.indexOf('/email') !== -1)) {
@@ -295,7 +295,7 @@ export class ProjectProfileGuard implements CanActivate {
       return true
       // if (this.userIsAuthorized === false &&  userRole !== 'agent')
     } else {
-      console.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
+      this.logger.log('[PROJECT-PROFILE-GUARD] USER NOT AUTHORIZED - URL ', url);
       this.router.navigate([url + '-demo']);
       return false
     }
