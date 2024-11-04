@@ -49,7 +49,7 @@ export class ResetPswComponent implements OnInit {
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 6 characters long.',
+      'minlength': 'Password must be at least 8 characters long.',
       'maxlength': 'Password cannot be more than 25 characters long.',
     },
     'confirmPassword': {
