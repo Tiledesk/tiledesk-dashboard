@@ -22,11 +22,19 @@ export class PasswordStrengthComponent implements OnInit {
   msg = '';
   messageColor: string;
 
+  lowerLettersIsOk: boolean;
+  upperLettersIsOk: boolean;
+  numbersIsOk: boolean;
+  symbolsIsOk: boolean;
+
+
   private colors = ['darkred', 'orangered', 'orange', 'yellowgreen'];
 
   private static checkStrength(p) {
+    console.log('checkStrength p ', p)
     let force = 0;
     const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
+    // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
     // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
     // const regex = /^[!@#$%^&*]+$/;
 
@@ -35,14 +43,28 @@ export class PasswordStrengthComponent implements OnInit {
     const numbers = /[0-9]+/.test(p);
     const symbols = regex.test(p);
 
+
     const flags = [lowerLetters, upperLetters, numbers, symbols];
+    const flagNames = ['Lower Letters', 'Upper Letters', 'Numbers', 'Symbols'];
 
     let passedMatches = 0;
     for (const flag of flags) {
-     
+      console.log('flag ', flag)
+      console.log('flags ', flags)
+
       passedMatches += flag === true ? 1 : 0;
-     
+
     }
+
+    // flags.forEach((flag, index) => {
+    //   if (flag) {
+    //     console.log(`${flagNames[index]} is enabled.`);
+    //   } else {
+    //     console.log(`${flagNames[index]} is disabled.`);
+    //   }
+    // });
+
+
 
     force += 2 * p.length + ((p.length >= 10) ? 1 : 0);
     force += passedMatches * 10;
@@ -56,16 +78,21 @@ export class PasswordStrengthComponent implements OnInit {
     force = (passedMatches === 3) ? Math.min(force, 30) : force;
     force = (passedMatches === 4) ? Math.min(force, 40) : force;
 
+    // console.log('passedMatches 1 Uppercase' ,passedMatches === 1) 
+    // console.log('passedMatches 2' ,passedMatches === 2) 
+    // console.log('passedMatches 3' ,passedMatches === 3) 
+    // console.log('passedMatches 4' ,passedMatches === 4) 
+
     return force;
   }
 
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     const password = changes.passwordToCheck.currentValue;
-  
+
     this.setBarColors(4, '#DDD');
     if (password) {
       const c = this.getColor(PasswordStrengthComponent.checkStrength(password));
-     
+
       this.setBarColors(c.idx, c.col);
 
       const pwdStrength = PasswordStrengthComponent.checkStrength(password);
@@ -94,26 +121,26 @@ export class PasswordStrengthComponent implements OnInit {
   private getColor(s) {
     let idx = 0;
     if (s <= 10) {
-        idx = 0;
+      idx = 0;
     } else if (s <= 20) {
-        idx = 1;
+      idx = 1;
     } else if (s <= 30) {
-        idx = 2;
+      idx = 2;
     } else if (s <= 40) {
-        idx = 3;
+      idx = 3;
     } else {
-        idx = 4;
+      idx = 4;
     }
     return {
-        idx: idx + 1,
-        col: this.colors[idx]
+      idx: idx + 1,
+      col: this.colors[idx]
     };
   }
 
   private setBarColors(count, col) {
     for (let n = 0; n < count; n++) {
-        this['bar' + n] = col;
-        this.messageColor = col
+      this['bar' + n] = col;
+      this.messageColor = col
     }
   }
 

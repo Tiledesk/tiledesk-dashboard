@@ -309,7 +309,7 @@
             <!-- [readonly]="SKIP_WIZARD"   [ngClass]="{'gray-bckgnd' : SKIP_WIZARD}" -->
             <input id="user-email" type="email" class="input" formControlName="email" required autocomplete="off"
               autocorrect="off" autocapitalize="off" spellcheck="false"
-              [ngClass]="{'disabled-email-input-appsumo-signup': appSumoActivationEmail}">
+              [ngClass]="{'disabled-email-input-appsumo-signup': appSumoActivationEmail}" tabindex="0">
 
             <div *ngIf="formErrors.email" class="is-danger" translate>
               {{ formErrors.email }}
@@ -320,10 +320,11 @@
 
             <label for="password">Password <span style="color:#ff5252">*</span></label>
             <div class="pswrd-wpr">
-              <!-- <input type="text" id="signup-password" class="input secure" formControlName="password" required (focus)='onFocusPwsInput()' (blur)='onBlurPwsInput()'> -->
+
+              <!-- (focus)='onFocusPwsInput()' (blur)='onBlurPwsInput()' -->
               <input type="password" id="signup-password" class="input" autocomplete="new-password"
-                aria-autocomplete="list" formControlName="password" (focus)='onFocusPwsInput()'
-                (blur)='onBlurPwsInput()'>
+                aria-autocomplete="list" formControlName="password">
+
               <button type="button" tabindex="-1" class="pswrd-eye-btn"
                 (click)="togglePswdVisibility(isVisiblePsw = !isVisiblePsw)">
                 <!-- --------------------------------------- -->
@@ -348,11 +349,11 @@
               </button>
             </div>
            
-            <!-- <div *ngIf="formErrors.password" class="is-danger" translate style="margin-bottom: 0px;">
+            <div *ngIf="formErrors.password" class="is-danger" translate style="margin-bottom: 0px;">
               {{ formErrors.password }}
-            </div> -->
+            </div>
 
-            <div class="is-danger" *ngIf="passwordFormField?.dirty">
+            <!-- <div class="is-danger" *ngIf="passwordFormField?.dirty">
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('^(?=.*[A-Z])')}">
                 {{'AtLeastOneUppercaseLetter' | translate}} </span>
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[a-z])')}">
@@ -363,7 +364,7 @@
                 {{'AtLeastOneSpecialCharacter' | translate}} </span>
               <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('.{8,}')}">
                 {{'AtLeast8CharactersLong' | translate}} </span>
-           </div>
+            </div> -->
 
             <!-- *ngIf="isVisiblePwsStrengthBar" -->
             <password-strength [passwordToCheck]="userForm.value.password"
@@ -399,7 +400,7 @@
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
 
-            <!-- userForm.valid {{userForm.valid}} -->
+            userForm.valid {{userForm.valid}}
             <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" 
               class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
               <span *ngIf="!showSpinnerInLoginBtn">

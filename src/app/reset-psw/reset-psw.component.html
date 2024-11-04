@@ -191,11 +191,11 @@
                   </div>
 
 
-                  <!-- <div *ngIf="pswformErrors.password" class="is-danger" translate>
+                  <div *ngIf="pswformErrors.password" class="is-danger" translate>
                     {{ pswformErrors.password }}
-                  </div> -->
+                  </div>
 
-                  <div class="is--danger" *ngIf="passwordFormField?.dirty">
+                  <!-- <div class="is--danger" *ngIf="passwordFormField?.dirty">
                     <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('^(?=.*[A-Z])')}">
                       {{'AtLeastOneUppercaseLetter' | translate}} </span>
                     <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[a-z])')}">
@@ -207,7 +207,7 @@
                       {{'AtLeastOneSpecialCharacter' | translate}} </span>
                     <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('.{8,}')}">
                       {{'AtLeast8CharactersLong' | translate}} </span>
-                  </div>
+                  </div> -->
 
                   <!-- pswForm.value.password {{ pswForm.value.password}} -->
                   <password-strength [passwordToCheck]="pswForm.value.password"

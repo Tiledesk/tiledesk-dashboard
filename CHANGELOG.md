@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.38-rc1
+- Improves passwword strngth
+
 ### 2.7.38
 - Updates the link to the system status on the Support page
 
