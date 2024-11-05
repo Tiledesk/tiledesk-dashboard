@@ -62,7 +62,7 @@
 
         <div class="kb-container-wpr">
           
-          <div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
+          <!-- <div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
             <span>
               <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                 data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
@@ -72,11 +72,11 @@
                 </path>
               </svg>
             </span>
-            <!-- (click)="goToWidgetWebSdk()" -->
+          
             <span class="widget-set-up-link-to-docs" (click)="goToKbDoc()">
               {{'KbPage.LearnMoreAboutKB' | translate}}
             </span>
-          </div>
+          </div> -->
 
           <div class="kb-content-container">
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -87,10 +87,10 @@
                 <!-- <p class="header-title">{{ 'KbPage.AllContents' | translate }}</p> -->
 
                 <div style="display: flex; flex-direction: column;">
-                  <div style="display: flex; flex-direction: row; align-items: center;">
+                  <!-- <div style="display: flex; flex-direction: row; align-items: center;">
                     <div class="selected-namespace-label" style="font-size: 14px; margin-right: 4px;">Knowledge Base</div>
                     <div *ngIf="selectedNamespace.default" class="default-badge" style="background-color: #677693ab; color: white; padding: 0px 4px; border-radius: 6px; font-size: 12px; font-weight: 400;">Default</div>
-                  </div>
+                  </div> -->
                   <div class="selected-namespace-content">
                     <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
                       (mouseout)="onMouseOut()">
@@ -99,13 +99,25 @@
                         (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
                         matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
                         matTooltipHideDelay="100">
-                        {{selectedNamespace?.name}}
+                        <!-- <div class="selected-namespace-wpr" style="display: flex; flex-direction: row; gap: 12px; align-items: center;">  -->
+                          <div class="selected-namespace"> 
+                            {{selectedNamespace?.name}}
+                          </div>
+                          
+                        <!-- </div> -->
                       </div>
               
-                      <input *ngIf="namespaceIsEditable" id="namespace-name-input" [ngStyle]="{ 'width': namespaceNameOutputElWidth }"
-                        class="namespace-name-input" type="text" [(ngModel)]="selectedNamespace.name"
-                        (keypress)="onPressEnterUpdateNamespaceName($event)" (focus)="onFocusNamespaceName($event.target.value)"
-                        (ngModelChange)="onChangeNamespaceName($event)" (blur)="onBlurUpdateNamespaceName($event)">
+                      <input *ngIf="namespaceIsEditable" 
+                        id="namespace-name-input" 
+                        [ngStyle]="{ 'width': namespaceNameOutputElWidth }"
+                        class="namespace-name-input" type="text" 
+                        [(ngModel)]="selectedNamespace.name"
+                        (keypress)="onPressEnterUpdateNamespaceName($event)" 
+                        (focus)="onFocusNamespaceName($event.target.value)"
+                        (ngModelChange)="onChangeNamespaceName($event)" 
+                        (blur)="onBlurUpdateNamespaceName($event)">
+
+                        <div *ngIf="selectedNamespace?.default" class="kb-default-badge" style="">Default</div>
                     </div>
               
                     <!-- <button mat-icon-button (click)="openDialogKbList()">
@@ -130,7 +142,10 @@
               
                       <button [ngClass]="{'active--namespace': namespace.name === selectedNamespace.name}" mat-menu-item
                         *ngFor="let namespace of namespaces" (click)="onSelectNamespace(namespace)">
-                        <span>{{namespace?.name}}</span>
+                        <div class="namespace-name-in-menu-wpr"> 
+                          <div class="namespace-name-in-menu">{{namespace?.name}}</div>
+                         <div *ngIf="namespace?.default" class="kb-default-badge-in-menu-wpr" style="">Default</div>
+                        </div>
                       </button>
                     </mat-menu>
                   </div>

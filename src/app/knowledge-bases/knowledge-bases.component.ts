@@ -363,7 +363,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
     }, (error) => {

@@ -27,7 +27,10 @@
 
                     <div class="add-content-container ">
 
-                        <div class="upgrade-title">{{'KbPage.NoKbAdded' | translate }}</div>
+                        <div class="upgrade-title">
+                            <!-- {{'KbPage.NoKbAdded' | translate }} -->
+                            You don't have any contents yet
+                        </div>
                         <span class="span-12"> </span>
                         <div class="upgrade-subtitle">
                             {{'KbPage.NoKbAddedText' | translate }}
@@ -40,11 +43,24 @@
                             <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('urls')">
 
                                 <div class="add-content-card-content">
-                                    {{'KbPage.AddKbURL' | translate }}
-
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none"
+                                                style="transform: rotate(-45deg);">
+                                                <path
+                                                    d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbURL' | translate }}
+                                    </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Adds specific web pages or articles to your Knowledge Base
+                                    </p>
                                 </div>
-
-
                             </div>
 
                             <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('site-map')">
@@ -63,7 +79,7 @@
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Provide your sitemap to provide AI assistant with the information it contains.
+                                        Provide your sitemap to feed AI assistant with the information it contains.
                                     </p>
                                 </div>
                             </div>
@@ -80,33 +96,57 @@
                                         </span>
                                     </div>
                                     <span class="span-12"> </span>
-                                    <p class="add-content-card-content-title"> Q&As </p>
+                                    <p class="add-content-card-content-title"> FAQs </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Manually write your own specific Q&A or add multiple Q&As from .CSV file at
+                                        Manually write your own specific FAQ or add multiple FAQs from .CSV file at
                                         once.
                                     </p>
                                 </div>
-
                             </div>
 
-                            <div class="add-content-card-wpr">
-
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('text-file')">
                                 <div class="add-content-card-content">
-                                    {{'KbPage.AddKbText' | translate }}
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="M280-280h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm-80 480q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> Plain text </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Manually write your own textual information that users might ask for
+                                    </p>
                                 </div>
                             </div>
 
-                            <div class="add-content-card-wpr">
+
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('file-upload')">
                                 <div class="add-content-card-content">
-                                    {{'KbPage.UploadFile' | translate }}
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.UploadFile' | translate }} </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Upload detailed documentation, technical guides, user manuals, and other
+                                        extensive documents
+                                    </p>
                                 </div>
                             </div>
-
                         </div>
-
-
-
                     </div>
 
 
@@ -116,10 +156,27 @@
 
 
                     <div class="add-content-btn-wpr">
-                        <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
+                        <!-- <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu">
                             {{ 'KbPage.Add' | translate }}
-                        </button>
+                        </button> -->
+
+
+                        <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
+                            <span>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#0f62ff" style="vertical-align: middle;">
+                                    <path
+                                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                                </svg>
+                             
+                            </span>
+                           
+                            <span class="kb-link-to-docs" (click)="goToKbDoc()">
+                                {{'KbPage.LearnMoreAboutKB' | translate}}
+                            </span>
+                        </div>
 
                         <!-- *ngIf="hasAlreadyVisitedKb === 'false'" -->
                         <!-- <div  class="getting-started-add-content">

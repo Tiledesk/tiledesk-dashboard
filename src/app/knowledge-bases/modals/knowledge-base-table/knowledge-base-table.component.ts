@@ -4,7 +4,7 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChange
 // import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { KB_DEFAULT_PARAMS } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, URL_kb } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 
@@ -336,6 +336,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
   onCheckStatus(kb) {
     // this.logger.log('onCheckStatus:: ', kb);
     this.checkStatus.emit(kb);
+  }
+
+  goToKbDoc() {
+    const url = URL_kb;
+    window.open(url, '_blank');
   }
 
 }
