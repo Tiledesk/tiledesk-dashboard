@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.40
+- Minor improvements and bug fixing
+
 ### 2.7.39
 - Improves password strength bar
 
