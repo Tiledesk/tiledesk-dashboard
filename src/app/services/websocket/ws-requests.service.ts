@@ -135,12 +135,12 @@ export class WsRequestsService implements OnDestroy {
   }
   getStoredForegroungNotificationAndPublish() {
     const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
-    // console.log('foregrondNotificationsCount ', foregrondNotificationsCount) 
+    // this.logger.log('foregrondNotificationsCount ', foregrondNotificationsCount) 
     this.foregroundNotificationCount$.next(foregrondNotificationsCount)
   }
 
   publishAndStoreForegroundRequestCount(msgscount) {
-    // console.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
+    // this.logger.log('[WS-MSGS-SERV] - foreground Request Count ', msgscount)
     this.foregroundNotificationCount$.next(msgscount)
     this.usersLocalDbService.storeForegrondNotificationsCount(msgscount)
   }
@@ -165,16 +165,16 @@ export class WsRequestsService implements OnDestroy {
     self.wsAllRequestsList = [];
  
     this.auth.project_bs.subscribe((project) => {
-      // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT this.auth.project_bs.value', this.auth.project_bs.value)
-      // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT project', project)
+      // this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT this.auth.project_bs.value', this.auth.project_bs.value)
+      // this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - PRJCT project', project)
 
       // ---------------------------------------------------------------------------------
       // Unsubscribe to websocket requests with the old project id  
       // ---------------------------------------------------------------------------------
       if (this.project_id) {
 
-        // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - ACTUALLY SUBSCRIBED TO THE REQUEST ID', this.subscribed_request_id)
-        // console.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - UNSUBSCRIBE FROM OLD PROJECT-ID (REQUESTS - REQUEST-ID - MSGS - PRESENCE - AVAILABILITY)', this.project_id)
+        // this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - ACTUALLY SUBSCRIBED TO THE REQUEST ID', this.subscribed_request_id)
+        // this.logger.log('[WS-REQUESTS-SERV] - GET CURRENT PRJCT AND SUBSCRIBE TO WS-REQUESTS - UNSUBSCRIBE FROM OLD PROJECT-ID (REQUESTS - REQUEST-ID - MSGS - PRESENCE - AVAILABILITY)', this.project_id)
 
         this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
 
@@ -297,7 +297,7 @@ export class WsRequestsService implements OnDestroy {
           // Update
           }, function (data, notification) {
 
-            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            // this.logger.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
             
@@ -318,17 +318,17 @@ export class WsRequestsService implements OnDestroy {
 
           }, function (data, notification) {
             self.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ", data);
-            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ", data);
+            // this.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ", data);
             self.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - NOTIFICATION ", notification);
             // self.wsConvData$.next(data)
 
             // if (notification.event.method === 'CREATE') {
 
             // self.wsRequestsList.push(data[0]);
-            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  self.wsRequestsList);
+            // this.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  self.wsRequestsList);
 
             // self.wsRequestsList$.next(data);
-            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  data);
+            // this.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA data published ",  data);
 
             // if (data) {
             //   if (Array.isArray(data)) {
@@ -350,12 +350,12 @@ export class WsRequestsService implements OnDestroy {
             // ------------------------------- 
             // let wsOnDataConvsList = [];
             // wsOnDataConvsList.push(data)
-            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA wsOnDataConvsList ", wsOnDataConvsList);
+            // this.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA wsOnDataConvsList ", wsOnDataConvsList);
             // // if (wsOnDataRequestsList.length > 0) {
             // let wsOnDataConvsUnserved = wsOnDataConvsList[0].filter((el) => {
             //   return el.status === 100;
             // });
-            // console.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ONLY UNSERVED  ", wsOnDataConvsUnserved);
+            // this.logger.log("[WS-REQUESTS-SERV] DSHB - ON-DATA - DATA ONLY UNSERVED  ", wsOnDataConvsUnserved);
             // self.wsOnDataUnservedConvs$.next(wsOnDataConvsUnserved);
             // }
             // }
@@ -468,7 +468,7 @@ export class WsRequestsService implements OnDestroy {
   }
 
   unsubscribePreviousRequestId() {
-    // console.log('[WS-REQUESTS-SERV] UNSUBSCRIBE TO PREVIOUS REQUEST ID ', this.subscribed_request_id)
+    // this.logger.log('[WS-REQUESTS-SERV] UNSUBSCRIBE TO PREVIOUS REQUEST ID ', this.subscribed_request_id)
    
     if (this.subscribed_request_id) {
       this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id);
@@ -486,7 +486,7 @@ export class WsRequestsService implements OnDestroy {
    * @param id_request 
    */
   subscribeTo_wsRequestById(id_request) {
-    // console.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
+    // this.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
 
     this.unsubscribePreviousRequestId()
 
@@ -550,7 +550,7 @@ export class WsRequestsService implements OnDestroy {
    */
   unsubscribeTo_wsRequestById(id_request) {
     this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + id_request);
-    // console.log("[WS-REQUESTS-SERV] - UNSUBSCRIBE REQUEST-BY-ID FROM WS request_id ", id_request, ' project_id ', this.project_id);
+    // this.logger.log("[WS-REQUESTS-SERV] - UNSUBSCRIBE REQUEST-BY-ID FROM WS request_id ", id_request, ' project_id ', this.project_id);
   }
 
 
@@ -563,7 +563,7 @@ export class WsRequestsService implements OnDestroy {
 
     const path = '/' + this.project_id + '/project_users/users/' + requesterid;
 
-    // console.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE PATH ", path);
+    // this.logger.log("[WS-REQUESTS-SERV] - SUBSCRIBE TO REQUESTER-PRECENCE PATH ", path);
 
     this.webSocketJs.ref(path, 'subscribeToWS_RequesterPresence',
 
@@ -968,7 +968,7 @@ export class WsRequestsService implements OnDestroy {
     };
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/followers/' + projectuserid
-    // console.log('[WS-REQUESTS-SERV] - REMOVE FOLLOWER  URL ', url);
+    // this.logger.log('[WS-REQUESTS-SERV] - REMOVE FOLLOWER  URL ', url);
 
     return this._httpClient
       .delete(url, httpOptions)
@@ -1006,7 +1006,7 @@ export class WsRequestsService implements OnDestroy {
   // https://tiledesk-server-pre.herokuapp.com/public/requests/support-group-62e26b1324bc4200357b1a3c-0930f905800f4c62b6bac937d6beb568/messages.csv
   public exportTranscriptAsCSVFile(idrequest: any) {
     const url = this.SERVER_BASE_PATH + 'public/requests/' + idrequest + '/messages.csv';
-    // console.log('DOWNLOAD TRANSCRIPT AS CSV URL ', url);
+    // this.logger.log('DOWNLOAD TRANSCRIPT AS CSV URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -1209,7 +1209,7 @@ export class WsRequestsService implements OnDestroy {
 
     // const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + id_request + '/chatbot/parameters';
-    // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
+    // this.logger.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
 
     // 'Authorization': this.TOKEN,
     const httpOptions = {
@@ -1264,9 +1264,13 @@ export class WsRequestsService implements OnDestroy {
       operator = '='
      } 
 
+     if (status === '150' ) {
+       operator = '='
+     }
+
     let _querystring = ''
     if (querystring && querystring !== undefined) {
-      if (status === '100' || status === '200' || status === '1000' || status === '50' ||  status ==="1000,100,200" || status ==="100,150,200" || statuses?.length>0) {
+      if (status === '100' || status === '200' || status === '1000' || status === '150' ||  status ==="1000,100,200" || status ==="100,150,200" || statuses?.length>0) {
         _querystring = '&' + querystring
         this.logger.log('[WS-REQUESTS-SERV][HISTORY & NORT-CONVS] - *** REQUESTS SERVICE HERE 1');
       } else if (status === 'all') {

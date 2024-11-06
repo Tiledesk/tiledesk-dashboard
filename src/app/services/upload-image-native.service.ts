@@ -117,7 +117,7 @@ export class UploadImageNativeService {
     // USE IMAGE API
     const BASE_URL_IMAGES = this.BASE_URL + 'images'
     return this._httpClient
-      .put<any>(BASE_URL_IMAGES + `/users/photo?force=true&user_id=${id}`, formData, requestOptions)
+      .put<any>(BASE_URL_IMAGES + `/users/photo?force=true&bot_id=${id}`, formData, requestOptions)
       .pipe(map((res: any) => {
         this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES ', res);
         if (res && res.message) {

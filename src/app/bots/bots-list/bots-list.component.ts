@@ -791,7 +791,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
-        self.logger.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        // console.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
         bot.botImage = imageUrl + '&' + new Date().getTime();
         // this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
         // self.setImageProfileUrl_Native(baseUrl)
@@ -799,7 +799,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       } else {
         self.botProfileImageExist = imageExists
 
-        self.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+      //  console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
 
       }
     })

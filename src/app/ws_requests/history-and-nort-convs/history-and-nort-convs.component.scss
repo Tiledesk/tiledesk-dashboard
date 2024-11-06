@@ -392,6 +392,10 @@ p.member:hover {
   top: -4px !important;
 }
 
+.requester-avatar--in-history-not-has-phone-number {
+  top: -4px !important;
+}
+
 .ws-requests-list-servedby-avatar {
   vertical-align: middle;
   width: 30px;
@@ -465,6 +469,14 @@ p.member:hover {
 }
 
 .requester-verified-with-phone-num {
+  top: -11px !important;
+}
+
+.requester-verified-no-phone-num {
+  top: -8px;
+}
+
+.verified-icon-requester-not-has-phone-number {
   top: -11px !important;
 }
 

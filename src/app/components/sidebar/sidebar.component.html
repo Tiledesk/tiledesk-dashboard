@@ -61,7 +61,7 @@
       <!-- ------------------------------------------- -->
       <!-- CHAT  -->
       <!-- ------------------------------------------- -->
-      <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat"
+      <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" style="position: relative;"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
         <!-- <i class="material-icons sidebar-icons">chat</i> -->
         <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}" (click)="openChat()">
@@ -72,8 +72,9 @@
               c1.9,0,3.6-1.2,4.2-2.1c0.5,0.2,0.9,0.6,1.4,0.9C16.1,15.8,14,17.2,11.5,17.2z" />
             </svg>
           </span>
+         
           <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
-            class="new-messages-count">{{new_messages_count}} </span>
+            class="new-messages-count"> {{new_messages_count}} </span>
         </a>
       </div>
 
