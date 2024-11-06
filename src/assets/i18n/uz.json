@@ -515,6 +515,7 @@
     "Ok": "Ok",
     "Success": "Muvaffaqiyat",
     "ChatbotSuccessfullyCreated":"Chatbot muvaffaqiyatli yaratildi",
+    "AIAgentSuccessfullyCreated":"AI agenti muvaffaqiyatli yaratildi",
     "ItIsNotPossibleToCreateTheChatbot": "Chatbot yaratish mumkin emas",
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Loyihangizda Chatbot yaratish uchun kerakli shablon yetishmayapti",
     "EditChatbot": "Chatbotni tahrirlash {{ chat_bot_name }}",

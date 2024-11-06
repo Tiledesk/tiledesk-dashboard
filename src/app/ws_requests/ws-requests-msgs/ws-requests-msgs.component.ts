@@ -3522,7 +3522,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (pair && pair._bots) {
           this.bots = pair._bots
             .filter(bot => {
-              if (bot['trashed'] === undefined ||   bot['trashed'] === false) {
+              if (bot['trashed'] === false) {
                 return true
               } else {
                 return false

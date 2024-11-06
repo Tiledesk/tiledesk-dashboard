@@ -513,6 +513,7 @@
     "Ok": "Tamam",
     "Success": "Müvəffəqiyyət",
     "ChatbotSuccessfullyCreated":"Chatbot uğurla yaradıldı",
+    "AIAgentSuccessfullyCreated":"AI agenti uğurla yaradıldı",
     "ItIsNotPossibleToCreateTheChatbot": "Chatbot yaratmaq mümkün deyil",
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Layihənizdə Chatbot yaratmaq üçün lazım olan şablon yoxdur",
     "EditChatbot": "{{ chat_bot_name }} chatbotunu redaktə edin",

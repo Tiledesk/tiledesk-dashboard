@@ -33,6 +33,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
+  // last added
+  @Output() openBaseModalPreviewSettings = new EventEmitter();
+  @Output() onOpenAddContents = new EventEmitter();
+  
   kbsListCountCurrentValue: number;
 
   timeoutId: any;
@@ -303,6 +307,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.openBaseModalPreview.emit();
   }
 
+  onOpenBaseModalPreviewSettings() {
+    this.openBaseModalPreviewSettings.emit();
+  }
+
+  onOpenAddContent() {
+    console.log('onOpenAddContent');
+    this.onOpenAddContents.emit();
+  }
+
   onOpenBaseModalDelete(kb) {
     // kb.deleting = true;
     this.openBaseModalDelete.emit(kb);
@@ -312,6 +325,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // this.logger.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
+
+  
+
 
   getSubtitle(kb) {
     this.logger.log('getSubtitle')

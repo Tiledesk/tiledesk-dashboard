@@ -58,10 +58,33 @@
     color: white;
     padding: 0px 4px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 400;
-    height: 23px;
+    height: 20px;
+    position: relative;
+    top: 1px;
 }
+
+
+.kb-default-badge-in-menu-wpr  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #677693ab;
+    color: white;
+    padding: 0px 4px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 400;
+    height: 14px;
+    // position: relative;
+    // top: 1px;
+}
+// .kb-default-badge-in-menu {
+   
+// }
+
+
 
 .selected-namespace-label {
     color: #647491;
@@ -69,7 +92,7 @@
 }
 
 .custom-button {
-    text-transform: capitalize;
+    // text-transform: capitalize;
     color: white;
     border: none;
     height: 36px;
@@ -861,4 +884,12 @@ table {
 
 .widget-set-up-link-to-docs:hover {
     text-decoration: underline;
+}
+
+
+.namespace-name-in-menu-wpr {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    align-items: center;
 }

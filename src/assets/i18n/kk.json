@@ -514,6 +514,7 @@
     "Ok": "Жарайды ма",
     "Success": "Жетістік",
     "ChatbotSuccessfullyCreated": "Чатбот сәтті жасалды",
+    "AIAgentSuccessfullyCreated":"AI агенті сәтті жасалды",
     "ItIsNotPossibleToCreateTheChatbot": "Чатбот жасау мүмкін емес",
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Жобаңызда Чатбот жасау үшін қажетті үлгі жоқ",
     "EditChatbot": "{{ chat_bot_name }} чатботын өңдеу",

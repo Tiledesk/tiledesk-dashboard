@@ -43,6 +43,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
+import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -363,7 +364,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
-        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
     }, (error) => {
@@ -992,7 +993,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('AIAgentSuccessfullyCreated'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,
@@ -1361,6 +1362,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[Modal DELETE KB] kb: ', kb);
       if (kb) {
         this.onDeleteKnowledgeBase(kb)
+      }
+    });
+  }
+
+
+
+  onOpenAddContent(){
+    const dialogRef = this.dialog.open(ModalAddContentComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '900px',
+    });
+
+    dialogRef.afterClosed().subscribe(type => {
+      console.log('[Modal ADD CONTENT] type: ', type);
+      if (type) {
+        this.openAddKnowledgeBaseModal(type)
       }
     });
   }
@@ -1861,7 +1879,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
 
-      this.presentKBTour()
+      // this.presentKBTour()
 
     })
   }

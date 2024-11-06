@@ -514,6 +514,7 @@
     "Ok": "Ok",
     "Success": "Success",
     "ChatbotSuccessfullyCreated":"Chatbot successfully created",
+    "AIAgentSuccessfullyCreated":"Agente de inteligencia artificial creado con éxito",
     "ItIsNotPossibleToCreateTheChatbot": "It is not possible to create the Chatbot",
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Your project is missing the template needed to create the Chatbot",
     "EditChatbot": "Edit chatbot {{ chat_bot_name }}",

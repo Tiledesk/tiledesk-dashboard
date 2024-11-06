@@ -525,7 +525,7 @@ span .switch-agent-admin-requests-btn {
   padding-bottom: 5px;
   float: left;
   height: 50px;
-  padding-left: 0px;
+  padding-left: 10px;
   // display: flex;
   // flex-grow: 1;
 }
@@ -1480,6 +1480,7 @@ $f21blue: #039be5;
   font-weight: 400;
   font-size: 14px;
   padding: 0px 8px;
+  border-radius: 999px;
 }
 
 .btn-primary-active:hover {
@@ -1620,4 +1621,8 @@ $f21blue: #039be5;
   display: flex;
     flex-direction: row;
     gap: 3px;
+}
+
+.btn-tdblu-no-boxshadow {
+  border-radius: 999px;
 }

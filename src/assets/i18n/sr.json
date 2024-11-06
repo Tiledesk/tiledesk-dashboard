@@ -515,6 +515,7 @@
     "Ok": "Ок",
     "Success": "Успех",
     "ChatbotSuccessfullyCreated":"Цхатбот је успешно направљен",
+    "AIAgentSuccessfullyCreated":"АИ агент је успешно креиран",
     "ItIsNotPossibleToCreateTheChatbot": "Није могуће креирати Цхатбот",
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Вашем пројекту недостаје шаблон потребан за креирање четбота",
     "EditChatbot": "Уреди цхатбот {{ chat_bot_name }}",

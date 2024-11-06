@@ -74,7 +74,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     public notify: NotifyService,
   ) {
     super(prjctPlanService, notify);
-    this.logger.log('[MODAL-PREVIEW-KB] data ', data)
+    console.log('[MODAL-PREVIEW-KB] data ', data)
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
@@ -105,7 +105,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
     if (data && data.askBody) {
-      // console.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
+      console.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
       // this.question = data.askBody.question
       // this.submitQuestion()
     }

@@ -11,10 +11,10 @@
                             {{ 'KbPage.Add' | translate }} 
                         </button>
                     </div> -->
-
+                    <!--  -->
                     <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-msg">
                         <!-- Welcome to Tiledesk Knowledge Base -->
-                        {{'KbPage.WelcomeToKB' | translate:{company_name: companyName} }}
+                        👋 {{'KbPage.WelcomeToKB' | translate:{company_name: companyName} }}
                     </div>
                     <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-sub-msg">
                         You've just created your first AI Assistant
@@ -155,7 +155,7 @@
 
 
 
-                    <div class="add-content-btn-wpr">
+                    <div class="link-to-docs-container">
                         <!-- <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
                             [matMenuTriggerFor]="menu">
                             {{ 'KbPage.Add' | translate }}
@@ -170,9 +170,9 @@
                                     <path
                                         d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
                                 </svg>
-                             
+
                             </span>
-                           
+
                             <span class="kb-link-to-docs" (click)="goToKbDoc()">
                                 {{'KbPage.LearnMoreAboutKB' | translate}}
                             </span>
@@ -188,11 +188,11 @@
                         </div> -->
                     </div>
                 </div>
-                <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
+                <!-- <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
                     <add-content-menu class="mat-menu"
                         (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
                     </add-content-menu>
-                </mat-menu>
+                </mat-menu> -->
             </div>
         </div>
     </div>
@@ -205,7 +205,7 @@
     <div class="search-filters-card-header">
 
         <div class="filters">
-            <span class="material-icons-outlined filter-icon">filter_list</span>
+            <!-- <span class="material-icons-outlined filter-icon">filter_list</span> -->
             <div class="selector status-selector">
                 <ng-select class="custom--input" editable="false" [clearable]='false' [editable]='false'
                     [(ngModel)]='filterStatus' dropdownPosition='bottom'
@@ -269,13 +269,69 @@
             </div>
             <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: <b>{{ kbsListCount }}</b></div>
         </div>
-        <!-- <div class="preview-settings">
+
+        <div class="preview-settings">
             <div class="btn-preview">
-                <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
-                  <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
+
+
+                <!-- <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+                  <span class="material-icon material-icons-round">play_arrow</span>
+                  {{'Preview' | translate}}
+                </button> -->
+
+
+                <!-- ---------------------------------------- -->
+                <!-- AI Settings -->
+                <!-- ---------------------------------------- -->
+                <button id="ai-settings" class="custom--button preview-settings"
+                    (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
+                    matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
+                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff" style="vertical-align: middle;">
+                            <path
+                                d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+                        </svg>
+
+                    </span>
+                    <!-- <span class="material-icons-round">settings</span> -->
+                </button>
+
+                <!-- ---------------------------------------- -->
+                <!-- KB preview -->
+                <!-- ---------------------------------------- -->
+                <button id="kb-preview" class="custom--button preview" aria-label="Preview"
+                    (click)="$event.stopPropagation(); onOpenBaseModalPreview()" matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{'KbPage.KBpreview' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltipHideDelay="100">
+                    <!-- <span class="material-icons-round">play_arrow</span> -->
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff" style="vertical-align: middle;">
+                            <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
+                        </svg>
+                    </span>
+                    <span> {{'Preview' | translate}} </span>
+                </button>
+
+                <!-- ---------------------------------------- -->
+                <!-- Add Content -->
+                <!-- ---------------------------------------- -->
+                <button id="kb-add-content" class="custom--button add-content"
+                    (click)="$event.stopPropagation(); onOpenAddContent()" matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{'KbPage.Add' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltipHideDelay="100">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff" style="vertical-align: middle;">
+                            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                        </svg>
+                    </span>
+                    <span> </span> {{ 'Add' | translate }}
                 </button>
             </div>
-        </div> -->
+        </div>
     </div>
 
 

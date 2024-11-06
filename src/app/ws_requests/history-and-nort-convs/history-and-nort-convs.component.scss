@@ -680,6 +680,7 @@ p.member:hover {
   padding: 5px 15px 5px 0px;
   max-width: 722px;
   box-shadow: 0 2px 6px 0 #e6e9ed;
+  border-radius: 12px;
   // position: absolute;
   // background: #fff;
   // top: 66px;
@@ -779,6 +780,7 @@ p.member:hover {
   max-width: 460px;
   border: 0.1px solid #ffffff;
   width: 100%;
+  border-radius: 12px;
 }
 
 .full-text-search-full-width {
@@ -997,4 +999,33 @@ p.member:hover {
   display: flex;
   align-items: center;
   gap: 2px;
+}
+
+.btn-gray-no-boxshadow { 
+  border-radius:999px;
+}
+
+.btn-tdblu-no-boxshadow {
+  border-radius:999px;
+}
+
+.btn-gray-no-boxshadow:active {
+  background: #e4e6eb !important;
+  box-shadow: unset !important;;
+  color: #050505 !important;
+}
+
+
+
+.btn-gray-no-boxshadow:focus {
+  background: #e4e6eb !important;
+  box-shadow: unset !important;;
+  color: #050505 !important;
+}
+
+.search-btn > span {
+  color: #fff;
+  padding-right: 3px;
+  position: relative;
+  top: 2px;
 }

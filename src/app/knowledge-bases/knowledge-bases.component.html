@@ -127,7 +127,7 @@
                     <!-- ----------- MAT-MENU ----------- -->
                     <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
                       matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                       <mat-icon>unfold_more</mat-icon>
                     </button>
               
@@ -144,7 +144,12 @@
                         *ngFor="let namespace of namespaces" (click)="onSelectNamespace(namespace)">
                         <div class="namespace-name-in-menu-wpr"> 
                           <div class="namespace-name-in-menu">{{namespace?.name}}</div>
-                         <div *ngIf="namespace?.default" class="kb-default-badge-in-menu-wpr" style="">Default</div>
+                         <div *ngIf="namespace?.default" class="kb-default-badge-in-menu-wpr">
+                          <span class="kb-default-badge-in-menu">
+                            Default
+                          </span>
+                         
+                        </div>
                         </div>
                       </button>
                     </mat-menu>
@@ -225,29 +230,29 @@
                   <!-- ---------------------------------------- -->
                   <!-- AI Settings -->
                   <!-- ---------------------------------------- -->
-                  <button id="ai-settings" class="custom-button preview-settings"
+                  <!-- <button id="ai-settings" class="custom-button preview-settings"
                     (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                     matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                     matTooltipPosition='below' matTooltipHideDelay="100">
                     <span class="material-icons-round">settings</span>
-                  </button>
+                  </button> -->
 
                   <!-- ---------------------------------------- -->
                   <!-- KB preview -->
                   <!-- ---------------------------------------- -->
-                  <button id="kb-preview" class="custom-button preview" aria-label="Preview"
+                  <!-- <button id="kb-preview" class="custom-button preview" aria-label="Preview"
                     (click)="$event.stopPropagation(); onOpenBaseModalPreview()" [disabled]="kbsListCount === 0"
                     [ngClass]="{'preview-btn-disabled': kbsListCount === 0}" matTooltipClass="kb-custom-mat-tooltip"
                     [matTooltip]="kbsListCount === 0 ? ( 'KbPage.AddContentsToUseTheKBPreview' | translate ) : ( 'KbPage.KBpreview' | translate ) "
                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                     <span class="material-icons-round">play_arrow</span>
                     <span class=""> {{'Preview' | translate}} </span>
-                  </button>
+                  </button> -->
 
                   <!-- ---------------------------------------- -->
                   <!-- Add Content -->
                   <!-- ---------------------------------------- -->
-                  <div class="add-kb-div">
+                  <!-- <div class="add-kb-div">
                     <button id="kb-add-content" class="custom-button add-content" [disabled]="addButtonDisabled"
                       [matMenuTriggerFor]="menu">
                       <span class=""> {{ 'KbPage.Add' | translate }} </span>
@@ -257,9 +262,9 @@
                         (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
                       </add-content-menu>
                     </mat-menu>
-                  </div>
+                  </div> -->
 
-                  <div id="other-actions" class="other-actions">
+                  <!-- <div id="other-actions" class="other-actions">
                     <button mat-icon-button [matMenuTriggerFor]="otherActions" aria-label="other-actions">
                       <mat-icon>more_horiz</mat-icon>
                     </button>
@@ -270,7 +275,7 @@
                         <span>{{ 'KbPage.RestartTour' | translate }}</span>
                       </button>
                     </mat-menu>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -412,8 +417,12 @@
                 (openBaseModalDelete)="onOpenBaseModalDelete($event)"
                 (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
                 (openBaseModalPreview)="onOpenBaseModalPreview()"
-                (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
-                (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                (onOpenAddContents)="onOpenAddContent()"
+                (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
+                (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" 
+                (checkStatus)="onCheckStatus($event)"
+                (runIndexing)="onRunIndexing($event)" 
+                (loadPage)="onLoadPage($event)"
                 (loadByFilter)="onLoadByFilter($event)">
               </knowledge-base-table>
               <!-- END TABLE -->

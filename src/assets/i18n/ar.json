@@ -514,6 +514,7 @@
     "Ok": "موافق",
     "Success": "نجاح",
     "ChatbotSuccessfullyCreated": "تم إنشاء Chatbot بنجاح",
+    "AIAgentSuccessfullyCreated":"تم إنشاء وكيل الذكاء الاصطناعي بنجاح",
     "ItIsNotPossibleToCreateTheChatbot": "ليس من الممكن إنشاء Chatbot",
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "يفتقر مشروعك إلى القالب المطلوب لإنشاء Chatbot",
     "EditChatbot": "تحرير chatbot {{ chat_bot_name }}",
