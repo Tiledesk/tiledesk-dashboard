@@ -1354,6 +1354,9 @@
         "ManageTags":"Manage TAG",
         "ConversationsTAG":"Conversations' TAGS",
         "AddTags": "Add tag",
+        "CrateTag": "Create tag",
+        "WriteATag": "Write a tag",
+        "HowTagsWork": "How tags work",
         "DeleteLabel": "Delete tag",
         "TypeALabelAndPressEnter": "Type a tag and press Enter",
         "YouHaveNotAddedAnyTags": "You have not added any tags",
@@ -1721,7 +1724,8 @@
         "YesDelete": "Yes, delete",
         "NoDelete": "No",
         "SlotDeleteSuccess": "Slot deleted successfully",
-        "ErrorOccurred": "An error occurred"
+        "ErrorOccurred": "An error occurred",
+        "LearnMoreAboutOH": "Learn more about operating hours"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Learn more about Knowledge Base",
@@ -2081,7 +2085,7 @@
     "ReadyThemes": "Ready themes",
     "CustomColors": "Custom colors",
     "HeaderLogo": "Header Logo",
-    "UpdateWidget": "UPDATE WIDGET",
+    "UpdateWidget": "Update widget",
     "WelcomeGreetings": "Welcome greetings",
     "OnlineOfflineGreetings": "Online / Offline Greetings",
     "WidgetPreviewIsDisplayedIn": "Widget preview and the following phrases are currently displayed in",
@@ -2478,6 +2482,7 @@
     "PlanStartDate": "Plan start date",
     "EditProfile": "Edit profile",
     "HowEmailTicketingWorks": "How email ticketing works",
+    "HowCannedResponsesWorks": "How canned responses works",
     "Reopen": "Reopen",
     "MostRecentComment": "Most recent comment",
     "ContactConversations": "Contact conversations",

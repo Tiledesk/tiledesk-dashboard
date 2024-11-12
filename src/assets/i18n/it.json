@@ -654,7 +654,7 @@
         "First_name_of_agent": "Nome dell'agente",
         "EnterCannedResponseTitle": "Inserisci il titolo della risposta predefinita",
         "WriteMsgToSendToYourVisitors": "Scrivi un messaggio di risposta predefinito da inviare ai tuoi visitatori",
-        "PleaseFillOutThisField": "Perfavore compila questo campo",
+        "PleaseFillOutThisField": "Per favore compila questo campo",
         "NotificationMsgs": {
             "DeleteCannedResSuccess": "Risposta eliminata correttamente",
             "DeleteCannedResError": "Si è verificato un errore durante l'eliminazione della risposta",
@@ -902,7 +902,7 @@
             "SignInForAllTiledeskProducts": "Accesso a tutti i prodotti {{ BRAND_NAME }}",
             "AllowedIpRanges": "Intervalli IP consentiti",
             "AddIpRanges": " Aggiungi gli intervalli IP che necessitano dell'accesso a {{ BRAND_NAME }}. ",
-            "Use": "Utilizzo",
+            "Use": "Utilizza",
             "SyntaxWhereN": "sintassi dove n è un numero",
             "RangesPlaceholder": "esempio: xx.xxx.xxx.xxx, xx.xxx.xxx.xxx",
             "EnableIpBasedAccessRestrictions": "L'attivazione delle restrizioni di accesso basate su IP può interrompere le integrazioni di terze parti. Consenti a tutti gli IP esterni che necessitano di accedere al tuo account tramite l'API {{ BRAND_NAME }}."
@@ -1356,6 +1356,9 @@
         "ManageTags": "Gestisci TAG",
         "ConversationsTAG":"TAG delle conversazioni",
         "AddTags": "Aggiungi tag",
+        "CrateTag": "Crea tag",
+        "WriteATag": "Scrivi una tag",
+        "HowTagsWork": "Come funzionano le tag",
         "DeleteLabel": "Elimina tag",
         "TypeALabelAndPressEnter": "Digita una tag e premi Invio",
         "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto tag",
@@ -1722,7 +1725,8 @@
         "YesDelete": "Si, elimina",
         "NoDelete": "No",
         "SlotDeleteSuccess": "Slot eliminato con successo",
-        "ErrorOccurred": "Si è verificato un errore"
+        "ErrorOccurred": "Si è verificato un errore",
+        "LearnMoreAboutOH": "Scopri di più sugli orari di apertura"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Scopri di più sulla Knowledge Base",
@@ -2080,7 +2084,7 @@
     "ReadyThemes": "Temi pronti",
     "CustomColors": "Colori personalizzati",
     "HeaderLogo": "Logo dell'intestazione",
-    "UpdateWidget": "AGGIORNA WIDGET",
+    "UpdateWidget": "Aggiorna widget",
     "WelcomeGreetings": "Saluti di benvenuto",
     "OnlineOfflineGreetings": "Online / Offline Greetings",
     "WidgetPreviewIsDisplayedIn": "L'anteprima del widget e le seguenti frasi sono attualmente visualizzate in",
@@ -2476,6 +2480,7 @@
     "PlanStartDate": "Data di inizio del piano",
     "EditProfile": "Cambia profilo",
     "HowEmailTicketingWorks": "Come funziona l'e-mail ticketing",
+    "HowCannedResponsesWorks": "Come funzionano le risposte predefinite",
     "Reopen": "Riapri",
     "MostRecentComment": "Commento più recente",
     "ContactConversations": "Conversazioni del contatto",

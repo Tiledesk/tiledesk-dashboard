@@ -388,7 +388,7 @@ p.member:hover {
   top: 4px;
 }
 
-.requester-avatar--in-history-phone-number{
+.requester-avatar--in-history-phone-number {
   top: -4px !important;
 }
 
@@ -1001,29 +1001,22 @@ p.member:hover {
   gap: 2px;
 }
 
-.btn-gray-no-boxshadow { 
-  border-radius:999px;
+.btn-gray-no-boxshadow {
+  border-radius: 999px;
 }
 
 .btn-tdblu-no-boxshadow {
-  border-radius:999px;
-}
-
-.btn-gray-no-boxshadow:active {
-  background: #e4e6eb !important;
-  box-shadow: unset !important;;
-  color: #050505 !important;
+  border-radius: 999px;
 }
 
 
 
-.btn-gray-no-boxshadow:focus {
-  background: #e4e6eb !important;
-  box-shadow: unset !important;;
-  color: #050505 !important;
+.search-btn {
+  padding: 9px 30px;
+  margin-right: 15px;
 }
 
-.search-btn > span {
+.search-btn>span {
   color: #fff;
   padding-right: 3px;
   position: relative;

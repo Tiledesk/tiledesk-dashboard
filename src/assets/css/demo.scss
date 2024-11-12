@@ -523,27 +523,126 @@ my-app .main-panel .main-content .card {
   border: unset !important;
 }
 
-/*
-// -------------------------
-// BTN TD-BLU NO BOX-SHADOW
-// ------------------------- */
+
+/* BTN ROUND RED
+/* ------------------------- */
+.btn-round-red {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 7px !important;
+  background: var(--red-btn-background-color) !important;
+  font-size: 14px;
+  border-radius: var(--btn-border-radius) !important;
+  font-family: var(--header-font-family) !important;
+  color: var(--red-btn-color) !important;
+  height: 38px;
+}
+
+.btn-round-red:hover {
+  box-shadow: unset !important;
+  background: var(--red-btn-hover-background-color) !important;
+}
+
+/* BTN  RED
+/* ------------------------- */
+.btn-red {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 20px !important;
+  background: var(--red-btn-background-color) !important;
+  font-size: 14px;
+  border-radius: var(--btn-border-radius) !important;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+}
+
+.btn-red:hover {
+  box-shadow: unset !important;
+  background: var(--red-btn-hover-background-color) !important;
+}
+
+
+/* BTN TD-BLU NO BOX-SHADOW
+/* ------------------------- */
 .btn-tdblu-no-boxshadow {
   box-shadow: unset !important;
   text-transform: none !important;
-  padding: 9px 15px !important;
-  background: #3ea9f5 !important;
+  padding: 9px 20px !important;
+  background: var(--primary-btn-background) !important;
   font-size: 14px;
+  border-radius: var(--btn-border-radius) !important;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+  // border: unset;
 }
 
 .btn-tdblu-no-boxshadow:hover {
   box-shadow: unset !important;
-  background: #399ce2 !important;
+  background: var(--primary-btn-hover-background) !important;
 }
 
-/*
-// -------------------------
-// BTN TD-SUCCESS NO BOX-SHADOW
-// ------------------------- */
+.btn-m {
+  font-size: 12px !important;
+}
+
+/* BTN OUTLINE
+/* ------------------------- */
+.btn-outlined {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 20px !important;
+  background: var(--outlined-btn-background) !important;
+  font-size: 14px;
+  border-radius: var(--btn-border-radius) !important;
+  border: 1px solid var(--outlined-btn-border-color);
+  font-family: var(--header-font-family) !important;
+  color: var(--text-color) !important;
+}
+
+
+.btn-outlined:hover {
+  box-shadow: unset !important;
+  background: var(--outlined-btn-hover-background) !important;
+}
+
+
+
+
+/* BTN GRAY NO BOX-SHADOW
+/* ------------------------- */
+.btn-gray-no-boxshadow {
+  background: var(--secondary-btn-background); //#e4e6eb;
+  box-shadow: unset;
+  color: var(--secondary-btn-color); //#050505;
+  text-transform: none !important;
+  padding: 9px 20px;
+  font-size: 14px;
+  border-radius: var(--btn-border-radius) !important;
+  font-family: var(--header-font-family) !important;
+}
+
+.btn-gray-no-boxshadow:hover {
+  background: #d2d4d9;
+  box-shadow: unset;
+  color: var(--secondary-btn-color) !important;
+}
+
+.btn-gray-no-boxshadow:active {
+  background: var(--secondary-btn-background) !important;
+  box-shadow: unset !important;
+  color: var(--secondary-btn-color) !important;
+}
+
+.btn-gray-no-boxshadow:focus {
+  background: var(--secondary-btn-background) !important;
+  box-shadow: unset !important;
+  color: var(--secondary-btn-color) !important;
+}
+
+
+
+/* BTN TD-SUCCESS NO BOX-SHADOW
+/* ---------------------------- */
 .btn-success-no-boxshadow {
   box-shadow: unset !important;
   text-transform: none !important;
@@ -563,24 +662,68 @@ my-app .main-panel .main-content .card {
   opacity: 0.6;
 }
 
-/*
-// -------------------------
-// BTN GRAY NO BOX-SHADOW
-// ------------------------- */
-.btn-gray-no-boxshadow {
-  background: #e4e6eb;
-  box-shadow: unset;
-  color: #050505;
-  text-transform: none;
-  padding: 9px 15px;
-  font-size: 14px;
+
+.c-alert {
+  background-color: #fff;
+  border: 1px solid #e8f0f5;
+  box-shadow: none;
+  padding: 10px;
+  border-radius: var(--card-border-radius);
 }
 
-.btn-gray-no-boxshadow:hover {
-  background: #d2d4d9;
-  box-shadow: unset;
-  color: #050505;
+.c-alert>i {
+  vertical-align: middle;
+  display: inline-flex;
+  color: var(--blue-light); // #3ea9f5
 }
+
+.c-alert>span {
+  vertical-align: middle;
+  display: inline-flex;
+  padding-left: 4px;
+  color: var(--secondary-text-color);
+  font-weight: 400;
+}
+
+.c-alert>span>span:hover {
+  text-decoration: underline;
+}
+
+.c-alert-x-long-string {
+  background-color: #fff;
+  border: 1px solid #e8f0f5;
+  box-shadow: none;
+  padding: 10px;
+  border-radius: var(--card-border-radius);
+}
+
+.c-alert-x-long-string>span {
+  display: flex;
+}
+
+.c-alert-x-long-string>span>i {
+  vertical-align: middle;
+  display: inline-flex;
+  color: var(--blue-light);
+  margin-right: 2px;
+}
+
+.c-alert-x-long-string>span>span {
+  vertical-align: middle;
+  display: inline-flex;
+  color: var(--secondary-text-color);
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.span-20 {
+  display: block;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+}
+
 
 .label-7695a5 {
   text-align: left;
@@ -1206,14 +1349,15 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
 /* Bottom Underline of the titles of the sections */
 .card_title__underlined {
   text-transform: none;
-  color: #566787;
+  color: var(--text-color); // #566787;
   margin-bottom: 0px;
   height: 40px !important;
   position: relative;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  height: 30px;
+  font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
+  // height: 30px;
   font-size: 16px;
   margin-top: 10px;
+  font-weight: 400;
   // z-index: 0;
 }
 
@@ -1222,15 +1366,29 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   top: 0;
   left: 0;
   bottom: -1px;
-  border-bottom: 2px solid $brand-primary;
+  border-bottom: 2px solid var(--blue-light); // $brand-primary;
   z-index: 1;
 }
 
 .section-subtitle {
   height: 20px;
   border-top: 1px solid #ddd;
+  color: var(--secondary-text-color);
   /*  width: calc((100% / 3) + 372px); */
 }
+
+.section-subtitle-paragraph {
+  margin-top: -10px;
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-family: var(--header-font-family);
+ }
+
+ .section-subtitle-ul > li { 
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-family: var(--header-font-family);
+ }
 
 // -------------------------------------------------
 // Added when the user details sidebar is opened
@@ -1275,7 +1433,7 @@ span.navbar-brand-sidebar-settings {
   position: relative;
   margin-top: 6px;
   border-right: 1px solid #e5effe;
-  padding-left: 25px;  // increased for the new sidebar width  
+  padding-left: 25px; // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings.is_opened {
@@ -1833,14 +1991,14 @@ footer ul {
   border: none;
 }
 
-.ng-select.custom--input .ng-select-container  {
+.ng-select.custom--input .ng-select-container {
   box-shadow: 0 0 4px #c7c7c7 !important;
   border: unset !important;
   border-radius: 12px !important;
-} 
+}
 
 .ng-select-container {
-    height: 36px !important;
+  height: 36px !important;
 }
 
 
@@ -2819,6 +2977,20 @@ li.active-item a .sidebar-item-s {
   margin-left: 6px !important;
 }
 
+.settings-sidebar-icons {
+  fill: var(--settings-sidebar-color);
+  position: relative;
+  top: -1px;
+}
+
+.settings-sidebar>li:hover .settings-sidebar-icons {
+  fill: var(--settings-sidebar-hover-color);
+}
+
+li.active-item a span>.settings-sidebar-icons {
+  fill: var(--settings-sidebar-active-color) !important;
+}
+
 .custom_paragraph {
   margin-bottom: 0px;
   padding-left: 8px;
@@ -3061,7 +3233,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 }
 
-div:where(.swal2-container) .swal2-select { 
+div:where(.swal2-container) .swal2-select {
   margin-top: 0px !important;
 
   // appearance: none;

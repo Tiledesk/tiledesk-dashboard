@@ -479,15 +479,15 @@
                 <div class="row" *ngIf="CREATE_VIEW">
                   <div class="col-sm-12">
                     <span *ngIf="has_selected_bot === true">
-                      <button class="btn btn-primary"
+                      <button class="btn btn-tdblu-no-boxshadow  create-dept-has-selected-bot"
                         [disabled]="deptName_toUpdate?.length < 2 || BOT_NOT_SELECTED === true"
                         (click)="createDepartment()">
                         {{ "DeptsAddEditPage.CreateDept" | translate}}
                       </button>
                     </span>
-
+                    <!-- btn-primary  -->
                     <span *ngIf="has_selected_bot !== true">
-                      <button class="btn btn-primary" [disabled]="deptName_toUpdate?.length < 2"
+                      <button class="btn btn-tdblu-no-boxshadow create-dept-not-has-selected-bot" [disabled]="deptName_toUpdate?.length < 2"
                         (click)="createDepartment()">
 
                         {{ "DeptsAddEditPage.CreateDept" | translate}}

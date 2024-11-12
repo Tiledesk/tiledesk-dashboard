@@ -1354,6 +1354,9 @@
         "ManageTags": "Gerenciar TAG",
         "ConversationsTAG": "TAGS das conversas",
         "AddTags": "Adicionar etiqueta",
+        "CrateTag": "Criar etiqueta",
+        "WriteATag": "Escreva uma etiqueta",
+        "HowTagsWork": "Como funcionam as etiquetas",
         "DeleteLabel": "Excluir etiqueta",
         "TypeALabelAndPressEnter": "Digite uma etiqueta e pressione Enter",
         "YouHaveNotAddedAnyTags": "Você não adicionou nenhuma etiquetas",
@@ -1721,7 +1724,8 @@
         "YesDelete": "Sim, excluir",
         "NoDelete": "Não",
         "SlotDeleteSuccess": "Slot excluído com sucesso",
-        "ErrorOccurred": "Um erro ocorreu"
+        "ErrorOccurred": "Um erro ocorreu",
+        "LearnMoreAboutOH": "Saiba mais sobre o horário de funcionamento"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",
@@ -2069,7 +2073,7 @@
     "ReadyThemes": "Temas prontos",
     "CustomColors": "Cores personalizadas",
     "HeaderLogo": "Logotipo do cabeçalho",
-    "UpdateWidget": "ATUALIZAR WIDGET",
+    "UpdateWidget": "Atualizar widget",
     "WelcomeGreetings": "Saudações de boas-vindas",
     "OnlineOfflineGreetings": "Saudações on-line/off-line",
     "WidgetPreviewIsDisplayedIn": "A visualização do widget e as seguintes frases são exibidas atualmente em",
@@ -2466,6 +2470,7 @@
     "PlanStartDate": "Data de início do plano",
     "EditProfile": "Editar Perfil",
     "HowEmailTicketingWorks": "Como funciona a emissão de tíquetes por e-mail",
+    "HowCannedResponsesWorks": "Como funcionam as respostas automáticas",
     "Reopen": "Reabrir",
     "MostRecentComment": "Comentário mais recente",
     "ContactConversations": "Conversas de contato",

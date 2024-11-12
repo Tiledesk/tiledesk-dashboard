@@ -1354,6 +1354,9 @@
         "ManageTags":"TAGlarni boshqarish",
         "ConversationsTAG":"Suhbatlarning TAGS",
         "AddTags": "Teg qo'shing",
+        "CrateTag": "Teg yarating",
+        "WriteATag": "Teg yozing",
+        "HowTagsWork": "Teglar qanday ishlaydi",
         "DeleteLabel": "Tegni o'chirish",
         "TypeALabelAndPressEnter": "Tegni kiriting va Enter tugmasini bosing",
         "YouHaveNotAddedAnyTags": "Siz hech qanday teg qo'shmagansiz",
@@ -1721,7 +1724,8 @@
         "YesDelete": "Ha, o'chirish",
         "NoDelete": "Yo'q",
         "SlotDeleteSuccess": "Slot muvaffaqiyatli oʻchirildi",
-        "ErrorOccurred": "Xatolik yuz berdi"
+        "ErrorOccurred": "Xatolik yuz berdi",
+        "LearnMoreAboutOH": "Ish vaqti haqida ko'proq bilib oling"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Bilimlar bazasi haqida ko'proq bilib oling",
@@ -2069,7 +2073,7 @@
     "ReadyThemes": "Tayyor mavzular",
     "CustomColors": "Maxsus ranglar",
     "HeaderLogo": "Sarlavha logotipi",
-    "UpdateWidget": "VIDJETNI YANGILASH",
+    "UpdateWidget": "Vidjetni yangilash",
     "WelcomeGreetings": "Xush kelibsiz salomlar",
     "OnlineOfflineGreetings": "Onlayn / Oflayn tabriklar",
     "WidgetPreviewIsDisplayedIn": "Vidjetni oldindan ko'rish va quyidagi iboralar hozirda ko'rsatiladi",
@@ -2465,6 +2469,7 @@
     "PlanStartDate": "Boshlanish sanasini rejalashtirish",
     "EditProfile": "Profilni tahrirlash",
     "HowEmailTicketingWorks": "Elektron pochta orqali chiptalar qanday ishlaydi",
+    "HowCannedResponsesWorks": "Konservalangan javoblar qanday ishlaydi",
     "Reopen": "Qayta oching",
     "MostRecentComment": "Eng so'nggi sharh",
     "ContactConversations": "Aloqa suhbatlari",

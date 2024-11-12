@@ -53,9 +53,15 @@
     </div>
 
     <div class="footer">
-        <button class="custom-primary-button" (click)="saveIntegration()">{{ 'Integration.Save' | translate }}</button>
-        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">{{ 'Integration.Delete' | translate }}</button>
-        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">{{ 'Integration.Clear' | translate }}</button>
+        <button class="custom-primary-button" (click)="saveIntegration()">
+            {{ 'Integration.Save' | translate }}
+        </button>
+        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">
+            {{ 'Integration.Delete' | translate }}
+        </button>
+        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">
+            {{ 'Integration.Clear' | translate }}
+        </button>
         <!-- <button class="custom-danger-button" (click)="deleteIntegration()" [disabled]="integration == null">Delete</button> -->
     </div>
 

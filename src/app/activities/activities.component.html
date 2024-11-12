@@ -88,14 +88,16 @@
               <div class="row">
                 <div class="col-sm-12">
                   <div class="actvity-btn-wpr">  
-                    <button #searchbtn type="submit" class="btn btn-tdblu-no-boxshadow search-btn" (click)="search()">
-                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                      {{'Search' | translate}}
-                    </button>
+                   
 
                     <button #clearsearchbtn type="submit" class="btn btn-gray-no-boxshadow clearsearchbtn" (click)="clearSearch()">
                       <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
                       {{ 'HistoryPage.ClearSearch' | translate }}
+                    </button>
+
+                    <button #searchbtn type="submit" class="btn btn-tdblu-no-boxshadow search-btn" (click)="search()">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      {{'Search' | translate}}
                     </button>
                   </div>
 
@@ -563,14 +565,14 @@
                   </span>
 
                   <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px;">
+                  <span class="input-group-btn" style="padding-right:0px; padding-left: 0px;">
                     <button class="btn btn-tdblu-no-boxshadow" type="button" style="border-radius: 0px !important;">
                       {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                     </button>
                   </span>
 
                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px">
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
                     <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
                       class="btn btn-tdblu-no-boxshadow" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>

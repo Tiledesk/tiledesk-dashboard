@@ -17,6 +17,7 @@ import { DAYS } from './utils';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { RoleService } from 'app/services/role.service';
+import { BrandService } from 'app/services/brand.service';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -51,7 +52,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   // System Variables
   USER_ROLE: string;
-
+  public hideHelpLink: boolean;
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
@@ -63,10 +64,13 @@ export class HoursComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public brandService: BrandService,
   ) { 
     // this.auth.checkRoleForCurrentProject();
     this.roleService.checkRoleForCurrentProject('hours')
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit() {

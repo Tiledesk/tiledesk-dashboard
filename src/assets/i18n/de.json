@@ -1355,6 +1355,9 @@
 		"ManageTags": "TAG verwalten",
 		"ConversationsTAG": "TAGS der Gespräche",
 		"AddTags": "Tag hinzufügen",
+		"CrateTag": "Tag erstellen",
+		"WriteATag": "Schreiben Sie ein Tag",
+		"HowTagsWork": "So funktionieren Tags",
 		"DeleteLabel": "Tag löschen",
 		"TypeALabelAndPressEnter": "Geben Sie ein Tag ein und drücken Sie die Eingabetaste",
 		"YouHaveNotAddedAnyTags": "Sie haben keine Tags hinzugefügt",
@@ -1722,7 +1725,8 @@
 		"YesDelete": "Ja, löschen",
 		"NoDelete": "Nein",
 		"SlotDeleteSuccess": "Slot erfolgreich gelöscht",
-		"ErrorOccurred": "Ein Fehler ist aufgetreten"
+		"ErrorOccurred": "Ein Fehler ist aufgetreten",
+		 "LearnMoreAboutOH": "Erfahren Sie mehr über die Öffnungszeiten"
 	},
 	"KbPage": {
 		"LearnMoreAboutKB": "Erfahren Sie mehr über die Knowledge Base",
@@ -2465,6 +2469,7 @@
 	"PlanStartDate": "Startdatum planen",
 	"EditProfile": "Profil bearbeiten",
 	"HowEmailTicketingWorks": "So funktioniert E-Mail-Ticketing",
+	"HowCannedResponsesWorks": "So funktionieren vorgefertigte Antworten",
 	"Reopen": "Öffnen Sie wieder",
 	"MostRecentComment": "Neuester Kommentar",
 	"ContactConversations": "Konversationen kontaktieren",

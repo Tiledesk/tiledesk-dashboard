@@ -1355,6 +1355,9 @@
         "ManageTags":"Управляйте тегами",
         "ConversationsTAG":"ТЕГИ разговоров",
         "AddTags": "Добавить метку",
+        "CrateTag": "Создать тег",
+        "WriteATag": "Напишите тег",
+        "HowTagsWork": "Как работают теги",
         "DeleteLabel": "Удалить тег",
         "TypeALabelAndPressEnter": "Введите тег и нажмите Enter",
         "YouHaveNotAddedAnyTags": "Вы не добавили ни одного тега",
@@ -1722,7 +1725,8 @@
         "YesDelete": "Да, удалить",
         "NoDelete": "Нет",
         "SlotDeleteSuccess": "Слот успешно удален",
-        "ErrorOccurred": "Произошла ошибка"
+        "ErrorOccurred": "Произошла ошибка",
+        "LearnMoreAboutOH": "Узнать больше о часах работы"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Saiba mais sobre a Base de Conhecimento",
@@ -2069,7 +2073,7 @@
     "ReadyThemes": "Готовые темы",
     "CustomColors": "Пользовательские цвета",
     "HeaderLogo": "Логотип заголовка",
-    "UpdateWidget": "ОБНОВИТЬ ВИДЖЕТ",
+    "UpdateWidget": "Обновить виджет",
     "WelcomeGreetings": "Добро пожаловать поздравления",
     "OnlineOfflineGreetings": "Онлайн/Офлайн приветствия",
     "WidgetPreviewIsDisplayedIn": "Предварительный просмотр виджета и следующие фразы в настоящее время отображаются в",
@@ -2465,6 +2469,7 @@
     "PlanStartDate": "Планировать дату начала",
     "EditProfile": "Редактировать профиль",
     "HowEmailTicketingWorks": "Приходите funziona la creazione di ticket по электронной почте",
+    "HowCannedResponsesWorks": "Как работают шаблонные ответы",
     "Reopen": "Открыть заново",
     "MostRecentComment": "Самый последний комментарий",
     "ContactConversations": "Контактные разговоры",

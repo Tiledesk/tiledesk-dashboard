@@ -1356,6 +1356,9 @@
         "ManageTags":"Управљајте ТАГовима",
         "ConversationsTAG":"ОЗНАКЕ разговора",
         "AddTags": "Додај ознаку",
+        "CrateTag": "Креирајте ознаку",
+        "WriteATag": "Напишите ознаку",
+        "HowTagsWork": "Како функционишу ознаке",
         "DeleteLabel": "Обриши ознаку",
         "TypeALabelAndPressEnter": "Унесите ознаку и притисните Ентер",
         "YouHaveNotAddedAnyTags": "Нисте додали ниједну ознаку",
@@ -1723,7 +1726,8 @@
         "YesDelete": "Да, избриши",
         "NoDelete": "Не",
         "SlotDeleteSuccess": "Слот је успешно избрисан",
-        "ErrorOccurred": "Дошло је до грешке"
+        "ErrorOccurred": "Дошло је до грешке",
+        "LearnMoreAboutOH": "Сазнајте више о радном времену"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Сазнајте више о Бази знања",
@@ -2071,7 +2075,7 @@
     "ReadyThemes": "Спремне теме",
     "CustomColors": "Прилагођене боје",
     "HeaderLogo": "Лого заглавља",
-    "UpdateWidget": "АЖУРИРАЈ ВИЂЕТ",
+    "UpdateWidget": "Ажурирај виђет",
     "WelcomeGreetings": "Поздрав добродошлице",
     "OnlineOfflineGreetings": "Онлajн / Офлajн Поздрав",
     "WidgetPreviewIsDisplayedIn": "Преглед виџета и следеће фразе се тренутно приказују у",
@@ -2467,6 +2471,7 @@
     "PlanStartDate": "Датум почетка плана",
     "EditProfile": "Уреди профил",
     "HowEmailTicketingWorks": "Како функционише издавање карата путем е-поште",
+    "HowCannedResponsesWorks": "Како функционишу унапред припремљени одговори",
     "Reopen": "Отвори поново",
     "MostRecentComment": "Најновији коментар",
     "ContactConversations": "Контакт разговори",

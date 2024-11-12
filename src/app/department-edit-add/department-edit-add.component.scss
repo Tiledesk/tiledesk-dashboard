@@ -520,6 +520,7 @@ select[disabled] {
 .sidebar-description-cropped {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
   /* autoprefixer: ignore next */
@@ -715,7 +716,8 @@ select[disabled] {
 }
 
 .routing-rule.rule-active {
-  border: 2px solid var(--icon-hover-color);
+  // border: 2px solid var(--icon-hover-color);
+  border: 2px solid var(--blue-light);
 }
 
 .routing-rule-content {

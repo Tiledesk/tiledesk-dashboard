@@ -1355,6 +1355,9 @@
         "ManageTags":"TAG idarə et",
         "ConversationsTAG":"Söhbətlərin ETİKETləri",
         "AddTags": "Etiket əlavə edin",
+        "CrateTag": "Etiket yaradın",
+        "WriteATag": "Etiket yazın",
+        "HowTagsWork": "Etiketlər necə işləyir",
         "DeleteLabel": "Etiketi silin",
         "TypeALabelAndPressEnter": "Bir etiket yazın və Enter düyməsini basın",
         "YouHaveNotAddedAnyTags": "Siz heç bir teq əlavə etməmisiniz",
@@ -1722,7 +1725,8 @@
         "YesDelete": "Bəli, silin",
         "NoDelete": "Yox",
         "SlotDeleteSuccess": "Slot uğurla silindi",
-        "ErrorOccurred": "Xəta baş verdi"
+        "ErrorOccurred": "Xəta baş verdi",
+        "LearnMoreAboutOH": "İş saatları haqqında daha çox məlumat əldə edin"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Bilik bazası haqqında ətraflı məlumat əldə edin",
@@ -2070,7 +2074,7 @@
     "ReadyThemes": "Hazır mövzular",
     "CustomColors": "Xüsusi rənglər",
     "HeaderLogo": "Başlıq Logosu",
-    "UpdateWidget": "VIDGETİ YENİLƏNİN",
+    "UpdateWidget": "Vidgeti̇ yeni̇ləni̇n",
     "WelcomeGreetings": "Xoş gəldin salamlar",
     "OnlineOfflineGreetings": "Onlayn / Oflayn Salamlar",
     "WidgetPreviewIsDisplayedIn": "Widget önizləməsi və aşağıdakı ifadələr hazırda göstərilir",
@@ -2466,6 +2470,7 @@
     "PlanStartDate": "Başlama tarixini planlaşdırın",
     "EditProfile": "Profilə düzəliş et",
     "HowEmailTicketingWorks": "E-poçt bileti necə işləyir",
+    "HowCannedResponsesWorks": "Konservləşdirilmiş cavablar necə işləyir",
     "Reopen": "Yenidən açın",
     "MostRecentComment": "Ən son şərh",
     "ContactConversations": "Əlaqə söhbətləri",

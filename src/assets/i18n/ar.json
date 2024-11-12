@@ -1355,6 +1355,9 @@
         "ManageTags": "إدارة TAG",
         "ConversationsTAG": "علامات المحادثات",
         "AddTags": "إضافة علامة",
+        "CrateTag": "إنشاء علامة",
+        "WriteATag": "اكتب علامة",
+        "HowTagsWork": "كيف تعمل العلامات",
         "DeleteLabel": "حذف العلامة",
         "TypeALabelAndPressEnter": "اكتب علامة واضغط على Enter",
         "YouHaveNotAddedAnyTags": "لم تقم بإضافة أي علامات",
@@ -1722,7 +1725,8 @@
         "YesDelete": "نعم احذف",
         "NoDelete": "لا",
         "SlotDeleteSuccess": "تم حذف الفتحة بنجاح",
-        "ErrorOccurred": "حدث خطأ"
+        "ErrorOccurred": "حدث خطأ",
+         "LearnMoreAboutOH": "تعرف على المزيد حول ساعات العمل"
     },
     "KbPage": {
         "LearnMoreAboutKB": "تعرف على المزيد حول قاعدة المعرفة",
@@ -2070,7 +2074,7 @@
     "ReadyThemes": "مواضيع جاهزة",
     "CustomColors": "ألوان العرف",
     "HeaderLogo": "رأس الشعار",
-    "UpdateWidget": "تحديث القطعة",
+    "UpdateWidget": "تحديث الأداة",
     "WelcomeGreetings": "أهلا وسهلا بك تحياتي",
     "OnlineOfflineGreetings": "تحيات عبر الإنترنت / غير متصل",
     "WidgetPreviewIsDisplayedIn": "يتم عرض معاينة الأداة والعبارات التالية حاليًا بتنسيق",
@@ -2467,6 +2471,7 @@
     "PlanStartDate": "تاريخ بدء الخطة",
     "EditProfile": "تعديل الملف الشخصي",
     "HowEmailTicketingWorks": "كيف يعمل البريد الإلكتروني التذاكر",
+    "HowCannedResponsesWorks": "كيف تعمل الردود المعلبة",
     "Reopen": "أعد فتح",
     "MostRecentComment": "أحدث تعليق",
     "ContactConversations": "محادثات الاتصال",

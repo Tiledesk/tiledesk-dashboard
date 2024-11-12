@@ -26,7 +26,7 @@ export class RoleService {
   async checkRoleForCurrentProject(calledby) {
     this.logger.log('[ROLE-SERV] checkRoleForCurrentProject is called by ', calledby)
     const storedUser = localStorage.getItem('user')
-    // this.logger.log('[ROLE-SERV] storedUser ', storedUser) 
+    console.log('[ROLE-SERV] storedUser ', storedUser) 
     let userId = ''
     if (storedUser) {
       const storedUserObject = JSON.parse(storedUser)
@@ -34,7 +34,7 @@ export class RoleService {
       userId = storedUserObject._id
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > userId ', userId)
       const currentProject = this.auth.project_bs.value
-      // this.logger.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
+      console.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
 
       const projectId = currentProject._id
 
@@ -50,7 +50,13 @@ export class RoleService {
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
         }
       } else {
-        this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
+        this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
+        const _projectUserRole = await this.getProjectUser(userId, projectId)
+        console.log('[ROLE-SERV] - checkRoleForCurrentProject  _projectUserRole GET from remote', _projectUserRole)
+        if (_projectUserRole === 'agent') {
+          this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
+          this.router.navigate([`project/${projectId}/unauthorized`])
+        }
       }
 
       // if (userId && projectId) {
@@ -75,21 +81,21 @@ export class RoleService {
     }
   }
 
-  // getProjectUser(currentUserId: string, prjct_id: string): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe((projectUser) => {
+  getProjectUser(currentUserId: string, prjct_id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe((projectUser) => {
 
-  //       console.log('[ROLE-SERV] projectUser ', projectUser)
-  //       console.log('[ROLE-SERV] projectUser role', projectUser[0]['role'])
-  //       resolve(projectUser[0]['role'])
+        console.log('[ROLE-SERV] projectUser ', projectUser)
+        console.log('[ROLE-SERV] projectUser role', projectUser[0]['role'])
+        resolve(projectUser[0]['role'])
       
-  //     }, (error) => {
-  //       console.error('[ROLE-SERV] getProjectUserRole --> ERROR:', error)
-  //       resolve('error')
-  //     })
+      }, (error) => {
+        console.error('[ROLE-SERV] getProjectUserRole --> ERROR:', error)
+        resolve('error')
+      })
 
-  //   })
-  // }
+    })
+  }
 
 
 }

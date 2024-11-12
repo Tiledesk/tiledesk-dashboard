@@ -1356,6 +1356,9 @@
         "ManageTags": "Hantera TAGgar",
         "ConversationsTAG": "TAGGAR av konversationerna",
         "AddTags": "Lägg till tagg",
+        "CrateTag": "Skapa tagg",
+        "WriteATag": "Skriv en tagg",
+        "HowTagsWork": "Hur taggar fungerar",
         "DeleteLabel": "Ta bort tagg",
         "TypeALabelAndPressEnter": "Skriv en tagg och tryck på Enter",
         "YouHaveNotAddedAnyTags": "Du har inte lagt till några taggar",
@@ -1723,7 +1726,8 @@
         "YesDelete": "Ja, radera",
         "NoDelete": "Nej",
         "SlotDeleteSuccess": "Platsen har raderats",
-        "ErrorOccurred": "Ett fel uppstod"
+        "ErrorOccurred": "Ett fel uppstod",
+        "LearnMoreAboutOH": "Läs mer om öppettider"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Läs mer om Knowledge Base",
@@ -2071,7 +2075,7 @@
     "ReadyThemes": "Färdiga teman",
     "CustomColors": "Anpassade färger",
     "HeaderLogo": "Rubriklogga",
-    "UpdateWidget": "UPPDATERA WIDGET",
+    "UpdateWidget": "Uppdatera widget",
     "WelcomeGreetings": "Välkommen hälsningar",
     "OnlineOfflineGreetings": "Online / Offline Hälsningar",
     "WidgetPreviewIsDisplayedIn": "Förhandsgranskning av widgeten och följande fraser visas för närvarande i",
@@ -2467,6 +2471,7 @@
     "PlanStartDate": "Planera startdatum",
     "EditProfile": "Redigera profil",
     "HowEmailTicketingWorks": "Hur e-biljetter fungerar",
+    "HowCannedResponsesWorks": "Hur konserverade svar fungerar",
     "Reopen": "Öppna igen",
     "MostRecentComment": "Senaste kommentaren",
     "ContactConversations": "Kontaktkonversationer",

@@ -1356,6 +1356,9 @@
         "ManageTags":"Etiketleri yönet",
         "ConversationsTAG":"konuşmaların ETİKETLERİ",
         "AddTags": "Etiket Ekle",
+        "CrateTag": "Etiket oluştur",
+        "WriteATag": "Bir etiket yaz",
+        "HowTagsWork": "Etiketler nasıl çalışır",
         "DeleteLabel": "Etiketi sil",
         "TypeALabelAndPressEnter": "Bir etiket yazın ve Enter'a basın",
         "YouHaveNotAddedAnyTags": "Hiç etiket eklemediniz",
@@ -1723,7 +1726,8 @@
         "YesDelete": "Evet sil",
         "NoDelete": "HAYIR",
         "SlotDeleteSuccess": "Slot başarıyla silindi",
-        "ErrorOccurred": "Bir hata oluştu"
+        "ErrorOccurred": "Bir hata oluştu",
+        "LearnMoreAboutOH": "Çalışma saatleri hakkında daha fazla bilgi edinin"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Bilgi Tabanı hakkında daha fazla bilgi edinin",
@@ -2071,7 +2075,7 @@
     "ReadyThemes": "Hazır temalar",
     "CustomColors": "Özel renkler",
     "HeaderLogo": "Başlık logosu",
-    "UpdateWidget": "GÜNCELLEME WIDGET'I",
+    "UpdateWidget": "Güncelleme widget'i",
     "WelcomeGreetings": "Hoş geldiniz selamları",
     "OnlineOfflineGreetings": "Çevrimiçi / Çevrimdışı Selamlar",
     "WidgetPreviewIsDisplayedIn": "Widget önizlemesi ve aşağıdaki ifadeler şu anda şurada görüntüleniyor",
@@ -2468,6 +2472,7 @@
     "PlanStartDate": "Plan başlangıç tarihi",
     "EditProfile": "Profili Düzenle",
     "HowEmailTicketingWorks": "E-posta biletleme nasıl çalışır",
+    "HowCannedResponsesWorks": "Hazır yanıtlar nasıl çalışır",
     "Reopen": "Yeniden aç",
     "MostRecentComment": "En son yorum",
     "ContactConversations": "Temasa geçmek chat",

@@ -563,16 +563,23 @@ input:-webkit-autofill:active {
 }
 
 #clear-search-btn {
-    padding: 9px 30px;
-    margin-bottom: 0px;
+    // padding: 9px 30px;
+    // margin-bottom: 0px;
     margin-top: 7px;
-    border-radius: 999px;
+    // border-radius: 999px;
 }
 
 #cnct-search-btn {
-    padding: 9px 30px;
-    margin-bottom: 0px;
+    // padding: 9px 30px;
+    // margin-bottom: 0px;
     margin-top: 7px;
     margin-left: 12px;
-    border-radius: 999px;
+    // border-radius: 999px;
 }
+
+#cnct-search-btn>span {
+    color: #fff;
+    padding-right: 3px;
+    position: relative;
+    top: 2px;
+  }

@@ -224,7 +224,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   t_params: any;
   planFeatures: any;
   highlightedFeatures: any;
-  isTier3Plans: boolean // Plus or Custom
+  isTier3Plans: boolean = true// Plus or Custom
   isSripeSub: boolean;
   salesEmail: string;
   public hideHelpLink: boolean;

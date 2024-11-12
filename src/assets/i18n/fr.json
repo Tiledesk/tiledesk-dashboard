@@ -1354,6 +1354,9 @@
         "ManageTags": "Gérer les TAG",
         "ConversationsTAG": "TAGS des conversations",
         "AddTags": "Ajouter une balise",
+        "CrateTag": "Créer une balise",
+        "WriteATag": "Écrire une balise",
+        "HowTagsWork": "Comment fonctionnent les tags",
         "DeleteLabel": "Supprimer la balise",
         "TypeALabelAndPressEnter": "Tapez une balise et appuyez sur Entrée",
         "YouHaveNotAddedAnyTags": "Vous n'avez ajouté aucun balise",
@@ -1721,7 +1724,8 @@
         "YesDelete": "Oui, supprimer",
         "NoDelete": "Non",
         "SlotDeleteSuccess": "Emplacement supprimé avec succès",
-        "ErrorOccurred": "Une erreur s'est produite"
+        "ErrorOccurred": "Une erreur s'est produite",
+        "LearnMoreAboutOH": "En savoir plus sur les heures d'ouverture"
     },
     "KbPage": {
         "LearnMoreAboutKB": "En savoir plus sur la base de connaissances",
@@ -2069,7 +2073,7 @@
     "ReadyThemes": "Thèmes prêts",
     "CustomColors": "Couleurs personnalisées",
     "HeaderLogo": "Logo d'en-tête",
-    "UpdateWidget": "METTRE À JOUR LE WIDGET",
+    "UpdateWidget": "Mettre à jour le widget",
     "WelcomeGreetings": "Salutations de bienvenue",
     "OnlineOfflineGreetings": "Salutations en ligne / hors ligne",
     "WidgetPreviewIsDisplayedIn": "L'aperçu du widget et les phrases suivantes sont actuellement affichés dans",
@@ -2466,6 +2470,7 @@
     "PlanStartDate": "Date de début du plan",
     "EditProfile": "Editer le profil",
     "HowEmailTicketingWorks": "Comment fonctionne ticketing par é-mail",
+    "HowCannedResponsesWorks": "Comment fonctionnent les réponses prédéfinies",
     "Reopen": "Rouvrir",
     "MostRecentComment": "Commentaire le plus récent",
     "ContactConversations": "Conversations de contact",

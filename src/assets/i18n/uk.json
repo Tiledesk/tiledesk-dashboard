@@ -1357,6 +1357,9 @@
         "ManageTags": "Керуйте тегами",
         "ConversationsTAG": "ТЕГИ розмов",
         "AddTags": "Додати мітку",
+        "CrateTag": "Створити тег",
+        "WriteATag": "Напишіть тег",
+        "HowTagsWork": "Як працюють теги",
         "DeleteLabel": "Видалити мітку",
         "TypeALabelAndPressEnter": "Введіть тег і натисніть Enter",
         "YouHaveNotAddedAnyTags": "Ви не додали жодних міток",
@@ -1724,7 +1727,8 @@
         "YesDelete": "Так, видалити",
         "NoDelete": "Немає",
         "SlotDeleteSuccess": "Слот успішно видалено",
-        "ErrorOccurred": "Виникла помилка"
+        "ErrorOccurred": "Виникла помилка",
+        "LearnMoreAboutOH": "Дізнайтеся більше про години роботи"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Дізнайтеся більше про базу знань",
@@ -2072,7 +2076,7 @@
     "ReadyThemes": "Готові теми",
     "CustomColors": "Індивідуальні кольори",
     "HeaderLogo": "Логотип заголовка",
-    "UpdateWidget": "ВІДЖЕТ ОНОВЛЕННЯ",
+    "UpdateWidget": "Віджет оновлення",
     "WelcomeGreetings": "Вітаємо",
     "OnlineOfflineGreetings": "Онлайн / Офлайн Вітання",
     "WidgetPreviewIsDisplayedIn": "Попередній перегляд віджетів і наступні фрази наразі відображаються",
@@ -2468,6 +2472,7 @@
     "PlanStartDate": "Дата початку планування",
     "EditProfile": "Редагувати профіль",
     "HowEmailTicketingWorks": "Як працює електронна доставка квитків",
+    "HowCannedResponsesWorks": "Як працюють стандартні відповіді",
     "Reopen": "Відкрити знову",
     "MostRecentComment": "Останній коментар",
     "ContactConversations": "Контактні розмови",

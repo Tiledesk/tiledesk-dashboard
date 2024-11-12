@@ -1354,6 +1354,9 @@
         "ManageTags": "Gérer les TAG",
         "ConversationsTAG": "Әңгімелесулердің TAGS",
         "AddTags": "Тег қосыңыз",
+        "CrateTag": "Тег жасау",
+        "WriteATag": "Тег жазыңыз",
+        "HowTagsWork": "Тегтер қалай жұмыс істейді",
         "DeleteLabel": "Тегті жою",
         "TypeALabelAndPressEnter": "Тегті теріп, Enter пернесін басыңыз",
         "YouHaveNotAddedAnyTags": "Сіз ешбір тег қосқан жоқсыз",
@@ -1721,7 +1724,8 @@
         "YesDelete": "Иә, жою",
         "NoDelete": "Жоқ",
         "SlotDeleteSuccess": "Слот сәтті жойылды",
-        "ErrorOccurred": "Қате орын алды"
+        "ErrorOccurred": "Қате орын алды",
+        "LearnMoreAboutOH": "Жұмыс уақыты туралы көбірек біліңіз"
     },
     "KbPage": {
         "LearnMoreAboutKB": "Білім қоры туралы көбірек біліңіз",
@@ -2069,7 +2073,7 @@
     "ReadyThemes": "Дайын тақырыптар",
     "CustomColors": "Арнайы түстер",
     "HeaderLogo": "Тақырып логотипі",
-    "UpdateWidget": "ВИДЖЕТТІ ЖАҢАРТУ",
+    "UpdateWidget": "Виджетті жаңарту",
     "WelcomeGreetings": "Қош келдіңіздер",
     "OnlineOfflineGreetings": "Онлайн / Офлайн сәлемдесу",
     "WidgetPreviewIsDisplayedIn": "Виджетті алдын ала қарау және келесі фразалар қазіргі уақытта көрсетіледі",
@@ -2466,6 +2470,7 @@
     "PlanStartDate": "Жоспардың басталу күні",
     "EditProfile": "Профильді өңдеу",
     "HowEmailTicketingWorks": "Электрондық пошта билеті қалай жұмыс істейді",
+    "HowCannedResponsesWorks": "Консервіленген жауаптар қалай жұмыс істейді",
     "Reopen": "Қайта ашыңыз",
     "MostRecentComment": "Ең соңғы түсініктеме",
     "ContactConversations": "Байланыс сұхбаттары",
