@@ -326,11 +326,8 @@
                       <!-- [ngClass]="{'col-xs-6' : hasClickedTrashed === false, 'col-xs-12': hasClickedTrashed === true}"  -->
                       <div class="col-xs-6">
                         <span *ngIf="hasClickedTrashed === false">
-                          <!-- <span style="font-weight: 400;margin-right: 16px;">
-                    {{ contacts?.length }} {{ 'Contacts' | translate }} {{ '_Active' | translate}}
-                  </span> -->
-                          <button style="padding: 6px 14px; margin-top: 0px; margin-bottom: 0px;"
-                            class="btn btn-primary btn-simple export-to-csv-btn" (click)="exportContactsToCsv()">
+                          <button 
+                            class="btn btn-outlined export-to-csv-btn" (click)="exportContactsToCsv()">
                             {{ 'ExportToCSV' | translate }}
                             <span class="material-icons">
                               save_alt
@@ -341,14 +338,10 @@
                         <span *ngIf="hasClickedTrashed === true" style="font-weight: 400;margin-right: 16px;">
                           <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
                             class="material-icons">delete</i>
-                          <!-- {{ trashedContanctCount }} {{ 'Contacts' | translate }} {{ 'inTheTrash' | translate}} -->
+                  
                           {{'TrashContacts' | translate}}
                         </span>
 
-                        <!--  <button style="padding: 9px 30px;margin-bottom:0px" class="btn btn-default"
-                  (click)="closeTrashContacts()">
-                   {{ 'CloseTrash' |translate}}
-                </button> -->
 
                       </div>
 
@@ -654,7 +647,7 @@
                           </td>
 
                           <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
-                            style="padding-left: 0px;padding-top: 17px;">
+                            style="padding-left: 0px;padding-top: 17px !important;">
                             <button type="button" class="btn btn-danger btn-simple btn-xs"
                               [disabled]="IS_CURRENT_USER_OWNER !== true"
                               (click)='deleteContactForever(contact?._id, contact?.fullname)'

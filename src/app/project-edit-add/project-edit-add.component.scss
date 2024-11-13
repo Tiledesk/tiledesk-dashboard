@@ -57,25 +57,15 @@ input[type="text"]:disabled {
   background-color: rgb(248, 249, 249);
 }
 
-.chat-limit-help-1 {
-  font-size: 12px;
-  font-weight: 100;
+.chat-limit-tips {
+  font-size: 13px;
   color: var(--secondary-text-color); // #7695a5;
-  line-height: 1.2em;
+  line-height: 1.3em;
   padding-top: 3px;
-  font-weight: 400;
+  font-weight: 300;
 }
 
-.chat-limit-help-2 {
-  font-size: 12px;
-  font-weight: 100;
-  color: var(--secondary-text-color); // #7695a5;
-  line-height: 1.2em;
-  padding-top: 3px;
-  max-width: 415px;
-  margin-top: 5px;
-  font-weight: 400;
-}
+
 
 .reassignment-timeout-help {
   font-size: 12px;
@@ -1477,13 +1467,7 @@ $f21blue: #039be5;
   margin-left: 4px;
 }
 
-.span-12 {
-  display: block;
-  width: 4px;
-  min-width: 4px;
-  height: 4px;
-  min-height: 4px;
-}
+
 
 .btn-size-xl-round {
   border-radius: 26px;

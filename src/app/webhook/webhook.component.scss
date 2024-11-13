@@ -4,18 +4,12 @@
     margin-top: 5px;
 }
 
-.card-header-custom-bkgrnd {
-    // display:none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    margin: 0px;
-    border-radius: 3px 3px 0px 0px;
-    // background-color: #f2f6f8;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eff3f5;
-    padding-top: 12px;
-    padding-bottom: 12px;
+.card-custom-margin{
+    border-radius: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
+
 
 .left-col-custom-padding {
     padding-right: 5px !important;
@@ -90,29 +84,66 @@ input[type="text"] {
     background-color: #fff;
 }
 
-.webhook-link-to-doc {
-    margin-left: 8px;
+// .webhook-link-to-doc {
+//     margin-left: 8px;
+//     vertical-align: middle;
+//     color: #0f62ff;
+//     font-size: 14px;
+//     font-weight: 400;
+//     cursor: pointer;
+// }
+
+// .webhook-link-to-doc:hover {
+//     text-decoration: underline;
+// }
+
+// .link-to-webhook-doc {
+//     background-color: rgb(241, 241, 241);
+//     margin-top: -9px;
+//     padding: 20px 20px 10px 28px;
+//     margin-left: -3px
+// }
+
+// .link-to-webhook-doc>div {
+//     font-size: 14px;
+//     font-weight: 400;
+//     margin-bottom: 6px;
+//     line-height: 20px;
+// }
+
+// .link-to-webhook-doc>div>svg {
+//     width: 25px;
+//     height: auto;
+//     vertical-align: middle;
+// }
+
+.link-to-docs-wpr {
+    margin-bottom: 16px;
+  }
+  .link-to-docs-wpr > div > div > span > svg {
+    fill: var(--blue-light);
     vertical-align: middle;
-    color: #0f62ff;
+  } 
+  
+  .link-to-docs {
+    // background-color: rgb(241, 241, 241);
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-left: -14px;
+    // padding-bottom: 12px;
+    // padding-top: 12px;
+    padding: 10px 0px;
+  }
+  
+  .custom-anchor-to-docs {
+    color: var(--blue-light); // #0f62ff !important;
+    vertical-align: middle;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
-}
-
-.webhook-link-to-doc:hover {
+    margin-left: 8px;
+  }
+  
+  .custom-anchor-to-docs:hover {
     text-decoration: underline;
-}
-
-.link-to-webhook-doc {
-    background-color: rgb(241, 241, 241);
-    margin-top: -9px;
-    padding: 20px 20px 10px 28px;
-    margin-left: -3px
-}
-
-.link-to-webhook-doc > div {
-    font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;
-}
-.link-to-webhook-doc > div > svg{ 
-    width: 25px;height:auto; vertical-align: middle;
-}
+  }

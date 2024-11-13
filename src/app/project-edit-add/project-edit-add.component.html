@@ -1099,7 +1099,7 @@
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_NOTIFICATION_ROUTE">
 
-                  <!-- ASSIGNED CONVERSATION -->
+                  <!-- Automatic assignment -->
                   <div class="row">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
@@ -1108,10 +1108,17 @@
                         </span>
                       </h3>
                     </div>
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph">
+                        {{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}
+                      </p>
+                    </div>
 
                     <!-- SWITCH BUTTON -->
                     <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
+                      <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
 
                         <div class="onoffswitch">
                           <input (change)="toggleProjectAssignedConversation($event)"
@@ -1122,18 +1129,12 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
-                      </h3>
+                      <!-- </h3> -->
                     </div>
 
-                    <!-- SUBTITLE -->
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
-                      <p class="section-subtitle-paragraph">
-                        {{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}
-                      </p>
-                    </div>
+          
                   </div>
-                  <!-- END ASSIGNED CONVERSATION -->
+                  <!-- END AUTOMATIC CONVERSATION -->
 
                   <!-- UNASSIGNED CONVERSATION -->
                   <div class="row" style="margin-top: 40px;">
@@ -1144,10 +1145,17 @@
                         </span>
                       </h3>
                     </div>
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph">
+                        {{ "NotificationSettings.UnassignedConversationsSubtitle" | translate }}
+                      </p>
+                    </div>
 
                     <!-- SWITCH BUTTON -->
                     <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
+                      <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
 
                         <div class="onoffswitch">
                           <input (change)="toggleProjectUnassignedConversation($event)"
@@ -1158,16 +1166,10 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
-                      </h3>
+                      <!-- </h3> -->
                     </div>
 
-                    <!-- SUBTITLE -->
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
-                      <p class="section-subtitle-paragraph">
-                        {{ "NotificationSettings.UnassignedConversationsSubtitle" | translate }}
-                      </p>
-                    </div>
+                    
                   </div> <!-- ./ UNASSIGNED CONVERSATION -->
                   <!-- --------------------------------------------- -->
                   <!-- TRANSCRIPT BY EMAIL -->
@@ -1614,6 +1616,7 @@
                   </div>
 
                   <div class="input-wrapper" style="max-width: 992px;">
+                    <span class="span-12"></span>
                     <!-- <div class="row">
                       <div class="col-sm-8">
                         <div class="c-alert-x-long-string">
@@ -1632,8 +1635,11 @@
                     <!-- Automatic Assignment On / Off switch -->
                     <!-- ------------------------------------ -->
                     <div class="row"> 
-                      <div class="col-md-6">
-                        <h3 class="card-title onoffswitch_container_first_line">
+                      <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                        {{ 'EnableDisable' | translate}}
+                      </label>
+                      <div class="col-xs-12 col-sm-10">
+                        <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
 
                           
                           <div class="onoffswitch">
@@ -1645,9 +1651,10 @@
                               <span class="onoffswitch-switch"></span>
                             </label>
                           </div>
-                        </h3>
+                        <!-- </h3> -->
                       </div>
                     </div>
+                    <span class="span-20"></span>
                   </div>
 
 
@@ -1682,7 +1689,7 @@
                         <span class="span-20"> </span>
                       </div>
                     </div> -->
-
+                    <span class="span-12"></span>
                     <div class="row">
                       <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
                         {{ 'ProjectEditPage.MaximumChats' | translate}}
@@ -1710,14 +1717,15 @@
                           {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
                         </div>
 
-                        <div class="chat-limit-help-1">
+                        <div class="chat-limit-tips">
                           {{ "ProjectEditPage.ThisChatLimitWillAppliedToAllAgents" | translate }}
                         </div>
-                        <div class="chat-limit-help-2">
+                        <div class="chat-limit-tips" style="max-width: 415px;">
                           {{ "ProjectEditPage.YouCanSpecifyAgentsIndividualChatLimit" | translate }}
                         </div>
                       </div>
                     </div>
+                    <span class="span-20"></span>
                   </div>
 
 
@@ -1733,8 +1741,25 @@
                       </h3>
                     </div>
 
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container">
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                        {{ "ProjectEditPage.ReassignChatIf" | translate }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="input-wrapper" style="max-width: 992px;"
+                    [ngClass]="{'section-disabled' : reassignment_on === false}">
+
+                    <span class="span-12"></span>
+
+                    <div class="row">
+                      <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                        {{ 'EnableDisable' | translate}}
+                      </label>
+                    <div class="col-xs-12 col-sm-10">
+                     
                         <div class="onoffswitch">
                           <input (change)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
                             name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on"
@@ -1744,27 +1769,12 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
-                      </h3>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      
                     </div>
                   </div>
 
-
-                  <div class="input-wrapper" style="max-width: 992px;"
-                    [ngClass]="{'section-disabled' : reassignment_on === false}">
-
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-sm-8">
-                        <!-- <div class="alert"
-                            style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                            <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
-                              class="material-icons">info
-                            </i>
-                            <span style="vertical-align: middle; display: inline-flex;">
-                              {{ "ProjectEditPage.ReassignChatIf" | translate }}</span>
-                          </div> -->
                         <div class="c-alert-x-long-string">
                           <span>
                             <i class="material-icons">info </i>
@@ -1775,8 +1785,8 @@
                         </div>
                         <span class="span-20"></span>
                       </div>
-                    </div>
-
+                    </div> -->
+                    <span class="span-20"></span>
                     <div class="row">
                       <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
                         {{ "ProjectEditPage.ReassignmentTimeout" | translate }}
@@ -1807,6 +1817,7 @@
                         </div>
                       </div>
                     </div>
+                    <span class="span-20"></span>
                   </div>
 
 
@@ -1821,42 +1832,46 @@
                         </span>
                       </h3>
                     </div>
-
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container">
-
-                        <div class="onoffswitch">
-                          <input (change)="toggleUnavailable_status_on($event)"
-                            [checked]="automatic_unavailable_status_on === true" type="checkbox"
-                            name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
-                            id="unavailable_status_on" [disabled]="reassignment_on === false">
-                          <label class="onoffswitch-label" for="unavailable_status_on">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-
-                      </h3>
-                    </div>
-
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                    </div>
+                      <div class="col-md-12">
+                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                        <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                          {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}
+                        </p>
+                      </div>
+                    
                   </div>
 
 
                   <div class="input-wrapper" style="max-width: 992px;"
                     [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false || reassignment_on === false}">
+                   
+                    <span class="span-12"></span>
+
                     <div class="row">
+                      <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                        {{ 'EnableDisable' | translate}}
+                      </label>
+                        <!-- <h3 class="card-title onoffswitch_container"> -->
+                        <div class="col-xs-12 col-sm-10">
+                          <div class="onoffswitch">
+                            <input (change)="toggleUnavailable_status_on($event)"
+                              [checked]="automatic_unavailable_status_on === true" type="checkbox"
+                              name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
+                              id="unavailable_status_on" [disabled]="reassignment_on === false">
+                            <label class="onoffswitch-label" for="unavailable_status_on">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </div>
+
+                        <!-- </h3> -->
+                      </div>
+                   
+
+                    <!-- <div class="row">
                       <div class="col-sm-8">
-                        <!-- <div class="alert"
-                            style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
-                            <i style="vertical-align: middle; display: inline-flex; color:#3ea9f5"
-                              class="material-icons">info
-                            </i>
-                            <span style="vertical-align: middle; display: inline-flex;">
-                              {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}</span>
-                          </div> -->
+
 
                         <div class="c-alert-x-long-string">
                           <span>
@@ -1868,7 +1883,9 @@
                         </div>
                         <span class="span-20"></span>
                       </div>
-                    </div>
+                    </div> -->
+
+                    <span class="span-20"></span>
 
                     <div class="row">
                       <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
