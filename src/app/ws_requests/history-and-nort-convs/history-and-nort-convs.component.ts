@@ -652,6 +652,63 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
   }
 
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
+      if (project) {
+        this.projectId = project._id;
+        this.findCurrentProjectAmongAll(this.projectId)
+      }
+    });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      if (this.current_selected_prjct.id_project.profile) {
+        const projectProfile = this.current_selected_prjct.id_project.profile
+        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
+        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
+        if (projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice === true) {
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+        if(this.payIsVisible) {
+          let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+          this.conversationType.splice(voice_vxml_index, 1);
+        } else {
+          let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+          this.conversationType.splice(voice_twilio_index, 1);
+        }
+          // if (projectProfile.customization.voice) {
+
+          // } else {
+          //   this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          // }
+        } else {
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
+          let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+          let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', voice_vxml_index);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_TWILIO ++++ 1 index', voice_twilio_index);
+          this.conversationType.splice(voice_vxml_index, 1);
+          this.conversationType.splice(voice_twilio_index, 1);
+        }
+
+      }
+
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
+    });
+  }
 
   getCurrentUrlLoadRequests() {
     const currentUrl = this.router.url;
@@ -1403,7 +1460,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               // User Agent
               // -------------------------------------------------------------------
               const user_agent_result = this.parseUserAgent(request.userAgent);
-              // console.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
+              //  this.logger.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
               const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
@@ -1948,8 +2005,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversation_type = 'messenger'
     }
 
-
-
     if (this.conversation_type === 'email') {
       // this.conversationTypeValue = 'email'
       this.conversation_type = 'email'
@@ -1969,6 +2024,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.conversation_type === 'voice-vxml') {
       // this.conversationTypeValue = 'whatsapp'
       this.conversation_type = 'voice-vxml'
+    }
+
+    if (this.conversation_type === 'voice-twilio') {
+      // this.conversationTypeValue = 'whatsapp'
+      this.conversation_type = 'voice-twilio'
     }
   }
 
@@ -2930,52 +2990,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
-      if (project) {
-        this.projectId = project._id;
-        this.findCurrentProjectAmongAll(this.projectId)
-      }
-    });
-  }
-
-  findCurrentProjectAmongAll(projectId: string) {
-
-    this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
-      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
-
-      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-      if (this.current_selected_prjct.id_project.profile) {
-        const projectProfile = this.current_selected_prjct.id_project.profile
-        this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
-        if (projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice === true) {
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-          // if (projectProfile.customization.voice) {
-
-          // } else {
-          //   this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-          // }
-        } else {
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
-          let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', index);
-          this.conversationType.splice(index, 1);
-        }
-
-      }
-
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
-    }, error => {
-      this.logger.error('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
-    });
-  }
+  
 
   getRequestText(text: string): string {
     if (text) {

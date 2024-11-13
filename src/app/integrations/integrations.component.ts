@@ -284,7 +284,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             smsApp.runURL = environment['smsConfigUrl'];
             smsApp.channel = "sms";
           } else {
-            telegramApp = {
+            smsApp = {
               runURL: environment['smsConfigUrl'],
               channel: "sms"
             }
@@ -315,6 +315,31 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           }
         }
         this.availableApps.push(voiceApp);
+
+        // -------
+
+        let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
+  
+        if (environment['voiceTwilioConfigUrl']) {
+          if (voiceTwiloApp) {
+            voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
+            voiceTwiloApp.channel = "voice-twilio";
+          } else {
+            voiceTwiloApp = {
+              voiceTwiloApp: environment['voiceTwilioConfigUrl'],
+              channel: "voice-twilio"
+            }
+          }
+        }
+        else {
+          if (voiceTwiloApp) {
+            voiceTwiloApp.channel = "voice-twilio";
+          }
+        }
+        this.availableApps.push(voiceTwiloApp);
+
+        // -------
+
 
         resolve(true);
 

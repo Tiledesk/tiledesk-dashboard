@@ -666,6 +666,7 @@
           conversationTypeValue === CHANNELS_NAME.WHATSAPP || 
           conversationTypeValue === CHANNELS_NAME.EMAIL ||
           conversationTypeValue === CHANNELS_NAME.VOICE_VXML || 
+          conversationTypeValue === CHANNELS_NAME.VOICE_TWILIO || 
           conversationTypeValue === CHANNELS_NAME.SMS_TWILIO" class="applied-filter">
       <span *ngIf="conversationTypeValue === CHANNELS_NAME.CHAT21 ">
         Chat
@@ -694,6 +695,9 @@
       </span>
 
       <span *ngIf="conversationTypeValue === CHANNELS_NAME.VOICE_VXML">
+        Voice
+      </span>
+      <span *ngIf="conversationTypeValue === CHANNELS_NAME.VOICE_TWILIO">
         Voice
       </span>
       <span *ngIf="conversationTypeValue === CHANNELS_NAME.SMS_TWILIO">
@@ -1370,6 +1374,7 @@
                         <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER">Facebook Messenger </span>
                         <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP"> WhatsApp </span>
                         <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML"> Voice </span>
+                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO"> Voice </span>
                         <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO"> SMS </span>
                       </span>
                     </div>
@@ -1557,7 +1562,7 @@
                       <!-- ---------------------------------------- -->
                       <!-- Channel - Voice -->
                       <!-- ---------------------------------------- -->
-                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML" class="tool_tip">
+                      <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO" class="tool_tip">
 
                         <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
                           class="img-fluid">
