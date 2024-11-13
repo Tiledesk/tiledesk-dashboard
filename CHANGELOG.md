@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.41-rc2
+- Adds the "Twilio voice" integration 
+
 ### 2.7.41-rc1
 - Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
 
