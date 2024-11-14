@@ -63,11 +63,7 @@
 ### 2.7.36-rc1
 - Adds role guard
 - Updates the libraries ua-parser-js, bootstrap and jquery
-<<<<<<< HEAD
 - Adds checks to validate user uploads (user profile, inport chatbot, widget settings, conversation detail)
-=======
-- Adds checks to validate user upload (user profile, inport chatbot, widget settings, conversation detail)
->>>>>>> master-PRE
 
 ### 2.7.35
 - Refactors tables in Monitor page 
