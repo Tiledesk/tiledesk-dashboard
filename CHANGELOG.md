@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.41-rc5
+- Refactors dashboard UI (work in progress)
+
 ### 2.7.41-rc4
 - Fixes bugs on "Twilio voice" integration 
 
