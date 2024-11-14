@@ -10,7 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidation } from 'app/reset-psw/password-validation';
 const swal = require('sweetalert');
-
+type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
+type FormErrors = { [u in UserFields]: string };
 @Component({
   selector: 'appdashboard-change-password',
   templateUrl: './change-password.component.html',
@@ -39,6 +40,37 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   pswForm: FormGroup;
   strongPassword = false;
   isVisiblePsw: boolean = false
+
+  formErrors: FormErrors = {
+    'email': '',
+    'password': '',
+    'firstName': '',
+    'lastName': '',
+    'terms': '',
+  };
+  validationMessages = {
+    'email': {
+      'required': 'Email is required.',
+      'email': 'Email must be a valid email',
+      'pattern': 'Email must be a valid email',
+    },
+    'password': {
+      'required': 'Password is required.',
+      'pattern': 'Password must be include at one letter and one number.',
+      'minlength': 'Password must be at least 8 characters long.',
+      'maxlength': 'Password is too long.',
+
+    },
+    'firstName': {
+      'required': 'First Name is required.',
+    },
+    'lastName': {
+      'required': 'Last Name is required.',
+    },
+    'terms': {
+      'required': 'Please accept Terms and Conditions and Privacy Policy',
+    },
+  };
   
   constructor(
     private _location: Location,
@@ -63,7 +95,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     this.pswForm = this.fb.group({
       'oldPassword': ['', Validators.required],
       'password': ['', [
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
+        // Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
         Validators.minLength(8),
         Validators.maxLength(512),
       ]],
@@ -73,13 +105,40 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
       { validator: PasswordValidation.MatchPassword }
     );
 
-    // this.pswForm.valueChanges.subscribe((data) => this.onPswValueChanged(data));
-    // this.onPswValueChanged(); // reset validation messages
+    this.pswForm.valueChanges.subscribe((data) => this.onValueChanged(data));
+    this.onValueChanged(); // reset validation messages
   }
 
   get passwordFormField() {
     return this.pswForm.get('password');
   }
+
+    // Updates validation state on form changes.
+    onValueChanged(data?: any) {
+      if (!this.pswForm) {
+        return;
+      }
+      const form = this.pswForm;
+  
+      for (const field in this.formErrors) {
+        // tslint:disable-next-line:max-line-length
+        if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms')) {
+          // clear previous error message (if any)
+          this.formErrors[field] = '';
+          const control = form.get(field);
+          if (control && control.dirty && !control.valid) {
+            const messages = this.validationMessages[field];
+            if (control.errors) {
+              for (const key in control.errors) {
+                if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                  this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
 
   onPasswordStrengthChanged(event: boolean) {
     this.logger.log('[USER-PROFILE][CHANGE-PSW] onPasswordStrengthChanged ', event)

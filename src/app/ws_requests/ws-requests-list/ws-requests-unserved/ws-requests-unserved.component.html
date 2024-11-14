@@ -401,6 +401,7 @@
                   <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER">Facebook Messenger </span>
                   <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP"> WhatsApp </span>
                   <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML"> Voice </span>
+                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO"> Voice </span>
                   <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO"> SMS </span>
                 </span>
               </div>
@@ -596,7 +597,7 @@
                 <!-- ---------------------------------------- -->
                 <!-- Channel - Voice -->
                 <!-- ---------------------------------------- -->
-                <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML" class="tool_tip">
+                <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO" class="tool_tip">
 
                   <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/voice.svg"
                     class="img-fluid">
@@ -764,30 +765,30 @@
                 <div class="requester---avatar"
                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}">
                   <span
-                    *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.lead?.fullname !== request?.lead?.phone"
+                    *ngIf="(request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.fullname !== request?.lead?.phone"
                     style="color: #ffffff">
                     {{ request?.requester_fullname_initial }}
                   </span>
                   <span
-                    *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && request?.lead?.fullname === request?.lead?.phone"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.fullname === request?.lead?.phone"
                     class="material-icons-outlined"
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
                   </span>
                   <span
-                    *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && !request?.lead?.phone"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO)  && !request?.lead?.phone"
                     class="material-icons-outlined"
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
                   </span>
                   <span
-                    *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)"
                     style="color: #ffffff;">
                     {{ request?.requester_fullname_initial }}
                   </span>
 
-                  <!-- *ngIf="request?.requester_is_verified === true" -->
-                  <div class="verified-user-icon-wpr">
+                 
+                  <div class="verified-user-icon-wpr" *ngIf="request?.requester_is_verified === true">
                     <svg class="requester-verified--icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                       height="17" xml:space="preserve">
@@ -819,9 +820,9 @@
                 <div class="requester---fullname-wpr">
                   
                   <span class="requester---fullname" [ngClass]="
-                    {'requester-not-has-email' : request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && !request?.lead?.email, 
-                    'requester-not-has-phone': request?.channel?.name === CHANNELS_NAME.VOICE_VXML && !request?.lead?.phone,
-                    'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML) && (request?.lead?.phone === request?.lead?.fullname)
+                    {'requester-not-has-email' : (request?.channel?.name !== CHANNELS_NAME.VOICE_VXML  && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.email, 
+                    'requester-not-has-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone,
+                    'requester-fullname-is-phone': (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.phone === request?.lead?.fullname)
                     }">
                     {{ request?.lead?.fullname}}
                   </span>
@@ -834,12 +835,12 @@
                 <div class="requester---email-wpr">
                   <span class="requester---email">
                     
-                    <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML" class="requester-has-email">
+                    <span *ngIf="(request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO)" class="requester-has-email">
                       <span *ngIf="request?.lead?.email">
                         {{ request?.lead?.email }}
                       </span>
                     </span>
-                    <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
+                    <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO)">
                       <span *ngIf="request?.lead?.phone !== request?.lead?.fullname"
                         matTooltipClass="convs-custom-mat-tooltip" matTooltip="{{ 'RequesterPhoneNumber' | translate }}"
                         #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">

@@ -38,9 +38,9 @@ export class RoleService {
 
       const projectId = currentProject._id
 
-      const projectUserRole = this.usersService.project_user_role_bs.value
-      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
-      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
+      const projectUserRole = this.usersService.projectUser_bs.value.role
+      console.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
+      console.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
       if (projectUserRole) {
         if (projectUserRole === 'agent') {
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')

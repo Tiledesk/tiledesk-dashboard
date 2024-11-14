@@ -229,7 +229,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
 
       // this.certfifiedTemplates = res
-     console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
+      this.logger.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
       if (res) {
         // this.templates = res.slice(0, 5);
 

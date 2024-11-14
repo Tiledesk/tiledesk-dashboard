@@ -14,6 +14,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
+import { ProjectUser } from 'app/models/project-user';
 
 
 const swal = require('sweetalert');
@@ -96,6 +97,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
+    this.logger.log('INTEGRATIONS ', this.INTEGRATIONS )
   }
 
 
@@ -168,21 +170,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
 
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
+        } else {
+          this.ROLE_IS_AGENT = false;
         }
-      });
+      }
+    });
   }
 
   /**
@@ -284,7 +282,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             smsApp.runURL = environment['smsConfigUrl'];
             smsApp.channel = "sms";
           } else {
-            telegramApp = {
+            smsApp = {
               runURL: environment['smsConfigUrl'],
               channel: "sms"
             }
@@ -315,6 +313,31 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           }
         }
         this.availableApps.push(voiceApp);
+
+        // -------
+
+        let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
+  
+        if (environment['voiceTwilioConfigUrl']) {
+          if (voiceTwiloApp) {
+            voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
+            voiceTwiloApp.channel = "voice-twilio";
+          } else {
+            voiceTwiloApp = {
+              voiceTwiloApp: environment['voiceTwilioConfigUrl'],
+              channel: "voice-twilio"
+            }
+          }
+        }
+        else {
+          if (voiceTwiloApp) {
+            voiceTwiloApp.channel = "voice-twilio";
+          }
+        }
+        this.availableApps.push(voiceTwiloApp);
+
+        // -------
+
 
         resolve(true);
 
@@ -770,6 +793,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   manageAppVisibility(projectProfileData) {
 
+    this.logger.log('[INTEGRATIONS] projectProfileData.customization ', projectProfileData.customization)
+
     if (projectProfileData && projectProfileData.customization) {
 
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
@@ -793,6 +818,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
+      if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
       if (index === -1) {
@@ -804,8 +834,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
     } else {
 
-      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
-      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
+
+      let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
       
     }
 

@@ -4846,6 +4846,7 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: var(--no-tags-line-clamp);
+  line-clamp: var(--no-tags-line-clamp);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   font-family: var(--content-font-family);
@@ -5675,6 +5676,10 @@ label {
   font-size: 12px;
   line-height: 16px;
   letter-spacing: -0.01em;
+}
+
+.mat-tab-group-on-panel {
+  margin-top: 5px;
 }
 
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,.mat-tab-nav-bar.mat-primary .mat-ink-bar {
