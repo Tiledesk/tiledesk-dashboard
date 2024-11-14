@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.41-rc3
+- Improves the "Twilio voice" integration 
+
 ### 2.7.41-rc2
 - Adds the "Twilio voice" integration 
 
