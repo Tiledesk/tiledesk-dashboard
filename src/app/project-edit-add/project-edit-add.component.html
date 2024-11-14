@@ -730,7 +730,7 @@
                               <!-- {{ numberOf_agents_seats }} -->
                               {{countOfPendingInvites + projectUsersLength}}
                             </span>
-          
+
                           </span>
                         </div>
                       </div>
@@ -747,7 +747,7 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
                     <!-- && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
-                 
+
                     <ng-container *ngIf="!appSumoProfile && isSripeSub">
                       <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                         <label class="col-sm-3 custom-label">
@@ -755,8 +755,7 @@
                         </label>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                           <!-- btn-primary -->
-                          <button class="btn btn-tdblu-no-boxshadow" (click)="goToPayments()"
-                            style="margin-top: 0px;">
+                          <button class="btn btn-tdblu-no-boxshadow" (click)="goToPayments()" style="margin-top: 0px;">
                             {{ "ProjectEditPage.SeePayments" | translate }}
                           </button>
                         </div>
@@ -767,7 +766,7 @@
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
 
-                   
+
 
                     <!-- *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F" -->
                     <ng-container *ngIf="!appSumoProfile && isSripeSub && prjct_profile_type !== 'free'">
@@ -776,7 +775,7 @@
                         <div class="col-md-12">
                           <h3 class="card_title__underlined">
                             <span class="card_title__underline">
-                  
+
                               {{ "ExtremeMeasures" | translate }}
                             </span>
                           </h3>
@@ -796,7 +795,7 @@
                         </div>
                       </div>
                     </ng-container>
-                    
+
 
 
                     <!-- ------------------------------------------------------------------------------------------------ -->
@@ -1030,12 +1029,9 @@
                         <div class="upgrade-btn-wpr">
                           <button class="btn btn-get-feature-no-boxshadow custom-margin pull-left"
                             [ngStyle]="{'margin-left':isVisiblePaymentTab === true ? '15px' : '0px'}"
-                            (click)="goToPricing()" 
-                            matTooltipClass="custom-mat-tooltip-in-widget-setup"
-                            matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='below' 
-                            matTooltipHideDelay="100">
+                            (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
+                            matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
+                            matTooltipPosition='below' matTooltipHideDelay="100">
                             <span class="material-icons-outlined get-feature-upgrade-plan-icon">
                               upgrade
                             </span>
@@ -1118,7 +1114,13 @@
 
                     <!-- SWITCH BUTTON -->
                     <div class="col-md-6">
+                      <span class="span-12"></span>
                       <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
+                      <div class="label--switch-wpr">
+                        <label>
+                          {{ 'Enable' | translate}}
+                        </label>
+
 
                         <div class="onoffswitch">
                           <input (change)="toggleProjectAssignedConversation($event)"
@@ -1129,10 +1131,12 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
+
+                      </div>
                       <!-- </h3> -->
                     </div>
 
-          
+
                   </div>
                   <!-- END AUTOMATIC CONVERSATION -->
 
@@ -1156,6 +1160,11 @@
                     <!-- SWITCH BUTTON -->
                     <div class="col-md-6">
                       <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
+                      <span class="span-12"></span>
+                      <div class="label--switch-wpr">
+                        <label>
+                          {{ 'Enable' | translate}}
+                        </label>
 
                         <div class="onoffswitch">
                           <input (change)="toggleProjectUnassignedConversation($event)"
@@ -1166,10 +1175,11 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
+                      </div>
                       <!-- </h3> -->
                     </div>
 
-                    
+
                   </div> <!-- ./ UNASSIGNED CONVERSATION -->
                   <!-- --------------------------------------------- -->
                   <!-- TRANSCRIPT BY EMAIL -->
@@ -1182,10 +1192,23 @@
                         </span>
                       </h3>
                     </div>
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph">
+                        {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
+                      </p>
+                    </div>
 
                     <!-- SWITCH BUTTON -->
                     <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
+                      <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
+                      <span class="span-12"></span>
+
+                      <div class="label--switch-wpr">
+                        <label>
+                          {{ 'Enable' | translate}}
+                        </label>
 
                         <div class="onoffswitch">
                           <input (change)="autoSendTranscriptOnOff($event)"
@@ -1196,16 +1219,13 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
-                      </h3>
+                      </div>
+                      <!-- </h3> -->
                     </div>
 
-                    <!-- SUBTITLE -->
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
-                      <p class="section-subtitle-paragraph">
-                        {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
-                      </p>
-                    </div>
+
+
+
                   </div>
                   <!-- --------------------------------------------- -->
                   <!-- AUTO SEND TRANSCRIPT BY EMAIL BODY -->
@@ -1356,7 +1376,7 @@
 
                     </div>
                   </div>
-                  <!-- ASSIGNED CONVERSATION -->
+
                   <div class="row">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
@@ -1365,10 +1385,28 @@
                         </span>
                       </h3>
                     </div>
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                        {{'ProjectEditPage.Security.ThisWillAffects' | translate }}:
+                        {{'ProjectEditPage.Security.SignInForAllTiledeskProducts' | translate:tparams }}
+                      </p>
+                      <!-- <ul class="section-subtitle-ul">
+                        <li>
+                          {{'ProjectEditPage.Security.SignInForAllTiledeskProducts' | translate:tparams }}
+                        </li>
+                      </ul> -->
+                    </div>
 
                     <!-- SWITCH BUTTON -->
                     <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
+                      <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
+                      <span class="span-12"></span>
+                      <div class="label--switch-wpr" style="margin-left: 15px;">
+                        <label>
+                          {{ 'Enable' | translate}}
+                        </label>
 
                         <div class="onoffswitch">
                           <input (change)="toggleEnableIPrestrictions($event)" [checked]="ip_restrictions_on === true"
@@ -1379,68 +1417,51 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
-                      </h3>
-                    </div>
-
-                    <!-- SUBTITLE -->
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
-                      <p class="section-subtitle-paragraph" style="margin-bottom: 2px;">
-                        {{'ProjectEditPage.Security.ThisWillAffects' | translate }}
-                      </p>
-                      <ul class="section-subtitle-ul">
-                        <li>
-                          {{'ProjectEditPage.Security.SignInForAllTiledeskProducts' | translate:tparams }}
-                        </li>
-                        <!-- <li>
-                            Access to functionality within Support, Guide, Talk and Explore
-                          </li>
-                          <li>
-                            API calls for Support, Guide, Talk and Explore
-                          </li> -->
-                      </ul>
-                    </div>
-
-
-                    <div class="row" style="margin-top: 40px;">
-                      <div class="col-md-8" style="max-width:645px">
-                        <h3 class="security-section-title">
-                          {{'ProjectEditPage.Security.AllowedIpRanges' | translate }}
-                        </h3>
-
-                        <!-- style="width: calc((100% / 3) + 372px); -->
-                        <div class="security-section-subtitle">
-                          {{'ProjectEditPage.Security.AddIpRanges' | translate:tparams }}
-                          {{'ProjectEditPage.Security.Use' | translate }}
-                          <span style="font-weight: 500;"> n.n.n.n </span> {{ 'Or' | translate }}<span
-                            style="font-weight: 500;">
-                            n.n.n/n </span>
-
-                          {{'ProjectEditPage.Security.AllowedIpRanges' | translate }}
-
-                          <!--[disabled]="!ip_restrictions_on" -->
-                          <input style="margin-top: 6px;" [(ngModel)]="allowedIPs"
-                            (ngModelChange)="allowedIPsChanged($event)" type="text"
-                            placeholder="{{'ProjectEditPage.Security.RangesPlaceholder' | translate }}"
-                            [disabled]="!ip_restrictions_on">
-                        </div>
                       </div>
+                      <!-- </h3> -->
                     </div>
+                  </div>
+                  <!-- style="margin-top: 40px;" -->
+                  <div class="row" style="margin-top: 30px;">
+                    <div class="col-md-8" style="max-width:645px">
+                      <h3 class="security-section-title">
+                        {{'ProjectEditPage.Security.AllowedIpRanges' | translate }}
+                      </h3>
 
+                      <!-- style="width: calc((100% / 3) + 372px); -->
+                      <div class="security-section-subtitle">
+                        {{'ProjectEditPage.Security.AddIpRanges' | translate:tparams }}
+                        {{'ProjectEditPage.Security.Use' | translate }}
+                        <span style="font-weight: 500;"> n.n.n.n </span> {{ 'Or' | translate }}<span
+                          style="font-weight: 500;">
+                          n.n.n/n </span>
+                        <span style="display: block; margin-top: 12px;"> 
+                          {{'ProjectEditPage.Security.AllowedIpRanges' | translate }}
+                        </span>
 
-                    <div class="row">
-                      <div class="col-sm-8">
-                        <div class="security-warning">
-                          <span>
-                            <i class="material-icons">report_problem</i>
-                            <span>
-                              {{'ProjectEditPage.Security.EnableIpBasedAccessRestrictions' | translate:tparams }}
-                            </span>
-                          </span>
-                        </div>
+                        <!--[disabled]="!ip_restrictions_on" -->
+                        <input style="margin-top: 6px;" [(ngModel)]="allowedIPs"
+                          (ngModelChange)="allowedIPsChanged($event)" type="text"
+                          placeholder="{{'ProjectEditPage.Security.RangesPlaceholder' | translate }}"
+                          [disabled]="!ip_restrictions_on">
                       </div>
                     </div>
                   </div>
+
+
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="security-warning">
+                        <span>
+                          <i class="material-icons">report_problem</i>
+                          <span>
+                            {{'ProjectEditPage.Security.EnableIpBasedAccessRestrictions' | translate:tparams }}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                 </span> <!-- ./ security -->
 
 
@@ -1537,10 +1558,8 @@
                                     [disabled]="IS_CURRENT_USER_AGENT === true"
                                     (click)='unbanVisitor(visitor?.bannedUsers_Id)'
                                     matTooltipClass="custom-mat-tooltip-in-widget-setup"
-                                    matTooltip=" {{'Unban' | translate}}" 
-                                    #tooltip="matTooltip"
-                                    matTooltipPosition='right' 
-                                    matTooltipHideDelay="100">
+                                    matTooltip=" {{'Unban' | translate}}" #tooltip="matTooltip"
+                                    matTooltipPosition='right' matTooltipHideDelay="100">
 
                                     <!-- <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
@@ -1605,7 +1624,7 @@
                       </h3>
                     </div>
 
-                   
+
 
                     <div class="col-md-12">
                       <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
@@ -1634,23 +1653,23 @@
                     <!-- ------------------------------------ -->
                     <!-- Automatic Assignment On / Off switch -->
                     <!-- ------------------------------------ -->
-                    <div class="row"> 
+                    <div class="row">
                       <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                        {{ 'EnableDisable' | translate}}
+                        {{ 'Enable' | translate}}
                       </label>
                       <div class="col-xs-12 col-sm-10">
                         <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
 
-                          
-                          <div class="onoffswitch">
-                            <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
-                              name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch"
-                              [disabled]="advancedSettingBtnDisabled === true">
-                            <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
-                              <span class="onoffswitch-inner"></span>
-                              <span class="onoffswitch-switch"></span>
-                            </label>
-                          </div>
+
+                        <div class="onoffswitch">
+                          <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
+                            name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch"
+                            [disabled]="advancedSettingBtnDisabled === true">
+                          <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
                         <!-- </h3> -->
                       </div>
                     </div>
@@ -1756,10 +1775,10 @@
 
                     <div class="row">
                       <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                        {{ 'EnableDisable' | translate}}
+                        {{ 'Enable' | translate}}
                       </label>
-                    <div class="col-xs-12 col-sm-10">
-                     
+                      <div class="col-xs-12 col-sm-10">
+
                         <div class="onoffswitch">
                           <input (change)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
                             name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on"
@@ -1769,9 +1788,9 @@
                             <span class="onoffswitch-switch"></span>
                           </label>
                         </div>
-                      
+
+                      </div>
                     </div>
-                  </div>
 
                     <!-- <div class="row">
                       <div class="col-sm-8">
@@ -1832,42 +1851,42 @@
                         </span>
                       </h3>
                     </div>
-                      <div class="col-md-12">
-                        <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
-                        <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
-                          {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}
-                        </p>
-                      </div>
-                    
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                        {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate }}
+                      </p>
+                    </div>
+
                   </div>
 
 
                   <div class="input-wrapper" style="max-width: 992px;"
                     [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false || reassignment_on === false}">
-                   
+
                     <span class="span-12"></span>
 
                     <div class="row">
                       <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                        {{ 'EnableDisable' | translate}}
+                        {{ 'Enable' | translate}}
                       </label>
-                        <!-- <h3 class="card-title onoffswitch_container"> -->
-                        <div class="col-xs-12 col-sm-10">
-                          <div class="onoffswitch">
-                            <input (change)="toggleUnavailable_status_on($event)"
-                              [checked]="automatic_unavailable_status_on === true" type="checkbox"
-                              name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
-                              id="unavailable_status_on" [disabled]="reassignment_on === false">
-                            <label class="onoffswitch-label" for="unavailable_status_on">
-                              <span class="onoffswitch-inner"></span>
-                              <span class="onoffswitch-switch"></span>
-                            </label>
-                          </div>
+                      <!-- <h3 class="card-title onoffswitch_container"> -->
+                      <div class="col-xs-12 col-sm-10">
+                        <div class="onoffswitch">
+                          <input (change)="toggleUnavailable_status_on($event)"
+                            [checked]="automatic_unavailable_status_on === true" type="checkbox"
+                            name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
+                            id="unavailable_status_on" [disabled]="reassignment_on === false">
+                          <label class="onoffswitch-label" for="unavailable_status_on">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                          </label>
                         </div>
-
-                        <!-- </h3> -->
                       </div>
-                   
+
+                      <!-- </h3> -->
+                    </div>
+
 
                     <!-- <div class="row">
                       <div class="col-sm-8">
@@ -1938,29 +1957,43 @@
                         </span>
                       </h3>
                     </div>
+                    
 
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
-
-                        <div class="onoffswitch">
-                          <!--  [disabled]="advancedSettingBtnDisabled === true"-->
-                          <input (change)="toggleAgentViewOnlyOwnConv($event)" type="checkbox"
-                            name="agent_view_only_own_conv" class="onoffswitch-checkbox" id="agent_view_only_own_conv"
-                            [checked]="agents_can_see_only_own_convs">
-                          <label class="onoffswitch-label" for="agent_view_only_own_conv">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-                      </h3>
-                    </div>
-
+                    <!-- SUBTITLE -->
                     <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph">
+                        {{'ProjectEditPage.EnablingThisOptionAllowsTeammatesToOnlySeeOwnConvs' | translate}}
+                      </p>
                     </div>
+
+                    <!-- SWITCH BUTTON -->
+                    <div class="col-md-6">
+                      <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
+                        <span class="span-12"></span>
+
+                        <div class="label--switch-wpr">
+                          <label>
+                            {{ 'Enable' | translate}}
+                          </label>
+
+                          <div class="onoffswitch">
+                            <input (change)="toggleAgentViewOnlyOwnConv($event)" type="checkbox"
+                              name="agent_view_only_own_conv" class="onoffswitch-checkbox" id="agent_view_only_own_conv"
+                              [checked]="agents_can_see_only_own_convs">
+                            <label class="onoffswitch-label" for="agent_view_only_own_conv">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </div>
+                      <!-- </h3> -->
+                    </div>
+
+                   
                   </div>
 
-                  <div class="input-wrapper" style="max-width: 992px;">
+                  <!-- <div class="input-wrapper" style="max-width: 992px;">
                     <div class="row">
                       <div class="col-sm-8">
                         <div class="c-alert-x-long-string">
@@ -1974,7 +2007,7 @@
                         <span class="span-20"> </span>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
 
                   <!-- ----------------------------------- -->
@@ -1990,29 +2023,41 @@
                       </h3>
                     </div>
 
-                    <div class="col-md-6">
-                      <h3 class="card-title onoffswitch_container_first_line">
-
-                        <div class="onoffswitch">
-
-                          <input (change)="toggleVisibilityOfChatbotAttributes($event)" type="checkbox"
-                            name="are_hide_chatbot_attributes_card_in_conv_dtls" class="onoffswitch-checkbox"
-                            id="are_hide_chatbot_attributes_card_in_conv_dtls"
-                            [checked]="areHideChatbotAttributesInConvDtls">
-                          <label class="onoffswitch-label" for="are_hide_chatbot_attributes_card_in_conv_dtls">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-                      </h3>
+                    <!-- SUBTITLE -->
+                    <div class="col-md-12">
+                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                      <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                        {{'EnablingThisOptionHidesChatbotAttributes' | translate }}
+                      </p>
                     </div>
 
-                    <div class="col-md-12">
-                      <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"> </div>
+
+                    <!-- SWITCH BUTTON -->
+                    <div class="col-md-6">
+                      <!-- <h3 class="card-title onoffswitch_container_first_line"> -->
+                        <span class="span-12"></span>
+
+                        <div class="label--switch-wpr">
+                          <label>
+                            {{ 'Enable' | translate}}
+                          </label>
+                          <div class="onoffswitch">
+
+                            <input (change)="toggleVisibilityOfChatbotAttributes($event)" type="checkbox"
+                              name="are_hide_chatbot_attributes_card_in_conv_dtls" class="onoffswitch-checkbox"
+                              id="are_hide_chatbot_attributes_card_in_conv_dtls"
+                              [checked]="areHideChatbotAttributesInConvDtls">
+                            <label class="onoffswitch-label" for="are_hide_chatbot_attributes_card_in_conv_dtls">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+                        </div>
+                      <!-- </h3> -->
                     </div>
                   </div>
 
-                  <div class="input-wrapper" style="max-width: 992px;">
+                  <!-- <div class="input-wrapper" style="max-width: 992px;">
                     <div class="row">
                       <div class="col-sm-8">
                         <div class="c-alert-x-long-string">
@@ -2026,7 +2071,7 @@
                         <span class="span-20"> </span>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
 
                 </span> <!-- /. Advanced ROUTE -->

@@ -226,6 +226,7 @@ button.close {
 .onoffswitch-switch {
   display: block;
   width: 22px;
+  height: 22px;
   margin: 5px;
   background: #f44336;
   position: absolute;
@@ -261,7 +262,12 @@ button.close {
 
 // ./end SWITCH BTN
 
-
+.label--switch-wpr {
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
 
 .custom-label {
   color: rgb(118, 149, 165);
