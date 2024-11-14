@@ -398,7 +398,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
-    
+
   }
 
   getProjectUserRole() {
@@ -432,7 +432,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       let servedIndex = this.statusInHistory.findIndex(x => x.id === '200');
       this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan servedIndex', servedIndex)
       this.statusInHistory.splice(servedIndex, 1)
-      this.statusInHistory =  this.statusInHistory.slice(0)
+      this.statusInHistory = this.statusInHistory.slice(0)
     }
 
   }
@@ -675,20 +675,30 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         const projectProfile = this.current_selected_prjct.id_project.profile
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
-        if (projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice === true) {
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-        if(this.payIsVisible) {
-          let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
-          this.conversationType.splice(voice_vxml_index, 1);
-        } else {
-          let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
-          this.conversationType.splice(voice_twilio_index, 1);
-        }
-          // if (projectProfile.customization.voice) {
+        // && projectProfile.customization.voice && projectProfile.customization.voice === true
+        if (projectProfile && projectProfile.customization) {
 
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          if (projectProfile.customization.voice && projectProfile.customization.voice === true) {
+            let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+            this.conversationType.splice(voice_twilio_index, 1);
+          } 
+          else if (projectProfile.customization['voice-twilio'] && projectProfile.customization['voice-twilio'] === true) {
+            let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+            this.conversationType.splice(voice_vxml_index, 1);
+          }
+
+
+
+          //   let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+          //   this.conversationType.splice(voice_vxml_index, 1);
           // } else {
-          //   this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          // let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+          // this.conversationType.splice(voice_twilio_index, 1);
           // }
+
+
+
         } else {
           this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
           this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
@@ -1252,8 +1262,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.operator = '='
       this.requests_status_selected_from_advanced_option = '200'
       this.requests_status = '200'
-    } 
-    
+    }
+
     // else if (request_status === '50') {
     //   this.operator = '='
     //   this.requests_status_selected_from_advanced_option = '50'
@@ -1277,7 +1287,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getAllRequests() {
-  //  this.operator = '='
+    //  this.operator = '='
     this.requests_status = 'all'
     //  this.requests_status = '100,150,200'
     // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
@@ -1428,9 +1438,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getRequests() {
     this.logger.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
-    this.logger.log('getRequests requests_status ' , this.requests_status) 
-  
+    this.logger.log('getRequests requests_statuses ', this.requests_statuses)
+    this.logger.log('getRequests requests_status ', this.requests_status)
+
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -1605,7 +1615,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - detectMobile IS MOBILE ', this.isMobile);
   }
 
-  
+
 
 
   // requestWillBePermanentlyDeleted
@@ -2557,7 +2567,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.duration_operator_temp = this.request_duration_operator_array[0]['id']
 
-    if (this.duration)  {
+    if (this.duration) {
       this.duration = ''
     }
 
@@ -2698,7 +2708,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'requester_email=' + '&'
       + 'tags=' + '&'
       + 'channel=';
-      + 'rstatus=' + '&'
+    + 'rstatus=' + '&'
       + 'duration_op=' + '&'
       + 'duration=' + '&'
       + 'called=' + '&'
@@ -2990,7 +3000,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  
+
 
   getRequestText(text: string): string {
     if (text) {

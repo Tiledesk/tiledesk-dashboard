@@ -96,6 +96,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
+    this.logger.log('INTEGRATIONS ', this.INTEGRATIONS )
   }
 
 
@@ -794,6 +795,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   manageAppVisibility(projectProfileData) {
+
+    this.logger.log('[INTEGRATIONS] projectProfileData.customization ', projectProfileData.customization)
 
     if (projectProfileData && projectProfileData.customization) {
 

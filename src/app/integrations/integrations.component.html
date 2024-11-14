@@ -38,6 +38,8 @@
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
 
+                                <!-- INTEGRATIONS > {{INTEGRATIONS | json }} -->
+
                                 <div *ngFor="let integration of INTEGRATIONS">
                                     <div *ngIf="integration.category === category.type" class="element"
                                         [ngClass]="{'element-selected': integrationSelectedName === integration.key }"
