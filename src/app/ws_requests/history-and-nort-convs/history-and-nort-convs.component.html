@@ -659,12 +659,12 @@
 
     <!-- || conversation_type  === 'chat21'  && conversation_type !== 'all'-->
     <div id="conversation-type" *ngIf="
-          conversationTypeValue === CHANNELS_NAME.CHAT21 ||
-          conversationTypeValue === CHANNELS_NAME.FORM ||
-          conversationTypeValue === CHANNELS_NAME.MESSANGER ||
-          conversationTypeValue === CHANNELS_NAME.TELEGRAM || 
-          conversationTypeValue === CHANNELS_NAME.WHATSAPP || 
-          conversationTypeValue === CHANNELS_NAME.EMAIL ||
+          conversationTypeValue  === CHANNELS_NAME.CHAT21 ||
+          conversationTypeValue  === CHANNELS_NAME.FORM ||
+          conversationTypeValue  === CHANNELS_NAME.MESSANGER ||
+          conversationTypeValue  === CHANNELS_NAME.TELEGRAM || 
+          conversationTypeValue  === CHANNELS_NAME.WHATSAPP || 
+          conversationTypeValue  === CHANNELS_NAME.EMAIL ||
           conversationTypeValue === CHANNELS_NAME.VOICE_VXML || 
           conversationTypeValue === CHANNELS_NAME.VOICE_TWILIO || 
           conversationTypeValue === CHANNELS_NAME.SMS_TWILIO" class="applied-filter">
@@ -1575,6 +1575,7 @@
                         </span>
                       </span>
 
+                    
                       <!-- ---------------------------------------- -->
                       <!-- Channel - SMS -->
                       <!-- ---------------------------------------- -->
@@ -1588,6 +1589,7 @@
                           <i></i>
                         </span>
                       </span>
+                      
                       <!-- ---------------------------------------- -->
                       <!-- Channel - WhatsApp -->
                       <!-- ---------------------------------------- -->
