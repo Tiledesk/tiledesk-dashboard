@@ -2036,6 +2036,7 @@
     "AppliedFilters": "Applied Filters",
     "Ticket": "Internal request",
     "EnableDisable": "Enable / disable",
+    "Enable": "Enable",
     "Webhook": {
         "AddSubscription": "Add Subscription",
         "Subscriptions": "Subscriptions",

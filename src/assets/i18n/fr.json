@@ -2024,6 +2024,7 @@
     "AppliedFilters": "Filtres appliqués",
     "Ticket": "Demande interne",
     "EnableDisable": "Activer / désactiver",
+    "Enable": "Activer",
     "Webhook": {
         "AddSubscription": "Ajouter un abonnement",
         "Subscriptions": "Abonnements",

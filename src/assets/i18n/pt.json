@@ -2023,7 +2023,8 @@
     "ResetFilters": "Redefinir filtros",
     "AppliedFilters": "Filtros aplicados",
     "Ticket": "Solicitação interna",
-    "EnableDisable": "Habilitar desabilitar",
+    "EnableDisable": "Habilitar / Desabilitar",
+    "Enable": "Habilitar",
     "Webhook": {
         "AddSubscription": "Adicionar assinatura",
         "Subscriptions": "Assinaturas",

@@ -2025,6 +2025,7 @@
     "AppliedFilters": "المرشحات التطبيقية",
     "Ticket": "طلب داخلي",
     "EnableDisable": "مفعل وغير مفعل",
+    "Enable": "تفعيل",
     "Webhook": {
         "AddSubscription": "إضافة اشتراك",
         "Subscriptions": "الاشتراكات",

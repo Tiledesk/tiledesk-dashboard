@@ -2023,6 +2023,7 @@
 	"AppliedFilters": "Angewandte Filter",
 	"Ticket": "Interne Anfrage",
 	"EnableDisable": "Aktivieren / deaktivieren",
+	"Enable": "Aktivieren",
 	"Webhook": {
 		"AddSubscription": "Abonnement hinzufügen",
 		"Subscriptions": "Abonnements",

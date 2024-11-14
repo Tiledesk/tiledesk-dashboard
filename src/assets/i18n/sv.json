@@ -2025,7 +2025,8 @@
     "ResetFilters": "Återställ filter",
     "AppliedFilters": "Tillämpade filter",
     "Ticket": "Intern förfrågan",
-    "EnableDisable": "Aktivera inaktivera",
+    "EnableDisable": "Aktivera / Inaktivera",
+    "Enable": "Aktivera",
     "Webhook": {
         "AddSubscription": "Lägg till prenumeration",
         "Subscriptions": "Prenumerationer",

@@ -2027,6 +2027,7 @@
     "AppliedFilters": "Застосовані фільтри",
     "Ticket": "Внутрішній запит",
     "EnableDisable": "Увімкнути / вимкнути",
+    "Enable": "Увімкнути",
     "Webhook": {
         "AddSubscription": "Додати підписку",
         "Subscriptions": "Підписки",

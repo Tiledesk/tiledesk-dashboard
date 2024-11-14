@@ -2026,6 +2026,7 @@
     "AppliedFilters": "Примењени филтери",
     "Ticket": "Интерни захтев",
     "EnableDisable": "Омогући / онемогући",
+    "Enable": "Омогући",
     "Webhook": {
         "AddSubscription": "Додај претплату",
         "Subscriptions": "Претплате",

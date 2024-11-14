@@ -2026,6 +2026,7 @@
     "AppliedFilters": "Uygulanan Filtreler",
     "Ticket": "Dahili istek",
     "EnableDisable": "Etkinleştirme / Devre dışı",
+    "Enable": "Etkinleştir",
     "Webhook": {
         "AddSubscription": "Abonelik Ekle",
         "Subscriptions": "Abonelikler",

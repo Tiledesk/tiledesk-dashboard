@@ -2024,6 +2024,7 @@
     "AppliedFilters": "Применяемые фильтры",
     "Ticket": "Внутренний запрос",
     "EnableDisable": "Включить выключить",
+    "Enable": "Активировать",
     "Webhook": {
         "AddSubscription": "Добавить подписку",
         "Subscriptions": "Подписки",
