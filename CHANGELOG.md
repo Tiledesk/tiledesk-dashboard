@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.41
+- Fixes the bug: onboarding content is not visible on small height screens
+
 ### 2.7.40
 - Minor improvements and bug fixing
 
