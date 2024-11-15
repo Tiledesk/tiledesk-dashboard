@@ -334,6 +334,9 @@ $color-pro-plan: #3ea9f5;
 .onbording-btn-back-text {
     margin-left: 6px !important;
     font-weight: 400;
+    font-size: 14px;
+    font-family: var(--header-font-family);
+    text-transform: uppercase;
 }
 
 .hide-prev-btn {
