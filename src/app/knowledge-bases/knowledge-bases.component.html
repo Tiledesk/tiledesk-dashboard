@@ -213,18 +213,21 @@
                 <!-- --------- ./ MAT-MENU ---------- -->
 
                 <!-- ---------------------------------------- -->
-                <!-- Delete -->
+                <!-- Delete KB / CONTENT -->
                 <!-- ---------------------------------------- -->
                 <div class="buttons-div">
-                  <button id="delete-kb" class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
+                  <button id="delete-kb" class="btn btn-red" [disabled]="addButtonDisabled" aria-label="Delete"
                     style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
-                    matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
-                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    matTooltipClass="kb-custom-mat-tooltip" 
+                    matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below' matTooltipHideDelay="100">
                     <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
-                    <span class="material-icons-round">
+                    <!-- <span class="material-icons-round" style="vertical-align: middle;">
                       delete
-                    </span>
+                    </span> -->
                     <!-- {{ 'KbPage.DeleteNamespace' | translate }} -->
+                    {{ 'Delete' | translate }}
                   </button>
 
                   <!-- ---------------------------------------- -->

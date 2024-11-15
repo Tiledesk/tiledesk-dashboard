@@ -46,6 +46,23 @@ select.select-status {
     }
 }
 
+.preview-count-n {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    // padding: 8px 20px;
+    // border-radius: 0px;
+    // margin: 20px 0 0px;
+    // background-color: #f9f9f9;
+    // height: 50px;
+
+    .preview-count-left {
+        display: flex;
+        align-items: baseline;
+    }
+}
+
 .preview-settings {
     display: flex;
     flex-direction: row;
@@ -221,6 +238,7 @@ table {
 
 .table-body {
     padding: 20px 0px;
+    padding: 5px 20px;
 }
 
 .ellipsis-text {
@@ -493,10 +511,18 @@ td {
     text-transform: none;
 }
 
-.card {
-    border: none !important;
-    margin: 40px 0;
-    //padding: 0px 15px 20px;
+// .card {
+//     border: none !important;
+//     margin: 40px 0;
+// }
+
+.card.contents-card { 
+    border-radius: var(--card-border-radius) ;
+}
+
+.card.filters-card {
+    border-radius: var(--card-border-radius) ;
+    margin-bottom: 0px;
 }
 
 .btn {
@@ -510,12 +536,12 @@ td {
 
 
 .fake-input {
-    height: 37px;
-    //border-radius: 6px;
-    border-radius: 12px;
-    //border: solid 2px #c6cdd4;
-    // border: solid 1px #b5b5b5;
-    box-shadow: 0px 0px 4px #c7c7c7;
+    height: 36px;
+    // border-radius: 12px;
+    // box-shadow: 0px 0px 4px #c7c7c7;
+    // border-radius: 4px;
+    border-radius: 9999px;
+    border: 1px solid #ccc;
     display: flex;
     align-items: center;
     padding: 12px;
@@ -602,6 +628,14 @@ td {
     align-items: center;
 }
 
+.filters > span > svg { 
+    fill: var(--icon-color);
+    vertical-align: middle;
+    margin-right: 18px;
+}
+
+
+
 .selector {
     width: 160px;
     margin-right: 8px;
@@ -617,6 +651,7 @@ td {
     display: flex;
     flex-direction: row;
     justify-content: center; 
+    margin-top: 21px;
 }
 
 
@@ -724,8 +759,10 @@ td {
     justify-content: flex-start;
     -webkit-box-align: center;
     align-items: center;
-    padding: 42px 120px;
-    border-radius: 4px;
+    // padding: 42px 120px;
+    padding: 30px;
+    border-radius: var( --card-border-radius); // 4px;
+    border: 1px solid #e5effe !important;
     // border: 1px solid rgb(226, 232, 239);
 }
 
