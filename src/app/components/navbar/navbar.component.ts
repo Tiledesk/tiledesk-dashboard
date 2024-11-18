@@ -41,6 +41,8 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -220,7 +222,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public brandService: BrandService,
     public localDbService: LocalDbService,
     private logger: LoggerService,
-    private quotesService: QuotesService
+    private quotesService: QuotesService,
+    public dialog: MatDialog,
   ) {
 
     super(prjctPlanService, notifyService);
@@ -1895,8 +1898,31 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   openLogoutModal() {
-    this.displayLogoutModal = 'block';
+    // this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+
+    this.logger.log('[NAVBAR] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'navbar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        console.log(`[NAVBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+
+  logout() {
+    this.logger.log('[NAVBAR] RUN LOGOUT FROM NAV-BAR')
+    this.auth.showExpiredSessionPopup(false);
+    this.auth.signOut('navbar');
   }
 
   onCloseModal() {
@@ -1912,11 +1938,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.displayLogoutModal = 'none';
   }
 
-  logout() {
-    this.logger.log('[NAVBAR] RUN LOGOUT FROM NAV-BAR')
-    this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut('navbar');
-  }
+ 
 
   testExpiredSessionFirebaseLogout() {
     this.auth.testExpiredSessionFirebaseLogout(true)

@@ -82,7 +82,8 @@ export class NotifyService {
     public brandService: BrandService,
     private logger: LoggerService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    // private projectService: ProjectService,
   ) {
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -399,15 +400,7 @@ export class NotifyService {
     this.cancelSubscriptionCompleted$.next(hasDone);
   }
 
-  presentLogoutModal() {
-    this.displayLogoutModal = 'block';
-  }
-
-  closeLogoutModal() {
-    this.displayLogoutModal = 'none';
-  }
-
-
+ 
   update(content: string, style: 'error' | 'info' | 'success') {
     const msg: Msg = { content, style };
     this._msgSource.next(msg);
@@ -828,6 +821,16 @@ export class NotifyService {
       'message': '<i class="material-icons" style="vertical-align: middle;padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg + '</span> <span style="padding-left:28px">' + '</span>'
     })
   }
+
+  // No more used - called by sidebar user details
+  presentLogoutModal() {
+    this.displayLogoutModal = 'block';
+  }
+
+  closeLogoutModal() {
+    this.displayLogoutModal = 'none';
+  }
+
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {

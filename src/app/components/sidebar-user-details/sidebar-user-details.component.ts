@@ -21,6 +21,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
 import { Project } from 'app/models/project-model';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -312,9 +313,32 @@ export class SidebarUserDetailsComponent implements OnInit {
       });
   }
 
+  openLogoutModal() {
+    // this.notifyService.presentLogoutModal()
+    this.auth.hasOpenedLogoutModal(true);
+    this.logger.log('[PROJECTS] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'userdetailsidebar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        console.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+  
+
   logout() {
     this.closeUserDetailSidePanel()
-    this.notifyService.presentLogoutModal()
+    
+    this.auth.signOut('userdetailsidebar');
   }
 
 

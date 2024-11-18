@@ -153,7 +153,7 @@
         </span>
     </section>
 
-    <section *ngIf="hideHelpLink" class="user-details-help-center">
+    <!-- <section *ngIf="hideHelpLink" class="user-details-help-center">
         <span class="material-icons user-details-help-center-icon">
             support
         </span>
@@ -161,7 +161,7 @@
         <span class="user-details-help-center" (click)="goToHelpCenter()">
             Help center
         </span>
-    </section>
+    </section> -->
 
     <!-- <hr class="second-divider" style="margin-top: 20px;border: 0;
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
@@ -173,7 +173,7 @@
             logout
         </i>
         <div> Logout</div> -->
-        <div role="button" class="logout-btn-wpr" (click)=logout()>
+        <div role="button" class="logout-btn-wpr" (click)=openLogoutModal()>
             <i class="material-icons user-details-logout-icon">
                 logout
             </i>

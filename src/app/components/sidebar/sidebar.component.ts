@@ -44,6 +44,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './sidebar.tour.con
 
 import Step from 'shepherd.js/src/types/step';
 import { environment } from 'environments/environment';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 
 declare const $: any;
 
@@ -2040,8 +2041,29 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   openLogoutModal() {
     this.logger.log('[SIDEBAR] - calling openLogoutModal - PROJRCT ID ', this.projectId);
-    this.displayLogoutModal = 'block';
+    // this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+    this.logger.log('[SIDEBAR] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'sidebar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        console.log(`[SIDEBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+
+  logout() {
+    this.auth.showExpiredSessionPopup(false);
+    this.auth.signOut('sidebar');
   }
 
   onCloseModal() {
@@ -2057,11 +2079,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.displayLogoutModal = 'none';
   }
 
-  logout() {
-    this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut('sidebar');
-
-  }
+  
 
   removeChatBtnFocus() {
     this.notify.publishHasClickedChat(true);

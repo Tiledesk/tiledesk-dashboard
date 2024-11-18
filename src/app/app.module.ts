@@ -402,6 +402,8 @@ import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
 import { RoleService } from './services/role.service';
+import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
+
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
 // import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
@@ -717,6 +719,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // N8nIntegrationComponent,
     KnowledgeBasesAlertComponent,
     CnpSelectTemplatesOrKbComponent,
+    LogoutModalComponent,
     // ModalAddContentComponent,
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,

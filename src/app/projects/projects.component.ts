@@ -18,6 +18,8 @@ import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
+import { MatDialog } from '@angular/material/dialog';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -95,7 +97,8 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     public wsRequestsService: WsRequestsService,
     private logger: LoggerService,
     private translate: TranslateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
   ) {
     const brand = brandService.getBrand();
     this.logoutBtnVisible = brand['LOGOUT_ENABLED'];
@@ -849,10 +852,35 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   // };
 
 
-
-  openLogoutModal() {
+  // Not more used
+  _openLogoutModal() {
     this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+  }
+
+  openLogoutModal() {
+    this.auth.hasOpenedLogoutModal(true);
+    this.logger.log('[PROJECTS] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'projects'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        console.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+
+  logout() {
+    this.auth.showExpiredSessionPopup(false);
+    this.auth.signOut('projects');
   }
 
   onCloseModal() {
@@ -868,11 +896,6 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   onLogoutModalHandled() {
     this.logout();
     this.displayLogoutModal = 'none';
-  }
-
-  logout() {
-    this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut('projects');
   }
 
   testExpiredSessionFirebaseLogout() {

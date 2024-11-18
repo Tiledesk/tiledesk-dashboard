@@ -173,7 +173,6 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
   onLogoutModalHandled() {
     this.notify.closeLogoutModal()
     this.auth.signOut('userdetailsidebar');
-
   }
 
   getBrowserLang() {
