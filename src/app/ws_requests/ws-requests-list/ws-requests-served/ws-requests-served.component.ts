@@ -24,6 +24,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 import scrollToWithAnimation from 'scrollto-with-animation'
 
 @Component({
@@ -772,26 +773,31 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id) {
-    swal({
+    Swal.fire({
       title: this.areYouSureMsg,
       text: this.youAreAboutToJoinMsg + ': ' + chatAgent,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.joinToChatMsg,
+      cancelButtonText: this.cancelMsg,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+      reverseButtons: true,
 
       icon: "info",
-      buttons: {
-        cancel: this.cancelMsg,
-        catch: {
-          text: this.joinToChatMsg,
-          value: "catch",
-        },
-      },
-
-      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-      dangerMode: false,
+      // buttons: {
+      //   cancel: this.cancelMsg,
+      //   catch: {
+      //     text: this.joinToChatMsg,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
     })
-      .then((value) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+      .then((result) => {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] ARE YOU SURE TO JOIN THIS CHAT ... result', result)
 
-        if (value === 'catch') {
+        if (result.isConfirmed) {
           this.onJoinHandled(request_id, this.currentUserID);
         }
       })

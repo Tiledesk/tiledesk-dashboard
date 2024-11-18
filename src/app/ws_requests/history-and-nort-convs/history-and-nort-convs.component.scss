@@ -780,7 +780,7 @@ p.member:hover {
   max-width: 460px;
   border: 0.1px solid #ffffff;
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--search-bar-border-radius);
 }
 
 .full-text-search-full-width {
@@ -1021,4 +1021,24 @@ p.member:hover {
   padding-right: 3px;
   position: relative;
   top: 2px;
+}
+
+.no-agent > span{
+  width: 30px;
+  cursor: pointer;
+  height: 30px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+}
+
+/* No more used 
+/* ********************************** */
+.no-agent > span > svg{ 
+  fill:var( --icon-color) // #8796af 
+}
+
+.no-agent > span > svg > g > path{ 
+  fill:var(--svg-icon-gray) // #8796af 
 }

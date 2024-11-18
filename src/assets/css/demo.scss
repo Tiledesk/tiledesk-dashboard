@@ -507,6 +507,10 @@ my-app .main-panel .main-content .card {
   border-bottom: 1px solid #e5effe !important;
 }
 
+.btn-xs > span > svg {
+  fill: var(--table-action-icon-color)
+}
+
 @media screen and (max-width: 767px) {
   .table-responsive {
     border: unset !important;
@@ -3237,6 +3241,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 /* ********************************** */
 .swal2-popup {
   font-size: 1.6rem !important;
+  border-radius: var(--dialog-border-radius) !important;;
 }
 
 .swal2-title {
@@ -3256,7 +3261,14 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 .swal2-html-container .swal2-select {
   margin-top: 0px !important;
+}
 
+.swal2-actions > .swal2-confirm {
+  border-radius: 9999px !important;
+}
+
+.swal2-actions > .swal2-cancel {
+  border-radius: 9999px !important;
 }
 
 div:where(.swal2-container) .swal2-select {

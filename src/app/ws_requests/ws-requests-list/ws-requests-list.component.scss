@@ -1479,14 +1479,14 @@ $f21blue: #039be5;
   text-transform: none;
   font-weight: 400;
   font-size: 14px;
-  padding: 0px 8px;
-  border-radius: 999px;
+  padding: 0 16px 0 8px;
+  border-radius: var(--btn-border-radius);
 }
 
 .btn-primary-active:hover {
   box-shadow: unset;
   background: rgb(231, 241, 255);
-  color: #0f62ff;
+  color: var(--icon-hover-color);
 }
 
 .btn-primary-active .btn--link {
@@ -1623,6 +1623,3 @@ $f21blue: #039be5;
     gap: 3px;
 }
 
-.btn-tdblu-no-boxshadow {
-  border-radius: 999px;
-}

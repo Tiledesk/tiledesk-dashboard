@@ -3267,12 +3267,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   presentModalReopenConvIsNotPossible() {
-    swal({
+    Swal.fire({
       title: this.warningMsg,
       text: this.conversationsCannotBeReopened,
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
