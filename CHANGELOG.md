@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.42
+- Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
+
 ### 2.7.41
 - Fixes the bug: onboarding content is not visible on small height screens
 
