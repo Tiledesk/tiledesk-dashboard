@@ -14,12 +14,16 @@
       <div class="row link-to-docs">
         <div class="col-md-12">
           <span style="margin-left: 15px;">
-            <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+            <!-- <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
               data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
               <path fill="#0f62ff"
                 d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
               </path>
+            </svg> -->
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="none">
+              <path
+                d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
             </svg>
           </span>
           <a class="custom-anchor-to-docs" (click)="goToCreateNewAppDocs()">
@@ -51,43 +55,46 @@
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
             <input [(ngModel)]="app_icon_url" class="input" style="margin-bottom: 0px;" type="text"
               placeholder="{{'EnterTheURLOfTheAppIcon' | translate }}">
-              <span style="display: block;color: #f44336; font-weight: 400;font-size: 12px;"  *ngIf="!app_icon_url || app_icon_url?.length === 0">
-                 <!-- The app logo is required -->
-                 {{'TheAppIconIsRequired' | translate}}
-              </span>
+            <span style="display: block;color: #f44336; font-weight: 400;font-size: 12px;"
+              *ngIf="!app_icon_url || app_icon_url?.length === 0">
+              <!-- The app logo is required -->
+              {{'TheAppIconIsRequired' | translate}}
+            </span>
           </div>
         </div>
         <!-- https://fakecrm.nicolan74.repl.co -->
         <div class="row">
           <label class="col-sm-12 app-create-label">
             <!-- App name* -->
-             {{'AppName' | translate}}*
+            {{'AppName' | translate}}*
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="app_name" class="input" style="margin-bottom: 0px;" type="text" placeholder="{{'AppName' | translate}}">
+            <input [(ngModel)]="app_name" class="input" style="margin-bottom: 0px;" type="text"
+              placeholder="{{'AppName' | translate}}">
           </div>
         </div>
 
         <div class="row" *ngIf="EDIT_VIEW && app_installation_url">
           <label class="col-sm-8 col-md-8 col-lg-8 app-create-label">
-           
-            {{'ConfigurationURL' | translate}} 
+
+            {{'ConfigurationURL' | translate}}
             <span style="color: rgb(157, 159, 162); display: block;font-size: 12px;">
               <!-- Used to create a custom configuration page for your app. 
               Your app can in fact include a page to perform advanced configurations eg: https//myapp-for-tiledesk/ configuration. 
               To access the custom configuration page, click on the "manage" button after installing the app -->
-            {{ 'UsedToCreateCustomConfigurationPageForYourApp' | translate }}
+              {{ 'UsedToCreateCustomConfigurationPageForYourApp' | translate }}
             </span>
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="app_installation_url" (ngModelChange)="onChangeAppInstalaltionUrl($event)"class="input" style="margin-bottom: 0px;" type="text"
-              placeholder="{{'ConfigurationURL_PH' | translate}}">
-              <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorAppInstallationUrlIsNoValid === true"> 
-                <!-- Endpoint url must be a valid HTTPS URL  -->
-                {{ 'TheEndpointURLMustBeValidHTTPSURL' | translate}}
-              </div>
+            <input [(ngModel)]="app_installation_url" (ngModelChange)="onChangeAppInstalaltionUrl($event)" class="input"
+              style="margin-bottom: 0px;" type="text" placeholder="{{'ConfigurationURL_PH' | translate}}">
+            <div style="color: #f44336; font-weight: 400;font-size: 12px;"
+              *ngIf="diplayErrorAppInstallationUrlIsNoValid === true">
+              <!-- Endpoint url must be a valid HTTPS URL  -->
+              {{ 'TheEndpointURLMustBeValidHTTPSURL' | translate}}
+            </div>
           </div>
         </div>
 
@@ -102,18 +109,18 @@
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-            <input (ngModelChange)="onChangeRunUrl($event)" [(ngModel)]="app_run_url" class="input" style="margin-bottom: 0px;" type="text"
-              placeholder="{{'AppRenderURL' | translate }}">
-              <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorRunUrlIsNoValid === true"> 
-                <!-- Endpoint url must be a valid HTTPS URL  -->
-                {{ 'TheEndpointURLMustBeValidHTTPSURL' | translate}}
-              </div>
+            <input (ngModelChange)="onChangeRunUrl($event)" [(ngModel)]="app_run_url" class="input"
+              style="margin-bottom: 0px;" type="text" placeholder="{{'AppRenderURL' | translate }}">
+            <div style="color: #f44336; font-weight: 400;font-size: 12px;" *ngIf="diplayErrorRunUrlIsNoValid === true">
+              <!-- Endpoint url must be a valid HTTPS URL  -->
+              {{ 'TheEndpointURLMustBeValidHTTPSURL' | translate}}
+            </div>
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
-            {{ 'ShortDescription' | translate}}*  
+            {{ 'ShortDescription' | translate}}*
           </label>
 
           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -182,7 +189,8 @@
             <div class="btn-wpr">
               <!-- !app_installation_url || app_installation_url?.length === 0 || -->
               <!-- ||  (clients.dashboard === false && clients.dashboard === false && clients.dashboard === false) -->
-              <button class="btn btn-primary" (click)="saveOrUpdateNewApp()" [disabled]="!app_name || 
+              <!-- btn-primary -->
+              <button class="btn btn-tdblu-no-boxshadow" (click)="saveOrUpdateNewApp()" [disabled]="!app_name || 
                 app_name?.length === 0 || 
                 !app_icon_url || 
                 app_icon_url?.length === 0 || 

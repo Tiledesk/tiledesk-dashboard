@@ -59,6 +59,10 @@ input:-webkit-autofill:active {
     margin: auto;
 }
 
+.search-form > div > div > .full-text-input {
+    border-radius: var(--search-bar-border-radius)
+}
+
 @media screen and (min-width: 768px) {
     .search-form {
         width: 600px;

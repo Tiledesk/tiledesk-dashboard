@@ -1793,15 +1793,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // this.areYouSureMsg
   presentModalConfirmUnistallWatsApp() {
-    swal({
-      title: "Are you sure",
-      text: "The app will be deleted", // this.appWillBeDeletedMsg,
+    Swal.fire({
+      title: this.translate.instant('AreYouSure'), // "Are you sure", 
+      text:  this.translate.instant('TheAppWillBeDeleted'), // "The app will be deleted", // this.appWillBeDeletedMsg, 
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      // confirmButtonText: this.translate.instant('Delete'),
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      // confirmButtonColor: "var(--red-btn-background-color)",
+      focusConfirm: false,
+      reverseButtons: true,
+
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
     })
-      .then((WillDelete) => {
-        if (WillDelete) {
+      .then((result) => {
+        if (result.isDenied) {
           this.logger.log('[HOME] UNINSTALL WA APP - app_id', this.whatsAppAppId);
           this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
             this.logger.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
@@ -2161,9 +2172,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // /. --- step 3
 
 
-  presentModalWaSuccessfullyConnected() {
-    swal("Good job!", "WhatsApp connected successfully!", "success");
-  }
+  // presentModalWaSuccessfullyConnected() {
+  //   swal("Good job!", "WhatsApp connected successfully!", "success");
+  // }
 
 
   updateProjectWithHasCompletedWAWizard() {

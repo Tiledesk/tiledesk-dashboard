@@ -61,7 +61,7 @@
         <!-- -------------------------------------------------- -->
         <div class="row" *ngIf="areActivePay">
           <div class="col-md-12">
-            <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
+            <div class="card card card--no-border" style="margin-top: -16px; margin-bottom: 0px;">
               <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                  (prjct_profile_type === 'free' && trial_expired === false) || 
                  (prjct_profile_type === 'free' && trial_expired === true))  &&
@@ -105,7 +105,8 @@
                 </span>
                 <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
                 <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                  <button class="upgrade--plan-btn" (click)="presentGoToPricingModal()">
+                  <!-- upgrade--plan-btn -->
+                  <button class="btn btn-withe" (click)="presentGoToPricingModal()">
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
                 </div>
@@ -119,7 +120,8 @@
                 </span>
                 <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
                 <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                  <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
+                  <!-- upgrade--plan-btn -->
+                  <button class="btn btn-withe" (click)="presentContactUsModal()">
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
                 </div>
@@ -141,7 +143,8 @@
                   </span>
 
                   <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-                    <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+                    <!-- upgrade--plan-btn -->
+                    <button class="btn btn-withe" (click)="openModalSubsExpired()">
                       {{ "Pricing.UpgradePlan" | translate }}
                     </button>
                   </div>

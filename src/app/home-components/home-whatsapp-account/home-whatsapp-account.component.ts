@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { ProjectService } from 'app/services/project.service';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-home-whatsapp-account',
@@ -430,23 +431,31 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      title: this.translate.instant('Oops'),
+      text:  this.translate.instant('AvailableFrom') + ' ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      // content: el,
       icon: "info",
+      showCloseButton: false,
+      showCancelButton: true,
+      cancelButtonText: this.cancel,
+      confirmButtonText: this.upgradePlan,
+      focusConfirm: false,
+      reverseButtons: true,
+      confirmButtonColor: "var(--blue-light)",
       // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
       dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {

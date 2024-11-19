@@ -21,48 +21,7 @@
     {{ 'ProjectSettings' | translate }}
   </div>
   <div class="container-fluid" style="padding-right: 5px;">
-    <ng-container *ngIf="isVisiblePaymentTab">
-      <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" class="row">
-        <div class="col-sm-12">
-          <div class="payment--problem-wpr">
-            <div class="payment--problem-text">
-              {{ "Pricing.WeWereUnableToAutomaticallyRenewYourSubscription" | translate }}.
-              {{ "Pricing.PleaseContactUs" | translate }}
-              {{ "Pricing.ToUpdateYourPaymentInformation" | translate }}.
-              <!-- <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
-                {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
-              </span> -->
-              <div class="contact--us-btn-wpr" style="text-align: center;">
-                <button class="contact--us-btn" (click)="contactUs()">
-                  {{'ContactUs' | translate}}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-
-    <!-- <div *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-    (prjct_profile_type === 'free' && prjct_trial_expired === false) || 
-    (prjct_profile_type === 'free' && prjct_trial_expired === true))  &&
-    (projectUsersLength + countOfPendingInvites > seatsLimit))" class="row">
-      <div class="col-sm-12">
-        <div class="payment--problem-wpr">
-          <div class="payment--problem-text">
-            <span class="msg-alert">
-              {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
-            </span>
-            <div class="contact--us-btn-wpr" style="text-align: center;">
-              <button class="contact--us-btn" (click)="contactUs()">
-                {{'ContactUs' | translate}}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
+    
 
     <div class="content-wpr" style="display: flex;">
 
@@ -123,6 +82,34 @@
           </div>
         </div>
 
+        <!-- ------ -->
+
+        <ng-container *ngIf="isVisiblePaymentTab">
+          <div *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" class="row">
+            <div class="col-sm-12">
+              <div class="payment--problem-wpr">
+                <div class="payment--problem-text">
+                  {{ "Pricing.WeWereUnableToAutomaticallyRenewYourSubscription" | translate }}.
+                  {{ "Pricing.PleaseContactUs" | translate }}
+                  {{ "Pricing.ToUpdateYourPaymentInformation" | translate }}.
+                  <!-- <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+                    {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
+                  </span> -->
+                  <div class="contact--us-btn-wpr" style="text-align: center;">
+                    <!-- contact--us-btn -->
+                    <button class="btn btn-withe" (click)="contactUs()">
+                      {{'ContactUs' | translate}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+
+
+        <!-- ------ -->
         <!-- <div *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE && hideHelpLink" class="row link-to-automatic-assignment-doc-wpr"> -->
         <div *ngIf="PROJECT_SETTINGS_SMARTASSIGNMENT_ROUTE && hideHelpLink"
           class="row link-to-automatic-assignment-doc-wpr">

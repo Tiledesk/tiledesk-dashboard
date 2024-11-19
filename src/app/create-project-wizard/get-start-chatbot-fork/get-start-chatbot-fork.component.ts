@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'app/services/cache.service';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-get-start-chatbot-fork',
@@ -363,19 +364,23 @@ export class GetStartChatbotForkComponent implements OnInit {
     } else {
       el.innerHTML = this.agentsCannotManageChatbots + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+      html: el,
       icon: "info",
-      buttons: {
-        catch: {
-          text: "OK",
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value: any) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: {
+      //   catch: {
+      //     text: "OK",
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result: any) => {
+      if (result.isConfirmed) {
         this.goToHome()
       }
     });

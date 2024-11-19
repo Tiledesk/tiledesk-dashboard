@@ -17,6 +17,7 @@ import { environment } from 'environments/environment';
 
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-integrations',
@@ -398,21 +399,37 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === integration.name));
     })
   }
-
+  // TheIntegratonWillBeDeleted
+  // TheIntegrationHasBeenDeleted
+  // AnErrorOccurreWhileDeletingTheIntegration
   presentDeleteConfirmModal(integration) {
-    swal({
-      title: "Are you sure?",
-      text: "Are you sure you want to delete this integration?",
+    Swal.fire({
+      title: this.translate.instant('AreYouSure'), // "Are you sure?",
+      text: this.translate.instant('TheIntegratonWillBeDeleted'),
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then((WillDelete) => {
-      if (WillDelete) {
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+      if (result.isDenied) {
 
         this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
           this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
-          swal("Deleted" + "!", "You will no longer use this integration", {
+          Swal.fire({
+            title: this.translate.instant('Done') + "!",
+            text: this.translate.instant('TheIntegrationHasBeenDeleted'),
             icon: "success",
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonColor: "var(--primary-btn-background)",
+            confirmButtonText: this.translate.instant('Ok'),
           }).then((okpressed) => {
             this.logger.log("[INTEGRATION-COMP]  ok pressed")
           });
@@ -420,8 +437,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
         }, (error) => {
           this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
-          swal("Unable to delete the integration", {
+          Swal.fire({
+            title: this.translate.instant('Oops') + '!',
+            text: this.translate.instant('AnErrorOccurreWhileDeletingTheIntegration'), 
             icon: "error",
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok'),
+            confirmButtonColor: "var(--primary-btn-background)",
           });
         })
       } else {
@@ -443,21 +466,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
         this.logger.log("[INTEGRATION-COMP] route vs plan management");
         this.goToPricing();
-        // this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
-        //   this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
-        //   swal("Deleted" + "!", "You will no longer use this integration", {
-        //     icon: "success",
-        //   }).then((okpressed) => {
-        //     this.logger.log("ok pressed")
-        //   });
-        //   this.reloadSelectedIntegration(integration);
 
-        // }, (error) => {
-        //   this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
-        //   swal("Unable to delete the integration", {
-        //     icon: "error",
-        //   });
-        // })
       } else {
         this.logger.log('[INTEGRATION-COMP]  operation aborted')
       }

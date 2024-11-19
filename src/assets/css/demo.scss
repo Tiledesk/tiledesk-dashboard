@@ -587,6 +587,25 @@ my-app .main-panel .main-content .card {
   background: var(--primary-btn-hover-background) !important;
 }
 
+/* BTN TD-BLU NO BOX-SHADOW
+/* ------------------------- */
+.btn-withe {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 20px !important;
+  background: #fff !important;
+  font-size: 14px;
+  border-radius: var(--btn-border-radius) !important;
+  font-family: var(--header-font-family) !important;
+  color: var(--withe-btn-color) !important;
+  // border: unset;
+}
+
+.btn-withe:hover {
+  box-shadow: unset !important;
+  background: #e8eaed !important;
+}
+
 .btn-m {
   font-size: 12px !important;
 }
@@ -603,6 +622,11 @@ my-app .main-panel .main-content .card {
   border: 1px solid var(--outlined-btn-border-color);
   font-family: var(--header-font-family) !important;
   color: var(--text-color) !important;
+}
+
+.btn-outlined-disabled {
+  background-color: #eff2f6 !important;
+  color: #acb8cb !important;
 }
 
 
@@ -3265,9 +3289,14 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 .swal2-actions > .swal2-confirm {
   border-radius: 9999px !important;
+  // background-color: var(--primary-btn-background)  !important;
 }
 
 .swal2-actions > .swal2-cancel {
+  border-radius: 9999px !important;
+}
+
+.swal2-actions > .swal2-deny {
   border-radius: 9999px !important;
 }
 

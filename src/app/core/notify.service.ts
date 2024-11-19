@@ -6,7 +6,7 @@ import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
 import { BrandService } from 'app/services/brand.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-const swal = require('sweetalert');
+// const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 // import Swal from 'sweetalert2';
 // import Swal from 'sweetalert2';
@@ -860,10 +860,10 @@ export class NotifyService {
       icon: "warning",
       showCloseButton: true,
       showCancelButton: false,
-      confirmButtonText: "OK",
+      confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
       focusConfirm: false,
+      // cancelButtonColor: "var(--red-color)",
       // reverseButtons: true,
     })
 
@@ -877,15 +877,20 @@ export class NotifyService {
     } else {
       el.innerHTML = agentsCannotManageChatbots + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+      html: el,
       icon: "warning",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+    
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
 
   }
@@ -897,15 +902,21 @@ export class NotifyService {
     } else {
       el.innerHTML = onlyOwnerCanManageSMTPSettings + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
+      html: el,
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+
       // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
   }
 

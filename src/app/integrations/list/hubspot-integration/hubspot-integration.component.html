@@ -34,22 +34,31 @@
 
         <div class="password-input">
             <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
-                [(ngModel)]="integration.value.apikey">
+                [(ngModel)]="integration.value.apikey" autocomplete="new-password" >
             <div class="show-hide-button">
                 <span *ngIf="keyVisibile === false" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility</span>
-                <span *ngIf="keyVisibile === true" class="material-icons-outlined"
                     (click)="showHideKey()">visibility_off</span>
+                <span *ngIf="keyVisibile === true" class="material-icons-outlined"
+                    (click)="showHideKey()">visibility</span>
             </div>
         </div>
 
     </div>
 
 
-    <div class="footer">
-        <button class="custom-primary-button" (click)="saveIntegration()">{{ 'Integration.Save' | translate }}</button>
-        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">{{ 'Integration.Delete' | translate }}</button>
-        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">{{ 'Integration.Clear' | translate }}</button>
+    <div class="integration-footer">
+        <!-- custom-primary-button -->
+        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+            {{ 'Integration.Save' | translate }}
+        </button>
+        <!-- custom-danger-button -->
+        <button *ngIf="integration._id" class="btn btn-red" (click)="deleteIntegration()">
+            {{ 'Integration.Delete' | translate }}
+        </button>
+        <!-- custom-danger-button -->
+        <button *ngIf="!integration._id" class="btn btn-outlined" (click)="resetValues()">
+            {{ 'Integration.Clear' | translate }}
+        </button>
     </div>
 
 </div>
