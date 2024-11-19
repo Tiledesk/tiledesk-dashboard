@@ -25,7 +25,7 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
         </div>
         <!-- STEP NUMBER  arrayOfSteps.length >= activeTypeStepNumber ||  -->
 
-        <div *ngIf="arrayOfSteps.length>0 && arrayOfSteps.length>activeTypeStepNumber" class="box-steps">
+        <div *ngIf="arrayOfSteps.length>1 && arrayOfSteps.length>activeTypeStepNumber" class="box-steps">
             <div class="step-number">
                 <span class="number-label">
                     {{ "OnboardPage.Pass" | translate }}
@@ -48,6 +48,7 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
    
     <!-- <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
     <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+        <!-- arrayOfSteps {{ arrayOfSteps }} arrayOfSteps length {{ arrayOfSteps.length}} -->
         <div *ngFor="let nameStep of arrayOfSteps; index as i" 
             class="step-page"
             [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
@@ -108,7 +109,7 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
                 <!-- </div> -->
 
                 <!-- BUTTONS -->
-                <div class="row-navigation">
+                <!-- <div class="row-navigation">
                     <div class="navigation-btn">
                         <button type="button" class="btn-back" 
                             [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
@@ -122,8 +123,29 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
                             {{'OnboardPage.Next' | translate}}
                         </button>
                     </div>
-                </div>
+                </div> -->
 
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="row-navigation" *ngIf="nameStep !== typeStep.NAME_PROJECT"
+            [ngClass]="{'row-navigation-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+                <div class="navigation-btn">
+                    <button type="button" class="btn-back" 
+                        [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
+                        [disabled]="DISABLED_PREV_BUTTON"
+                        (click)="goToPrevCustomStep()">
+                        <em class="material-icons">arrow_back</em>
+                        <span class="onbording-btn-back-text"> 
+                            {{'Back' | translate }}
+                        </span>
+                    </button>
+                    <button class="btn btn-lg btn-primary" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
+                        [disabled]="DISABLED_NEXT_BUTTON"
+                        (click)="goToNextCustomStep()">
+                        {{'OnboardPage.Next' | translate}}
+                    </button>
+                </div>
             </div>
 
             <!-- SELECT TEMPLATES / KB -->
@@ -218,6 +240,8 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
       ></appdashboard-error-result> -->
 
     </div>
+
+
 
 
     <!-- <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"> -->
