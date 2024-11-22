@@ -507,7 +507,7 @@ my-app .main-panel .main-content .card {
   border-bottom: 1px solid #e5effe !important;
 }
 
-.btn-xs > span > svg {
+.btn-xs>span>svg {
   fill: var(--table-action-icon-color)
 }
 
@@ -527,8 +527,53 @@ my-app .main-panel .main-content .card {
   border: unset !important;
 }
 
+/* EYE BTN  - used in integrations to hide display the API key
+/* ------------------------- */
+.eye-btn {
+  background: transparent;
+  border: unset;
+}
 
+/* DROP-DOWN MENU
+/* ------------------------- */
+.dropdown-menu-custom li a:hover,
+.dropdown-menu li a:focus, 
+.dropdown-menu li a:active{
+  background-color:var(--dropdown-menu-hover-color) !important;
+  color: #fff;
+}
 
+/* NO MORE USED on static page (to fix)
+/* ------------------------- */
+.btn-outlined-blu {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  background-color: transparent;
+  color: var(--outlined-btn-blu-color);
+  border-radius: var(--btn-border-radius) !important;
+  padding: 9px 20px !important;
+  border: 1px solid var(--outlined-btn-blu-color)!important;
+  font-size: 14px;
+  // height: 38px;
+}
+
+.btn-outlined-blu:hover {
+  box-shadow: unset !important;
+  background-color: var(--outlined-btn-blu-hover-backgound-color);
+  color: var(--outlined-btn-blu-color);
+}
+
+.btn-outlined-blu:focus {
+  box-shadow: unset !important;
+  background-color: var(--outlined-btn-blu-hover-backgound-color);
+  color: var(--outlined-btn-blu-color);
+}
+
+.btn-outlined-blu:active {
+  box-shadow: unset !important;
+  background-color: var(--outlined-btn-blu-hover-backgound-color);
+  color: var(--outlined-btn-blu-color);
+}
 
 /* BTN ROUND RED
 /* ------------------------- */
@@ -587,9 +632,27 @@ my-app .main-panel .main-content .card {
   background: var(--primary-btn-hover-background) !important;
 }
 
+
 /* BTN TD-BLU NO BOX-SHADOW
 /* ------------------------- */
-.btn-withe {
+.btn-icon-only {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 4px !important;
+  background: var(--primary-btn-background) !important;
+  border-radius: var(--btn-border-radius) !important;
+  color: var(--primary-btn-color) !important;
+  // border: unset;
+}
+
+.btn-icon-only:hover {
+  box-shadow: unset !important;
+  background: var(--primary-btn-hover-background) !important;
+}
+
+/* BTN TD-BLU NO BOX-SHADOW
+/* ------------------------- */
+.btn-white-rounded {
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 9px 20px !important;
@@ -601,7 +664,7 @@ my-app .main-panel .main-content .card {
   // border: unset;
 }
 
-.btn-withe:hover {
+.btn-white-rounded:hover {
   box-shadow: unset !important;
   background: #e8eaed !important;
 }
@@ -1396,6 +1459,13 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   padding-bottom: 0px !important;
 }
 
+.card-header-custom-bkgrnd>.card-header-title {
+  font-size: 14px;
+  color: var(--text-color) !important;
+  font-family: var(--header-font-family);
+
+}
+
 
 
 /* Bottom Underline of the titles of the sections */
@@ -1435,13 +1505,13 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
   color: var(--secondary-text-color);
   font-family: var(--header-font-family);
   line-height: 1.4em;
- }
+}
 
- .section-subtitle-ul > li { 
+.section-subtitle-ul>li {
   font-size: 14px;
   color: var(--secondary-text-color);
   font-family: var(--header-font-family);
- }
+}
 
 // -------------------------------------------------
 // Added when the user details sidebar is opened
@@ -1486,17 +1556,17 @@ span.navbar-brand-sidebar-settings {
   position: relative;
   margin-top: 6px;
   border-right: 1px solid #e5effe;
-  padding-left: 25px; // increased for the new sidebar width  
+  // padding-left: 25px; // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings.is_opened {
-  // width: 226px; 
-  width: 236px; // increased for the new sidebar width  
+  width: 226px; 
+  // width: 236px; // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings.is_closed {
-  // width: 51px;
-  width: 61px; // increased for the new sidebar width  
+  width: 51px;
+  // width: 61px; // increased for the new sidebar width  
 }
 
 span.navbar-brand-sidebar-settings>i {
@@ -1558,9 +1628,93 @@ span.navbar-brand-title {
   padding: 7px 10px !important;
 }
 
+/* Modal custom class
+/* ************************* */
 .modal {
   z-index: 1055 !important; // default bottstrap css value  1050
 }
+
+
+.custom--modal-content {
+  border-radius: 16px !important;
+  padding: 15px !important;
+  
+}
+
+.custom--modal-content>.modal-header {
+  border-bottom: unset !important;
+}
+
+.custom--modal-content>.modal-header>h4 {
+  font-family: var(--header-font-family) !important;
+  font-weight: 400 !important;
+}
+
+.custom--modal-content>.modal-header>h4.warning { 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.custom--modal-content>.modal-header>h4.warning > .modal-header-icon-wpr{  
+  background-color: rgb(254, 226, 226);
+  border-radius: 9999px;
+  padding: 2px 5px 5px 5px;
+  height: 34px;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom--modal-content>.modal-header>h4.warning > .modal-header-icon-wpr >svg{  
+  fill: #dc2626;
+}
+
+.custom--modal-content>.modal-body {
+  padding-right: 15px !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
+.custom--modal-content>.modal-body>.modal-body--content {
+  font-weight: 400;
+  text-align: left;
+  color: var(--text-color) !important;
+}
+
+.custom--modal-content>.modal-body>div>div>.card {
+  border-radius: var(--card-border-radius) !important;
+  ;
+}
+
+.custom--modal-content>.modal-body>.modal-loader-wpr>p {
+  margin-top: 60px !important;
+  text-align: center !important;
+  color: var(--secondary-text-color) !important;
+  font-weight: 400 !important;
+}
+
+.custom--modal-content>.modal-body>.no-error-modal-ms-wpr>div {
+  text-align: center !important;
+}
+
+.custom--modal-content>.modal-body>.no-error-modal-ms-wpr>.no-error-modal-content>p {
+  margin-top: 0px !important;
+  text-align: center !important;
+  font-weight: 400 !important;
+  color: var(--text-color) !important;
+}
+
+.custom--modal-content>.modal-footer {
+  text-align: center !important;
+  border-top: unset !important;
+  background-color: unset !important;
+  padding: 7px !important;
+}
+
+
+
+/* ************************* */
 
 .pre-chat-form-fields-wpr .checkbox .checkbox-material .check {
   background: #fff;
@@ -2781,12 +2935,13 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .custom-mat-tooltip {
-  background-color: #2d323e !important;
+  background-color:  var(--dark-background) !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family);
   padding-top: 8px !important;
   padding-bottom: 8px !important;
+  color: var(--text-color-on-dark);
 }
 
 
@@ -3096,13 +3251,13 @@ li.active-item a i.settings-sidebar-icons {
 }
 
 .toggle-setting-sidebar-icon-wpr.is_opened {
-  // left: 215px; 
-  left: 225px; // increased fro the new sidebar width
+  left: 215px; 
+  // left: 225px; // increased fro the new sidebar width
 }
 
 .toggle-setting-sidebar-icon-wpr.is_closed {
-  // left: 40px;
-  left: 50px; // increased fro the new sidebar width
+  left: 40px;
+  // left: 50px; // increased fro the new sidebar width
 }
 
 .toggle-setting-sidebar-icon {
@@ -3265,7 +3420,8 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 /* ********************************** */
 .swal2-popup {
   font-size: 1.6rem !important;
-  border-radius: var(--dialog-border-radius) !important;;
+  border-radius: var(--dialog-border-radius) !important;
+  ;
 }
 
 .swal2-title {
@@ -3287,16 +3443,16 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   margin-top: 0px !important;
 }
 
-.swal2-actions > .swal2-confirm {
+.swal2-actions>.swal2-confirm {
   border-radius: 9999px !important;
   // background-color: var(--primary-btn-background)  !important;
 }
 
-.swal2-actions > .swal2-cancel {
+.swal2-actions>.swal2-cancel {
   border-radius: 9999px !important;
 }
 
-.swal2-actions > .swal2-deny {
+.swal2-actions>.swal2-deny {
   border-radius: 9999px !important;
 }
 
@@ -3348,8 +3504,12 @@ div:where(.swal2-container) .swal2-select {
 /* Angular material dialog customitations
 /* --------------------------------------- */
 
+.mat-dialog-title {
+  font-family: var(--header-font-family) !important;
+}
+
 .mat-dialog-container {
-  font-family: 'Poppins' !important;
+  font-family: var(--header-font-family) !important;
   border-radius: var(--dialog-border-radius) !important;
 }
 
@@ -3372,8 +3532,8 @@ div:where(.swal2-container) .swal2-select {
 
 
 
-.mat-dialog-actions  > .mat-button {
-  border-radius: var(--btn-border-radius);  
+.mat-dialog-actions>.mat-button {
+  border-radius: var(--btn-border-radius);
 }
 
 

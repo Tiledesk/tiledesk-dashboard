@@ -763,12 +763,16 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   presentModalYouCannotJoinChat() {
-    swal({
+    Swal.fire({
       title: this.joinChatTitle,
       text: this.youCannotJoinChat,
       icon: "info",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
     })
   }
 
@@ -783,7 +787,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       reverseButtons: true,
-
       icon: "info",
       // buttons: {
       //   cancel: this.cancelMsg,

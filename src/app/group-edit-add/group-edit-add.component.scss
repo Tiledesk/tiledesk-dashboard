@@ -7,6 +7,7 @@ input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     border-top: 1px solid #c0c0c0;
@@ -79,6 +80,7 @@ select {
 
 button.close {
     -webkit-appearance: none;
+    appearance: none;
     padding: 0;
     cursor: pointer;
     background: 0 0;
@@ -112,6 +114,7 @@ button.close {
     background-color: #eeeeee;
     padding-top: 10px !important;
 }
+
 
 /* MODAL END */
 
@@ -288,4 +291,12 @@ button.close {
     border: 1px solid #eee;
     margin-right: 15px;
     object-fit: cover;
+}
+
+
+.card-header-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }

@@ -13,7 +13,7 @@
 </div>
 
 
-<div class="main-content" style="padding-top:0px;  padding-left: 25px;">
+<div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
 
     <!-- ---------------------------------------------------------------- -->
@@ -853,7 +853,7 @@
                   <!-- Action Delete selected if IS_HERE_FOR_HISTORY -->
                   <!-- --------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0 && USER_ROLE === 'owner'" class="delete-selected-wpr">
-                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
+                    <button class="custom-input-group---btn" type="button" style="height: 37px;"
                       (click)="deleteSelected()" matTooltipClass="mat-white-tooltip"
                       matTooltip="{{ 'Delete' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
                       matTooltipHideDelay="100">

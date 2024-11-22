@@ -440,12 +440,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
   openInAppStoreInstall(app, appTitle) {
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
-    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
 
-    this.logger.log('openInAppStoreInstall app ', app)
+    console.log('openInAppStoreInstall app ', app)
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
   }
 

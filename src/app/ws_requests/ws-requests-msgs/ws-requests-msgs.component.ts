@@ -45,6 +45,7 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { CacheService } from 'app/services/cache.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -423,7 +424,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-
+    private cacheService:  CacheService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -1362,6 +1363,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
+    this.cacheService.clearCache()
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -1388,7 +1390,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
-        // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
+        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
       }
 
 
@@ -2810,12 +2812,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalTagAlredyAssigned() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('TagAlreadyAssigned'),
       text: this.translationMap.get('ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag'),
       icon: "info",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
   }
@@ -3468,12 +3474,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
   // this.addAgentTitle
   presentModalYouCannotAddAgents(agentFullname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('YouCannotAddAgents'),
       text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+
+      // buttons: 'OK',
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
   }
@@ -3702,17 +3713,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentSwalModalReassignConversationToAgent(userid, userfirstname, userlastname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.ReassignRequest'),
       text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + userfirstname + ' ' + userlastname,
       icon: "info",
-      buttons: true,
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: true,
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willReassign) => {
-        if (willReassign) {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent swal willReassign to User', willReassign)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent swal willReassign to User', result)
 
 
           this.wsRequestsService.setParticipants(this.id_request, userid).subscribe((res: any) => {
@@ -3721,18 +3740,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ReassignConversationToAgent in swal willReassign to User setParticipants - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent in swal willReassign to User setParticipants * COMPLETE *');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
+              // text: 'Conversation successfully reassigned',
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -3740,7 +3768,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] + ReassignConversationToAgent  swal willReassign', willReassign)
+          this.logger.log('[WS-REQUESTS-MSGS] + ReassignConversationToAgent  swal willReassign', confirm)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -3748,17 +3776,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
     this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.AddAgent'),
       text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', { user: userfirstname + ' ' + userlastname }),
       icon: "info",
-      buttons: true,
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willBeAdded: any) => {
-        if (willBeAdded) {
-          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in wal willBeAdded to User', willBeAdded)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in wal willBeAdded to User', result)
 
 
           this.wsRequestsService.addParticipant(this.id_request, userid).subscribe((res: any) => {
@@ -3767,17 +3802,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire( {
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant * COMPLETE *');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
@@ -3786,7 +3830,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', willBeAdded);
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
         }
       });
   }
@@ -3995,17 +4039,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   presentSwalModalConfirmReassignToDept(deptid, deptname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.ReassignRequest'),
       text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + deptname,
       icon: "info",
-      buttons: true,
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: true,
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willReassign) => {
-        if (willReassign) {
-          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign to dept', willReassign)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign to dept', result)
 
 
           this.wsRequestsService.joinDept(deptid, this.id_request).subscribe((res: any) => {
@@ -4013,17 +4065,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire( {
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept * COMPLETE *');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
               className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
@@ -4032,7 +4093,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign', willReassign)
+          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign', result)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -4113,12 +4174,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalReopenConvIsNotPossible() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('ConversationsArchivedCannotBeReopened'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
@@ -4162,12 +4227,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   presentModalYouCannotJoinChat(agentFullname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('RequestMsgsPage.YouCannotJoinThisChat'),
       text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
   }
@@ -4215,28 +4284,39 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
   // this.leaveChatTitle,
   presentModalYouCannotLeaveTheChat() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('YouCannotLeaveTheChat'),
       text: this.translate.instant('EmailAndTicketSupportCannotBeUnserved'),
       icon: "warning",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      // buttons: 'OK',
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
   }
 
   presentModalLeaveTheChat() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
-      text: this.translationMap.get('Done'),
+      // text: this.translationMap.get('Done'),
       icon: "info",
-      buttons: true,
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willleave) => {
-        if (willleave) {
-          this.logger.log('[WS-REQUESTS-MSGS] LEAVE THE CHAT', willleave)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] LEAVE THE CHAT', result)
           this.wsRequestsService.leaveTheGroup(this.id_request, this.currentUserID)
             .subscribe((data: any) => {
 
@@ -4244,14 +4324,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }, (err) => {
               this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
 
-              swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+              Swal.fire( {
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
                 icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
               });
             }, () => {
-              swal({
+              Swal.fire({
                 title: this.translationMap.get('Done') + "!",
                 icon: "success",
-                button: "OK",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+
+                // button: "OK",
                 className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((okpressed) => {
                 this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
@@ -4260,7 +4351,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             });
 
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willRwillleaveeassign', willleave)
+          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willRwillleaveeassign', result)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -4681,38 +4772,59 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
-    this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
+    console.log("displayModalBanVisitor bannedVisitorsArray index" , index)
+    console.log("displayModalBanVisitor bannedVisitorsArray", this.bannedVisitorsArray)
     // if (this.visitorIsBanned === false) {
     if (index === -1) {
-      swal({
+      Swal.fire({
         title: this.translationMap.get('AreYouSure') + '?',
-        icon: "info",
-        buttons: [this.translationMap.get('Cancel'), this.translationMap.get('YesBanVisitor')],
-        dangerMode: true,
-        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+        icon: "warning",
+        showCloseButton: false,
+        showCancelButton: true,
+        showConfirmButton: false,
+        showDenyButton: true,
+        denyButtonText: this.translate.instant('YesBanVisitor'),
+        cancelButtonText: this.translate.instant('Cancel'),
+        focusConfirm: false,
+        reverseButtons: true,
+        // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('YesBanVisitor')],
+        // dangerMode: true,
+        // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       })
-        .then((willBan) => {
-          if (willBan) {
+        .then((result) => {
+          if (result.isDenied) {
             // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
             this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-              // this.logger.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+             console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
             }, (error) => {
               // this.logger.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
-              swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+              Swal.fire( {
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
                 icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
               });
             }, () => {
               // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
-              swal({
+              Swal.fire({
                 title: this.translationMap.get('Done') + "!",
                 icon: "success",
-                button: "OK",
-                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-              }).then((okpressed) => {
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+                // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((result) => {
+                if (result.isConfirmed) {
+                this.cacheService.clearCache()
                 this.findCurrentProjectAmongAll(this.id_project)
+                }
               });
 
             });
@@ -4872,12 +4984,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalVisitorAlreadyBanned() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('VisitorAlreadyBanned'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)"
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
@@ -5616,22 +5732,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presenModalMessageCouldNotBeSent() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('TheMessageCouldNotBeSent'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
   presenModalAttachmentFileTypeNotSupported() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('SorryFileTypeNotSupported'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
@@ -5706,16 +5830,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOff() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('AreYouSure') + '?',
       text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
       icon: "info",
-      buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
-      dangerMode: true,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('ConvertToOffline'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+
+      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
+      // dangerMode: true,
+      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willDisableSmartAssignment) => {
-        if (willDisableSmartAssignment) {
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
@@ -5723,18 +5856,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire( {
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
 
             });
@@ -5748,16 +5889,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOn() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('AreYouSure') + '?',
       text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
       icon: "info",
-      buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
-      dangerMode: true,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('ConvertToOnline'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
+      // dangerMode: true,
+      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willEnableSmartAssignment) => {
-        if (willEnableSmartAssignment) {
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
@@ -5765,18 +5914,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)"
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+
+              // button: "OK",
+              // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
             });

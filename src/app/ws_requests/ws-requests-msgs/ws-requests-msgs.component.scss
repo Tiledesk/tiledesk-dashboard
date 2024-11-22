@@ -577,7 +577,7 @@ button.close {
   background: var(--card-background-color) !important;
 }
 
-.assign-reassign-modal-card-in-accordion { 
+.assign-reassign-modal-card-in-accordion {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
   border-radius: 0px !important;
@@ -1853,13 +1853,13 @@ span .conv-svg-icon {
   color: #8894ab;
 }
 
-.ws_msgs_small_btn {
-  padding: 3px 6px;
-  margin-bottom: 6px;
-  margin-top: 0px;
-  // width: 70px;
+.add-note-btn{
+  padding: 3px 9px !important;
+  margin-bottom: 6px !important;
+  margin-top: 0;
   min-width: 70px;
   height: 22px;
+  font-size: 12px;
 }
 
 .delete_icon:hover {
@@ -1884,16 +1884,20 @@ span .conv-svg-icon {
 
 .manage_tags {
   // float: right;
-  color: #03a5e8;
+  color: var(--only-text-btn-color);
   font-size: 12px;
   font-weight: 400;
-  margin-top: 7px;
+  margin-top: 16px;
   cursor: pointer;
-  margin-left: 53px;
+  margin-left: 42px;
+  background-color: transparent;
+  border: unset;
+  border-radius: 4px;
 }
 
 .manage_tags:hover {
-  text-decoration: underline;
+  // text-decoration: underline;
+  background-color: var(--only-text-btn-hover-background)
 }
 
 // .followers-label {
@@ -2191,6 +2195,7 @@ span .conv-svg-icon {
 
 .chat-card-normal-mode {
   margin-top: 5px !important;
+  border-radius: var(--card-border-radius)
   // min-height: 631px;
 }
 
@@ -3133,7 +3138,7 @@ span .conv-svg-icon {
 }
 
 .upload-btn>span {
-  color: #3ea9f5;
+  color:  var(--icon-btn);
   font-size: 24px;
 }
 
@@ -3992,12 +3997,14 @@ label {
 // }
 
 .working-status-dropdown-btn {
-  padding: 4px 5px;
+  padding: 4px 10px;
   margin-top: 0px;
   margin-bottom: 0px;
   height: 24px;
   box-shadow: none;
-  font-size: 11px;
+  font-size: 12px;
+  border-radius: var(--btn-border-radius);
+  text-transform: capitalize;
 }
 
 .working-status-dropdown-btn-chat {
@@ -4039,7 +4046,7 @@ label {
 
 
 .sideber-header-btn {
-  padding: 4px 5px;
+  padding: 4px 10px;
   height: 24px;
   margin-bottom: 0px;
   margin-top: 0px;
@@ -4049,7 +4056,10 @@ label {
   color: var(--conv-details-resolve-conv-btn-color);
   margin-left: 8px;
   margin-right: 8px;
-  font-size: 11px;
+  font-size: 12px;
+  border-radius: var(--btn-border-radius);
+  text-transform: capitalize;
+  font-weight: 400;
 }
 
 .sideber-header-btn>i {
@@ -4700,11 +4710,14 @@ label {
 }
 
 .convert-to-offline-btn {
-  color: var(--accent-text-color);
+  color: var(--only-text-btn-color);
   font-size: 14px;
   font-weight: 400;
   margin-top: 7px;
   cursor: pointer;
+  background-color: transparent;
+  border: unset;
+  border-radius: 4px;
 }
 
 .convert-to-offline-btn>span>i {
@@ -4716,6 +4729,16 @@ label {
   top: 0px;
 }
 
+.convert-to-offline-btn-wpr>span>i {
+  font-size: 16px;
+  color: var(--secondary-text-color);
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+}
+
+
 // .convert-to-offline-btn-disabled {
 //   color: #03a5e8;
 //   font-size: 14px;
@@ -4725,7 +4748,8 @@ label {
 // }
 
 .convert-to-offline-btn:hover {
-  text-decoration: underline;
+  // text-decoration: underline;
+  background-color: var(--only-text-btn-hover-background);
 }
 
 .ticket--panel {
@@ -4846,6 +4870,7 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: var(--no-tags-line-clamp);
+  line-clamp: var(--no-tags-line-clamp);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   font-family: var(--content-font-family);
@@ -5677,17 +5702,19 @@ label {
   letter-spacing: -0.01em;
 }
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
   background-color: #0566ff;
 }
 
 
 ::ng-deep .mat-tab-header {
   top: 0;
-  z-index: 1000; 
+  z-index: 1000;
   position: sticky !important;
-  position: -webkit-sticky !important; /* macOS/iOS Safari */  
-  background: #fff;  
+  position: -webkit-sticky !important;
+  /* macOS/iOS Safari */
+  background: #fff;
 }
 
 .close---round-btn {
@@ -5698,8 +5725,9 @@ label {
   height: 36px;
   width: 36px;
   background-color: transparent;
-  
+
 }
+
 // .close---round-btn:hover>span {
 .close---round-btn:hover {
   // color: rgba(60, 72, 88, .6) !important;
@@ -5710,4 +5738,16 @@ label {
 .close---round-btn>span {
   font-size: 31px;
   color: var(--btn-color) !important;
+}
+
+
+.send-msg-btn {
+  border-right: 1px solid #fff;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.send-msg-dropdown-toggle {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }

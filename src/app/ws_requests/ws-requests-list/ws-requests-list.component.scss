@@ -65,6 +65,21 @@ button.close {
   padding-top: 10px !important;
 }
 
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr {
+  float: right;
+  cursor: pointer;
+}
+
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.view-requester-details {
+  color: var(--blue-light);
+}
+
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.material-icons {
+  color:var(--blue-light); // #0f62ff;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
 /* MODAL END */
 
 /* texarea & input in  MODAL  */
@@ -1032,6 +1047,15 @@ $f21blue: #039be5;
   color: #f44336 !important;
 }
 
+::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-icon {
+  vertical-align: middle; 
+  color:var(--ng-select-footer-btn-color) // #0f62ff
+}
+
+::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-text {
+ color: var(--ng-select-footer-btn-color) // #0f62ff
+}
+
 /* moved in /node_modules/@ng-select/ng-select/themes/default.theme.css - in the template this style works only encapsulation: ViewEncapsulation.None 
  but this this compromises the style of the other dropdowns */
 // .internal-request-custom-select > .ng-dropdown-panel .ng-dropdown-panel-items  {
@@ -1619,7 +1643,6 @@ $f21blue: #039be5;
 
 .open-chat-tool-text {
   display: flex;
-    flex-direction: row;
-    gap: 3px;
+  flex-direction: row;
+  gap: 3px;
 }
-
