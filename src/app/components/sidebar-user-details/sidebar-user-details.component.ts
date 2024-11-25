@@ -72,6 +72,8 @@ export class SidebarUserDetailsComponent implements OnInit {
   currentUserId: string;
   selectedStatus: any;
   isChromeVerGreaterThan100: boolean;
+    NOTIFICATION_SOUND: string;
+  storedValuePrefix = 'dshbrd----'
   teammateStatus = [
     { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
     { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
@@ -130,7 +132,27 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserAvailability$()
     this.getWsCurrentUserIsBusy$()
     this.getBrowserVersion()
+    // this.setNotificationSound();
   }
+
+
+  // setNotificationSound() {
+  //   // NOTIFICATION_SOUND = 'enabled';
+  //   const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+  //   this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
+
+  //   if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
+  //     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+  //     this.NOTIFICATION_SOUND = storedNotificationSound;
+  //   } else {
+
+  //     this.NOTIFICATION_SOUND = 'enabled';
+
+  //     localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+  //     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+  //   }
+
+  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {

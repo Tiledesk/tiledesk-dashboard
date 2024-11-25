@@ -36,7 +36,7 @@
 .home-block-title {
   font-size: 20px;
   font-weight: 400;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   margin-right: 16px;
 }
 
@@ -47,11 +47,18 @@
 }
 
 .home-block-description {
-  color: #000000;
+  color: var(--text-color);
   font-size: 15px;
   font-weight: 400;
   line-height: 20px;
   margin: 0px;
+}
+
+#unistall-icon-btn {
+  box-shadow: unset!important;
+  margin-right: 16px!important;
+  background-color: var(--red-color)!important; // #f44336!important;
+  position: relative!important;
 }
 
 .unistall-app-btn-disabled {

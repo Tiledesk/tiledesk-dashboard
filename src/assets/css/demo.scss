@@ -739,9 +739,10 @@ my-app .main-panel .main-content .card {
 .btn-success-no-boxshadow {
   box-shadow: unset !important;
   text-transform: none !important;
-  padding: 9px 15px !important;
+  padding: 9px 20px !important;
   background: #3ecf8e !important;
-  font-size: 14px;
+  font-size: 14px !important;
+  border-radius: var(--btn-border-radius) !important;
 }
 
 .btn-success-no-boxshadow:hover {
@@ -2508,8 +2509,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 //--indigo-deep -> #5b5dbc
 
 .btn.btn-p {
-  background-color: var(--indigo);
-  border-color: var(--indigo);
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   text-transform: none;
   border-radius: 999px;
@@ -2518,22 +2519,22 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .btn.btn-p:hover {
-  background-color: var(--indigo-deep);
-  border-color: var(--indigo-deep);
+  background-color: var(--primary-btn-hover-background);
+  border-color: var(--primary-btn-hover-background);
   color: #fff;
   box-shadow: unset;
 }
 
 .btn.btn-p:focus {
-  background-color: var(--indigo-deep);
-  border-color: var(--indigo-deep);
+  background-color: var(--primary-btn-hover-background);
+  border-color: var(--primary-btn-hover-background);
   color: #fff;
   box-shadow: unset;
 }
 
 .btn.btn-p:active {
-  background-color: var(--indigo-deep);
-  border-color: var(--indigo-deep);
+  background-color: var(--primary-btn-hover-background);
+  border-color: var(--primary-btn-hover-background);
 }
 
 .btn.btn-p-ripple {
@@ -2542,7 +2543,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .btn.btn-p-ripple:hover {
-  background: var(--indigo-deep) radial-gradient(circle, transparent 1%, var(--indigo) 1%) center/15000%;
+  background: var(--blue-light) radial-gradient(circle, transparent 1%, var(--primary-btn-hover-background) 1%) center/15000%;
 }
 
 .btn.btn-p-ripple:active {
@@ -2563,32 +2564,32 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   border: 1px solid var(--blue-light) !important;
   color: var(--blue-light);
   background-color: #fff;
-  border-radius: 999px !important;
+  border-radius:var(--btn-border-radius) !important;
   box-shadow: unset;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family); //"Poppins", "Roboto", "Arial", sans-serif;
   text-transform: unset;
 }
 
 .btn.btn-p-outline:hover {
-  background-color: rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color);//rgba(104, 131, 208, .2);
   // border: 1px solid var(--indigo-deep);
   // color: var(--indigo-deep);
-  border: 1px solid var(--vivid-blue);
-  color: var(--vivid-blue);
+  border: 1px solid var(--blue-light); // --vivid-blue
+  color: var(--blue-light);
   box-shadow: unset;
 }
 
 .btn.btn-p-outline:focus {
-  background-color: rgba(104, 131, 208, .2);
-  border: var(--indigo-deep);
-  color: var(--indigo-deep);
+  background-color:  var(--outlined-btn-blu-hover-backgound-color);//rgba(104, 131, 208, .2);
+  border: var(--blue-light);
+  color: var(--blue-light);
   box-shadow: unset;
 }
 
 .btn.btn-p-outline:active {
-  background-color: rgba(104, 131, 208, .2);
-  border: 1px solid var(--indigo-deep);
-  color: var(--indigo-deep);
+  background-color:  var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
+  border: 1px solid var(--blue-light);
+  color: var(--blue-light);
   box-shadow: unset;
 }
 
@@ -2602,7 +2603,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 // }
 
 .btn.btn-p-outline-ripple:active {
-  background-color: rgba(104, 131, 208, .2);
+  background-color:  var(--outlined-btn-blu-hover-backgound-color) !important; //rgba(104, 131, 208, .2);
   background-size: 100%;
   transition: background 0s;
 }

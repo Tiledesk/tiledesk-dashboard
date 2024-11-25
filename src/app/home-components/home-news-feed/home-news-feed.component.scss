@@ -148,9 +148,9 @@
     padding-bottom: 15px !important;
     font-size: 14px !important;
     cursor: pointer;
-    color: #0566ff !important;
+    color: var(--only-text-btn-color);// #0566ff !important;
     font-weight: 400;
-    font-family: Poppins,Roboto,Arial,sans-serif;
+    font-family: var(--header-font-family);
 }
 
 .news-tag {

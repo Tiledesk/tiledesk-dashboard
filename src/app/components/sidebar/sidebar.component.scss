@@ -69,6 +69,11 @@
     }
     span{
       display: flex;
+
+      svg {
+        width: 24;
+        height: 24px;
+      }
       
     }
   }
