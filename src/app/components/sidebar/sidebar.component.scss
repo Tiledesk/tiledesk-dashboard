@@ -71,7 +71,7 @@
       display: flex;
 
       svg {
-        width: 24;
+        width: 24px;
         height: 24px;
       }
       
@@ -90,7 +90,24 @@
 .nav-custom > div:hover > #openchat-a > span > svg > g > path {
   stroke: var(--sidebar-hover-icon-color);
 }
+// New chat icon
+.nav-custom > div > #openchat-a > span > svg {
+  fill: var(--sidebar-icon-color);
+}
 
+// New chat icon
+.nav-custom > div:hover > #openchat-a > span > svg  {
+  fill: var(--sidebar-hover-icon-color);
+}
+
+
+.item-active svg path,
+.item-active svg ellipse{
+  height: 40px;
+  // background-color: #3ea9f5;
+  fill: var(--sidebar-active-icon) !important;
+  pointer-events: none;
+}
 
 div.item-active > a  {
   background-color: var(--sidebar-bckgrnd-item-hover);
@@ -139,13 +156,7 @@ div.item-active > a > i {
 }
 
 
-.item-active svg path,
-.item-active svg ellipse{
-  height: 40px;
-  // background-color: #3ea9f5;
-  fill: var(--sidebar-active-icon) !important;
-  pointer-events: none;
-}
+
 
 // li.active a span.sidebar-mini {
 //   color: #ffffff !important;
