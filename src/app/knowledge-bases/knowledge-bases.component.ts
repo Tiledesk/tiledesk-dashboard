@@ -1376,7 +1376,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
 
     dialogRef.afterClosed().subscribe(type => {
-      console.log('[Modal ADD CONTENT] type: ', type);
+      this.logger.log('[Modal ADD CONTENT] type: ', type);
       if (type) {
         this.openAddKnowledgeBaseModal(type)
       }

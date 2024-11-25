@@ -45,7 +45,7 @@ export class LogRequestsInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (request.method === 'GET') {
           // Handle GET request error
-          console.error('[HTTP-INTERCEPTOR] GET request error:', error);
+          // console.error('[HTTP-INTERCEPTOR] GET request error:', error);
           // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
           if ( error.status === 429) {
             this.presentAlert()

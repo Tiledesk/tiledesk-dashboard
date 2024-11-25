@@ -1390,7 +1390,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
-        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
       }
 
 
@@ -3507,7 +3507,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -4772,8 +4772,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
-    console.log("displayModalBanVisitor bannedVisitorsArray index" , index)
-    console.log("displayModalBanVisitor bannedVisitorsArray", this.bannedVisitorsArray)
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray index" , index)
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray", this.bannedVisitorsArray)
     // if (this.visitorIsBanned === false) {
     if (index === -1) {
       Swal.fire({
@@ -4796,7 +4796,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
             this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-             console.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+              this.logger.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
             }, (error) => {
               // this.logger.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);

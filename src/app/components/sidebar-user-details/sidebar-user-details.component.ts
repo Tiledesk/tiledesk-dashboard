@@ -350,7 +350,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(calledBy => {
       if (calledBy) {
-        console.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logger.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
         this.logout()
       }
     });

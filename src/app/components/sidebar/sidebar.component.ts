@@ -2055,7 +2055,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(calledBy => {
       if (calledBy) {
-        console.log(`[SIDEBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logger.log(`[SIDEBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
         this.logout()
       }
     });

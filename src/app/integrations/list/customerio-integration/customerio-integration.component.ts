@@ -62,7 +62,7 @@ export class CustomerioIntegrationComponent implements OnInit {
 
   checkKey() {
     return new Promise((resolve) => {
-      console.log("[INT-Customer.io] integration.value.apikey" , this.integration.value.apikey)
+      this.logger.log("[INT-Customer.io] integration.value.apikey" , this.integration.value.apikey)
       let url = "https://track.customer.io/api/v1/accounts/region";
       let apikey = 'Basic ' + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url, apikey).subscribe((resp: any) => {

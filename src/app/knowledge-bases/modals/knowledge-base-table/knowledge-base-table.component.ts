@@ -312,7 +312,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddContent() {
-    console.log('onOpenAddContent');
+    this.logger.log('onOpenAddContent');
     this.onOpenAddContents.emit();
   }
 
@@ -345,7 +345,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(type) {
-   console.log('onOpenAddKnowledgeBaseModal', type);
+    this.logger.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
 

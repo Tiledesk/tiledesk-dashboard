@@ -1913,7 +1913,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     dialogRef.afterClosed().subscribe(calledBy => {
       if (calledBy) {
-        console.log(`[NAVBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logger.log(`[NAVBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
         this.logout()
       }
     });

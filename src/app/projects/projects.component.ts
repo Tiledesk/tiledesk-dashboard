@@ -872,7 +872,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(calledBy => {
       if (calledBy) {
-        console.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logger.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
         this.logout()
       }
     });

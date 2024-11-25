@@ -90,7 +90,7 @@ export class HubspotIntegrationComponent implements OnInit {
 
   checkKey() {
     return new Promise((resolve) => {
-      console.log('checkKey  this.integration.value.apikey; ', this.integration.value.apikey)
+      this.logger.log('checkKey  this.integration.value.apikey; ', this.integration.value.apikey)
       let url = "https://api.hubapi.com/crm/v3/objects/contacts?limit=10";
       let key = "Bearer " + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp: any) => {
@@ -98,7 +98,7 @@ export class HubspotIntegrationComponent implements OnInit {
         resolve(true);
       }, (error) => {
         this.isVerified = false;
-        console.error("[INT-Hubspot] Key verification failed: ", error);
+        this.logger.error("[INT-Hubspot] Key verification failed: ", error);
         if (error.status === 0) {
           resolve(false);
         } else {

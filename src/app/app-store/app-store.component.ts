@@ -440,12 +440,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
   openInAppStoreInstall(app, appTitle) {
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
 
-    console.log('openInAppStoreInstall app ', app)
+    this.logger.log('openInAppStoreInstall app ', app)
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
   }
 
@@ -770,7 +770,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   goToCreateBot(type: string) {
-    console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
     if (type !== 'native' && type !== 'tilebot') {
       this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
     } else if (type === 'native') {

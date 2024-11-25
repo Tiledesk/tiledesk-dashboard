@@ -373,9 +373,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   integrationUpdateEvent(data) {
-    console.log('[INTEGRATION-COMP] data',  data) 
+    this.logger.log('[INTEGRATION-COMP] data',  data) 
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
-      console.log("[INTEGRATION-COMP] Save integration result: ", result);
+      this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
       this.reloadSelectedIntegration(data.integration);
       // if (data.isVerified === true) {
