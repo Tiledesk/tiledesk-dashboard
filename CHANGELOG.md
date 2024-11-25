@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.43-rc1
+- Refactors dashboard UI
+
 ### 2.7.41-rc5
 - Refactors dashboard UI (work in progress)
 
