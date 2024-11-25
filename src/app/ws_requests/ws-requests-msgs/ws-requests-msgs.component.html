@@ -757,13 +757,16 @@
                         [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
                         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                         (click)="goToContactDetails()">
-                        <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                        <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO">
                           {{ requester_fullname_initial }}
                         </span>
-                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname === request?.lead?.phone)" class="material-icons-outlined">
+                        <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.fullname === request?.lead?.phone)" class="material-icons-outlined">
                           call
                         </span>
-                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname !== request?.lead?.phone)">
+                        <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone" class="material-icons-outlined">
+                          call
+                        </span>
+                        <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)">
                           {{ requester_fullname_initial }}
                         </span>
                       </div>
@@ -1682,7 +1685,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Browser & Operating sistem -->
                     <!-- ------------------------------------- -->
-                    <li class="browser" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                    <li class="browser" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
@@ -1714,7 +1717,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Ip Address -->
                     <!-- ------------------------------------- -->
-                    <li class="ip-address" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                    <li class="ip-address" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1738,7 +1741,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Channel VOICE - Called Number -->
                     <!-- ------------------------------------- -->
-                    <li class="dnis" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
+                    <li class="dnis" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1762,7 +1765,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Channel VOICE - Duration -->
                     <!-- ------------------------------------- -->
-                    <li class="duration" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && requestDuration">
+                    <li class="duration" *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && requestDuration">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
@@ -1959,7 +1962,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel voice  -->
                     <!-- ---------------------------------------- -->
-                    <li class="voice-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
+                    <li class="voice-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO">
                       <div id="contact-row-voice-channel" class="contact-row">
                         <span>
 

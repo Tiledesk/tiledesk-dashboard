@@ -730,6 +730,7 @@ export const CHANNELS_NAME = {
     MESSANGER: 'messenger',
     WHATSAPP: 'whatsapp',
     VOICE_VXML: 'voice-vxml',
+    VOICE_TWILIO: 'voice-twilio',
     SMS_TWILIO: 'sms-twilio',
 }
 
@@ -741,6 +742,7 @@ export const CHANNELS = [
     { id: CHANNELS_NAME.MESSANGER, name: 'Facebook Messenger' },
     { id: CHANNELS_NAME.WHATSAPP, name: 'WhatsApp' },
     { id: CHANNELS_NAME.VOICE_VXML, name: 'Voice' },
+    { id: CHANNELS_NAME.VOICE_TWILIO, name: 'Voice' },
     { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
 
 ]
