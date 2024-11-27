@@ -59,6 +59,8 @@ export class WebhookAddEditComponent implements OnInit {
     { id: "group.delete", name:"Group Delete"},
     { id: "operator.select", name:"Operator Selection"},
     { id: "event.emit", name:"Event Emit"},
+    { id: "event.emit.smart_assignment.request_abandoned", name:"Request Abandoned"},
+    { id: "event.emit.request.fully_abandoned", name:"Request Fully Abandoned"},
   ]
 
   constructor(

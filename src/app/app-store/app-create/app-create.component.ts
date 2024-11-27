@@ -5,6 +5,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { Location } from '@angular/common';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'appdashboard-app-create',
   templateUrl: './app-create.component.html',
@@ -37,6 +38,7 @@ export class AppCreateComponent implements OnInit {
   diplayErrorRunUrlIsNoValid: boolean = false;
   diplayErrorAppInstallationUrlIsNoValid: boolean = false;
   currentApp: any;
+  public hideHelpLink: boolean;
   // no more used
   // where_items = [
   //   { id: 'dashboard', name: 'Dashboard' },
@@ -54,7 +56,11 @@ export class AppCreateComponent implements OnInit {
     private notify: NotifyService,
     private router: Router,
     public route: ActivatedRoute,
-  ) { }
+    public brandService: BrandService,
+  ) { 
+    const brand = brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit() {
     this.getBrowserVersion();
