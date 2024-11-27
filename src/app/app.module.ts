@@ -402,6 +402,9 @@ import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-
 import { LogRequestsInterceptor } from './services/interceptor/log-requests.interceptor';
 import { CnpSelectTemplatesOrKbComponent } from './create-new-project/cnp-select-templates-or-kb/cnp-select-templates-or-kb.component';
 import { RoleService } from './services/role.service';
+import { SleekplanSsoService } from './services/sleekplan-sso.service';
+import { SleekplanService } from './services/sleekplan.service';
+import { SleekplanApiService } from './services/sleekplan-api.service';
 // import { PasswordStrengthModule } from './auth/signup/password-strength/password-strength.module';
 // import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 
@@ -842,6 +845,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     PopupService,
     NotificationService,
     RoleService,
+    SleekplanSsoService,
+    SleekplanService,
+    SleekplanApiService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

@@ -49,6 +49,7 @@
           </a>
         </li> -->
 
+
         <!-- -------------------------------------------- -->
         <!-- Quote - usage stats  indicator -->
         <!-- -------------------------------------------- -->
@@ -61,7 +62,7 @@
               class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
               (click)="onOpenQuoteMenu()">
               <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
-              <mat-icon class="data-usage-icon" >
+              <mat-icon class="data-usage-icon">
                 data_usage
               </mat-icon>
               <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
@@ -182,14 +183,14 @@
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title link"(click)="goToHistoryAllConvs()">
+                              <p class="quota-right-title link" (click)="goToHistoryAllConvs()">
                                 <!-- Total conversations usage -->
                                 {{'TotalConversationsUsage' | translate}}
                               </p>
                               <div class="quota-limit-wpr">
-                                <p  class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
                                 <!-- <p  class="quota-limit">{{openedConversations + closedConversations}} /&nbsp;</p> -->
-                                <p  class="quota-limit">{{requests_limit | number:'1.0-0'}}</p>
+                                <p class="quota-limit">{{requests_limit | number:'1.0-0'}}</p>
                               </div>
                             </div>
                             <div class="quota-pie" style="width: 50px; height: 50px;">
@@ -213,9 +214,10 @@
                                     </linearGradient>
                                 </defs>
                             </svg> -->
-                            <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
-                              <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                                [mode]="'determinate'" [value]="requests_perc" [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                              <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
+                              <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50"
+                                [color]="'primary'" [mode]="'determinate'" [value]="requests_perc"
+                                [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">
                                 {{ requests_perc }}%
@@ -236,7 +238,7 @@
                               <h2 class="quota-title">AI Tokens</h2>
                               <!-- <span  class="quota-plan-badge">Free</span> -->
                             </div>
-                            
+
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
@@ -245,8 +247,8 @@
                                 {{'TotalAITokensUsage' | translate}}
                               </p>
                               <div class="quota-limit-wpr">
-                                <p  class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
-                                <p  class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
+                                <p class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
                               </div>
                             </div>
                             <div class="quota-pie" style="width: 50px; height: 50px;">
@@ -258,18 +260,18 @@
                                   stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
                                   stroke-linecap="round"></circle>
                               </svg> -->
-                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                                [mode]="'determinate'" [value]="tokens_perc" 
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
+                                [color]="'primary'" [mode]="'determinate'" [value]="tokens_perc"
                                 [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">{{ tokens_perc }}%</div>
                             </div>
                           </div>
                         </div>
-                        
+
                       </div>
                     </div>
-                    
+
                     <div aria-label="Usage limit for Email" class="quota-section-main last">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
@@ -300,8 +302,8 @@
                                   stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
                                   stroke-linecap="round"></circle>
                               </svg> -->
-                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                                [mode]="'determinate'" [value]="email_perc"
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
+                                [color]="'primary'" [mode]="'determinate'" [value]="email_perc"
                                 [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">{{ email_perc }}% </div>
@@ -316,7 +318,7 @@
 
                 <!-- ------------ -->
 
-                <div class="quotas-upgrade-btn-wpr">  
+                <div class="quotas-upgrade-btn-wpr">
                   <button *ngIf="isVisiblePay" mat-flat-button class="quotas-upgrade-btn" (click)="goToPricing()">
                     <span class="material-icons-outlined">bolt</span>
                     {{ "Pricing.UpgradePlan" | translate }}
@@ -395,7 +397,8 @@
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisiblePay">
           <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate }} </a>
+            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate
+              }} </a>
           </li>
         </ng-container>
 
@@ -404,7 +407,7 @@
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
         <!-- *ngIf="isVisiblePay" -->
-        <ng-container >
+        <ng-container>
           <li
             [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
             id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
@@ -596,6 +599,31 @@
             <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
           </a>
         </li>
+
+        <!-- -------------------------------------------- -->
+        <!-- Sleekplan -->
+        <!-- -------------------------------------------- -->
+        <!-- <button (click)="openFeedback()">Give Feedback</button> -->
+        <ng-container *ngIf="isVisiblePay" style="position: relative;">
+          <li>
+            <a>
+              <button class="give-feedback" (click)="openFeedback()">
+
+                <i class="material-icons">notifications</i>
+              </button>
+              
+            </a>
+
+          </li>
+          <!-- *ngIf="newChangelogCount" -->
+          <div *ngIf="newChangelogCount" class="changelog-count" > 
+            <span>
+              1
+            </span>
+           
+          </div>
+
+        </ng-container>
 
 
         <!--  ------------------------------------------------ -->

@@ -35,6 +35,9 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
+import { HttpClient } from '@angular/common/http';
+import { SleekplanSsoService } from './services/sleekplan-sso.service';
+import { SleekplanService } from './services/sleekplan.service';
 // import { UsersService } from './services/users.service';
 
 
@@ -100,6 +103,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
+       
+        private sleekplanSsoService: SleekplanSsoService,
+        private  sleekplanService: SleekplanService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
@@ -615,11 +621,45 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
+    sleekplanSso(user) {
+        this.sleekplanSsoService.getSsoToken(user).subscribe(
+          (response) => {
+            console.log('sleekplanSso response ', response)
+            console.log('sleekplanSso response token', response['token'])
+            console.log('sleekplanSso response $sleek',  window['$sleek'])
+            // Configure Sleekplan with SSO
+            // window['Sleekplan'] = {
+            //   id: 'YOUR_SLEEKPLAN_ID',
+            //   sso: response.token,
+            // };
+    
+            // window['$sleek'].setUser({
+            //   token: response['token'],
+            // });
+    
+            // window.document.addEventListener('sleek:init', () => {
+            //   window['$sleek'].setUser({ token: response['token'] });
+            // }, false);
+           
+            // window['$sleek'].sso = { token: response['token'] }
+    
+            window['SLEEK_USER'] = { token: response['token'] }
+    
+            this.sleekplanService.loadSleekplan()
+    
+            // Load the Sleekplan widget
+            // this.sleekplanService.loadSleekplan();
+          },
+          (error) => {
+            console.error('Failed to fetch Sleekplan SSO token', error);
+          }
+        );
+      }
 
     getCurrentUserAndConnectToWs() {
-       
         this.auth.user_bs.subscribe((user) => {
-            this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            this.sleekplanSso(user)
             if (!user) {
                 this.wsInitialized = false;
             }

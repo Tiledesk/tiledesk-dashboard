@@ -41,6 +41,7 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
+import { SleekplanApiService } from 'app/services/sleekplan-api.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -201,6 +202,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   startSlot: string;
   endSlot: string;
 
+  newChangelogCount: number | null = null;
+  lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -220,7 +224,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public brandService: BrandService,
     public localDbService: LocalDbService,
     private logger: LoggerService,
-    private quotesService: QuotesService
+    private quotesService: QuotesService,
+    private sleekplanApi: SleekplanApiService
   ) {
 
     super(prjctPlanService, notifyService);
@@ -292,6 +297,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
+    this.fetchNewChangelogCount();
+
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
@@ -689,7 +696,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
     keys.forEach(key => {
-     
+
       if (key.includes("MTT")) {
         // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
         let mt = key.split(":");
@@ -1940,7 +1947,65 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
   }
 
+
+  openFeedback(): void {
+    // console.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
+    // if (window['Sleekplan']?.open) {
+    //   window['Sleekplan'].open();
+    // }
+    console.log('[NAVBAR] open Sleekplan ', window['$sleek'])
+    window['$sleek'].toggle();
+    this.lastSeen = Date.now()
+    console.log('[NAVBAR] open Sleekplan lastSeen ', this.lastSeen)
+    // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
+    this.localDbService.setInStorage('lastSeenTimestamp', this.lastSeen.toString())
+    // window.$sleek
+  }
+
+  fetchNewChangelogCount() {
+    const lastSeen = this.localDbService.getFromStorage('lastSeenTimestamp')
+    console.log('SLEEKPLAN SERV lastSeen form storage', lastSeen);
+    this.sleekplanApi.getNewChangelogCount(this.lastSeen).subscribe(
+      (resp) => {
+        // this.newChangelogCount = data.count;
+        console.log('SLEEKPLAN SERV changelog count resp', resp);
+        console.log('SLEEKPLAN SERV changelog count  resp data ', resp['data']);
+        console.log('SLEEKPLAN SERV changelog count  resp data items ', resp['data']['items']);
+        const data = resp['data']['items']
+        //       const createdDate = resp['data']['items']['item'].created;
+        // console.log('SLEEKPLAN SERV createdDate' , createdDate); // Output: "2024-10-16 07:05:24"
+        // console.log(' new changelog count',  this.newChangelogCount);
+
+        const firstKey = Object.keys(data)[0]; // Get the first key in the object
+        const createdValue = data[firstKey].created; // Access the created property
+
+        console.log('SLEEKPLAN SERV createdValue ', createdValue); // Output: "2024-10-16 07:05:24"
+        const createdValueTimestamp = new Date(createdValue).getTime()
+
+        console.log('SLEEKPLAN SERV createdValueTimestamp ', createdValueTimestamp);
+        if (lastSeen) {
+          if (createdValueTimestamp > this.lastSeen) {
+            console.log('SLEEKPLAN SERV there is a notification ');
+            this.newChangelogCount = 1
+          } else {
+            console.log('SLEEKPLAN SERV there is NOT notification ');
+            this.newChangelogCount = null
+          }
+        } else {
+          console.log('SLEEKPLAN SERV there is a notification ');
+          this.newChangelogCount = null
+        }
+      },
+      (error) => {
+        console.error('Failed to fetch new changelog count', error);
+        this.newChangelogCount = null;
+      }
+    );
+  }
+
   // changeThemeColor() {
   //   this.document.body.classList.add('dark');
   // }
 }
+
+

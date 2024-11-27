@@ -1569,6 +1569,26 @@ button.close.custom-hover:hover {
   font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
 }
 
+.give-feedback {
+  background: unset;
+  border: unset;
+}
+
+
+.changelog-count {
+  position: absolute;
+    right: 31px;
+    background: red;
+    font-size: 12px;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    border-radius: 9999px;
+    top: 12px;
+    border: 1px solid #fff;
+}
+
 // .quota-resets {
 //   margin-top: 0px;
 //   margin-bottom: 0px;
