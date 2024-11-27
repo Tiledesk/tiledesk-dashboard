@@ -333,6 +333,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           }
         }
         else {
+          this.logger.log('heree voiceTwiloApp ', voiceTwiloApp)
           if (voiceTwiloApp) {
             voiceTwiloApp.channel = "voice-twilio";
           }
@@ -365,12 +366,16 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category , ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
       if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
+        this.logger.log("[INTEGRATIONS]- OLLa " )
         // this.integrationSelectedName = "external";
         
         this.integrationSelectedType = "external";
         this.showInIframe = true;
         this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType , ' showInIframe ', this.showInIframe)
+        this.logger.log("[INTEGRATIONS]- availableApps ", this.availableApps )
         let app = this.availableApps.find(a => a.channel === integration.key);
+        this.logger.log("[INTEGRATIONS]- app ", app )
+        
         this.renderUrl = app.runURL;
       } else {
         this.showInIframe = false;
