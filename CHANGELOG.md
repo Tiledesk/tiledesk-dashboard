@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.45
+- Improves the app store
+
 ### 2.7.44
 - Improves the method manage integrations visibility
 - Improves the method that display the runned out quotas banner
