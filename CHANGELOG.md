@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.44
+- Improves the method manage integrations visibility
+- Improves the method that display the runned out quotas banner
+
 ### 2.7.43
 - Adds the "Twilio voice" integration 
 
