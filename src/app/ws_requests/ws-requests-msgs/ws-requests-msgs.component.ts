@@ -2708,8 +2708,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   updateRequestTags(id_request, tagsArray, fromaction) {
-    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
-    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
+    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
     this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
@@ -2767,7 +2767,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   createNewTag = (newTag: string) => {
-    this.logger.log("Create New TAG Clicked : " + newTag)
+   console.log("Create New TAG Clicked : " + newTag)
     this.logger.log("Create New TAG Clicked - request tag: ", this.request.tags)
 
     var index = this.request.tags.findIndex(t => t.tag === newTag);
@@ -2885,7 +2885,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   createTag(newTag) {
     this.tag_selected_color = '#43B1F2'
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
+    console.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
     this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
     this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
     // this.ngselect.close()

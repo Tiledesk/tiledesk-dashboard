@@ -1105,7 +1105,7 @@ export class WsRequestsService implements OnDestroy {
 
     const body = { 'tags': tags };
     // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
-    this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - BODY ', body);
+    console.log('[WS-REQUESTS-SERV] UPDATE TAG - BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - URL ', url);
