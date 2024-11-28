@@ -98,7 +98,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
-    console.log('INTEGRATIONS ', this.INTEGRATIONS)
   }
 
 
@@ -138,7 +137,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(async (projectProfileData: any) => {
         if (projectProfileData) {
-          console.log('[INTEGRATION-COMP] projectProfileData ', projectProfileData)
+          this.logger.log('[INTEGRATION-COMP] projectProfileData ', projectProfileData)
           this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
 
           this.profile_name = projectProfileData.profile_name;
@@ -196,7 +195,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
       this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
-      console.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
+      this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
@@ -225,8 +224,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
     return new Promise((resolve) => {
       this.appService.getApps().subscribe((response: any) => {
-
-        // console.log('Apps ',response )
 
         let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
         if (environment['whatsappConfigUrl']) {
@@ -805,17 +802,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   manageAppVisibility(projectProfileData) {
-    // const twilioVoiceObjct = INTEGRATION_LIST_ARRAY.filter(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-    // console.log('twilioVoiceObjct' , twilioVoiceObjct) 
-    // this.INTEGRATIONS = INTEGRATION_LIST_ARRAY
-    console.log('[INTEGRATIONS] manageAppVisibility INTEGRATIONS' , this.INTEGRATIONS) 
-    console.log('[INTEGRATIONS] manageAppVisibility INTEGRATIONS_CLONE' , INTEGRATION_LIST_ARRAY_CLONE) 
-    
-    
-    console.log('[INTEGRATIONS] projectProfileData.customization ', projectProfileData.customization)
 
     if (projectProfileData && projectProfileData.customization) {
-      console.log('[INTEGRATIONS] manageAppVisibility 1  ')
+   
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
@@ -832,26 +821,50 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
+
+      // -----------------------------
+      // VXML_VOICE
+      // -----------------------------
+      // Removes "VXML voice" integration if in not activated in customization
       if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
+       // Restores the "VXML voice" integration (use case: it was removed from the Integration array in a project where it was not active)
+       if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === true) {
+        this.logger.log('[INTEGRATIONS] manageAppVisibility VXML_VOICE ')
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+        if (index != -1) {
+          this.logger.log('VXML_VOICE index A', index)
+        } else if (index == -1) {
+          this.logger.log('VXML_VOICE index B', index)
+          const VXMLVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.VXML_VOICE);
+          this.logger.log('VXMLVoiceObjct' , VXMLVoiceObjct) 
+          this.INTEGRATIONS.push(VXMLVoiceObjct)
+        }
+      }
+
+
+      // -----------------------------
+      // TWILIO_VOICE
+      // -----------------------------
+      // Removes "Twilio voice" integration if in not activated in customization
       if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
-        console.log('[INTEGRATIONS] manageAppVisibility 1 A ')
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
+      // Restores the "Twilio voice" integration (use case: it was removed from the Integration array in a project where it was not active)
       if (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] && projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === true) {
-        console.log('[INTEGRATIONS] manageAppVisibility 1 B ')
+        this.logger.log('[INTEGRATIONS] manageAppVisibility TWILIO_VOICE ')
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (index != -1) {
-          console.log('TWILIO_VOICE index A', index)
+          this.logger.log('TWILIO_VOICE index A', index)
         } else if (index == -1) {
-          console.log('TWILIO_VOICE index B', index)
+          this.logger.log('TWILIO_VOICE index B', index)
           const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-          console.log('twilioVoiceObjct' , twilioVoiceObjct) 
+          this.logger.log('twilioVoiceObjct' , twilioVoiceObjct) 
           this.INTEGRATIONS.push(twilioVoiceObjct)
         }
       }
@@ -866,7 +879,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
 
     } else {
-      console.log('[INTEGRATIONS] manageAppVisibility 2  ')
       let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
       if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
 
