@@ -1114,6 +1114,26 @@ export class WsRequestsService implements OnDestroy {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
+  updateRequestTags(request_id: string, tag: any) {
+    console.log('[WS-REQUESTS-SERV] NEW UPDATE TAGS - tag ', tag);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const body = tag;
+    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+    console.log('[WS-REQUESTS-SERV] NEW UPDATE TAGS - BODY ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/tag'
+    console.log('[WS-REQUESTS-SERV] NEW UPDATE TAGS - URL ', url);
+
+    return this._httpClient
+      .put(url, body, httpOptions)
+  }
+
   // -------------------------------------------------------
   // @ Create note
   // -------------------------------------------------------

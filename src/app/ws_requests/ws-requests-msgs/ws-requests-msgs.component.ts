@@ -1704,7 +1704,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe(async (wsrequest) => {
 
-      //  console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+      console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
        
 
@@ -2677,35 +2677,56 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   addTag() {
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
+    console.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
-    let tagObject = {}
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
-    if (foundtag.length > 0) {
-      tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
-    }
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
+  
+    console.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
+
+    // No more used
+    // let tagObject = {}
+    // if (foundtag.length > 0) {
+    //   tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
+    // }
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
+    const newTagArray = [{ tag: foundtag[0].tag, color: foundtag[0].color }]
+    console.log('[WS-REQUESTS-MSGS] - ADD TAG - newTagArray: ', newTagArray);
     setTimeout(() => {
       this.tag = null;
     })
-    const tagObjectsize = Object.keys(tagObject).length
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
-    if (tagObjectsize > 0) {
-      this.tagsArray.push(tagObject);
-      // this.getTag()
-    }
+    this.manageRequestTags(this.id_request, newTagArray, 'add')
 
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
-    // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
-    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
-    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
-    if (tagObjectsize > 0) {
-      this.updateRequestTags(this.id_request, this.tagsArray, 'add')
-    }
+    // No more used
+    // const tagObjectsize = Object.keys(tagObject).length
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    // if (tagObjectsize > 0) {
+    //   this.tagsArray.push(tagObject);
+    // }
+
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
+    // if (tagObjectsize > 0) {
+    //   this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    // }
 
   }
+
+ manageRequestTags(id_request, tag, fromaction) {
+    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tag: ', tag);
+    this.wsRequestsService.updateRequestTags(id_request, tag)
+      .subscribe((data: any) => {
+       console.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+      }, (err) => {
+        console.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
+      }, () => {
+        console.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
+        this.getTagContainerElementHeight()
+      });
+  }
+
 
   updateRequestTags(id_request, tagsArray, fromaction) {
     console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
@@ -2789,10 +2810,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         .subscribe((tag: any) => {
           this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
 
-          const tagObject = { tag: tag.tag, color: tag.color }
-          self.tagsArray.push(tagObject);
+          // const tagObject = { tag: tag.tag, color: tag.color } // no more used
+          // self.tagsArray.push(tagObject); // no more used
+          const newTagArray = [{ tag: tag.tag, color: tag.color }]
+          
 
-          self.updateRequestTags(this.id_request, this.tagsArray, 'create')
+          self.manageRequestTags(this.id_request, newTagArray, 'create')
 
         }, (error) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
@@ -2884,6 +2907,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   createTag(newTag) {
+    console.log("Create TAG Clicked - is used?: " + newTag)
     this.tag_selected_color = '#43B1F2'
     console.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
     this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
