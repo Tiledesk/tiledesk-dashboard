@@ -119,6 +119,8 @@ export const INTEGRATION_LIST_ARRAY = [
     // { name: "Google Sheets'", category: INTEGRATIONS_CATEGORIES.STORAGE, type: INTEGRATIONS_KEYS.GSHEETS, src: "assets/cds/images/actions/google_sheets.png" }
 ]
 
+export const INTEGRATION_LIST_ARRAY_CLONE = [...INTEGRATION_LIST_ARRAY] 
+
 export function getKeyByValue(value, keys) {
     const indexOfS = Object.values(keys).indexOf(value as unknown as any);
     const key = Object.keys(keys)[indexOfS];
