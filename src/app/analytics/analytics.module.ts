@@ -19,6 +19,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { TagsAnalyticsComponent } from './metrics/tags-analytics/tags-analytics.component';
 
 const routes: Routes = [
   { path: "", component: AnalyticsComponent},
@@ -37,7 +38,7 @@ const routes: Routes = [
     VisitorsAnalyticsComponent,
     PanoramicaComponent,
     RealtimeComponent,
-
+    TagsAnalyticsComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

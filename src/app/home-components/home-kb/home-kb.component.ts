@@ -153,7 +153,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   getAllNamespaces() {
     this.kbService.getAllNamespaces().subscribe((namespaces: any) => {
       if (namespaces) {
-        this.logger.log('[HOME-KB] - GET ALL NAMESPACES', namespaces);
+        console.log('[HOME-KB] - GET ALL NAMESPACES', namespaces);
         this.namespaces = namespaces
 
         this.namespaceCount = this.namespaces.length

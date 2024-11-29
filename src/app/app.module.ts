@@ -715,7 +715,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MessagesStatsModalComponent,
     // N8nIntegrationComponent,
     KnowledgeBasesAlertComponent,
-    CnpSelectTemplatesOrKbComponent,
+    CnpSelectTemplatesOrKbComponent
     // ModalChatbotReassignmentComponent,
     // ModalAddNamespaceComponent,
     // ModalUploadFileComponent,

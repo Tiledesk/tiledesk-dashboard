@@ -1088,21 +1088,6 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
-.analytics-date-range-selected {
-  margin: 8px !important;
-  color: rgba(0, 0, 0, 0.5);
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  font-size: 16px;
-  display: block;
-}
-
-.arrow_forward-custom {
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-  font-size: 18px;
-}
-
 .custom-swal>.swal-title {
   color: black;
   font-weight: 500;
@@ -1831,14 +1816,14 @@ footer ul {
   border: none;
 }
 
-.ng-select.custom--input .ng-select-container  {
+.ng-select.custom--input .ng-select-container {
   box-shadow: 0 0 4px #c7c7c7 !important;
   border: unset !important;
   border-radius: 12px !important;
-} 
+}
 
 .ng-select-container {
-    height: 36px !important;
+  height: 36px !important;
 }
 
 
@@ -3057,7 +3042,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 }
 
-div:where(.swal2-container) .swal2-select { 
+div:where(.swal2-container) .swal2-select {
   margin-top: 0px !important;
 
   // appearance: none;
@@ -3102,24 +3087,75 @@ div:where(.swal2-container) .swal2-select {
 }
 
 .mat-dialog-container {
-  font-family: 'Poppins' !important;
+  font-family: var(--header-font-family) !important;
 }
 
 .mat-expansion-panel-header {
-  font-family: 'Poppins' !important;
+  font-family: var(--header-font-family) !important;
   font-size: 14px !important;
 }
 
 .mat-form-field-infix {
-  font-family: 'Poppins' !important;
+  font-family: var(--header-font-family) !important;
 }
 
 .mat-select {
-  font-family: 'Poppins' !important;
+  font-family: var(--header-font-family) !important;
 }
 
 .mat-option {
-  font-family: 'Poppins' !important;
+  font-family: var(--header-font-family) !important;
+}
+
+/* Graph card
+/* *********************************************** */
+.graph-card {
+  border-radius: 12px;
+}
+
+.graph-card>.graph-card-header {
+  padding-top: 27px;
+  padding-bottom: 10px
+}
+
+.graph-card>.graph-card-header {
+  padding-bottom: 18px;
+}
+
+.graph-card>.graph-card-header>.graph-card-header-title {
+  font-size: 18px;
+  font-family: var(--header-font-family)
+}
+
+.analytics-date-range-selected {
+  margin: 8px !important;
+  color: var(--secondary-text-color);
+  font-family: var(--header-font-family);
+  font-size: 16px;
+  display: block;
+}
+
+.graph-card>.graph-card-header>.analytics-date-range-filter-wpr {
+  margin-left: 37px;
+}
+
+.graph-card>.graph-card-header>.analytics-date-range-filter-wpr>.analytics-date-range-filter-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color) ;
+}
+
+.graph-card>.graph-card-header>.analytics-date-range-filter-wpr>.analytics-date-range-filter-select {
+  max-width: 300px;
+  text-align: left;
+}
+
+.analytics-date-range-selected>.arrow_forward-custom {
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+  font-size: 16px;
 }
 
 // .mat-form-field-appearance-outline .mat-form-field-outline {
