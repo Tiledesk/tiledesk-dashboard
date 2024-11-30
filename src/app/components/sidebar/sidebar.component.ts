@@ -1226,10 +1226,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         if (event.url.indexOf('/messages') !== -1) {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         } else {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/wsrequests-demo') !== -1) {
@@ -1339,12 +1339,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
 
-        if (event.url.indexOf('/support') !== -1) {
+        // if (event.url.indexOf('/support') !== -1) {
+        if (  event.url.substring(event.url.lastIndexOf('/') + 1) === 'support') {
           this.SUPPORT_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE; ', this.SUPPORT_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE; ', this.SUPPORT_ROUTE_IS_ACTIVE);
         } else {
           this.SUPPORT_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/home') !== -1) { 
