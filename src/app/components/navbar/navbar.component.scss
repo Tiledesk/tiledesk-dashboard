@@ -1579,7 +1579,7 @@ button.close.custom-hover:hover {
   position: absolute;
     right: 31px;
     background: red;
-    font-size: 12px;
+    font-size: 11px;
     color: #fff;
     width: 18px;
     height: 18px;
@@ -1587,6 +1587,11 @@ button.close.custom-hover:hover {
     border-radius: 9999px;
     top: 12px;
     border: 1px solid #fff;
+    font-weight: bold;
+    font-family: arial;
+    line-height: 18px;
+    letter-spacing: 0;
+    opacity: 1;
 }
 
 // .quota-resets {

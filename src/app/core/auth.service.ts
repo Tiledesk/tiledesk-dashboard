@@ -694,11 +694,26 @@ export class AuthService {
   }
 
   sleekplanSso(user) {
+
+    // console.log('AUT-SERV sleekplanSs')
+    // window['$sleek'].setUser = { 
+    //     mail: user.email, 
+    //     id: user._id, 
+    //     name: user.firstname, 
+    // }
+
+    // window['SLEEK_USER'] = {
+    //   mail: user.email,
+    //   id: user._id,
+    //   name: user.firstname,
+    // }
+    // // Load the Sleekplan widget
+    // this.sleekplanService.loadSleekplan();
     this.sleekplanSsoService.getSsoToken(user).subscribe(
       (response) => {
-        console.log('sleekplanSso response ', response)
-        console.log('sleekplanSso response token', response['token'])
-        console.log('sleekplanSso response $sleek',  window['$sleek'])
+        console.log('[Auth-SERV] sleekplanSso response ', response)
+        console.log('[Auth-SERV] sleekplanSso response token', response['token'])
+        console.log('[Auth-SERV] sleekplanSso response $sleek',  window['$sleek'])
         // Configure Sleekplan with SSO
         // window['Sleekplan'] = {
         //   id: 'YOUR_SLEEKPLAN_ID',
@@ -712,7 +727,7 @@ export class AuthService {
         // window.document.addEventListener('sleek:init', () => {
         //   window['$sleek'].setUser({ token: response['token'] });
         // }, false);
-       
+
         // window['$sleek'].sso = { token: response['token'] }
 
         window['SLEEK_USER'] = { token: response['token'] }
@@ -728,9 +743,6 @@ export class AuthService {
     );
   }
 
-  // sleekplanSso(user) { 
-
-  // }
 
 
 
@@ -965,8 +977,22 @@ export class AuthService {
     }
   }
 
+  resetSleekplanUser() {
+    window['$sleek'].shutdown()
+  }
+
+  closeSleekplanWidget() {
+    if (window && window['$sleek']) {
+      window['$sleek'].close();
+    } else {
+      console.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] ', window['$sleek'])
+    }
+  }
+
   signOut(calledby: string) {
     this.cacheService.clearCache()
+    // this.resetSleekplanUser()
+    this.closeSleekplanWidget()
     // this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {

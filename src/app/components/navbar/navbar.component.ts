@@ -202,8 +202,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   startSlot: string;
   endSlot: string;
 
-  newChangelogCount: number | null = null;
-  lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
+  newChangelogCount: boolean;
+  // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -297,7 +297,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
-    this.fetchNewChangelogCount();
+    
 
     // this.listenToQuotasReachedInHome()
 
@@ -571,14 +571,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+      console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
 
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
       if (this.user) {
-
+        this.fetchNewChangelogCount(this.user);
         const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
         if (stored_preferred_lang) {
@@ -1952,25 +1952,33 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // console.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
     // if (window['Sleekplan']?.open) {
     //   window['Sleekplan'].open();
-    // }
+    // }this.user
+    console.log('[NAVBAR] open Sleekplan this.user', this.user)
     console.log('[NAVBAR] open Sleekplan ', window['$sleek'])
     window['$sleek'].toggle();
-    this.lastSeen = Date.now()
-    console.log('[NAVBAR] open Sleekplan lastSeen ', this.lastSeen)
+    const lastSeen = Date.now()
+    console.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
     // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
-    this.localDbService.setInStorage('lastSeenTimestamp', this.lastSeen.toString())
+    localStorage.setItem(`lastSeenTimestamp-${this.user._id}`,lastSeen.toString())
+    this.newChangelogCount = false
     // window.$sleek
   }
 
-  fetchNewChangelogCount() {
-    const lastSeen = this.localDbService.getFromStorage('lastSeenTimestamp')
-    console.log('SLEEKPLAN SERV lastSeen form storage', lastSeen);
-    this.sleekplanApi.getNewChangelogCount(this.lastSeen).subscribe(
+  fetchNewChangelogCount(user) {
+    let storedLastSeen = localStorage.getItem(`lastSeenTimestamp-${user._id}`)
+
+    console.log('NAVBAR changelog lastSeen form storedLastSeen', storedLastSeen);
+    console.log('NAVBAR changelog lastSeen form storage type of', typeof storedLastSeen);
+    let lastSeen = 0
+    if (storedLastSeen !== null ) {
+      lastSeen = +storedLastSeen
+    }
+    this.sleekplanApi.getNewChangelogCount().subscribe(
       (resp) => {
         // this.newChangelogCount = data.count;
-        console.log('SLEEKPLAN SERV changelog count resp', resp);
-        console.log('SLEEKPLAN SERV changelog count  resp data ', resp['data']);
-        console.log('SLEEKPLAN SERV changelog count  resp data items ', resp['data']['items']);
+        console.log('NAVBAR changelog count resp', resp);
+        console.log('NAVBAR changelog count  resp data ', resp['data']);
+        console.log('NAVBAR changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']
         //       const createdDate = resp['data']['items']['item'].created;
         // console.log('SLEEKPLAN SERV createdDate' , createdDate); // Output: "2024-10-16 07:05:24"
@@ -1979,26 +1987,30 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         const firstKey = Object.keys(data)[0]; // Get the first key in the object
         const createdValue = data[firstKey].created; // Access the created property
 
-        console.log('SLEEKPLAN SERV createdValue ', createdValue); // Output: "2024-10-16 07:05:24"
-        const createdValueTimestamp = new Date(createdValue).getTime()
+        console.log('NAVBAR  last changelog createdValue ', createdValue); // Output: "2024-10-16 07:05:24"
+        const createdValueTimestamp = new Date(createdValue).getTime();
+        console.log('NAVBAR  last changelog createdValue as Timestamp  ', createdValueTimestamp);
+        console.log('NAVBAR  last changelog createdValue as Timestamp  type of ',typeof createdValueTimestamp);
 
-        console.log('SLEEKPLAN SERV createdValueTimestamp ', createdValueTimestamp);
-        if (lastSeen) {
-          if (createdValueTimestamp > this.lastSeen) {
-            console.log('SLEEKPLAN SERV there is a notification ');
-            this.newChangelogCount = 1
+        console.log('NAVBAR  lastSeen ', lastSeen);
+        if (lastSeen ) {
+          if (createdValueTimestamp > lastSeen) {
+            console.log('NAVBAR  there is a notification 1');
+            this.newChangelogCount = true
           } else {
-            console.log('SLEEKPLAN SERV there is NOT notification ');
-            this.newChangelogCount = null
+            console.log('NAVBAR  there is NOT notification ');
+            this.newChangelogCount = false
           }
         } else {
-          console.log('SLEEKPLAN SERV there is a notification ');
-          this.newChangelogCount = null
+         
+          this.newChangelogCount = true;
+          console.log('SLEEKPLAN SERV there is a notification 2 newChangelogCount ', this.newChangelogCount);
+        
         }
       },
       (error) => {
         console.error('Failed to fetch new changelog count', error);
-        this.newChangelogCount = null;
+        this.newChangelogCount = true;
       }
     );
   }

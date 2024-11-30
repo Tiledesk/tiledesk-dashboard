@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SleekplanApiService {
- SLEEKPLAN_API_KEY = '410017437c9fbea3a57b12346860fae9741ad0921';
+ SLEEKPLAN_API_KEY = '410017437c9fbea3a57b12346860fae9741ad0921'; // The good one
+//  SLEEKPLAN_API_KEY = '9834831126380f3d69fff6251cd3a690cb97e41ac'; // for test
  SLEEKPLAN_API_URL = 'https://api.sleekplan.com/v1/updates';
 
   constructor(
@@ -19,7 +20,7 @@ export class SleekplanApiService {
   //   );
   // }
 
-  getNewChangelogCount(lastSeen: number) {
+  getNewChangelogCount() {
     const httpOptions = {
       headers: new HttpHeaders({ 
         Authorization: `Bearer ${this.SLEEKPLAN_API_KEY}`,

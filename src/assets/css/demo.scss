@@ -3122,6 +3122,25 @@ div:where(.swal2-container) .swal2-select {
   font-family: 'Poppins' !important;
 }
 
+
+// Sleek widget overwrite iframe css
+.i-sl-wrapper {
+  // display: none!important;
+  border-radius: 0px !important;
+  height: 100vh !important;
+}
+
+.i-sl-wrapper.right { 
+  right: 0px !important;
+  top: 0px !important;
+}
+
+#sleek-widget-wrap > #sleek-widget > html > head {
+  display: none !important;
+}
+
+
+
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   transition: border-color 0.3s ease; /* Smooth transition */
 // }

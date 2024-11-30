@@ -622,11 +622,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
+        // console.log('APP-COMP sleekplanSso ')
+        // window['$sleek'].setUser = { 
+        //     mail: user.email, 
+        //     id: user._id, 
+        //     name: user.firstname, 
+        // }
+    
+       
+
+
         this.sleekplanSsoService.getSsoToken(user).subscribe(
           (response) => {
-            console.log('sleekplanSso response ', response)
-            console.log('sleekplanSso response token', response['token'])
-            console.log('sleekplanSso response $sleek',  window['$sleek'])
+            console.log('[APP-COMP] sleekplanSso response ', response)
+            console.log('[APP-COMP] sleekplanSso response token', response['token'])
+            console.log('[APP-COMP] sleekplanSso response $sleek',  window['$sleek'])
             // Configure Sleekplan with SSO
             // window['Sleekplan'] = {
             //   id: 'YOUR_SLEEKPLAN_ID',
@@ -652,6 +662,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           (error) => {
             console.error('Failed to fetch Sleekplan SSO token', error);
+            // this.sleekplanService.loadSleekplan()
           }
         );
       }
@@ -659,7 +670,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     getCurrentUserAndConnectToWs() {
         this.auth.user_bs.subscribe((user) => {
             console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-            this.sleekplanSso(user)
+            if (user) {
+                this.sleekplanSso(user)
+            }
             if (!user) {
                 this.wsInitialized = false;
             }

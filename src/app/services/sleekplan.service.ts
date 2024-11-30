@@ -22,7 +22,8 @@ export class SleekplanService {
 
       // Configure Sleekplan product ID
       window['$sleek'] = [];
-      window['SLEEK_PRODUCT_ID'] = 869241497; // Replace with your actual product ID
+      window['SLEEK_PRODUCT_ID'] = 869241497; // The good one product ID
+      // window['SLEEK_PRODUCT_ID'] = 615248482 // for test
 
       // Dynamically load the Sleekplan script
       const script = document.createElement('script');
