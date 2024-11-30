@@ -1348,41 +1348,7 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
-.custom-swal>.swal-title {
-  color: black;
-  font-weight: 500;
-}
 
-.custom-swal>.swal-text {
-  text-align: center;
-}
-
-.swal-size-sm {
-  width: 260px !important;
-  background-color: var(--card-background-color);
-
-  /* // .swal-icon {
-  //   width: 60px !important;
-  //   height: 60px !important;
-  //   margin: 12px auto !important;
-  // }
-
-  // .swal-icon--info:after {
-  //   top: 5px !important;
-  // } */
-}
-
-.swal-size-sm>.swal-title {
-  font-size: 18px !important;
-  padding-top: 0px !important;
-  color: var(--text-color);
-}
-
-.swal-size-sm>.swal-text {
-  font-size: 14px;
-  text-align: center;
-  color: var(--secondary-text-color);
-}
 
 
 
@@ -3412,9 +3378,8 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   background: #191d2285;
 }
 
-
-
 /* ********************************** */
+
 
 /*
  * Sweet Alert 2 
@@ -3429,6 +3394,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   padding-top: 12px !important;
   font-family: var(--header-font-family) !important;
   font-weight: 500 !important;
+  line-height: 1.3em;
 }
 
 .swal2-close:focus {
@@ -3437,12 +3403,14 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 .swal2-html-container label {
   display: block;
-  margin-top: 16px;
+  margin-top: 6px;
 }
 
-.swal2-html-container .swal2-select {
-  margin-top: 0px !important;
-}
+// .swal2-html-container .swal2-select {
+//   margin-top: 0px !important;
+//   border-radius: 4px !important;
+//     border-color: #ccc!important;
+// }
 
 .swal2-actions>.swal2-confirm {
   border-radius: 9999px !important;
@@ -3459,11 +3427,44 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 div:where(.swal2-container) .swal2-select {
   margin-top: 0px !important;
+  border-radius: 4px !important;
+    border-color: #ccc!important;
 
   // appearance: none;
   // border: 1px solid #ccc;
   // background-color: #fff;
   // border-radius: 4px;
+}
+
+
+.swal-size-sm {
+  width: 260px !important;
+  // background-color: var(--card-background-color);
+}
+
+.swal-size-sm > .swal2-icon {
+    width: 3em;
+    height: 3em;
+}
+
+.swal-size-sm > .swal2-icon > .swal2-icon-content{
+  font-size: 2.75em;
+}
+
+.swal-size-sm>.swal2-title {
+  font-size: 1.2em !important;
+  // padding-top: 0px !important;
+  // color: var(--text-color);
+}
+
+.swal-size-sm>.swal2-html-container {
+  font-size: 1em;
+  // text-align: center;
+  // color: var(--secondary-text-color);
+}
+
+.swal-size-sm>.swal2-select { 
+  font-size: 1em;
 }
 
 // .swal2-html-container {

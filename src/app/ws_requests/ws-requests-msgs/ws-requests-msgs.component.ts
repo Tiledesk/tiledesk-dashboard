@@ -2822,7 +2822,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: 'OK',
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
@@ -3485,7 +3485,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       // buttons: 'OK',
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
@@ -3727,7 +3727,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       // buttons: true,
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -3748,6 +3748,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
               confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
@@ -3761,6 +3762,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -3789,7 +3791,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       reverseButtons: true,
       // buttons: true,
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -3810,6 +3812,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
               confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
@@ -3822,7 +3825,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -3895,6 +3898,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
       input: "select",
       inputAttributes: {
         id: 'my-input'
@@ -3927,44 +3931,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       })
 
     }
-    // .then((result) => {
-    //   if (result.isConfirmed) {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot', result)
 
-
-    //     // this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
-
-    //     // }, (error) => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
-
-    //     //  Swal.fire(this.anErrorHasOccurredMsg, {
-    //     //     icon: "error",
-    //     //   });
-
-    //     // }, () => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
-
-
-
-    //     //   Swal.fire({
-    //     //     title: this.done_msg + "!",
-    //     //     icon: "success",
-    //     //     // button: "OK",
-    //     //     confirmButtonText: this.translate.instant('Ok') ,
-    //     //     confirmButtonColor: "var(--blue-light)",
-    //     //     focusConfirm: true,
-    //     //     // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    //     //   }).then((okpressed) => {
-
-    //     //     this.displayUsersListModal = 'none';
-    //     //     this.presentModalSelectChatbotBlock(botname, botidNoPrefix) 
-    //     //   });
-    //     // });
-    //   } else {
-    //     console.log('swal result', result);
-    //   }
-    // });
   }
 
   sendMessage(block) {
@@ -3994,6 +3961,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     }).then((okpressed) => {
       this.displayUsersListModal = 'none';
     })
@@ -4053,7 +4021,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       // buttons: true,
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -4073,6 +4041,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
               confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
             });
 
           }, () => {
@@ -4085,7 +4054,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -4182,6 +4151,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
       // button: "OK",
       // dangerMode: false,
     })
@@ -4237,7 +4207,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: 'OK',
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
@@ -4294,7 +4264,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--primary-btn-background)",
       // buttons: 'OK',
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
@@ -4312,7 +4282,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       reverseButtons: true,
       // buttons: true,
       // dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+     customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -4332,6 +4302,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 showCancelButton: false,
                 confirmButtonText: this.translate.instant('Ok'),
                 confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               });
             }, () => {
               Swal.fire({
@@ -4343,7 +4314,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 confirmButtonText: this.translate.instant('Ok'),
 
                 // button: "OK",
-                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((okpressed) => {
                 this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
                 this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
@@ -4789,7 +4760,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         reverseButtons: true,
         // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('YesBanVisitor')],
         // dangerMode: true,
-        // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+        customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       })
         .then((result) => {
           if (result.isDenied) {
@@ -4809,6 +4780,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 showCancelButton: false,
                 confirmButtonText: this.translate.instant('Ok'),
                 confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               });
             }, () => {
               // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
@@ -4819,7 +4791,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 showCancelButton: false,
                 confirmButtonColor: "var(--primary-btn-background)",
                 confirmButtonText: this.translate.instant('Ok'),
-                // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((result) => {
                 if (result.isConfirmed) {
                 this.cacheService.clearCache()
@@ -4854,6 +4826,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // content: el,
       // buttons: {
       //   cancel: this.translationMap.get('Cancel'),
@@ -4907,6 +4880,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // content: el,
       // buttons: {
       //   cancel: this.translationMap.get('Cancel'),
@@ -4943,6 +4917,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
       // content: el,
       // buttons: {
@@ -4991,7 +4966,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--primary-btn-background)"
+      confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // button: "OK",
       // dangerMode: false,
     })
@@ -5740,6 +5716,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // button: "OK",
       // dangerMode: false,
     })
@@ -5754,6 +5731,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // button: "OK",
       // dangerMode: false,
     })
@@ -5841,6 +5819,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
 
       // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
@@ -5864,6 +5843,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
               confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
@@ -5876,6 +5856,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
             });
@@ -5900,6 +5881,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
       // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
       // dangerMode: true,
@@ -5921,7 +5903,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCloseButton: false,
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)"
+              confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
@@ -5934,6 +5917,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               showCancelButton: false,
               confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
               // button: "OK",
               // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
