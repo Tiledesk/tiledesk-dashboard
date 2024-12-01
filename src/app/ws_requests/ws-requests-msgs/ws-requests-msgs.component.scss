@@ -5385,13 +5385,18 @@ label {
 }
 
 .transcript-options-wpr {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  position: relative;
-  flex-wrap: wrap;
-  gap: 8px;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // align-content: center;
+  // position: relative;
+  // flex-wrap: wrap;
+  // gap: 8px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+  gap: 20px;
+  justify-content: center;
 }
 
 .transcript-option-wpr {
@@ -5399,24 +5404,28 @@ label {
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 0 rgba(0, 0, 0, 0), 0 0 rgba(0, 0, 0, 0), 0 1px 3px rgba(0, 0, 0, 0.1019607843), 0 1px 2px -1px rgba(0, 0, 0, 0.1019607843) !important;
+  padding: 12px 0px;
 }
 
 .transcript-option-icon>.send-by-email {
   font-size: 20px;
   rotate: -35deg;
-  margin-left: -22px;
+  // margin-left: -22px;
   color: var(--text-color);
 }
 
 .transcript-option-icon>span {
-  margin-left: -23px;
+  // margin-left: -23px;
   font-size: 20px;
   color: var(--text-color);
 }
 
 .transcript-option-text {
   color: var(--text-color);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
 }
 
