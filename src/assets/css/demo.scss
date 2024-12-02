@@ -3135,28 +3135,86 @@ div:where(.swal2-container) .swal2-select {
   display: block;
 }
 
-.graph-card>.graph-card-header>.analytics-date-range-filter-wpr {
-  margin-left: 37px;
-}
-
-.graph-card>.graph-card-header>.analytics-date-range-filter-wpr>.analytics-date-range-filter-label {
-  text-align: left;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text-color) ;
-}
-
-.graph-card>.graph-card-header>.analytics-date-range-filter-wpr>.analytics-date-range-filter-select {
-  max-width: 300px;
-  text-align: left;
-}
-
 .analytics-date-range-selected>.arrow_forward-custom {
   vertical-align: middle;
   position: relative;
   top: -2px;
   font-size: 16px;
 }
+
+.analytics-date-range-filter-wpr {
+  margin-left: 37px;
+}
+
+.analytics-date-range-filter-wpr>.analytics-date-range-filter-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.analytics-date-range-filter-wpr>.analytics-date-range-filter-select {
+  max-width: 300px;
+  width: 300px;
+  text-align: left;
+}
+
+/* Metrics > Tags 
+/* ************************* */
+.graph-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 26px;
+}
+
+
+.graph-type-select-btn {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.graph-type-options-wpr > .analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.graph-type-select-btns-wrp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  // margin-top: 21px;
+}
+
+
+.graph-type-select-btn-wrp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.graph-type-select-btn>svg {
+  width: 34px;
+  height: 34px;
+  fill: var(--icon-color)  
+}
+
+.graph-type-select-btn:hover>svg {
+  fill: var(--icon-hover-color)  
+}
+
+.graph-type-select-btn.active-column-graph > svg{
+  fill: var(--icon-active-color) 
+}
+
 
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   transition: border-color 0.3s ease; /* Smooth transition */

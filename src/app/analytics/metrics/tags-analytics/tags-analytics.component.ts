@@ -43,19 +43,35 @@ export class TagsAnalyticsComponent implements OnInit {
   initDay: string;
   endDay: string;
   selectedDaysId = 7  //  ?? evaluate whether to use it
-
+  chartStackedColumns: boolean = true 
+  chartBasicColumns: boolean = false 
+ 
   constructor(
     private tagsService: TagsService,
     private logger: LoggerService,
   ) { }
 
   ngOnInit(): void {
-    this.getTagDataAndBuildGraph(this.lastdays)
+    this.getTagDataAndBuildGraph(this.lastdays, this.chartStackedColumns)
   }
 
+  onSelectStackedColmunsGraphType(areStaked) {
+    console.log('[TAG-ANALYTICS] - onSelectColmunsGraphType areStaked', areStaked)
+    this.chartStackedColumns = areStaked;
+    this.chartBasicColumns = false
+    console.log('[TAG-ANALYTICS] - chartStackedColumns ', this.chartStackedColumns)
+    this.getTagDataAndBuildGraph(this.lastdays, this.chartStackedColumns)
+  }
+
+  onSelectBasicColmunsGraphType(areBasic) {
+    console.log('[TAG-ANALYTICS] - onSelectBasicColmunsGraphType ', areBasic)
+    this.chartBasicColumns = areBasic
+    this.chartStackedColumns = false;
+    console.log('[TAG-ANALYTICS] - chartBasicColumns ', this.chartBasicColumns)
+    this.getTagDataAndBuildGraph(this.lastdays, this.chartStackedColumns)
+  }
 
   daysSelect(value) {
-
     this.selectedDaysId = value;//--> value to pass throw for graph method
     //check value for label in htlm
     if (value <= 30) {
@@ -70,10 +86,10 @@ export class TagsAnalyticsComponent implements OnInit {
     // this.avgTimeResponseCHART(value, this.selectedDeptId, this.selectedAgentId, this.selectedChannelId);
    console.log('[TAG-ANALYTICS] daysSelect:', value,  'selectedDaysId ', this.selectedDaysId)
 
-   this.getTagDataAndBuildGraph(this.lastdays)
+   this.getTagDataAndBuildGraph(this.lastdays, this.chartStackedColumns)
   }
 
-  getTagDataAndBuildGraph(lastdays) {
+  getTagDataAndBuildGraph(lastdays, chartStackedColumns) {
     this.tagsService.geTagsForGraph().subscribe((res: any) => {
 
       console.log('[TAG-ANALYTICS] - GET GRAPH TAGS RES ', res)
@@ -137,7 +153,7 @@ export class TagsAnalyticsComponent implements OnInit {
         dates: fullDateRange,
         series: filledSeries
       };
-      this.buildGraph(finalData)
+      this.buildGraph(finalData, chartStackedColumns)
 
       console.log('finalData', finalData);
       // console.log('finalData',  JSON.stringify(finalData));
@@ -153,7 +169,7 @@ export class TagsAnalyticsComponent implements OnInit {
    
   }
 
-  buildGraph(finalData) {
+  buildGraph(finalData, chartStackedColumns) {
   this.chartOptions = {
     series: finalData.series,
     // series: [
@@ -197,7 +213,7 @@ export class TagsAnalyticsComponent implements OnInit {
     chart: {
       type: "bar",
       height: 350,
-      stacked: true
+      stacked: chartStackedColumns
     },
     plotOptions: {
       bar: {

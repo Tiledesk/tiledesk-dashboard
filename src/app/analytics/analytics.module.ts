@@ -20,6 +20,7 @@ import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { TagsAnalyticsComponent } from './metrics/tags-analytics/tags-analytics.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   { path: "", component: AnalyticsComponent},
@@ -50,6 +51,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgApexchartsModule,
+    MatTooltipModule,
   ],
   exports: [
     RouterModule
