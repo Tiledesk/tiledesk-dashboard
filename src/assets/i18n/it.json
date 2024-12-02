@@ -1920,6 +1920,7 @@
             "Satisfaction": "Gradimento",
             "Events": "Eventi"
         },
+        "ConversationsTags": "Tag delle conversazioni",
         "BasicColumns": "Colonne",
         "StackedColumns":"Colonne impilate",
         "GraphType":"Tipo di grafico",

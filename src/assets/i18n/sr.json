@@ -1910,6 +1910,7 @@
             "Satisfaction": "Задовољство",
             "Events": "Догађаји"
         },
+        "ConversationsTags": "Ознаке конверзација",
         "BasicColumns": "Колумне",
         "StackedColumns":"Наслагане колоне",
         "GraphType":"Тип графикона",

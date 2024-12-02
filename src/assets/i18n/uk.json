@@ -1911,6 +1911,7 @@
             "Satisfaction": "Задоволення",
             "Events": "Події"
         },
+        "ConversationsTags": "Теги розмов",
         "BasicColumns": "Стовпці",
         "StackedColumns":"Складені колони",
         "GraphType":"Тип графіка",

@@ -1908,6 +1908,7 @@
             "Satisfaction": "Satisfacción",
             "Events": "Eventos"
         },
+        "ConversationsTags": "Etiquetas de conversaciones",
         "BasicColumns": "Columnas",
         "StackedColumns":"Columnas apiladas",
         "GraphType":"Tipo de gráfico",

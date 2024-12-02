@@ -1910,6 +1910,7 @@
             "Satisfaction": "Memnuniyet",
             "Events": "Olaylar"
         },
+        "ConversationsTags": "Konuşma etiketleri",
         "BasicColumns": "Sütunlar",
         "StackedColumns":"Yığılmış sütunlar",
         "GraphType":"Grafik türü",

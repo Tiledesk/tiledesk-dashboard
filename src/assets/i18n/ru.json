@@ -1908,6 +1908,7 @@
             "Satisfaction": "Удовлетворение",
             "Events": "События"
         },
+        "ConversationsTags": "Теги разговоров",
         "BasicColumns": "Колонны",
         "StackedColumns":"Сложенные столбцы",
         "GraphType":"Тип графика",

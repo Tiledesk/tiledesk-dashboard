@@ -1909,6 +1909,7 @@
             "Satisfaction": "إشباع",
             "Events": "الأحداث"
         },
+        "ConversationsTags": "علامات المحادثات",
         "BasicColumns": "الأعمدة",
         "StackedColumns":"الأعمدة المكدسة",
         "GraphType":"نوع الرسم البياني",

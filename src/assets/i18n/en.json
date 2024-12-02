@@ -1920,6 +1920,7 @@
             "Satisfaction": "Satisfaction",
             "Events": "Events"
         },
+        "ConversationsTags": "Conversations tags",
         "BasicColumns": "Columns",
         "StackedColumns":"Stacked columns",
         "GraphType":"Graph type",

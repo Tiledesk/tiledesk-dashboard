@@ -1910,6 +1910,7 @@
             "Satisfaction": "Tillfredsställelse",
             "Events": "evenemang"
         },
+        "ConversationsTags": "Konversationstaggar",
         "BasicColumns": "Kolumner",
         "StackedColumns":"Staplade kolumner",
         "GraphType":"Graftyp",

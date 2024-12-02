@@ -1908,6 +1908,7 @@
 			"Satisfaction": "Befriedigung",
 			"Events": "Veranstaltungen"
 		},
+		"ConversationsTags": "Konversations-Tags",
 		"BasicColumns": "Spalten",
 		"StackedColumns":"Gestapelte Spalten",
 		"GraphType":"Diagrammtyp",
