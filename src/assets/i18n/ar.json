@@ -1909,6 +1909,10 @@
             "Satisfaction": "إشباع",
             "Events": "الأحداث"
         },
+        "BasicColumns": "الأعمدة",
+        "StackedColumns":"الأعمدة المكدسة",
+        "GraphType":"نوع الرسم البياني",
+        "TagsAnalysis":"تحليل الوسوم",
         "RealTimeComponentTitle": "في الوقت الحالى",
         "AvgTimeTitle": "متوسط مراقبة الوقت",
         "MedianResTimeClock": "متوسط وقت الاستجابة",

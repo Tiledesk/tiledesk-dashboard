@@ -1910,6 +1910,10 @@
             "Satisfaction": "Tillfredsställelse",
             "Events": "evenemang"
         },
+        "BasicColumns": "Kolumner",
+        "StackedColumns":"Staplade kolumner",
+        "GraphType":"Graftyp",
+        "TagsAnalysis":"Taggar analys",
         "RealTimeComponentTitle": "Realtid",
         "AvgTimeTitle": "Genomsnittlig tidsövervakning",
         "MedianResTimeClock": "Mediansvarstid",

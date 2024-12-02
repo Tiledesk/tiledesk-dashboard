@@ -1908,6 +1908,10 @@
 			"Satisfaction": "Befriedigung",
 			"Events": "Veranstaltungen"
 		},
+		"BasicColumns": "Spalten",
+		"StackedColumns":"Gestapelte Spalten",
+		"GraphType":"Diagrammtyp",
+		"TagsAnalysis":"Tag-Analyse",
 		"RealTimeComponentTitle": "Echtzeit",
 		"AvgTimeTitle": "Durchschnittliche Zeit Überwachung",
 		"MedianResTimeClock": "Durchschnittliche Reaktionszeit",

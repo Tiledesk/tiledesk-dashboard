@@ -1908,6 +1908,10 @@
             "Satisfaction": "Удовлетворение",
             "Events": "События"
         },
+        "BasicColumns": "Колонны",
+        "StackedColumns":"Сложенные столбцы",
+        "GraphType":"Тип графика",
+        "TagsAnalysis":"Анализ тегов",
         "RealTimeComponentTitle": "Реальное время",
         "AvgTimeTitle": "Мониторинг среднего времени",
         "MedianResTimeClock": "Среднее время отклика",

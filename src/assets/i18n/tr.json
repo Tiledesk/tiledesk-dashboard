@@ -1910,6 +1910,10 @@
             "Satisfaction": "Memnuniyet",
             "Events": "Olaylar"
         },
+        "BasicColumns": "Sütunlar",
+        "StackedColumns":"Yığılmış sütunlar",
+        "GraphType":"Grafik türü",
+        "TagsAnalysis":"Etiket analizi",
         "RealTimeComponentTitle": "Gerçek zaman",
         "AvgTimeTitle": "Ortalama Süre İzleme",
         "MedianResTimeClock": "Medyan Tepki Süresi",

@@ -1908,6 +1908,10 @@
             "Satisfaction": "Satisfação",
             "Events": "Eventos"
         },
+        "BasicColumns": "Colunas",
+        "StackedColumns":"Colunas empilhadas",
+        "GraphType":"Tipo de gráfico",
+        "TagsAnalysis":"Análise de tags",
         "RealTimeComponentTitle": "Tempo real",
         "AvgTimeTitle": "Monitoramento do Tempo Médio",
         "MedianResTimeClock": "Tempo de resposta médio",

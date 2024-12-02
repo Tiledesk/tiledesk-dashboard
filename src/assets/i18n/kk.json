@@ -1908,6 +1908,10 @@
             "Satisfaction": "Қанағаттану",
             "Events": "Оқиғалар"
         },
+        "BasicColumns": "Бағандар",
+        "StackedColumns":"Жинақталған бағандар",
+        "GraphType":"График түрі",
+        "TagsAnalysis":"Тегтерді талдау",
         "RealTimeComponentTitle": "Шынайы уақыт",
         "AvgTimeTitle": "Орташа уақытты бақылау",
         "MedianResTimeClock": "Орташа жауап беру уақыты",

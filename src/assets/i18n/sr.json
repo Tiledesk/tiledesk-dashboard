@@ -1910,6 +1910,10 @@
             "Satisfaction": "Задовољство",
             "Events": "Догађаји"
         },
+        "BasicColumns": "Колумне",
+        "StackedColumns":"Наслагане колоне",
+        "GraphType":"Тип графикона",
+        "TagsAnalysis":"Анализа ознака",
         "RealTimeComponentTitle": "Реално време",
         "AvgTimeTitle": "Праћење просечног времена",
         "MedianResTimeClock": "Средње време одговора",

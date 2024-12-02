@@ -1911,6 +1911,10 @@
             "Satisfaction": "Задоволення",
             "Events": "Події"
         },
+        "BasicColumns": "Стовпці",
+        "StackedColumns":"Складені колони",
+        "GraphType":"Тип графіка",
+        "TagsAnalysis":"Аналіз тегів",
         "RealTimeComponentTitle": "Реальний час",
         "AvgTimeTitle": "Моніторинг середнього часу",
         "MedianResTimeClock": "Середній час відповіді",

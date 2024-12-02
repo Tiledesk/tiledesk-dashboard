@@ -1908,6 +1908,10 @@
             "Satisfaction": "Qoniqish",
             "Events": "Voqealar"
         },
+        "BasicColumns": "Ustunlar",
+        "StackedColumns":"Yig'ilgan ustunlar",
+        "GraphType":"Grafik turi",
+        "TagsAnalysis":"Teglar tahlili",
         "RealTimeComponentTitle": "Haqiqiy vaqt",
         "AvgTimeTitle": "O'rtacha vaqt monitoringi",
         "MedianResTimeClock": "Median javob vaqti",

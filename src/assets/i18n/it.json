@@ -1920,6 +1920,10 @@
             "Satisfaction": "Gradimento",
             "Events": "Eventi"
         },
+        "BasicColumns": "Colonne",
+        "StackedColumns":"Colonne impilate",
+        "GraphType":"Tipo di grafico",
+        "TagsAnalysis":"Analisi dei tag",
         "RealTimeComponentTitle": "Tempo reale",
         "AvgTimeTitle": "Monitoraggio tempo medio",
         "MedianResTimeClock": "Tempo medio di risposta ",
