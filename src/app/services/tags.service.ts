@@ -47,18 +47,34 @@ export class TagsService {
     });
   }
 
-  public geTagsForGraph(): Observable<[any]> {
+  public geTagsForGraph(type, start_date, end_date): Observable<[any]> {
+    console.log('[TAGS-SERV] start_date', start_date, 'end_date', end_date)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-    // const url = this.SERVER_BASE_PATH + this.projectId + '/tags/'
+    const url = this.SERVER_BASE_PATH + this.projectId + '/analytics/tags/'+ type +'?start_date='+start_date +'&end_date=' +end_date
+    // const url = "assets/mock-data/tagsGraph.json"
+    console.log('[TAGS-SERV] - GET TAGS for graph - URL', url);
+
+
+
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
+  }
+
+  // MOCK DATA
+  public _geTagsForGraph(type): Observable<[any]> {
+   
+
+    // const url = this.SERVER_BASE_PATH + this.projectId + '/analytics/tags/'+ type
     const url = "assets/mock-data/tagsGraph.json"
-    this.logger.log('[TAGS-SERV] - GET TAGS for graph - URL', url);
+    console.log('[TAGS-SERV] - GET TAGS for graph - URL', url);
 
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'Authorization': this.TOKEN
-    //   })
-    // };
+
 
     return this._httpclient
       .get<[any]>(url)

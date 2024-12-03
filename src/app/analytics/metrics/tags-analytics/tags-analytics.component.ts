@@ -76,10 +76,13 @@ export class TagsAnalyticsComponent implements OnInit {
     //check value for label in htlm
     if (value <= 30) {
       this.lastdays = value;
-    } else if ((value === 90) || (value === 180)) {
-      this.lastdays = value / 30;
+    } else if ((value === 90)) {
+      this.lastdays = value;
+      console.log('lastdays use case 90 or 180 lastdays' ,this.lastdays) 
+    } else if ((value === 180)) {
+      this.lastdays = value;
     } else if (value === 360) {
-      this.lastdays = 1;
+      this.lastdays = value;
     }
     // this.barChart.destroy();
     // this.subscription.unsubscribe();
@@ -90,22 +93,26 @@ export class TagsAnalyticsComponent implements OnInit {
   }
 
   getTagDataAndBuildGraph(lastdays, chartStackedColumns) {
-    this.tagsService.geTagsForGraph().subscribe((res: any) => {
+
+    const fullDateRange = []
+    for (let i = 0; i < lastdays; i++) {
+      // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
+      // fullDateRange.push( moment().subtract(i, 'd').format('D/M/YYYY'));
+      fullDateRange.push( moment().subtract(i, 'd').format('YYYY-M-D'));
+    }
+    fullDateRange.reverse()
+    
+    console.log('[TAG-ANALYTICS] fullDateRange ', fullDateRange)
+
+    this.initDay = fullDateRange[0];
+    this.endDay = fullDateRange[this.lastdays - 1];
+    console.log("[TAG-ANALYTICS] filter start day", this.initDay, "filter end day ", this.endDay);
+
+    this.tagsService.geTagsForGraph('conversation-tag', this.initDay, this.endDay).subscribe((res: any) => {
 
       console.log('[TAG-ANALYTICS] - GET GRAPH TAGS RES ', res)
 
-     const fullDateRange = []
-      for (let i = 0; i < lastdays; i++) {
-        // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
-        fullDateRange.push( moment().subtract(i, 'd').format('D/M/YYYY'));
-      }
-      fullDateRange.reverse()
-      
-      console.log('[TAG-ANALYTICS] fullDateRange ', fullDateRange)
 
-      this.initDay = fullDateRange[0];
-      this.endDay = fullDateRange[this.lastdays - 1];
-      console.log("[TAG-ANALYTICS] filter start day", this.initDay, "filter end day ", this.endDay);
       // Generare tutte le date nell'intervallo specificato
       // const generateDateRange = (startDate, endDate) => {
       //   const dates = [];
