@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.46-rc1
+- Improves the add FAQs dialog window
+
 ### 2.7.43-rc1
 - Refactors dashboard UI
 
