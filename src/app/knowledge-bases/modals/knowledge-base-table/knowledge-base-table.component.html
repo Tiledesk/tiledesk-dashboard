@@ -11,15 +11,14 @@
                             {{ 'KbPage.Add' | translate }} 
                         </button>
                     </div> -->
-                    <!--  -->
-                    <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-msg">
-                        <!-- Welcome to Tiledesk Knowledge Base -->
+                    <!--  Welcome to Tiledesk Knowledge Base  -->
+                    <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-msg">
                         👋 {{'KbPage.WelcomeToKB' | translate:{company_name: companyName} }}
-                    </div>
+                    </div> -->
                     <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-sub-msg">
                         You've just created your first AI Assistant
                     </div> -->
-                    <!-- <span class="upgrade-title">{{'KbPage.NoKbAdded' | translate }}</span> -->
+                    <!-- <span class="upgrade-title">{{'KbPage.NoContentAdded' | translate }}</span> -->
 
                     <!-- ---------------------------------- -->
                     <!-- New -->
@@ -28,8 +27,8 @@
                     <div class="add-content-container ">
 
                         <div class="upgrade-title">
-                            <!-- {{'KbPage.NoKbAdded' | translate }} -->
-                            You don't have any contents yet
+                            {{'KbPage.NoContentAdded' | translate }}
+                            <!-- You don't have any contents yet -->
                         </div>
                         <span class="span-12"> </span>
                         <div class="upgrade-subtitle">
@@ -58,7 +57,7 @@
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Adds specific web pages or articles to your Knowledge Base
+                                        {{'KbPage.AddsURLSDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -79,7 +78,8 @@
                                     </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Provide your sitemap to feed AI assistant with the information it contains.
+                                        <!-- Provide your sitemap to feed AI assistant with the information it contains. -->
+                                        {{'KbPage.AddsSitemapDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -99,8 +99,8 @@
                                     <p class="add-content-card-content-title"> FAQs </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Manually write your own specific FAQ or add multiple FAQs from .CSV file at
-                                        once.
+                                        <!-- Manually write your own specific FAQ or add multiple FAQs from .CSV file at once. -->
+                                        {{'KbPage.AddsFAQsDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -117,10 +117,10 @@
                                         </span>
                                     </div>
                                     <span class="span-12"> </span>
-                                    <p class="add-content-card-content-title"> Plain text </p>
+                                    <p class="add-content-card-content-title">  {{'KbPage.AddKbText' | translate }} </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Manually write your own textual information that users might ask for
+                                        {{'KbPage.AddsPlainTextDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -141,8 +141,8 @@
                                     <p class="add-content-card-content-title"> {{'KbPage.UploadFile' | translate }} </p>
                                     <span class="span-8"> </span>
                                     <p class="add-content-card-content-subtitle">
-                                        Upload detailed documentation, technical guides, user manuals, and other
-                                        extensive documents
+                                        <!-- Upload detailed documentation, technical guides, user manuals, and other extensive documents -->
+                                        {{'KbPage.UploadFileDescription' | translate }}
                                     </p>
                                 </div>
                             </div>
@@ -341,7 +341,7 @@
                                     <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
                                 </svg>
                             </span>
-                            <span> </span> {{ 'Add' | translate }}
+                            <span> {{ 'Add' | translate }} </span> 
                         </button>
                     </div>
                 </div>

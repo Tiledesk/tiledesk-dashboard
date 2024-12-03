@@ -3387,7 +3387,6 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 .swal2-popup {
   font-size: 1.6rem !important;
   border-radius: var(--dialog-border-radius) !important;
-  ;
 }
 
 .swal2-title {
@@ -3532,9 +3531,13 @@ div:where(.swal2-container) .swal2-select {
   font-family: var(--header-font-family) !important;
 }
 
-
-
 .mat-dialog-actions>.mat-button {
+  border-radius: var(--btn-border-radius);
+}
+
+/* Use case KB > Upload CSV 
+/* ************************************* */ 
+.mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
 }
 
