@@ -1224,7 +1224,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // if (event.url.indexOf('/messages') !== -1) {
-          
         if (event.url.indexOf('/wsrequest') !== -1) {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
