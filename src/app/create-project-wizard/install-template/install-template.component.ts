@@ -22,6 +22,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { ProjectUser } from 'app/models/project-user';
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
@@ -136,12 +137,12 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-
-        this.logger.log('[INSTALL-TEMPLATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[INSTALL-TEMPLATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getParamsTemplatesAndProjects() {

@@ -32,6 +32,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -398,29 +399,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversation_type', this.conversation_type);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
-    
-  }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
-        }
-        if (user_role) {
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-
-          } else {
-            this.ROLE_IS_AGENT = false
-          }
-        }
-      });
   }
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
@@ -432,7 +411,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       let servedIndex = this.statusInHistory.findIndex(x => x.id === '200');
       this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan servedIndex', servedIndex)
       this.statusInHistory.splice(servedIndex, 1)
-      this.statusInHistory =  this.statusInHistory.slice(0)
+      this.statusInHistory = this.statusInHistory.slice(0)
     }
 
   }
@@ -652,6 +631,73 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
   }
 
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
+      if (project) {
+        this.projectId = project._id;
+        this.findCurrentProjectAmongAll(this.projectId)
+      }
+    });
+  }
+
+  findCurrentProjectAmongAll(projectId: string) {
+
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
+      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
+      // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
+
+      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
+      if (this.current_selected_prjct.id_project.profile) {
+        const projectProfile = this.current_selected_prjct.id_project.profile
+        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
+        //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
+        // && projectProfile.customization.voice && projectProfile.customization.voice === true
+        if (projectProfile && projectProfile.customization) {
+
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
+          if (projectProfile.customization.voice && projectProfile.customization.voice === true) {
+            let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+            this.conversationType.splice(voice_twilio_index, 1);
+          } 
+          else if (projectProfile.customization['voice-twilio'] && projectProfile.customization['voice-twilio'] === true) {
+            let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+            this.conversationType.splice(voice_vxml_index, 1);
+          }
+
+
+
+          //   let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+          //   this.conversationType.splice(voice_vxml_index, 1);
+          // } else {
+          // let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+          // this.conversationType.splice(voice_twilio_index, 1);
+          // }
+
+
+
+        } else {
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
+          let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
+          let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', voice_vxml_index);
+          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_TWILIO ++++ 1 index', voice_twilio_index);
+          this.conversationType.splice(voice_vxml_index, 1);
+          this.conversationType.splice(voice_twilio_index, 1);
+        }
+
+      }
+
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
+    }, error => {
+      this.logger.error('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
+    });
+  }
 
   getCurrentUrlLoadRequests() {
     const currentUrl = this.router.url;
@@ -1205,11 +1251,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.operator = '='
       this.requests_status_selected_from_advanced_option = '200'
       this.requests_status = '200'
-    } else if (request_status === '50') {
-      this.operator = '='
-      this.requests_status_selected_from_advanced_option = '50'
-      this.requests_status = '50'
     }
+
+    // else if (request_status === '50') {
+    //   this.operator = '='
+    //   this.requests_status_selected_from_advanced_option = '50'
+    //   this.requests_status = '50'
+    // }
 
   }
 
@@ -1219,7 +1267,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.requests_statuses.length === 0) {
       this.logger.log('[HISTORY & NORT-CONVS] - requestsStatusesSelectFromAdvancedOption requests_statuses 2', this.requests_statuses);
       // this.requests_statuses = ['1000', '100', '200', '50']
-      this.requests_status = "1000,100,200,50"
+      // this.requests_status = "1000,100,200,50"
+      this.requests_status = "1000,100,200"
       this.getRequests()
     }
     this.requests_status = requests_statuses.join()
@@ -1227,7 +1276,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getAllRequests() {
-  //  this.operator = '='
+    //  this.operator = '='
     this.requests_status = 'all'
     //  this.requests_status = '100,150,200'
     // this.logger.log('[HISTORY & NORT-CONVS] - WsRequests NO-RT - getAllRequests', this.requests_status, 'operator ', this.operator);
@@ -1378,9 +1427,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getRequests() {
     this.logger.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
-    this.logger.log('getRequests requests_statuses ' , this.requests_statuses) 
-    this.logger.log('getRequests requests_status ' , this.requests_status) 
-  
+    this.logger.log('getRequests requests_statuses ', this.requests_statuses)
+    this.logger.log('getRequests requests_status ', this.requests_status)
+
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -1410,7 +1459,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               // User Agent
               // -------------------------------------------------------------------
               const user_agent_result = this.parseUserAgent(request.userAgent);
-              // console.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
+              //  this.logger.log('[HISTORY & NORT-CONVS] - user_agent_result ', user_agent_result);
               const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
@@ -1555,7 +1604,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - detectMobile IS MOBILE ', this.isMobile);
   }
 
-  
+
+  getProjectUserRole() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role
+          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
+          if (this.USER_ROLE === 'agent') {
+            this.ROLE_IS_AGENT = true
+          } else {
+            this.ROLE_IS_AGENT = false
+          }
+        }
+      });
+  }
 
 
   // requestWillBePermanentlyDeleted
@@ -1955,8 +2018,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversation_type = 'messenger'
     }
 
-
-
     if (this.conversation_type === 'email') {
       // this.conversationTypeValue = 'email'
       this.conversation_type = 'email'
@@ -1976,6 +2037,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.conversation_type === 'voice-vxml') {
       // this.conversationTypeValue = 'whatsapp'
       this.conversation_type = 'voice-vxml'
+    }
+
+    if (this.conversation_type === 'voice-twilio') {
+      // this.conversationTypeValue = 'whatsapp'
+      this.conversation_type = 'voice-twilio'
     }
   }
 
@@ -2474,7 +2540,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -2504,7 +2571,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.duration_operator_temp = this.request_duration_operator_array[0]['id']
 
-    if (this.duration)  {
+    if (this.duration) {
       this.duration = ''
     }
 
@@ -2899,12 +2966,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);
@@ -2937,52 +3004,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
-      if (project) {
-        this.projectId = project._id;
-        this.findCurrentProjectAmongAll(this.projectId)
-      }
-    });
-  }
 
-  findCurrentProjectAmongAll(projectId: string) {
-
-    this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
-      // const current_selected_prjct = projects.filter(prj => prj.id_project.id === projectId);
-      // this.logger.log('[SIDEBAR] - GET PROJECTS - current_selected_prjct ', current_selected_prjct);
-
-      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-      if (this.current_selected_prjct.id_project.profile) {
-        const projectProfile = this.current_selected_prjct.id_project.profile
-        this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
-        if (projectProfile && projectProfile.customization && projectProfile.customization.voice && projectProfile.customization.voice === true) {
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-          // if (projectProfile.customization.voice) {
-
-          // } else {
-          //   this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization.voice ', projectProfile.customization.voice);
-          // }
-        } else {
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile.customization ', projectProfile.customization);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - conversationType ', this.conversationType);
-          let index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
-          this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > CHANNELS_NAME.VOICE_VXML ++++ 1 index', index);
-          this.conversationType.splice(index, 1);
-        }
-
-      }
-
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - projects ', projects);
-    }, error => {
-      this.logger.error('[HISTORY & NORT-CONVS] - GET PROJECTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS * COMPLETE * ');
-    });
-  }
 
   getRequestText(text: string): string {
     if (text) {

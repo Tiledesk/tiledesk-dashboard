@@ -4,6 +4,7 @@ export interface ProjectUser {
     createdAt?: any;
     id_project?: string;
     user_available?: boolean;
+    profileStatus?: string;
     role?: string;
     createdBy?: string;
     is_group_member?: boolean;
