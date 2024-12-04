@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.46-rc2
+- Adds in Analytics > Metrics the conversations tags graph
+
 ### 2.7.46-rc1
 - Improves the add FAQs dialog window
 
