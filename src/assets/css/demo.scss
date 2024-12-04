@@ -3577,6 +3577,10 @@ div:where(.swal2-container) .swal2-select {
   font-family: var(--header-font-family) !important;
 }
 
+.mat-dialog-actions > button  {
+  border-radius: var(--btn-border-radius) !important;
+}
+
 /* Graph card
 /* *********************************************** */
 .graph-card {
