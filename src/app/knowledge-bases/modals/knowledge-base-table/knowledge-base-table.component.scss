@@ -117,7 +117,7 @@ table {
 }
 
 th {
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     font-size: 14px;
     font-weight: 500;
 }
@@ -178,7 +178,7 @@ th.mat-sort-header-sorted {
     // color: rgb(98, 119, 140);
     // background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
     // box-shadow: rgb(212, 217, 230) 0px 1px 0px;
-    background-color:  var(--blue-light);
+    background-color:  var(--primary-btn-background);
 
     &:hover {
         // background: linear-gradient(rgba(239, 245, 246, 0.851) 0%, rgb(225, 241, 246) 100%), rgb(255, 255, 255);
@@ -350,6 +350,9 @@ td {
     // margin-bottom: -40px;
     button {
         margin-left: 8px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding: 7px 20px !important;
     }
 }
 

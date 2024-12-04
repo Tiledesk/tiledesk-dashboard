@@ -109,7 +109,19 @@
   pointer-events: none;
 }
 
+.is-active svg path,
+.is-active svg ellipse{
+  height: 40px;
+  // background-color: #3ea9f5;
+  fill: var(--sidebar-active-icon) !important;
+  pointer-events: none;
+}
+
 div.item-active > a  {
+  background-color: var(--sidebar-bckgrnd-item-hover);
+}
+
+div.is-active > a  {
   background-color: var(--sidebar-bckgrnd-item-hover);
 }
 
@@ -152,6 +164,10 @@ div:hover > a > i {
   color: var(--sidebar-hover-icon-color);
 }
 div.item-active > a > i {
+  color: var(--sidebar-active-icon) !important;
+}
+
+div.is-active > a > i {
   color: var(--sidebar-active-icon) !important;
 }
 

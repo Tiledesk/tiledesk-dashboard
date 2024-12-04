@@ -296,7 +296,8 @@
                         <!-- ---------------------------------------- -->
                         <!-- AI Settings -->
                         <!-- ---------------------------------------- -->
-                        <button id="ai-settings" class="custom--button preview-settings"
+                        <!-- custom--button preview-settings -->
+                        <button id="ai-settings" class="btn btn-outlined-round-blu" style="padding: 7px !important;"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
@@ -312,16 +313,16 @@
                         </button>
 
                         <!-- ---------------------------------------- -->
-                        <!-- KB preview -->
+                        <!-- KB preview custom--button preview -->
                         <!-- ---------------------------------------- -->
-                        <button id="kb-preview" class="custom--button preview" aria-label="Preview"
+                        <button id="kb-preview" class="btn btn-outlined-blu" aria-label="Preview"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- <span class="material-icons-round">play_arrow</span> -->
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="#fff" style="vertical-align: middle;">
+                                    width="24px" fill="none" style="vertical-align: middle;">
                                     <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
                                 </svg>
                             </span>
@@ -331,7 +332,8 @@
                         <!-- ---------------------------------------- -->
                         <!-- Add Content -->
                         <!-- ---------------------------------------- -->
-                        <button id="kb-add-content" class="custom--button add-content"
+                        <!-- custom--button add-content -->
+                        <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
                             (click)="$event.stopPropagation(); onOpenAddContent()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">

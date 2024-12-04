@@ -192,12 +192,12 @@
 
 
     <!-- ------------------------------------------- -->
-    <!-- Conversations (MONITOR)  -->
+    <!-- Conversations (MONITOR)   [class.item-active]="MONITOR_ROUTE_IS_ACTIVE || CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE"-->
     <!-- ------------------------------------------- -->
     <ng-container *ngIf="isVisibleMON">
       <div id="monitor" *ngIf="project" routerLinkActive="item-active" matTooltipClass="sb-mat-tooltip"
         matTooltip="Monitor" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
-        [class.item-active]="CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE">
+        [ngClass]="{'is-active': MONITOR_ROUTE_IS_ACTIVE || CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE || NORT_CONV_ROUTE_IS_ACTIVE}">
         <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
           <!-- <i class="material-symbols-outlined sidebar-icons">
             planner_review

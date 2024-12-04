@@ -543,7 +543,44 @@ my-app .main-panel .main-content .card {
   color: #fff;
 }
 
-/* NO MORE USED on static page (to fix)
+/* Btn outlined blu
+/* ------------------------- */
+.btn-outlined-round-blu {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  background-color: transparent;
+  color: var(--outlined-btn-blu-color);
+  border-radius: var(--btn-border-radius) !important;
+  padding: 7px !important;
+  border: 1px solid var(--outlined-btn-blu-color)!important;
+  font-size: 14px;
+  // height: 38px;
+}
+
+.btn-outlined-round-blu>span>svg { 
+  fill: var(--outlined-btn-blu-color);
+}
+
+
+.btn-outlined-round-blu:hover {
+  box-shadow: unset !important;
+  background-color: var(--outlined-btn-blu-hover-backgound-color);
+  color: var(--outlined-btn-blu-color);
+}
+
+.btn-outlined-round-blu:focus {
+  box-shadow: unset !important;
+  background-color: white !important;
+  color: var(--outlined-btn-blu-color);
+}
+
+.btn-outlined-round-blu:active {
+  box-shadow: unset !important;
+  background-color: white !important;
+  color: var(--outlined-btn-blu-color);
+}
+
+/* Btn outlined blu
 /* ------------------------- */
 .btn-outlined-blu {
   box-shadow: unset !important;
@@ -557,6 +594,11 @@ my-app .main-panel .main-content .card {
   // height: 38px;
 }
 
+.btn-outlined-blu>span>svg { 
+  fill: var(--outlined-btn-blu-color);
+}
+
+
 .btn-outlined-blu:hover {
   box-shadow: unset !important;
   background-color: var(--outlined-btn-blu-hover-backgound-color);
@@ -565,13 +607,13 @@ my-app .main-panel .main-content .card {
 
 .btn-outlined-blu:focus {
   box-shadow: unset !important;
-  background-color: var(--outlined-btn-blu-hover-backgound-color);
+  background-color: white;
   color: var(--outlined-btn-blu-color);
 }
 
 .btn-outlined-blu:active {
   box-shadow: unset !important;
-  background-color: var(--outlined-btn-blu-hover-backgound-color);
+  background-color: white;
   color: var(--outlined-btn-blu-color);
 }
 
