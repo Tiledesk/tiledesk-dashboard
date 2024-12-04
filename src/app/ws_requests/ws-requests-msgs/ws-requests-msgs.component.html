@@ -44,10 +44,11 @@
                     <!-- ---------------------------------------- -->
                     <div class="chat-header-wpr-open-chat-btn"
                       *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
-                      <!-- [ngClass]="{'disable_open_the_chat_btn' : request?.status == 1000}" -->
+                     
                       <div class="chat-header-wpr-btn">
+                        <!-- btn-primary chat-header-btn -->
                         <button #openChatBtn (click)="openChatAtSelectedConversation()"
-                          class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" role="button"
+                          class="btn  btn-outlined plr-8 ptb-8 pull-right" role="button"
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='below' matTooltipHideDelay="100">
@@ -64,7 +65,8 @@
                     <div class=" chat-header-wpr-join-chat-btn"
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                       <div class="chat-header-wpr-btn">
-                        <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                        <!-- btn-primary chat-header-btn -->
+                        <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
                           [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='below' matTooltipHideDelay="100">
@@ -82,7 +84,8 @@
                     && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
                     && JOIN_TO_GROUP_HAS_ERROR === false">
                       <div class="chat-header-wpr-btn">
-                        <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right">
+                        <!-- btn-primary chat-header-btn -->
+                        <button class="btn btn-outlined plr-8 ptb-8 pull-right">
                           <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                           {{ 'RequestMsgsPage.Loading' | translate }}
                         </button>
@@ -96,7 +99,8 @@
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
 
                       <div class="chat-header-wpr-btn">
-                        <button class="btn btn-danger chat-header-btn plr-8 ptb-8 pull-right" disabled>
+                        <!-- btn-danger chat-header-btn -->
+                        <button class="btn btn-red plr-8 ptb-8 pull-right" disabled>
                           {{ 'Error' | translate }}
                         </button>
                       </div>
@@ -446,7 +450,7 @@
 
                           <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
 
-                            <button type="button" class="btn btn-primary send-msg" style="border-right: 1px solid #fff;"
+                            <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn" style=""
                               (click)="sendChatMessage()"
                               [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
                               <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
@@ -466,13 +470,13 @@
                             </button>
 
 
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            <button type="button" class="btn btn-tdblu-no-boxshadow dropdown-toggle send-msg-dropdown-toggle" data-toggle="dropdown"
                               (click)="isOpenDropdown(isOpen = !isOpen)">
                               <span class="caret"
                                 [ngClass]="{'caret-rotate-0': is0penDropDown === true, 'caret-rotate-180': is0penDropDown === false}"></span>
                               <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu dropdown-menu-custom" role="menu">
                               <li>
 
                                 <a (click)="hasSelectedOpen('sendMessageAs', request)"
@@ -549,8 +553,9 @@
                 *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
                 <!-- [ngClass]="{'disable_open_the_chat_btn' : request?.status == 1000}" -->
                 <div class="chat-header-footer-wpr-btn">
+                  <!-- btn-primary chat-header-btn -->
                   <button #openChatBtn (click)="openChatAtSelectedConversation()"
-                    class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" role="button"
+                    class="btn btn-outlined plr-8 ptb-8 pull-right" role="button"
                     matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='below' matTooltipHideDelay="100">
@@ -566,7 +571,8 @@
               <div class="chat-header-wpr-join-chat-btn"
                 *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                 <div class="chat-header-footer-wpr-btn">
-                  <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                  <!-- btn-primary chat-header-btn -->
+                  <button class="btn btn-outlined plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
                     [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
                     matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" 
                     #tooltip="matTooltip"
@@ -588,7 +594,8 @@
               && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
               && JOIN_TO_GROUP_HAS_ERROR === false">
                 <div class="chat-header-footer-wpr-btn">
-                  <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right">
+                  <!-- btn-primary chat-header-btn -->
+                  <button class="btn btn-outlined plr-8 ptb-8 pull-right">
                     <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
                     {{ 'RequestMsgsPage.Loading' | translate }}
                   </button>
@@ -602,7 +609,8 @@
                 *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
 
                 <div class="chat-header-footer-wpr-btn">
-                  <button class="btn btn-danger chat-header-btn plr-8 ptb-8 pull-right" disabled>
+                  <!-- btn-danger chat-header-btn -->
+                  <button class="btn btn-red plr-8 ptb-8 pull-right" disabled>
                     {{ 'Error' | translate }}
                   </button>
                 </div>
@@ -639,7 +647,7 @@
                             more_vert
                           </span>
                         </a>
-                        <ul class="dropdown-menu" [ngClass]="{'dropdown-menu-chat': CHAT_PANEL_MODE === true}">
+                        <ul class="dropdown-menu dropdown-menu-custom" [ngClass]="{'dropdown-menu-chat': CHAT_PANEL_MODE === true}">
 
                           <li *ngIf="CHAT_PANEL_MODE === true">
 
@@ -1353,9 +1361,9 @@
                             matTooltip=" {{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
-                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                              <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
+                              <i class="material-icons" style="vertical-align: middle; ">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
                             </button>
                           </div>
@@ -1366,9 +1374,9 @@
                             matTooltip=" {{ 'ClosesTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
-                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
-                              <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
+                              <i class="material-icons" style="vertical-align: middle;">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
                             </button>
                           </div>
@@ -1382,7 +1390,7 @@
                             matTooltip=" {{ 'ReopenTheCurrentConversation' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
@@ -1396,7 +1404,7 @@
                             matTooltip=" {{ 'ReopenTheCurrentTicket' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                              class="btn btn-primary sideber-header-btn pull-right" role="button"
+                              class="btn sideber-header-btn pull-right" role="button"
                               [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
                               <i class="material-icons"
                                 style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
@@ -2508,12 +2516,14 @@
                           (clear)="removeAllFollowers($event)">
                         </ng-select>
 
-                        <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21" class="convert-to-offline-btn-wpr"
+                        <div *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21" class="convert-to-offline-btns-wpr"
                           style="margin-top:14px">
 
-                          <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn"
-                            (click)="smartAssignmentOff()">
-                            {{'ConvertToOffline' | translate}}
+                          <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn-wpr">
+                            <button (click)="smartAssignmentOff()" class="convert-to-offline-btn">
+                              {{'ConvertToOffline' | translate}}
+                            </button>
+                            
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeDisabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
@@ -2523,14 +2533,16 @@
                             </span>
                           </span>
 
-                          <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn"
-                            (click)="smartAssignmentOn()">
-                            {{'ConvertToOnline' | translate}}
+                          <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn-wpr">
+                            <button class="convert-to-offline-btn"  (click)="smartAssignmentOn()">
+                              {{'ConvertToOnline' | translate}}
+                            </button>
+                            
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                               <i class="material-icons"
-                                style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
+                                style="">
                                 help_outline
                               </i>
                             </span>
@@ -2616,9 +2628,10 @@
                   </form>
 
                 </div> <!-- ./Conversation tag -->
-                <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false"
-                  (click)="goToTags()" class="manage_tags">
-                  {{ 'Tags.ManageTags' | translate}}
+                <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false">
+                  <button (click)="goToTags()" class="manage_tags"> 
+                    {{ 'Tags.ManageTags' | translate}}
+                  </button>
                 </div>
               </div>
 
@@ -2635,7 +2648,8 @@
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
                       <!--  Btn Add Notes (note: is disabled if the current user has agent role and is not among the participants) -->
                       <!--  ------------------------------------------------------------------------------------------------------------ -->
-                      <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
+                      <!-- btn-xs btn-primary -->
+                      <button type="button" class="btn btn-tdblu-no-boxshadow add-note-btn" #cont
                         style="margin-bottom: 0px;" (click)="addNote()"
                         [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
 
@@ -4914,8 +4928,8 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalTranscript}"
   style="background-color: rgba(90,90,90,0.9);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content transcript-modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
-      <div class="modal-header transcript-modal-header" style=" border-bottom:none!important; position: relative;">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
 
         <!-- <button type="button" class="close" aria-label="Close" (click)="closeModalTranscript()"
           style="position: absolute; right: 14px;top: 16px;">
@@ -4928,21 +4942,22 @@
             </svg>
           </span>
         </button> -->
-
-        <button type="button" style="position: absolute; right: 12px;" class="close---round-btn" aria-label="Close"
+        <!-- close---round-btn -->
+        <button type="button" style="position: absolute; right: 12px;" class="close" aria-label="Close"
           (click)="closeModalTranscript()">
           <span aria-hidden="true">&times;</span>
         </button>
 
-        <h2 class="modal-title custom__modal__title">
+        <h4 class="modal-title">
           <span style="vertical-align: middle;">
             Transcript
           </span>
-        </h2>
+        </h4>
 
       </div>
-      <hr *ngIf="CHAT_PANEL_MODE === false" class="transcript-custom-hr">
-      <div class="modal-body transcript-modal-body">
+      <!-- <hr *ngIf="CHAT_PANEL_MODE === false" class="transcript-custom-hr"> -->
+      <!-- transcript-modal-body -->
+      <div class="modal-body ">
 
         <div class="transcript-options-wpr">
           <div class="transcript-option-wpr" (click)="sendTranscriptByEmail()">
@@ -4993,10 +5008,10 @@
         </div>
       </div>
 
-      <div class="modal-footer transcript__modal__footer">
-        <div style="text-align: center; margin-bottom: 15px;">
+      <div class="modal-footer">
+        <div style="text-align: center;">
 
-          <button style="padding-left: 24px; padding-right: 24px;" type="button" class="btn btn-white"
+          <button type="button" class="btn btn-gray-no-boxshadow"
             (click)="closeModalTranscript()">
             {{ "Cancel" | translate }}
           </button>

@@ -11,8 +11,8 @@
     {{ 'Tags.Tags' | translate }}
 </span> -->
 
-<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+<div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-right: 5px;padding-left: 10px">
 
     <div class="page-title--sidebar-settings"
       [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
@@ -24,9 +24,28 @@
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+
+        <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
+          <div class="row link-to-docs">
+            <div class="col-md-12">
+              <span>
+                
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="none">
+                  <path
+                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                </svg>
+              </span>
+              <a class="custom-anchor-to-docs" (click)="goTagsDocs()">
+                {{'Tags.HowTagsWork' | translate}}
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-md-9 col-lg-8">
-            <div class="card card--no-border" style="margin-top: 5px;">
+            <div class="card" style="margin-top: 5px; border-radius: 12px;">
               <div class="card-header card-header-custom-bkgrnd">
                 <div class="tag-input-wrapper">
 
@@ -34,8 +53,7 @@
                   <!-- Dropdown select tag color -->
                   <!-- ------------------------------------------------------- -->
                   <div class="dropdown" style="float: left;">
-                    <a href="#" class="btn dropdown-toggle" data-toggle="dropdown"
-                      style="background: #fff; border: 1px solid #d9d9d9;margin-top: 0px;margin-bottom: 0px;margin-right: -1px!important;padding: 8px 15px; border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
+                    <a href="#" class="btn dropdown-toggle tag-dropdown-toggle" data-toggle="dropdown">
                       <b class="caret" style="color:#000000"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -60,27 +78,30 @@
                       </li>
                     </ul>
                   </div>
-
-                  <form>
+                  <!-- {{ 'Tags.AddTags' | translate }} ... -->
+                  <form style="position: relative;">
                     <input id="tag_name" name="tag_name" [(ngModel)]="tagname" (ngModelChange)="onChangeTagname($event)"
-                      class="input" type="text" placeholder="{{ 'Tags.AddTags' | translate }} ...">
-                    <div class="tag-color-round-div--in-input" [ngStyle]="{'background-color':tag_selected_color}">
+                      class="input" type="text" placeholder="{{ 'Tags.WriteATag' | translate }}">
+                    <div class="tag-color-round-div--in-input" 
+                      [ngStyle]="{'background-color':tag_selected_color}">
                     </div>
 
                      
                     <!-- ------------------------------------------------------- -->
-                    <!-- Add tag btn -->
+                    <!-- Add tag btn  btn-primary -->
                     <!-- ------------------------------------------------------- -->
-                    <button class="btn btn-primary create-tag-btn"
-                      (click)="createTag()" type="submit">
-                      <span class="icon add-tag-icon" >
+                    <button class="btn btn-tdblu-no-boxshadow  create-tag-btn"
+                      (click)="createTag()" type="submit" style="border-bottom-left-radius: 0px !important;border-top-left-radius: 0px !important">
+                      <!-- <span class="icon add-tag-icon" >
                         <i class="material-icons">add_circle</i>
-                      </span>
-                     <span class="add-tags-text"> {{ "Tags.AddTags" | translate }} </span>
+                      </span> -->
+                     <span class="add-tags-text"> 
+                      <!-- {{ "Tags.AddTags" | translate }}  -->
+                      {{ "Tags.CrateTag" | translate }} 
+                    </span>
                     </button>
 
-                    <div *ngIf="hasError === true" class="error-message" style="color: #f6303a;font-size: 14px;position: relative;
-                left: -197px;top: 4px;">
+                    <div *ngIf="hasError === true" class="tag-error-message">
                       {{'CannedResponses.PleaseFillOutThisField' | translate }}
                     </div>
                   </form>
@@ -256,7 +277,7 @@
 
           <!-- // RIGHT SIDEBAR -->
           <div class="col-md-3 col-lg-4">
-            <div class="card card--no-border" style="margin-top: 5px;">
+            <div class="card card--no-border quick-tips-right-bar">
               <div class="card-content">
                 <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">

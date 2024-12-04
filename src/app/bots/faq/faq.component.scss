@@ -7,6 +7,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
@@ -18,6 +19,7 @@ input[type="text"] {
   background-color: #fff !important;
   border: solid 1px #ddd;
 }
+
 textarea[type="text"] {
   // min-width: 307px !important;
   // height: 36px;
@@ -25,6 +27,7 @@ textarea[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
@@ -61,6 +64,7 @@ select {
   border-radius: 0px;
   border-color: #d9d9d9;
 }
+
 .card form [class*="col-"] {
   padding: 0px;
 }
@@ -113,6 +117,7 @@ select {
 .modal {
   top: 0;
 }
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -138,11 +143,13 @@ select {
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -289,7 +296,8 @@ button.close {
   /* Position the tooltip text - TOP */
   bottom: 100%;
   left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 
   // NEW
   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
@@ -300,6 +308,7 @@ button.close {
 .tooltipx:hover .tooltiptext {
   visibility: visible;
 }
+
 // end TOOLTIP
 
 /*
@@ -361,13 +370,14 @@ and also iPads specifically.
     padding-top: 5px !important;
     padding-bottom: 5px !important;
   }
+
   .spacer_div {
     display: none !important;
   }
 }
 
 .title-attribute {
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
 }
@@ -378,7 +388,7 @@ and also iPads specifically.
 }
 
 .faq-table-title {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
   font-size: 16px;
@@ -417,6 +427,7 @@ and also iPads specifically.
   .custom-label {
     height: 0px !important;
   }
+
   .webhook-url-label {
     text-align: left !important;
     position: relative;
@@ -426,7 +437,7 @@ and also iPads specifically.
 }
 
 .checkbox-label {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   color: #394f5a;
   font-weight: 500;
 }
@@ -451,7 +462,8 @@ input[type="text"]:disabled::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #a0a0a0 !important;
   font-weight: 300 !important;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
 :-ms-input-placeholder {
@@ -508,6 +520,7 @@ input[type="text"]:disabled::placeholder {
   padding-right: 16px !important;
   // text-align: right !important;
 }
+
 .upload-button {
   display: inline-block;
   border: none;
@@ -515,6 +528,7 @@ input[type="text"]:disabled::placeholder {
   cursor: pointer;
   color: #5754a3;
 }
+
 .upload-button input {
   display: none;
 }
@@ -535,6 +549,7 @@ input[type="text"]:disabled::placeholder {
 .dept-avatar-wrapper {
   cursor: pointer;
 }
+
 .dept-avatar-in-bot-dtl {
   border-radius: 5px;
   font-size: 18px;
@@ -622,11 +637,13 @@ input[type="text"]:disabled::placeholder {
   //   left: 251px !important;
   // }
 }
+
 @media (max-width: 1055px) {
   .customize-table-btn-name {
     display: none !important;
   }
 }
+
 .btn-light-blu {
   padding: 8px;
   margin-top: 0px;
@@ -680,14 +697,14 @@ input[type="text"]:disabled::placeholder {
 // }
 
 ::ng-deep .custom-mat-tooltip-in-faq-table {
-  background-color: #555555  !important;
+  background-color: #555555 !important;
   color: #fff !important;
-  font-size: 12px  !important;
+  font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
-  padding-top:8px!important;
-  padding-bottom:8px!important;
-  border: 1px solid #555555!important;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border: 1px solid #555555 !important;
 }
 
 
@@ -748,12 +765,15 @@ input[type="text"]:disabled::placeholder {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
+
 .nw-onoffswitch-checkbox {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
+
 .nw-onoffswitch-label {
   display: block;
   overflow: hidden;
@@ -766,6 +786,7 @@ input[type="text"]:disabled::placeholder {
   background-color: #ffffff;
   transition: background-color 0.3s ease-in;
 }
+
 .nw-onoffswitch-label:before {
   content: "";
   display: block;
@@ -780,16 +801,20 @@ input[type="text"]:disabled::placeholder {
   border-radius: 25px;
   transition: all 0.3s ease-in 0s;
 }
-.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label {
+
+.nw-onoffswitch-checkbox:checked+.nw-onoffswitch-label {
   background-color: #3ea9f5;
 }
-.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label,
-.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
+
+.nw-onoffswitch-checkbox:checked+.nw-onoffswitch-label,
+.nw-onoffswitch-checkbox:checked+.nw-onoffswitch-label:before {
   border-color: #3ea9f5;
 }
-.nw-onoffswitch-checkbox:checked + .nw-onoffswitch-label:before {
+
+.nw-onoffswitch-checkbox:checked+.nw-onoffswitch-label:before {
   right: 0px;
 }
+
 // --------- ./end new on-off btn logo ---------
 
 .close-modal-window {
@@ -841,7 +866,7 @@ input[type="text"]:disabled::placeholder {
 .answers-count {
   color: #353f45;
   padding: 6px 12px;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   font-weight: 500;
   margin-left: 9px;
   margin-top: 0px;
@@ -963,6 +988,7 @@ input[type="text"]:disabled::placeholder {
   vertical-align: middle;
   text-align: center;
 }
+
 // .pagination-icon-right-wpr:not(.pagination-icon-right-wpr-disabled) {
 //   cursor: pointer;
 // }
@@ -974,6 +1000,7 @@ input[type="text"]:disabled::placeholder {
 .decrease-page-disabled-icon {
   opacity: 0.43;
 }
+
 .increase-page-disabled-icon {
   opacity: 0.43;
 }
@@ -987,6 +1014,7 @@ input[type="text"]:disabled::placeholder {
   position: relative;
   top: 2px;
 }
+
 // .pagination-icon-left-wpr:not(.pagination-icon-left-wpr-disabled):hover {
 //   background-color: transparent;
 // }
@@ -1004,19 +1032,60 @@ input[type="text"]:disabled::placeholder {
   background-color: rgba(60, 64, 67, 0.08);
   transition: background-color 300ms linear;
 }
+
 // FULL TEST SEARCH PLACEHOLDER CUSTOM COLOR
 #full-text-search::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: grey;
   font-weight: 300 !important;
 }
+
 #full-text-search:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: grey;
   font-weight: 300 !important;
 }
+
 #full-text-search::-ms-input-placeholder {
   /* Microsoft Edge */
   color: grey;
   font-weight: 300 !important;
+}
+
+.hook-bot-to-dept {
+  padding-left: 0px !important;
+}
+
+.hook-bot-to-dept-btn {
+  margin-top: 0px !important;;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 0px !important;;
+  border-top-left-radius: 3px !important;;
+  border-bottom-left-radius: 3px !important;;
+}
+
+::ng-deep .ng-select.ng-select-dept>.ng-select-container {
+  border-radius: 999px !important;
+  border-top-left-radius: 999px !important;
+  border-bottom-left-radius: 999px !important;
+  border-top-right-radius: unset !important;
+  border-bottom-right-radius: unset !important;
+}
+
+.select-dept-label>span {
+  font-family: var(--header-font-family);
+  color: var(--text-color);
+  font-weight: 400;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.delete-bot-image-btn {
+  margin-top: 20px;
+  margin-left: 12px;
+}
+
+.delete-bot-image-btn>span>svg {
+  fill: var(--red-btn-color);
 }
