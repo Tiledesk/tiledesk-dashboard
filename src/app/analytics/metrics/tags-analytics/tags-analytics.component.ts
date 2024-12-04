@@ -98,11 +98,34 @@ export class TagsAnalyticsComponent implements OnInit {
     for (let i = 0; i < lastdays; i++) {
       // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
       // fullDateRange.push( moment().subtract(i, 'd').format('D/M/YYYY'));
-      fullDateRange.push( moment().subtract(i, 'd').format('YYYY-M-D'));
+      fullDateRange.push( moment().subtract(i, 'd').format('YYYY-MM-DD'));
     }
     fullDateRange.reverse()
-    
-    console.log('[TAG-ANALYTICS] fullDateRange ', fullDateRange)
+
+    // ---------------------------------------------------------
+    // Generate all dates in the specified range @Gio
+    // ---------------------------------------------------------
+    //  const generateDateRange = (startDate, endDate) => {
+    //   const dates = [];
+    //   let currentDate = new Date(startDate);
+    //   // console.log('currentDate', currentDate)
+    //   const stopDate = new Date(endDate);
+    //   // console.log('stopDate', stopDate)
+    //   while (currentDate <= stopDate) {
+    //     dates.push(currentDate.toISOString().split('T')[0]); // Format YYYY-MM-DD
+    //     currentDate.setDate(currentDate.getDate() + 1); // Increment day
+    //   }
+    //   console.log('dates', dates)
+    //   return dates;
+    // };
+
+    // const endDate =  moment().format('YYYY-MM-DD');
+    // const startDate = moment().subtract(6, 'd').format('YYYY-MM-DD');
+    // console.log('endDate XX ', endDate)
+    // console.log('startDate XX ', startDate)
+    // const fullDateRange = generateDateRange('2024-11-28', '2024-12-04');
+    // console.log('[TAG-ANALYTICS] fullDateRange ', fullDateRange)
+
 
     this.initDay = fullDateRange[0];
     this.endDay = fullDateRange[this.lastdays - 1];
@@ -111,39 +134,12 @@ export class TagsAnalyticsComponent implements OnInit {
     this.tagsService.geTagsForGraph('conversation-tag', this.initDay, this.endDay).subscribe((res: any) => {
 
       console.log('[TAG-ANALYTICS] - GET GRAPH TAGS RES ', res)
-
-
-      // Generare tutte le date nell'intervallo specificato
-      // const generateDateRange = (startDate, endDate) => {
-      //   const dates = [];
-      //   // let currentDate = new Date(startDate);
-      //   // console.log('currentDate', currentDate)
-      //   // const stopDate = new Date(endDate);
-      //   // console.log('stopDate', stopDate)
-      //   while (startDate <= endDate) {
-      //     // dates.push(startDate.toISOString().split('T')[0]); // Format YYYY-MM-DD
-      //     // startDate.setDate(startDate.getDate() + 1); // Increment day
-      //     // dates.push( moment().add(1, 'd'))
-      //   }
-      //   console.log('dates', dates)
-      //   return dates;
-      // };
-
-      // // Intervallo desiderato dall'utente
-      // const endDate =  moment().format('D/M/YYYY');
-      // const startDate = moment().subtract(6, 'd').format('D/M/YYYY');
-      // console.log('startDate x', startDate)
-      // console.log('endDate x', endDate)
      
-
-      // const fullDateRange = generateDateRange(startDate, endDate);
-      // console.log('startDate',startDate) 
-      // console.log('endDate',endDate) 
-      // console.log('fullDateRange',fullDateRange) 
-      
-
-      // // Mappare le serie con i valori riempiti
+      // ---------------------------------------------
+      // Map series with filled values
+      // ---------------------------------------------
       const filledSeries = res.series.map(serie => {
+        console.log('filledSeries serie ', serie) 
         const valuesMap = Object.fromEntries(
           res.dates.map((date, index) => [date, serie.values[index]])
         );
@@ -155,7 +151,7 @@ export class TagsAnalyticsComponent implements OnInit {
         return { name: serie.name, data: filledValues };
       });
 
-      // // Output finale con le date aggiornate e le serie riempite
+      // Final output with updated dates and filled series
        const finalData = {
         dates: fullDateRange,
         series: filledSeries
