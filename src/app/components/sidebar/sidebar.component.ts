@@ -1228,18 +1228,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
        
         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'wsrequests') {
           this.MONITOR_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
         } else {
           this.MONITOR_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/messages') !== -1) {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
-          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         } else {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
-          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/wsrequests-demo') !== -1) {
