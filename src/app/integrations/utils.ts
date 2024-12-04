@@ -18,6 +18,7 @@ export enum INTEGRATIONS_KEYS {
     TELEGRAM = 'telegram',
     TWILIO = 'twilio',
     VXML_VOICE = 'voice',
+    TWILIO_VOICE = "voice-twilio",
     WHATSAPP = 'whatsapp',
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',
@@ -29,7 +30,8 @@ export enum APPS_TITLE {
     MESSENGER = "Facebook Messenger",
     TELEGRAM = "Telegram",
     VXML_VOICE = "VXML Voice",
-    TWILIO_SMS = "Twilio SMS"
+    TWILIO_SMS = "Twilio SMS",
+    TWILIO_VOICE = "Twilio Voice"
 }
 
 export enum INTEGRATIONS_CATEGORIES {
@@ -107,6 +109,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Telegram",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TELEGRAM,        src_icon: "assets/img/int/telegram-icon.png",               src_logo: "assets/img/int/telegram-logo.png",           pro: false, plan: 'Sandbox' },
     { name: "Twilio SMS",       category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_SMS,      src_icon: "assets/img/int/twilio-sms.png",                  src_logo: "assets/img/int/twilio-sms.png",              pro: false, plan: 'Premium' },
     { name: "VXML Voice",       category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.VXML_VOICE,      src_icon: "assets/img/int/vxml-icon.png",                   src_logo: "assets/img/int/vxml-icon.png",               pro: true,  plan: 'Premium' },
+    { name: "Twilio Voice",       category: INTEGRATIONS_CATEGORIES.CHANNEL,        key: INTEGRATIONS_KEYS.TWILIO_VOICE,    src_icon: "assets/img/int/voice-twilio-icon.png",           src_logo: "assets/img/int/voice-twilio-icon.png",       pro: true,  plan: 'Premium' },
     { name: "WhatsApp",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,        src_icon: "assets/img/int/whatsapp-icon.png",               src_logo: "assets/img/int/whatsapp-logo.png",           pro: true,  plan: 'Premium' },
     //{ name: "Zapier",           category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",               src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
     //{ name: "Zendesk",          category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,         src_icon: "assets/img/int/zendesk-icon.png",              src_logo: "assets/img/int/zendesk-logo.png",            pro: true,  plan: 'Premium' },

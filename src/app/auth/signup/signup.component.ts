@@ -20,6 +20,7 @@ declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -177,11 +178,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -217,9 +219,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
       'password': ['', [
-        // Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
+        // Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
         // Validators.pattern(/[$-/:-?{-~!"^@#`\[\]]/g),
+        // Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$-/:-?{-~!"^@#`\[\]]).{8,}$/),
+
         Validators.maxLength(512),
         Validators.minLength(8),
         Validators.required,
@@ -235,9 +238,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   get passwordFormField() {
-    
     return this.userForm.get('password');
-    
   }
 
   // Updates validation state on form changes.
@@ -246,6 +247,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       return;
     }
     const form = this.userForm;
+
+  //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+  //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
+  //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
+  //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
 
     
 
@@ -1066,13 +1072,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     } else {
       pswrdElem.setAttribute("type", "password");
     }
-
-    // }
   }
 
-
   onFocusPwsInput() {
-
     this.isVisiblePwsStrengthBar = true;
     this.logger.log('[SIGN-UP] onFocusPwsInput isVisiblePwsStrengthBar ', this.isVisiblePwsStrengthBar)
   }

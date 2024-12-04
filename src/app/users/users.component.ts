@@ -378,14 +378,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.USER_ROLE = user_role
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role
         this.logger.log('[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
-      })
+      }
+    })
   }
 
   getBrowserVersion() {
@@ -624,24 +622,24 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
             // users_id_array.push(_user_id);
             // this.logger.log('[USERS] - PROJECT-USER - users_id_array', users_id_array)
 
-            // let imgUrl = ''
-            // if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-            //   imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storage + '/o/profiles%2F' + projectuser['id_user']['_id'] + '%2Fphoto.jpg?alt=media'
-            //   // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase firebase)', imgUrl);
-            // } else {
-            //   imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
-            //   // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase native)', imgUrl);
-            // }
+            let imgUrl = ''
+            if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+              imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storage + '/o/profiles%2F' + projectuser['id_user']['_id'] + '%2Fphoto.jpg?alt=media'
+              // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase firebase)', imgUrl);
+            } else {
+              imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+              // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase native)', imgUrl);
+            }
 
-            // this.checkImageExists(imgUrl, (existsImage) => {
-            //   if (existsImage == true) {
-            //     this.logger.log('[USERS] - IMAGE EXIST X PROJECT USERS', projectuser)
-            //     projectuser.hasImage = true
-            //   } else {
-            //     this.logger.log('[USERS] - IMAGE NOT EXIST X PROJECT USERS', projectuser)
-            //     projectuser.hasImage = false
-            //   }
-            // })
+            this.checkImageExists(imgUrl, (existsImage) => {
+              if (existsImage == true) {
+                this.logger.log('[USERS] - IMAGE EXIST X PROJECT USERS', projectuser)
+                projectuser.hasImage = true
+              } else {
+                this.logger.log('[USERS] - IMAGE NOT EXIST X PROJECT USERS', projectuser)
+                projectuser.hasImage = false
+              }
+            })
 
             if (projectuser && projectuser['id_user']) {
               this.createProjectUserAvatar(projectuser['id_user'])
