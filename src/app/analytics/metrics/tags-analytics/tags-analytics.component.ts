@@ -97,8 +97,8 @@ export class TagsAnalyticsComponent implements OnInit {
     const fullDateRange = []
     for (let i = 0; i < lastdays; i++) {
       // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
-      // fullDateRange.push( moment().subtract(i, 'd').format('D/M/YYYY'));
-      fullDateRange.push( moment().subtract(i, 'd').format('YYYY-MM-DD'));
+      fullDateRange.push( moment().subtract(i, 'd').format('DD/MM/YYYY'));
+      // fullDateRange.push( moment().subtract(i, 'd').format('YYYY-MM-DD'));
     }
     fullDateRange.reverse()
 
@@ -127,11 +127,20 @@ export class TagsAnalyticsComponent implements OnInit {
     // console.log('[TAG-ANALYTICS] fullDateRange ', fullDateRange)
 
 
-    this.initDay = fullDateRange[0];
+    this.initDay = fullDateRange[0]
     this.endDay = fullDateRange[this.lastdays - 1];
+
+    // const _initDay = moment(fullDateRange[0]).format('MM/DD/YYYY');
+    // const _endDay =  moment(fullDateRange[this.lastdays - 1]).format('MM/DD/YYYY');
+    // console.log("[TAG-ANALYTICS] fullDateRange[0]", fullDateRange[0]);
+    // console.log("[TAG-ANALYTICS] filter start day x query", _initDay, "filter end day x query", _endDay);
+    
     console.log("[TAG-ANALYTICS] filter start day", this.initDay, "filter end day ", this.endDay);
 
-    this.tagsService.geTagsForGraph('conversation-tag', this.initDay, this.endDay).subscribe((res: any) => {
+    console.log("[TAG-ANALYTICS] filter start day x query", moment(this.initDay, 'DD/MM/YYYY').format('MM/DD/YYYY'), "filter end day x query",  moment(this.endDay, 'DD/MM/YYYY').format('MM/DD/YYYY'));
+    const initDayForQuery = moment(this.initDay, 'DD/MM/YYYY').format('MM/DD/YYYY')
+    const endDayForQuery = moment(this.endDay, 'DD/MM/YYYY').format('MM/DD/YYYY')
+    this.tagsService.geTagsForGraph('conversation-tag', initDayForQuery, endDayForQuery).subscribe((res: any) => {
 
       console.log('[TAG-ANALYTICS] - GET GRAPH TAGS RES ', res)
      
