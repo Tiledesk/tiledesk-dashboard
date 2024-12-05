@@ -4040,6 +4040,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   archiveRequest(requestid) {
+
+    const msg = { action: 'openJoinConversationModal', parameter: requestid }
+    window.parent.postMessage(msg, '*')
+
     this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
     this.wsRequestsService.closeSupportGroup(requestid)
