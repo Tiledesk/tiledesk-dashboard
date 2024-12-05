@@ -15,6 +15,7 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -159,16 +160,12 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
 
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
 

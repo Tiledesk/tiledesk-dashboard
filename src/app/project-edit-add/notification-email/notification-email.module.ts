@@ -5,6 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
+import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 
 const routes: Routes = [
   { path: "", component: NotificationEmailComponent},
@@ -21,6 +23,8 @@ const routes: Routes = [
     TranslateModule,
     SharedModule,
     FormsModule,
+    MatTabsModule,
+    SettingsSidebarModule,
   ]
 })
 export class NotificationEmailModule { }

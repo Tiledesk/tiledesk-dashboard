@@ -22,12 +22,12 @@
     </li>
 </ul> -->
 
-<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
       {{ 'UsersAndGroups' | translate }}
   </div>
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 0px; margin-right: -5px;">
     <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
     <div class="row"></div>
 
@@ -35,10 +35,10 @@
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       
-      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+      <div class="teplate-content" style="flex: 1 1 auto;">
 
         <!-- box-shadow: unset -->
-        <ul class="bottom-nav" style="top:-9px; box-shadow: unset">
+        <ul class="bottom-nav" style="top:-9px;">
           <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
             <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
           </li>
@@ -48,7 +48,7 @@
         </ul>
 
 
-        <div *ngIf="hideHelpLink" class="link-to-groups-docs">
+        <!-- <div *ngIf="hideHelpLink" class="link-to-groups-docs">
           <div class="row">
             <div class="col-md-12">
               <span style="margin-left: 15px;">
@@ -68,19 +68,20 @@
               </a>
             </div>
           </div>
-        </div>
+        </div> -->
 
 
-        <div class="row">
+        <div class="row group-row" style=" margin-left: 20px;">
           <div class="col-md-8">
-            <div class="card card--no-border" style="min-height: 195px; box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px !important;">
+            <div class="card card--no-border group-card">
 
               <div class="card-header card-header-custom-bkgrnd">
-                <button class="btn btn-primary" style="padding: 8px 16px;margin:0px;"
+                <!-- style="padding: 8px 16px;margin:0px;" -->
+                <button class="btn btn-tdblu-no-boxshadow pull-right" 
                   (click)="goToEditAddPage_create()">
-                  <span class="icon" style="padding-right:8px">
+                  <!-- <span class="icon" style="padding-right:8px">
                     <i class="material-icons">add_circle</i>
-                  </span>
+                  </span> -->
 
                   {{ "GroupsPage.AddGroup" | translate }}
 
@@ -191,7 +192,7 @@
                         <!-- Elimima Gruppo -->
                         <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}"
                           class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(group?._id, group?.name)'>
-                          <i class="material-icons">close</i>
+                          <i class="material-icons">delete</i>
                         </button>
                       </td>
 
@@ -208,7 +209,7 @@
           <div class="col-md-4">
             <div class="card card card--no-border">
               <div class="card-content">
-                <div class="row">
+                <div class="row quick-tips-row" style="margin-top: -25px;" >
                   <div class="col-sm-12 col-md-12">
                     <h3 class="card_title__underlined">
                       <span class="card_title__underline">
@@ -233,6 +234,26 @@
                   <!-- You can group agents based on skills and assign groups of agents to your departments. -->
                   {{ "GroupsQuickTips2" | translate }}
                 </p>
+
+                <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
+                  {{ "RelatedKnowledgeBase" | translate }}
+                </p>
+                <p class="help-link" *ngIf="hideHelpLink">
+
+                  <span>
+                  
+
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                      fill="none" style="vertical-align: middle;">
+                      <path
+                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                    </svg>
+                  </span>
+                  <a (click)="goToGroupsDoc()">
+
+                    {{ 'LearnHowCreateAGroup' | translate }}
+                  </a>
+                </p>
               </div>
             </div>
           </div>
@@ -246,61 +267,52 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#ff5252;">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
-          <span aria-hidden="true" style="color: #fff">&times;</span>
+          <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" style="color: #fff">
-          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+        <h4 class="modal-title warning">
+          <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
+          <span class="modal-header-icon-wpr"> 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
           <span style="vertical-align: middle; padding-left:8px">
-            <!-- Elimina gruppo -->
+           
             {{ "GroupsPage.DeleteGroup" | translate }}
 
           </span>
         </h4>
-        <!-- padding-left: 36px  -->
-        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
-          <!-- Il gruppo con ID:  -->
+  
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
           {{ "GroupsPage.TheGroupWithId" | translate }}
           <code>{{ id_group_to_delete }}</code>
-          {{ "GroupsPage.WillBeRemoved" | translate }}
-
-          <!-- The group “aaaa” will be deleted -->
-          <!-- {{ "GroupsPage.TheGroup" | translate }}
-          <span style="font-weight: 400;"> 
-            “{{ name_group_to_delete }}”
-          </span>
-          {{ "GroupsPage.WillBeRemoved" | translate }} -->
-        </h4>
+          {{ "GroupsPage.WillBeRemoved" | translate }}>
+        </h4> -->
       </div>
       <div class="modal-body">
-        <p style="font-weight: 400; color: rgba(0,0,0,0.87); vertical-align: middle">
-          <!-- Sei sicuro di voler rimuovere il gruppo  -->
+        <p class="modal-body--content">
+       
           {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
 
-          <span style="color: rgba(0,0,0,0.87)">
-            <strong> “{{name_group_to_delete}}” </strong>
+          <span>
+            <strong> {{name_group_to_delete}} </strong>
           </span>?
-          <!-- <span style="color:#212121"><strong> {{ id_project }}</strong> </span> -->
+
         </p>
 
-        <!-- Id group: xxxxxx -->
-        <!-- <label style="font-weight:400;  padding-top:16px; font-size: 14px; color: rgba(0,0,0,0.54)" class="col-md-10">
-          {{ "GroupsPage.IdGroup" | translate }}:
-          <span style="color:rgba(0,0,0,0.87)">
-              {{id_group_to_delete }}
-          </span>
-        </label> -->
 
       </div>
-      <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
-          <!-- {{ "GroupsPage.Cancel" | translate }} -->
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteModal()">
+       
           {{ "Cancel" | translate }}
         </button>
-        <button style="margin-top:0px" class="btn btn-danger" (click)="deleteGroup()">
-          <!-- Elimina Gruppo -->
+        <button class="btn btn-red" (click)="deleteGroup()">
+ 
           {{ "GroupsPage.DeleteGroup" | translate }}
         </button>
       </div>

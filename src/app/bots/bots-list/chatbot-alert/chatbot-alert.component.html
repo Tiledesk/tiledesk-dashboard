@@ -6,7 +6,7 @@
     </span>
     <!-- (click)=" openModalTrialExpired()  " -->
     <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-      <button class="upgrade--plan-btn" (click)="presentGoToPricingModal()">
+      <button class="btn btn-white-rounded" (click)="presentGoToPricingModal()">
         {{ "Pricing.UpgradePlan" | translate }}
       </button>
     </div>
@@ -18,7 +18,8 @@
     </span>
     <!-- (click)=" openModalTrialExpired" -->
     <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-      <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
+      <!-- upgrade--plan-btn  -->
+      <button class="btn btn-white-rounded" (click)="presentContactUsModal()">
         {{ "Pricing.UpgradePlan" | translate }}
       </button>
     </div>
@@ -29,8 +30,9 @@
     <span class="msg-alert">
       {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
     </span>
+   
     <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-      <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+      <button class="btn btn-white-rounded" (click)="openModalSubsExpired()">
         {{ "Pricing.UpgradePlan" | translate }}
       </button>
     </div>

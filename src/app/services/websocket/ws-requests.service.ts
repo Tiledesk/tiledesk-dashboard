@@ -188,7 +188,6 @@ export class WsRequestsService implements OnDestroy {
         //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id); // WHEN CHANGING THE PROJECT I UNSUBSCRIBE FROM THE "REQUEST BY ID" TO WHICH IT IS POSSIBLY SUBSCRIBED
         //   this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + this.subscribed_request_id + '/messages'); // AS ABOVE BUT FOR MESSAGES
         // }
-
         //  unsuscribe requester presence al cambio progetto
         if (this.subscribed_requester_id) {
           this.webSocketJs.unsubscribe('/' + this.project_id + '/project_users/users/' + this.subscribed_requester_id);
@@ -215,6 +214,7 @@ export class WsRequestsService implements OnDestroy {
           function (data, notification) {
 
             if (data) {
+              // console.log("[WS-REQUESTS-SERV] DSHB - Create - DATA ", data);
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
@@ -486,7 +486,7 @@ export class WsRequestsService implements OnDestroy {
    * @param id_request 
    */
   subscribeTo_wsRequestById(id_request) {
-    // this.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
+    this.logger.log("[WS-REQUESTS-SERV] - SUBSCR TO WS REQUEST-BY-ID (REF) id_request ", id_request);
 
     this.unsubscribePreviousRequestId()
 
@@ -1105,13 +1105,33 @@ export class WsRequestsService implements OnDestroy {
 
     const body = { 'tags': tags };
     // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
-    this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - BODY ', body);
+    console.log('[WS-REQUESTS-SERV] UPDATE TAG - BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
     this.logger.log('[WS-REQUESTS-SERV] UPDATE TAG - URL ', url);
 
     return this._httpClient
       .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  updateRequestTags(request_id: string, tag: any) {
+    console.log('[WS-REQUESTS-SERV] NEW UPDATE TAGS - tag ', tag);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const body = tag;
+    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+    console.log('[WS-REQUESTS-SERV] NEW UPDATE TAGS - BODY ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/tag'
+    console.log('[WS-REQUESTS-SERV] NEW UPDATE TAGS - URL ', url);
+
+    return this._httpClient
+      .put(url, body, httpOptions)
   }
 
   // -------------------------------------------------------
@@ -1209,7 +1229,10 @@ export class WsRequestsService implements OnDestroy {
 
     // const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + id_request + '/chatbot/parameters';
-    // this.logger.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
+    // https://tiledesk-server-pre.herokuapp.com/62c3f10152dc7400352bab0d/requests/support-group-62c3f10152dc7400352bab0d-e81d9c55-wab-109639215462567-393484506627/chatbot/parameters
+    
+
+    // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
 
     // 'Authorization': this.TOKEN,
     const httpOptions = {

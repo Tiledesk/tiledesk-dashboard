@@ -886,9 +886,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     elemSidebarWrapper.style.height = "100vh";
                 } else {
+                    // elemSidebarWrapper.style.height = "calc(100vh - 44px)";
                     elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-                    // elemSidebarWrapper.style.height = "calc(100vh - 35px)";
-                    // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
+                    
+                    
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {
