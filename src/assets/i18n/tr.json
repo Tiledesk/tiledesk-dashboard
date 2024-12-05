@@ -614,6 +614,7 @@
     "EnablingThisOptionHidesChatbotAttributes": "Bu seçeneği etkinleştirmek, sohbet robotunun niteliklerini konuşma ayrıntıları kenar çubuğundan gizler",
     "AccessDenied":"Erişim engellendi",
     "ItLooksLikeYouAreNotTeammateOfThisProject": "Görünüşe göre bu projenin takım arkadaşı değilsiniz",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Size erişim izni vermesi için proje yöneticisiyle iletişime geçin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

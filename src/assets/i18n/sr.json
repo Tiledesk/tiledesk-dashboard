@@ -613,6 +613,7 @@
     "EnablingThisOptionHidesChatbotAttributes": "Омогућавањем ове опције сакривају се атрибути робота за ћаскање са бочне траке са детаљима разговора",
     "AccessDenied":"Приступ одбијен",
     "ItLooksLikeYouAreNotTeammateOfThisProject": "Изгледа да нисте саиграч овог пројекта",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Обратите се администратору пројекта да вам одобри приступ",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

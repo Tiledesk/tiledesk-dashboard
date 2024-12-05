@@ -611,6 +611,7 @@
     "EnablingThisOptionHidesChatbotAttributes": "Ativar esta opção oculta os atributos do chatbot da barra lateral de detalhes da conversa",
     "AccessDenied":"Acesso negado",
     "ItLooksLikeYouAreNotTeammateOfThisProject": "Parece que não é colega de equipa deste projeto",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Contacte o administrador do projeto para conceder acesso",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

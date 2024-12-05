@@ -890,7 +890,7 @@ export class NotifyService {
   presentModalYouDontBelongToTheProject() {
     Swal.fire({
       title: this.translate.instant('AccessDenied') + '!',
-      text: this.translate.instant('ItLooksLikeYouAreNotTeammateOfThisProject') + '. ' + "Contact the project administrator to grant you the access.",
+      text: this.translate.instant('ItLooksLikeYouAreNotTeammateOfThisProject') + '. ' + this.translate.instant('ContactTheProjectAdministratorToGrantYouTheAccess') + '.',
       icon: "warning",
       showCloseButton: false,
       showCancelButton: false,

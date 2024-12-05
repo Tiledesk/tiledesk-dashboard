@@ -613,6 +613,7 @@
     "EnablingThisOptionHidesChatbotAttributes": "Om du aktiverar det här alternativet döljs chatbotens attribut från sidofältet för konversationsinformation",
     "AccessDenied":"Åtkomst nekad",
     "ItLooksLikeYouAreNotTeammateOfThisProject": "Det verkar som att du inte är en lagkamrat i det här projektet",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Kontakta projektadministratören för att ge dig åtkomst",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
