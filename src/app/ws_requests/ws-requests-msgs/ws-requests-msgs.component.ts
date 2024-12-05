@@ -1703,7 +1703,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe(async (wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
 
@@ -4098,12 +4098,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           //  NOTIFY ERROR 
           this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
         }, () => {
+          // ----------------------------------------------------------------------------
+          // Sends a "post" message to the parent when the user resolves a conversation
+           // ----------------------------------------------------------------------------
           if (this.CHAT_PANEL_MODE === true) {
-            const msg = { action: 'openJoinConversationModal', parameter: requestid }
+            const msg = { action: 'resolveConversation', parameter: requestid }
             window.parent.postMessage(msg, '*')
           }
 
-          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+          console.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE requestid', requestid, 'CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE);
           //  NOTIFY SUCCESS
           this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
 
