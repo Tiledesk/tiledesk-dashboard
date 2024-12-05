@@ -283,7 +283,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   CURRENT_USER_IS_A_FOLLOWER: boolean = false;
   displayModalTranscript: string = 'none'
   transcriptDwnldPreference: string;
-  
+
   resolutionBotCount: number;
   previousUrl: string;
   hasSearchedBy: string;
@@ -424,7 +424,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService:  CacheService
+    private cacheService: CacheService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -646,7 +646,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
-      this.translationMap.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan'), 
+      this.translationMap.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan'),
       this.translationMap.get('LearnMoreAboutDefaultRoles')
     )
   }
@@ -1309,7 +1309,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.overridePay = false;
     }
 
-    
+
   }
 
   // -------------------------------------------------------------
@@ -1331,12 +1331,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -------------------------------------------------------------
   getProjectUserRole() {
     this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
-        if(projectUser){
-          this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', projectUser)
-          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-          this.CURRENT_USER_ROLE = projectUser.role;
-        }
-      })
+      if (projectUser) {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', projectUser)
+        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.CURRENT_USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   // -------------------------------------------------------------
@@ -1701,9 +1701,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe(async(wsrequest) => {
+      .subscribe(async (wsrequest) => {
 
-      console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
 
@@ -1924,8 +1924,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.members_array = this.request.participants;
           this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById PARTICIPANTS_ARRAY ', this.members_array)
 
-          if(!this.CURRENT_USER_ROLE) {
-            this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project) 
+          if (!this.CURRENT_USER_ROLE) {
+            this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project)
             this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
           }
 
@@ -2665,7 +2665,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
-  
+
     console.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
 
     // No more used
@@ -2695,12 +2695,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
- manageRequestTags(id_request, tag, fromaction) {
+  manageRequestTags(id_request, tag, fromaction) {
     console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
     console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tag: ', tag);
     this.wsRequestsService.updateRequestTags(id_request, tag)
       .subscribe((data: any) => {
-       console.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+        console.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
       }, (err) => {
         console.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
         this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
@@ -2772,7 +2772,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   createNewTag = (newTag: string) => {
-   console.log("Create New TAG Clicked : " + newTag)
+    console.log("Create New TAG Clicked : " + newTag)
     this.logger.log("Create New TAG Clicked - request tag: ", this.request.tags)
 
     var index = this.request.tags.findIndex(t => t.tag === newTag);
@@ -2797,7 +2797,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // const tagObject = { tag: tag.tag, color: tag.color } // no more used
           // self.tagsArray.push(tagObject); // no more used
           const newTagArray = [{ tag: tag.tag, color: tag.color }]
-          
+
 
           self.manageRequestTags(this.id_request, newTagArray, 'create')
 
@@ -3748,7 +3748,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
             Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -3810,9 +3810,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant - ERROR ', error);
 
-            Swal.fire( {
+            Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -4039,9 +4039,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept - ERROR ', error);
 
-            Swal.fire( {
+            Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -4077,9 +4077,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   archiveRequest(requestid) {
 
-    const msg = { action: 'openJoinConversationModal', parameter: requestid }
-    window.parent.postMessage(msg, '*')
-
     this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
     this.wsRequestsService.closeSupportGroup(requestid)
@@ -4101,6 +4098,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           //  NOTIFY ERROR 
           this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
         }, () => {
+          if (this.CHAT_PANEL_MODE === true) {
+            const msg = { action: 'openJoinConversationModal', parameter: requestid }
+            window.parent.postMessage(msg, '*')
+          }
 
           this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
           //  NOTIFY SUCCESS
@@ -4292,7 +4293,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       reverseButtons: true,
       // buttons: true,
       // dangerMode: false,
-     customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -4304,9 +4305,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }, (err) => {
               this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
 
-              Swal.fire( {
+              Swal.fire({
                 title: this.translate.instant('Oops') + '!',
-                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
                 icon: "error",
                 showCloseButton: false,
                 showCancelButton: false,
@@ -4746,14 +4747,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalOnlyOwnerCanManageAdvancedProjectSettings() {
     this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(
-      this.translationMap.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings'), 
+      this.translationMap.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings'),
       this.translationMap.get('LearnMoreAboutDefaultRoles')
     )
   }
 
   banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
-    this.logger.log("displayModalBanVisitor bannedVisitorsArray index" , index)
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray index", index)
     this.logger.log("displayModalBanVisitor bannedVisitorsArray", this.bannedVisitorsArray)
     // if (this.visitorIsBanned === false) {
     if (index === -1) {
@@ -4782,7 +4783,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }, (error) => {
               // this.logger.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
-              Swal.fire( {
+              Swal.fire({
                 title: this.translate.instant('Oops') + '!',
                 text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
                 icon: "error",
@@ -4804,8 +4805,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                 customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((result) => {
                 if (result.isConfirmed) {
-                this.cacheService.clearCache()
-                this.findCurrentProjectAmongAll(this.id_project)
+                  this.cacheService.clearCache()
+                  this.findCurrentProjectAmongAll(this.id_project)
                 }
               });
 
@@ -4963,7 +4964,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentModalAgentCannotManageAvancedSettings() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
-      this.translationMap.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject'), 
+      this.translationMap.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject'),
       this.translationMap.get('LearnMoreAboutDefaultRoles')
     )
   }
@@ -5243,7 +5244,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------
   translateNotificationMsgs() {
 
-    let keys= [
+    let keys = [
       'Tags.NotificationMsgs',
       'Notes.NotificationMsgs',
       'Processing',
@@ -5290,11 +5291,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       'SorryFileTypeNotSupported',
     ]
 
-    this.translate.get(keys).subscribe({next: (translation)=>{
-      Object.keys(translation).forEach(key => {
-        this.translationMap.set(key, translation[key])
-      })
-    }})
+    this.translate.get(keys).subscribe({
+      next: (translation) => {
+        Object.keys(translation).forEach(key => {
+          this.translationMap.set(key, translation[key])
+        })
+      }
+    })
 
 
     this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
@@ -5380,7 +5383,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       // const isAccepted = this.checkAcceptedFile(mimeType)
       const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
-      if(!canUploadFile){
+      if (!canUploadFile) {
         this.uploadedFiles = null;
         this.presenModalAttachmentFileTypeNotSupported();
         return;
@@ -5845,9 +5848,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            Swal.fire( {
+            Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -5908,7 +5911,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
             Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
