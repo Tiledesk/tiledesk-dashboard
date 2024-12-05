@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.46-rc3
+- Sends a "post" message to the parent when the user resolves a conversation
+
 ### 2.7.46-rc2
 - Adds in Analytics > Metrics the conversations tags graph
 
