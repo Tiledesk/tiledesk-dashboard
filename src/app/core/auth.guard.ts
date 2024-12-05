@@ -217,11 +217,13 @@ export class AuthGuard implements CanActivate {
       this.logger.log('[AUTH-GUARD] error', error.error)
       if (error.error.msg === "you dont belong to the project.") {
 
-        this._snackBar.open("Oops! " + error.error.msg, null, {
-          duration: 5000,
-          verticalPosition: 'top',
-          panelClass: 'error-snackbar'
-        });
+        this.notify.presentModalYouDontBelongToTheProject()
+
+        // this._snackBar.open("Oops! " + error.error.msg, null, {
+        //   duration: 5000,
+        //   verticalPosition: 'top',
+        //   panelClass: 'error-snackbar'
+        // });
       }
 
 

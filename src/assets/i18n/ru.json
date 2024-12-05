@@ -610,6 +610,8 @@
     "IncludeChatbotsOnlyConversations": "Включить только разговоры с чат-ботами",
     "HideChatbotAttributesWidget":"Скрыть виджет «Атрибуты чат-бота»",
     "EnablingThisOptionHidesChatbotAttributes": "Включение этой опции скрывает атрибуты чат-бота на боковой панели сведений о разговоре.",
+    "AccessDenied":"Доступ запрещен",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Похоже, вы не являетесь членом команды этого проекта",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

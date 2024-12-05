@@ -13,6 +13,7 @@ import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
+import { NotifyService } from 'app/core/notify.service';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -39,7 +40,8 @@ export class AutologinComponent implements OnInit {
     private projectService: ProjectService,
     private logger: LoggerService,
     private localDbService: LocalDbService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public notify: NotifyService,
   ) {
 
     this.user = auth.user_bs.value;
@@ -136,7 +138,7 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route, storedJWT) {
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
@@ -153,7 +155,7 @@ export class AutologinComponent implements OnInit {
 
       const auth_user = resp['user']
       const token = resp['token']
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  auth_user ', auth_user);
+      console.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  auth_user ', auth_user);
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  token ', token);
 
       const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: token }
@@ -206,7 +208,7 @@ export class AutologinComponent implements OnInit {
      
 
     }, () => {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
+      console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
 
       const route_part = route.split('/');
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
@@ -214,7 +216,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
 
       const storedProjectJson = localStorage.getItem(project_id);
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+      console.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
 
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
@@ -300,6 +302,12 @@ export class AutologinComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] - GET PROJECT BY ID - ERROR ', error);
+      console.log(error.error)
+      if (error.error.msg === 'you dont belong to the project.') {
+        console.log('Pressent a modal')
+        this.notify.presentModalYouDontBelongToTheProject()
+      }
+
     }, () => {
       this.logger.log('[AUTOLOGIN] - GET PROJECT BY ID - COMPLETE ');
 

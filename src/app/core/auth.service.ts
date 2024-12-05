@@ -261,7 +261,7 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)

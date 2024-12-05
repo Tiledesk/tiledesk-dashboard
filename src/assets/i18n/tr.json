@@ -612,6 +612,8 @@
     "IncludeChatbotsOnlyConversations": "Yalnızca Chatbot konuşmalarını dahil et",
     "HideChatbotAttributesWidget":"Chatbot Nitelikleri widget'ını gizle",
     "EnablingThisOptionHidesChatbotAttributes": "Bu seçeneği etkinleştirmek, sohbet robotunun niteliklerini konuşma ayrıntıları kenar çubuğundan gizler",
+    "AccessDenied":"Erişim engellendi",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Görünüşe göre bu projenin takım arkadaşı değilsiniz",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
