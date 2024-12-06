@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.46-rc5
+- Bug fixing
+
 ### 2.7.46-rc4
 - Improves remove conversation tag method
 
