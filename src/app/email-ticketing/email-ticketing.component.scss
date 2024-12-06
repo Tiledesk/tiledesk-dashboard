@@ -1,5 +1,32 @@
+
+
+.email-ticketing-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding: 10px 15px 0px;
+}
+
+.link-to-docs-wpr {
+    margin-bottom: 16px;
+}
+.link-to-docs-wpr > div > div > span > svg {
+    fill: var(--blue-light);
+    vertical-align: middle;
+} 
+
+.link-to-docs {
+    // background-color: rgb(241, 241, 241);
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-left: -14px;
+    // padding-bottom: 12px;
+    // padding-top: 12px;
+    padding: 10px 0px;
+}
+
 .custom-anchor-to-docs {
-    color: #0f62ff !important;
+    color: var(--blue-light); // #0f62ff !important;
     vertical-align: middle;
     font-size: 14px;
     font-weight: 400;
@@ -11,25 +38,6 @@
     text-decoration: underline;
 }
 
-.email-ticketing-title {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    padding: 10px 15px 0px;
-}
-
-.link-to-email-ticketing-wpr {
-    margin-bottom: 16px;
-}
-
-.link-to-email-ticketing-docs {
-    background-color: rgb(241, 241, 241);
-    margin-right: 0px;
-    margin-left: 0px;
-    padding-bottom: 12px;
-    padding-top: 12px;
-}
-
 input[type="text"] {
     // min-width: 307px !important;
     height: 36px;
@@ -37,6 +45,7 @@ input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     // border-top: 1px solid #c0c0c0;
@@ -59,11 +68,14 @@ input[type="text"] {
 }
 
 .copy-btn {
-    padding-bottom: 9px !important;
-    margin-bottom: 10px !important;
-    padding-top: 9px !important;
-    border-radius: 5px !important;
+    // padding-bottom: 9px !important;
+    // margin-bottom: 10px !important;
+    // padding-top: 9px !important;
+    // border-radius: 5px !important;
     width: 77px;
+    position: relative;
+    top: -2.1px;
+
 }
 
 #ticketing-email {

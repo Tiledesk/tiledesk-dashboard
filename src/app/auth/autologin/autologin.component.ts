@@ -13,6 +13,7 @@ import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -70,11 +71,12 @@ export class AutologinComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -168,11 +170,11 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin routeSegments ', routeSegments);
 
       const projectIDGetFromRoute = routeSegments[2]
-      
+
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
-    
+
       this.getProject(projectIDGetFromRoute)
-    
+
 
       this.router.navigate([route]);
 
@@ -205,6 +207,7 @@ export class AutologinComponent implements OnInit {
       }
      
 
+
     }, () => {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
 
@@ -222,7 +225,7 @@ export class AutologinComponent implements OnInit {
     });
   }
 
- 
+
 
 
   getProject(projectIDGetFromRouteIsNumber) {
@@ -240,7 +243,7 @@ export class AutologinComponent implements OnInit {
     })
   }
 
- 
+
 
 
 

@@ -887,6 +887,7 @@ button.close.custom-hover:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: var(--header-font-family);
 }
 
 .navbar-test-site-btn-wpr {
@@ -1182,12 +1183,13 @@ button.close.custom-hover:hover {
 }
 
 #home-material-btn {
-  background-color: var(--blue-light);
-  color: #fff;
+  background-color: var(--primary-btn-background);
+  color: var(--primary-btn-color);
 }
 
 .quotas-upgrade-btn-wpr {
   text-align: center;
+  margin-bottom: 8px;
 }
 
 .quotas-upgrade-btn {
@@ -1197,10 +1199,10 @@ button.close.custom-hover:hover {
   // height: 36px;
   // border: solid 1px #f5f7f9;
     background-color: transparent;
-    color: #1e88e5;
-    border: 2px solid #1e88e5;
-    border-radius: 999px;
-    text-transform: uppercase;
+    color: var(--primary-btn-background);  // #1e88e5;
+    border: 2px solid var(--primary-btn-background); // #1e88e5;
+    border-radius: var(--btn-border-radius);
+    // text-transform: uppercase;
     font-family: var(--header-font-family) ;
 }
 
@@ -1211,8 +1213,8 @@ button.close.custom-hover:hover {
   // color: #647491;
   // height: 36px;
   // border: solid 1px #d6dde3;
-  background-color: #1e88e5;
-  color: #fff;
+  background-color:  var(--primary-btn-background); // #1e88e5;
+  color: var( --primary-btn-color ) // #fff;
 }
 
 
@@ -1567,6 +1569,27 @@ button.close.custom-hover:hover {
   letter-spacing: -0.01em;
   text-align: right;
   font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+#upgrade-plan-btn-wpr > a {
+  padding-top: 8px;
+  padding-bottom: 0px;
+}
+
+.upgrade-plan-btn {
+  padding: 6px 15px !important;
+}
+
+.simulate-visitor-btn {
+  background: transparent;
+  border: unset;
+}
+
+#usage-stats >  ::ng-deep button > span  >  span {
+  font-family: var(  --header-font-family);
+  font-weight: 400;
+  padding-left: 3px; 
 }
 
 // .quota-resets {

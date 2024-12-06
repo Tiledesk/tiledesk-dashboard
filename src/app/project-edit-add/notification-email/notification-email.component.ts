@@ -30,6 +30,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   anErrorHasOccurredMsg: string;
   emailTemplateUpdatedSuccessfullyMsg: string;
   isChromeVerGreaterThan100: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
   constructor(
     public location: Location,
     public projectService: ProjectService,
@@ -55,7 +56,15 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     //   let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
     //   ps.update();
     // }
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.listenSidebarIsOpened()
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[NOTIFICATION-EMAIL] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getBrowserVersion() {

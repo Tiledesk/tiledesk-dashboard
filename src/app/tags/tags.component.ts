@@ -7,13 +7,15 @@ import { UsersService } from '../services/users.service';
 import { AppConfigService } from '../services/app-config.service';
 import { AuthService } from '../core/auth.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { URL_tag_doc } from 'app/utils/util';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'appdashboard-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss']
 })
 export class TagsComponent implements OnInit, AfterViewInit {
-
+  public tag_docs_url = URL_tag_doc
   tagsList: Array<any>;
   tagname: string;
   tag_name: string; // is that passed to the delete modal
@@ -34,6 +36,7 @@ export class TagsComponent implements OnInit, AfterViewInit {
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   hasError = false;
+  public hideHelpLink: boolean;
  
   tagColor = [
     { name: 'red', hex: '#FF5C55' },
@@ -53,8 +56,12 @@ export class TagsComponent implements OnInit, AfterViewInit {
     public appConfigService: AppConfigService,
     private usersService: UsersService,
     private auth: AuthService,
-    private logger: LoggerService
-  ) { }
+    private logger: LoggerService,
+    public brandService: BrandService,
+  ) { 
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+  }
 
   ngOnInit() {
     this.getTag();
@@ -250,5 +257,12 @@ export class TagsComponent implements OnInit, AfterViewInit {
         this.getTag();
       });
   }
+
+  goTagsDocs(){
+    const url = this.tag_docs_url;
+    window.open(url, '_blank');
+  }
+
+
 
 }

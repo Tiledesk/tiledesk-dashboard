@@ -348,11 +348,15 @@ textarea[type="text"] {
     cursor: pointer;
     margin-left: var(--manage-tag-margin-left);
     font-family: var(--content-font-family);
-    display: var(--manage-tag-diplay)
+    display: var(--manage-tag-diplay);
+    background-color: transparent;
+    border: unset;
+    border-radius: 4px;
 }
 
 .manage_tags-cnctc-info:hover {
-    text-decoration: underline;
+    // text-decoration: underline;
+    background-color: var(--only-text-btn-hover-background)
 }
 
 // ---- Assigned tag without icon

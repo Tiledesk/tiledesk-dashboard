@@ -12,11 +12,11 @@ export class IntegrationHeaderComponent implements OnInit, OnChanges{
   constructor() { }
 
   ngOnInit(): void {
-    // console.log("header laoded: ", this.integrationModel);
+    // this.logger.log("header laoded: ", this.integrationModel);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-  //  console.log("[INTEGRATION-HEADER] integrationModel: ", this.integrationModel);
+  //  this.logger.log("[INTEGRATION-HEADER] integrationModel: ", this.integrationModel);
   }
 
 }
