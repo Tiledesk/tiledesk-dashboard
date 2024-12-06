@@ -109,6 +109,8 @@
     "TotalAITokensUsage": "Tokens AI'nın toplam kullanımı",
     "TotalEmailUsage": "Toplam e-posta kullanımı",
     "Email": "E-posta",
+    "Voice":"Voice",
+    "TotalVoiceUsage": "Toplam ses kullanımı",
     "RequestsForAgent": "Temsilci için konuşmalar",
     "RequestsForDept": "Departman görüşmeleri",
     "NumberOfRequestsLast7Days": "Son 7 gündeki görüşme sayısı",

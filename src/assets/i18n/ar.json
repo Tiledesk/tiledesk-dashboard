@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "إجمالي استخدام Tokens AI",
     "TotalEmailUsage": "إجمالي استخدام البريد الإلكتروني",
     "Email": "بريد إلكتروني",
+    "Voice":"صوت",
+    "TotalVoiceUsage": "إجمالي استخدام الصوت",
     "RequestsForAgent": "محادثات للوكيل",
     "RequestsForDept": "محادثات للقسم",
     "NumberOfRequestsLast7Days": "عدد المحادثات آخر 7 أيام",

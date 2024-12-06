@@ -108,6 +108,8 @@
 	"TotalAITokensUsage": "Gesamtnutzung von Tokens AI",
 	"TotalEmailUsage": "Gesamte E-Mail-Nutzung",
 	"Email": "E-Mail",
+	"Voice":"Stimme",
+	"TotalVoiceUsage": "Vollständige Nutzung der Stimme",
 	"RequestsForAgent": "Anfrage für Agenten",
 	"RequestsForDept": "Anfrage für Abteilung",
 	"NumberOfRequestsLast7Days": "Anfragen in den letzten 7 Tagen",

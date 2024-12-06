@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Total användning av Tokens AI",
     "TotalEmailUsage": "Total e-postanvändning",
     "Email": "E-post",
+    "Voice":"Röst",
+    "TotalVoiceUsage": "Total röstanvändning",
     "RequestsForAgent": "Samtal för agent",
     "RequestsForDept": "Samtal för avdelningen",
     "NumberOfRequestsLast7Days": "Antal konversationer senaste 7 dagarna",

@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Укупна употреба AI Tokens",
     "TotalEmailUsage": "Укупна употреба е-поште",
     "Email": "Емаил",
+    "Voice":"Воице",
+    "TotalVoiceUsage": "Укупна употреба гласа",
     "RequestsForAgent": "Разговори за агента",
     "RequestsForDept": "Разговори за одељење",
     "NumberOfRequestsLast7Days": "Број разговора у последњих 7 дана",

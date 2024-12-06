@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Общее использование AI Tokens",
     "TotalEmailUsage": "Общее использование электронной почты",
     "Email": "Электронная почта",
+    "Voice":"Голос",
+    "TotalVoiceUsage": "Общее использование голоса",
     "RequestsForAgent": "Разговоры для агента",
     "RequestsForDept": "Разговоры для отдела",
     "NumberOfRequestsLast7Days": "Количество разговоров за последние 7 дней",

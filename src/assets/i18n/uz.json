@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Jami AI Tokens foydalanish",
     "TotalEmailUsage": "Jami elektron pochtadan foydalanish",
     "Email": "Email",
+    "Voice":"Ovoz",
+    "TotalVoiceUsage": "Ovozdan umumiy foydalanish",
     "RequestsForAgent": "Agent uchun suhbatlar",
     "RequestsForDept": "Kafedra uchun suhbatlar",
     "NumberOfRequestsLast7Days": "Oxirgi 7 kunlik suhbatlar soni",
