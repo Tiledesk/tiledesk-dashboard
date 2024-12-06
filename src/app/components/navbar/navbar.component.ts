@@ -198,6 +198,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
 
+  diplayTwilioVoiceQuota: boolean;
+  diplayVXMLVoiceQuota: boolean;
+
   startSlot: string;
   endSlot: string;
 
@@ -292,6 +295,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
+    this.manageVoiceQuotaVisibility()
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
@@ -323,16 +327,60 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           // this.getQuotes();
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
-
+        
         this.getProjects()
+
       }
+    });
+  }
+
+  manageVoiceQuotaVisibility() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      this.logger.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        if (projectProfileData['customization']) {
+
+          if (projectProfileData['customization'] && ((projectProfileData['customization']['voice-twilio'] !== undefined) || (projectProfileData['customization']['voice'] !== undefined) )) {
+    
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+            if (projectProfileData['customization']['voice-twilio'] === true) {
+              this.diplayTwilioVoiceQuota = true
+            } else if (projectProfileData['customization']['voice-twilio'] === false) {
+              this.diplayTwilioVoiceQuota = false
+            } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+              this.diplayTwilioVoiceQuota = false
+            } 
+    
+            if (projectProfileData['customization']['voice'] === true) {
+              this.diplayVXMLVoiceQuota = true
+            } else if (projectProfileData['customization']['voice'] === false) {
+              this.diplayVXMLVoiceQuota = false
+            } else if (projectProfileData['customization']['voice'] === undefined) {
+              this.diplayVXMLVoiceQuota = false
+            } 
+          }
+    
+        } else {
+    
+          this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+          this.diplayTwilioVoiceQuota = false
+          this.diplayVXMLVoiceQuota = false
+        }
+
+      }
+
+    }, error => {
+      this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
+    }, () => {
+      this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
     });
   }
 
   onOpenQuoteMenu() {
     this.isOpenCurrentUsageMenu = true
-    // console.log('[NAVBAR] - on open quotes menu' )
-    // console.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+    // this.logger.log('[NAVBAR] - on open quotes menu' )
+    // this.logger.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
     this.getQuotasCount()
     this.getQuotes();
@@ -349,7 +397,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   onQuotasMenuClosed() {
     this.isOpenCurrentUsageMenu = false
-    // console.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+    // this.logger.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
   }
 
   getProjectQuotes() {
@@ -388,7 +436,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   // listenToWSRequestsDataCallBack() {
   //   // .pipe(throttleTime(0))
-  //   console.log("[NAVBAR] listenToWSRequestsDataCallBack ");
+  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
   //   this.wsRequestsService.wsConvData$
 
   //     .pipe(
@@ -401,10 +449,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // }
 
   // listenToQuotasReachedInHome() {
-  //   console.log("[NAVBAR] listenToQuotasReachedInHome ", )
+  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
 
   //   if (this.projectId)  {
-  //     console.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
+  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
   //     this.getQuotes()
   //   }
   // }
@@ -499,11 +547,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.requestsPieOrangeStroke = false;
         this.requestsPieRedStroke = true; // 76% a 100%
       }
-
-
-
-
-
 
       this.requests_count = resp.quotes.requests.quote;
       this.messages_count = resp.quotes.messages.quote;
@@ -689,7 +732,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
     keys.forEach(key => {
-     
+
       if (key.includes("MTT")) {
         // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
         let mt = key.split(":");
@@ -1060,7 +1103,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     });
   }
 
-
+ 
 
   getTrialLeft() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -1313,7 +1356,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.auth.projectSelected(project, 'navbar')
       this.router.navigate([`/project/${id_project}/home`]);
-      // console.log('[NAVBAR] goToHome prjct ', project )  
+      // this.logger.log('[NAVBAR] goToHome prjct ', project )  
     }
   }
 

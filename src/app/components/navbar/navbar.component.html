@@ -193,26 +193,7 @@
                               </div>
                             </div>
                             <div class="quota-pie" style="width: 50px; height: 50px;">
-                              <!-- <svg class="svg-pi"
-                                style="width: 32px; height: 32px;">
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3">
-                                </circle>
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3"
-                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
-                                  stroke-linecap="round">
-                                </circle>
-                              </svg> -->
-                              <!-- [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}" -->
-                              <!-- <svg width="0" height="0">
-                                <defs>
-                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color: green; stop-opacity: 1;" />
-                                        <stop offset="50%" style="stop-color: yellow; stop-opacity: 1;" />
-                                        <stop offset="75%" style="stop-color: orange; stop-opacity: 1;" />
-                                        <stop offset="100%" style="stop-color: red; stop-opacity: 1;" />
-                                    </linearGradient>
-                                </defs>
-                            </svg> -->
+                     
                             <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
                               <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
                                 [mode]="'determinate'" [value]="requests_perc" [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
@@ -270,7 +251,8 @@
                       </div>
                     </div>
                     
-                    <div aria-label="Usage limit for Email" class="quota-section-main last">
+                    <div aria-label="Usage limit for Email" class="quota-section-main"
+                    [ngClass]="{'last': !diplayTwilioVoiceQuota && !diplayVXMLVoiceQuota}">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
@@ -310,6 +292,51 @@
                         </div>
                       </div>
                     </div>
+                    <!-- --------------------------------------------- -->
+                    <!-- Voice -->
+                    <!-- --------------------------------------------- -->
+                    <div *ngIf="diplayTwilioVoiceQuota || diplayVXMLVoiceQuota"  aria-label="Usage limit for Voice" class="quota-section-main last"
+                      [ngClass]="{'last': diplayTwilioVoiceQuota || diplayVXMLVoiceQuota}">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">{{'Voice' | translate}}</h2>
+                              <!-- <span class="quota-plan-badge">Free</span> -->
+                            </div>
+                            <!-- <p  class="quota-resets">Quota resets on 19 Sep 2024</p> -->
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <p class="quota-right-title">
+                                <!-- Total email usage -->
+                                {{'TotalVoiceUsage' | translate}}
+                              </p>
+                              <div class="quota-limit-wpr">
+                                <p class="quota-limit">{{email_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p class="quota-limit">{{email_limit | number:'1.0-0'}}</p>
+                              </div>
+                            </div>
+                            <div class="quota-pie" style="width: 50px; height: 50px;">
+                              <!-- <svg class="svg-pi"
+                                style="width: 32px; height: 32px;">
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#dce9ff" stroke-width="3">
+                                </circle>
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#0566ff" stroke-width="3"
+                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
+                                  stroke-linecap="round"></circle>
+                              </svg> -->
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="email_perc"
+                                [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                              </mat-progress-spinner>
+                              <div class="quota-pie-label">{{ email_perc }}% </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 

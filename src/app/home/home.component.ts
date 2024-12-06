@@ -246,6 +246,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+  diplayTwilioVoiceQuota: boolean;
+  diplayVXMLVoiceQuota: boolean;
 
   // ---------------------------------------
   // For test 
@@ -358,13 +360,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe$.complete();
   }
 
+  listeHasOpenedNavbarQuotasMenu() {
+    //  this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
+    this.quotesService.hasOpenNavbarQuotasMenu$
+
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((hasOpen) => {
+
+        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        if (this.projectId) {
+          this.getQuotes()
+        }
+      })
+
+  }
+
   getCurrentProjectProjectByIdAndBots() {
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-       console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        // this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
 
@@ -373,10 +392,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectId = this.project._id;
           this.projectName = this.project.name
 
-          if (this.projectId) {
-            this.getProjectQuotes();
-            this.getQuotasCount()
-          }
+          // if (this.projectId) {
+          //   this.getProjectQuotes();
+          //   this.getQuotasCount()
+          // }
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
@@ -398,49 +417,66 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  getQuotasCount() {
-    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[HOME] - GET QUOTAS COUNT - response: ", resp)
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      if (project) {
+        this.project = project
+        if (project.attributes && project.attributes.dashlets) {
+          this.PROJECT_ATTRIBUTES = project.attributes;
+          this.getDashlet(this.PROJECT_ATTRIBUTES)
+        }
 
-      this.openedConversations = resp.open;
-      this.closedConversations = resp.closed;
-      this.startSlot = resp.slot.startDate;
-      this.endSlot = resp.slot.endDate;
+        if (project.attributes && project.attributes.userPreferences) {
+          this.PROJECT_ATTRIBUTES = project.attributes;
+          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
+
+        } else {
+          this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES > USER PREFERENCES UNDEFINED - SET DEFAULT', this.PROJECT_ATTRIBUTES)
+          this.setDefaultPreferences()
+        }
 
 
-      this.logger.log("[HOME] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
-      this.logger.log("[HOME] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      this.logger.log("[HOME] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      this.logger.log("[HOME] GET QUOTAS COUNT - END SLOT ", this.endSlot);
-    }, (error) => {
-      this.logger.error("[HOME] GET QUOTAS COUNT error: ", error)
+        if (project.attributes && project.attributes.wasettings) {
+          this.logger.log('[HOME] - (getProjectById) - wasettings', project.attributes.wasettings)
+          this.wadepartmentid = project.attributes.wasettings.department_id
+          this.getDeptById(this.wadepartmentid)
+        } else {
+          this.logger.log('[HOME] - (getProjectById) - not exist wasettings',)
+        }
+
+        const projectProfileData = project.profile
+
+        this.manageChatbotVisibility(projectProfileData)
+        this.manageVoiceQuotaVisibility(projectProfileData)
+        this.destructureProjectProfile(project, projectProfileData)
+
+
+        this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
+
+
+
+        this.trackGroup(projectProfileData)
+      }
+    }, error => {
+      this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      this.logger.log("[HOME] GET QUOTAS COUNT * COMPLETE *");
-    })
+      this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
+
+
+      this.getApps();
+
+      if (this.projectId) {
+        this.getProjectQuotes();
+        this.getQuotasCount()
+      }
+    });
   }
-
-
-  goToHistoryOpenedConvs() {
-    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
-  }
-
-
-  goToHistoryClosedConvs() {
-    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
-  }
-
-  goToHistoryAllConvs() {
-    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
-  }
-
 
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[HOME] getProjectQuotes response: ", response);
-      this.logger.log("[HOME] getProjectQuotes: ", response);
+     this.logger.log("[HOME] getProjectQuotes res: ", response);
       this.project_limits = response;
       if (this.project_limits) {
         this.getQuotes()
@@ -449,23 +485,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.error("[HOME] getProjectQuotes error: ", err);
       this.displayQuotaSkeleton = false
     })
-  }
-
-  listeHasOpenedNavbarQuotasMenu() {
-    //  this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
-    this.quotesService.hasOpenNavbarQuotasMenu$
-
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((hasOpen) => {
-
-        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
-        if (this.projectId) {
-          this.getQuotes()
-        }
-      })
-
   }
 
   getQuotes() {
@@ -511,8 +530,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[HOME] tokens_limit', this.tokens_limit)
 
-  
-
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
@@ -533,7 +550,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] get all quotes *COMPLETE*");
       setTimeout(() => {
         this.displayQuotaSkeleton = false
-        this.getRunnedOutQuotes( this.quotes)
+        this.getRunnedOutQuotes(this.quotes)
       }, 1000);
 
     })
@@ -571,127 +588,164 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  contacUsViaEmail() {
-    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
-  }
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[HOME] - GET QUOTAS COUNT - response: ", resp)
 
-  contacUsViaEmailToUpdadePaymentInformation() {
-    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
-  }
-
-  getProjectById(projectId) {
-    this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
-      if (project) {
-        this.project = project
-        if (project.attributes && project.attributes.dashlets) {
-          this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getDashlet(this.PROJECT_ATTRIBUTES)
-        }
-
-        if (project.attributes && project.attributes.userPreferences) {
-          this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
-
-        } else {
-          this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES > USER PREFERENCES UNDEFINED - SET DEFAULT', this.PROJECT_ATTRIBUTES)
-          this.setDefaultPreferences()
-        }
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
 
 
-        if (project.attributes && project.attributes.wasettings) {
-          this.logger.log('[HOME] - (getProjectById) - wasettings', project.attributes.wasettings)
-          this.wadepartmentid = project.attributes.wasettings.department_id
-          this.getDeptById(this.wadepartmentid)
-        } else {
-          this.logger.log('[HOME] - (getProjectById) - not exist wasettings',)
-        }
-
-        const projectProfileData = project.profile
-
-        this.manageChatbotVisibility(projectProfileData)
-
-        this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
-
-        this.prjct_name = project.name
-        this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
-
-        this.prjct_profile_name = projectProfileData.name;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
-
-        this.profile_name = projectProfileData.name;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
-
-        this.prjct_trial_expired = project.trialExpired;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
-
-        this.prjct_profile_type = projectProfileData.type;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
-
-        this.subscription_is_active = project.isActiveSubscription;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
-
-        this.subscription_end_date = projectProfileData.subEnd;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
-
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
-
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-          this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
-          this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-        } else if (!projectProfileData.extra3) {
-          this.tPlanParams = { 'plan_name': PLAN_NAME.B }
-        }
-
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-          this.DISPLAY_OPH_AS_DISABLED = true;
-        } else {
-          this.DISPLAY_OPH_AS_DISABLED = false;
-        }
-
-
-        this.buildProjectProfileName()
-
-
-        const projectCreatedAt = project.createdAt
-        this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
-        const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
-        this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
-
-        const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-        this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
-
-        const currentTime = moment();
-
-        const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
-        this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
-
-        const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
-        this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
-        this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
-
-        if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
-          this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
-
-          localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
-
-          this.trackTrialEnded(project, trialStarDate, trialEndDate)
-
-        }
-
-        this.trackGroup(projectProfileData)
-      }
-    }, error => {
-      this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
+      this.logger.log("[HOME] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[HOME] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[HOME] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[HOME] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+    }, (error) => {
+      this.logger.error("[HOME] GET QUOTAS COUNT error: ", error)
     }, () => {
-      this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
-
-
-      this.getApps();
-    });
+      this.logger.log("[HOME] GET QUOTAS COUNT * COMPLETE *");
+    })
   }
+
+  manageVoiceQuotaVisibility(projectProfileData) {
+    if (projectProfileData['customization']) {
+
+      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice-twilio'] !== undefined) || (projectProfileData['customization']['voice'] !== undefined) )) {
+
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+        if (projectProfileData['customization']['voice-twilio'] === true) {
+          this.diplayTwilioVoiceQuota = true
+        } else if (projectProfileData['customization']['voice-twilio'] === false) {
+          this.diplayTwilioVoiceQuota = false
+        } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+          this.diplayTwilioVoiceQuota = false
+        } 
+
+        if (projectProfileData['customization']['voice'] === true) {
+          this.diplayVXMLVoiceQuota = true
+        } else if (projectProfileData['customization']['voice'] === false) {
+          this.diplayVXMLVoiceQuota = false
+        } else if (projectProfileData['customization']['voice'] === undefined) {
+          this.diplayVXMLVoiceQuota = false
+        } 
+      }
+
+    } else {
+
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+      this.diplayTwilioVoiceQuota = false
+      this.diplayVXMLVoiceQuota = false
+    }
+
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+    this.logger.log('[HOME] (manageChatbotVisibility) ')
+
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
+
+    }
+  }
+
+
+  destructureProjectProfile(project, projectProfileData) {
+    this.prjct_name = project.name
+    this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
+
+    this.prjct_profile_name = projectProfileData.name;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
+
+    this.profile_name = projectProfileData.name;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
+
+    this.prjct_trial_expired = project.trialExpired;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
+
+    this.prjct_profile_type = projectProfileData.type;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
+
+    this.subscription_is_active = project.isActiveSubscription;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
+
+    this.subscription_end_date = projectProfileData.subEnd;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
+
+    if (projectProfileData && projectProfileData.extra3) {
+      this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
+
+      this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
+      this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+      this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
+      this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+    } else if (!projectProfileData.extra3) {
+      this.tPlanParams = { 'plan_name': PLAN_NAME.B }
+    }
+
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+      this.DISPLAY_OPH_AS_DISABLED = true;
+    } else {
+      this.DISPLAY_OPH_AS_DISABLED = false;
+    }
+
+
+    this.buildProjectProfileName()
+
+
+    const projectCreatedAt = project.createdAt
+    this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
+    const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
+    this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
+
+    const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
+    this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
+
+    const currentTime = moment();
+
+    const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
+    this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
+
+    const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
+    this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
+    this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
+
+    if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
+      this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+
+      localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
+
+      this.trackTrialEnded(project, trialStarDate, trialEndDate)
+
+    }
+
+  }
+
 
   buildProjectProfileName() {
     if (this.prjct_profile_type === 'free') {
@@ -806,37 +860,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  manageChatbotVisibility(projectProfileData) {
-    this.logger.log('[HOME] (manageChatbotVisibility) ')
 
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
-    }
 
-    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
 
-      if (projectProfileData['customization']['chatbot'] === true) {
-        this.areVisibleChatbot = true;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      } else if (projectProfileData['customization']['chatbot'] === false) {
 
-        this.areVisibleChatbot = false;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      }
-
-    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
-
-    } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
-
-    }
-  }
 
 
   trackTrialEnded(project, trialStarDate, trialEndDate) {
@@ -868,6 +895,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 100);
     }
 
+  }
+
+  goToHistoryOpenedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
+  }
+
+  goToHistoryClosedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
+  }
+
+  goToHistoryAllConvs() {
+    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
+  }
+
+  contacUsViaEmailToUpdadePaymentInformation() {
+    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
   }
 
   trackGroup(projectProfileData) {

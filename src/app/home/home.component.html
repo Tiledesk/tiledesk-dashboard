@@ -344,6 +344,36 @@
                 </div>
               </div>
             </div>
+
+            <!-- -------------------------- -->
+            <!-- Voice -->
+            <!-- -------------------------- -->
+            <div *ngIf="diplayTwilioVoiceQuota || diplayVXMLVoiceQuota" class="home-quote-container" [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
+
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                  Voice
+                </p>
+                <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
+                <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
+                  You run out of Email
+                </div>
+              </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="email_perc"
+                  [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
+                  {{ email_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                </div>
+              </div>
+            </div>
+
           </div>
           <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
             <div class="home-quota-banner-icon">
