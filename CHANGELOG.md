@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.46-rc4
+- Improves remove conversation tag method
+
 ### 2.7.46-rc3
 - Sends a "post" message to the parent when the user resolves a conversation
 
