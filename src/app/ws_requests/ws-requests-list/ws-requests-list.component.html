@@ -449,7 +449,7 @@
                           matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
                           #tooltip="matTooltip" 
                           matTooltipPosition='above'
-                          matTooltipHideDelay="100">
+                          matTooltipHideDelay="100" (click)='goToEditUser(agent?._id)'>
                           <div class="served-by-conv-d">
 
                         

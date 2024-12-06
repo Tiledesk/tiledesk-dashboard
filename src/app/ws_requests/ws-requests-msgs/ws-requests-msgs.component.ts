@@ -1704,7 +1704,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe(async (wsrequest) => {
 
-      console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
        
 
@@ -1766,6 +1766,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           // this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
+            this.logger.log('[WS-REQUESTS-MSGS] request.lead ', this.request.lead)
             this.getContactRequests(this.request.lead._id)
             this.request.lead.email
           }
@@ -1893,7 +1894,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // User Agent
           // -------------------------------------------------------------------
           const user_agent_result = this.parseUserAgent(this.request.userAgent);
-          // console.log('user_agent_result  ', user_agent_result)
+          //  this.logger.log('user_agent_result  ', user_agent_result)
 
           if (user_agent_result.browser.name) {
             if (user_agent_result.browser.version) {
@@ -2677,12 +2678,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   addTag() {
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - this.tag TO ADD: ', this.tag);
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
   
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
 
     // No more used
     // let tagObject = {}
@@ -2691,13 +2692,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // }
     // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
     const newTagArray = [{ tag: foundtag[0].tag, color: foundtag[0].color }]
-    console.log('[WS-REQUESTS-MSGS] - ADD TAG - newTagArray: ', newTagArray);
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - newTagArray: ', newTagArray);
     setTimeout(() => {
       this.tag = null;
     })
     this.manageRequestTags(this.id_request, newTagArray, 'add')
 
+    // ----------------------------
     // No more used
+    // ----------------------------
     // const tagObjectsize = Object.keys(tagObject).length
     // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
     // if (tagObjectsize > 0) {
@@ -2712,26 +2715,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
  manageRequestTags(id_request, tag, fromaction) {
-    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
-    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tag: ', tag);
+  this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+  this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tag: ', tag);
     this.wsRequestsService.updateRequestTags(id_request, tag)
-      .subscribe((data: any) => {
-       console.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
-      }, (err) => {
-        console.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
-      }, () => {
-        console.log('[WS-REQUESTS-MSGS] * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
-        this.getTagContainerElementHeight()
-      });
-  }
-
-
-  updateRequestTags(id_request, tagsArray, fromaction) {
-    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
-    console.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
-    this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
       }, (err) => {
@@ -2743,6 +2729,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.getTagContainerElementHeight()
       });
   }
+
+  // No more used - replace with manageRequestTags
+  // updateRequestTags(id_request, tagsArray, fromaction) {
+  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
+  //   this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
+  //     .subscribe((data: any) => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+  //     }, (err) => {
+  //       this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
+  //     }, () => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
+  //       this.getTagContainerElementHeight()
+  //     });
+  // }
 
   getTag() {
     this.loadingTags = true
@@ -2786,9 +2789,41 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - TAG SELECTED COLOR ', hex);
     this.tag_selected_color = hex;
   }
+  // --------------------------------------------
+  // No more used - replaced with createNewTag
+  // --------------------------------------------
+  // createTag(newTag) {
+  //   this.logger.log("Create TAG Clicked - is used?: " + newTag)
+  //   this.tag_selected_color = '#43B1F2'
+  //   this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
+  //   this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
+  //   this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
+  //   this.tagsService.createTag(newTag, this.tag_selected_color)
+  //     .subscribe((tag: any) => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+
+  //       const tagObject = { tag: tag.tag, color: tag.color }
+  //       this.tagsArray.push(tagObject);
+
+  //       this.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+  //     }, (error) => {
+  //       this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
+  //     }, () => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+  //       // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+
+  //       this.tag_name = '';
+  //       this.tag_selected_color = '#43B1F2';
+
+  //       this.getTag();
+  //     });
+
+  // }
 
   createNewTag = (newTag: string) => {
-   console.log("Create New TAG Clicked : " + newTag)
+    // this.logger.log("Create New TAG Clicked : " + newTag)
     this.logger.log("Create New TAG Clicked - request tag: ", this.request.tags)
 
     var index = this.request.tags.findIndex(t => t.tag === newTag);
@@ -2829,7 +2864,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log("Create New TAG Clicked - Tag already exist ")
       this.presentModalTagAlredyAssigned()
     }
-
   }
 
   presentModalTagAlredyAssigned() {
@@ -2846,18 +2880,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   removeTag(tag: string) {
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
       this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
-      var index = this.tagsArray.indexOf(tag);
-      if (index !== -1) {
-        this.tagsArray.splice(index, 1);
-      }
-      this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag id TO REMOVE: ', tag['_id']);
+      // ----------------------------
+      // NO MORE USED
+      // ----------------------------
+      // var index = this.tagsArray.indexOf(tag);
+      // if (index !== -1) {
+      //   this.tagsArray.splice(index, 1);
+      // }
+      // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      // this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
       setTimeout(() => {
         this.getTagContainerElementHeight()
       }, 0);
       // this.getTag();
 
-      this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
-      this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+      
+      // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+      this.wsRequestsService.deleteRequestTags(this.id_request, tag['_id'])
         .subscribe((data: any) => {
 
           this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - RES: ', data);
@@ -2906,43 +2946,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.ngSelect.blur()
   }
 
-  createTag(newTag) {
-    console.log("Create TAG Clicked - is used?: " + newTag)
-    this.tag_selected_color = '#43B1F2'
-    console.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
-    // this.ngselect.close()
-    // if (this.tag_name && this.tag_name.length > 0) {
-    // this.hasError = false;
-
-    // this.tagsService.createTag(this.tag_name, this.tag_selected_color)
-    this.tagsService.createTag(newTag, this.tag_selected_color)
-      .subscribe((tag: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
-
-        const tagObject = { tag: tag.tag, color: tag.color }
-        this.tagsArray.push(tagObject);
-
-        this.updateRequestTags(this.id_request, this.tagsArray, 'create')
-
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
-        // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
-
-        this.tag_name = '';
-        this.tag_selected_color = '#43B1F2';
-
-        this.getTag();
-      });
-
-    // } else {
-    //   // this.hasError = true;
-    // }
-  }
+  
 
   onPressEnterInIputTypeNewTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ON PRESS ENTER IN INPUT TYPE NEW TAG');
@@ -3942,7 +3946,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     //     //   });
     //     // });
     //   } else {
-    //     console.log('swal result', result);
+    //     this.logger.log('swal result', result);
     //   }
     // });
   }
