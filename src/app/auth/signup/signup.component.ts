@@ -246,10 +246,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
     const form = this.userForm;
 
-  //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+  //  this.logger.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
   //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
   //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
-  //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
+  //  this.logger.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
 
     
 

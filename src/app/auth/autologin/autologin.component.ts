@@ -138,7 +138,7 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route, storedJWT) {
-    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
@@ -155,7 +155,7 @@ export class AutologinComponent implements OnInit {
 
       const auth_user = resp['user']
       const token = resp['token']
-      console.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  auth_user ', auth_user);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  auth_user ', auth_user);
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  token ', token);
 
       const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: token }
@@ -200,15 +200,15 @@ export class AutologinComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser  error', error);
-      // console.log('[AUTOLOGIN] SSO error.error ',  error.error);
-      // console.log('[AUTOLOGIN] SSO error.status ',  error.status);
+      // this.logger.log('[AUTOLOGIN] SSO error.error ',  error.error);
+      // this.logger.log('[AUTOLOGIN] SSO error.status ',  error.status);
       if (error && error.status && error.status === 401) {
         this.router.navigate(['invalid-token'])
       }
      
 
     }, () => {
-      console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
 
       const route_part = route.split('/');
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
@@ -216,7 +216,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin route_part ', route_part);
 
       const storedProjectJson = localStorage.getItem(project_id);
-      console.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedProjectJson ', storedProjectJson);
 
       if (storedProjectJson === null) {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
@@ -302,9 +302,8 @@ export class AutologinComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] - GET PROJECT BY ID - ERROR ', error);
-      console.log(error.error)
+      this.logger.log(error.error)
       if (error.error.msg === 'you dont belong to the project.') {
-        console.log('Pressent a modal')
         this.notify.presentModalYouDontBelongToTheProject()
       }
 
