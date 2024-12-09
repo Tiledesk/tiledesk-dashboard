@@ -442,10 +442,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
 
       this.NOTIFICATION_SOUND = storedNotificationSound;
-      console.log('[SIDEBAR] NOTIFICATION_SOUND - GET SOUND PRREFERENCE - NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
+      this.logger.log('[SIDEBAR] NOTIFICATION_SOUND - GET SOUND PRREFERENCE - NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
     } else {
       this.NOTIFICATION_SOUND = 'enabled';
-      console.log('[SIDEBAR] NOTIFICATION_SOUND - GET SOUND PRREFERENCE - NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
+      this.logger.log('[SIDEBAR] NOTIFICATION_SOUND - GET SOUND PRREFERENCE - NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
     }
   }
 
@@ -455,8 +455,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((newSoundPreference) => {
-        console.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
-        this.NOTIFICATION_SOUND = newSoundPreference;
+        this.logger.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
+        if (newSoundPreference !== null) {
+          this.NOTIFICATION_SOUND = newSoundPreference;
+        }
       }, error => {
         this.logger.error('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
       }, () => {
@@ -470,35 +472,37 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((foregroundNoticationCount) => {
-        console.log('[SIDEBAR] - FOREGROUND NOTIFICATION - COUNT ', foregroundNoticationCount);
+        this.logger.log('[SIDEBAR] - FOREGROUND NOTIFICATION - COUNT ', foregroundNoticationCount);
         this.new_messages_count = foregroundNoticationCount;
 
-        const storedSoundPreference = localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
-        console.log('[NAVBAR] FOREGROUND NOTIFICATION - storedSoundPreference ', storedSoundPreference)
-        console.log('[NAVBAR] FOREGROUND NOTIFICATION - NOTIFICATION_SOUND ', this.NOTIFICATION_SOUND)
-        if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
-          console.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-          if (this.hasPlayed === false) {
-            // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
-            this.audio = new Audio();
+        const storedSoundPreference = localStorage.getItem(this.storedValuePrefix + 'sound');
+        this.logger.log('[SIDEBAR] FOREGROUND NOTIFICATION - storedSoundPreference ', storedSoundPreference)
+        this.logger.log('[SIDEBAR] FOREGROUND NOTIFICATION - NOTIFICATION_SOUND ', this.NOTIFICATION_SOUND)
+        if (this.new_messages_count > 0) {
+          if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
+            this.logger.log('[SIDEBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+            if (this.hasPlayed === false) {
+              // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+              this.audio = new Audio();
 
-            this.audio.src = 'assets/pling.mp3';
-            // this.logger.log('sidebar audio src ',  this.audio.src )
-            this.audio.load();
+              this.audio.src = 'assets/pling.mp3';
+              // this.logger.log('sidebar audio src ',  this.audio.src )
+              this.audio.load();
 
-            this.audio.play().then(() => {
+              this.audio.play().then(() => {
 
-              this.hasPlayed = true
-              this.logger.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
-
-              setTimeout(() => {
-                this.hasPlayed = false;
+                this.hasPlayed = true
                 this.logger.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
 
-              }, 4000);
-            }).catch((error: any) => {
-              this.logger.log('[APP-COMP] ***soundMessage error*', error);
-            });
+                setTimeout(() => {
+                  this.hasPlayed = false;
+                  this.logger.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+
+                }, 4000);
+              }).catch((error: any) => {
+                this.logger.log('[SIDEBAR] ***soundMessage error*', error);
+              });
+            }
           }
         }
       }, error => {

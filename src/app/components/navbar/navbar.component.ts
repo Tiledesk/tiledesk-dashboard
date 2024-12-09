@@ -292,6 +292,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
+    this.listenSoundPreference()
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
@@ -303,6 +304,24 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+  listenSoundPreference() {
+    this.wsRequestsService.hasChangedSoundPreference$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((newSoundPreference) => {
+        this.logger.log('[NAVBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
+        if (newSoundPreference !== null) {
+          this.NOTIFICATION_SOUND = newSoundPreference;
+        }
+      }, error => {
+        this.logger.error('[NAVBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
+      }, () => {
+        this.logger.log('[NAVBAR] - LISTEN TO SOUND PREFERNCE CHANGED *** COMPLETE *** ')
+      });
   }
 
 
@@ -331,8 +350,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   onOpenQuoteMenu() {
     this.isOpenCurrentUsageMenu = true
-    // console.log('[NAVBAR] - on open quotes menu' )
-    // console.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+    // this.logger.log('[NAVBAR] - on open quotes menu' )
+    // this.logger.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
     this.getQuotasCount()
     this.getQuotes();
@@ -349,7 +368,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   onQuotasMenuClosed() {
     this.isOpenCurrentUsageMenu = false
-    // console.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+    // this.logger.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
   }
 
   getProjectQuotes() {
@@ -388,7 +407,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   // listenToWSRequestsDataCallBack() {
   //   // .pipe(throttleTime(0))
-  //   console.log("[NAVBAR] listenToWSRequestsDataCallBack ");
+  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
   //   this.wsRequestsService.wsConvData$
 
   //     .pipe(
@@ -401,10 +420,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // }
 
   // listenToQuotasReachedInHome() {
-  //   console.log("[NAVBAR] listenToQuotasReachedInHome ", )
+  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
 
   //   if (this.projectId)  {
-  //     console.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
+  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
   //     this.getQuotes()
   //   }
   // }
@@ -1313,7 +1332,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.auth.projectSelected(project, 'navbar')
       this.router.navigate([`/project/${id_project}/home`]);
-      // console.log('[NAVBAR] goToHome prjct ', project )  
+      // this.logger.log('[NAVBAR] goToHome prjct ', project )  
     }
   }
 
@@ -1472,13 +1491,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((requests) => {
-        console.log('[NAVBAR] notifyLastUnserved - requests  ', requests)
+        this.logger.log('[NAVBAR] notifyLastUnserved - requests  ', requests)
         const unserved = requests.filter((requests: any) => {
           return requests.status === 100;
         });
 
         const unservedCount = unserved.length
-        console.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount)
+        this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount)
         // if (requests) {
         if (unservedCount) {
           let count = 0;
@@ -1493,31 +1512,31 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             count = count + 1;
             // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
             if (r.status === 100 && !storedRequest && this.user !== null) {
-              
+
 
               // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
               if (this.ROLE_IS_AGENT === true) {
                 if (this.hasmeInAgents(r.agents) === true) {
-                  
 
-                  console.log('[NAVBAR] notifyLastUnserved - count A ', count)
-                  console.log('[NAVBAR] notifyLastUnserved - Unserved count ', unservedCount)
+
+                  this.logger.log('[NAVBAR] notifyLastUnserved - count A ', count)
+                  this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count ', unservedCount)
                   this.displayUnservedInAppNotification(r)
                   if (unservedCount === count) {
-                    console.log('[NAVBAR] notifyLastUnserved - count A HERE', count)
-                    console.log('[NAVBAR] notifyLastUnserved - Unserved count A HERE', unservedCount)
+                    this.logger.log('[NAVBAR] notifyLastUnserved - count A HERE', count)
+                    this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count A HERE', unservedCount)
                     this.playSoundForUnservedNotifications();
                   }
                 }
               } else {
-                
-                console.log('[NAVBAR] notifyLastUnserved - count B', count)
-                console.log('[NAVBAR] notifyLastUnserved - Unserved count B', unservedCount)
+
+                this.logger.log('[NAVBAR] notifyLastUnserved - count B', count)
+                this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B', unservedCount)
                 this.displayUnservedInAppNotification(r)
 
                 if (unservedCount === count) {
-                  console.log('[NAVBAR] notifyLastUnserved - count B HERE', count)
-                  console.log('[NAVBAR] notifyLastUnserved - Unserved count B HERE', unservedCount)
+                  this.logger.log('[NAVBAR] notifyLastUnserved - count B HERE', count)
+                  this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B HERE', unservedCount)
                   this.playSoundForUnservedNotifications();
                 }
               }
@@ -1534,7 +1553,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   playSoundForUnservedNotifications() {
-    console.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
+    this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
       // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
       // if (this.hasPlayed === false) {
@@ -1548,15 +1567,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.audio.play().then(() => {
 
         this.hasPlayed = true
-        console.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+        this.logger.log('[NAVBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
 
         setTimeout(() => {
           this.hasPlayed = false;
-          console.log('[SIDEBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+          this.logger.log('[NAVBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
 
         }, 4000);
       }).catch((error: any) => {
-        this.logger.log('[APP-COMP] ***soundMessage error*', error);
+        this.logger.log('[NAVBAR] ***soundMessage error*', error);
       });
       // }
     }
