@@ -82,7 +82,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INFO_MENU_ITEMS = INFO_MENU_ITEMS;
   public version: string = environment.VERSION;
   test: Date = new Date();
- 
+
   // tparams = brand;
 
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
@@ -329,7 +329,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.getChatUrl();
     this.isMac();
     this.listenHasDeleteUserProfileImage();
-    this.listenToForegroundNotificationCount();
+    this.listenToForegroundNotificationCount(); // nk commented
     this.listenSoundPreference();
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
@@ -442,10 +442,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
 
       this.NOTIFICATION_SOUND = storedNotificationSound;
-      this.logger.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
+      console.log('[SIDEBAR] NOTIFICATION_SOUND - GET SOUND PRREFERENCE - NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
     } else {
       this.NOTIFICATION_SOUND = 'enabled';
-      this.logger.log('[SIDEBAR] NOTIFICATION_SOUND -  this.NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
+      console.log('[SIDEBAR] NOTIFICATION_SOUND - GET SOUND PRREFERENCE - NOTIFICATION_SOUND', this.NOTIFICATION_SOUND)
     }
   }
 
@@ -455,7 +455,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((newSoundPreference) => {
-        this.logger.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
+        console.log('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
         this.NOTIFICATION_SOUND = newSoundPreference;
       }, error => {
         this.logger.error('[SIDEBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
@@ -470,11 +470,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((foregroundNoticationCount) => {
-        this.logger.log('[SIDEBAR] - FOREGROUND NOTIFICATION COUNT ', foregroundNoticationCount);
+        console.log('[SIDEBAR] - FOREGROUND NOTIFICATION - COUNT ', foregroundNoticationCount);
         this.new_messages_count = foregroundNoticationCount;
 
+        const storedSoundPreference = localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+        console.log('[NAVBAR] FOREGROUND NOTIFICATION - storedSoundPreference ', storedSoundPreference)
+        console.log('[NAVBAR] FOREGROUND NOTIFICATION - NOTIFICATION_SOUND ', this.NOTIFICATION_SOUND)
         if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
-          // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+          console.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
           if (this.hasPlayed === false) {
             // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
             this.audio = new Audio();
@@ -1221,8 +1224,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/home') !== -1) { 
-          this.presentHelpCenterPopup() 
+        if (event.url.indexOf('/home') !== -1) {
+          this.presentHelpCenterPopup()
         }
       }
     });
@@ -1230,7 +1233,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   presentHelpCenterPopup() {
     const sidebarTourShowed = this.localDbService.getFromStorage(`sidebar-tour-showed-${this.currentUserId}`)
-     
+
     if (!sidebarTourShowed) {
       setTimeout(() => {
         this.shepherdService.defaultStepOptions = defaultStepOptions;
