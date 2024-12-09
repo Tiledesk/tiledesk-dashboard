@@ -757,13 +757,16 @@
                         [ngClass]="{'chat-avatar': CHAT_PANEL_MODE === true}"
                         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                         (click)="goToContactDetails()">
-                        <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                        <span *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO">
                           {{ requester_fullname_initial }}
                         </span>
-                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname === request?.lead?.phone)" class="material-icons-outlined">
+                        <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.fullname === request?.lead?.phone)" class="material-icons-outlined">
                           call
                         </span>
-                        <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && (request?.lead?.fullname !== request?.lead?.phone)">
+                        <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && !request?.lead?.phone" class="material-icons-outlined">
+                          call
+                        </span>
+                        <span *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)">
                           {{ requester_fullname_initial }}
                         </span>
                       </div>
@@ -1682,7 +1685,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Browser & Operating sistem -->
                     <!-- ------------------------------------- -->
-                    <li class="browser" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                    <li class="browser" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
@@ -1714,7 +1717,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Ip Address -->
                     <!-- ------------------------------------- -->
-                    <li class="ip-address" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML">
+                    <li class="ip-address" *ngIf="request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1738,7 +1741,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Channel VOICE - Called Number -->
                     <!-- ------------------------------------- -->
-                    <li class="dnis" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
+                    <li class="dnis" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -1762,7 +1765,7 @@
                     <!-- ------------------------------------- -->
                     <!-- Channel VOICE - Duration -->
                     <!-- ------------------------------------- -->
-                    <li class="duration" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML && requestDuration">
+                    <li class="duration" *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && requestDuration">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
@@ -1959,7 +1962,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel voice  -->
                     <!-- ---------------------------------------- -->
-                    <li class="voice-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML">
+                    <li class="voice-channel" *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO">
                       <div id="contact-row-voice-channel" class="contact-row">
                         <span>
 
@@ -2564,7 +2567,7 @@
                       d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
                     </path>
                   </svg>
-
+                 
                   <form style="min-height: 52px;" [ngStyle]="{'height':convTagContainerElementHeight }">
                     <div class="tags--container-wpr">
                       <div class="tags--container">
@@ -2573,7 +2576,7 @@
                         </div>
 
                         <div class="tag" *ngFor="let tag of request?.tags" role="button">
-
+                          <!-- request  {{request?.tags }} -->
                           <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
                           <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
                           <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->

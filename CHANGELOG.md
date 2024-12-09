@@ -1,5 +1,30 @@
 # tiledesk-dashboard
 
+### 2.7.45
+- Improves the app store
+
+### 2.7.44
+- Improves the method manage integrations visibility
+- Improves the method that display the runned out quotas banner
+
+### 2.7.43
+- Adds the "Twilio voice" integration 
+
+### 2.7.42
+- Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
+
+### 2.7.41
+- Fixes the bug: onboarding content is not visible on small height screens
+
+### 2.7.40
+- Minor improvements and bug fixing
+
+### 2.7.39
+- Improves password strength bar
+
+### 2.7.38-rc1
+- Improves password strength
+
 ### 2.7.38
 - Updates the link to the system status on the Support page
 

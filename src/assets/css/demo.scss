@@ -1390,6 +1390,10 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
+.custom-swal>.swal-title {
+  color: black;
+  font-weight: 500;
+}
 
 
 
@@ -3583,6 +3587,114 @@ div:where(.swal2-container) .swal2-select {
   border-radius: var(--btn-border-radius);
 }
 
+/* Graph card
+/* *********************************************** */
+.graph-card {
+  border-radius: 12px;
+}
+
+.graph-card>.graph-card-header {
+  padding-top: 27px;
+  padding-bottom: 10px
+}
+
+.graph-card>.graph-card-header {
+  padding-bottom: 18px;
+}
+
+.graph-card>.graph-card-header>.graph-card-header-title {
+  font-size: 18px;
+  font-family: var(--header-font-family)
+}
+
+.analytics-date-range-selected {
+  margin: 8px !important;
+  color: var(--secondary-text-color);
+  font-family: var(--header-font-family);
+  font-size: 16px;
+  display: block;
+}
+
+.analytics-date-range-selected>.arrow_forward-custom {
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+  font-size: 16px;
+}
+
+.analytics-date-range-filter-wpr {
+  margin-left: 37px;
+}
+
+.analytics-date-range-filter-wpr>.analytics-date-range-filter-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.analytics-date-range-filter-wpr>.analytics-date-range-filter-select {
+  max-width: 300px;
+  width: 300px;
+  text-align: left;
+}
+
+/* Metrics > Tags 
+/* ************************* */
+.graph-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 26px;
+}
+
+
+.graph-type-select-btn {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.graph-type-options-wpr > .analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.graph-type-select-btns-wrp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  // margin-top: 21px;
+}
+
+
+.graph-type-select-btn-wrp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.graph-type-select-btn>svg {
+  width: 34px;
+  height: 34px;
+  fill: var(--icon-color)  
+}
+
+.graph-type-select-btn:hover>svg {
+  fill: var(--icon-hover-color)  
+}
+
+.graph-type-select-btn.active-column-graph > svg{
+  fill: var(--icon-active-color) 
+}
+
 
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   transition: border-color 0.3s ease; /* Smooth transition */
@@ -3594,3 +3706,4 @@ div:where(.swal2-container) .swal2-select {
 //     border: 1px solid #ccc !important; /* Change to your desired hover color */
 //   }
 // }
+
