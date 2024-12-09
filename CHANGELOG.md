@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.46-rc6
+- Adds in Analytics > Metrics the conversations tags graph
+- Improves the UI of the sidebar
+
 ### 2.7.45
 - Improves the app store
 
