@@ -128,9 +128,9 @@
     </div>
 
     <!-- -------------------------------------------------------- -->
-    <!--  @ Knowledge Bases  -->
+    <!--  @ Knowledge Bases  && ARE_NEW_KB == true -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="USER_ROLE !== 'agent' && ARE_NEW_KB == true && isVisibleKNB">
+    <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
       <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip"
         matTooltip="{{ 'KnowledgeBases' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
         matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="KB_ROUTE_IS_ACTIVE ">

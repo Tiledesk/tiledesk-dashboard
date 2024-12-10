@@ -1324,18 +1324,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
           this.OLD_KB_ROUTE_IS_ACTIVE = true;
-          //  this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         } else {
           this.OLD_KB_ROUTE_IS_ACTIVE = false;
-          //  this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         }
 
 
         // if (event.url.match('/knowledge-bases')) {
         // if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
-        if (event.url.indexOf('/knowledge-bases') !== -1) {
+        if (event.url.indexOf('/knowledge-bases') !== -1 && event.url.substring(event.url.lastIndexOf('/') + 1) !== 'knowledge-bases-pre') {
           this.KB_ROUTE_IS_ACTIVE = true;
-          //  this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         } else {
           this.KB_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);

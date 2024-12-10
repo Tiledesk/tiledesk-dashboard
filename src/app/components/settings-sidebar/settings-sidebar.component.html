@@ -288,12 +288,21 @@
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'KnowledgeBases' | translate }}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a class="settings-sidebar-anchor">
-          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
             school
-          </i>
+          </i> -->
+          <span *ngIf="IS_OPEN === true || IS_OPEN === false">
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="none"
+              class="settings-sidebar-icons">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                d="M12 3 1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z" />
+            </svg>
+          </span>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{ 'KnowledgeBases' | translate }}
-            <span class="kb-beta-badge">Beta</span>
+            <!-- <span class="kb-beta-badge">Beta</span> -->
           </p>
         </a>
       </li>
@@ -368,7 +377,7 @@
             class="material-icons settings-sidebar-icons">construction</i> -->
           <span *ngIf="IS_OPEN === true || IS_OPEN === false">
             <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="none"
-             class="settings-sidebar-icons">
+              class="settings-sidebar-icons">
               <path
                 d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z" />
             </svg>
