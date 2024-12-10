@@ -24,9 +24,9 @@
       <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE}"
         (click)="goToOtherMyChatbotOther()">
         <a class="sidebar-item">
-          <i class="material-icons settings-sidebar-icons" style="margin-left: 0px !important;">
+          <!-- <i class="material-icons settings-sidebar-icons" style="margin-left: 0px !important;">
             smart_toy
-          </i>
+          </i> -->
           <p class="custom_paragraph" style="position: relative; top: 1px;">
             <!-- All -->
             My Chatbots
@@ -67,15 +67,9 @@
     </ng-container>
 
     <!-- -------------------------------------------------------- -->
-    <!--  @ Knowledge Bases  -->
+    <!--  @ Knowledge Bases !!! Moved on the sidebar -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="ARE_NEW_KB == true && isVisibleKNB">
-      <!-- <li class="sidebar-item-wpr-no-link" style="margin-top: 16px;">
-        <a class="sidebar-item-no-link">
-          KNOWLEDGE BASE
-        </a>
-      </li> -->
-
+    <!-- <ng-container *ngIf="ARE_NEW_KB == true && isVisibleKNB">
       <li class="sidebar-item-wpr" [ngClass]="{'active-item': KNOWLEDGE_BASE_ROUTE_IS_ACTIVE}"
         (click)="goToNewKnowledgeBases()">
         <a class="sidebar-item">
@@ -83,15 +77,14 @@
             school
           </i>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-              <!-- {{'ManageYourContents' | translate}} -->
-            <!-- Manage your Contents -->
+              <!- - {{'ManageYourContents' | translate}} - ->
             Knowledge Bases
            
           </p>
           <span class="sidebar-item-s">{{ kbCount }}</span>
         </a>
       </li>
-    </ng-container>
+    </ng-container> -->
 
     <!-- ------------------------------------------------------- -->
     <!-- @ Template -->

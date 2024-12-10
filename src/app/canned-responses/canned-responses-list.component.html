@@ -10,7 +10,7 @@
   {{ 'CannedResponses.CannedResponses' | translate }}
 </span> -->
 
-<div class="main-content canned-responses-list-maincontent" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+<div class="main-content canned-responses-list-maincontent" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
  
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
@@ -18,25 +18,45 @@
   </div>
   
   
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-right: 5px;    padding-left: 10px;">
 
     <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+
+        <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
+          <div class="row link-to-docs">
+            <div class="col-md-12">
+              <span>
+                
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="none">
+                  <path
+                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                </svg>
+              </span>
+              <a class="custom-anchor-to-docs" (click)="goCannedResponseDocs()">
+                {{'HowCannedResponsesWorks' | translate}}
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
 
           <!-- [ngClass]="{'col-sm-12': innerWidthLessThan992 === true, 'col-sm-7': innerWidthLessThan992 === false }" -->
           <div class="col-sm-8 left-col-custom-padding" >
-            <div class="card card-custom-margin card--no-border">
+            <!-- card--no-border -->
+            <div class="card left-card-custom-margin ">
               <div class="card-header card-header-custom-bkgrnd">
-
-                <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
+                <!-- btn-primary -->
+                <button class="btn btn-tdblu-no-boxshadow pull-right"
                   (click)="presentResponseModal_inAddMode()">
-                  <span class="icon" style="padding-right:8px">
+                  <!-- <span class="icon" style="padding-right:8px">
                     <i class="material-icons">add_circle</i>
-                  </span>
+                  </span> -->
                   {{ "CannedResponses.AddResponses" | translate }}
                 </button>
               </div>
@@ -123,7 +143,7 @@
                       </td>
 
 
-                      <td class="td-actions text-right" style="padding-top:20px">
+                      <td class="td-actions text-right">
                         <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
                           (click)='presentResponseModal_inEditMode(response?._id)'>
                           <i class="material-icons">edit</i>
@@ -148,7 +168,7 @@
           <!-- right-col-custom-padding -->
           <!-- [ngClass]="{'isHidden': innerWidthLessThan992 === true, 'col-sm-5': innerWidthLessThan992 === false }" -->
           <div class="col-sm-4 right-col-custom-padding" >
-            <div class="card card-custom-margin card--no-border">
+            <div class="card right-card-custom-margin card--no-border">
               <div class="card-content">
                 <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">

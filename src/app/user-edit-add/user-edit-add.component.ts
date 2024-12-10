@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -204,7 +205,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('Signin page error', err);
+          this.logger.error('Invite Temmates Page error', err);
         }
       }
     }
@@ -311,11 +312,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getUserRole() {
-    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
-
-      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+    this.subscription = this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', projectUser)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.CURRENT_USER_ROLE = userRole;
+      this.CURRENT_USER_ROLE = projectUser.role;
     })
   }
 
@@ -811,25 +811,6 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     // console.log('[USER-EDIT-ADD] - INVITE USER PROJECT PROFILE TYPE ', this.prjct_profile_type)
     // console.log('[USER-EDIT-ADD] - INVITE USER Seats Limit ', this.seatsLimit)
     // console.log('[USER-EDIT-ADD] - INVITE USER projectUsersLength + countOfPendingInvites', this.projectUsersLength + this.countOfPendingInvites)
-
-
-    // if (this.prjct_profile_type === 'payment') {
-    // this.seatsLimit
-    // if (this.CURRENT_USER_ROLE === 'owner') {
-    //   if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
-    //     this.doInviteUser();
-    //   } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
-
-    //     // this.notify._displayContactUsModal(true, 'seats_limit_reached')
-    //     if (this.prjct_profile_type === 'free') {
-    //       this.presentGoToPricingModal()
-    //     } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
-    //       this.notify._displayContactUsModal(true, 'seats_limit_reached')
-    //     }
-    //   }
-    // } else {
-    //   this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    // }
 
 
 

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,9 +14,11 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
+import { ProjectUser } from 'app/models/project-user';
 
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-integrations',
@@ -46,6 +48,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   INT_KEYS = INTEGRATIONS_KEYS;
   INTEGRATIONS = INTEGRATION_LIST_ARRAY;
+
   CATEGORIES = CATEGORIES_LIST;
 
   plan_expired: boolean = false;
@@ -85,7 +88,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
-
+    // this.INTEGRATIONS_CLONE = JSON.parse(JSON.stringify(INTEGRATION_LIST_ARRAY))
+    
   }
 
   ngOnInit(): void {
@@ -122,6 +126,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       )
       .subscribe((project) => {
         if (project) {
+
           this.project = project
           this.projectID = project._id
           this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
@@ -168,21 +173,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
 
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
+        } else {
+          this.ROLE_IS_AGENT = false;
         }
-      });
+      }
+    });
   }
 
   /**
@@ -193,7 +194,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.intName = this.route.snapshot.queryParamMap.get('name');
       this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
       this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
-      
+
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
         this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
@@ -284,7 +285,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             smsApp.runURL = environment['smsConfigUrl'];
             smsApp.channel = "sms";
           } else {
-            telegramApp = {
+            smsApp = {
               runURL: environment['smsConfigUrl'],
               channel: "sms"
             }
@@ -316,6 +317,32 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
         this.availableApps.push(voiceApp);
 
+        // -------
+
+        let voiceTwiloApp = response.apps.find(a => (a.title === APPS_TITLE.TWILIO_VOICE && a.version === "v2"));
+
+        if (environment['voiceTwilioConfigUrl']) {
+          if (voiceTwiloApp) {
+            voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
+            voiceTwiloApp.channel = "voice-twilio";
+          } else {
+            voiceTwiloApp = {
+              voiceTwiloApp: environment['voiceTwilioConfigUrl'],
+              channel: "voice-twilio"
+            }
+          }
+        }
+        else {
+          this.logger.log('heree voiceTwiloApp ', voiceTwiloApp)
+          if (voiceTwiloApp) {
+            voiceTwiloApp.channel = "voice-twilio";
+          }
+        }
+        this.availableApps.push(voiceTwiloApp);
+
+        // -------
+
+
         resolve(true);
 
       }, (error) => {
@@ -330,21 +357,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key )
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations )
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration )
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category , ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category, ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
       if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
+        this.logger.log("[INTEGRATIONS]- OLLa ")
         // this.integrationSelectedName = "external";
-        
+
         this.integrationSelectedType = "external";
         this.showInIframe = true;
-        this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType , ' showInIframe ', this.showInIframe)
+        this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType, ' showInIframe ', this.showInIframe)
+        this.logger.log("[INTEGRATIONS]- availableApps ", this.availableApps)
         let app = this.availableApps.find(a => a.channel === integration.key);
+        this.logger.log("[INTEGRATIONS]- app ", app)
+
         this.renderUrl = app.runURL;
       } else {
         this.showInIframe = false;
@@ -372,6 +403,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   integrationUpdateEvent(data) {
+    this.logger.log('[INTEGRATION-COMP] data',  data) 
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
       this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
@@ -398,21 +430,37 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === integration.name));
     })
   }
-
+  // TheIntegratonWillBeDeleted
+  // TheIntegrationHasBeenDeleted
+  // AnErrorOccurreWhileDeletingTheIntegration
   presentDeleteConfirmModal(integration) {
-    swal({
-      title: "Are you sure?",
-      text: "Are you sure you want to delete this integration?",
+    Swal.fire({
+      title: this.translate.instant('AreYouSure'), // "Are you sure?",
+      text: this.translate.instant('TheIntegratonWillBeDeleted'),
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then((WillDelete) => {
-      if (WillDelete) {
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    }).then((result) => {
+      if (result.isDenied) {
 
         this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
           this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
-          swal("Deleted" + "!", "You will no longer use this integration", {
+          Swal.fire({
+            title: this.translate.instant('Done') + "!",
+            text: this.translate.instant('TheIntegrationHasBeenDeleted'),
             icon: "success",
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonColor: "var(--primary-btn-background)",
+            confirmButtonText: this.translate.instant('Ok'),
           }).then((okpressed) => {
             this.logger.log("[INTEGRATION-COMP]  ok pressed")
           });
@@ -420,8 +468,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
         }, (error) => {
           this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
-          swal("Unable to delete the integration", {
+          Swal.fire({
+            title: this.translate.instant('Oops') + '!',
+            text: this.translate.instant('AnErrorOccurreWhileDeletingTheIntegration'), 
             icon: "error",
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok'),
+            confirmButtonColor: "var(--primary-btn-background)",
           });
         })
       } else {
@@ -443,21 +497,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
         this.logger.log("[INTEGRATION-COMP] route vs plan management");
         this.goToPricing();
-        // this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
-        //   this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
-        //   swal("Deleted" + "!", "You will no longer use this integration", {
-        //     icon: "success",
-        //   }).then((okpressed) => {
-        //     this.logger.log("ok pressed")
-        //   });
-        //   this.reloadSelectedIntegration(integration);
 
-        // }, (error) => {
-        //   this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
-        //   swal("Unable to delete the integration", {
-        //     icon: "error",
-        //   });
-        // })
       } else {
         this.logger.log('[INTEGRATION-COMP]  operation aborted')
       }
@@ -525,9 +565,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   manageProBadgeVisibility(integration: any, projectProfileData: any) {
     if (this.profileType === 'free') {
       this.logger.log('[INTEGRATION-COMP] >>> CURRENT PLAN ', projectProfileData.profile_name)
-      
+
       if (projectProfileData.trial_expired === true) {
-       
+
         this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
         if (integration.plan === 'Sandbox') {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
@@ -549,16 +589,16 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
           integration['displayBadge'] = true
         }
-       
+
       } else if (projectProfileData.trial_expired === false) {
         this.logger.log('[INTEGRATION-COMP] USECASE PLAN ,', this.profile_name, 'TRIAL EXPIRED ', projectProfileData.trial_expired)
 
-      
+
         if (integration.plan === "Sandbox") {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
           integration['displayBadge'] = false
         }
-     
+
         if (integration.plan === PLAN_NAME.D) {
           this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
           integration['displayBadge'] = false
@@ -620,8 +660,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             integration['displayBadge'] = false
           }
 
-           // TEAM
-           if (integration.plan === PLAN_NAME.EE) {
+          // TEAM
+          if (integration.plan === PLAN_NAME.EE) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = false
           }
@@ -638,18 +678,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             integration['displayBadge'] = false
           }
 
-        
+
           // PREMIUM
           if (integration.plan === PLAN_NAME.E) {
             this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
             integration['displayBadge'] = false
           }
 
-            // TEAM
-            if (integration.plan === PLAN_NAME.EE) {
-              this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
-              integration['displayBadge'] = false
-            }
+          // TEAM
+          if (integration.plan === PLAN_NAME.EE) {
+            this.logger.log('[INTEGRATION-COMP] INTEGRATION NAME ', integration.name, '  AVAILABLE FOM ', integration.plan, ' PLAN ')
+            integration['displayBadge'] = false
+          }
 
           // CUSTOM
           if (integration.plan === PLAN_NAME.F) {
@@ -686,7 +726,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     // this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
-     
+
       // FREE or SANDBOX PLAN
       // if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
       //   if (integration_plan !== 'Sandbox') {
@@ -695,23 +735,23 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       //   resolve(true)
       // }
 
-       // FREE or SANDBOX PLAN - Trial expired // nk
-       if ((this.profile_name === 'free' && this.trialExpired) || (this.profile_name === 'Sandbox' && this.trialExpired)) {
+      // FREE or SANDBOX PLAN - Trial expired // nk
+      if ((this.profile_name === 'free' && this.trialExpired) || (this.profile_name === 'Sandbox' && this.trialExpired)) {
         if (integration_plan !== 'Sandbox') {
           reject(false);
         }
         resolve(true)
       }
 
-       // FREE or SANDBOX PLAN - Trial // nk 
-       if ((this.profile_name === 'free' && !this.trialExpired) || (this.profile_name === 'Sandbox' && !this.trialExpired)) {
+      // FREE or SANDBOX PLAN - Trial // nk 
+      if ((this.profile_name === 'free' && !this.trialExpired) || (this.profile_name === 'Sandbox' && !this.trialExpired)) {
         if (integration_plan === PLAN_NAME.F) {
           reject(false);
         }
         resolve(true)
       }
 
-      
+
 
       // BASIC PLAN
       // else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
@@ -721,16 +761,16 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       //   resolve(true)
       // }
 
-       // BASIC PLAN ubscription Is Active // nk
-       else if ((this.profile_name === PLAN_NAME.A && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && this.subscriptionIsActive)) {
+      // BASIC PLAN ubscription Is Active // nk
+      else if ((this.profile_name === PLAN_NAME.A && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && this.subscriptionIsActive)) {
         if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.EE || integration_plan === PLAN_NAME.F) {
           reject(false);
         }
         resolve(true)
       }
 
-       // BASIC PLAN ubscription Is Not Active // nk
-       else if ((this.profile_name === PLAN_NAME.A && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && !this.subscriptionIsActive)) {
+      // BASIC PLAN ubscription Is Not Active // nk
+      else if ((this.profile_name === PLAN_NAME.A && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.D && !this.subscriptionIsActive)) {
         if (integration_plan !== 'Sandbox') {
           reject(false);
         }
@@ -746,14 +786,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // }
 
       // PREMIUM PLAN subscription Is Active // nk
-      else if ((this.profile_name === PLAN_NAME.B && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && this.subscriptionIsActive )) {
+      else if ((this.profile_name === PLAN_NAME.B && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && this.subscriptionIsActive)) {
         if (integration_plan === PLAN_NAME.F) {
           reject(false);
         }
         resolve(true)
       }
       // PREMIUM PLAN subscription Is Not Active // nk
-      else if ((this.profile_name === PLAN_NAME.B && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.C && !this.subscriptionIsActive)  || (this.profile_name === PLAN_NAME.F && !this.subscriptionIsActive)) {
+      else if ((this.profile_name === PLAN_NAME.B && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.E && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.EE && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.C && !this.subscriptionIsActive) || (this.profile_name === PLAN_NAME.F && !this.subscriptionIsActive)) {
         if (integration_plan !== 'Sandbox') {
           reject(false);
         }
@@ -771,7 +811,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   manageAppVisibility(projectProfileData) {
 
     if (projectProfileData && projectProfileData.customization) {
-
+   
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
@@ -788,9 +828,52 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
+
+      // -----------------------------
+      // VXML_VOICE
+      // -----------------------------
+      // Removes "VXML voice" integration if in not activated in customization
       if (!projectProfileData.customization[this.INT_KEYS.VXML_VOICE] || projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
+       // Restores the "VXML voice" integration (use case: it was removed from the Integration array in a project where it was not active)
+       if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === true) {
+        this.logger.log('[INTEGRATIONS] manageAppVisibility VXML_VOICE ')
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+        if (index != -1) {
+          this.logger.log('VXML_VOICE index A', index)
+        } else if (index == -1) {
+          this.logger.log('VXML_VOICE index B', index)
+          const VXMLVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.VXML_VOICE);
+          this.logger.log('VXMLVoiceObjct' , VXMLVoiceObjct) 
+          this.INTEGRATIONS.push(VXMLVoiceObjct)
+        }
+      }
+
+
+      // -----------------------------
+      // TWILIO_VOICE
+      // -----------------------------
+      // Removes "Twilio voice" integration if in not activated in customization
+      if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
+      // Restores the "Twilio voice" integration (use case: it was removed from the Integration array in a project where it was not active)
+      if (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] && projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === true) {
+        this.logger.log('[INTEGRATIONS] manageAppVisibility TWILIO_VOICE ')
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (index != -1) {
+          this.logger.log('TWILIO_VOICE index A', index)
+        } else if (index == -1) {
+          this.logger.log('TWILIO_VOICE index B', index)
+          const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+          this.logger.log('twilioVoiceObjct' , twilioVoiceObjct) 
+          this.INTEGRATIONS.push(twilioVoiceObjct)
+        }
       }
 
 
@@ -803,10 +886,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
 
     } else {
+      let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
+      if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
 
-      let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
-      if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
-      
+      let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+
     }
 
     this.integrationListReady = true;

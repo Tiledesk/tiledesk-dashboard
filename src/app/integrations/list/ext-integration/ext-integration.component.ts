@@ -24,7 +24,7 @@ export class ExtIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.logger.log("Starting External App Integration");
+    // console.log("Starting External App Integration");
 
 
   }

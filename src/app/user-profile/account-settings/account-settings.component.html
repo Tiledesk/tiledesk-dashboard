@@ -5,8 +5,8 @@
 
   {{ "Settings" | translate }}
 </div>
-
-<ul class="bottom-nav" style="top: 5px;">
+<!-- style="top: 5px;" -->
+<ul class="bottom-nav" >
   <li class="btn-with-border-effect border-from-center" (click)="goToUserProfile()">
     <a> {{ "UserProfile.Profile" | translate }} </a>
   </li>
@@ -50,8 +50,8 @@
                 </label> -->
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="input-group">
-
-                    <button class="btn btn-danger" (click)="openDeleteAccountModal()">
+                    <!-- btn-danger -->
+                    <button class="btn btn-red" (click)="openDeleteAccountModal()">
                       {{ "DeleteAccount" | translate }}
                     </button>
 
