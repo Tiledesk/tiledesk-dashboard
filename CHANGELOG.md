@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.47-rc1
+- Fixes the bug: Knowledge Base menu item displays with a delay
+
 ### 2.7.46
 - Adds in Analytics > Metrics the conversations tags graph
 - Improves the UI of the sidebar
