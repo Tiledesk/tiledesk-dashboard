@@ -631,8 +631,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     
         this.sleekplanSsoService.getSsoToken(user).subscribe(
           (response) => {
-            console.log('[APP-COMP] sleekplanSso response ', response)
-            console.log('[APP-COMP] sleekplanSso response token', response['token'])
+            this.logger.log('[APP-COMP] sleekplanSso response ', response)
+            this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
     
             // Configure Sleekplan with SSO
             // window['Sleekplan'] = {
@@ -653,16 +653,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             window['SLEEK_USER'] = { token: response['token'] }
             // Load the Sleekplan widget
             this.sleekplanService.loadSleekplan().then(() => {
-                console.log('[APP-COMP] - Sleekplan successfully initialized');
-
-            
+                this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
               })
               .catch(err => {
-                console.error('[APP-COMP] - Sleekplan initialization failed', err);
+                this.logger.error('[APP-COMP] - Sleekplan initialization failed', err);
               });
           },
           (error) => {
-            console.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
+            this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
             // this.sleekplanService.loadSleekplan()
           }
         );
@@ -670,7 +668,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     getCurrentUserAndConnectToWs() {
         this.auth.user_bs.subscribe((user) => {
-            console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
             if (user) {
                 this.sleekplanSso(user)
             }

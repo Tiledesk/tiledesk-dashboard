@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LoggerService } from './logger/logger.service';
 
 
 @Injectable({
@@ -7,11 +8,11 @@ import { Injectable } from '@angular/core';
 export class SleekplanService {
   private sleekplanLoaded = false;
   constructor(
-
+    private logger: LoggerService,
   ) { }
 
   loadSleekplan(): Promise<void> {
-    console.log('SLEEKPLAN-SERV - loadSleekplan ');
+    this.logger.log('[SLEEKPLAN-SERV] - loadSleekplan ');
     return new Promise((resolve, reject) => {
       if (this.sleekplanLoaded) {
         resolve();
@@ -32,13 +33,13 @@ export class SleekplanService {
       script.async = true;
 
       script.onload = () => {
-        console.log('SLEEKPLAN-SERV - Sleekplan script loaded successfully');
+        this.logger.log('[SLEEKPLAN-SERV] - Sleekplan script loaded successfully');
         resolve();
         
       };
 
       script.onerror = (error) => {
-        console.error('SLEEKPLAN-SERV - Failed to load Sleekplan script', error);
+        this.logger.error('[SLEEKPLAN-SERV] - Failed to load Sleekplan script', error);
         reject(error);
       };
 

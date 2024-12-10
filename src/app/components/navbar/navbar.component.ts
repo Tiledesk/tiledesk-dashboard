@@ -571,7 +571,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+      this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -1953,45 +1953,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // if (window['Sleekplan']?.open) {
     //   window['Sleekplan'].open();
     // }this.user
-    console.log('[NAVBAR] open Sleekplan this.user', this.user)
-    console.log('[NAVBAR] open Sleekplan ', window['$sleek'])
+    this.logger.log('[NAVBAR] open Sleekplan this.user', this.user)
+    this.logger.log('[NAVBAR] open Sleekplan ', window['$sleek'])
     window['$sleek'].toggle();
     const lastSeen = Date.now()
-    console.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
+    this.logger.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
     // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
     localStorage.setItem(`lastSeenTimestamp-${this.user._id}`,lastSeen.toString())
     this.newChangelogCount = false
     
-        // const iframe = document.querySelector('#sleek-widget') as HTMLIFrameElement;
-        // // const iframe = document.querySelector('#sleek-widget-wrap') 
-        // console.log('[NAVBAR] Sleekplan iframe' , iframe) 
-
-        // if (iframe && iframe.contentDocument) {
-        //   const iframeDoc = iframe.contentDocument;
-        //   console.log(iframeDoc); // Access the #document
-        //   const body = iframeDoc.body;
-        //   console.log(body); // Access iframe's <body>
-        //   // const firstDiv = body.querySelector('div');
-        //   const firstDiv = body.querySelector('div:first-of-type');
-        //   console.log('First <div> inside iframe body:', firstDiv);
-        //   if (firstDiv) {
-        //     // Access the first nested element inside the first <div>
-        //     const nestedElement = firstDiv.querySelector(':scope > *'); // Selects the first child element of the <div>
-        
-        //     if (nestedElement) {
-        //       console.log('First nested element inside the first <div>:', nestedElement);
-        
-             
-        //     }
-        //   }
-        // }
   }
 
   fetchNewChangelogCount(user) {
     let storedLastSeen = localStorage.getItem(`lastSeenTimestamp-${user._id}`)
 
-    console.log('[NAVBAR] changelog lastSeen form storedLastSeen', storedLastSeen);
-    console.log('[NAVBAR] changelog lastSeen form storage type of', typeof storedLastSeen);
+    this.logger.log('[NAVBAR] changelog lastSeen form storedLastSeen', storedLastSeen);
+    this.logger.log('[NAVBAR] changelog lastSeen form storage type of', typeof storedLastSeen);
     let lastSeen = 0
     if (storedLastSeen !== null ) {
       lastSeen = +storedLastSeen
@@ -1999,40 +1976,36 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sleekplanApi.getNewChangelogCount().subscribe(
       (resp) => {
         // this.newChangelogCount = data.count;
-        console.log('[NAVBAR] changelog count resp', resp);
-        console.log('[NAVBAR] changelog count  resp data ', resp['data']);
-        console.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
+        this.logger.log('[NAVBAR] changelog count resp', resp);
+        this.logger.log('[NAVBAR] changelog count  resp data ', resp['data']);
+        this.logger.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']
-        //       const createdDate = resp['data']['items']['item'].created;
-        // console.log('SLEEKPLAN SERV createdDate' , createdDate); // Output: "2024-10-16 07:05:24"
-        // console.log(' new changelog count',  this.newChangelogCount);
-
+    
         const firstKey = Object.keys(data)[0]; // Get the first key in the object
         const createdValue = data[firstKey].created; // Access the created property
 
-        console.log('NAVBAR  last changelog createdValue ', createdValue); // Output: "2024-10-16 07:05:24"
+        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue); 
         const createdValueTimestamp = new Date(createdValue).getTime();
-        console.log('NAVBAR  last changelog createdValue as Timestamp  ', createdValueTimestamp);
-        console.log('NAVBAR  last changelog createdValue as Timestamp  type of ',typeof createdValueTimestamp);
+        this.logger.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
 
-        console.log('NAVBAR  lastSeen ', lastSeen);
+        this.logger.log('[NAVBAR] lastSeen ', lastSeen);
         if (lastSeen ) {
           if (createdValueTimestamp > lastSeen) {
-            console.log('NAVBAR  there is a notification 1');
+            this.logger.log('[NAVBAR]  there is a notification 1');
             this.newChangelogCount = true
           } else {
-            console.log('NAVBAR  there is NOT notification ');
+            this.logger.log('[NAVBAR]  there is NOT notification ');
             this.newChangelogCount = false
           }
         } else {
          
           this.newChangelogCount = true;
-          console.log('SLEEKPLAN SERV there is a notification 2 newChangelogCount ', this.newChangelogCount);
+          this.logger.log('[NAVBAR] there is a notification 2 newChangelogCount ', this.newChangelogCount);
         
         }
       },
       (error) => {
-        console.error('Failed to fetch new changelog count', error);
+        this.logger.error('Failed to fetch new changelog count', error);
         this.newChangelogCount = true;
       }
     );

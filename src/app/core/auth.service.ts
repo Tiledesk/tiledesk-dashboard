@@ -707,13 +707,12 @@ export class AuthService {
     //   id: user._id,
     //   name: user.firstname,
     // }
-    // // Load the Sleekplan widget
-    // this.sleekplanService.loadSleekplan();
+
     this.sleekplanSsoService.getSsoToken(user).subscribe(
       (response) => {
-        console.log('[Auth-SERV] sleekplanSso response ', response)
-        console.log('[Auth-SERV] sleekplanSso response token', response['token'])
-        console.log('[Auth-SERV] sleekplanSso response $sleek',  window['$sleek'])
+         this.logger.log('[Auth-SERV] sleekplanSso response ', response)
+         this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
+         this.logger.log('[Auth-SERV] sleekplanSso response $sleek',  window['$sleek'])
         // Configure Sleekplan with SSO
         // window['Sleekplan'] = {
         //   id: 'YOUR_SLEEKPLAN_ID',
@@ -733,17 +732,17 @@ export class AuthService {
         window['SLEEK_USER'] = { token: response['token'] }
 
         this.sleekplanService.loadSleekplan().then(() => {
-          console.log('[Auth-SERV] Sleekplan successfully initialized');
+          this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
         })
         .catch(err => {
-          console.error('[Auth-SERV] Sleekplan initialization failed', err);
+          this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
         });
 
         // Load the Sleekplan widget
         // this.sleekplanService.loadSleekplan();
       },
       (error) => {
-        console.error('Failed to fetch Sleekplan SSO token', error);
+        this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
       }
     );
   }
@@ -990,7 +989,7 @@ export class AuthService {
     if (window && window['$sleek']) {
       window['$sleek'].close();
     } else {
-      console.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] ', window['$sleek'])
+      this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] ', window['$sleek'])
     }
   }
 
