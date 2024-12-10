@@ -43,6 +43,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -243,7 +244,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   ngOnInit() {
     this.getCurrentProject();
-    this.getProjectUserRole();
     this.getProfileImageStorage();
 
     // -------------------------------------------
@@ -264,7 +264,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.getUnservedRequestLenght_bs();
 
 
-    this.getProjectUserId();
+    this.getProjectUser();
 
     this.getActiveRoute();
     this.hidePendingEmailNotification();
@@ -278,7 +278,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getFromLocalStorageHasOpenedTheChat();
     this.getFromNotifyServiceHasOpenedChat();
 
-    this.getUserAvailability();
     this.hasChangedAvailabilityStatusInSidebar();
     this.hasChangedAvailabilityStatusInUsersComp();
     // this.subscribeToLogoutPressedinSidebarNavMobile();
@@ -377,7 +376,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -668,29 +666,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  getProjectUserRole() {
-    // const user___role =  this.usersService.project_user_role_bs.value;
-    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
-
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
-        }
-      });
-  }
-
-
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -794,13 +769,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
     this.logger.log('[NAVBAR] ===== BRS LANG ', this.browserLang)
-  }
-
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
   }
 
   hasChangedAvailabilityStatusInSidebar() {
@@ -1957,10 +1925,21 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     return 'Dashboard';
   }
 
-  getProjectUserId() {
-    this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-      this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser_id);
-      this.projectUser_id = projectUser_id;
+  getProjectUser() {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser);
+      if(projectUser){
+        this.projectUser_id = projectUser._id;
+        this.IS_AVAILABLE = projectUser.user_available;
+
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
+
+        } else {
+          this.ROLE_IS_AGENT = false;
+        }
+      }
     });
   }
 

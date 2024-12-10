@@ -1375,6 +1375,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -1390,10 +1391,15 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
-.custom-swal>.swal-title {
-  color: black;
-  font-weight: 500;
-}
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
+
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
 
 
 
@@ -3585,6 +3591,10 @@ div:where(.swal2-container) .swal2-select {
 /* ************************************* */ 
 .mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
+}
+
+.mat-dialog-actions > button  {
+  border-radius: var(--btn-border-radius) !important;
 }
 
 /* Graph card

@@ -145,6 +145,8 @@ export class QuotesService {
       }
 
       limits = PLANS_LIST[plan];
+      // console.log('[Q-S] limits ', limits) 
+      // console.log('[Q-S] PLANS_LIST[plan] ', PLANS_LIST[plan]) 
 
     } else {
       if (project.trialExpired === true) {
