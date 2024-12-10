@@ -1961,14 +1961,37 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
     localStorage.setItem(`lastSeenTimestamp-${this.user._id}`,lastSeen.toString())
     this.newChangelogCount = false
-    // window.$sleek
+    
+        // const iframe = document.querySelector('#sleek-widget') as HTMLIFrameElement;
+        // // const iframe = document.querySelector('#sleek-widget-wrap') 
+        // console.log('[NAVBAR] Sleekplan iframe' , iframe) 
+
+        // if (iframe && iframe.contentDocument) {
+        //   const iframeDoc = iframe.contentDocument;
+        //   console.log(iframeDoc); // Access the #document
+        //   const body = iframeDoc.body;
+        //   console.log(body); // Access iframe's <body>
+        //   // const firstDiv = body.querySelector('div');
+        //   const firstDiv = body.querySelector('div:first-of-type');
+        //   console.log('First <div> inside iframe body:', firstDiv);
+        //   if (firstDiv) {
+        //     // Access the first nested element inside the first <div>
+        //     const nestedElement = firstDiv.querySelector(':scope > *'); // Selects the first child element of the <div>
+        
+        //     if (nestedElement) {
+        //       console.log('First nested element inside the first <div>:', nestedElement);
+        
+             
+        //     }
+        //   }
+        // }
   }
 
   fetchNewChangelogCount(user) {
     let storedLastSeen = localStorage.getItem(`lastSeenTimestamp-${user._id}`)
 
-    console.log('NAVBAR changelog lastSeen form storedLastSeen', storedLastSeen);
-    console.log('NAVBAR changelog lastSeen form storage type of', typeof storedLastSeen);
+    console.log('[NAVBAR] changelog lastSeen form storedLastSeen', storedLastSeen);
+    console.log('[NAVBAR] changelog lastSeen form storage type of', typeof storedLastSeen);
     let lastSeen = 0
     if (storedLastSeen !== null ) {
       lastSeen = +storedLastSeen
@@ -1976,9 +1999,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sleekplanApi.getNewChangelogCount().subscribe(
       (resp) => {
         // this.newChangelogCount = data.count;
-        console.log('NAVBAR changelog count resp', resp);
-        console.log('NAVBAR changelog count  resp data ', resp['data']);
-        console.log('NAVBAR changelog count  resp data items ', resp['data']['items']);
+        console.log('[NAVBAR] changelog count resp', resp);
+        console.log('[NAVBAR] changelog count  resp data ', resp['data']);
+        console.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']
         //       const createdDate = resp['data']['items']['item'].created;
         // console.log('SLEEKPLAN SERV createdDate' , createdDate); // Output: "2024-10-16 07:05:24"

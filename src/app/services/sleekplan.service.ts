@@ -11,7 +11,7 @@ export class SleekplanService {
   ) { }
 
   loadSleekplan(): Promise<void> {
-    console.log('loadSleekplan ');
+    console.log('SLEEKPLAN-SERV - loadSleekplan ');
     return new Promise((resolve, reject) => {
       if (this.sleekplanLoaded) {
         resolve();
@@ -32,19 +32,22 @@ export class SleekplanService {
       script.async = true;
 
       script.onload = () => {
-        console.log('Sleekplan script loaded successfully');
+        console.log('SLEEKPLAN-SERV - Sleekplan script loaded successfully');
         resolve();
         
       };
 
       script.onerror = (error) => {
-        console.error('Failed to load Sleekplan script', error);
+        console.error('SLEEKPLAN-SERV - Failed to load Sleekplan script', error);
         reject(error);
       };
 
       document.head.appendChild(script);
+
+     
     });
   }
+
 
  
 }

@@ -732,7 +732,12 @@ export class AuthService {
 
         window['SLEEK_USER'] = { token: response['token'] }
 
-        this.sleekplanService.loadSleekplan()
+        this.sleekplanService.loadSleekplan().then(() => {
+          console.log('[Auth-SERV] Sleekplan successfully initialized');
+        })
+        .catch(err => {
+          console.error('[Auth-SERV] Sleekplan initialization failed', err);
+        });
 
         // Load the Sleekplan widget
         // this.sleekplanService.loadSleekplan();

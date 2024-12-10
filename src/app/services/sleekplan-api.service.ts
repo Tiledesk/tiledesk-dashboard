@@ -31,7 +31,7 @@ export class SleekplanApiService {
 
     // const url = `https://9c17ea53-8432-4560-b14b-8169b389c8a8-00-34l7pm8guu6m6.riker.replit.dev/api/sleekplan/new-changelog-count?lastSeen=${lastSeen}`;
     const url = this.SLEEKPLAN_API_URL + '?per_page=1'
-    console.log('[AUTOMATIONS.SERVICE] - get transaction for current project');
+    console.log('[SLEEKPLAN-SERVICE] - get last post');
 
     return this.httpClient.get(url, httpOptions);
   }
