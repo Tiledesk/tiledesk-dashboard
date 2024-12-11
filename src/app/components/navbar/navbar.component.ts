@@ -182,6 +182,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_perc = 0;
   tokens_limit = 0;
 
+  voice_count = 0;
+  voice_perc = 0;
+  voice_limit = 0;
+  voice_count_min_sec: any;
+
   requestsPieStroke: string;
   requestsPieGreenStroke: boolean;
   requestsPieYellowStroke: boolean;
@@ -197,6 +202,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+  voiceRunnedOut: boolean = false;
 
   diplayTwilioVoiceQuota: boolean;
   diplayVXMLVoiceQuota: boolean;
@@ -469,6 +475,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.requests_limit = this.project_limits.requests;
         this.email_limit = this.project_limits.email;
         this.tokens_limit = this.project_limits.tokens;
+        this.voice_limit = Math.floor(this.project_limits.voice_duration / 60);
       }
 
       if (resp.quotes.requests.quote === null) {
@@ -484,6 +491,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         resp.quotes.tokens.quote = 0;
       }
 
+      if (resp.quotes.voice_duration.quote === null) {
+        resp.quotes.voice_duration.quote = 0;
+      }
+
       this.logger.log('[NAVBAR] used requests', resp.quotes.requests.quote)
       this.logger.log('[NAVBAR] requests_limit', this.requests_limit)
 
@@ -493,6 +504,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
+
+      console.log('[NAVBAR] used voice', resp.quotes.voice_duration.quote)
+      console.log('[NAVBAR] voice_limit', this.voice_limit)
 
       if (resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
@@ -518,12 +532,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
       }
 
+      if (resp.quotes.voice_duration.quote >= this.voice_limit) {
+        this.voiceRunnedOut = true;
+        console.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.voiceRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        console.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+      }
+
 
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
-
+      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit) * 100));
       this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
       if (this.requests_perc <= 25) {
         this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
@@ -552,6 +576,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
+      this.voice_count = resp.quotes.voice_duration.quote
+      console.log("[NAVBAR] getAllQuotes voice_count: ", this.voice_count)
+      this.voice_count_min_sec =  this.secondsToMinutes_seconds(this.voice_count)
+      console.log("[HOME] getAllQuotes  voice_count_min_sec: ", this.voice_count_min_sec)
 
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
@@ -559,6 +587,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log("get all quotes *COMPLETE*");
     })
   }
+
+  secondsToMinutes_seconds(seconds) {  
+    let minutes = Math.floor(seconds / 60);  
+    let remainingSeconds = seconds % 60;  
+    return `${minutes}m ${remainingSeconds}s`;  
+  } 
 
 
   goToHistoryOpenedConvs() {

@@ -241,11 +241,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   tokens_perc = 0;
   tokens_limit = 0;
 
+  voice_count = 0;
+  voice_perc = 0;
+  voice_limit = 0;
+  voice_count_min_sec: any;
+
   project_limits: any;
   quotes: any;
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+  voiceRunnedOut: boolean = false;
   diplayTwilioVoiceQuota: boolean;
   diplayVXMLVoiceQuota: boolean;
 
@@ -476,7 +482,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[HOME] getProjectQuotes response: ", response);
-     this.logger.log("[HOME] getProjectQuotes res: ", response);
+     console.log("[HOME] getProjectQuotes res: ", response);
       this.project_limits = response;
       if (this.project_limits) {
         this.getQuotes()
@@ -489,16 +495,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[HOME] getAllQuotes response: ", resp)
+      console.log("[HOME] getAllQuotes response: ", resp)
       this.quotes = resp
 
-      this.logger.log("[HOME] project_limits: ", this.project_limits)
+      console.log("[HOME] project_limits: ", this.project_limits)
       this.logger.log("[HOME] resp.quotes: ", resp.quotes)
       if (this.project_limits) {
         this.messages_limit = this.project_limits.messages;
         this.requests_limit = this.project_limits.requests;
         this.email_limit = this.project_limits.email;
         this.tokens_limit = this.project_limits.tokens;
+        this.voice_limit = Math.floor(this.project_limits.voice_duration / 60); // this.project_limits.voice_duration
       }
       // -----------------------------
       // For test
@@ -520,6 +527,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         resp.quotes.tokens.quote = 0;
       }
 
+      if (resp.quotes.voice_duration.quote === null) {
+        resp.quotes.voice_duration.quote = 0;
+      }
+
       this.logger.log('[HOME] used requests', resp.quotes.requests.quote)
       this.logger.log('[HOME] requests_limit', this.requests_limit)
 
@@ -530,16 +541,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[HOME] tokens_limit', this.tokens_limit)
 
+      console.log('[HOME] used voice', resp.quotes.voice_duration.quote)
+      console.log('[HOME] voice_limit', this.voice_limit)
+
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit) * 100));
 
       this.requests_count = resp.quotes.requests.quote;
       this.logger.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
+      this.voice_count = resp.quotes.voice_duration.quote
+      console.log("[HOME] getAllQuotes voice_count: ", this.voice_count)
+
+      const minutes = this.voice_count / 60;
+      console.log("[HOME] getAllQuotes voice_count min: ", minutes)
+
+      const _minutes = Math.floor(this.voice_count / 60);
+      console.log("[HOME] getAllQuotes voice_count min: ", minutes)
+
+      const seconds = this.voice_count - minutes * 60;
+      console.log("[HOME] getAllQuotes voice_count seconds: ", seconds)
+
+    this.voice_count_min_sec =  this.secondsToMinutes_seconds(this.voice_count)
+    console.log("[HOME] getAllQuotes  voice_count_min_sec: ", this.voice_count_min_sec)
 
     }, (error) => {
       this.logger.error("[HOME] get all quotes error: ", error)
@@ -551,10 +580,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       setTimeout(() => {
         this.displayQuotaSkeleton = false
         this.getRunnedOutQuotes(this.quotes)
-      }, 1000);
+      }, 1500);
 
     })
   }
+
+  secondsToMinutes_seconds(seconds) {  
+    let minutes = Math.floor(seconds / 60);  
+    let remainingSeconds = seconds % 60;  
+    return `${minutes}m ${remainingSeconds}s`;  
+  }  
 
   getRunnedOutQuotes(resp) {
     if (resp.quotes.requests.quote >= this.requests_limit) {
@@ -586,6 +621,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.quotesService.hasReachedQuotasLimitInHome(false)
       this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
     }
+
+    if (resp.quotes.voice_duration.quote >= this.voice_limit) {
+      this.voiceRunnedOut = true;
+      console.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+      // this.quotesService.hasReachedQuotasLimitInHome(true)
+    } else {
+      this.voiceRunnedOut = false;
+      // this.quotesService.hasReachedQuotasLimitInHome(false)
+      console.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+    }
+
+    
   }
 
   getQuotasCount() {

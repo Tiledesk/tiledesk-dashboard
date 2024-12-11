@@ -313,8 +313,8 @@
                                 {{'TotalVoiceUsage' | translate}}
                               </p>
                               <div class="quota-limit-wpr">
-                                <p class="quota-limit">{{email_count | number:'1.0-0'}} /&nbsp;</p>
-                                <p class="quota-limit">{{email_limit | number:'1.0-0'}}</p>
+                                <p class="quota-limit">{{voice_count_min_sec}} /&nbsp;</p>
+                                <p class="quota-limit">{{voice_limit | number:'1.0-0'}}m</p>
                               </div>
                             </div>
                             <div class="quota-pie" style="width: 50px; height: 50px;">
@@ -327,10 +327,10 @@
                                   stroke-linecap="round"></circle>
                               </svg> -->
                               <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                                [mode]="'determinate'" [value]="email_perc"
-                                [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                                [mode]="'determinate'" [value]="voice_perc"
+                                [ngClass]="{'mat-progress-spinner-voice-runned-out': emailsRunnedOut}">
                               </mat-progress-spinner>
-                              <div class="quota-pie-label">{{ email_perc }}% </div>
+                              <div class="quota-pie-label">{{ voice_perc }}% </div>
                             </div>
                           </div>
                         </div>
