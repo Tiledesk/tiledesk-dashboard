@@ -695,7 +695,7 @@ export class AuthService {
 
   sleekplanSso(user) {
 
-    // console.log('AUT-SERV sleekplanSs')
+    // this.logger.log('AUT-SERV sleekplanSs')
     // window['$sleek'].setUser = { 
     //     mail: user.email, 
     //     id: user._id, 
@@ -710,9 +710,9 @@ export class AuthService {
 
     this.sleekplanSsoService.getSsoToken(user).subscribe(
       (response) => {
-         this.logger.log('[Auth-SERV] sleekplanSso response ', response)
-         this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
-         this.logger.log('[Auth-SERV] sleekplanSso response $sleek',  window['$sleek'])
+        this.logger.log('[Auth-SERV] sleekplanSso response ', response)
+        this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
+      
         // Configure Sleekplan with SSO
         // window['Sleekplan'] = {
         //   id: 'YOUR_SLEEKPLAN_ID',

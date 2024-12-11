@@ -355,13 +355,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //             this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
     //             // this.current_selected_prjct = project
     //             this.projectService.getProjects().subscribe((projects: any) => {
-    //                 console.log('[APP-COMPONENT] getProjects projects ', projects)
+    //                 this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
     //                 if (projects) {
     //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-    //                     console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+    //                     this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
                        
     //                     this.USER_ROLE = this.current_selected_prjct_user.role
-    //                     console.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
+    //                     this.logger.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
     //                 }
     //             })
     //         }
@@ -622,7 +622,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
-        // console.log('APP-COMP sleekplanSso ')
+        // this.logger.log('APP-COMP sleekplanSso ')
         // window['$sleek'].setUser = { 
         //     mail: user.email, 
         //     id: user._id, 
