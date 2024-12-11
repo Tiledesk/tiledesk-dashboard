@@ -710,9 +710,9 @@ export class AuthService {
 
     this.sleekplanSsoService.getSsoToken(user).subscribe(
       (response) => {
-         this.logger.log('[Auth-SERV] sleekplanSso response ', response)
-         this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
-         this.logger.log('[Auth-SERV] sleekplanSso response $sleek',  window['$sleek'])
+        this.logger.log('[Auth-SERV] sleekplanSso response ', response)
+        this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
+        this.logger.log('[Auth-SERV] sleekplanSso response $sleek', window['$sleek'])
         // Configure Sleekplan with SSO
         // window['Sleekplan'] = {
         //   id: 'YOUR_SLEEKPLAN_ID',
@@ -730,13 +730,16 @@ export class AuthService {
         // window['$sleek'].sso = { token: response['token'] }
 
         window['SLEEK_USER'] = { token: response['token'] }
-
-        this.sleekplanService.loadSleekplan().then(() => {
-          this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
-        })
-        .catch(err => {
-          this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
-        });
+        
+        // Load the Sleekplan widget
+        this.sleekplanService.loadSleekplan()
+        
+        // .then(() => {
+        //  console.log('[Auth-SERV] - Sleekplan successfully initialized');
+        // })
+        //   .catch(err => {
+        //     this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
+        //   });
 
         // Load the Sleekplan widget
         // this.sleekplanService.loadSleekplan();
@@ -980,16 +983,54 @@ export class AuthService {
       this.logger.log('[AUTH-SERV] - HAS-OPENED-LOGOUT-MODAL - WORKS WITHOUT FIREBASE DOES NOT RUN checkIfFCMIsSupported')
     }
   }
-
-  resetSleekplanUser() {
-    window['$sleek'].shutdown()
+  deleteCookie(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    this.logger.log(`Cookie "${name}" has been removed.`);
   }
 
-  closeSleekplanWidget() {
-    if (window && window['$sleek']) {
-      window['$sleek'].close();
+  removeScriptById(scriptId: string) {
+    const script = document.getElementById(scriptId);
+    if (script) {
+      script.parentNode?.removeChild(script);
+      this.logger.log(`Script with ID "${scriptId}" has been removed.`);
     } else {
-      this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] ', window['$sleek'])
+      this.logger.warn(`No script with ID "${scriptId}" found.`);
+    }
+
+    if (window['$sleek']) {
+      delete window['$sleek'];
+      this.logger.log('$sleek object removed.');
+    }
+  }
+
+  // resetSleekplanUser() {
+  //   if (window && window['$sleek']) {
+  //     window['$sleek']?.shutdown()
+  //   }
+  //   this.removeScriptById('sleek-widget');
+  //   this.sleekplanService.hasLogout()
+  //   if (window.hasOwnProperty('SLEEK_USER')) { 
+  //     console.log('[AUTH-SERV] SLEEK_USER window ', window['SLEEK_USER']);
+  //     delete window['SLEEK_USER'];
+  //     console.log('[AUTH-SERV] SLEEK_USER has been removed from the window object.');
+  //     // this.deleteCookie('_sleek_product');
+  //     // console.log('Current cookies:', document.cookie);
+  //   } else {
+  //     console.warn('SLEEK_USER does not exist on the window object.');
+  //   }
+  // }
+
+  closeSleekplanWidget() {
+    const sleekIframe = document.getElementById('sleek-widget-wrap');
+    this.logger.log('[AUTH-SERV] - closeSleekplanWidget sleekIframe ', sleekIframe)
+    if (sleekIframe) {
+      this.logger.log('AUTH-SERV] - closeSleekplanWidget Sleekplan widget is open. Closing it now.');
+      if (window && window['$sleek']) {
+        this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] usecase 1 ', window['$sleek'])
+        window['$sleek'].close();
+      } 
+    } else {
+      this.logger.log('[AUTH-SERV] - closeSleekplanWidget Sleekplan widget is already closed')
     }
   }
 
