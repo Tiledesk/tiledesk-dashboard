@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.48
+- Implements a widget to notify customers about Tiledesk updates
+
 ### 2.7.47
 - Fixes the bug: Knowledge Base menu item displays with a delay
 
