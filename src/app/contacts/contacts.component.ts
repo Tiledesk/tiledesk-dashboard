@@ -14,7 +14,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
 declare const $: any;
-const swal = require('sweetalert');
+// const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 @Component({
@@ -886,27 +886,39 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[CONTACTS-COMP]  deleteContactForever request_count', request_count);
         if (request_count !== 0) {
 
-          swal({
+          Swal.fire({
             title: this.deleteContact_msg,
             text: this.youCannotDeleteThisContact,
             icon: "info",
-            button: true,
-            dangerMode: false,
+            showCloseButton: false,
+            showCancelButton: false,
+            confirmButtonText: this.translate.instant('Ok'),
+            confirmButtonColor: "var(--primary-btn-background)",
+            // button: true,
+            // dangerMode: false,
           })
         } else {
 
           this.logger.log('[CONTACTS-COMP]  deleteContactForever ', contactid)
 
-          swal({
+          Swal.fire({
             title: this.areYouSure + "?",
             text: this.contactWillBePermanentlyDeleted,
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
+            showCloseButton: false,
+            showCancelButton: true,
+            showConfirmButton: false,
+            showDenyButton: true,
+            denyButtonText: this.translate.instant('Delete'),
+            cancelButtonText: this.translate.instant('Cancel'),
+            focusConfirm: false,
+            reverseButtons: true,
+            // buttons: true,
+            // dangerMode: true,
           })
-            .then((willDelete) => {
-              if (willDelete) {
-                this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
+            .then((result) => {
+              if (result.isDenied) {
+                this.logger.log('[CONTACTS-COMP] swal result', result)
 
                 this.contactsService.deleteLeadForever(contactid).subscribe((res: any) => {
                   this.logger.log('[CONTACTS-COMP] in swal deleteRequest res ', res)
@@ -914,15 +926,30 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
                 }, (error) => {
                   this.logger.error('[CONTACTS-COMP] in swal deleteRequest res - ERROR ', error);
 
-                  swal(this.errorDeleting, this.pleaseTryAgain, {
+                  Swal.fire({
+                    title: this.errorDeleting,
+                    text: this.pleaseTryAgain, 
                     icon: "error",
+                    showCloseButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: this.translate.instant('Ok'),
+                    confirmButtonColor: "var(--primary-btn-background)",
                   });
 
                 }, () => {
                   this.logger.log('[CONTACTS-COMP] in swal deleteRequest res* COMPLETE *');
 
-                  swal(this.done_msg + "!", this.contactWasSuccessfullyDeleted, {
+                  Swal.fire({
+                    title: this.done_msg + "!",
+                    text: this.contactWasSuccessfullyDeleted,
                     icon: "success",
+                    showCloseButton: false,
+                    showCancelButton: false,
+                    confirmButtonColor: "var(--primary-btn-background)",
+                    confirmButtonText: this.translate.instant('Ok'),
+
+
+
                   }).then((okpressed) => {
                     this.getContacts();
                     // this.getTrashedContacts();
@@ -930,7 +957,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 });
               } else {
-                this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
+                this.logger.log('[CONTACTS-COMP] swal result', result)
                 // swal("Your imaginary file is safe!");
               }
             });
@@ -961,16 +988,24 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.logger.log('[CONTACTS-COMP] - moveContactToTrash ', this.moveContactToTrash_msg);
 
-    swal({
+    Swal.fire({
       title: this.moveToTrash_msg,
       text: this.moveContactToTrash_msg,
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: true,
     })
-      .then((willDelete) => {
-        if (willDelete) {
-          this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
+      .then((result) => {
+        if (result.isDenied) {
+          this.logger.log('[CONTACTS-COMP] swal willDelete', result)
 
           this.contactsService.deleteLead(contactid).subscribe((res: any) => {
             this.logger.log('[CONTACTS-COMP] in swal deleteRequest res ', res)
@@ -978,22 +1013,33 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           }, (error) => {
             this.logger.error('[CONTACTS-COMP] in swal deleteRequest res - ERROR ', error);
 
-            swal(this.errorDeleting, this.pleaseTryAgain, {
+            Swal.fire( {
+              title: this.errorDeleting,
+              text: this.pleaseTryAgain, 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
             });
-
           }, () => {
             this.logger.log('[CONTACTS-COMP] in swal deleteRequest res* COMPLETE *');
 
-            swal(this.done_msg + "!", this.contactHasBeenMovedToTheTrash, {
+            Swal.fire({
+              title: this.done_msg + "!",
+              text: this.contactHasBeenMovedToTheTrash,
               icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.getContacts();
             });
 
           });
         } else {
-          this.logger.log('[CONTACTS-COMP] swal willDelete', willDelete)
+          this.logger.log('[CONTACTS-COMP] swal willDelete', result)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -1194,9 +1240,9 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   presentModalAppSumoFeautureAvailableFromBPlan() {
     // const el = document.createElement('div')
     // el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
+    Swal.fire({
       title: this.upgradePlan,
-      text: 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      text: this.translate.instant('AvailableFrom') + ' ' + this.appSumoProfilefeatureAvailableFromBPlan,
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,

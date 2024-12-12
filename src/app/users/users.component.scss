@@ -881,7 +881,7 @@ $f21blue: #039be5;
 }
 
 .link-to-teammates-roles-docs>.row > div >a {
-  color: #0f62ff !important;
+  color:var(--blue-light) !important;
   vertical-align: middle;
   font-size: 14px;
   font-weight: 400;
@@ -894,9 +894,24 @@ $f21blue: #039be5;
 }
 
 .link-to-teammates-roles-docs>.row > div >span > svg{ 
-  width: 25px;height:auto; vertical-align: middle;
+  fill:var(--blue-light)
 }
 
+
 .link-to-teammates-roles-docs>.row > div >a:hover {
+  text-decoration: underline;
+}
+
+
+.main--wrapper {
+  padding: 0px 15px;
+}
+
+.link-to-action-wpr > span {
+  color: var(--blue-light); // #039be5; 
+  cursor:pointer
+}
+
+.link-to-action-wpr > span:hover {
   text-decoration: underline;
 }

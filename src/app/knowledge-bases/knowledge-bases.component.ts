@@ -43,6 +43,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
+import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -992,7 +993,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('AIAgentSuccessfullyCreated'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,
@@ -1361,6 +1362,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log('[Modal DELETE KB] kb: ', kb);
       if (kb) {
         this.onDeleteKnowledgeBase(kb)
+      }
+    });
+  }
+
+
+
+  onOpenAddContent(){
+    const dialogRef = this.dialog.open(ModalAddContentComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '900px',
+    });
+
+    dialogRef.afterClosed().subscribe(type => {
+      this.logger.log('[Modal ADD CONTENT] type: ', type);
+      if (type) {
+        this.openAddKnowledgeBaseModal(type)
       }
     });
   }
@@ -1861,7 +1879,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
 
-      this.presentKBTour()
+      // this.presentKBTour()
 
     })
   }
@@ -1874,13 +1892,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
+          showCloseButton: false,
+          showCancelButton: false,
+          confirmButtonColor: "var(--primary-btn-background)",
+          confirmButtonText: this.translate.instant('Ok'),
+       
         })
       } else {
         this.listSitesOfSitemap = resp.sites;
@@ -1894,13 +1914,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
       //this.onOpenErrorModal(error);
 
-      swal({
+      Swal.fire({
         title: this.warningTitle,
         text: error,
         icon: "warning",
-        className: "custom-swal",
-        buttons: [null, "Cancel"],
-        dangerMode: false
+        showCloseButton: false,
+        showCancelButton: false,
+        confirmButtonColor: "var(--primary-btn-background)",
+        confirmButtonText: this.translate.instant('Ok'),
+       
       })
 
     }, () => {
@@ -1964,14 +1986,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          // className: "custom-swal",
-          // buttons: [this.cancel, this.upgrade],
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
           confirmButtonColor: "var(--blue-light)",
           reverseButtons: true,
+          // buttons: [this.cancel, this.upgrade],
           // dangerMode: false
         }).then((result: any) => {
 
@@ -1994,7 +2015,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          // className: "custom-swal",
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
@@ -2015,8 +2035,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
           icon: "warning",
-          // className: "custom-swal",
-          // buttons: [this.cancel, this.contactUs],
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
@@ -2025,6 +2043,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           focusConfirm: false,
           reverseButtons: true,
           // dangerMode: false
+           // buttons: [this.cancel, this.contactUs],
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2073,15 +2092,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          // className: "custom-swal",
-          // buttons: [this.cancel, this.upgrade],
-          // dangerMode: false
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
           confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
+          // buttons: [this.cancel, this.upgrade],
+          // dangerMode: false
         }).then((result: any) => {
 
           if (result.isConfirmed) {
@@ -2101,14 +2119,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           title: this.warningTitle,
           text: error,
           icon: "warning",
-          // className: "custom-swal",
-          // buttons: [null, this.cancel],
-          // dangerMode: false
           showCloseButton: false,
           showCancelButton: false,
           confirmButtonText: this.cancel,
           confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
+          // buttons: [null, this.cancel],
+          // dangerMode: false
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
         // this.logger.log('here 1')
@@ -2116,15 +2133,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
           icon: "warning",
-          // className: "custom-swal",
-          // buttons: [this.cancel, this.contactUs],
-          // dangerMode: false
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
           confirmButtonColor: "var(--blue-light)",
           canecelButtonText: this.cancel,
           focusConfirm: false,
+            // buttons: [this.cancel, this.contactUs],
+          // dangerMode: false
         }).then((result) => {
           if (result.isConfirmed) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2160,17 +2176,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         Swal.fire({
           title: this.warningTitle,
           text: error,
-          icon: "warning",
-          // className: "custom-swal",
-          // buttons: [null, this.cancel],
-          // dangerMode: false
           showCloseButton: false,
           showCancelButton: true,
           showConfirmButton: false,
-          // confirmButtonText: this.translate.instant('ContactUs'),
-          // confirmButtonColor: "var(--blue-light)",
           cancelButtonText: this.cancel,
           focusConfirm: false,
+            // confirmButtonText: this.translate.instant('ContactUs'),
+          // confirmButtonColor: "var(--blue-light)",
+           // buttons: [null, this.cancel],
+          // dangerMode: false
         })
 
 
@@ -2197,13 +2211,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       //this.kbid_selected.deleting = false;
 
       // this.onOpenErrorModal(error);
-      swal({
+      Swal.fire({
         title: this.warningTitle,
         text: error,
-        icon: "warning",
-        className: "custom-swal",
-        buttons: [null, this.cancel],
-        dangerMode: false
+        showCloseButton: false,
+        showCancelButton: true,
+        showConfirmButton: false,
+        cancelButtonText: this.cancel,
+        focusConfirm: false,
       })
 
     }, () => {
@@ -2304,13 +2319,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (!response || (response.success && response.success === false)) {
 
         // this.onOpenErrorModal(error);
-        swal({
+        Swal.fire({
           title: this.warningTitle,
           text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, this.cancel],
-          dangerMode: false
+          showCloseButton: false,
+          showCancelButton: true,
+          showConfirmButton: false,
+          cancelButtonText: this.cancel,
+          focusConfirm: false,
         })
 
 
@@ -2347,13 +2363,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
 
           //this.onOpenErrorModal(error);
-          swal({
+          Swal.fire({
             title: this.warningTitle,
             text: error,
-            icon: "warning",
-            className: "custom-swal",
-            buttons: [null, this.cancel],
-            dangerMode: false
+            showCloseButton: false,
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: this.cancel,
+            focusConfirm: false,
           })
 
 
@@ -2367,13 +2384,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       kb.deleting = false;
 
       // this.onOpenErrorModal(error);
-      swal({
+      Swal.fire({
         title: this.warningTitle,
         text: error,
-        icon: "warning",
-        className: "custom-swal",
-        buttons: [null, this.cancel],
-        dangerMode: false
+        showCloseButton: false,
+        showCancelButton: true,
+        showConfirmButton: false,
+        cancelButtonText: this.cancel,
+        focusConfirm: false,
       })
 
     }, () => {

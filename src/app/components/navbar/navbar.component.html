@@ -24,6 +24,7 @@
       <!-- <a class="navbar-brand" href="#">Testina</a> -->
     </div>
     <div class="collapse navbar-collapse">
+     
 
       <ul class="nav navbar-nav navbar-right">
         <!-- <li>
@@ -50,6 +51,113 @@
         </li> -->
 
 
+        <!--  ------------------------------------------------ -->
+        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
+        <!--  ------------------------------------------------ -->
+        <!-- *ngIf="isVisiblePay" -->
+        <ng-container >
+          <li
+            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
+            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
+            <a>
+              <!--  ------------------------------------------------ -->
+              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
+              <!--  ------------------------------------------------ -->
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
+                (click)="openModalSubsExpired()" class="expired__Tooltip">
+                <i class="material-icons"
+                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
+                  error_outline
+                </i>
+                <span class="expired__Tooltiptext"
+                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+
+                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                  </span>
+                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
+                    {{ 'Pricing.ThePlanHasExpired' | translate }}
+                  </span>
+                </span>
+              </span>
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- ------------------------------------------------  -->
+        <!--  UPGRADE (PROFILE TYPE = FREE) -->
+        <!-- ------------------------------------------------  -->
+        <ng-container *ngIf="isVisiblePay">
+          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
+
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
+              <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
+                <span class="progress-left">
+                  <span class="progress-bar"
+                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                </span>
+                <span class="progress-right">
+                  <span class="progress-bar"
+                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                </span>
+                <div class="progress-value">
+                  <div style="font-size: 14px;font-weight: 400;">
+                    <span *ngIf="prjct_trial_expired === false">
+                      {{ prjc_trial_days_left }}
+                    </span>
+                    <span *ngIf="prjct_trial_expired === true">
+                      0
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <ul class="dropdown-menu"
+              style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
+              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
+                </span>
+
+                {{ "Pricing.WillExpireIn" | translate }}
+
+                <span *ngIf="prjc_trial_days_left < -1">
+                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                </span>
+
+                <span *ngIf="prjc_trial_days_left === -1">
+                  {{ "Pricing.Tomorrow" | translate }}
+                </span>
+              </p>
+
+              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
+                </span>
+                {{ "Pricing.HasExpired" | translate }}
+              </p>
+            </ul>
+          </li>
+        </ng-container>
+
+
+        <!--  ------------------------------------------------ -->
+        <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
+        <!--  ------------------------------------------------ -->
+        <ng-container *ngIf="isVisiblePay">
+          <li id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
+            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> 
+              <button class="btn btn-success-no-boxshadow upgrade-plan-btn" >
+              {{ "Pricing.UpgradePlan" | translate }} 
+            </button>
+            </a>
+          </li>
+        </ng-container>
+
         <!-- -------------------------------------------- -->
         <!-- Quote - usage stats  indicator -->
         <!-- -------------------------------------------- -->
@@ -65,7 +173,7 @@
               <mat-icon class="data-usage-icon">
                 data_usage
               </mat-icon>
-              <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
+              <span>{{'CurrentUsage' | translate}}</span>
               <mat-icon style="color: #555555"
                 [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
                 arrow_drop_down
@@ -163,6 +271,8 @@
                     </div>
                   </div>
                 </div> -->
+
+
 
                 <!-- ------- -->
                 <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
@@ -331,110 +441,9 @@
           </li>
         </ng-container>
 
-        <!-- ------------------------------------------------  -->
-        <!--  UPGRADE (PROFILE TYPE = FREE) -->
-        <!-- ------------------------------------------------  -->
-        <ng-container *ngIf="isVisiblePay">
-          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
-
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
-              <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
-                <span class="progress-left">
-                  <span class="progress-bar"
-                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                </span>
-                <span class="progress-right">
-                  <span class="progress-bar"
-                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                </span>
-                <div class="progress-value">
-                  <div style="font-size: 14px;font-weight: 400;">
-                    <span *ngIf="prjct_trial_expired === false">
-                      {{ prjc_trial_days_left }}
-                    </span>
-                    <span *ngIf="prjct_trial_expired === true">
-                      0
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <ul class="dropdown-menu"
-              style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
-              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
-                {{ "Pricing.Your" | translate }}
-
-                <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
-                </span>
-
-                {{ "Pricing.WillExpireIn" | translate }}
-
-                <span *ngIf="prjc_trial_days_left < -1">
-                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                </span>
-
-                <span *ngIf="prjc_trial_days_left === -1">
-                  {{ "Pricing.Tomorrow" | translate }}
-                </span>
-              </p>
-
-              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
-                {{ "Pricing.Your" | translate }}
-                <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
-                </span>
-                {{ "Pricing.HasExpired" | translate }}
-              </p>
-            </ul>
-          </li>
-        </ng-container>
+    
 
 
-        <!--  ------------------------------------------------ -->
-        <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
-        <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisiblePay">
-          <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate
-              }} </a>
-          </li>
-        </ng-container>
-
-
-        <!--  ------------------------------------------------ -->
-        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
-        <!--  ------------------------------------------------ -->
-        <!-- *ngIf="isVisiblePay" -->
-        <ng-container>
-          <li
-            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
-            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
-            <a>
-              <!--  ------------------------------------------------ -->
-              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
-              <!--  ------------------------------------------------ -->
-              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
-                (click)="openModalSubsExpired()" class="expired__Tooltip">
-                <i class="material-icons"
-                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
-                  error_outline
-                </i>
-                <span class="expired__Tooltiptext"
-                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-
-                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
-                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
-                  </span>
-                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
-                    {{ 'Pricing.ThePlanHasExpired' | translate }}
-                  </span>
-                </span>
-              </span>
-            </a>
-          </li>
-        </ng-container>
 
         <!-- <ng-container class="operating-hours">
           <li *ngIf="project">
@@ -470,12 +479,23 @@
         <!-- test site btn -->
         <!-- ------------------------------------------------------ -->
         <ng-container class="test-site">
-          <li *ngIf="project">
-            <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
+          <li *ngIf="project"
+          matTooltipClass="custom-mat-tooltip-navbar"
+          matTooltip="{{ 'VisitorsPage.SimulateVisitor' | translate }}"
+          #tooltip="matTooltip" 
+          matTooltipPosition='above' 
+          matTooltipHideDelay="100" >
+            <a role="button" >
+              <button class="simulate-visitor-btn" (click)="testWidgetPage()">
+                <i class="material-icons">play_arrow</i>
+              </button>
+             
+            </a>
+            <!-- <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
             font-family: 'Poppins';" (click)="testWidgetPage()">
               <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
               <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
-            </button>
+            </button> -->
           </li>
         </ng-container>
         <!-- <ng-container class="test-site">
@@ -495,12 +515,27 @@
         </ng-container> -->
 
         <!--  ------------------------------------------------ -->
+        <!--  Sound on / off -->
+        <!--  ------------------------------------------------ -->
+        <li *ngIf="project">
+          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
+            <i class="material-icons">volume_up</i>
+          </a>
+          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
+            <i class="material-icons">volume_off</i>
+            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
+          </a>
+        </li>
+
+        <!--  ------------------------------------------------ -->
         <!--  ------ PROJECTS  DROPDOWN ------ -->
         <!--  ------------------------------------------------ -->
         <li *ngIf="project">
           <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
-            <i id="navbar-dropdown" class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
+            
             <span style="text-transform: none"> {{ project.name }} </span>
+            <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
+            <!-- <b class="caret"></b> -->
             <!-- <p class="hidden-lg hidden-md">Projects</p> -->
           </a>
 
@@ -586,19 +621,7 @@
         </li>
 
 
-        <!--  ------------------------------------------------ -->
-        <!--  Sound on / off -->
-        <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
-            <i class="material-icons">volume_up</i>
-            <!-- <p class="hidden-lg hidden-md">soundon</p> -->
-          </a>
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
-            <i class="material-icons">volume_off</i>
-            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
-          </a>
-        </li>
+      
 
         <!-- -------------------------------------------- -->
         <!-- Sleekplan -->
@@ -635,9 +658,11 @@
         <!--  ------------------------------------------------ -->
         <!--  NOTIFICATION -->
         <!--  ------------------------------------------------ -->
-        <!-- <li *ngIf="project" class="dropdown" matTooltipClass="custom-mat-tooltip-navbar"
+        <!-- <li *ngIf="project" class="dropdown" 
+          matTooltipClass="custom-mat-tooltip-navbar"
           matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}"
-          #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100">
+          #tooltip="matTooltip" matTooltipPosition='left' 
+          matTooltipHideDelay="100">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">notifications</i>
 

@@ -224,7 +224,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   t_params: any;
   planFeatures: any;
   highlightedFeatures: any;
-  isTier3Plans: boolean // Plus or Custom
+  isTier3Plans: boolean = true// Plus or Custom
   isSripeSub: boolean;
   salesEmail: string;
   public hideHelpLink: boolean;
@@ -2204,7 +2204,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.CARD_HAS_ERROR = true;
         this.SPINNER_IN_ADD_CARD_MODAL = false
         this.DISPLAY_ADD_CARD_COMPLETED = false
-      } else if (error_body && !error_body.msg) {
+      } else if (error_body && (!error_body.msg || error_body.msg === undefined)) {
         if (error_body && error_body.error && error_body.error && error_body.error.msg.code) {
           this.credit_card_error_msg = error_body.error.msg.code;
           this.CARD_HAS_ERROR = true;

@@ -21,6 +21,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
 import { Project } from 'app/models/project-model';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -71,6 +72,8 @@ export class SidebarUserDetailsComponent implements OnInit {
   currentUserId: string;
   selectedStatus: any;
   isChromeVerGreaterThan100: boolean;
+    NOTIFICATION_SOUND: string;
+  storedValuePrefix = 'dshbrd----'
   teammateStatus = [
     { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
     { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
@@ -129,7 +132,27 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserAvailability$()
     this.getWsCurrentUserIsBusy$()
     this.getBrowserVersion()
+    // this.setNotificationSound();
   }
+
+
+  // setNotificationSound() {
+  //   // NOTIFICATION_SOUND = 'enabled';
+  //   const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+  //   this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
+
+  //   if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
+  //     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+  //     this.NOTIFICATION_SOUND = storedNotificationSound;
+  //   } else {
+
+  //     this.NOTIFICATION_SOUND = 'enabled';
+
+  //     localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+  //     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+  //   }
+
+  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -312,9 +335,32 @@ export class SidebarUserDetailsComponent implements OnInit {
       });
   }
 
+  openLogoutModal() {
+    // this.notifyService.presentLogoutModal()
+    this.auth.hasOpenedLogoutModal(true);
+    this.logger.log('[PROJECTS] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'userdetailsidebar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        this.logger.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+  
+
   logout() {
     this.closeUserDetailSidePanel()
-    this.notifyService.presentLogoutModal()
+    
+    this.auth.signOut('userdetailsidebar');
   }
 
 

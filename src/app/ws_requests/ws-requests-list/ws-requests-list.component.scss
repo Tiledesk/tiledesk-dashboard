@@ -65,6 +65,21 @@ button.close {
   padding-top: 10px !important;
 }
 
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr {
+  float: right;
+  cursor: pointer;
+}
+
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.view-requester-details {
+  color: var(--blue-light);
+}
+
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.material-icons {
+  color:var(--blue-light); // #0f62ff;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
 /* MODAL END */
 
 /* texarea & input in  MODAL  */
@@ -525,7 +540,7 @@ span .switch-agent-admin-requests-btn {
   padding-bottom: 5px;
   float: left;
   height: 50px;
-  padding-left: 0px;
+  padding-left: 10px;
   // display: flex;
   // flex-grow: 1;
 }
@@ -1032,6 +1047,15 @@ $f21blue: #039be5;
   color: #f44336 !important;
 }
 
+::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-icon {
+  vertical-align: middle; 
+  color:var(--ng-select-footer-btn-color) // #0f62ff
+}
+
+::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-text {
+ color: var(--ng-select-footer-btn-color) // #0f62ff
+}
+
 /* moved in /node_modules/@ng-select/ng-select/themes/default.theme.css - in the template this style works only encapsulation: ViewEncapsulation.None 
  but this this compromises the style of the other dropdowns */
 // .internal-request-custom-select > .ng-dropdown-panel .ng-dropdown-panel-items  {
@@ -1479,13 +1503,14 @@ $f21blue: #039be5;
   text-transform: none;
   font-weight: 400;
   font-size: 14px;
-  padding: 0px 8px;
+  padding: 0 16px 0 8px;
+  border-radius: var(--btn-border-radius);
 }
 
 .btn-primary-active:hover {
   box-shadow: unset;
   background: rgb(231, 241, 255);
-  color: #0f62ff;
+  color: var(--icon-hover-color);
 }
 
 .btn-primary-active .btn--link {
@@ -1570,6 +1595,10 @@ $f21blue: #039be5;
     padding-right: 6px;
   }
 
+  .select-convtype-wpr {
+    padding-left: 6px;
+  }
+
   // .select-convtype-wpr {
   //   padding-left: 6px;
   //   padding-right: 6px;
@@ -1618,6 +1647,6 @@ $f21blue: #039be5;
 
 .open-chat-tool-text {
   display: flex;
-    flex-direction: row;
-    gap: 3px;
+  flex-direction: row;
+  gap: 3px;
 }

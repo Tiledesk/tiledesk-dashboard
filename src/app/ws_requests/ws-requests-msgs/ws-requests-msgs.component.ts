@@ -45,6 +45,7 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/modal-chatbot-reassignment.component';
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { CacheService } from 'app/services/cache.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -423,7 +424,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-
+    private cacheService:  CacheService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -1362,6 +1363,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   findCurrentProjectAmongAll(projectId: string) {
+    this.cacheService.clearCache()
     this.bannedVisitorsArray = []
     this.projectService.getProjects().subscribe((projects: any) => {
       //  this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects ', projects);
@@ -1388,7 +1390,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.bannedUsers) {
         this.bannedVisitorsArray = this.current_selected_prjct.id_project.bannedUsers;
-        // this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
+        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > bannedVisitorsArray', this.bannedVisitorsArray);
       }
 
 
@@ -1766,6 +1768,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           // this.logger.log('[WS-REQUESTS-MSGS] - this.request: ', this.request);
           if (this.request.lead) {
+            this.logger.log('[WS-REQUESTS-MSGS] request.lead ', this.request.lead)
             this.getContactRequests(this.request.lead._id)
             this.request.lead.email
           }
@@ -1893,7 +1896,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // User Agent
           // -------------------------------------------------------------------
           const user_agent_result = this.parseUserAgent(this.request.userAgent);
-          // console.log('user_agent_result  ', user_agent_result)
+          //  this.logger.log('user_agent_result  ', user_agent_result)
 
           if (user_agent_result.browser.name) {
             if (user_agent_result.browser.version) {
@@ -2681,36 +2684,42 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const foundtag = this.tagsList.filter((obj: any) => {
       return obj._id === this.tag;
     });
-    let tagObject = {}
+  
     this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - foundtag: ', foundtag);
-    if (foundtag.length > 0) {
-      tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
-    }
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
+
+    // No more used
+    // let tagObject = {}
+    // if (foundtag.length > 0) {
+    //   tagObject = { tag: foundtag[0].tag, color: foundtag[0].color }
+    // }
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject: ', tagObject);
+    const newTagArray = [{ tag: foundtag[0].tag, color: foundtag[0].color }]
+    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - newTagArray: ', newTagArray);
     setTimeout(() => {
       this.tag = null;
     })
-    const tagObjectsize = Object.keys(tagObject).length
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
-    if (tagObjectsize > 0) {
-      this.tagsArray.push(tagObject);
-      // this.getTag()
-    }
+    this.manageRequestTags(this.id_request, newTagArray, 'add')
 
-    this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
-    // const firstTagObjectsize = Object.keys(this.tagsArray[0]).length
-    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG firstTagObjectsize: ', firstTagObjectsize);
-    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAG this.tagsArray.length: ', this.tagsArray.length);
-    if (tagObjectsize > 0) {
-      this.updateRequestTags(this.id_request, this.tagsArray, 'add')
-    }
+    // ----------------------------
+    // No more used
+    // ----------------------------
+    // const tagObjectsize = Object.keys(tagObject).length
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - tagObject LENGTH: ', tagObjectsize);
+    // if (tagObjectsize > 0) {
+    //   this.tagsArray.push(tagObject);
+    // }
+
+    // this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - TAGS ARRAY AFTER PUSH: ', this.tagsArray);
+    // if (tagObjectsize > 0) {
+    //   this.updateRequestTags(this.id_request, this.tagsArray, 'add')
+    // }
 
   }
 
-  updateRequestTags(id_request, tagsArray, fromaction) {
-    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
-    this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
-    this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
+ manageRequestTags(id_request, tag, fromaction) {
+  this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+  this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tag: ', tag);
+    this.wsRequestsService.updateRequestTags(id_request, tag)
       .subscribe((data: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
       }, (err) => {
@@ -2722,6 +2731,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.getTagContainerElementHeight()
       });
   }
+
+  // No more used - replace with manageRequestTags
+  // updateRequestTags(id_request, tagsArray, fromaction) {
+  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS fromaction: ', fromaction);
+  //   this.logger.log('[WS-REQUESTS-MSGS] - UPDATE REQUEST TAGS  tagsArray: ', tagsArray);
+  //   this.wsRequestsService.updateRequestsById_UpdateTag(id_request, tagsArray)
+  //     .subscribe((data: any) => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - ADD TAG - RES: ', data);
+  //     }, (err) => {
+  //       this.logger.error('[WS-REQUESTS-MSGS] - ADD TAG - ERROR: ', err);
+  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
+  //     }, () => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] * COMPLETE *');
+  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelSuccess'], 2, 'done');
+  //       this.getTagContainerElementHeight()
+  //     });
+  // }
 
   getTag() {
     this.loadingTags = true
@@ -2765,9 +2791,41 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - TAG SELECTED COLOR ', hex);
     this.tag_selected_color = hex;
   }
+  // --------------------------------------------
+  // No more used - replaced with createNewTag
+  // --------------------------------------------
+  // createTag(newTag) {
+  //   this.logger.log("Create TAG Clicked - is used?: " + newTag)
+  //   this.tag_selected_color = '#43B1F2'
+  //   this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
+  //   this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
+  //   this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
+  //   this.tagsService.createTag(newTag, this.tag_selected_color)
+  //     .subscribe((tag: any) => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+
+  //       const tagObject = { tag: tag.tag, color: tag.color }
+  //       this.tagsArray.push(tagObject);
+
+  //       this.updateRequestTags(this.id_request, this.tagsArray, 'create')
+
+  //     }, (error) => {
+  //       this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+  //       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
+  //     }, () => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+  //       // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+
+  //       this.tag_name = '';
+  //       this.tag_selected_color = '#43B1F2';
+
+  //       this.getTag();
+  //     });
+
+  // }
 
   createNewTag = (newTag: string) => {
-    this.logger.log("Create New TAG Clicked : " + newTag)
+    // this.logger.log("Create New TAG Clicked : " + newTag)
     this.logger.log("Create New TAG Clicked - request tag: ", this.request.tags)
 
     var index = this.request.tags.findIndex(t => t.tag === newTag);
@@ -2789,10 +2847,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         .subscribe((tag: any) => {
           this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
 
-          const tagObject = { tag: tag.tag, color: tag.color }
-          self.tagsArray.push(tagObject);
+          // const tagObject = { tag: tag.tag, color: tag.color } // no more used
+          // self.tagsArray.push(tagObject); // no more used
+          const newTagArray = [{ tag: tag.tag, color: tag.color }]
+          
 
-          self.updateRequestTags(this.id_request, this.tagsArray, 'create')
+          self.manageRequestTags(this.id_request, newTagArray, 'create')
 
         }, (error) => {
           this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
@@ -2806,35 +2866,44 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.logger.log("Create New TAG Clicked - Tag already exist ")
       this.presentModalTagAlredyAssigned()
     }
-
   }
 
   presentModalTagAlredyAssigned() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('TagAlreadyAssigned'),
       text: this.translationMap.get('ThisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag'),
       icon: "info",
-      buttons: 'OK',
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
   removeTag(tag: string) {
     if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
       this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag TO REMOVE: ', tag);
-      var index = this.tagsArray.indexOf(tag);
-      if (index !== -1) {
-        this.tagsArray.splice(index, 1);
-      }
-      this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - tag id TO REMOVE: ', tag['_id']);
+      // ----------------------------
+      // NO MORE USED
+      // ----------------------------
+      // var index = this.tagsArray.indexOf(tag);
+      // if (index !== -1) {
+      //   this.tagsArray.splice(index, 1);
+      // }
+      // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      // this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
       setTimeout(() => {
         this.getTagContainerElementHeight()
       }, 0);
       // this.getTag();
 
-      this.logger.log('[WS-REQUESTS-MSGS] -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
-      this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+      
+      // this.wsRequestsService.updateRequestsById_UpdateTag(this.id_request, this.tagsArray)
+      this.wsRequestsService.deleteRequestTags(this.id_request, tag['_id'])
         .subscribe((data: any) => {
 
           this.logger.log('[WS-REQUESTS-MSGS] - REMOVE TAG - RES: ', data);
@@ -2883,42 +2952,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.ngSelect.blur()
   }
 
-  createTag(newTag) {
-    this.tag_selected_color = '#43B1F2'
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.TAG: ', this.tag)
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
-    this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
-    // this.ngselect.close()
-    // if (this.tag_name && this.tag_name.length > 0) {
-    // this.hasError = false;
-
-    // this.tagsService.createTag(this.tag_name, this.tag_selected_color)
-    this.tagsService.createTag(newTag, this.tag_selected_color)
-      .subscribe((tag: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
-
-        const tagObject = { tag: tag.tag, color: tag.color }
-        this.tagsArray.push(tagObject);
-
-        this.updateRequestTags(this.id_request, this.tagsArray, 'create')
-
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Tags.NotificationMsgs')['AddLabelError'], 4, 'report_problem');
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
-        // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
-
-        this.tag_name = '';
-        this.tag_selected_color = '#43B1F2';
-
-        this.getTag();
-      });
-
-    // } else {
-    //   // this.hasError = true;
-    // }
-  }
+  
 
   onPressEnterInIputTypeNewTag() {
     this.logger.log('[WS-REQUESTS-MSGS] - ON PRESS ENTER IN INPUT TYPE NEW TAG');
@@ -3468,13 +3502,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
   // this.addAgentTitle
   presentModalYouCannotAddAgents(agentFullname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('YouCannotAddAgents'),
       text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
-      buttons: 'OK',
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+
+      // buttons: 'OK',
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
@@ -3496,7 +3535,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
@@ -3702,17 +3741,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentSwalModalReassignConversationToAgent(userid, userfirstname, userlastname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.ReassignRequest'),
       text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + userfirstname + ' ' + userlastname,
       icon: "info",
-      buttons: true,
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: true,
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
-      .then((willReassign) => {
-        if (willReassign) {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent swal willReassign to User', willReassign)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent swal willReassign to User', result)
 
 
           this.wsRequestsService.setParticipants(this.id_request, userid).subscribe((res: any) => {
@@ -3721,18 +3768,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ReassignConversationToAgent in swal willReassign to User setParticipants - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent in swal willReassign to User setParticipants * COMPLETE *');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
+              // text: 'Conversation successfully reassigned',
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -3740,7 +3798,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] + ReassignConversationToAgent  swal willReassign', willReassign)
+          this.logger.log('[WS-REQUESTS-MSGS] + ReassignConversationToAgent  swal willReassign', confirm)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -3748,17 +3806,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
     this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.AddAgent'),
       text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', { user: userfirstname + ' ' + userlastname }),
       icon: "info",
-      buttons: true,
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
-      .then((willBeAdded: any) => {
-        if (willBeAdded) {
-          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in wal willBeAdded to User', willBeAdded)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in wal willBeAdded to User', result)
 
 
           this.wsRequestsService.addParticipant(this.id_request, userid).subscribe((res: any) => {
@@ -3767,18 +3832,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire( {
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation in swal willBeAssigned to User addParticipant * COMPLETE *');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -3786,7 +3861,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', willBeAdded);
+          this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
         }
       });
   }
@@ -3851,6 +3926,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
       input: "select",
       inputAttributes: {
         id: 'my-input'
@@ -3883,44 +3959,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       })
 
     }
-    // .then((result) => {
-    //   if (result.isConfirmed) {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot', result)
 
-
-    //     // this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
-
-    //     // }, (error) => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
-
-    //     //  Swal.fire(this.anErrorHasOccurredMsg, {
-    //     //     icon: "error",
-    //     //   });
-
-    //     // }, () => {
-    //     this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
-
-
-
-    //     //   Swal.fire({
-    //     //     title: this.done_msg + "!",
-    //     //     icon: "success",
-    //     //     // button: "OK",
-    //     //     confirmButtonText: this.translate.instant('Ok') ,
-    //     //     confirmButtonColor: "var(--blue-light)",
-    //     //     focusConfirm: true,
-    //     //     // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    //     //   }).then((okpressed) => {
-
-    //     //     this.displayUsersListModal = 'none';
-    //     //     this.presentModalSelectChatbotBlock(botname, botidNoPrefix) 
-    //     //   });
-    //     // });
-    //   } else {
-    //     console.log('swal result', result);
-    //   }
-    // });
   }
 
   sendMessage(block) {
@@ -3950,6 +3989,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     }).then((okpressed) => {
       this.displayUsersListModal = 'none';
     })
@@ -3995,17 +4035,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   presentSwalModalConfirmReassignToDept(deptid, deptname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.ReassignRequest'),
       text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + deptname,
       icon: "info",
-      buttons: true,
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+
+      // buttons: true,
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
-      .then((willReassign) => {
-        if (willReassign) {
-          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign to dept', willReassign)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign to dept', result)
 
 
           this.wsRequestsService.joinDept(deptid, this.id_request).subscribe((res: any) => {
@@ -4013,18 +4061,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire( {
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept in swal joinDept * COMPLETE *');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
             }).then((okpressed) => {
 
               this.displayUsersListModal = 'none'
@@ -4032,7 +4090,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign', willReassign)
+          this.logger.log('[WS-REQUESTS-MSGS] ConfirmReassignToDept swal willReassign', result)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -4061,6 +4119,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           //  NOTIFY ERROR 
           this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
         }, () => {
+
+          if (this.CHAT_PANEL_MODE === true) {
+            const msg = { action: 'openJoinConversationModal', parameter: requestid }
+            window.parent.postMessage(msg, '*')
+          }
 
           this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
           //  NOTIFY SUCCESS
@@ -4113,12 +4176,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalReopenConvIsNotPossible() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('ConversationsArchivedCannotBeReopened'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
@@ -4162,13 +4230,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   presentModalYouCannotJoinChat(agentFullname) {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('RequestMsgsPage.YouCannotJoinThisChat'),
       text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
-      buttons: 'OK',
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
@@ -4215,28 +4287,39 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
   // this.leaveChatTitle,
   presentModalYouCannotLeaveTheChat() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('YouCannotLeaveTheChat'),
       text: this.translate.instant('EmailAndTicketSupportCannotBeUnserved'),
       icon: "warning",
-      buttons: 'OK',
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      // buttons: 'OK',
+      // dangerMode: false,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     })
   }
 
   presentModalLeaveTheChat() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('VisitorsPage.AreYouSureLeftTheChat'),
-      text: this.translationMap.get('Done'),
+      // text: this.translationMap.get('Done'),
       icon: "info",
-      buttons: true,
-      dangerMode: false,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: false,
+     customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willleave) => {
-        if (willleave) {
-          this.logger.log('[WS-REQUESTS-MSGS] LEAVE THE CHAT', willleave)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[WS-REQUESTS-MSGS] LEAVE THE CHAT', result)
           this.wsRequestsService.leaveTheGroup(this.id_request, this.currentUserID)
             .subscribe((data: any) => {
 
@@ -4244,15 +4327,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }, (err) => {
               this.logger.error('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - ERROR ', err);
 
-              swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+              Swal.fire( {
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
                 icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               });
             }, () => {
-              swal({
+              Swal.fire({
                 title: this.translationMap.get('Done') + "!",
                 icon: "success",
-                button: "OK",
-                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+
+                // button: "OK",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               }).then((okpressed) => {
                 this.logger.log('[WS-REQUESTS-MSGS] - LEAVE THE GROUP - COMPLETE  okpressed ', okpressed);
                 this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
@@ -4260,7 +4355,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             });
 
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willRwillleaveeassign', willleave)
+          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willRwillleaveeassign', result)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -4681,38 +4776,60 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
-    this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray index" , index)
+    this.logger.log("displayModalBanVisitor bannedVisitorsArray", this.bannedVisitorsArray)
     // if (this.visitorIsBanned === false) {
     if (index === -1) {
-      swal({
+      Swal.fire({
         title: this.translationMap.get('AreYouSure') + '?',
-        icon: "info",
-        buttons: [this.translationMap.get('Cancel'), this.translationMap.get('YesBanVisitor')],
-        dangerMode: true,
-        className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+        icon: "warning",
+        showCloseButton: false,
+        showCancelButton: true,
+        showConfirmButton: false,
+        showDenyButton: true,
+        denyButtonText: this.translate.instant('YesBanVisitor'),
+        cancelButtonText: this.translate.instant('Cancel'),
+        focusConfirm: false,
+        reverseButtons: true,
+        // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('YesBanVisitor')],
+        // dangerMode: true,
+        customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       })
-        .then((willBan) => {
-          if (willBan) {
+        .then((result) => {
+          if (result.isDenied) {
             // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR swal willBan ', willBan)
 
             this.projectService.banVisitor(leadid, ipaddress).subscribe((res: any) => {
-              // this.logger.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
+              this.logger.log('[WS-REQUESTS-MSGS]  BAN VISITOR in swal - RES ', res)
 
             }, (error) => {
               // this.logger.error('[WS-REQUESTS-MSGS] BAN VISITOR in swal  - ERROR ', error);
 
-              swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+              Swal.fire( {
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
                 icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
               });
             }, () => {
               // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
-              swal({
+              Swal.fire({
                 title: this.translationMap.get('Done') + "!",
                 icon: "success",
-                button: "OK",
-                className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-              }).then((okpressed) => {
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((result) => {
+                if (result.isConfirmed) {
+                this.cacheService.clearCache()
                 this.findCurrentProjectAmongAll(this.id_project)
+                }
               });
 
             });
@@ -4742,6 +4859,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // content: el,
       // buttons: {
       //   cancel: this.translationMap.get('Cancel'),
@@ -4795,6 +4913,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
       // content: el,
       // buttons: {
       //   cancel: this.translationMap.get('Cancel'),
@@ -4831,6 +4950,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
       // content: el,
       // buttons: {
@@ -4872,12 +4992,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentModalVisitorAlreadyBanned() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('VisitorAlreadyBanned'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
@@ -5616,22 +5741,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presenModalMessageCouldNotBeSent() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('TheMessageCouldNotBeSent'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
   presenModalAttachmentFileTypeNotSupported() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('Warning'),
       text: this.translationMap.get('SorryFileTypeNotSupported'),
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--primary-btn-background)",
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 
@@ -5706,16 +5841,26 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOff() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('AreYouSure') + '?',
       text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
       icon: "info",
-      buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
-      dangerMode: true,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('ConvertToOffline'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+
+
+      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
+      // dangerMode: true,
+      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willDisableSmartAssignment) => {
-        if (willDisableSmartAssignment) {
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
@@ -5723,18 +5868,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire( {
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
             });
@@ -5748,16 +5903,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOn() {
-    swal({
+    Swal.fire({
       title: this.translationMap.get('AreYouSure') + '?',
       text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
       icon: "info",
-      buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
-      dangerMode: true,
-      className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('ConvertToOnline'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      reverseButtons: true,
+      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+
+      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
+      // dangerMode: true,
+      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
     })
-      .then((willEnableSmartAssignment) => {
-        if (willEnableSmartAssignment) {
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
@@ -5765,18 +5929,31 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }, (error) => {
             this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
 
-            swal(this.translationMap.get('UserEditAddPage.AnErrorHasOccurred'), {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'), 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             });
 
           }, () => {
             this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
 
-            swal({
+            Swal.fire({
               title: this.translationMap.get('Done') + "!",
               icon: "success",
-              button: "OK",
-              className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+
+              // button: "OK",
+              // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
             }).then((okpressed) => {
 
             });

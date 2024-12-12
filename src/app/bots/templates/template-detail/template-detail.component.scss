@@ -188,7 +188,8 @@
 
 .template-detail-tag-wpr {
     display: flex;
-    border-radius: 4px;
+    border-radius: var(--badge-border-radius);
+    padding: 0px 6px; 
     // background-color: rgb(208, 239, 255);
     // color: rgb(0, 105, 158);
 }

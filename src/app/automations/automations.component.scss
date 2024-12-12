@@ -21,17 +21,26 @@ p {
     margin-bottom: 10px;
 }
 
-.header {
+.automation-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    align-items: flex-end;
+    align-items: center;
 
     p {
         font-weight: 500;
         font-size: 22px;
     }
+
+    button > span {
+        vertical-align: middle;
+    }
+
+}
+
+.automation-header > p {
+   font-family: var(--header-font-family)
 }
 
 .no-automations {
@@ -40,14 +49,16 @@ p {
     align-items: center;
     padding: 80px 100px 80px 80px;
 
-    .material-icons-outlined {
+    span {
         font-size: 60px;
-        color: #3c48588c;
+        color: var(--secondary-text-color); // #3c48588c;
         margin-bottom: 20px;
+        vertical-align: middle;
     }
 
     p {
         font-size: 18px;
+        color: var(--secondary-text-color);
     }
 
 }

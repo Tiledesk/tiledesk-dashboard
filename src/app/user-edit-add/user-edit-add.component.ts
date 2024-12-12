@@ -204,7 +204,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('Signin page error', err);
+          this.logger.error('Invite Temmates Page error', err);
         }
       }
     }
@@ -811,25 +811,6 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     // console.log('[USER-EDIT-ADD] - INVITE USER PROJECT PROFILE TYPE ', this.prjct_profile_type)
     // console.log('[USER-EDIT-ADD] - INVITE USER Seats Limit ', this.seatsLimit)
     // console.log('[USER-EDIT-ADD] - INVITE USER projectUsersLength + countOfPendingInvites', this.projectUsersLength + this.countOfPendingInvites)
-
-
-    // if (this.prjct_profile_type === 'payment') {
-    // this.seatsLimit
-    // if (this.CURRENT_USER_ROLE === 'owner') {
-    //   if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
-    //     this.doInviteUser();
-    //   } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
-
-    //     // this.notify._displayContactUsModal(true, 'seats_limit_reached')
-    //     if (this.prjct_profile_type === 'free') {
-    //       this.presentGoToPricingModal()
-    //     } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
-    //       this.notify._displayContactUsModal(true, 'seats_limit_reached')
-    //     }
-    //   }
-    // } else {
-    //   this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    // }
 
 
 

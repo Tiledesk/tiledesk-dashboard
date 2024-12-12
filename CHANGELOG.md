@@ -1,5 +1,26 @@
 # tiledesk-dashboard
 
+### 2.7.47
+- Fixes the bug: Knowledge Base menu item displays with a delay
+
+### 2.7.46
+- Adds in Analytics > Metrics the conversations tags graph
+- Improves the UI of the sidebar
+
+### 2.7.46-rc6
+- Adds in Analytics > Metrics the conversations tags graph
+- Improves the UI of the sidebar
+
+### 2.7.45
+- Improves the app store
+
+### 2.7.44
+- Improves the method manage integrations visibility
+- Improves the method that display the runned out quotas banner
+
+### 2.7.43
+- Adds the "Twilio voice" integration 
+
 ### 2.7.42
 - Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
 

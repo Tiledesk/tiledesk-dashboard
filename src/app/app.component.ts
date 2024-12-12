@@ -378,7 +378,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event : ', event)
                 const count = +that.usersLocalDbService.getForegrondNotificationsCount();
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count)
-                that.wsRequestsService.publishAndStoreForegroundRequestCount(count)
+                that.wsRequestsService.publishAndStoreForegroundRequestCount(count, 'App-comp listenToSwPostMessage')
             })
         }
     }
@@ -416,7 +416,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
         // this.logger.log('>>>>>>>> onStorageChanged foregrondNotificationsCount', foregrondNotificationsCount)
         this.count = foregrondNotificationsCount
-        this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount)
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount, 'App-comp onStorageChanged')
         if (this.count === 0) {
             const brand = this.brandService.getBrand();
             document.title = brand['META_TITLE']
@@ -493,7 +493,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 this.count = this.count + 1;
                 // this.logger.log('snd test foreground notification count ', this.count);
-                this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+                this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count, 'App comp - listenToFCMForegroundMsgs')
 
                 const elemNotification = document.getElementById('foreground-not');
                 // this.logger.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
@@ -567,7 +567,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.count = this.count + 1;
         // this.logger.log('snd test foreground notification count ', this.count);
-        this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count, 'App comp sendForegroundMsg')
         // const brand = this.brandService.getBrand();
     }
 
@@ -939,9 +939,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     elemSidebarWrapper.style.height = "100vh";
                 } else {
+                    // elemSidebarWrapper.style.height = "calc(100vh - 44px)";
                     elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-                    // elemSidebarWrapper.style.height = "calc(100vh - 35px)";
-                    // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
+                    
+                    
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {

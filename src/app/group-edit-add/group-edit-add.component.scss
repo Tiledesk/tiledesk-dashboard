@@ -7,6 +7,7 @@ input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     border-top: 1px solid #c0c0c0;
@@ -25,6 +26,7 @@ select {
     border-radius: 0px;
     border-color: #d9d9d9;
 }
+
 .card form [class*="col-"] {
     padding: 0px;
 }
@@ -78,11 +80,13 @@ select {
 
 button.close {
     -webkit-appearance: none;
+    appearance: none;
     padding: 0;
     cursor: pointer;
     background: 0 0;
     border: 0;
 }
+
 .close {
     float: right;
     font-size: 21px;
@@ -110,6 +114,8 @@ button.close {
     background-color: #eeeeee;
     padding-top: 10px !important;
 }
+
+
 /* MODAL END */
 
 /* TABLE LIST OF USERS - IN THE MODAL WINDOWS */
@@ -167,6 +173,7 @@ button.close {
     color: #fff !important;
     // display: none
 }
+
 // button add members
 .addMember {
     margin-top: 0px;
@@ -208,7 +215,8 @@ button.close {
     /* Position the tooltip text - TOP */
     bottom: 100%;
     left: 50%;
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    margin-left: -60px;
+    /* Use half of the width (120/2 = 60), to center the tooltip */
 
     // NEW
     box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
@@ -231,16 +239,18 @@ button.close {
         padding-top: 5px !important;
         padding-bottom: 5px !important;
     }
+
     .spacer_div {
         display: none !important;
     }
 }
 
 .title-attribute {
-    font-family:'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
     color: #394f5a;
     // font-weight: 500;
 }
+
 .attribute {
     color: #7695a5;
     // font-weight: 500;
@@ -255,23 +265,10 @@ button.close {
     text-align: right !important;
 }
 
-.card-header-custom-bkgrnd {
-    // display:none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    margin: 0px;
-    border-radius: 3px 3px 0px 0px;
-    // background-color: #f2f6f8;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eff3f5;
-    padding-top: 12px;
-    padding-bottom: 12px;
-}
-.card-header-custom {
-    box-shadow: none !important;
-    margin-left: 0px;
-    margin-right: 0px;
-    border-bottom: 1px solid #eff3f5;
+.card-wpr>div {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-radius: var(--card-border-radius);
 }
 
 .column-th-span {
@@ -294,4 +291,12 @@ button.close {
     border: 1px solid #eee;
     margin-right: 15px;
     object-fit: cover;
+}
+
+
+.card-header-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }

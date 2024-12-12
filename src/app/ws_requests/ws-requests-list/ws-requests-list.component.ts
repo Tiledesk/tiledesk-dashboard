@@ -507,6 +507,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.router.navigate(['project/' + this.projectId + '/all-conversations']);
   }
 
+  goToEditUser(projectUser_id) {
+    if (this.CURRENT_USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser_id])
+    }
+  }
+
   showRequestsMap() {
     this.displayRequestsMap = true;
   }
@@ -1564,7 +1570,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
-          // console.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
+          // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
 
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
 

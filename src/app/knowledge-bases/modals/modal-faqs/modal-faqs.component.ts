@@ -15,10 +15,10 @@ export class ModalFaqsComponent implements OnInit {
 
   kbForm: FormGroup;
   buttonDisabled: boolean = true;
-
+  displayAddManuallySection : boolean = false;
   displayUploadFromCSVSection: boolean = false;
   displayAfterUploadFromCSVSection: boolean = false;
-  csvColumnsDelimiter = ';'
+  csvColumnsDelimiter = ','
   parse_done: boolean;
   parse_err: boolean;
   modalChoosefileDisabled: boolean;
@@ -88,8 +88,13 @@ export class ModalFaqsComponent implements OnInit {
     this.displayUploadFromCSVSection = true
   }
 
+  changeSectionToAddFaqsManually() {
+    this.displayAddManuallySection = true
+  }
+
   goBack() {
-    this.displayUploadFromCSVSection = false
+    this.displayUploadFromCSVSection = false;
+    this.displayAddManuallySection = false;
   }
 
   countDelimiterDigit(event) {
