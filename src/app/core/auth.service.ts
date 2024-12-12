@@ -695,7 +695,7 @@ export class AuthService {
 
   sleekplanSso(user) {
 
-    // console.log('AUT-SERV sleekplanSs')
+    // this.logger.log('AUT-SERV sleekplanSs')
     // window['$sleek'].setUser = { 
     //     mail: user.email, 
     //     id: user._id, 
@@ -730,19 +730,16 @@ export class AuthService {
         // window['$sleek'].sso = { token: response['token'] }
 
         window['SLEEK_USER'] = { token: response['token'] }
-        
+
         // Load the Sleekplan widget
         this.sleekplanService.loadSleekplan()
-        
+
         // .then(() => {
-        //  console.log('[Auth-SERV] - Sleekplan successfully initialized');
+        //  this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
         // })
         //   .catch(err => {
         //     this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
         //   });
-
-        // Load the Sleekplan widget
-        // this.sleekplanService.loadSleekplan();
       },
       (error) => {
         this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
@@ -988,37 +985,64 @@ export class AuthService {
     this.logger.log(`Cookie "${name}" has been removed.`);
   }
 
-  removeScriptById(scriptId: string) {
-    const script = document.getElementById(scriptId);
-    if (script) {
-      script.parentNode?.removeChild(script);
-      this.logger.log(`Script with ID "${scriptId}" has been removed.`);
-    } else {
-      this.logger.warn(`No script with ID "${scriptId}" found.`);
-    }
+  removeSleekScript() {
+    const scripts = document.querySelectorAll('script');
+    scripts.forEach((script) => {
+      if (script.src === 'https://client.sleekplan.com/sdk/e.js') {
+        script.remove(); // Remove the script element
+        this.logger.log('Sleekplan script removed successfully.');
+      }
+    });
 
+    // Manually reset the $sleek object
     if (window['$sleek']) {
       delete window['$sleek'];
-      this.logger.log('$sleek object removed.');
+      // window['$sleek'] = undefined; // Force reset
+      this.logger.log('$sleek object reset.');
+
+      // Add an additional safeguard
+      Object.defineProperty(window, '$sleek', {
+        value: null,
+        configurable: true, // Allows future overwrites
+        writable: true,
+      });
+
+      this.logger.log('Sleekplan state fully reset.');
     }
   }
 
-  // resetSleekplanUser() {
-  //   if (window && window['$sleek']) {
-  //     window['$sleek']?.shutdown()
-  //   }
-  //   this.removeScriptById('sleek-widget');
-  //   this.sleekplanService.hasLogout()
-  //   if (window.hasOwnProperty('SLEEK_USER')) { 
-  //     console.log('[AUTH-SERV] SLEEK_USER window ', window['SLEEK_USER']);
-  //     delete window['SLEEK_USER'];
-  //     console.log('[AUTH-SERV] SLEEK_USER has been removed from the window object.');
-  //     // this.deleteCookie('_sleek_product');
-  //     // console.log('Current cookies:', document.cookie);
-  //   } else {
-  //     console.warn('SLEEK_USER does not exist on the window object.');
-  //   }
-  // }
+  resetSleekplanUser() {
+    if (window && window['$sleek']) {
+      window['$sleek']?.shutdown()
+    }
+
+
+    // Force reload the page
+    // console.log('Reloading page to reset Sleekplan state.');
+    // window.location.reload();
+
+    // this.removeSleekScript();
+    // this.sleekplanService.hasLogout()
+    // if (window.hasOwnProperty('SLEEK_USER')) { 
+    //   console.log('[AUTH-SERV] SLEEK_USER window ', window['SLEEK_USER']);
+    //   delete window['SLEEK_USER'];
+    //   console.log('[AUTH-SERV] SLEEK_USER has been removed from the window object.');
+    //   // this.deleteCookie('_sleek_product');
+    //   // console.log('Current cookies:', document.cookie);
+    // } else {
+    //   console.warn('SLEEK_USER does not exist on the window object.');
+    // }
+
+    // if (window.hasOwnProperty('SLEEK_PRODUCT_ID')) { 
+    //   console.log('[AUTH-SERV] SLEEK_PRODUCT_ID window ', window['SLEEK_PRODUCT_ID']);
+    //   delete window['SLEEK_PRODUCT_ID'];
+    //   console.log('[AUTH-SERV] SLEEK_PRODUCT_ID has been removed from the window object.');
+    //   // this.deleteCookie('_sleek_product');
+    //   // console.log('Current cookies:', document.cookie);
+    // } else {
+    //   console.warn('SLEEK_PRODUCT_ID does not exist on the window object.');
+    // }
+  }
 
   closeSleekplanWidget() {
     const sleekIframe = document.getElementById('sleek-widget-wrap');
@@ -1028,7 +1052,7 @@ export class AuthService {
       if (window && window['$sleek']) {
         this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] usecase 1 ', window['$sleek'])
         window['$sleek'].close();
-      } 
+      }
     } else {
       this.logger.log('[AUTH-SERV] - closeSleekplanWidget Sleekplan widget is already closed')
     }

@@ -622,7 +622,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
-        // console.log('APP-COMP sleekplanSso ')
+        // this.logger.log('APP-COMP sleekplanSso ')
         // window['$sleek'].setUser = { 
         //     mail: user.email, 
         //     id: user._id, 
@@ -651,6 +651,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // window['$sleek'].sso = { token: response['token'] }
     
             window['SLEEK_USER'] = { token: response['token'] }
+
             // Load the Sleekplan widget
             this.sleekplanService.loadSleekplan().then(() => {
                 this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
@@ -661,7 +662,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           (error) => {
             this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
-            // this.sleekplanService.loadSleekplan()
+           
           }
         );
       }
