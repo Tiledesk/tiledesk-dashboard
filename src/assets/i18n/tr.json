@@ -612,6 +612,7 @@
     "IncludeChatbotsOnlyConversations": "Yalnızca Chatbot konuşmalarını dahil et",
     "HideChatbotAttributesWidget":"Chatbot Nitelikleri widget'ını gizle",
     "EnablingThisOptionHidesChatbotAttributes": "Bu seçeneği etkinleştirmek, sohbet robotunun niteliklerini konuşma ayrıntıları kenar çubuğundan gizler",
+    "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Aylık kaynak kotanızı artırmak için bizimle iletişime geçin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

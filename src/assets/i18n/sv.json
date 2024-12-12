@@ -611,6 +611,7 @@
     "IncludeChatbotsOnlyConversations": "Inkludera endast chatbots-konversationer",
     "HideChatbotAttributesWidget":"Dölj widgeten Chatbot-attribut",
     "EnablingThisOptionHidesChatbotAttributes": "Om du aktiverar det här alternativet döljs chatbotens attribut från sidofältet för konversationsinformation",
+    "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Kontakta oss för att öka dina månatliga resurskvoter",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

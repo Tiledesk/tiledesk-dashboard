@@ -609,6 +609,7 @@
     "IncludeChatbotsOnlyConversations": "Inclure uniquement les conversations des chatbots",
     "HideChatbotAttributesWidget":"Masquer le widget des attributs du chatbot",
     "EnablingThisOptionHidesChatbotAttributes": "L'activation de cette option masque les attributs du chatbot dans la barre latérale des détails de la conversation",
+    "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Contactez-nous pour augmenter vos quotas de ressources mensuels",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

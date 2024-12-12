@@ -1191,7 +1191,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   presentModalIncreaseMonltlResource() {
     Swal.fire({
       title: this.translate.instant('Pricing.UpgradePlan'),
-      text: "Contact us to increase your monthly resources quotas",
+      text: this.translate.instant('ContactUsToIncreaseYourMonthlyResourcesQuotas'), //"Contact us to increase your monthly resources quotas",
       // html: `contentText`,
       icon: "warning",
       showCloseButton: true,
