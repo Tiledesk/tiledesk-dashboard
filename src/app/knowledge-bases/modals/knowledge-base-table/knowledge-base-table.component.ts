@@ -4,7 +4,7 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChange
 // import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { KB_DEFAULT_PARAMS } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, URL_kb } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 
@@ -33,6 +33,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
+  // last added
+  @Output() openBaseModalPreviewSettings = new EventEmitter();
+  @Output() onOpenAddContents = new EventEmitter();
+  
   kbsListCountCurrentValue: number;
 
   timeoutId: any;
@@ -303,6 +307,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.openBaseModalPreview.emit();
   }
 
+  onOpenBaseModalPreviewSettings() {
+    this.openBaseModalPreviewSettings.emit();
+  }
+
+  onOpenAddContent() {
+    this.logger.log('onOpenAddContent');
+    this.onOpenAddContents.emit();
+  }
+
   onOpenBaseModalDelete(kb) {
     // kb.deleting = true;
     this.openBaseModalDelete.emit(kb);
@@ -312,6 +325,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // this.logger.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
+
+  
+
 
   getSubtitle(kb) {
     this.logger.log('getSubtitle')
@@ -329,13 +345,18 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(type) {
-    // this.logger.log('onOpenAddKnowledgeBaseModal', type);
+    this.logger.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
 
   onCheckStatus(kb) {
     // this.logger.log('onCheckStatus:: ', kb);
     this.checkStatus.emit(kb);
+  }
+
+  goToKbDoc() {
+    const url = URL_kb;
+    window.open(url, '_blank');
   }
 
 }

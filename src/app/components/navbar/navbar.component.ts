@@ -41,6 +41,10 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
+import { SleekplanApiService } from 'app/services/sleekplan-api.service';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -211,6 +215,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   startSlot: string;
   endSlot: string;
 
+  newChangelogCount: boolean;
+  // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -230,7 +237,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public brandService: BrandService,
     public localDbService: LocalDbService,
     private logger: LoggerService,
-    private quotesService: QuotesService
+    private quotesService: QuotesService,
+    private sleekplanApi: SleekplanApiService,
+    public dialog: MatDialog,
   ) {
 
     super(prjctPlanService, notifyService);
@@ -250,7 +259,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   ngOnInit() {
     this.getCurrentProject();
-    this.getProjectUserRole();
     this.getProfileImageStorage();
 
     // -------------------------------------------
@@ -271,7 +279,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.getUnservedRequestLenght_bs();
 
 
-    this.getProjectUserId();
+    this.getProjectUser();
 
     this.getActiveRoute();
     this.hidePendingEmailNotification();
@@ -285,7 +293,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getFromLocalStorageHasOpenedTheChat();
     this.getFromNotifyServiceHasOpenedChat();
 
-    this.getUserAvailability();
     this.hasChangedAvailabilityStatusInSidebar();
     this.hasChangedAvailabilityStatusInUsersComp();
     // this.subscribeToLogoutPressedinSidebarNavMobile();
@@ -303,6 +310,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
     this.manageVoiceQuotaVisibility()
+    this.listenSoundPreference()
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
@@ -314,6 +322,24 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+  listenSoundPreference() {
+    this.wsRequestsService.hasChangedSoundPreference$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((newSoundPreference) => {
+        this.logger.log('[NAVBAR] - LISTEN TO SOUND PREFERNCE CHANGED ', newSoundPreference);
+        if (newSoundPreference !== null) {
+          this.NOTIFICATION_SOUND = newSoundPreference;
+        }
+      }, error => {
+        this.logger.error('[NAVBAR] - LISTEN TO SOUND PREFERNCE CHANGED * ERROR * ', error)
+      }, () => {
+        this.logger.log('[NAVBAR] - LISTEN TO SOUND PREFERNCE CHANGED *** COMPLETE *** ')
+      });
   }
 
 
@@ -410,7 +436,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -651,7 +676,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
       if (this.user) {
-
+        this.fetchNewChangelogCount(this.user);
         const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
         if (stored_preferred_lang) {
@@ -725,29 +750,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
     // this.logger.log('[NAVBAR] AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
-
-  getProjectUserRole() {
-    // const user___role =  this.usersService.project_user_role_bs.value;
-    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
-
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
-        }
-      });
-  }
-
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -852,13 +854,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
     this.logger.log('[NAVBAR] ===== BRS LANG ', this.browserLang)
-  }
-
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
   }
 
   hasChangedAvailabilityStatusInSidebar() {
@@ -1552,24 +1547,25 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((requests) => {
+        this.logger.log('[NAVBAR] notifyLastUnserved - requests  ', requests)
+        const unserved = requests.filter((requests: any) => {
+          return requests.status === 100;
+        });
 
-        if (requests) {
-          requests.forEach(r => {
-
-            const participantsArray = r.participants // new used with ws 
-            // this.logger.log([NAVBAR] participantsArray ', participantsArray);
-
-            // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
-            const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
-            // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
-
+        const unservedCount = unserved.length
+        this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount)
+        // if (requests) {
+        if (unservedCount) {
+          let count = 0;
+          // requests.forEach(r => {
+          unserved.forEach(r => {
 
             // --------------------------------------------------------------------------
             // @ get stored request
             // --------------------------------------------------------------------------
             const storedRequest = localStorage.getItem(r.id + '_' + r.status);
             // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
-
+            count = count + 1;
             // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
             if (r.status === 100 && !storedRequest && this.user !== null) {
 
@@ -1577,22 +1573,68 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
               // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
               if (this.ROLE_IS_AGENT === true) {
                 if (this.hasmeInAgents(r.agents) === true) {
+
+
+                  this.logger.log('[NAVBAR] notifyLastUnserved - count A ', count)
+                  this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count ', unservedCount)
                   this.displayUnservedInAppNotification(r)
+                  if (unservedCount === count) {
+                    this.logger.log('[NAVBAR] notifyLastUnserved - count A HERE', count)
+                    this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count A HERE', unservedCount)
+                    this.playSoundForUnservedNotifications();
+                  }
                 }
               } else {
+
+                this.logger.log('[NAVBAR] notifyLastUnserved - count B', count)
+                this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B', unservedCount)
                 this.displayUnservedInAppNotification(r)
+
+                if (unservedCount === count) {
+                  this.logger.log('[NAVBAR] notifyLastUnserved - count B HERE', count)
+                  this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B HERE', unservedCount)
+                  this.playSoundForUnservedNotifications();
+                }
               }
             }
-
-
-
           });
+
+
         }
       }, error => {
         this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
       }, () => {
         this.logger.log('[NAVBAR] notifyLastUnservedRequest */* COMPLETE */*')
       })
+  }
+
+  playSoundForUnservedNotifications() {
+    this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
+    if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
+      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+      // if (this.hasPlayed === false) {
+      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+      this.audio = new Audio();
+
+      this.audio.src = 'assets/pling.mp3';
+      // this.logger.log('sidebar audio src ',  this.audio.src )
+      this.audio.load();
+
+      this.audio.play().then(() => {
+
+        this.hasPlayed = true
+        this.logger.log('[NAVBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+
+        setTimeout(() => {
+          this.hasPlayed = false;
+          this.logger.log('[NAVBAR] - SOUND HAS PLAYED  hasPlayed ', this.hasPlayed)
+
+        }, 4000);
+      }).catch((error: any) => {
+        this.logger.log('[NAVBAR] ***soundMessage error*', error);
+      });
+      // }
+    }
   }
 
 
@@ -1614,8 +1656,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
       this.notifyService.showUnservedNotication(contact_fullname, r.first_text, url)
 
-      const count = +this.localDbService.getForegrondNotificationsCount();
-      this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
+      // const count = +this.localDbService.getForegrondNotificationsCount();
+      // this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
 
       this.shown_requests[r.id] = true;
 
@@ -1624,6 +1666,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       // @ set request to store (doUnservedDateDiffAndShowNotification)
       // --------------------------------------------------------------------------
       localStorage.setItem(r.id + '_' + r.status, 'true');
+
 
     }
 
@@ -1635,241 +1678,241 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // NOTE: ARE DISPLAYED IN THE NOTIFICATION ONLY THE UNSERVED REQUEST (support_status = 100)
   // THAT ARE NOT FOUND (OR HAVE THE VALUE FALSE) IN THE LOCAL DICTIONARY shown_requests
   // FURTHERMORE THE NOTICATIONS WILL NOT BE DISPLAYED IF THE USER OBJECT IS NULL (i.e THERE ISN'T USER LOGGED IN)
-  notifyLastUnservedAndCurrentUserRequest() {
-    // this.requestsService.requestsList_bs.subscribe((requests) => {
-    this.subscription = this.wsRequestsService.wsRequestsList$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((requests) => {
+  // notifyLastUnservedAndCurrentUserRequest() {
+  //   // this.requestsService.requestsList_bs.subscribe((requests) => {
+  //   this.subscription = this.wsRequestsService.wsRequestsList$
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((requests) => {
 
-        if (requests) {
-          requests.forEach(r => {
+  //       if (requests) {
+  //         requests.forEach(r => {
 
-            const participantsArray = r.participants // new used with ws 
-            // this.logger.log([NAVBAR] participantsArray ', participantsArray);
+  //           const participantsArray = r.participants // new used with ws 
+  //           // this.logger.log([NAVBAR] participantsArray ', participantsArray);
 
-            // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
-            const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
-            // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
-
-
-            // --------------------------------------------------------------------------
-            // @ get stored request
-            // --------------------------------------------------------------------------
-            const storedRequest = localStorage.getItem(r.id + '_' + r.status);
-            // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
-
-            // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
-            if (r.status === 100 && !storedRequest && this.user !== null) {
+  //           // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
+  //           const currentUserIsInParticipants = participantsArray.includes(this.user._id); // new used with ws 
+  //           // this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST currentUserIsInParticipants ', currentUserIsInParticipants);
 
 
-              // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
-              if (this.ROLE_IS_AGENT === true) {
-                if (this.hasmeInAgents(r.agents) === true) {
-                  this.doUnservedDateDiffAndShowNotification(r)
-                }
-              } else {
-                this.doUnservedDateDiffAndShowNotification(r)
-              }
-            }
+  //           // --------------------------------------------------------------------------
+  //           // @ get stored request
+  //           // --------------------------------------------------------------------------
+  //           const storedRequest = localStorage.getItem(r.id + '_' + r.status);
+  //           // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
+
+  //           // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
+  //           if (r.status === 100 && !storedRequest && this.user !== null) {
 
 
-            if (this.user !== null && !storedRequest && currentUserIsInParticipants === true) {
-              // const requestCreationDate = moment(r.createdAt);
-              const requestUpdatedTime = moment(r.updatedAt);
-
-              const currentTime = moment();
-
-              // const dateDiff = currentTime.diff(requestCreationDate, 'h');
-              const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-
-              const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-
-              let contact_fullname = ''
-              this.logger.log('[NAVBAR] -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
-              if (r.lead && r.lead.fullname) {
-                contact_fullname = r.lead.fullname
-              } else {
-                contact_fullname = ""
-              }
-
-              this.showNotification(
-                '<span style="font-weight: 400; font-family: Poppins, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
-                '<em style="font-family: Poppins, sans-serif;color:#7695a5!important">' + r.first_text +
-                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
-                4,
-                'border-left-color: rgb(77, 175, 79)',
-                'new-chat-icon-served-by-me.png'
-              );
+  //             // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
+  //             if (this.ROLE_IS_AGENT === true) {
+  //               if (this.hasmeInAgents(r.agents) === true) {
+  //                 this.doUnservedDateDiffAndShowNotification(r)
+  //               }
+  //             } else {
+  //               this.doUnservedDateDiffAndShowNotification(r)
+  //             }
+  //           }
 
 
-              this.shown_my_requests[r.id] = true;
+  //           if (this.user !== null && !storedRequest && currentUserIsInParticipants === true) {
+  //             // const requestCreationDate = moment(r.createdAt);
+  //             const requestUpdatedTime = moment(r.updatedAt);
+
+  //             const currentTime = moment();
+
+  //             // const dateDiff = currentTime.diff(requestCreationDate, 'h');
+  //             const dateDiff = currentTime.diff(requestUpdatedTime, 's');
+
+  //             const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+
+  //             let contact_fullname = ''
+  //             this.logger.log('[NAVBAR] -  currentUserIsInParticipants DATE DIFF (s) ', dateDiff);
+  //             if (r.lead && r.lead.fullname) {
+  //               contact_fullname = r.lead.fullname
+  //             } else {
+  //               contact_fullname = ""
+  //             }
+
+  //             this.showNotification(
+  //               '<span style="font-weight: 400; font-family: Poppins, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
+  //               '<em style="font-family: Poppins, sans-serif;color:#7695a5!important">' + r.first_text +
+  //               '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+  //               4,
+  //               'border-left-color: rgb(77, 175, 79)',
+  //               'new-chat-icon-served-by-me.png'
+  //             );
 
 
-              // --------------------------------------------------------------------------
-              // @ set request to store (notifyLastUnservedAndCurrentUserRequest)
-              // --------------------------------------------------------------------------
-              localStorage.setItem(r.id + '_' + r.status, 'true');
-
-            }
-
-          });
-        }
-      }, error => {
-        this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
-      }, () => {
-        this.logger.log('[NAVBAR] notifyLastUnservedRequest */* COMPLETE */*')
-      })
-  }
-
-  doUnservedDateDiffAndShowNotification(r) {
-    // const requestCreationDate = moment(r.createdAt);
-    const requestUpdatedTime = moment(r.updatedAt);
-    const currentTime = moment();
-    this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST TODAY ', currentTime);
-
-    // const dateDiff = currentTime.diff(requestCreationDate, 'h');
-    const dateDiff = currentTime.diff(requestUpdatedTime, 's');
-    // this.logger.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
-
-    /**
-     * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
-     */
+  //             this.shown_my_requests[r.id] = true;
 
 
-    // if (dateDiff < 5) {
+  //             // --------------------------------------------------------------------------
+  //             // @ set request to store (notifyLastUnservedAndCurrentUserRequest)
+  //             // --------------------------------------------------------------------------
+  //             localStorage.setItem(r.id + '_' + r.status, 'true');
 
-    // this.lastRequest = requests[requests.length - 1];
-    // this.logger.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+  //           }
 
-    // this.logger.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-    // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
-    const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-    this.logger.log('[NAVBAR] unserved request url ', url);
+  //         });
+  //       }
+  //     }, error => {
+  //       this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
+  //     }, () => {
+  //       this.logger.log('[NAVBAR] notifyLastUnservedRequest */* COMPLETE */*')
+  //     })
+  // }
 
-    this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
+  // doUnservedDateDiffAndShowNotification(r) {
+  //   // const requestCreationDate = moment(r.createdAt);
+  //   const requestUpdatedTime = moment(r.updatedAt);
+  //   const currentTime = moment();
+  //   this.logger.log('[NAVBAR] notifyLastUnservedRequest REQUEST TODAY ', currentTime);
 
-    let contact_fullname = ''
-    if (r.lead && r.lead.fullname) {
-      contact_fullname = r.lead.fullname
-    } else {
-      contact_fullname = ""
-    }
+  //   // const dateDiff = currentTime.diff(requestCreationDate, 'h');
+  //   const dateDiff = currentTime.diff(requestUpdatedTime, 's');
+  //   // this.logger.log('IN-APP-NOTIFICATION  notifyLastUnservedRequest DATE DIFF (second)', dateDiff);
 
-    this.showNotification(
-      '<span style="font-weight: 400; font-family: Poppins, sans-serif;color:#2d323e!important">' + contact_fullname + '</span>' +
-      '<em style="font-family: Poppins, sans-serif;color:#7695a5!important">' + r.first_text +
-      '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
-      3,
-      'border-left-color: rgb(237, 69, 55)',
-      'new-chat-icon-unserved.png'
-    );
-
-    this.shown_requests[r.id] = true;
-    // this.logger.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
-    // r.notification_already_shown = true;
-
-    // --------------------------------------------------------------------------
-    // @ set request to store (doUnservedDateDiffAndShowNotification)
-    // --------------------------------------------------------------------------
-    localStorage.setItem(r.id + '_' + r.status, 'true');
+  //   /**
+  //    * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
+  //    */
 
 
-  }
+  //   // if (dateDiff < 5) {
+
+  //   // this.lastRequest = requests[requests.length - 1];
+  //   // this.logger.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+
+  //   // this.logger.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+  //   // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+  //   const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+  //   this.logger.log('[NAVBAR] unserved request url ', url);
+
+  //   this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
+
+  //   let contact_fullname = ''
+  //   if (r.lead && r.lead.fullname) {
+  //     contact_fullname = r.lead.fullname
+  //   } else {
+  //     contact_fullname = ""
+  //   }
+
+  //   this.showNotification(
+  //     '<span style="font-weight: 400; font-family: Poppins, sans-serif;color:#2d323e!important">' + contact_fullname + '</span>' +
+  //     '<em style="font-family: Poppins, sans-serif;color:#7695a5!important">' + r.first_text +
+  //     '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+  //     3,
+  //     'border-left-color: rgb(237, 69, 55)',
+  //     'new-chat-icon-unserved.png'
+  //   );
+
+  //   this.shown_requests[r.id] = true;
+  //   // this.logger.log('IN-APP-NOTIFICATION shown_requests ', this.shown_requests)
+  //   // r.notification_already_shown = true;
+
+  //   // --------------------------------------------------------------------------
+  //   // @ set request to store (doUnservedDateDiffAndShowNotification)
+  //   // --------------------------------------------------------------------------
+  //   localStorage.setItem(r.id + '_' + r.status, 'true');
 
 
-  showNotification(text: string, notificationColor: number, borderColor: string, chatIcon: string) {
-    // this.logger.log('show notification' )
-    const type = ['', 'info', 'success', 'warning', 'danger'];
-
-    // const color = Math.floor((Math.random() * 4) + 1);
-    // the tree corresponds to the orange
-    const color = notificationColor
-
-    // this.logger.log('COLOR ', color)
-    // const color = '#ffffff';
-
-    // the in-app notifications are not displayed if the route is /request-for-panel
-    if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
+  // }
 
 
-      // const elemNotificationAlert = $('#request-notify');
-      // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) notify alert get by id ', elemNotificationAlert)
+  // showNotification(text: string, notificationColor: number, borderColor: string, chatIcon: string) {
+  //   // this.logger.log('show notification' )
+  //   const type = ['', 'info', 'success', 'warning', 'danger'];
+
+  //   // const color = Math.floor((Math.random() * 4) + 1);
+  //   // the tree corresponds to the orange
+  //   const color = notificationColor
+
+  //   // this.logger.log('COLOR ', color)
+  //   // const color = '#ffffff';
+
+  //   // the in-app notifications are not displayed if the route is /request-for-panel
+  //   if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
 
 
-      this.notify = $.notify({
-        icon: 'notifications',
-        // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
-        // this.lastRequest.text + '<br>ID: ' + request_recipient,
-        message: text
-        // url: 'routerLink="/requests"',
-        // url: 'https://github.com/mouse0270/bootstrap-notify',
-        // url: '<a routerLink="/requests">',
-        // url: this.router.navigate(['/requests']),
-        // target: '_self'
-        // border-left-color: rgb(255, 179, 40);
-
-      }, {
-        type: type[color],
-        timer: 1000,
-        template:
-          `<div id="request-notify" data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
-                    class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
-          '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
-          '<div class="row">' +
-          '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
-          '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
-          '</div>' +
-          '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
-          '<span data-notify="title">{1}</span>' +
-          '<span data-notify="message">{2}</span>' +
-          '</div>' +
-          '</div>' +
-          '</div>'
-        // placement: {
-        //     from: from,
-        //     align: align
-        // }
-      },
-        {
-          // onClose: this.test(),
-        }
-      );
-
-    } // end if IS_REQUEST_FOR_PANEL_ROUTE
+  //     // const elemNotificationAlert = $('#request-notify');
+  //     // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) notify alert get by id ', elemNotificationAlert)
 
 
-    //------------------------------------------
-    // Notification Sound
-    //------------------------------------------
+  //     this.notify = $.notify({
+  //       icon: 'notifications',
+  //       // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
+  //       // this.lastRequest.text + '<br>ID: ' + request_recipient,
+  //       message: text
+  //       // url: 'routerLink="/requests"',
+  //       // url: 'https://github.com/mouse0270/bootstrap-notify',
+  //       // url: '<a routerLink="/requests">',
+  //       // url: this.router.navigate(['/requests']),
+  //       // target: '_self'
+  //       // border-left-color: rgb(255, 179, 40);
+
+  //     }, {
+  //       type: type[color],
+  //       timer: 1000,
+  //       template:
+  //         `<div id="request-notify" data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
+  //                   class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
+  //         '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
+  //         '<div class="row">' +
+  //         '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
+  //         '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
+  //         '</div>' +
+  //         '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
+  //         '<span data-notify="title">{1}</span>' +
+  //         '<span data-notify="message">{2}</span>' +
+  //         '</div>' +
+  //         '</div>' +
+  //         '</div>'
+  //       // placement: {
+  //       //     from: from,
+  //       //     align: align
+  //       // }
+  //     },
+  //       {
+  //         // onClose: this.test(),
+  //       }
+  //     );
+
+  //   } // end if IS_REQUEST_FOR_PANEL_ROUTE
 
 
-    this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
-    // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
-    // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-    if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
-      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-      if (this.hasPlayed === false) {
-        // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
-        this.audio = new Audio();
-        // this.audio.src = 'assets/Carme.mp3';
-        // this.audio.src = 'assets/microbounce.mp3';
-        // this.audio.src = 'assets/justsaying.mp3';
-        this.audio.src = 'assets/intuition-561.mp3';
+  //   //------------------------------------------
+  //   // Notification Sound
+  //   //------------------------------------------
 
-        this.audio.load();
-        this.audio.play();
 
-      }
+  //   this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
+  //   // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
+  //   // this.logger.log('[NAVBAR] NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+  //   if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
+  //     // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+  //     if (this.hasPlayed === false) {
+  //       // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+  //       this.audio = new Audio();
+  //       // this.audio.src = 'assets/Carme.mp3';
+  //       // this.audio.src = 'assets/microbounce.mp3';
+  //       // this.audio.src = 'assets/justsaying.mp3';
+  //       this.audio.src = 'assets/intuition-561.mp3';
 
-    }
-    this.hasPlayed = true
-    // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-    setTimeout(() => {
-      this.hasPlayed = false
-    }, 3000);
-  }  // end show notification
+  //       this.audio.load();
+  //       this.audio.play();
+
+  //     }
+
+  //   }
+  //   this.hasPlayed = true
+  //   // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+  //   setTimeout(() => {
+  //     this.hasPlayed = false
+  //   }, 3000);
+  // }  // end show notification
 
 
 
@@ -1967,16 +2010,50 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     return 'Dashboard';
   }
 
-  getProjectUserId() {
-    this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-      this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser_id);
-      this.projectUser_id = projectUser_id;
+  getProjectUser() {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser);
+      if(projectUser){
+        this.projectUser_id = projectUser._id;
+        this.IS_AVAILABLE = projectUser.user_available;
+
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
+
+        } else {
+          this.ROLE_IS_AGENT = false;
+        }
+      }
     });
   }
 
   openLogoutModal() {
-    this.displayLogoutModal = 'block';
+    // this.displayLogoutModal = 'block';
     this.auth.hasOpenedLogoutModal(true);
+
+    this.logger.log('[NAVBAR] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'navbar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        this.logger.log(`[NAVBAR] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+
+  logout() {
+    this.logger.log('[NAVBAR] RUN LOGOUT FROM NAV-BAR')
+    this.auth.showExpiredSessionPopup(false);
+    this.auth.signOut('navbar');
   }
 
   onCloseModal() {
@@ -1992,11 +2069,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.displayLogoutModal = 'none';
   }
 
-  logout() {
-    this.logger.log('[NAVBAR] RUN LOGOUT FROM NAV-BAR')
-    this.auth.showExpiredSessionPopup(false);
-    this.auth.signOut('navbar');
-  }
+ 
 
   testExpiredSessionFirebaseLogout() {
     this.auth.testExpiredSessionFirebaseLogout(true)
@@ -2020,7 +2093,73 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
   }
 
+
+  openFeedback(): void {
+    // console.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
+    // if (window['Sleekplan']?.open) {
+    //   window['Sleekplan'].open();
+    // }this.user
+    this.logger.log('[NAVBAR] open Sleekplan this.user', this.user)
+    this.logger.log('[NAVBAR] open Sleekplan ', window['$sleek'])
+    window['$sleek'].toggle();
+    const lastSeen = Date.now()
+    this.logger.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
+    // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
+    localStorage.setItem(`lastSeenTimestamp-${this.user._id}`,lastSeen.toString())
+    this.newChangelogCount = false
+    
+  }
+
+  fetchNewChangelogCount(user) {
+    let storedLastSeen = localStorage.getItem(`lastSeenTimestamp-${user._id}`)
+
+    this.logger.log('[NAVBAR] changelog lastSeen form storedLastSeen', storedLastSeen);
+    this.logger.log('[NAVBAR] changelog lastSeen form storage type of', typeof storedLastSeen);
+    let lastSeen = 0
+    if (storedLastSeen !== null ) {
+      lastSeen = +storedLastSeen
+    }
+    this.sleekplanApi.getNewChangelogCount().subscribe(
+      (resp) => {
+        // this.newChangelogCount = data.count;
+        this.logger.log('[NAVBAR] changelog count resp', resp);
+        this.logger.log('[NAVBAR] changelog count  resp data ', resp['data']);
+        this.logger.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
+        const data = resp['data']['items']
+    
+        const firstKey = Object.keys(data)[0]; // Get the first key in the object
+        const createdValue = data[firstKey].created; // Access the created property
+
+        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue); 
+        const createdValueTimestamp = new Date(createdValue).getTime();
+        this.logger.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
+
+        this.logger.log('[NAVBAR] lastSeen ', lastSeen);
+        if (lastSeen ) {
+          if (createdValueTimestamp > lastSeen) {
+            this.logger.log('[NAVBAR]  there is a notification 1');
+            this.newChangelogCount = true
+          } else {
+            this.logger.log('[NAVBAR]  there is NOT notification ');
+            this.newChangelogCount = false
+          }
+        } else {
+         
+          this.newChangelogCount = true;
+          this.logger.log('[NAVBAR] there is a notification 2 newChangelogCount ', this.newChangelogCount);
+        
+        }
+      },
+      (error) => {
+        this.logger.error('Failed to fetch new changelog count', error);
+        this.newChangelogCount = true;
+      }
+    );
+  }
+
   // changeThemeColor() {
   //   this.document.body.classList.add('dark');
   // }
 }
+
+

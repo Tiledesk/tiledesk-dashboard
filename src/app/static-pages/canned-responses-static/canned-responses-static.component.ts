@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
+import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
 
 @Component({
@@ -137,14 +138,12 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.USER_ROLE = user_role;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
         this.logger.log('[CANNED-RES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
-      });
+      }
+    });
   }
 
 

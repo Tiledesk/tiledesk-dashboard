@@ -26,6 +26,8 @@ import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
 import { BrandService } from 'app/services/brand.service'
 import { CacheService } from 'app/services/cache.service'
+import { SleekplanSsoService } from 'app/services/sleekplan-sso.service'
+import { SleekplanService } from 'app/services/sleekplan.service'
 // import { ProjectService } from 'app/services/project.service'
 // import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
@@ -102,7 +104,9 @@ export class AuthService {
     private logger: LoggerService,
     public brandService: BrandService,
     private scriptService: ScriptService,
-    private cacheService:  CacheService,
+    private cacheService: CacheService,
+    private sleekplanSsoService: SleekplanSsoService,
+    private sleekplanService: SleekplanService
     // private projectService: ProjectService,
     // public myapp: AppComponent
     // private prjctPlanService: ProjectPlanService,
@@ -261,7 +265,7 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project , ' calledBy ', calledBy)
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project, ' calledBy ', calledBy)
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
@@ -300,7 +304,7 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
-     this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
+      this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
@@ -358,7 +362,7 @@ export class AuthService {
               url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
-              this.logger.log( '[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
+              this.logger.log('[AUTH-SERV] NAVIGATION-PROJECT-ID IS UNDEFINED 2', this.nav_project_id, ' - UNSUBSCRIBE FROM ROUTER-EVENTS')
 
               this.subscription.unsubscribe()
 
@@ -432,7 +436,7 @@ export class AuthService {
   }
 
   checkRoleForCurrentProjectPermissionOnlyToOwner() {
-    this.logger.log(  '[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
+    this.logger.log('[AUTH-SERV] - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT')
     let project_id = ''
     if (this.nav_project_id !== undefined) {
       project_id = this.nav_project_id
@@ -598,27 +602,31 @@ export class AuthService {
 
         if (user) {
           // used in signOut > removeInstanceId
-          this.userId = user._id
+          this.userId = user._id;
+
+
+          this.sleekplanSso(user)
+
         }
 
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes['token']
 
         // const userRole = 
-       
+
 
         // PUBLISH THE USER OBJECT
         this.user_bs.next(user)
 
         // SET USER IN LOCAL STORAGE
-        localStorage.setItem('user', JSON.stringify(user))    
+        localStorage.setItem('user', JSON.stringify(user))
         localStorage.setItem('tiledesk_token', user.token) // x autologin of Chat ionic
         this.logger.log('[AUTH-SERV] > USER ', user)
 
         ///////////////////
         this.logger.log('[AUH-SERV] SSO - LOGIN 1. POST DATA ', jsonRes)
         if (jsonRes['success'] === true) {
-          this.logger.log( '[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth',this.appConfigService.getConfig().firebaseAuth )
+          this.logger.log('[AUTH-SERV] SSO - LOGIN getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
 
           if (this.appConfigService.getConfig().firebaseAuth === true) {
             this.logger.log('[AUTH-SERV] SSO - LOGIN - WORKS WITH FIREBASE ')
@@ -683,6 +691,60 @@ export class AuthService {
         this.logger.error('[AUTH-SERV] SSO - LOGIN - SIGNIN POST REQUEST ERROR', error)
         callback(error)
       })
+  }
+
+  sleekplanSso(user) {
+
+    // this.logger.log('AUT-SERV sleekplanSs')
+    // window['$sleek'].setUser = { 
+    //     mail: user.email, 
+    //     id: user._id, 
+    //     name: user.firstname, 
+    // }
+
+    // window['SLEEK_USER'] = {
+    //   mail: user.email,
+    //   id: user._id,
+    //   name: user.firstname,
+    // }
+
+    this.sleekplanSsoService.getSsoToken(user).subscribe(
+      (response) => {
+        this.logger.log('[Auth-SERV] sleekplanSso response ', response)
+        this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
+      
+        // Configure Sleekplan with SSO
+        // window['Sleekplan'] = {
+        //   id: 'YOUR_SLEEKPLAN_ID',
+        //   sso: response.token,
+        // };
+
+        // window['$sleek'].setUser({
+        //   token: response['token'],
+        // });
+
+        // window.document.addEventListener('sleek:init', () => {
+        //   window['$sleek'].setUser({ token: response['token'] });
+        // }, false);
+
+        // window['$sleek'].sso = { token: response['token'] }
+
+        window['SLEEK_USER'] = { token: response['token'] }
+
+        this.sleekplanService.loadSleekplan().then(() => {
+          this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
+        })
+        .catch(err => {
+          this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
+        });
+
+        // Load the Sleekplan widget
+        // this.sleekplanService.loadSleekplan();
+      },
+      (error) => {
+        this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
+      }
+    );
   }
 
 
@@ -919,8 +981,22 @@ export class AuthService {
     }
   }
 
+  resetSleekplanUser() {
+    window['$sleek'].shutdown()
+  }
+
+  closeSleekplanWidget() {
+    if (window && window['$sleek']) {
+      window['$sleek'].close();
+    } else {
+      this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] ', window['$sleek'])
+    }
+  }
+
   signOut(calledby: string) {
     this.cacheService.clearCache()
+    // this.resetSleekplanUser()
+    this.closeSleekplanWidget()
     // this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {
@@ -1077,7 +1153,7 @@ export class AuthService {
         this.logger.log('[AUTH-SERV] SIGNOUT - STORED stored__tiledeskToken : ', stored__tiledeskToken)
       }
 
-      const stored__lastProject = localStorage.getItem('last_project') 
+      const stored__lastProject = localStorage.getItem('last_project')
       if (stored__lastProject) {
         localStorage.removeItem('last_project')
         this.logger.log('[AUTH-SERV] SIGNOUT - STORED stored__lastProjectn : ', stored__lastProject)
@@ -1128,7 +1204,7 @@ export class AuthService {
               vapidKey: this.appConfigService.getConfig().firebase.vapidKey,
             })
             .then((FCMtoken) => {
-              this.logger.log( '[AUTH-SERV] signOut >>>> getToken FCMtoken',  FCMtoken)
+              this.logger.log('[AUTH-SERV] signOut >>>> getToken FCMtoken', FCMtoken)
               this.FCMcurrentToken = FCMtoken
               const storedUser = localStorage.getItem('user')
               const storedUserObj = JSON.parse(storedUser)

@@ -241,3 +241,11 @@ $f21blue: #039be5;
   margin-left: -10px;
   margin-right: 6px;
 }
+
+.tab-active-color {
+ color: var( --blue-light) !important;
+ 
+}
+::ng-deep .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: var( --blue-light) !important; // #673ab7;
+}

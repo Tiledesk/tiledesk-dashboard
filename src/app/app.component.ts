@@ -35,6 +35,9 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
+import { HttpClient } from '@angular/common/http';
+import { SleekplanSsoService } from './services/sleekplan-sso.service';
+import { SleekplanService } from './services/sleekplan.service';
 // import { UsersService } from './services/users.service';
 
 
@@ -100,6 +103,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
+       
+        private sleekplanSsoService: SleekplanSsoService,
+        private  sleekplanService: SleekplanService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
@@ -349,13 +355,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //             this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
     //             // this.current_selected_prjct = project
     //             this.projectService.getProjects().subscribe((projects: any) => {
-    //                 console.log('[APP-COMPONENT] getProjects projects ', projects)
+    //                 this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
     //                 if (projects) {
     //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-    //                     console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+    //                     this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
                        
     //                     this.USER_ROLE = this.current_selected_prjct_user.role
-    //                     console.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
+    //                     this.logger.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
     //                 }
     //             })
     //         }
@@ -372,7 +378,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event : ', event)
                 const count = +that.usersLocalDbService.getForegrondNotificationsCount();
                 that.logger.log('[APP-COMPONENT] FIREBASE-NOTIFICATION  - Received a message from service worker event count ', count)
-                that.wsRequestsService.publishAndStoreForegroundRequestCount(count)
+                that.wsRequestsService.publishAndStoreForegroundRequestCount(count, 'App-comp listenToSwPostMessage')
             })
         }
     }
@@ -410,7 +416,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
         // this.logger.log('>>>>>>>> onStorageChanged foregrondNotificationsCount', foregrondNotificationsCount)
         this.count = foregrondNotificationsCount
-        this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount)
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount, 'App-comp onStorageChanged')
         if (this.count === 0) {
             const brand = this.brandService.getBrand();
             document.title = brand['META_TITLE']
@@ -487,7 +493,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 this.count = this.count + 1;
                 // this.logger.log('snd test foreground notification count ', this.count);
-                this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+                this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count, 'App comp - listenToFCMForegroundMsgs')
 
                 const elemNotification = document.getElementById('foreground-not');
                 // this.logger.log('[APP-COMPONENT] !! elemNotification  ', elemNotification)
@@ -561,7 +567,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.count = this.count + 1;
         // this.logger.log('snd test foreground notification count ', this.count);
-        this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count)
+        this.wsRequestsService.publishAndStoreForegroundRequestCount(this.count, 'App comp sendForegroundMsg')
         // const brand = this.brandService.getBrand();
     }
 
@@ -615,11 +621,57 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
+    sleekplanSso(user) {
+        // this.logger.log('APP-COMP sleekplanSso ')
+        // window['$sleek'].setUser = { 
+        //     mail: user.email, 
+        //     id: user._id, 
+        //     name: user.firstname, 
+        // }
+    
+        this.sleekplanSsoService.getSsoToken(user).subscribe(
+          (response) => {
+            this.logger.log('[APP-COMP] sleekplanSso response ', response)
+            this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
+    
+            // Configure Sleekplan with SSO
+            // window['Sleekplan'] = {
+            //   id: 'YOUR_SLEEKPLAN_ID',
+            //   sso: response.token,
+            // };
+    
+            // window['$sleek'].setUser({
+            //   token: response['token'],
+            // });
+    
+            // window.document.addEventListener('sleek:init', () => {
+            //   window['$sleek'].setUser({ token: response['token'] });
+            // }, false);
+           
+            // window['$sleek'].sso = { token: response['token'] }
+    
+            window['SLEEK_USER'] = { token: response['token'] }
+            // Load the Sleekplan widget
+            this.sleekplanService.loadSleekplan().then(() => {
+                this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
+              })
+              .catch(err => {
+                this.logger.error('[APP-COMP] - Sleekplan initialization failed', err);
+              });
+          },
+          (error) => {
+            this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
+            // this.sleekplanService.loadSleekplan()
+          }
+        );
+      }
 
     getCurrentUserAndConnectToWs() {
-       
         this.auth.user_bs.subscribe((user) => {
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            if (user) {
+                this.sleekplanSso(user)
+            }
             if (!user) {
                 this.wsInitialized = false;
             }
@@ -886,9 +938,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     elemSidebarWrapper.style.height = "100vh";
                 } else {
+                    // elemSidebarWrapper.style.height = "calc(100vh - 44px)";
                     elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-                    // elemSidebarWrapper.style.height = "calc(100vh - 35px)";
-                    // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
+                    
+                    
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {

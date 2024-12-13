@@ -12,6 +12,7 @@ import { ContactsService } from 'app/services/contacts.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-home-convs-graph',
@@ -226,13 +227,11 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
  
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getMonthsName() {

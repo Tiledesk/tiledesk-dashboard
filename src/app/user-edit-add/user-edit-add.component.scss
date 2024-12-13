@@ -13,9 +13,11 @@ input[type="text"] {
   border-radius: 5px;
   background-color: #fff;
 }
+
 input[type="text"]:disabled {
   background-color: rgb(248, 249, 249);
 }
+
 input[type="text"].invalid-email {
   border: 1px solid #f44336 !important;
 }
@@ -34,6 +36,7 @@ input[type="email"] {
   border-radius: 5px;
   background-color: #fff;
 }
+
 input[type="email"]:disabled {
   background-color: rgb(248, 249, 249);
 }
@@ -52,9 +55,11 @@ input[type="number"] {
   border-radius: 5px;
   background-color: #fff;
 }
+
 input[type="number"]:disabled {
   background-color: rgb(248, 249, 249);
 }
+
 select {
   height: 36px;
   font-size: 14px;
@@ -119,6 +124,7 @@ select[disabled] {
 .modal {
   top: 0;
 }
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -150,6 +156,7 @@ button.close {
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -177,6 +184,7 @@ button.close {
   background-color: #eeeeee;
   padding-top: 10px !important;
 }
+
 
 /* MODAL END */
 
@@ -244,11 +252,11 @@ button.close {
   transition: 0.4s;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   background-color: #1eb848;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   // background-color: #2196F3;
   background: #fff;
 }
@@ -257,7 +265,7 @@ input:checked + .slider {
 //     box-shadow: 0 0 1px #2196F3;
 //   }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(40px);
   -ms-transform: translateX(40px);
   transform: translateX(40px);
@@ -271,6 +279,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 // <!-- END SWITCH  -->
 
 // start new SWITCH BTN
@@ -283,9 +292,11 @@ input:checked + .slider:before {
   -ms-user-select: none;
   user-select: none;
 }
+
 .onoffswitch-checkbox__availability_status {
   display: none;
 }
+
 .onoffswitch-label__availability_status {
   display: block;
   overflow: hidden;
@@ -294,12 +305,14 @@ input:checked + .slider:before {
   border: 1px solid #d9d9d9 !important;
   border-radius: 22px;
 }
+
 .onoffswitch-inner__availability_status {
   display: block;
   width: 200%;
   margin-left: -100%;
   transition: margin 0.3s ease-in 0s;
 }
+
 .onoffswitch-inner__availability_status:before,
 .onoffswitch-inner__availability_status:after {
   display: block;
@@ -314,12 +327,14 @@ input:checked + .slider:before {
   // font-weight: bold;
   box-sizing: border-box;
 }
+
 .onoffswitch-inner__availability_status:before {
   content: "Available";
   padding-left: 10px;
   // background-color: #EEEEEE;
   color: #4caf50;
 }
+
 .onoffswitch-inner__availability_status:after {
   content: "Unavailable";
   padding-right: 10px;
@@ -327,6 +342,7 @@ input:checked + .slider:before {
   color: #f44336;
   text-align: right;
 }
+
 .onoffswitch-switch__availability_status {
   display: block;
   width: 21px;
@@ -342,21 +358,17 @@ input:checked + .slider:before {
   border-radius: 22px;
   transition: all 0.3s ease-in 0s;
 }
-.onoffswitch-checkbox__availability_status:checked
-  + .onoffswitch-label__availability_status
-  .onoffswitch-inner__availability_status {
+
+.onoffswitch-checkbox__availability_status:checked+.onoffswitch-label__availability_status .onoffswitch-inner__availability_status {
   margin-left: 0;
 }
-.onoffswitch-checkbox__availability_status:checked
-  + .onoffswitch-label__availability_status
-  .onoffswitch-switch__availability_status {
+
+.onoffswitch-checkbox__availability_status:checked+.onoffswitch-label__availability_status .onoffswitch-switch__availability_status {
   right: 0px;
   background-color: #4caf50;
 }
 
-.onoffswitch-checkbox__availability_status:disabled
-  + .onoffswitch-label__availability_status
-  .onoffswitch-switch__availability_status {
+.onoffswitch-checkbox__availability_status:disabled+.onoffswitch-label__availability_status .onoffswitch-switch__availability_status {
   background-color: #ddd;
 }
 
@@ -377,6 +389,7 @@ input:checked + .slider:before {
 .right-col-custom-padding {
   padding-right: 10px !important;
   padding-left: 5px !important;
+  margin-top: -15px;
 }
 
 @media (max-width: 768px) {
@@ -508,6 +521,7 @@ input:checked + .slider:before {
   .tag_icon_in_ws_msgs {
     fill: rgba(233, 235, 238, 0.3) !important;
   }
+
   .tag-delete {
     opacity: 1;
     font-size: 16px;
@@ -531,6 +545,7 @@ input:checked + .slider:before {
   border-bottom-left-radius: 0px;
   margin-bottom: 0px;
 }
+
 .tag-name-required-error {
   color: #f6303a;
   font-size: 12px;
@@ -570,4 +585,43 @@ input:checked + .slider:before {
 
 .upgrade---plan-btn:hover {
   background: #e8eaed;
+}
+
+.invite-teammate-card {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  margin-top: 15px;
+  border-radius: 12px;
+}
+
+.invite-button {
+  padding-right: 25px !important;
+  padding-left: 25px !important;
+}
+
+.link-string {
+  color: var(--blue-light); // #039be5; 
+  cursor: pointer
+}
+
+.link-string:hover {
+  text-decoration: underline;
+}
+
+.help-link>span>svg {
+  fill: var(--blue-light);
+}
+
+.help-link>a {
+  color: var(--blue-light) !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+  // text-decoration: underline;
+}
+
+.help-link:hover>a {
+  text-decoration: underline;
 }

@@ -20,6 +20,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ProjectUser } from 'app/models/project-user';
 @Component({
   selector: 'appdashboard-template-detail',
   templateUrl: './template-detail.component.html',
@@ -230,13 +231,12 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
 
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((user_role) => {
-        if (user_role) {
-          this.USER_ROLE = user_role
-          // this.logger.log('[TEMPLATE DETAIL] user_role ', user_role);
-        }
-      });
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+        // this.logger.log('[TEMPLATE DETAIL] user_role ', user_role);
+      }
+    });
   }
 
   getTestSiteUrl() {
