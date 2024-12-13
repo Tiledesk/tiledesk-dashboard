@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.49-rc1
+- Adds voice quota usage count
+
 ### 2.7.48-rc1
 - Implements a widget to notify customers about Tiledesk updates
 
