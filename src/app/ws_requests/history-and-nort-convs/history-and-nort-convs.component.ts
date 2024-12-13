@@ -1482,8 +1482,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               let newFillColour = '';
 
               if (request.lead && request.lead.fullname) {
+                this.logger.log('request.lead.fullname', request.lead.fullname)
+                this.logger.log('request.lead.fullname is a number', !isNaN(Number(request.lead.fullname)) )
                 newInitials = avatarPlaceholder(request.lead.fullname);
                 newFillColour = getColorBck(request.lead.fullname)
+                if (!isNaN(Number(request.lead.fullname))) {
+                  request['fullnameIsNumber'] = true
+                }
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';

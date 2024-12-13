@@ -1551,21 +1551,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 return true
               }
 
-
-
             });
           }
         }
 
-
-
         this.ws_requests.forEach((request) => {
 
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
-
           const user_agent_result = this.parseUserAgent(request.userAgent)
-          // console.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
-
+          // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
 
           request['ua_browser'] = ua_browser;
@@ -1714,6 +1708,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
             request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
             request['requester_fullname'] = request.lead.fullname;
+
+            if (!isNaN(Number(request.lead.fullname))) {
+              request['fullnameIsNumber'] = true
+            }
           } else {
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';

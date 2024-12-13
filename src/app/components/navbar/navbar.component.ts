@@ -507,8 +507,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
 
-      console.log('[NAVBAR] used voice', resp.quotes.voice_duration.quote)
-      console.log('[NAVBAR] voice_limit', this.voice_limit)
+      this.logger.log('[NAVBAR] used voice', resp.quotes.voice_duration.quote)
+      this.logger.log('[NAVBAR] voice_limit', this.voice_limit)
 
       if (resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
@@ -537,12 +537,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       // if (120000 >= this.voice_limit) {
       if (resp.quotes.voice_duration.quote >= this.voice_limit) {
         this.voiceRunnedOut = true;
-        console.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
+        this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
       } else {
         this.voiceRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        console.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+        this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
       }
 
 
@@ -582,9 +580,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
       this.voice_count = resp.quotes.voice_duration.quote
-      console.log("[NAVBAR] getAllQuotes voice_count: ", this.voice_count)
+      this.logger.log("[NAVBAR] getAllQuotes voice_count: ", this.voice_count)
       this.voice_count_min_sec =  this.secondsToMinutes_seconds(this.voice_count)
-      console.log("[HOME] getAllQuotes  voice_count_min_sec: ", this.voice_count_min_sec)
+      this.logger.log("[HOME] getAllQuotes  voice_count_min_sec: ", this.voice_count_min_sec)
 
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
