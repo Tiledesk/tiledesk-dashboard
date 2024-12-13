@@ -986,10 +986,16 @@ export class AuthService {
   }
 
   closeSleekplanWidget() {
-    if (window && window['$sleek']) {
-      window['$sleek'].close();
+    const sleekIframe = document.getElementById('sleek-widget-wrap');
+    this.logger.log('[AUTH-SERV] - closeSleekplanWidget sleekIframe ', sleekIframe)
+    if (sleekIframe) {
+      this.logger.log('AUTH-SERV] - closeSleekplanWidget Sleekplan widget is open. Closing it now.');
+      if (window && window['$sleek']) {
+        this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] usecase 1 ', window['$sleek'])
+        window['$sleek'].close();
+      }
     } else {
-      this.logger.log('[AUTH-SERV] - closeSleekplanWidget window[$sleek] ', window['$sleek'])
+      this.logger.log('[AUTH-SERV] - closeSleekplanWidget Sleekplan widget is already closed')
     }
   }
 

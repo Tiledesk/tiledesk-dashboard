@@ -24,7 +24,6 @@
       <!-- <a class="navbar-brand" href="#">Testina</a> -->
     </div>
     <div class="collapse navbar-collapse">
-     
 
       <ul class="nav navbar-nav navbar-right">
         <!-- <li>
@@ -50,27 +49,30 @@
           </a>
         </li> -->
 
+        <!-- -------------------------------------------- -->
+        <!-- Quote - usage stats  indicator -->
+        <!-- -------------------------------------------- -->
+        <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
+        <ng-container *ngIf="project && isVisibleQuoteBtn">
+          <li id="usage-stats">
 
-        <!--  ------------------------------------------------ -->
-        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
-        <!--  ------------------------------------------------ -->
-        <!-- *ngIf="isVisiblePay" -->
-        <ng-container >
-          <li
-            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
-            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
-            <a>
-              <!--  ------------------------------------------------ -->
-              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
-              <!--  ------------------------------------------------ -->
-              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
-                (click)="openModalSubsExpired()" class="expired__Tooltip">
-                <i class="material-icons"
-                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
-                  error_outline
-                </i>
-                <span class="expired__Tooltiptext"
-                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+            <!-- mat-mini-fab -->
+            <button mat-button aria-label="trend icon" [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
+              class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
+              (click)="onOpenQuoteMenu()">
+              <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
+              <mat-icon class="data-usage-icon" >
+                data_usage
+              </mat-icon>
+              <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
+              <mat-icon style="color: #555555"
+                [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
+                arrow_drop_down
+              </mat-icon>
+            </button>
+            <!--  -->
+            <mat-menu #menu="matMenu" class="quotas-usage-menu" xPosition="before"
+              style="margin-top: 6px !important; width: 280px !important;">
 
               <div class="menu-container">
                 <!-- <p class="menu-title">{{'Usage' | translate}}</p> -->
@@ -420,280 +422,42 @@
         <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisiblePay">
-          <li id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> 
-              <button class="btn btn-success-no-boxshadow upgrade-plan-btn" >
-              {{ "Pricing.UpgradePlan" | translate }} 
-            </button>
-            </a>
+          <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
+            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
         </ng-container>
 
-        <!-- -------------------------------------------- -->
-        <!-- Quote - usage stats  indicator -->
-        <!-- -------------------------------------------- -->
-        <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
-        <ng-container *ngIf="project && isVisibleQuoteBtn">
-          <li id="usage-stats">
 
-            <!-- mat-mini-fab -->
-            <button mat-button aria-label="trend icon" [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
-              class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
-              (click)="onOpenQuoteMenu()">
-              <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
-              <mat-icon class="data-usage-icon">
-                data_usage
-              </mat-icon>
-              <span>{{'CurrentUsage' | translate}}</span>
-              <mat-icon style="color: #555555"
-                [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
-                arrow_drop_down
-              </mat-icon>
-            </button>
-            <!--  -->
-            <mat-menu #menu="matMenu" class="quotas-usage-menu" xPosition="before"
-              style="margin-top: 6px !important; width: 280px !important;">
+        <!--  ------------------------------------------------ -->
+        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
+        <!--  ------------------------------------------------ -->
+        <!-- *ngIf="isVisiblePay" -->
+        <ng-container >
+          <li
+            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
+            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
+            <a>
+              <!--  ------------------------------------------------ -->
+              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
+              <!--  ------------------------------------------------ -->
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
+                (click)="openModalSubsExpired()" class="expired__Tooltip">
+                <i class="material-icons"
+                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
+                  error_outline
+                </i>
+                <span class="expired__Tooltiptext"
+                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
 
-              <div class="menu-container">
-                <!-- <p class="menu-title">{{'Usage' | translate}}</p> -->
-                <!-- <div class="quotes-container">
-
-                  <div class="quote-container">
-
-                    <div>
-                      <p class="quote-title">{{'Requests' | translate}}</p>
-                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div> 
-                      <p class="quote-title">Conversations</p>
-                      <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
-                    </div>
-
-
-                    <div class="quote">
-
-                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                        [mode]="'determinate'" [value]="requests_perc">
-                      </mat-progress-spinner>
-
-                      <div class="percentage">{{ requests_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                  <div class="quote-container">
-
-                    <!- - // number:'1.0-1' to diplay minimun 0 and manximum 1 digit after the comma - ->
-                    <div class="quota-wpr">
-                      <div class="quota-header-section">
-                        <p class="quote-title">AI Tokens</p>
-                        <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="quote">
-                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                        [mode]="'determinate'" [value]="tokens_perc">
-                      </mat-progress-spinner>
-
-                      <div class="percentage">{{ tokens_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div class="quote-container">
-
-                    <div class="quota-wpr">
-                      <div class="quota-header-section">
-                        <p class="quote-title">Email</p>
-                        <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <div class="quote">
-              
-                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                        [mode]="'determinate'" [value]="email_perc">
-                      </mat-progress-spinner>
-
-                      <div class="percentage">{{ email_perc }}<span
-                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                  </div>
-                </div> -->
-
-
-
-                <!-- ------- -->
-                <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
-                  <div class="quotas-usage-container">
-                    <div aria-label="Usage limit for Conversations" class="quota-section-main">
-                      <div class="quota-container-wpr">
-                        <div class="quota-container">
-                          <div class="quota-left-column-wpr">
-                            <div class="quota-title-wpr">
-                              <h2 class="quota-title">
-                                <!-- Conversations -->
-                                {{'Conversations' | translate}}
-                              </h2>
-                              <!-- <span  class="quota-plan-badge">Free</span> -->
-                            </div>
-                            <!-- <p class="quota-partial-count-link" (click)="goToHistoryOpenedConvs()"> <span style="text-transform: lowercase;"> {{'OpenConvsCount' | translate: {conv_num: openedConversations}  }}</span></p>
-                            <p class="quota-partial-count-link" (click)="goToHistoryClosedConvs()"><span style="text-transform: lowercase;"> {{'ClosedConvsCount' | translate: {conv_num: closedConversations} }}</span></p> -->
-                          </div>
-                          <div class="quota-right-column-wpr">
-                            <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title link" (click)="goToHistoryAllConvs()">
-                                <!-- Total conversations usage -->
-                                {{'TotalConversationsUsage' | translate}}
-                              </p>
-                              <div class="quota-limit-wpr">
-                                <p class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
-                                <!-- <p  class="quota-limit">{{openedConversations + closedConversations}} /&nbsp;</p> -->
-                                <p class="quota-limit">{{requests_limit | number:'1.0-0'}}</p>
-                              </div>
-                            </div>
-                            <div class="quota-pie" style="width: 50px; height: 50px;">
-                              <!-- <svg class="svg-pi"
-                                style="width: 32px; height: 32px;">
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3">
-                                </circle>
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3"
-                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
-                                  stroke-linecap="round">
-                                </circle>
-                              </svg> -->
-                              <!-- [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}" -->
-                              <!-- <svg width="0" height="0">
-                                <defs>
-                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color: green; stop-opacity: 1;" />
-                                        <stop offset="50%" style="stop-color: yellow; stop-opacity: 1;" />
-                                        <stop offset="75%" style="stop-color: orange; stop-opacity: 1;" />
-                                        <stop offset="100%" style="stop-color: red; stop-opacity: 1;" />
-                                    </linearGradient>
-                                </defs>
-                            </svg> -->
-                              <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
-                              <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50"
-                                [color]="'primary'" [mode]="'determinate'" [value]="requests_perc"
-                                [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
-                              </mat-progress-spinner>
-                              <div class="quota-pie-label">
-                                {{ requests_perc }}%
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- <a class="css-2jls5z e1y2rc4y0" href="/panel/settings/live-chat/installation">Install Chat
-                          Widget to see this
-                        </a> -->
-                      </div>
-                    </div>
-                    <div aria-label="Usage limit for AI Tokens" class="quota-section-main">
-                      <div class="quota-container-wpr">
-                        <div class="quota-container">
-                          <div class="quota-left-column-wpr">
-                            <div class="quota-title-wpr">
-                              <h2 class="quota-title">AI Tokens</h2>
-                              <!-- <span  class="quota-plan-badge">Free</span> -->
-                            </div>
-
-                          </div>
-                          <div class="quota-right-column-wpr">
-                            <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title">
-                                <!-- Total AI Tokens usage -->
-                                {{'TotalAITokensUsage' | translate}}
-                              </p>
-                              <div class="quota-limit-wpr">
-                                <p class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
-                                <p class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
-                              </div>
-                            </div>
-                            <div class="quota-pie" style="width: 50px; height: 50px;">
-                              <!-- <svg class="svg-pi"
-                                style="width: 32px; height: 32px;">
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3">
-                                </circle>
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3"
-                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
-                                  stroke-linecap="round"></circle>
-                              </svg> -->
-                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
-                                [color]="'primary'" [mode]="'determinate'" [value]="tokens_perc"
-                                [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
-                              </mat-progress-spinner>
-                              <div class="quota-pie-label">{{ tokens_perc }}%</div>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <div aria-label="Usage limit for Email" class="quota-section-main last">
-                      <div class="quota-container-wpr">
-                        <div class="quota-container">
-                          <div class="quota-left-column-wpr">
-                            <div class="quota-title-wpr">
-                              <h2 class="quota-title">{{'Email' | translate}}</h2>
-                              <!-- <span class="quota-plan-badge">Free</span> -->
-                            </div>
-                            <!-- <p  class="quota-resets">Quota resets on 19 Sep 2024</p> -->
-                          </div>
-                          <div class="quota-right-column-wpr">
-                            <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title">
-                                <!-- Total email usage -->
-                                {{'TotalEmailUsage' | translate}}
-                              </p>
-                              <div class="quota-limit-wpr">
-                                <p class="quota-limit">{{email_count | number:'1.0-0'}} /&nbsp;</p>
-                                <p class="quota-limit">{{email_limit | number:'1.0-0'}}</p>
-                              </div>
-                            </div>
-                            <div class="quota-pie" style="width: 50px; height: 50px;">
-                              <!-- <svg class="svg-pi"
-                                style="width: 32px; height: 32px;">
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#dce9ff" stroke-width="3">
-                                </circle>
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#0566ff" stroke-width="3"
-                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
-                                  stroke-linecap="round"></circle>
-                              </svg> -->
-                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
-                                [color]="'primary'" [mode]="'determinate'" [value]="email_perc"
-                                [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
-                              </mat-progress-spinner>
-                              <div class="quota-pie-label">{{ email_perc }}% </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <!-- ------------ -->
-
-                <div class="quotas-upgrade-btn-wpr">
-                  <button *ngIf="isVisiblePay" mat-flat-button class="quotas-upgrade-btn" (click)="goToPricing()">
-                    <span class="material-icons-outlined">bolt</span>
-                    {{ "Pricing.UpgradePlan" | translate }}
-                  </button>
-                </div>
-
-              </div>
-
-            </mat-menu>
+                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                  </span>
+                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
+                    {{ 'Pricing.ThePlanHasExpired' | translate }}
+                  </span>
+                </span>
+              </span>
+            </a>
           </li>
         </ng-container>
 
