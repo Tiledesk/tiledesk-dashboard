@@ -239,6 +239,7 @@
                                   stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
                                   stroke-linecap="round"></circle>
                               </svg> -->
+                             
                               <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
                                 [mode]="'determinate'" [value]="tokens_perc" 
                                 [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
@@ -328,7 +329,7 @@
                               </svg> -->
                               <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
                                 [mode]="'determinate'" [value]="voice_perc"
-                                [ngClass]="{'mat-progress-spinner-voice-runned-out': emailsRunnedOut}">
+                                [ngClass]="{'mat-progress-spinner-voice-runned-out': voiceRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">{{ voice_perc }}% </div>
                             </div>

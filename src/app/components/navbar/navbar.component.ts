@@ -185,6 +185,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   voice_count = 0;
   voice_perc = 0;
   voice_limit = 0;
+  voice_limit_in_sec = 0;
   voice_count_min_sec: any;
 
   requestsPieStroke: string;
@@ -475,6 +476,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.requests_limit = this.project_limits.requests;
         this.email_limit = this.project_limits.email;
         this.tokens_limit = this.project_limits.tokens;
+        this.voice_limit_in_sec = this.project_limits.voice_duration
         this.voice_limit = Math.floor(this.project_limits.voice_duration / 60);
       }
 
@@ -532,6 +534,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
       }
 
+      // if (120000 >= this.voice_limit) {
       if (resp.quotes.voice_duration.quote >= this.voice_limit) {
         this.voiceRunnedOut = true;
         console.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
@@ -547,7 +550,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
-      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit) * 100));
+      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit_in_sec) * 100));
+      // this.voice_perc = Math.min(100, Math.floor((120000 / this.voice_limit_in_sec) * 100));
+
       this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
       if (this.requests_perc <= 25) {
         this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
