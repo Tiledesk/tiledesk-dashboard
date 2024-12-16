@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.49
+- Improves the conversations graph and analytics overview on the home page 
+
 ### 2.7.48
 - Implements a widget to notify customers about Tiledesk updates
 
