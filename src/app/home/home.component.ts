@@ -460,9 +460,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((hasOpen) => {
 
-        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        console.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+
         if (this.projectId) {
-          this.getQuotes()
+          if (hasOpen !== null) {
+            this.getQuotes()
+          }
         }
       })
 
@@ -473,7 +476,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] getAllQuotes response: ", resp)
       this.quotes = resp
 
-      this.logger.log("[HOME] project_limits: ", this.project_limits)
+      console.log("[HOME] project_limits: ", this.project_limits)
       this.logger.log("[HOME] resp.quotes: ", resp.quotes)
       if (this.project_limits) {
         this.messages_limit = this.project_limits.messages;
@@ -511,7 +514,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[HOME] tokens_limit', this.tokens_limit)
 
-  
+
 
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
@@ -533,41 +536,43 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] get all quotes *COMPLETE*");
       setTimeout(() => {
         this.displayQuotaSkeleton = false
-        this.getRunnedOutQuotes( this.quotes)
+        this.getRunnedOutQuotes(this.quotes)
       }, 1000);
 
     })
   }
 
   getRunnedOutQuotes(resp) {
-    if (resp.quotes.requests.quote >= this.requests_limit) {
-      this.conversationsRunnedOut = true;
-      this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-      // this.quotesService.hasReachedQuotasLimitInHome(true)
-    } else {
-      this.conversationsRunnedOut = false;
-      // this.quotesService.hasReachedQuotasLimitInHome(false)
-      this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-    }
+    if (this.project_limits) {
+      if (resp.quotes.requests.quote >= this.project_limits.requests) {
+        this.conversationsRunnedOut = true;
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.conversationsRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+      }
 
-    if (resp.quotes.email.quote >= this.email_limit) {
-      this.emailsRunnedOut = true;
-      this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-      // this.quotesService.hasReachedQuotasLimitInHome(true)
-    } else {
-      this.emailsRunnedOut = false;
-      // this.quotesService.hasReachedQuotasLimitInHome(false)
-      this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-    }
+      if (resp.quotes.email.quote >= this.project_limits.email) {
+        this.emailsRunnedOut = true;
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.emailsRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+      }
 
-    if (resp.quotes.tokens.quote >= this.tokens_limit) {
-      this.tokensRunnedOut = true;
-      this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-      // this.quotesService.hasReachedQuotasLimitInHome(true)
-    } else {
-      this.tokensRunnedOut = false;
-      // this.quotesService.hasReachedQuotasLimitInHome(false)
-      this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+      if (resp.quotes.tokens.quote >= this.project_limits.tokens) {
+        this.tokensRunnedOut = true;
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.tokensRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+      }
     }
   }
 
@@ -1803,7 +1808,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   presentModalConfirmUnistallWatsApp() {
     Swal.fire({
       title: this.translate.instant('AreYouSure'), // "Are you sure", 
-      text:  this.translate.instant('TheAppWillBeDeleted'), // "The app will be deleted", // this.appWillBeDeletedMsg, 
+      text: this.translate.instant('TheAppWillBeDeleted'), // "The app will be deleted", // this.appWillBeDeletedMsg, 
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
