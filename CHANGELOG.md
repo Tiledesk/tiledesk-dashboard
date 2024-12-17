@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.50-rc1
+- Adds the ability to select the refresh rate for URL(s) type contents
+
 ### 2.7.49
 - Improves the conversations graph and analytics overview on the home page 
 
