@@ -713,6 +713,7 @@ export class AuthService {
         this.logger.log('[Auth-SERV] sleekplanSso response ', response)
         this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
         this.logger.log('[Auth-SERV] sleekplanSso response $sleek', window['$sleek'])
+      
         // Configure Sleekplan with SSO
         // window['Sleekplan'] = {
         //   id: 'YOUR_SLEEKPLAN_ID',

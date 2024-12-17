@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Jami AI Tokens foydalanish",
     "TotalEmailUsage": "Jami elektron pochtadan foydalanish",
     "Email": "Email",
+    "Voice":"Ovoz",
+    "TotalVoiceUsage": "Ovozdan umumiy foydalanish",
     "RequestsForAgent": "Agent uchun suhbatlar",
     "RequestsForDept": "Kafedra uchun suhbatlar",
     "NumberOfRequestsLast7Days": "Oxirgi 7 kunlik suhbatlar soni",
@@ -613,6 +615,9 @@
     "HideChatbotAttributesWidget":"Chatbot atributlari vidjetini yashirish",
     "EnablingThisOptionHidesChatbotAttributes": "Ushbu parametr yoqilsa, chatbotning atributlari suhbat tafsilotlari yon panelidan yashiriladi",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Oylik resurslar kvotalarini oshirish uchun biz bilan bog'laning",
+    "AccessDenied":"Ruxsat berilmadi",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Siz bu loyihaning jamoadoshi emassiz",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Sizga ruxsat berish uchun loyiha administratoriga murojaat qiling",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
