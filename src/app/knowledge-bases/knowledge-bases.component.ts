@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -62,7 +62,7 @@ const Swal = require('sweetalert2')
   styleUrls: ['./knowledge-bases.component.scss']
 })
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
   typeKnowledgeBaseModal: string;
@@ -89,7 +89,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   project: Project;
   project_name: string;
   id_project: string;
+
+
   profile_name: string;
+
+  isAvailableRefreshRateFeature: boolean;
+  t_params: any
+
   callingPage: string;
   errorMessage: string;
 
@@ -137,10 +143,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   contactUs: string;
   upgrade: string;
   cancel: string;
-
   paramsDefault: string // = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-
-
   selectedNamespace: any;
   hasChangedNameSpace: boolean = false;
 
@@ -335,9 +338,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+      const isActiveSubscription = project.isActiveSubscription
+      const trialExpired = project.trialExpired
+      const projectProfileType = project.profile.type
+      this.manageRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
+      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - isActiveSubscription: ', isActiveSubscription);
     }, error => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
@@ -357,6 +365,130 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.getAllNamespaces()
       }
     });
+  }
+
+  manageRefreshRateAvailability(profileName, isActiveSubscription, trialExpired, projectProfileType) {
+    console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - profile_name: ', profileName);
+    console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
+    console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', trialExpired);
+    console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
+    this.t_params = { 'plan_name': PLAN_NAME.F }
+    if (projectProfileType === 'free') {
+      if (trialExpired === false) {
+        // Trial active
+        if (profileName === 'free') {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+
+        } else if (profileName === 'Sandbox') {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else {
+        // Trial expired
+        if (profileName === 'free') {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        } else if (this.profile_name === 'Sandbox') {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    } else if (projectProfileType === 'payment') {
+
+      if (isActiveSubscription === true) {
+        // Growth sub active
+        if (profileName === PLAN_NAME.A) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub active
+        } else if (profileName === PLAN_NAME.B) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub active
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.isAvailableRefreshRateFeature = true;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Basic sub active
+        } else if (profileName === PLAN_NAME.D) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Premium sub active
+        } else if (profileName === PLAN_NAME.E) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Team sub active
+        } else if (profileName === PLAN_NAME.EE) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub active
+        } else if (profileName === PLAN_NAME.F) {
+          this.isAvailableRefreshRateFeature = true;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else if (isActiveSubscription === false) {
+        // Growth sub expired
+        if (profileName === PLAN_NAME.A) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub expired
+        } else if (profileName === PLAN_NAME.B) {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub expired
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Basic sub expired
+        } else if (profileName === PLAN_NAME.D) {
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Premium sub expired
+        } else if (profileName === PLAN_NAME.E) {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Team sub expired
+        } else if (profileName === PLAN_NAME.EE) {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub expired
+        } else if (profileName === PLAN_NAME.F) {
+
+          this.isAvailableRefreshRateFeature = false;
+          console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    }
   }
 
 
@@ -394,16 +526,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
-
+    // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
     if (!storedNamespace) {
       this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
 
       const currentUrl = this.router.url;
 
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
       let currentUrlSegment = currentUrl.split('/');
 
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
+      console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
       currentUrlSegment.forEach(segment => {
         if (segment === 'knowledge-bases') {
           this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
@@ -440,11 +572,28 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespace = namespaces.find((el) => {
           return el.id === this.nameSpaceId;
         });
-
-        this.selectedNamespaceName = this.selectedNamespace.name
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-        this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace nameSpaceId != 0', this.selectedNamespace);
+        if (this.selectedNamespace) {
+          this.selectedNamespaceName = this.selectedNamespace.name
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+          this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+          this.getChatbotUsingNamespace(this.selectedNamespace.id)
+        } else {
+          this.selectedNamespace = namespaces.find((el) => {
+            return el.default === true
+          });
+          console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace nameSpaceId != 0 USE CASE  namespace not found', this.selectedNamespace);
+          if (this.selectedNamespace) {
+            this.selectedNamespaceName = this.selectedNamespace.name
+  
+            this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
+  
+            this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+            this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+            this.getChatbotUsingNamespace(this.selectedNamespace.id)
+          }
+        }
       }
 
     } else {
@@ -832,7 +981,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         } else {
           this.logger.log('[KNOWLEDGE-BASES-COMP] Not exist kbOfficialResponderTemplate', kbOfficialResponderTemplate)
           this.esportingKBChatBotTemplate = false;
-          this.presentDialogNotExistThekbOfficialResponderTemplate() 
+          this.presentDialogNotExistThekbOfficialResponderTemplate()
         }
       }
     })
@@ -860,7 +1009,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.esportingKBChatBotTemplate = false
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - COMPLETE');
-      
+
 
     });
   }
@@ -1013,7 +1162,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot') , //"It is not possible to create the chatbot",
+      title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot'), //"It is not possible to create the chatbot",
       text: this.translate.instant('YourProjectIsMissingTheTemplateNeededToCreateTheChatbot') + ' !',
       icon: "error",
       showCloseButton: false,
@@ -1368,7 +1517,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-  onOpenAddContent(){
+  onOpenAddContent() {
     const dialogRef = this.dialog.open(ModalAddContentComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -1453,28 +1602,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      data: {
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        t_params: this.t_params
+      },
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
+      console.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
       if (body) {
-        this.onAddMultiKb(body)
+        if (!body.hasOwnProperty('upgrade_plan')) {
+          this.onAddMultiKb(body)
+        } else {
+          console.log('Property "upgrade_plan" exist');
+          this.goToPricing()
+        }
+      } else {
+        console.log(body);
       }
     });
 
   }
-
 
   presentModalImportSitemap() {
     const dialogRef = this.dialog.open(ModalSiteMapComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
-
+      data: {
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        t_params: this.t_params
+      },
     });
     dialogRef.afterClosed().subscribe(body => {
-      this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      console.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      // if (body) {
+      //   this.onAddMultiKb(body)
+      // }
       if (body) {
-        this.onAddMultiKb(body)
+        if (!body.hasOwnProperty('upgrade_plan')) {
+          this.onAddMultiKb(body)
+        } else {
+          console.log('Property "upgrade_plan" exist');
+          this.goToPricing()
+        }
+      } else {
+        console.log(body);
       }
 
     });
@@ -1496,6 +1668,46 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     });
 
+  }
+
+  goToPricing() {
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          if (this.profile_name === PLAN_NAME.C) {
+            console.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 1 ')
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            console.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 2 ')
+          } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+            // this.notify._displayContactUsModal(true, 'upgrade_plan');
+            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            console.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 3 ')
+          }
+        } else if (this.prjct_profile_type === 'free') {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE
+
+        ) {
+          console.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 4 ')
+          // this.presentModalFeautureAvailableOnlyWithPlanC()
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        console.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 5 ')
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      console.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 6 ')
+    }
   }
 
   getProjectUserRole() {
@@ -1900,7 +2112,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: false,
           confirmButtonColor: "var(--primary-btn-background)",
           confirmButtonText: this.translate.instant('Ok'),
-       
+
         })
       } else {
         this.listSitesOfSitemap = resp.sites;
@@ -1922,7 +2134,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         showCancelButton: false,
         confirmButtonColor: "var(--primary-btn-background)",
         confirmButtonText: this.translate.instant('Ok'),
-       
+
       })
 
     }, () => {
@@ -2010,7 +2222,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
-        this.logger.log('here 1 this.kbLimit ', this.kbLimit , 'error ', error)
+        this.logger.log('here 1 this.kbLimit ', this.kbLimit, 'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error,
@@ -2030,7 +2242,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        this.logger.log('here 2 this.kbLimit ', this.kbLimit,  'error ', error)
+        this.logger.log('here 2 this.kbLimit ', this.kbLimit, 'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
@@ -2043,7 +2255,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           focusConfirm: false,
           reverseButtons: true,
           // dangerMode: false
-           // buttons: [this.cancel, this.contactUs],
+          // buttons: [this.cancel, this.contactUs],
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2065,7 +2277,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onAddMultiKb(body) {
-    this.logger.log('onAddMultiKb body' ,body) 
+    this.logger.log('onAddMultiKb body', body)
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
@@ -2139,7 +2351,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           confirmButtonColor: "var(--blue-light)",
           canecelButtonText: this.cancel,
           focusConfirm: false,
-            // buttons: [this.cancel, this.contactUs],
+          // buttons: [this.cancel, this.contactUs],
           // dangerMode: false
         }).then((result) => {
           if (result.isConfirmed) {
@@ -2181,9 +2393,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showConfirmButton: false,
           cancelButtonText: this.cancel,
           focusConfirm: false,
-            // confirmButtonText: this.translate.instant('ContactUs'),
+          // confirmButtonText: this.translate.instant('ContactUs'),
           // confirmButtonColor: "var(--blue-light)",
-           // buttons: [null, this.cancel],
+          // buttons: [null, this.cancel],
           // dangerMode: false
         })
 

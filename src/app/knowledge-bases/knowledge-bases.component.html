@@ -413,9 +413,17 @@
               </div>
 
               <!-- START TABLE -->
-              <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
-                [hasRemovedKb]="hasRemovedKb" [hasUpdatedKb]="hasUpdatedKb" [getKbCompleted]="getKbCompleted"
-                [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
+              <knowledge-base-table 
+                [kbsList]="kbsList" 
+                [kbsListCount]="kbsListCount" 
+                [refresh]="refreshKbsList"
+                [hasRemovedKb]="hasRemovedKb" 
+                [hasUpdatedKb]="hasUpdatedKb" 
+                [getKbCompleted]="getKbCompleted"
+                [selectedNamespaceName]="selectedNamespaceName" 
+                [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
+                [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature"
+                [t_params]="t_params"
                 (openBaseModalDetail)="onOpenBaseModalDetail($event)"
                 (openBaseModalDelete)="onOpenBaseModalDelete($event)"
                 (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"

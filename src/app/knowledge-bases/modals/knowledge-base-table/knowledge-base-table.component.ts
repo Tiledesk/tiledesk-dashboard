@@ -25,6 +25,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() hasUpdatedKb: boolean;
   @Input() getKbCompleted: boolean;
   @Input() hasAlreadyVisitedKb: string;
+  @Input() isAvailableRefreshRateFeature: boolean;
+  @Input() t_params: string;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
