@@ -535,7 +535,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       }
 
       // if (120000 >= this.voice_limit) {
-      if (resp.quotes.voice_duration.quote >= this.voice_limit) {
+      if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
         this.voiceRunnedOut = true;
         this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
       } else {
