@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.45-rc1
+- Fixes the bug: voice quota limit is not calculated correctly
+
 ### 2.7.45
 - Improves the app store
 
