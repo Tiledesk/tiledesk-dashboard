@@ -551,7 +551,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
       this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit_in_sec) * 100));
-      //  this.voice_perc = Math.min(100, Math.floor((120000 / this.voice_limit_in_sec) * 100));
+      //  this.voice_perc = Math.min(100, Math.floor((3342 / this.voice_limit_in_sec) * 100));
 
       this.requests_count = resp.quotes.requests.quote;
       this.logger.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
@@ -613,7 +613,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    if (resp.quotes.voice_duration.quote >= this.voice_limit) {
+    if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
+    // if (3342 >= this.voice_limit_in_sec) {   
       this.voiceRunnedOut = true;
       this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
     } else {
