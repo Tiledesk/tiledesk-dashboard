@@ -33,8 +33,8 @@
     right: 0;
     bottom: 0;
     margin-right: 30px;
-    margin-left: 30px;
-    height: 70%;
+    margin-left: 40px;
+    // height: 70%;
 }
 
 .map-frame {
@@ -49,6 +49,15 @@
 
 .right-side-bar {
     width: 100% !important;
+}
+
+.map-header {
+    border-bottom: 1px solid #eeeeee;
+    background-color: #3c4252 !important;
+    color: #fff !important;
+    margin-left: -5px;
+    margin-right: -15px;
+    margin-top: -15px;
 }
 
 // @media (max-width: 723px) {

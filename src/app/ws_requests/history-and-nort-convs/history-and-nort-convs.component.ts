@@ -32,6 +32,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -399,28 +400,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
 
-  }
-
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
-        }
-        if (user_role) {
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-
-          } else {
-            this.ROLE_IS_AGENT = false
-          }
-        }
-      });
   }
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
@@ -1092,36 +1071,46 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   presentModalYouCannotJoinChat() {
-    swal({
+    Swal.fire({
       title: this.joinChatTitle,
       text: this.youCannotJoinChat,
       icon: "info",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
     })
   }
 
   displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request) {
-    swal({
+    Swal.fire({
       title: this.areYouSure,
       text: this.youAreAboutToJoinMsg + ': ' + chatAgent,
-
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.joinToChatMsg,
+      cancelButtonText: this.cancelMsg,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+      reverseButtons: true,
       icon: "info",
-      buttons: {
-        cancel: this.cancelMsg,
-        catch: {
-          text: this.joinToChatMsg,
-          value: "catch",
-        },
-      },
 
-      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-      dangerMode: false,
+
+      // buttons: {
+      //   cancel: this.cancelMsg,
+      //   catch: {
+      //     text: this.joinToChatMsg,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
     })
-      .then((value) => {
-        this.logger.log('[HISTORY & NORT-CONVS] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+      .then((result) => {
+        this.logger.log('[HISTORY & NORT-CONVS] ARE YOU SURE TO JOIN THIS CHAT ... result', result)
 
-        if (value === 'catch') {
+        if (result.isConfirmed) {
           this._onJoinHandled(request_id, this.currentUserID, request);
         }
       })
@@ -1621,6 +1610,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
+  getProjectUserRole() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role
+          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
+          if (this.USER_ROLE === 'agent') {
+            this.ROLE_IS_AGENT = true
+          } else {
+            this.ROLE_IS_AGENT = false
+          }
+        }
+      });
+  }
 
 
   // requestWillBePermanentlyDeleted
@@ -2542,7 +2545,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -2967,12 +2971,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);
@@ -3227,16 +3231,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   deleteArchivedRequest(request_id) {
     this.logger.log('[HISTORY & NORT-CONVS] - deleteArchivedRequest request_id ', request_id)
 
-    swal({
+    Swal.fire({
       title: this.areYouSure + "?",
       text: this.requestWillBePermanentlyDeleted,
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: true,
     })
-      .then((willDelete) => {
-        if (willDelete) {
-          this.logger.log('[HISTORY & NORT-CONVS] swal willDelete', willDelete)
+      .then((result) => {
+        if (result.isDenied) {
+          this.logger.log('[HISTORY & NORT-CONVS] swal willDelete', result)
 
           this.wsRequestsService.deleteRequest(request_id).subscribe((res: any) => {
             this.logger.log('[HISTORY & NORT-CONVS] in swal deleteRequest res ', res)
@@ -3244,20 +3256,35 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           }, (error) => {
             this.logger.error('[HISTORY & NORT-CONVS] in swal deleteRequest res - ERROR ', error);
 
-            swal(this.errorDeleting, this.pleaseTryAgain, {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.errorDeleting + ' ' + this.pleaseTryAgain, 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              confirmButtonColor: "var(--primary-btn-background)",
+
+
+
             });
           }, () => {
             this.logger.log('[HISTORY & NORT-CONVS] in swal deleteRequest res* COMPLETE *');
-            swal(this.done_msg, this.requestWasSuccessfullyDeleted, {
+            Swal.fire( {
+              title: this.done_msg + "!",
+              text: this.requestWasSuccessfullyDeleted,
               icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.getRequests();
             });
 
           });
         } else {
-          this.logger.log('[HISTORY & NORT-CONVS] swal willDelete', willDelete)
+          this.logger.log('[HISTORY & NORT-CONVS] swal willDelete', result)
           // swal("Your imaginary file is safe!");
         }
       });
@@ -3300,12 +3327,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   presentModalReopenConvIsNotPossible() {
-    swal({
+    Swal.fire({
       title: this.warningMsg,
       text: this.conversationsCannotBeReopened,
       icon: "warning",
-      button: "OK",
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+
+      // button: "OK",
+      // dangerMode: false,
     })
   }
 

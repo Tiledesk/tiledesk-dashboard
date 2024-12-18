@@ -483,7 +483,7 @@ export class RequestsComponent implements OnInit {
                 // humanizer.setOptions({ round: true })
                 //this.logger.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
-                // console.log('xxxx ', this.translate.instant('Requests') + ':' + currentItemValue)
+                //  this.logger.log('xxxx ', this.translate.instant('Requests') + ':' + currentItemValue)
                 return this.translate.instant('Requests') + ':' + currentItemValue;
 
                 // if (lang === 'it') {

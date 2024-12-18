@@ -8,6 +8,8 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { AppConfigService } from '../services/app-config.service';
 import { RoleService } from 'app/services/role.service';
+import { BrandService } from 'app/services/brand.service';
+import { URL_canned_responses_doc } from 'app/utils/util';
 @Component({
   selector: 'appdashboard-canned-responses-list',
   templateUrl: './canned-responses-list.component.html',
@@ -15,6 +17,7 @@ import { RoleService } from 'app/services/role.service';
 })
 export class CannedResponsesListComponent implements OnInit {
 
+  public canned_responses_docs_url = URL_canned_responses_doc
   displayModal_AddEditResponse = 'none'
   // displayEditResponseModal = 'none'
   responsesList: Array<any>;
@@ -29,6 +32,7 @@ export class CannedResponsesListComponent implements OnInit {
   storageBucket: string;
   baseUrl: string;
   isChromeVerGreaterThan100: boolean
+  public hideHelpLink: boolean;
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -38,8 +42,12 @@ export class CannedResponsesListComponent implements OnInit {
     private usersLocalDbService: LocalDbService,
     private usersService: UsersService,
     public appConfigService: AppConfigService,
-    public roleService: RoleService
-  ) { }
+    public roleService: RoleService,
+    public brandService: BrandService,
+  ) {
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+   }
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
@@ -224,6 +232,9 @@ export class CannedResponsesListComponent implements OnInit {
     this.getResponses();
   }
 
-
+  goCannedResponseDocs() {
+    const url = this.canned_responses_docs_url;
+    window.open(url, '_blank');
+  }
 
 }

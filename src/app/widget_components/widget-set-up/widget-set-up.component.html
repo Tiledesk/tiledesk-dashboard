@@ -23,7 +23,7 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
 
 	<div class="page-title--sidebar-settings"
-	[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+		[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 		{{ 'WidgetSetUp' | translate }}
 	</div>
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
@@ -49,13 +49,18 @@
 
 						<div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
 							<span>
-								<svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true"
+								<!-- <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true"
 									focusable="false" data-prefix="fab" data-icon="readme"
 									class="svg-inline--fa fa-readme fa-w-18" role="img"
 									xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
 									<path fill="#0f62ff"
 										d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
 									</path>
+								</svg> -->
+								<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+									width="24px" fill="none" style="vertical-align: middle;">
+									<path
+										d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
 								</svg>
 							</span>
 							<span class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
@@ -327,14 +332,14 @@
 					</div>
 				</div> -->
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-xs-12">
 						<div
 							style="margin-left: 20px;font-size: 18px;font-weight: 600;	margin-bottom: 6px;line-height: 28px;">
 							{{ 'CustomizeTheExperience' | translate }}
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="widget-all-settings-wrap" role="main">
 					<div class="row no-gap" style="margin-left: 0; margin-right: 0;">
@@ -942,9 +947,9 @@
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
-												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  appearance_save_btn_bottom"
-													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" btn-success-no-boxshadow-->
+												<button class="btn btn-tdblu-no-boxshadow appearance_save_btn_bottom"
+													style="margin-top: 15px; margin-bottom: 15px;"
 													(click)="saveWidgetAppearance()">
 
 													{{ 'UpdateWidget' | translate }}
@@ -1299,11 +1304,11 @@
 										<h4 class="widget-section-header__title-underlined">
 											Unbranding
 											<ng-container *ngIf="payIsVisible">
-												<span  class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
-													<span *ngIf="!isAppSumo">  
+												<span class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
+													<span *ngIf="!isAppSumo">
 														{{'AvailableFromThePlans' | translate: t_params }}
 													</span>
-													<span *ngIf="isAppSumo">  
+													<span *ngIf="isAppSumo">
 														{{'AvailableFromThePlan' | translate: t_params }}
 													</span>
 												</span>
@@ -1687,9 +1692,10 @@
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
 											<div class="col-sm-12">
-
-												<button id="btn-save-footer-brand--launcher-btn" class="btn btn-success-no-boxshadow  footerbrand-save-btn"
-													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+												<!-- btn-success-no-boxshadow -->
+												<button id="btn-save-footer-brand--launcher-btn"
+													class="btn  btn-tdblu-no-boxshadow  footerbrand-save-btn"
+													style="margin-top: 15px; margin-bottom: 15px;"
 													(click)="saveFooterBrandAndLauncherBtn()"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
 													{{ 'UpdateWidget' | translate }}
@@ -1981,8 +1987,9 @@
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
 												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  appearance_save_btn_bottom"
-													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn  btn-tdblu-no-boxshadow appearance_save_btn_bottom"
+													style="margin-top: 15px; margin-bottom: 15px;"
 													(click)="saveTranslation()">
 
 													{{ 'UpdateWidget' | translate }}
@@ -2183,8 +2190,9 @@
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
 												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  save_replytime_btn"
-													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn btn-tdblu-no-boxshadow save_replytime_btn"
+													style="margin-top: 15px; margin-bottom: 15px;"
 													(click)="saveTranslation(); saveReplyTime()">
 
 													{{ 'UpdateWidget' | translate }}
@@ -2373,9 +2381,9 @@
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
-												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  callout-settings-save-btn"
-													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" btn-success-no-boxshadow-->
+												<button class="btn btn-tdblu-no-boxshadow callout-settings-save-btn"
+													style="margin-top: 15px; margin-bottom: 15px;"
 													(click)="saveCalloutSettings();saveTranslation()"
 													[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
 
@@ -2605,7 +2613,8 @@
 										<div class="form-group" *ngIf="preChatFormCustomFieldsEnabled === false"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<div class="col-sm-12">
-												<button class="btn btn-success-no-boxshadow  prechatform-savejson-btn"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn btn-tdblu-no-boxshadow prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation()"
 													(click)="hasClickedUpdatePrechatformCustomFields()">
@@ -2799,7 +2808,8 @@
 										<div class="form-group" *ngIf="preChatFormCustomFieldsEnabled === true"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<div class="col-sm-12">
-												<button class="btn btn-success-no-boxshadow  prechatform-savejson-btn"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn  btn-tdblu-no-boxshadow prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="savePrechatFormCustomFields(); saveTranslation()">
 													{{ 'UpdateWidget' | translate }}
@@ -2848,31 +2858,39 @@
 											class="row language-row"
 											[ngClass]="{'selected-language-row': translation?.code === selectedLangCode}">
 											<div class="col-xs-6" style="padding-left:5px ;padding: 5px 0px;">
+												<div class="select-language-preview">
+													<div class="material-icons language-icon"
+														[ngClass]="{'selected-language-icon': translation?.code === selectedLangCode}">
+														flag
+													</div>
+													<div class="language-name"
+														[ngClass]="{'selected-language-name': translation?.code === selectedLangCode}">
+														{{translation?.name }}
 
-												<span class="material-icons language-icon"
-													[ngClass]="{'selected-language-icon': translation?.code === selectedLangCode}">
-													flag
-												</span>
-												<span class="language-name" style="position: relative;top:3px"
-													[ngClass]="{'selected-language-name': translation?.code === selectedLangCode}">
-													{{translation?.name }}
-
-													<span *ngIf="translation?.code === defaultLangCode "
-														style="font-weight: 400;color: #7695a5;">
-														(default)
-													</span>
-
-													<span *ngIf="translation?.code !== defaultLangCode " style="font-weight: 400;
-											color: #7695a5;
-											font-size: 11px;
-											background: rgba(0,0,0,0.1);
-											padding: 2px 4px;
-											border-radius: 4px;
-											cursor: pointer;" (click)="makeDefaultLanguage(translation?.code)">
+														<span *ngIf="translation?.code === defaultLangCode "
+															style="position: relative;top: -1px;font-size:9px" class="default-lang-badge">
+															default
+														</span>
+													</div>
+													<!-- <div *ngIf="translation?.code !== defaultLangCode " style="font-weight: 400;
+															color: #7695a5;
+															font-size: 11px;
+															background: rgba(0,0,0,0.1);
+															padding: 2px 4px;
+															border-radius: 4px;
+															cursor: pointer;" (click)="makeDefaultLanguage(translation?.code)">
 														{{'MakeDefault' | translate}}
-													</span>
-												</span>
+													</div> -->
 
+													<div *ngIf="translation?.code !== defaultLangCode "
+														(click)="makeDefaultLanguage(translation?.code)">
+														<button class="btn btn-outlined"
+															style="padding: 4px 9px !important;font-size: 11px;">
+															{{'MakeDefault' | translate}}
+														</button>
+													</div>
+
+												</div>
 											</div>
 											<div class="col-xs-6">
 												<!-- <i role="button" class="ion-close-round" data-placement="left" tabindex="0"></i> -->
@@ -2973,13 +2991,7 @@
 						</div>
 
 						<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
-						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr"
-							style="overflow: hidden;
-					position: sticky;
-					position: -webkit-sticky;
-					top: -20px;
-					padding-left: 0px;
-					padding-right: 0px;">
+						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr">
 
 							<div class="widget-preview-container">
 								<div id="appearance-widget-preview"

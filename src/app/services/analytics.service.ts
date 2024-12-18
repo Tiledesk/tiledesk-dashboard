@@ -393,6 +393,7 @@ export class AnalyticsService {
   }
 
   getLastMountConversationsCount(): Observable<[any]> {
+    this.logger.log('[ANA-SERV] getLastMountConversationsCount')
     let headers = new HttpHeaders({
       'Content-type': 'application/json',
       'Authorization': this.TOKEN
@@ -446,7 +447,7 @@ export class AnalyticsService {
     // USED TO TEST (note: this service doesn't work in localhost)
     //  const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/analytics/requests/count';
     const url = this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/count';
-    // console.log('[ANALYTICS-SERV]  - LAST MOUNT REQUESTS COUNT - URL ', url);
+    // this.logger.log('[ANALYTICS-SERV]  - LAST MOUNT REQUESTS COUNT - URL ', url);
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',

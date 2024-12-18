@@ -10,6 +10,7 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  height: 50px;
   
   .signup {
     display: flex;
@@ -23,6 +24,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
   }
 }
 
@@ -81,12 +83,17 @@ p {
   }
 }
 
-.footer {
+.integration-footer {
   border: none !important;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
+  justify-content: flex-end;
+  max-width: 500px;
+}
+.integration-footer > .btn-tdblu-no-boxshadow {
+  margin-right: 8px;
 }
 
 .custom-primary-button {
@@ -127,8 +134,8 @@ p {
   }
 }
 
-svg {
-  width: 14px;
+.status > svg {
+  width: 20px;
   //display: block;
   //margin: 40px auto 0;
 }
