@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.45-rc1
+### 2.7.45.1
 - Fixes the bug: voice quota limit is not calculated correctly
 
 ### 2.7.45
