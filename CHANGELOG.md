@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.50-rc2
+- Fixes the bug: voice quota limit is not calculated correctly
+
 ### 2.7.50-rc1
 - Adds the ability to select the refresh rate for URL(s) type contents
 
