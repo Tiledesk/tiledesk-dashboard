@@ -1221,9 +1221,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/home') !== -1) { 
-          this.presentHelpCenterPopup() 
-        }
+        // if (event.url.indexOf('/home') !== -1) { 
+        //   this.presentHelpCenterPopup() 
+        // }
       }
     });
   }
