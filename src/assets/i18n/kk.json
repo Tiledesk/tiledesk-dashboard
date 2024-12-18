@@ -2759,6 +2759,7 @@
     "NumberOfChatbotCreated": "жасалған {{allowed_cb_num}} {{plan_name}} үшін қолжетімді",
     "OnlyWithPlan": "Тек {{plan_name}} жоспары",
     "FeatureAvailableWithThe":"Мүмкіндік {{plan_name}} жоспарында қолжетімді",
+    "FeatureAvailableFromThe":"{{plan_name}} жоспарында қолжетімді мүмкіндік",
     "CreateNewContactProperty": "Жаңа контакт сипатын жасаңыз",
     "PropertyLabel": "Меншік белгісі",
     "InternalPropertyName": "Ішкі меншік атауы",

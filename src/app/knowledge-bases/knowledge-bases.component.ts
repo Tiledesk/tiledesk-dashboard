@@ -372,7 +372,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
     console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', trialExpired);
     console.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
-    this.t_params = { 'plan_name': PLAN_NAME.F }
+    this.t_params = { 'plan_name': PLAN_NAME.E }
     if (projectProfileType === 'free') {
       if (trialExpired === false) {
         // Trial active
@@ -429,12 +429,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           // Premium sub active
         } else if (profileName === PLAN_NAME.E) {
-          this.isAvailableRefreshRateFeature = false;
+          this.isAvailableRefreshRateFeature = true;
           console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Team sub active
         } else if (profileName === PLAN_NAME.EE) {
-          this.isAvailableRefreshRateFeature = false;
+          this.isAvailableRefreshRateFeature = true;
           console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Custom sub active

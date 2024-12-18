@@ -2760,6 +2760,7 @@
     "NumberOfChatbotCreated": "yaradılmış {{allowed_cb_num}} {{plan_name}} üçün əlçatandır",
     "OnlyWithPlan": "Yalnız {{plan_name}} plan",
     "FeatureAvailableWithThe":"Funksiya {{plan_name}} planı ilə əlçatandır",
+    "FeatureAvailableFromThe":"Funksiya {{plan_name}} planından əlçatandır",
     "CreateNewContactProperty":"Yeni Əlaqə Mülkiyyəti yaradın",
     "PropertyLabel":"Əmlak Etiketi",
     "InternalPropertyName": "Daxili Mülkiyyət Adı",

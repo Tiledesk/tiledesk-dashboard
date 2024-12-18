@@ -2761,6 +2761,7 @@
     "NumberOfChatbotCreated": "направљено од {{allowed_cb_num}} доступно за {{plan_name}}",
     "OnlyWithPlan": "Само {{plan_name}} план",
     "FeatureAvailableWithThe":"Функција доступна са планом {{plan_name}}",
+    "FeatureAvailableFromThe":"Функција доступна из плана {{plan_name}}",
     "CreateNewContactProperty":"Направите ново својство контакта",
     "PropertyLabel":"Проперти Лабел",
     "InternalPropertyName": "Интерно име својства",

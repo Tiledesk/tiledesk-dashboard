@@ -2760,6 +2760,7 @@
     "NumberOfChatbotCreated": "creado de {{allowed_cb_num}} disponible para {{plan_name}}",
     "OnlyWithPlan": "Solo {{plan_name}} plan",
     "FeatureAvailableWithThe":"Función disponible con el plan {{plan_name}}",
+    "FeatureAvailableFromThe":"Función disponible en el plan {{plan_name}}",
     "CreateNewContactProperty": "Crear una nueva propiedad de contacto",
     "PropertyLabel": "Etiqueta de la propiedad",
     "InternalPropertyName": "Nombre de propiedad interna",

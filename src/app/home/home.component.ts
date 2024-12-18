@@ -546,32 +546,32 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.project_limits) {
       if (resp.quotes.requests.quote >= this.project_limits.requests) {
         this.conversationsRunnedOut = true;
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
         // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.conversationsRunnedOut = false;
         // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
       }
 
       if (resp.quotes.email.quote >= this.project_limits.email) {
         this.emailsRunnedOut = true;
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
         // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.emailsRunnedOut = false;
         // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
       }
 
       if (resp.quotes.tokens.quote >= this.project_limits.tokens) {
         this.tokensRunnedOut = true;
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
         // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.tokensRunnedOut = false;
         // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
       }
     }
   }
