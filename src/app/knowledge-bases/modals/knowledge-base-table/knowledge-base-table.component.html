@@ -474,7 +474,27 @@
                                 matTooltipPosition='below' 
                                 matTooltipHideDelay="100" 
                                 [matTooltipDisabled]="isAvailableRefreshRateFeature">
-                                Never
+                                
+                                <span *ngIf="kb.refresh_rate === 'never' ">
+                                    {{'Never' | translate}}
+                                </span>
+                                <span *ngIf="kb.refresh_rate === 'daily' ">
+                                    {{'Daily' | translate}}
+                                </span>
+
+                                <span *ngIf="kb.refresh_rate === 'weekly' ">
+                                    {{'Weekly' | translate}}
+                                </span>
+
+                                <span *ngIf="kb.refresh_rate === 'monthly' ">
+                                    {{'Monthly' | translate}}
+                                </span>
+
+                                
+
+                                
+                                
+                                
                                 <!-- isAvailableRefreshRateFeature  {{isAvailableRefreshRateFeature}} -->
                             </span>
                             <span *ngIf="kb.type !== 'url'">
