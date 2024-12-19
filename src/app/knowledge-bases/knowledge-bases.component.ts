@@ -383,7 +383,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         } else if (profileName === 'Sandbox') {
 
-          this.isAvailableRefreshRateFeature = false;
+          this.isAvailableRefreshRateFeature = true;
           console.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
