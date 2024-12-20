@@ -373,7 +373,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', trialExpired);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
-    this.t_params = { 'plan_name': PLAN_NAME.F }
+    this.t_params = { 'plan_name': PLAN_NAME.E }
     if (projectProfileType === 'free') {
       if (trialExpired === false) {
         // Trial active
@@ -384,7 +384,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         } else if (profileName === 'Sandbox') {
 
-          this.isAvailableRefreshRateFeature = false;
+          this.isAvailableRefreshRateFeature = true;
           this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
@@ -430,12 +430,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           // Premium sub active
         } else if (profileName === PLAN_NAME.E) {
-          this.isAvailableRefreshRateFeature = false;
+          this.isAvailableRefreshRateFeature = true;
           this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Team sub active
         } else if (profileName === PLAN_NAME.EE) {
-          this.isAvailableRefreshRateFeature = false;
+          this.isAvailableRefreshRateFeature = true;
           this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Custom sub active
@@ -527,7 +527,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
-    // console.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
+    //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
     if (!storedNamespace) {
       this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
 

@@ -2134,19 +2134,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
         this.logger.log('[NAVBAR] last changelog createdValue ', createdValue); 
         const createdValueTimestamp = new Date(createdValue).getTime();
-        console.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
-        console.log('[NAVBAR] lastSeen ', lastSeen);
+        this.logger.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
+        this.logger.log('[NAVBAR] lastSeen ', lastSeen);
         if (lastSeen ) {
           if (createdValueTimestamp > lastSeen) {
             this.newChangelogCount = true
-            console.log('[NAVBAR]  there is A notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+            this.logger.log('[NAVBAR]  there is A notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
           } else {
             this.newChangelogCount = false
-            console.log('[NAVBAR]  there is NOT notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+            this.logger.log('[NAVBAR]  there is NOT notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
           }
         } else {
           this.newChangelogCount = true;
-          console.log('[NAVBAR] there is A notification (else) Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+          this.logger.log('[NAVBAR] there is A notification (else) Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
         
         }
       },

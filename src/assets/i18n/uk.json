@@ -2772,6 +2772,7 @@
     "NumberOfChatbotCreated": "створено з {{allowed_cb_num}} доступних для {{plan_name}}",
     "OnlyWithPlan": "Лише план {{plan_name}}",
     "FeatureAvailableWithThe":"Функція доступна з планом {{plan_name}}",
+    "FeatureAvailableFromThe":"Функція доступна в плані {{plan_name}}",
     "CreateNewContactProperty": "Створіть властивість нового контакту",
     "PropertyLabel": "Етикетка властивості",
     "InternalPropertyName": "Внутрішня назва властивості",

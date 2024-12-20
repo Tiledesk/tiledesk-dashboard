@@ -2769,6 +2769,7 @@
     "NumberOfChatbotCreated": "yaratilgan {{allowed_cb_num}} {{plan_name}} uchun mavjud",
     "OnlyWithPlan": "Faqat {{plan_name}} tarif rejasi",
     "FeatureAvailableWithThe":"Funksiya {{plan_name}} tarif rejasida mavjud",
+    "FeatureAvailableFromThe":"Funksiya {{plan_name}} tarif rejasida mavjud",
     "CreateNewContactProperty":"Yangi kontakt mulkini yarating",
     "PropertyLabel":"Mulk yorlig'i",
     "InternalPropertyName": "Ichki mulk nomi",

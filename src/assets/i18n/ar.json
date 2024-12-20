@@ -2771,6 +2771,7 @@
     "NumberOfChatbotCreated": "تم إنشاؤها من {{allowed_cb_num}} المتاحة لـ {{plan_name}}",
     "OnlyWithPlan": "فقط خطة {{plan_name}}",
     "FeatureAvailableWithThe":"الميزة متاحة مع خطة {{plan_name}}",
+    "FeatureAvailableFromThe":"الميزة متاحة من الخطة {{plan_name}}",
     "CreateNewContactProperty": "قم بإنشاء خاصية جهة اتصال جديدة",
     "PropertyLabel": "تسمية العقار",
     "InternalPropertyName": "اسم الملكية الداخلية",

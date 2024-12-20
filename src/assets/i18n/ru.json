@@ -2770,6 +2770,7 @@
     "NumberOfChatbotCreated": "создано из {{allowed_cb_num}}, доступно для {{plan_name}}",
     "OnlyWithPlan": "Только план {{plan_name}}",
     "FeatureAvailableWithThe":"Функция доступна в плане {{plan_name}}",
+    "FeatureAvailableFromThe":"Функция доступна в плане {{plan_name}}",
     "CreateNewContactProperty":"Создать новое свойство контакта",
     "PropertyLabel":"Ярлык свойства",
     "InternalPropertyName": "Имя внутреннего свойства",

@@ -2770,6 +2770,7 @@
     "NumberOfChatbotCreated": "criado de {{allowed_cb_num}} disponível para {{plan_name}}",
     "OnlyWithPlan": "Somente plano {{plan_name}}",
     "FeatureAvailableWithThe":"Recurso disponível com o plano {{plan_name}}",
+    "FeatureAvailableFromThe":"Recurso disponível no plano {{nome_plano}}",
     "CreateNewContactProperty": "Criar uma nova propriedade de contato",
     "PropertyLabel": "Rótulo de propriedade",
     "InternalPropertyName": "Ішкі меншік атауы",
