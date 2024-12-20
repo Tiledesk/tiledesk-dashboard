@@ -377,7 +377,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((hasOpen) => {
 
-       console.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
         if (this.projectId) {
           if(hasOpen !== null ) {
             this.getQuotes()
@@ -499,10 +499,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("[HOME] getAllQuotes response: ", resp)
+      this.logger.log("[HOME] getAllQuotes response: ", resp)
       this.quotes = resp
 
-      console.log("[HOME] project_limits: ", this.project_limits)
+      this.logger.log("[HOME] project_limits: ", this.project_limits)
       this.logger.log("[HOME] resp.quotes: ", resp.quotes)
       if (this.project_limits) {
         this.messages_limit = this.project_limits.messages;
@@ -615,13 +615,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
     }
 
-    console.log('[HOME] voiceRunnedOut diplayTwilioVoiceQuota', this.diplayTwilioVoiceQuota)
-    console.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
+    this.logger.log('[HOME] voiceRunnedOut diplayTwilioVoiceQuota', this.diplayTwilioVoiceQuota)
+    this.logger.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
     if (this.diplayTwilioVoiceQuota || this.diplayVXMLVoiceQuota) {
       if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
         // if (3342 >= this.voice_limit_in_sec) {   
         this.voiceRunnedOut = true;
-        console.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+        this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
       } else {
         this.voiceRunnedOut = false;
         this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)

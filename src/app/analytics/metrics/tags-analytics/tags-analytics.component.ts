@@ -46,8 +46,8 @@ export class TagsAnalyticsComponent implements OnInit {
   initDay: string;
   endDay: string;
   selectedDaysId = 7  //  ?? evaluate whether to use it
-  chartStackedColumns: boolean;
-  chartBasicColumns: boolean;
+  chartStackedColumns: boolean = true;
+  chartBasicColumns: boolean = false;
   // Date - picker
   startDate: Date | null = null;
   endDate: Date | null = null;
@@ -84,18 +84,18 @@ export class TagsAnalyticsComponent implements OnInit {
 
       if (user && user._id) {
         this.currentUserId = user._id;
-        this.getUserChartTypePreference(this.currentUserId)
+        // this.getUserChartTypePreference(this.currentUserId)
       }
     });
   }
 
   getUserChartTypePreference(currentUserId: string) {
     let storedChartTypeUserPreference = localStorage.getItem(`chartStackedColumns-${currentUserId}`)
-    this.logger.log('[TAG-ANALYTICS] STORED CHART TYPE PREFERENCE', storedChartTypeUserPreference)
+    console.log('[TAG-ANALYTICS] STORED CHART TYPE PREFERENCE', storedChartTypeUserPreference)
     if (!storedChartTypeUserPreference) {
       this.chartStackedColumns = true;
       this.chartBasicColumns = false;
-      this.logger.log('[TAG-ANALYTICS] NO STORED CHART TYPE PREFERENCE chartStackedColumns', this.chartStackedColumns, 'chartBasicColumns ', this.chartBasicColumns)
+      console.log('[TAG-ANALYTICS] NO STORED CHART TYPE PREFERENCE chartStackedColumns', this.chartStackedColumns, 'chartBasicColumns ', this.chartBasicColumns)
     } else {
       if (storedChartTypeUserPreference === 'false') {
         this.chartStackedColumns = false;
