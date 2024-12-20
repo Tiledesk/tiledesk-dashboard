@@ -1933,6 +1933,7 @@
     "Thursday": "Giovedì",
     "Friday": "Venerdì",
     "Saturday": "Sabato",
+    "SelectAnOption": "Seleziona un'opzione",
     "Analytics": {
         "AnalyticsTITLE": "Statistiche",
         "PanoramicaComponentTitle": "Panoramica",
@@ -1960,6 +1961,10 @@
         "ResponseDurationtime": "La durata di conversazione media complessiva del tuo team è ",
         "RequestChartTitle": "Numero di Conversazioni negli Ultimi",
         "FilterReport": "Filtra rapporto",
+        "FilterReportForTheLastNDays": "Filtra il report per gli ultimi N giorni",
+        "FilterByTheLastNDays": "Filtra per gli ultimi N giorni",
+        "FilterByCustomRange":"Intervallo massimo 30 giorni",
+        "MaxRange30Days": "Max range 30 days",
         "FilterByAgent": "Agenti",
         "FilterByWeek": "Settimane",
         "FilterByMonth": "Mesi",

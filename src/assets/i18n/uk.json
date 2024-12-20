@@ -1924,6 +1924,7 @@
     "Thursday": "четвер",
     "Friday": "п'ятниця",
     "Saturday": "субота",
+    "SelectAnOption": "Виберіть опцію",
     "Analytics": {
         "AnalyticsTITLE": "Аналітика",
         "HeatMapTitle": "Розмови за годину дня",
@@ -1951,6 +1952,10 @@
         "ResponseDurationtime": "Загальна середня тривалість розмови вашої команди становить ",
         "RequestChartTitle": "Остання кількість розмов ",
         "FilterReport": "Фільтрувати звіт",
+        "FilterReportForTheLastNDays": "Фільтрувати звіт за останні N днів",
+        "FilterByTheLastNDays": "Фільтрувати за останніми N днями",
+        "FilterByCustomRange":"Фільтрувати за спеціальним діапазоном",
+        "MaxRange30Days":"Максимальний діапазон 30 днів",
         "FilterByAgent": "Агент",
         "FilterByDay": "дні",
         "FilterByWeek": "тижні",

@@ -1921,6 +1921,7 @@
     "Thursday": "бейсенбі",
     "Friday": "жұма",
     "Saturday": "сенбі",
+    "SelectAnOption": "Опцияны таңдаңыз",
     "Analytics": {
         "AnalyticsTITLE": "Аналитика",
         "HeatMapTitle": "Тәулігіне бір сағатта сөйлесу",
@@ -1948,6 +1949,10 @@
         "ResponseDurationtime": "Сіздің командаңыздың жалпы медианалық сөйлесу ұзақтығы ",
         "RequestChartTitle": "Соңғы сөйлесулер саны ",
         "FilterReport": "Есепті сүзу",
+        "FilterReportForTheLastNDays": "Соңғы N күндегі есепті сүзіңіз",
+        "FilterByTheLastNDays": "Соңғы N күн бойынша сүзгілеу",
+        "FilterByCustomRange":"Арнаулы ауқым бойынша сүзгілеу",
+        "MaxRange30Days":"Максималды диапазон 30 күн",
         "FilterByAgent": "Агент",
         "FilterByDay": "Күндер",
         "FilterByWeek": "Апталар",

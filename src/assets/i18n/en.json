@@ -1933,6 +1933,7 @@
     "Thursday": "Thursday",
     "Friday": "Friday",
     "Saturday": "Saturday",
+    "SelectAnOption": "Select an option",
     "Analytics": {
         "AnalyticsTITLE": "Analytics",
         "HeatMapTitle": "Conversations per hour of day",
@@ -1960,6 +1961,10 @@
         "ResponseDurationtime": "Your team's overall Median Conversation Length is ",
         "RequestChartTitle": "Number of Conversations Last ",
         "FilterReport": "Filter report",
+        "FilterReportForTheLastNDays": "Filter report for the last N days",
+        "FilterByTheLastNDays": "Filter by the last N days",
+        "FilterByCustomRange":"Filter by custom range",
+        "MaxRange30Days": "Max range 30 days",
         "FilterByAgent": "Agent",
         "FilterByDay": "Days",
         "FilterByWeek": "Weeks",

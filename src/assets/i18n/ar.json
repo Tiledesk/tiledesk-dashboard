@@ -1922,6 +1922,7 @@
     "Thursday": "يوم الخميس",
     "Friday": "جمعة",
     "Saturday": "السبت",
+    "SelectAnOption": "حدد خيارا",
     "Analytics": {
         "AnalyticsTITLE": "تحليلات",
         "HeatMapTitle": "المحادثات في الساعة من اليوم",
@@ -1949,6 +1950,10 @@
         "ResponseDurationtime": "متوسط طول المحادثة الإجمالي لفريقك هو ",
         "RequestChartTitle": "عدد المحادثات الماضي ",
         "FilterReport": "تقرير التصفية",
+        "FilterReportForTheLastNDays": "تصفية التقرير لآخر N أيام",
+        "FilterByTheLastNDays": "تصفية حسب آخر N أيام",
+        "FilterByCustomRange":"تصفية حسب النطاق المخصص",
+        "MaxRange30Days": "أقصى مدى 30 يومًا",
         "FilterByAgent": "وكيلات",
         "FilterByDay": "أيام",
         "FilterByWeek": "أسابيع",

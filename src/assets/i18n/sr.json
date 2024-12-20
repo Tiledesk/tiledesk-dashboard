@@ -1923,6 +1923,7 @@
     "Thursday": "четвртак",
     "Friday": "петак",
     "Saturday": "субота",
+    "SelectAnOption": "Изаберите опцију",
     "Analytics": {
         "AnalyticsTITLE": "Аналитика",
         "HeatMapTitle": "Разговори по сату у дану",
@@ -1950,6 +1951,10 @@
         "ResponseDurationtime": "Укупна средња дужина разговора вашег тима је ",
         "RequestChartTitle": "Број последњих разговора ",
         "FilterReport": "Филтрирајте извештај",
+        "FilterReportForTheLastNDays": "Филтрирајте извештај за последњих Н дана",
+        "FilterByTheLastNDays": "Филтрирајте према последњих Н дана",
+        "FilterByCustomRange":"Филтрирај по прилагођеном опсегу",
+        "MaxRange30Days":"Максимални распон 30 дана",
         "FilterByAgent": "Агент",
         "FilterByDay": "Дани",
         "FilterByWeek": "Недеље",

@@ -1921,6 +1921,7 @@
 	"Thursday": "Donnerstag",
 	"Friday": "Freitag",
 	"Saturday": "Samstag",
+	"SelectAnOption": "Wählen Sie eine Option",
 	"Analytics": {
 		"AnalyticsTITLE": "Analytik",
 		"PanoramicaComponentTitle": "Überblick",
@@ -1948,6 +1949,10 @@
 		"ResponseDurationtime": "Die durchschnittliche Unterhaltungslänge Ihres Teams liegt bei ",
 		"RequestChartTitle": "Anzahl von Anfragen Letzte ",
 		"FilterReport": "Filter",
+		"FilterReportForTheLastNDays": "Bericht für die letzten N Tage filtern",
+		"FilterByTheLastNDays": "Filtern nach den letzten N Tagen",
+		"FilterByCustomRange":"Nach benutzerdefiniertem Bereich filtern",
+		"MaxRange30Days":"Max. Reichweite: 30 Tage",
 		"FilterByAgent": "Agent",
 		"FilterByDay": "Tage",
 		"FilterByWeek": "Wochen",

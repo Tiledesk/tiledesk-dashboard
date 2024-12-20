@@ -1923,6 +1923,7 @@
     "Thursday": "torsdag",
     "Friday": "fredag",
     "Saturday": "lördag",
+    "SelectAnOption": "Välj ett alternativ",
     "Analytics": {
         "AnalyticsTITLE": "Analytics",
         "HeatMapTitle": "Samtal per timme på dygnet",
@@ -1950,6 +1951,10 @@
         "ResponseDurationtime": "Ditt teams totala mediankonversationslängd är ",
         "RequestChartTitle": "Antal konversationer senast ",
         "FilterReport": "Filterrapport",
+        "FilterReportForTheLastNDays": "Filterrapport för de senaste N dagarna",
+        "FilterByTheLastNDays": "Filtrera efter de senaste N dagarna",
+        "FilterByCustomRange":"Filtrera efter anpassat intervall",
+        "MaxRange30Days":"Max räckvidd 30 dagar",
         "FilterByAgent": "Ombud",
         "FilterByDay": "dagar",
         "FilterByWeek": "Veckor",

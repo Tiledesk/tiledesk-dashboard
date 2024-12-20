@@ -1921,6 +1921,7 @@
     "Thursday": "Jeudi",
     "Friday": "Vendredi",
     "Saturday": "Samedi",
+    "SelectAnOption": "Sélectionnez une option",
     "Analytics": {
         "AnalyticsTITLE": "Analytique",
         "HeatMapTitle": "Conversations par heure de la journée",
@@ -1948,6 +1949,10 @@
         "ResponseDurationtime": "La durée médiane globale des conversations de votre équipe est de ",
         "RequestChartTitle": "Nombre de dernières conversations ",
         "FilterReport": "Filtrer le rapport",
+        "FilterReportForTheLastNDays": "Rapport de filtrage pour les N derniers jours",
+        "FilterByTheLastNDays": "Filtrer par les N derniers jours",
+        "FilterByCustomRange":"Filtrer par plage personnalisée",
+        "MaxRange30Days":"Portée maximale 30 jours",
         "FilterByAgent": "Agent",
         "FilterByDay": "Jours",
         "FilterByWeek": "Semaines",
