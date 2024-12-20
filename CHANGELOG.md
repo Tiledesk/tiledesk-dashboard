@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.51
+- Adds the ability to filter by custom range the tag graph
+
 ### 2.7.50-rc2
 - Fixes the bug: voice quota limit is not calculated correctly
 
