@@ -11,6 +11,7 @@ import { Project } from 'app/models/project-model';
 import { UsersService } from 'app/services/users.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-knowledge-bases-alert',
@@ -69,9 +70,11 @@ export class KnowledgeBasesAlertComponent extends PricingBaseComponent  implemen
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role
-      this.logger.log('[KB-ALERT] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role
+        this.logger.log('[KB-ALERT] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
+      }
     })
   }
 

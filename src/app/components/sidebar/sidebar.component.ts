@@ -45,6 +45,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './sidebar.tour.con
 import Step from 'shepherd.js/src/types/step';
 import { environment } from 'environments/environment';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { ProjectUser } from 'app/models/project-user';
 
 declare const $: any;
 
@@ -318,8 +319,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.translateChangeAvailabilitySuccessMsg();
     this.translateChangeAvailabilityErrorMsg();
     this.getProfileImageStorage();
-    this.getUserAvailability();
-    this.getUserUserIsBusy();
     this.getProjectUserId();
     this.hasChangedAvailabilityStatusInUsersComp();
     this.checkUserImageUploadIsComplete();
@@ -1359,7 +1358,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
         // if (event.url.indexOf('/support') !== -1) {
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'support') {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'support') {  
           this.SUPPORT_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE; ', this.SUPPORT_ROUTE_IS_ACTIVE);
         } else {
@@ -1367,9 +1366,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/home') !== -1) {
-          this.presentHelpCenterPopup()
-        }
+        // if (event.url.indexOf('/home') !== -1) { 
+        //   this.presentHelpCenterPopup() 
+        // }
       }
     });
   }
@@ -1504,17 +1503,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
   getProjectUserId() {
-    this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-      this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser_id);
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser);
+      if (projectUser) {
+        this.projectUser_id = projectUser._id;
+        this.IS_AVAILABLE = projectUser.user_available;
+        this.IS_BUSY = projectUser.isBusy;
 
-      // if (this.projectUser_id) {
-      //     this.logger.log('[SIDEBAR] - PROJECT-USER-ID (THIS)  ', this.projectUser_id);
-      //     this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser_id);
-
-      //     this.usersService.unsubscriptionToWsCurrentUser(projectUser_id)
-      // }
-      if (projectUser_id) {
-        this.projectUser_id = projectUser_id;
+        this.USER_ROLE = projectUser.role;
+        if (this.USER_ROLE) {
+          if (this.USER_ROLE === 'agent') {
+            this.SHOW_SETTINGS_SUBMENU = false;
+          }
+        }
       }
     });
   }
@@ -1526,22 +1527,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
      - the USER-SERVICE PUBLISH THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER ID
      - the SIDEBAR (this component) SUBSCRIBES THESE VALUES
   */
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      // this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
-  }
-
-  getUserUserIsBusy() {
-    this.usersService.user_is_busy$.subscribe((user_isbusy) => {
-      this.IS_BUSY = user_isbusy;
-      // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
-      // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      // this.logger.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
-    });
-  }
-
 
   // changeAvailabilityState(IS_AVAILABLE, profilestatus) {
   //     this.logger.log('[SIDEBAR] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
@@ -1596,34 +1581,28 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
   getProjectUser() {
     //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
       // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
-      if ((projectUser) && (projectUser.length !== 0)) {
-        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+      if (projectUser) {
+        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser._id)
+        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser.user_available)
+        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser.isBusy)
         // this.user_is_available_bs = projectUser.user_available;
 
-        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
-        this.subsTo_WsCurrentUser(projectUser[0]._id)
+        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser._id)
+        this.subsTo_WsCurrentUser(projectUser._id)
 
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
-        }
+        this.usersService.setProjectUser(projectUser)
 
         // ADDED 21 AGO
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+        if (projectUser.role !== undefined) {
+          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser.role);
 
-          // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-          this.USER_ROLE = projectUser[0].role;
-
-          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
+          // ASSIGN THE projectUser.role VALUE TO USER_ROLE
+          this.USER_ROLE = projectUser.role;
 
         }
       } else {
@@ -1757,7 +1736,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
 
 
-        this.getProjectUserRole();
+        this.getProjectUserId();
 
         this.getProjectUser();
         // this.getFaqKbByProjectId()
@@ -1801,21 +1780,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }, () => {
       this.logger.log('[SIDEBAR] GET BOTS COMPLETE');
     });
-  }
-
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-      if (this.USER_ROLE) {
-        // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
-        if (this.USER_ROLE === 'agent') {
-          this.SHOW_SETTINGS_SUBMENU = false;
-        }
-      }
-
-    });
-    // }
   }
 
   round5(x) {
