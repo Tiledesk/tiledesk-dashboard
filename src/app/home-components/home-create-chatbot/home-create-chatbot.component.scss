@@ -199,6 +199,7 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 
@@ -226,6 +227,7 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -862,12 +864,13 @@ body {
 
 .left-title {
   font-size: 26px;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 40px;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
-  text-transform: uppercase;
+  font-family: var(--header-font-family);
+  // text-transform: uppercase;
   margin-top: -40px;
-  color: var(--blue-light);
+  // color: var(--blue-light);
+  color: var( --text-color);
 }
 
 .right-title {
@@ -886,8 +889,8 @@ body {
 
 .right-title>.right-title-text {
   font-size: 18px;
-  font-weight: 500;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-weight: 400;
+  font-family: var(--header-font-family);
   display: flex;
   align-items: center;
 }

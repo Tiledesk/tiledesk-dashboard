@@ -8,14 +8,14 @@
 </span>
 
 
-<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+<div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
  
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     {{ 'AutomationsLog' | translate }}
   </div>
   
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-right: 5px;padding-left: 10px;">
 
     <div class="content-wpr" style="display: flex;">
 
@@ -31,9 +31,10 @@
             <!-- // to do -->
           </div>
 
-          <div class="header">
-            <p style="font-family: 'Poppins';">Last Automations</p>
-            <button class="custom-button" (click)="reload('automations')">
+          <div class="automation-header">
+            <p>Last Automations</p>
+            <!--  custom-button -->
+            <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
               <span class="material-icons-round button-icon">sync</span>
               Reload</button>
           </div>

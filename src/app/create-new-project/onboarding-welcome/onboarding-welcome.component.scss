@@ -99,6 +99,10 @@
     justify-content: center;
 }
 
+.onboarding-welcome-btn-wpr > button {
+    border-radius: var(--btn-border-radius) !important;
+}
+
 
 @media (max-width: 668px){
     .onboarding-welcome-subtitle { 

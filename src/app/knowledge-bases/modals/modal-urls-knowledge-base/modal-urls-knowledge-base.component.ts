@@ -6,6 +6,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
 
+
 @Component({
   selector: 'modal-urls-knowledge-base',
   templateUrl: './modal-urls-knowledge-base.component.html',
@@ -31,17 +32,41 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     // { name: "Headless (Text Only)", value: 3 },
     { name: "Advanced", value: 4 },
   ];
-  
+
   selectedScrapeType = 2;
   extract_tags = [];
   unwanted_tags = [];
   unwanted_classnames = [];
 
+  // ---------------------
+  // Refressh rate
+  // ---------------------
+  refresh_rate: Array<any> = [ 
+    { name: "Never", value: 'never' },
+    { name: "Daily", value: 'daily' },
+    { name: "Weekly", value: 'weekly' },
+    { name: "Monthly", value: 'monthly'}
+  ]
+
+  // selectedRefreshRate = 0;
+  selectedRefreshRate: any;
+  isAvailableRefreshRateFeature: boolean;
+  t_params: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
-    private logger: LoggerService
-  ) { }
+    private logger: LoggerService,
+  ) { 
+    this.selectedRefreshRate = this.refresh_rate[0].value;
+    this.logger.log("[MODALS-URLS] data: ", data);
+    if (data ) {
+      this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
+      this.t_params = data.t_params
+      this.logger.log("[MODALS-URLS] data > t_params: ", this.t_params);
+      this.logger.log("[MODALS-URLS] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+    } 
+  }
 
   /** */
   ngOnInit(): void {
@@ -75,6 +100,12 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     this.countSitemap = listSitesOfSitemap.length;
   }
 
+
+
+  onSelectRefreshRate(refreshRateSelected) {
+    this.logger.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
+  }
+
   /** */
   onSaveKnowledgeBase(){
     //const arrayURLS = this.content.split('\n');
@@ -84,6 +115,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     let body: any = {
       list: arrayURLS,
       scrape_type: this.selectedScrapeType,
+      refresh_rate: this.selectedRefreshRate
     }
 
     if (this.selectedScrapeType === 4) {
@@ -146,6 +178,12 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
       this.unwanted_classnames.splice(index, 1)
     }
 
+  }
+
+  goToPricing() {
+    // this.onCloseBaseModal()
+    let body: any = { upgrade_plan: true}
+    this.dialogRef.close(body);
   }
 
   /** */

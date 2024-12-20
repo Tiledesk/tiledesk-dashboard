@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service'
 import { DomSanitizer } from '@angular/platform-browser';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-tilebot-sidebar',
@@ -118,14 +119,12 @@ export class TilebotSidebarComponent implements OnInit , OnChanges{
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         //  console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   @HostListener('window:resize', ['$event'])

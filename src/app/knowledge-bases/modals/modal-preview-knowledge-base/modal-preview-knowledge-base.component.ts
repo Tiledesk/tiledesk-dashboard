@@ -105,7 +105,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
     if (data && data.askBody) {
-      // console.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
+      this.logger.log('[MODAL-PREVIEW-KB] askBody', data.askBody)
       // this.question = data.askBody.question
       // this.submitQuestion()
     }

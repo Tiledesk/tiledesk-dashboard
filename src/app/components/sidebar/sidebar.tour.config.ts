@@ -176,38 +176,33 @@ export function getSteps(router: Router, service: ShepherdService, translation: 
     //   title: translation.instant('KbPage.AIChatbotTourTitle'), //'AI chatbot',
     //   text: translation.instant('KbPage.NoAIChatbotTourText')  // 'Create your advanced AI chatbot connected to your contents ready to reply timely and precise to your users\' answers and questions',
     // },
-    {
-      attachTo: {
-        // .tour-card:nth-child(3) h2
-        element: '#support-anchor' ,
-        on: 'right',
-      },
-      // STEPS_BUTTONS.cancel, STEPS_BUTTONS.back,
-      buttons: [  STEPS_BUTTONS.cancel],
-      classes: 'step-with-image custom-cancel-button padding-4',
-      id: 'sb-tour-step-1',
-      title: translation.instant('WelcomeToYourHelpCenter'), //'Welcome to your Help Center!',
+
+
+    // {
+    //   attachTo: {
+    //     // .tour-card:nth-child(3) h2
+    //     // element: '#support-anchor' ,
+    //     element: '.sidebar' ,
+    //     on: 'right',
+    //   },
+    //   // STEPS_BUTTONS.cancel, STEPS_BUTTONS.back,
+    //   buttons: [  STEPS_BUTTONS.cancel],
+    //   classes: 'step-with-image custom-cancel-button padding-4',
+    //   id: 'sb-tour-step-1',
+    //   title: translation.instant('WelcomeToYourHelpCenter'), //'Welcome to your Help Center!',
       
-      text:`${translation.instant('TheHelpCenterIsDesignedToProvide')}
-      <div class="tour-text-container">
-        <div class="image-container">
-            <img 
-                src="assets/img/support-2.gif"
-                class="image-style"
-                frameBorder="0" 
-                allowFullScreen>
-            </img>
-        </div>
-      </div>
-     
-      `
-      // <div class="step-image-text"> 
-      // ${translation.instant('KbPage.LastStepText')} <a href='mailto:${brand['CONTACT_US_EMAIL']}?subject=Knowledge Base tour support'>${translation.instant('KbPage.LastStepContactUs')}</a>
-      // </div>
-     // text: `${translation.instant('TheHelpCenterIsDesignedToProvide')}  ` // `The Help Center is designed to provide a complete support option. You can get information from our documentation or turn to the community. If you can't find an answer, you can send a request directly to one of our agents via email or live chat.
-   
-     
-    },
+    //   text:`${translation.instant('TheHelpCenterIsDesignedToProvide')}
+    //   <div class="tour-text-container">
+    //     <div class="image-container">
+    //         <img 
+    //             src="assets/img/support-2.gif"
+    //             class="image-style"
+    //             frameBorder="0" 
+    //             allowFullScreen>
+    //         </img>
+    //     </div>
+    //   </div>`
+    // },
   
     
    

@@ -302,67 +302,107 @@ p.member:hover {
 /* 
  Attributes decoded JWT Accordion 
  ------------------------------------ */
-.attributes-jwt-decoded-cntct-accordion-wpr {
-  padding-left: 0px;
-  padding-right: 0px;
-  border-bottom: 1px solid #eeeeee;
-  border-top: 1px solid #eeeeee;
-  margin-top: -18px;
+ .attributes-jwt-decoded-accordion-wpr {
+  margin-top: 12px !important;
+  background-color: var(--card-background-color);
+  border-radius: 4px;
+  box-shadow: var(--card-elevation);
 }
 
+
+
 @media only screen and (max-width: 768px) {
-  .attributes-jwt-decoded-cntct-accordion-wpr {
+  .attributes-jwt-decoded-accordion-wpr {
     margin-top: 0px;
   }
 
-  .contact-email-col-12 {
-    margin-top: 15px;
+  .attributes-decoded-jwt-accordion:after {
+    margin-right: -25px;
   }
-  // .attributes-decoded-jwt-accordion:after {
-  //   margin-right: -25px;
-  // }
 }
-.attributes-decoded-jwt-cntct-accordion {
-  color: #444;
+
+
+
+.attributes-decoded-jwt-accordion {
+  // color: #444;
+  // cursor: pointer;
+  // padding: 8px 0px;
+  // width: 100%;
+  // border: none;
+  // text-align: left;
+  // outline: none;
+  // font-size: 15px;
+  // transition: 0.4s;
+
   cursor: pointer;
-  padding: 8px 0px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
+  position: relative;
+  padding: 16px 20px;
+  transition: all 0.2s ease-in-out 0s;
 }
 
-.attributes-decoded-jwt-cntct-accordion:hover {
-  background-color: #f7f8fc;
+.cnct-jwt-accordion {
+  padding-top: 8px !important; 
+  padding-bottom: 8px !important;
 }
 
-.attributes-decoded-jwt-cntct-accordion:after {
-  // content: "\002B";
+
+
+.attributes-decoded-jwt-accordion>svg {
+  fill: var(--icon-color);
+  margin-right: 12px;
+  margin-top: 2px;
+  align-self: flex-start;
+  transition: all 0.2s ease-in-out 0s;
+}
+
+.attributes-decoded-jwt-accordion:hover svg {
+  // fill: #0049bd;
+  fill: var(--icon-hover-color);
+}
+
+// .attributes-decoded-jwt-accordion:hover {
+//   background-color: var(--conv-details-card-hover-background-color);
+// }
+
+.attributes-decoded-jwt-accordion:after {
   content: "\f107";
   font-family: FontAwesome;
-  // color: #777;
-  color: #039be5;
+  // color: #039be5;
+  color: var(--icon-color);
   font-weight: bold;
   float: right;
-  // margin-left: 5px;
-  font-size: 22px;
-  padding-right: 6px;
+  font-size: 20px;
+  padding-right: 4px;
+  margin-top: 6px;
 }
-.attributes-decoded-jwt-cntct-accordion.active:after {
+
+.attributes-decoded-jwt-accordion:hover:after {
+  color: var(--icon-hover-color);
+}
+
+.attributes-decoded-jwt-accordion.active:after {
   content: "\f106";
   font-family: FontAwesome;
 }
 
+.decoded-jwt-accordion-title-cnct {
+  position: relative;
+  top: -3px;
+  font-weight: 500;
+  color: var(--text-color);
+  font-family: var(--header-font-family);
+  font-size: 14px
+}
+
 .attributes-decoded-jwt-panel {
   padding: 0 18px;
-  background-color: white;
+  background-color: var(--card-background-color);
   max-height: 0;
   // overflow: hidden;
   overflow-y: auto;
   // transition: max-height 0.2s ease-out;
 }
+
 /* ./ Attributes decoded JWT Accordion  */
 
 .contact-action-wpr {
@@ -373,7 +413,7 @@ p.member:hover {
 }
 
 .contact-action {
-  height: 18px;
+  // height: 18px;
   cursor: pointer;
 }
 
@@ -516,12 +556,13 @@ p.member:hover {
   padding-right: 24px;
   margin-top: 22px;
   background-color: #fff;
-  border-radius: 4px;
-  box-shadow: #001b4714 0 3px 8px;
-
+  // border-radius: 4px;
+  // box-shadow: #001b4714 0 3px 8px;
   margin-top: 12px !important;
   margin-left: 0px;
   margin-right: 0px;
+  border-radius: var(--list-wrapper-border-radius);
+  box-shadow: var(--card-elevation);
 }
 
 #attributes-row:hover div p span svg {
@@ -623,7 +664,7 @@ label {
   font-size: 16px;
   line-height: 20px;
   letter-spacing: -0.01em;
-  color: rgb(5, 102, 255);
+  color: var(--only-text-btn-color); // rgb(5, 102, 255);
   cursor: pointer;
   padding: 14px 0px 6px;
   margin-left: 8px;

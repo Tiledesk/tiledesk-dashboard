@@ -35,6 +35,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'bot-create',
@@ -188,15 +189,12 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -350,7 +348,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     const jsonString = JSON.stringify(json)
     // Check for XSS patterns
     if (containsXSS(jsonString)) {
-      // console.log("Potential XSS attack detected!");
+      this.logger.log("Potential XSS attack detected!");
       this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
       return;
     }
