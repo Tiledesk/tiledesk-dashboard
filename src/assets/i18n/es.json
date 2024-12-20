@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Uso total de Tokens AI",
     "TotalEmailUsage": "Uso total del correo electrónico",
     "Email": "Correo electrónico",
+    "Voice":"Voz",
+    "TotalVoiceUsage": "Uso total de voz",
     "RequestsForAgent": "Conversaciones para el agente",
     "RequestsForDept": "Conversaciones para el departamento",
     "NumberOfRequestsLast7Days": "Número de conversaciones en los últimos 7 días",
@@ -612,6 +614,9 @@
     "HideChatbotAttributesWidget":"Ocultar el widget Atributos del Chatbot",
     "EnablingThisOptionHidesChatbotAttributes": "Al habilitar esta opción se ocultan los atributos del chatbot de la barra lateral de detalles de la conversación.",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Contáctanos para aumentar tus cuotas mensuales de recursos",
+    "AccessDenied":"Acceso denegado",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Parece que no eres compañero de este proyecto",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Comuníquese con el administrador del proyecto para que le otorgue el acceso",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -3329,6 +3329,10 @@ img {
   margin-top: 18px;
 }
 
+.home-quote-container-voice-runned-out {
+  margin-top: 18px;
+}
+
 .quote-title {
   font-size: 14px;
   font-weight: 400;
@@ -3460,6 +3464,11 @@ img {
   // margin-top: 7px;
 }
 
+.mat-progress-spinner-voice-runned-out::ng-deep circle {
+  stroke: #f55a4e !important;
+  // margin-top: 7px;
+}
+
 
 .percentage-conversations-runned-out {
   color: #f55a4e !important;
@@ -3473,6 +3482,11 @@ img {
 
 
 .percentage-email-runned-out {
+  color: #f55a4e !important;
+  // margin-top: 8px;
+}
+
+.percentage-voice-runned-out {
   color: #f55a4e !important;
   // margin-top: 8px;
 }
