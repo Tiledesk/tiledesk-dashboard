@@ -460,7 +460,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((hasOpen) => {
 
-        console.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
 
         if (this.projectId) {
           if (hasOpen !== null) {

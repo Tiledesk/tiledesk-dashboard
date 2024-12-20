@@ -59,12 +59,12 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     private logger: LoggerService,
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
-    console.log("[MODALS-URLS] data: ", data);
+    this.logger.log("[MODALS-URLS] data: ", data);
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
       this.t_params = data.t_params
-      console.log("[MODALS-URLS] data > t_params: ", this.t_params);
-      console.log("[MODALS-URLS] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+      this.logger.log("[MODALS-URLS] data > t_params: ", this.t_params);
+      this.logger.log("[MODALS-URLS] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
     } 
   }
 
@@ -103,7 +103,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
 
 
   onSelectRefreshRate(refreshRateSelected) {
-    console.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
+    this.logger.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
   }
 
   /** */

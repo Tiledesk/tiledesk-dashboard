@@ -80,7 +80,7 @@ export class TagsAnalyticsComponent implements OnInit {
 
   getCurrentUserAndChartTypePreference() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[TAG-ANALYTICS] - LoggedUser ', user);
+      this.logger.log('[TAG-ANALYTICS] - LoggedUser ', user);
 
       if (user && user._id) {
         this.currentUserId = user._id;
@@ -91,11 +91,11 @@ export class TagsAnalyticsComponent implements OnInit {
 
   getUserChartTypePreference(currentUserId: string) {
     let storedChartTypeUserPreference = localStorage.getItem(`chartStackedColumns-${currentUserId}`)
-    console.log('[TAG-ANALYTICS] STORED CHART TYPE PREFERENCE', storedChartTypeUserPreference)
+    this.logger.log('[TAG-ANALYTICS] STORED CHART TYPE PREFERENCE', storedChartTypeUserPreference)
     if (!storedChartTypeUserPreference) {
       this.chartStackedColumns = true;
       this.chartBasicColumns = false;
-      console.log('[TAG-ANALYTICS] NO STORED CHART TYPE PREFERENCE chartStackedColumns', this.chartStackedColumns, 'chartBasicColumns ', this.chartBasicColumns)
+      this.logger.log('[TAG-ANALYTICS] NO STORED CHART TYPE PREFERENCE chartStackedColumns', this.chartStackedColumns, 'chartBasicColumns ', this.chartBasicColumns)
     } else {
       if (storedChartTypeUserPreference === 'false') {
         this.chartStackedColumns = false;
@@ -112,9 +112,9 @@ export class TagsAnalyticsComponent implements OnInit {
 
   // Start date selection handler
   onSelectStartDate(selectedDate: Date): void {
-    // console.log('[TAG-ANALYTICS] - Start Date onSelectStartDate:', selectedDate);
+    // this.logger.log('[TAG-ANALYTICS] - Start Date onSelectStartDate:', selectedDate);
     this.startDateTemp = moment(selectedDate).format('DD/MM/YYYY');
-    console.log('[TAG-ANALYTICS] - Start Date startDate:', this.startDateTemp);
+    this.logger.log('[TAG-ANALYTICS] - Start Date startDate:', this.startDateTemp);
     if (selectedDate) {
       this.minEndDate = new Date(selectedDate); // Set minEndDate to selected start date
       this.maxEndDate = new Date(selectedDate); // Initialize maxEndDate
@@ -128,13 +128,13 @@ export class TagsAnalyticsComponent implements OnInit {
 
   // End date selection handler
   onSelectEndDate(selectedDate: Date): void {
-    // console.log('[TAG-ANALYTICS] - End Date onSelectEndDate selectedDate:', selectedDate);
+    // this.logger.log('[TAG-ANALYTICS] - End Date onSelectEndDate selectedDate:', selectedDate);
     this.endDateTemp = moment(selectedDate).format('DD/MM/YYYY');
-    console.log('[TAG-ANALYTICS] - End Date endDateTemp:', this.endDateTemp);
+    this.logger.log('[TAG-ANALYTICS] - End Date endDateTemp:', this.endDateTemp);
     if (this.startDateTemp && this.endDateTemp) {
       this.selectedDaysId = null
       // const date_Array = this.createDateRange(this.startDateTemp, this.endDateTemp)
-      // console.log('[TAG-ANALYTICS] - End Date onSelectEndDate date_Array:', date_Array);
+      // this.logger.log('[TAG-ANALYTICS] - End Date onSelectEndDate date_Array:', date_Array);
       this.getTagDataAndBuildGraph(this.startDateTemp, this.endDateTemp, this.chartStackedColumns)
 
     }
@@ -142,7 +142,7 @@ export class TagsAnalyticsComponent implements OnInit {
 
 
   clearDateRange() {
-    console.log('[TAG-ANALYTICS] - CLEAR DATE RANGE');
+    this.logger.log('[TAG-ANALYTICS] - CLEAR DATE RANGE');
     this.startDate = null
     this.endDate = null
     this.startDateTemp = null
@@ -152,7 +152,7 @@ export class TagsAnalyticsComponent implements OnInit {
   }
 
   onSelectStackedColmunsGraphType(areStaked) {
-    console.log('[TAG-ANALYTICS] - onSelectColmunsGraphType areStaked', areStaked)
+    this.logger.log('[TAG-ANALYTICS] - onSelectColmunsGraphType areStaked', areStaked)
     this.chartStackedColumns = areStaked;
     this.chartBasicColumns = false;
 
@@ -160,7 +160,7 @@ export class TagsAnalyticsComponent implements OnInit {
     localStorage.setItem(`chartStackedColumns-${this.currentUserId}`, 'true')
 
     this.logger.log('[TAG-ANALYTICS] - chartStackedColumns ', this.chartStackedColumns)
-    console.log('[TAG-ANALYTICS] onSelectStackedColmunsGraphType startDateTemp'  , this.startDateTemp, ' endDateTemp ' ,  this.endDateTemp)
+    this.logger.log('[TAG-ANALYTICS] onSelectStackedColmunsGraphType startDateTemp'  , this.startDateTemp, ' endDateTemp ' ,  this.endDateTemp)
     // this.getTagDataAndBuildGraph(this.lastdays, this.chartStackedColumns)
     if (this.startDateTemp  && this.endDateTemp ) {
       this.getTagDataAndBuildGraph(this.startDateTemp, this.endDateTemp, this.chartStackedColumns)
@@ -171,7 +171,7 @@ export class TagsAnalyticsComponent implements OnInit {
   }
 
   onSelectBasicColmunsGraphType(areBasic) {
-    console.log('[TAG-ANALYTICS] - onSelectBasicColmunsGraphType ', areBasic)
+    this.logger.log('[TAG-ANALYTICS] - onSelectBasicColmunsGraphType ', areBasic)
     this.chartBasicColumns = areBasic
     this.chartStackedColumns = false;
 
@@ -179,7 +179,7 @@ export class TagsAnalyticsComponent implements OnInit {
     localStorage.setItem(`chartStackedColumns-${this.currentUserId}`, 'false')
 
     this.logger.log('[TAG-ANALYTICS] - chartBasicColumns ', this.chartBasicColumns)
-    console.log('[TAG-ANALYTICS] onSelectBasicColmunsGraphType startDateTemp'  , this.startDateTemp, ' endDateTemp ' ,  this.endDateTemp)
+    this.logger.log('[TAG-ANALYTICS] onSelectBasicColmunsGraphType startDateTemp'  , this.startDateTemp, ' endDateTemp ' ,  this.endDateTemp)
     // this.getTagDataAndBuildGraph(this.lastdays, this.chartStackedColumns)
    
     if (this.startDateTemp && this.endDateTemp) {
@@ -192,7 +192,7 @@ export class TagsAnalyticsComponent implements OnInit {
   daysSelect(value) {
 
     this.selectedDaysId = value;//--> value to pass throw for graph method
-    console.log('[TAG-ANALYTICS] daysSelect this.selectedDaysId ', this.selectedDaysId)
+    this.logger.log('[TAG-ANALYTICS] daysSelect this.selectedDaysId ', this.selectedDaysId)
     if (this.selectedDaysId) {
       this.clearDateRange()
     }
@@ -224,24 +224,21 @@ export class TagsAnalyticsComponent implements OnInit {
   }
   
   calculateDateRange(days: number) {
-    console.log('calculateDateRange days ', days)
+    this.logger.log('calculateDateRange days ', days)
     const today = moment(); // Current date
     const _startDate = today.clone().subtract(days - 1, 'days'); // Subtract (days - 1) for a full range
     const _endDate = today;
     const startDate = _startDate.format('DD/MM/YYYY')
     const endDate = _endDate.format('DD/MM/YYYY')
-    console.log('[TAG-ANALYTICS] --> calculateDateRange:', startDate, 'startDate ', ' endDate ', endDate)
+    this.logger.log('[TAG-ANALYTICS] --> calculateDateRange:', startDate, 'startDate ', ' endDate ', endDate)
 
     this.getTagDataAndBuildGraph(startDate, endDate, this.chartStackedColumns)
-    // return {
-    //   startDate: startDate.format('DD/MM/YYYY'),
-    //   endDate: endDate.format('DD/MM/YYYY'),
-    // };
+   
   }
 
   // getTagDataAndBuildGraph(lastdays, chartStackedColumns) { // old
   // console.log('getTagDataAndBuildGraph lastdays ', lastdays)
-  getTagDataAndBuildGraph(startDate, endDate, chartStackedColumns) {
+  getTagDataAndBuildGraph(startDate: string, endDate: string, chartStackedColumns: boolean) {
     
 
     // --------------------------------------------------------------------------------------
@@ -268,7 +265,7 @@ export class TagsAnalyticsComponent implements OnInit {
     // console.log('Generated Date Range:', fullDateRange);
 
 
-    console.log('[TAG-ANALYTICS] GET TAG DATA AND BUILD GRAPH  startDate ', startDate, 'endDate ', endDate, 'chartStackedColumns ', chartStackedColumns)
+    this.logger.log('[TAG-ANALYTICS] GET TAG DATA AND BUILD GRAPH  startDate ', startDate, 'endDate ', endDate, 'chartStackedColumns ', chartStackedColumns)
 
     // --------------------------------------------------------------------------------------
     // Generate a date range from a start and an end date (new)
@@ -300,7 +297,7 @@ export class TagsAnalyticsComponent implements OnInit {
     // this.logger.log("[TAG-ANALYTICS] fullDateRange[0]", fullDateRange[0]);
     // this.logger.log("[TAG-ANALYTICS] filter start day x query", _initDay, "filter end day x query", _endDay);
 
-    console.log("[TAG-ANALYTICS] filter start day", this.initDay, "filter end day ", this.endDay);
+    this.logger.log("[TAG-ANALYTICS] filter start day", this.initDay, "filter end day ", this.endDay);
 
     this.logger.log("[TAG-ANALYTICS] filter start day x query", moment(this.initDay, 'DD/MM/YYYY').format('MM/DD/YYYY'), "filter end day x query", moment(this.endDay, 'DD/MM/YYYY').format('MM/DD/YYYY'));
     const initDayForQuery = moment(this.initDay, 'DD/MM/YYYY').format('MM/DD/YYYY')
@@ -309,7 +306,7 @@ export class TagsAnalyticsComponent implements OnInit {
     // REST CALL
     this.tagsService.geTagsForGraph('conversation-tag', initDayForQuery, endDayForQuery).subscribe((res: any) => {
 
-     console.log('[TAG-ANALYTICS] ---> GET GRAPH TAGS RES ', res)
+      this.logger.log('[TAG-ANALYTICS] ---> GET GRAPH TAGS RES ', res)
 
       // ---------------------------------------------
       // Map series with filled values
