@@ -537,7 +537,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       setTimeout(() => {
         this.displayQuotaSkeleton = false
         this.getRunnedOutQuotes(this.quotes)
-      }, 1000);
+      }, 2000);
 
     })
   }
