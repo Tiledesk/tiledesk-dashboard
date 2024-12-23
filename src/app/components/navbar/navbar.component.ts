@@ -2073,7 +2073,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         const firstKey = Object.keys(data)[0]; // Get the first key in the object
         const createdValue = data[firstKey].created; // Access the created property
 
-        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue); 
+        console.log('[NAVBAR] last changelog createdValue ', createdValue); 
         const createdValueTimestamp = new Date(createdValue).getTime();
         console.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
         console.log('[NAVBAR] lastSeen ', lastSeen);

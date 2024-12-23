@@ -21,6 +21,8 @@ export class SleekplanApiService {
       headers: new HttpHeaders({ 
         Authorization: `Bearer ${this.SLEEKPLAN_API_KEY}`,
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',  
+        'Pragma': 'no-cache'  
       })
     };
     
