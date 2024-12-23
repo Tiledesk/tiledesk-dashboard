@@ -367,8 +367,9 @@
                         <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
                             <span>{{ 'KbPage.Status' | translate }}</span>
                         </th>
-                        <th class="column-th-span" style="width:150px;" (click)="onOrderBy('updatedAt')">
-                            <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span>
+                        <th class="column-th-span" style="width:1%;white-space: nowrap;" (click)="onOrderBy('updatedAt')">
+                            <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
+                            <span style="margin: 0px;">{{'LastUpdated' | translate }}</span>
                             <span *ngIf="directionDesc === 1" id="expand_more"
                                 class="th-label material-icons-outlined icon-direction">expand_more</span>
                             <span *ngIf="directionDesc === -1" id="expand_less"
@@ -463,7 +464,7 @@
                         </td>
 
                         <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
-                            {{ kb.createdAt | amTimeAgo }}
+                            {{ kb.updatedAt | amTimeAgo }}
                         </td>
 
                         <!-- <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
