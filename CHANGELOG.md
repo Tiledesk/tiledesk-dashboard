@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.53
+- Minor improvements
+
 ### 2.7.49
 - Improves the conversations graph and analytics overview on the home page 
 
