@@ -1915,6 +1915,11 @@
         "LastStepText": "Sei pronto per iniziare ad aggiungere i tuoi contenuti. Se hai bisogno di aiuto,",
         "LastStepContactUs": "CONTATTACI"
     },
+    "Never":"Mai",
+    "Daily":"Giornaliero",
+    "Weekly":"Settimanale",
+    "Monthly":"Mensile",
+    "LastUpdated":"Ultimo aggiornamento",
     "ViewInTheDesignStudio": "Visualizza nel Design Studio",
     "LearnHow": "Impara come",
     "AutomationsLog": "Registro delle automazioni",

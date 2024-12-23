@@ -1905,6 +1905,11 @@
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Det är allt"
     },
+    "Never":"Aldrig",
+    "Daily":"Dagligen",
+    "Weekly":"Veckovis",
+    "Monthly":"Månadsvis",
+    "LastUpdated":"Senast uppdaterad",
     "ViewInTheDesignStudio": "Utsikt i designstudion",
     "LearnHow": "Lära sig hur",
     "AutomationsLog": "Automationslogg",

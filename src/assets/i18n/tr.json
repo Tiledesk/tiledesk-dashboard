@@ -1905,6 +1905,11 @@
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Hepsi bu kadar"
     },
+    "Never":"Asla",
+    "Daily":"Günlük",
+    "Weekly":"Haftalık",
+    "Monthly":"Aylık",
+    "LastUpdated":"Son güncelleme",
     "ViewInTheDesignStudio": "Tasarım Stüdyosu'nda görüntüle",
     "LearnHow": "Nasıl yapılacağını öğrenin",
     "AutomationsLog": "Otomasyon Günlüğü",

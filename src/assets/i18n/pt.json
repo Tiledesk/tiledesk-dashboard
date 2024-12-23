@@ -1903,6 +1903,11 @@
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Isso é tudo"
     },
+    "Never":"Nunca",
+    "Daily":"Diariamente",
+    "Weekly":"Semanal",
+    "Monthly":"Mensal",
+    "LastUpdated":"Última atualização",
     "ViewInTheDesignStudio": "Veja no Design Studio",
     "LearnHow": "Aprenda como",
     "AutomationsLog": "Log de Automações",

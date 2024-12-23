@@ -1915,6 +1915,11 @@
         "LastStepText": "You're ready to start adding your contents. If you need help,",
         "LastStepContactUs": "CONTACT US"
     },
+    "Never":"Never",
+    "Daily":"Daily",
+    "Weekly":"Weekly",
+    "Monthly":"Monthly",
+    "LastUpdated":"Last update",
     "ViewInTheDesignStudio": "View in the Design Studio",
     "LearnHow": "Learn how",
     "AutomationsLog": "Automations Log",
