@@ -21,6 +21,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { TagsAnalyticsComponent } from './metrics/tags-analytics/tags-analytics.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   { path: "", component: AnalyticsComponent},
@@ -52,6 +59,13 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgApexchartsModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     RouterModule

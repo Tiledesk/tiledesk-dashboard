@@ -2144,6 +2144,33 @@ footer ul {
   vertical-align: middle !important;
 }
 
+/* Mat Date picker in Tags analytics */
+
+.tags-analytics-date-range-picker .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-underline {
+  display: none !important;
+}
+
+.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex {
+  padding-top: 0px !important;
+}
+
+.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+  border: 1px solid #ccc !important;
+  padding: 9px 8px;
+  height: 36px;
+  border-radius: 4px;
+  // position: relative;
+  // top: -1px;
+}
+
+.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator {
+  vertical-align: middle !important;
+}
+
 /* select teammate status in user detail drawer */
 .ng-select.teammate-status-in-drawer .ng-select-container {
   background-color: #2d323e;
@@ -3657,11 +3684,14 @@ div:where(.swal2-container) .swal2-select {
 
 /* Metrics > Tags 
 /* ************************* */
+
 .graph-options {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 26px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 
@@ -3674,7 +3704,7 @@ div:where(.swal2-container) .swal2-select {
   align-items: center;
 }
 
-.graph-type-options-wpr > .analytics-options-label {
+.graph-type-options-wpr>.analytics-options-label {
   text-align: left;
   font-size: 14px;
   font-weight: 400;
@@ -3700,15 +3730,52 @@ div:where(.swal2-container) .swal2-select {
 .graph-type-select-btn>svg {
   width: 34px;
   height: 34px;
-  fill: var(--icon-color)  
+  fill: var(--icon-color)
 }
 
 .graph-type-select-btn:hover>svg {
-  fill: var(--icon-hover-color)  
+  fill: var(--icon-hover-color)
 }
 
-.graph-type-select-btn.active-column-graph > svg{
-  fill: var(--icon-active-color) 
+.graph-type-select-btn.active-column-graph>svg {
+  fill: var(--icon-active-color)
+}
+
+.date-picker-wpr>.analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr {
+  position: relative;
+  top: -2px;
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr>i {
+  font-size: 18px;
+  color: #566787;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.chart-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  height: 375px;
+  justify-content: center;
+}
+
+.chart-loading-spinner > p {
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: var(--blue-light) !important;
 }
 
 
