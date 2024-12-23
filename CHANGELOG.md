@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.54
+- Fixes the bug: Knowledge base table update date is incorrect
+
 ### 2.7.52
 - Improves KB table
 
