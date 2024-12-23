@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.52
+- Improves KB table
+
 ### 2.7.51
 - Adds the ability to filter by custom range the tag graph
 
