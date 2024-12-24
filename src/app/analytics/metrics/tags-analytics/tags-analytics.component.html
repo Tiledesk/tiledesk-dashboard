@@ -75,9 +75,9 @@
                             <mat-form-field class="tags-analytics-date-range-picker" appearance="standard">
                                 <!-- <mat-label>Select a date range</mat-label> -->
                                 <mat-date-range-input [rangePicker]="picker" [min]="minEndDate" [max]="maxEndDate">
-                                    <input matStartDate placeholder="Start date" [(ngModel)]="startDate"
+                                    <input matStartDate placeholder="{{'StartDate' | translate}}" [(ngModel)]="startDate"
                                         (dateChange)="onSelectStartDate($event.value)">
-                                    <input matEndDate placeholder="End date" [(ngModel)]="endDate"
+                                    <input matEndDate placeholder="{{'EndDate' | translate}}" [(ngModel)]="endDate"
                                         (dateChange)="onSelectEndDate($event.value)">
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
