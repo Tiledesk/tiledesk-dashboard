@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.55
+- Adds the ability to filter by custom range the tag graph
+- Allows to search for conversations by tags not present in the tag list on the "History" page
+
 ### 2.7.53
 - Minor improvements
 
