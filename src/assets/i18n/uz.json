@@ -1908,6 +1908,9 @@
     "Weekly":"haftalik",
     "Monthly":"oylik",
     "LastUpdated":"Oxirgi yangilangan",
+    "SelectOrTypeTheTagToSearch": "Qidirish uchun tegni tanlang yoki yozing",
+    "Loading": "Yuklanmoqda...",
+    "TagNotFoundInTheList":"Roʻyxatda teg topilmadi",
     "ViewInTheDesignStudio": "Dizayn studiyasida ko'rish",
     "LearnHow": "Qanday qilib",
     "AutomationsLog": "Avtomatlashtirish jurnali",
@@ -1919,6 +1922,7 @@
     "Thursday": "Payshanba",
     "Friday": "Juma",
     "Saturday": "shanba",
+    "SelectAnOption": "Variantni tanlang",
     "Analytics": {
         "AnalyticsTITLE": "Analitika",
         "HeatMapTitle": "Kunning bir soatiga suhbatlar",

@@ -1909,6 +1909,9 @@
     "Weekly":"Həftəlik",
     "Monthly":"Aylıq",
     "LastUpdated":"Son yeniləmə",
+    "SelectOrTypeTheTagToSearch": "Axtarmaq üçün etiketi seçin və ya yazın",
+    "Loading": "Yüklənir...",
+    "TagNotFoundInTheList":"Siyahıda etiket tapılmadı",
     "ViewInTheDesignStudio": "Dizayn Studiyasında görüntüləyin",
     "LearnHow": "Necə öyrən",
     "AutomationsLog": "Avtomatlaşdırma qeydləri",
@@ -1920,6 +1923,7 @@
     "Thursday": "cümə axşamı",
     "Friday": "cümə",
     "Saturday": "şənbə",
+    "SelectAnOption": "Seçim seçin",
     "Analytics": {
         "AnalyticsTITLE": "Analitika",
         "HeatMapTitle": "Günün hər saatında söhbətlər",

@@ -1910,6 +1910,9 @@
     "Weekly":"Недељно",
     "Monthly":"Месечно",
     "LastUpdated":"Последње ажурирано",
+    "SelectOrTypeTheTagToSearch": "Изаберите или унесите ознаку за претрагу",
+    "Loading": "Учитавање...",
+    "TagNotFoundInTheList":"Ознака није пронађена на листи",
     "ViewInTheDesignStudio": "Погледајте у Студију дизајна",
     "LearnHow": "Научите како",
     "AutomationsLog": "Аутоматионс Лог",
@@ -1921,6 +1924,7 @@
     "Thursday": "четвртак",
     "Friday": "петак",
     "Saturday": "субота",
+    "SelectAnOption": "Изаберите опцију",
     "Analytics": {
         "AnalyticsTITLE": "Аналитика",
         "HeatMapTitle": "Разговори по сату у дану",

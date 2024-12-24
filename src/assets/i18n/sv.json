@@ -1910,6 +1910,9 @@
     "Weekly":"Veckovis",
     "Monthly":"Månadsvis",
     "LastUpdated":"Senast uppdaterad",
+    "SelectOrTypeTheTagToSearch": "Välj eller skriv taggen för att söka",
+    "Loading": "Belastning...",
+    "TagNotFoundInTheList":"Taggen hittades inte i listan",
     "ViewInTheDesignStudio": "Utsikt i designstudion",
     "LearnHow": "Lära sig hur",
     "AutomationsLog": "Automationslogg",
@@ -1921,6 +1924,7 @@
     "Thursday": "torsdag",
     "Friday": "fredag",
     "Saturday": "lördag",
+    "SelectAnOption": "Välj ett alternativ",
     "Analytics": {
         "AnalyticsTITLE": "Analytics",
         "HeatMapTitle": "Samtal per timme på dygnet",

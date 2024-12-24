@@ -1908,6 +1908,9 @@
     "Weekly":"Wöchentlich",
     "Monthly":"Monatlich",
 	"LastUpdated":"Zuletzt aktualisiert",
+	"SelectOrTypeTheTagToSearch": "Wählen Sie das zu suchende Tag aus oder geben Sie es ein",
+	"Loading": "Laden...",
+	"TagNotFoundInTheList":"Tag nicht in der Liste gefunden",
 	"ViewInTheDesignStudio": "Ansicht im Design Studio",
 	"LearnHow": "Lernen wie",
 	"AutomationsLog": "Protokoll der Automatisierungen",
@@ -1919,6 +1922,7 @@
 	"Thursday": "Donnerstag",
 	"Friday": "Freitag",
 	"Saturday": "Samstag",
+	"SelectAnOption": "Wählen Sie eine Option",
 	"Analytics": {
 		"AnalyticsTITLE": "Analytik",
 		"PanoramicaComponentTitle": "Überblick",

@@ -1909,6 +1909,9 @@
     "Weekly":"أسبوعي",
     "Monthly":"شهريا",
     "LastUpdated":"آخر تحديث",
+    "SelectOrTypeTheTagToSearch": "حدد أو اكتب العلامة للبحث",
+    "Loading": "تحميل...",
+    "TagNotFoundInTheList":"لم يتم العثور على العلامة في القائمة",
     "ViewInTheDesignStudio": "عرض في استوديو التصميم",
     "LearnHow": "تعلم كيف",
     "AutomationsLog": "سجل الأتمتة",
@@ -1920,6 +1923,7 @@
     "Thursday": "يوم الخميس",
     "Friday": "جمعة",
     "Saturday": "السبت",
+    "SelectAnOption": "حدد خيارا",
     "Analytics": {
         "AnalyticsTITLE": "تحليلات",
         "HeatMapTitle": "المحادثات في الساعة من اليوم",

@@ -1911,6 +1911,9 @@
     "Weekly":"Щотижня",
     "Monthly":"Щомісяця",
     "LastUpdated":"Останнє оновлення",
+    "SelectOrTypeTheTagToSearch": "Виберіть або введіть тег для пошуку",
+    "Loading": "Завантаження...",
+    "TagNotFoundInTheList":"Тег не знайдено в списку",
     "ViewInTheDesignStudio": "Переглянути в студії дизайну",
     "LearnHow": "Дізнайтесь як",
     "AutomationsLog": "Журнал автоматизації",
@@ -1922,6 +1925,7 @@
     "Thursday": "четвер",
     "Friday": "п'ятниця",
     "Saturday": "субота",
+    "SelectAnOption": "Виберіть опцію",
     "Analytics": {
         "AnalyticsTITLE": "Аналітика",
         "HeatMapTitle": "Розмови за годину дня",

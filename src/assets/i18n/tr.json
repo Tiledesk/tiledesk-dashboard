@@ -1910,6 +1910,9 @@
     "Weekly":"Haftalık",
     "Monthly":"Aylık",
     "LastUpdated":"Son güncelleme",
+    "SelectOrTypeTheTagToSearch": "Aramak istediğiniz etiketi seçin veya yazın",
+    "Loading": "Yükleniyor...",
+    "TagNotFoundInTheList":"Etiket listede bulunamadı",
     "ViewInTheDesignStudio": "Tasarım Stüdyosu'nda görüntüle",
     "LearnHow": "Nasıl yapılacağını öğrenin",
     "AutomationsLog": "Otomasyon Günlüğü",
@@ -1921,6 +1924,7 @@
     "Thursday": "Perşembe",
     "Friday": "Cuma",
     "Saturday": "Cumartesi",
+    "SelectAnOption": "Bir seçenek seçin",
     "Analytics": {
         "AnalyticsTITLE": "Analitik",
         "HeatMapTitle": "Günün saatine göre konuşma",

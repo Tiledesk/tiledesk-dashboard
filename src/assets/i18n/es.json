@@ -1908,6 +1908,9 @@
     "Weekly":"Semanal",
     "Monthly":"Mensual",
     "LastUpdated":"Última actualización",
+    "SelectOrTypeTheTagToSearch": "Seleccione o escriba la etiqueta a buscar",
+    "Loading": "Cargando...",
+    "TagNotFoundInTheList":"Etiqueta no encontrada en la lista",
     "ViewInTheDesignStudio": "Ver en el Design Studio",
     "LearnHow": "Aprender cómo",
     "AutomationsLog": "Registro de automatización",
@@ -1919,6 +1922,7 @@
     "Thursday": "Jueves",
     "Friday": "Viernes",
     "Saturday": "Sábado",
+    "SelectAnOption": "Seleccione una opción",
     "Analytics": {
         "AnalyticsTITLE": "Estadísticas",
         "HeatMapTitle": "Conversaciones por hora del día",

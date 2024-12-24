@@ -1908,6 +1908,9 @@
     "Weekly":"Еженедельно",
     "Monthly":"Ежемесячно",
     "LastUpdated":"Последнее обновление",
+    "SelectOrTypeTheTagToSearch": "Выберите или введите тег для поиска",
+    "Loading": "Загрузка...",
+    "TagNotFoundInTheList":"Тег не найден в списке",
     "ViewInTheDesignStudio": "Посмотреть в студии дизайна",
     "LearnHow": "Узнать, как",
     "AutomationsLog": "Журнал автоматизации",
@@ -1919,6 +1922,7 @@
     "Thursday": "Четверг",
     "Friday": "Пятница",
     "Saturday": "Суббота",
+    "SelectAnOption": "Выберите вариант",
     "Analytics": {
         "AnalyticsTITLE": "Аналитика",
         "HeatMapTitle": "Разговоров в час дня",
