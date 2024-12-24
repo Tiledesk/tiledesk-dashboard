@@ -462,7 +462,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
         if (this.projectId) {
-          this.getQuotes()
+          if (hasOpen !== null) {
+            this.getQuotes()
+          }
         }
       })
 
@@ -534,7 +536,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       setTimeout(() => {
         this.displayQuotaSkeleton = false
         this.getRunnedOutQuotes( this.quotes)
-      }, 1000);
+      }, 1500);
 
     })
   }
