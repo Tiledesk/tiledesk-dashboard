@@ -249,9 +249,9 @@
                       <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="Start date">
+                          placeholder="{{'StartDate' | translate}}">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="End date">
+                          placeholder="{{'EndDate' | translate}}">
                       </mat-date-range-input>
                       <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -292,18 +292,27 @@
                     {{ "Tags.Tags" | translate }}
                   </label>
                   <div class="col-sm-12">
+                    <!-- placeholder="{{'Tags.SelectTag' | translate}}"  -->
                     <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
-                      placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selecteTagName"
-                      (change)="tagNameSelected()" [clearable]='false' [loading]=loadingTags loadingText='Loading...'>
+                      placeholder="{{'SelectOrTypeTheTagToSearch' | translate }}"
+                      [(ngModel)]="selecteTagName"
+                      (change)="onSelectedTagName()" 
+                      (search)="onSearchTagName($event)"
+                      [clearable]='true' 
+                      [loading]=loadingTags 
+                      notFoundText="{{'TagNotFoundInTheList' | translate}}"
+                      [editableSearchTerm]="true"
+                      loadingText="{{'Loading' | translate}}"
+                      >
                       <ng-template ng-label-tmp let-item="item">
-                        <!-- <img height="15" width="15" [src]="item.avatar" /> -->
-                        <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
-                        <span style="margin-left:6px;">{{item.name}}</span>
+                        <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                        <!-- style="margin-left:6px;" -->
+                        <span>{{item.name}}</span>
                       </ng-template>
                       <ng-template ng-option-tmp let-item="item" let-index="index">
-                        <!-- <img height="15" width="15" [src]="item.avatar" /> -->
-                        <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
-                        <span style="margin-left:6px;">{{item.name}}</span>
+                        <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                        <!-- style="margin-left:6px;" -->
+                        <span>{{item.name}}</span>
                       </ng-template>
                     </ng-select>
                   </div>

@@ -1984,10 +1984,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // ------------------------------------------------------------------------------
   // @ Tags - on change tags get selected tag name
   // ------------------------------------------------------------------------------
-  tagNameSelected() {
-    // this.logger.log('[HISTORY & NORT-CONVS] - selecteTagName ', this.selecteTagName);
-
+  onSelectedTagName() {
+    this.logger.log('[HISTORY & NORT-CONVS] - selecteTagName ', this.selecteTagName);
+    this.logger.log('[HISTORY & NORT-CONVS] - tags_array ', this.tags_array);
     const selecteTag = this.tags_array.filter((tag: any) => {
+
       return tag.name === this.selecteTagName;
     });
     // this.logger.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag);
@@ -1995,6 +1996,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor_temp = selecteTag[0]['color']
     }
   }
+
+  onSearchTagName(event) {
+    this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName event term', event.term);
+    this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName tags_array ', this.tags_array);
+
+  
+    const existsInList  = this.tags_array.filter((tag: any) => {
+      return tag.name === event.term;
+      
+    });
+    this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName existsInList ', existsInList);
+
+    if (existsInList.length === 0) {
+      this.selecteTagName = event.term
+    }
+
+  }
+
 
   requestsTypeSelectFromAdvancedOption() {
     // this.logger.log('this.conversationTypeValue: ', this.conversationTypeValue)
