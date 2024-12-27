@@ -38,6 +38,7 @@ import { ProjectService } from './services/project.service';
 import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
+import { SleekplanApiService } from './services/sleekplan-api.service';
 // import { UsersService } from './services/users.service';
 
 
@@ -103,9 +104,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
-       
+
         private sleekplanSsoService: SleekplanSsoService,
-        private  sleekplanService: SleekplanService
+        private sleekplanService: SleekplanService,
+        private sleekplanApiService: SleekplanApiService
+
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
@@ -234,15 +237,96 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.logger.log('[APP-COMPONENT] There is no logged in user')
         }
+
+        // --------------------------
+        // Get if page is refreshed
+        // --------------------------
         this.subscription = router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
                 browserRefresh = !router.navigated;
+                this.logger.log('APP-COMP browserRefresh ', browserRefresh)
+                if (browserRefresh === true) {
+                    window.addEventListener('load', () => {
+                        this.logger.log('Page fully loaded');
+
+                        // Check if there is the sleelplan chagenlog live announcemnt popup
+                        this.checkSPPopupIframeWithRetries(3, 1000); // Retry 3 times with a 1-second delay
+                    });
+
+
+                }
             }
         });
 
-       
+
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
+
     }
+
+    checkSPPopupIframeWithRetries = (maxRetries = 3, delay = 1000) => {
+        let attempts = 0;
+
+        const checkForIframe = () => {
+            attempts++;
+            this.logger.log(`Attempt ${attempts} to find the iframe...`);
+
+            const wrapper = document.getElementById('sleek-widget-wrap');
+
+            if (wrapper) {
+                this.logger.log('wrapper', wrapper)
+                this.observeClassChange('.i-sl-wrapper.right.popup.active', 'expanded', () => {
+                    this.logger.log('The "expanded" class was added!');
+                    this.sleekplanApiService.hasOpenedSPChangelogFromPopup()
+                });
+
+                return; // Stop further retries once the iframe is found
+            }
+
+            if (attempts < maxRetries) {
+                setTimeout(checkForIframe, delay);
+            } else {
+                this.logger.log('Max attempts reached. Iframe not found.');
+            }
+        };
+
+        checkForIframe();
+    };
+
+
+    observeClassChange(targetSelector: string, classToDetect: string, callback: () => void): void {
+        const targetElement = document.querySelector(targetSelector);
+        this.logger.log('targetElement ', targetElement);
+        if (!targetElement) {
+            this.logger.error('Target element not found');
+            return;
+        }
+
+        // Create a MutationObserver instance
+        const observer = new MutationObserver((mutationsList) => {
+
+            for (const mutation of mutationsList) {
+                this.logger.log('mutation ', mutation);
+                if (
+                    mutation.type === 'attributes' &&
+                    mutation.attributeName === 'class'
+                ) {
+                    const element = mutation.target as HTMLElement;
+
+                    // Check if the target element has the specified class
+                    if (element.classList.contains(classToDetect)) {
+                        this.logger.log(`Class "${classToDetect}" added to the element`);
+                        callback(); // Trigger the callback
+                        observer.disconnect();
+                    }
+                }
+            }
+        });
+
+        // Observe the element for class attribute changes
+        observer.observe(targetElement, { attributes: true });
+    }
+
+
 
     async loadStyle(data) {
 
@@ -355,13 +439,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //             this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
     //             // this.current_selected_prjct = project
     //             this.projectService.getProjects().subscribe((projects: any) => {
-    //                 console.log('[APP-COMPONENT] getProjects projects ', projects)
+    //                 this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
     //                 if (projects) {
     //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-    //                     console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
-                       
+    //                     this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+
     //                     this.USER_ROLE = this.current_selected_prjct_user.role
-    //                     console.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
+    //                     this.logger.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
     //                 }
     //             })
     //         }
@@ -628,44 +712,44 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         //     id: user._id, 
         //     name: user.firstname, 
         // }
-    
-        this.sleekplanSsoService.getSsoToken(user).subscribe(
-          (response) => {
-            this.logger.log('[APP-COMP] sleekplanSso response ', response)
-            this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
-    
-            // Configure Sleekplan with SSO
-            // window['Sleekplan'] = {
-            //   id: 'YOUR_SLEEKPLAN_ID',
-            //   sso: response.token,
-            // };
-    
-            // window['$sleek'].setUser({
-            //   token: response['token'],
-            // });
-    
-            // window.document.addEventListener('sleek:init', () => {
-            //   window['$sleek'].setUser({ token: response['token'] });
-            // }, false);
-           
-            // window['$sleek'].sso = { token: response['token'] }
-    
-            window['SLEEK_USER'] = { token: response['token'] }
 
-            // Load the Sleekplan widget
-            this.sleekplanService.loadSleekplan().then(() => {
-                this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
-              })
-              .catch(err => {
-                this.logger.error('[APP-COMP] - Sleekplan initialization failed', err);
-              });
-          },
-          (error) => {
-            this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
-           
-          }
+        this.sleekplanSsoService.getSsoToken(user).subscribe(
+            (response) => {
+                this.logger.log('[APP-COMP] sleekplanSso response ', response)
+                this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
+
+                // Configure Sleekplan with SSO
+                // window['Sleekplan'] = {
+                //   id: 'YOUR_SLEEKPLAN_ID',
+                //   sso: response.token,
+                // };
+
+                // window['$sleek'].setUser({
+                //   token: response['token'],
+                // });
+
+                // window.document.addEventListener('sleek:init', () => {
+                //   window['$sleek'].setUser({ token: response['token'] });
+                // }, false);
+
+                // window['$sleek'].sso = { token: response['token'] }
+
+                window['SLEEK_USER'] = { token: response['token'] }
+
+                // Load the Sleekplan widget
+                this.sleekplanService.loadSleekplan().then(() => {
+                    this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
+                })
+                    .catch(err => {
+                        this.logger.error('[APP-COMP] - Sleekplan initialization failed', err);
+                    });
+            },
+            (error) => {
+                this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
+
+            }
         );
-      }
+    }
 
     getCurrentUserAndConnectToWs() {
         this.auth.user_bs.subscribe((user) => {
@@ -913,11 +997,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1) ||
-                    (this.route.indexOf('/desktop--access') !== -1) 
+                    (this.route.indexOf('/desktop--access') !== -1)
 
                 ) {
                     // && this.USER_ROLE === 'agent' 
-            
+
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
                     // margin-top: -70px
@@ -941,8 +1025,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     // elemSidebarWrapper.style.height = "calc(100vh - 44px)";
                     elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-                    
-                    
+
+
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {

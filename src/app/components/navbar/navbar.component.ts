@@ -29,7 +29,7 @@ import { AppConfigService } from '../../services/app-config.service';
 // import { public_Key } from '../../utils/util';
 // import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
-import { filter, takeUntil, throttleTime } from 'rxjs/operators'
+import { filter, skip, takeUntil, throttleTime } from 'rxjs/operators'
 import { Subscription } from 'rxjs'
 
 // import brand from 'assets/brand/brand.json';
@@ -300,9 +300,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
-    
+
 
     this.listenSoundPreference()
+    this.listenToLiveAnnouncementOpened()
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
@@ -2012,7 +2013,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.displayLogoutModal = 'none';
   }
 
- 
+
 
   testExpiredSessionFirebaseLogout() {
     this.auth.testExpiredSessionFirebaseLogout(true)
@@ -2038,7 +2039,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   openFeedback(): void {
-    // console.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
+    // this.logger.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
     // if (window['Sleekplan']?.open) {
     //   window['Sleekplan'].open();
     // }this.user
@@ -2048,9 +2049,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     const lastSeen = Date.now()
     this.logger.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
     // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
-    localStorage.setItem(`lastSeenTimestamp-${this.user._id}`,lastSeen.toString())
+    localStorage.setItem(`lastSeenTimestamp-${this.user._id}`, lastSeen.toString())
     this.newChangelogCount = false
-    
+
+  }
+
+  listenToLiveAnnouncementOpened() {
+    this.sleekplanApi.hasOpenedChangelogfromPopup$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .pipe(skip(1))
+      .subscribe((hasSeenChangelog) => {
+        this.logger.log('[NAVBAR] listenToLiveAnnouncementOpened hasSeenChangelog', hasSeenChangelog);
+        const lastSeen = Date.now()
+        localStorage.setItem(`lastSeenTimestamp-${this.user._id}`, lastSeen.toString())
+        this.newChangelogCount = false
+      })
   }
 
   fetchNewChangelogCount(user) {
@@ -2059,7 +2074,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.logger.log('[NAVBAR] changelog lastSeen form storedLastSeen', storedLastSeen);
     this.logger.log('[NAVBAR] changelog lastSeen form storage type of', typeof storedLastSeen);
     let lastSeen = 0
-    if (storedLastSeen !== null ) {
+    if (storedLastSeen !== null) {
       lastSeen = +storedLastSeen
     }
     this.sleekplanApi.getNewChangelogCount().subscribe(
@@ -2069,26 +2084,26 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] changelog count  resp data ', resp['data']);
         this.logger.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']
-    
+
         const firstKey = Object.keys(data)[0]; // Get the first key in the object
         const createdValue = data[firstKey].created; // Access the created property
 
-        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue); 
+        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue);
         const createdValueTimestamp = new Date(createdValue).getTime();
         this.logger.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
         this.logger.log('[NAVBAR] lastSeen ', lastSeen);
-        if (lastSeen ) {
+        if (lastSeen) {
           if (createdValueTimestamp > lastSeen) {
             this.newChangelogCount = true
-            this.logger.log('[NAVBAR]  there is A notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+            this.logger.log('[NAVBAR]  there is A notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen, ' newChangelogCount ', this.newChangelogCount);
           } else {
             this.newChangelogCount = false
-            this.logger.log('[NAVBAR]  there is NOT notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+            this.logger.log('[NAVBAR]  there is NOT notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen, ' newChangelogCount ', this.newChangelogCount);
           }
         } else {
           this.newChangelogCount = true;
-          this.logger.log('[NAVBAR] there is A notification (else) Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
-        
+          this.logger.log('[NAVBAR] there is A notification (else) Changelog created at', createdValueTimestamp, ' last seen ', lastSeen, ' newChangelogCount ', this.newChangelogCount);
+
         }
       },
       (error) => {
