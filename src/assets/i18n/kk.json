@@ -1882,7 +1882,7 @@
         "RestartTour": "Турды қайта бастау",
         "TheLLMYourAgentWillUse": "Агент деректерді алу және құрастыру үшін пайдаланатын үлкен тіл үлгісі (LLM).",
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse": "Бір жауапты жасау үшін пайдалануға болатын токендердің ең көп саны.",
-        "ControlTheRandomnessOfTheAnswer": "LLM беретін жауаптың кездейсоқтығын бақылаңыз.",
+        "ControlTheRandomnessOfTheAnswer": "LLM ұсынған жауаптың кездейсоқтығын тексеріңіз.",
         "DeterminesHowManyChunksWillBePassedToTheLLM": "Жауапты жасау үшін мәтінмән ретінде LLM-ге қанша деректер көзінің бөліктері жіберілетінін анықтайды. LLM шатастыруын болдырмау үшін 2-4 ұсынамыз.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Жүйеге жауаптарыңызды жасау кезінде ойнайтын рөлді беріңіз.",
         "Deterministic": "Детерминистік",

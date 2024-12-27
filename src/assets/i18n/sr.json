@@ -1884,7 +1884,7 @@
         "RestartTour": "Поново покрените обилазак",
         "TheLLMYourAgentWillUse":"Модел великог језика (LLM) који ће ваш агент користити за преузимање и компајлирање података.",
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Максималан број токена који се може користити за генерисање једног одговора.",
-        "ControlTheRandomnessOfTheAnswer":"Контролишите случајност одговора који ЛЛМ даје.",
+        "ControlTheRandomnessOfTheAnswer":"Проверите случајност одговора који је дао ЛЛМ.",
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Одређује колико ће делова извора података бити прослеђено ЛЛМ-у као контекст за генерисање одговора. Препоручујемо 2-4 да бисте избегли забуну LLM.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Дајте систему улогу коју треба да игра приликом креирања ваших одговора.",
         "Deterministic":"Детерминистички",

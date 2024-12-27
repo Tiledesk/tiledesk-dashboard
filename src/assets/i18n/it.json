@@ -1882,7 +1882,7 @@
         "KnowledgeBasePreview":"Anteprima della knowledge base",
         "TheLLMYourAgentWillUse":"Il modello linguistico di grandi dimensioni (LLM) che il tuo agente utilizzerà per recuperare e compilare i dati.",
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Il numero massimo di token che possono essere utilizzati per generare una singola risposta.",
-        "ControlTheRandomnessOfTheAnswer":"Controllare la casualità della risposta fornita dall'LLM.",
+        "ControlTheRandomnessOfTheAnswer":"Controlla la casualità della risposta fornita dall'LLM.",
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Determina quanti chunks saranno passati all'LLM come contesto per generare una risposta. Consigliamo 2-4 per evitare confusione con l'LLM.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Assegna al sistema un ruolo che dovrà svolgere durante la creazione delle tue risposte.",
         "Deterministic":"Deterministico",
