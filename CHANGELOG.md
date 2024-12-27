@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.56
+- Fixed the bug: if a new Changelog notification is opened from the popup, the badge indicating the number of new Changelog remains visible
+
 ### 2.7.55
 - Adds the ability to filter by custom range the tag graph
 - Allows to search for conversations by tags not present in the tag list on the "History" page
