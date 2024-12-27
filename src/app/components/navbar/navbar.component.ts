@@ -2061,7 +2061,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       )
       .pipe(skip(1))
       .subscribe((hasSeenChangelog) => {
-        this.logger.log('[NAVBAR] listenToLiveAnnouncementOpened hasSeenChangelog', hasSeenChangelog);
+        // console.log('[NAVBAR] listenToLiveAnnouncementOpened hasSeenChangelog', hasSeenChangelog);
         const lastSeen = Date.now()
         localStorage.setItem(`lastSeenTimestamp-${this.user._id}`, lastSeen.toString())
         this.newChangelogCount = false

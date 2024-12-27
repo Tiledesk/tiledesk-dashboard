@@ -263,12 +263,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
-    checkSPPopupIframeWithRetries = (maxRetries = 3, delay = 1000) => {
+    checkSPPopupIframeWithRetries = (maxRetries = 5, delay = 1000) => {
         let attempts = 0;
 
         const checkForIframe = () => {
             attempts++;
-            this.logger.log(`Attempt ${attempts} to find the iframe...`);
+            // console.log(`Attempt ${attempts} to find the iframe...`);
 
             const wrapper = document.getElementById('sleek-widget-wrap');
 
@@ -295,7 +295,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     observeClassChange(targetSelector: string, classToDetect: string, callback: () => void): void {
         const targetElement = document.querySelector(targetSelector);
-        this.logger.log('targetElement ', targetElement);
+        // console.log('targetElement ', targetElement);
         if (!targetElement) {
             this.logger.error('Target element not found');
             return;
