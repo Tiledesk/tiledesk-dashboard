@@ -250,7 +250,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.logger.log('Page fully loaded');
 
                         // Check if there is the sleelplan chagenlog live announcemnt popup
-                        this.checkSPPopupIframeWithRetries(3, 1000); // Retry 3 times with a 1-second delay
+                        this.checkSPPopupIframeWithRetries(5, 1000); // Retry 5 times with a 1-second delay
                     });
 
 
@@ -268,13 +268,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const checkForIframe = () => {
             attempts++;
-            // console.log(`Attempt ${attempts} to find the iframe...`);
+             this.logger.log(`Attempt ${attempts} to find the iframe...`);
 
             const wrapper = document.getElementById('sleek-widget-wrap');
-
+            this.logger.log('wrapper 1', wrapper)
             if (wrapper) {
                 this.logger.log('wrapper', wrapper)
-                this.observeClassChange('.i-sl-wrapper.right.popup.active', 'expanded', () => {
+                // this.observeClassChange('.i-sl-wrapper.right.popup.active', 'expanded', () => {
+                this.observeClassChange(wrapper, 'expanded', () => {
                     this.logger.log('The "expanded" class was added!');
                     this.sleekplanApiService.hasOpenedSPChangelogFromPopup()
                 });
@@ -293,13 +294,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
 
-    observeClassChange(targetSelector: string, classToDetect: string, callback: () => void): void {
-        const targetElement = document.querySelector(targetSelector);
-        // console.log('targetElement ', targetElement);
-        if (!targetElement) {
-            this.logger.error('Target element not found');
-            return;
-        }
+    // observeClassChange(targetSelector: any, classToDetect: string, callback: () => void): void {
+    observeClassChange(targetElement: any, classToDetect: string, callback: () => void): void {
+        // const targetElement = document.querySelector(targetSelector);
+        this.logger.log('targetElement ', targetElement);
+        // if (!targetElement) {
+        //     this.logger.error('Target element not found');
+        //     return;
+        // }
 
         // Create a MutationObserver instance
         const observer = new MutationObserver((mutationsList) => {
