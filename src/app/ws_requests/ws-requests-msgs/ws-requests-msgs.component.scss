@@ -392,9 +392,8 @@
 //  OUTLINE STYLE
 .outline_btn {
   background-color: #fff !important;
-  border: 1px solid $brand-primary !important;
-
-  color: $brand-primary !important;
+  border: 1px solid var(--blue-light) !important; // $brand-primary !important;
+  color: var(--blue-light) !important; // $brand-primary !important;
   box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0), 0 3px 1px -2px rgba(0, 188, 212, 0.2),
     0 1px 5px 0 rgba(0, 188, 212, 0.12) !important;
   // padding: 11px 11px;
@@ -1259,8 +1258,8 @@ span .conv-svg-icon {
   background-color: #ffffff;
   text-transform: none;
   font-weight: 500;
-  color: $brand-primary;
-  border: 1px solid $brand-primary;
+  color: var(--blue-light); // $brand-primary;
+  border: 1px solid var(--blue-light); // $brand-primary;
   border-radius: 30px;
   padding: 3px 10px !important;
   box-shadow: none !important;
@@ -1271,11 +1270,11 @@ span .conv-svg-icon {
 
 .btn-white-custom-round:hover {
   color: #ffffff;
-  background-color: $brand-primary !important;
-  box-shadow: 0 14px 26px -12px rgba($brand-primary, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba($brand-primary, 0.2) !important;
-  -webkit-box-shadow: 0 14px 26px -12px rgba($brand-primary, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba($brand-primary, 0.2) !important;
+  background-color: var(--blue-light) !important; // $brand-primary !important;
+  box-shadow: 0 14px 26px -12px rgba(var(--blue-light), 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
+    0 8px 10px -5px rgba(var(--blue-light), 0.2) !important;
+  -webkit-box-shadow: 0 14px 26px -12px rgba(var(--blue-light), 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
+    0 8px 10px -5px rgba(var(--blue-light), 0.2) !important;
 }
 
 .btn-white-no-border {
@@ -1283,7 +1282,7 @@ span .conv-svg-icon {
   background-color: #ffffff;
   text-transform: none;
   font-weight: 500;
-  color: $brand-primary;
+  color: var(--blue-light); // $brand-primary;
   padding: 3px 10px !important;
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
@@ -1392,8 +1391,7 @@ span .conv-svg-icon {
 .bouncespinner>div {
   width: 12px; // 18px;
   height: 12px; //18px;
-  background-color: $brand-primary;
-
+  background-color: var(--blue-light); //$brand-primary;
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -1465,11 +1463,10 @@ span .conv-svg-icon {
 }
 
 .stretchspinner>div {
-  background-color: $brand-primary;
+  background-color: var(--blue-light); // $brand-primary;
   height: 100%;
   width: 6px;
   display: inline-block;
-
   -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }

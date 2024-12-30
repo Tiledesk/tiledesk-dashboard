@@ -1367,8 +1367,8 @@ print {
   & span,
   &:before,
   &:after {
-    // background: #fff;
-    background: #0f62ff;
+    // background: #0f62ff;
+    background: var(--blue-20);
     content: "";
     display: block;
     width: $size;
@@ -3548,7 +3548,8 @@ img {
 }
 
 #home-material-btn {
-  background-color: var(--blue-light);
+  // background-color: var(--blue-light);
+  background-color: var(--blue-20);
   color: #fff;
 }
 

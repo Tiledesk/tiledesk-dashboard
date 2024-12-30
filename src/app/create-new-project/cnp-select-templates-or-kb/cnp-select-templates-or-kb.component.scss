@@ -225,10 +225,10 @@ $color-pro-plan: #3ea9f5;
     padding: 0px 10px 0 0px;
     display: flex;
     &:hover {
-        border: 2px solid #3ea9f5;
+        border: 2px solid var(--blue-light); // #3ea9f5;
     }
     &.selected{
-        border: 2px solid #3ea9f5;
+        border: 2px solid var(--blue-light); // #3ea9f5;
     }
     .content-button{
         margin: auto;

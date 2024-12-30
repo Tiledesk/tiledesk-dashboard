@@ -5,10 +5,11 @@
     // margin-right: -15px;
 }
 .home-news-feed-title {
-    color: var(--blue-light);
+    // color: var(--blue-light);
+    color: var(--blue-20);
     font-weight: 400;
     font-size: 24px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     padding-bottom: 8px;
     padding-top: 8px;
 }
@@ -17,7 +18,7 @@
     color: rgb(100,116,139);
     font-size: 16px;
     font-weight: 400;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     padding-bottom: 8px;
 }
 

@@ -33,7 +33,8 @@
      --outlined-btn-border-color: rgb(203, 213, 225);
      --outlined-btn-blu-color: #3ea9f5;
      --outlined-btn-blu-hover-backgound-color: rgba(62,169,245,.1 );
-     --only-text-btn-color: #3ea9f5;
+    //  --only-text-btn-color: #3ea9f5;
+     --only-text-btn-color: var(--blue-20);
      --only-text-btn-hover-background: rgba( 55, 143, 233, 0.1);
      --icon-btn: #3ea9f5;
      --btn-border-radius: 9999px;
@@ -57,6 +58,9 @@
      --light-periwinkle: #5b72a7;
      --blue-turquoise: #2196f3;
      --blue-light: #3ea9f5;
+     --blu-01:rgba(0, 73, 189,.1);
+     --blue-20: #0566ff;
+     --blue-40: #0049bd;
      --vivid-blue:#0d8aee;
      --opal-violet: #7c8eb9;
      --indigo: #6883d0;

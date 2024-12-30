@@ -549,35 +549,42 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   text-transform: none !important;
   background-color: transparent;
-  color: var(--outlined-btn-blu-color);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blue-20);
   border-radius: var(--btn-border-radius) !important;
   padding: 7px !important;
-  border: 1px solid var(--outlined-btn-blu-color)!important;
+  // border: 1px solid var(--outlined-btn-blu-color)!important;
+  border: 1px solid var(--blue-20)!important;
   font-size: 14px;
   // height: 38px;
 }
 
 .btn-outlined-round-blu>span>svg { 
-  fill: var(--outlined-btn-blu-color);
+  // fill: var(--outlined-btn-blu-color);
+  fill: var(--blue-20);
 }
 
 
 .btn-outlined-round-blu:hover {
   box-shadow: unset !important;
-  background-color: var(--outlined-btn-blu-hover-backgound-color);
-  color: var(--outlined-btn-blu-color);
+  // background-color: var(--outlined-btn-blu-hover-backgound-color);
+  // color: var(--outlined-btn-blu-color);
+  background-color: var(--blu-01);
+  color: var(--blue-40);
 }
 
 .btn-outlined-round-blu:focus {
   box-shadow: unset !important;
   background-color: white !important;
-  color: var(--outlined-btn-blu-color);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blu-01)
 }
 
 .btn-outlined-round-blu:active {
   box-shadow: unset !important;
   background-color: white !important;
-  color: var(--outlined-btn-blu-color);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blu-01)
 }
 
 /* Btn outlined blu
@@ -586,35 +593,43 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   text-transform: none !important;
   background-color: transparent;
-  color: var(--outlined-btn-blu-color);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blue-20);
   border-radius: var(--btn-border-radius) !important;
   padding: 9px 20px !important;
-  border: 1px solid var(--outlined-btn-blu-color)!important;
+  // border: 1px solid var(--outlined-btn-blu-color)!important;
+  border: 1px solid var(--blue-20)!important;
   font-size: 14px;
   // height: 38px;
 }
 
 .btn-outlined-blu>span>svg { 
-  fill: var(--outlined-btn-blu-color);
+  // fill: var(--outlined-btn-blu-color);
+  fill: var(--blue-20);
 }
 
 
 .btn-outlined-blu:hover {
   box-shadow: unset !important;
-  background-color: var(--outlined-btn-blu-hover-backgound-color);
-  color: var(--outlined-btn-blu-color);
+  // background-color: var(--outlined-btn-blu-hover-backgound-color);
+  background-color: var(--blu-01);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blue-40);
+  border: 1px solid var(--blue-40)!important;
 }
 
 .btn-outlined-blu:focus {
   box-shadow: unset !important;
   background-color: white;
-  color: var(--outlined-btn-blu-color);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blue-20);
 }
 
 .btn-outlined-blu:active {
   box-shadow: unset !important;
   background-color: white;
-  color: var(--outlined-btn-blu-color);
+  // color: var(--outlined-btn-blu-color);
+  color: var(--blue-20);
 }
 
 /* BTN ROUND RED
@@ -661,7 +676,8 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 9px 20px !important;
-  background: var(--primary-btn-background) !important;
+  // background: var(--primary-btn-background) !important;
+  background: var(--blue-20) !important;
   font-size: 14px;
   border-radius: var(--btn-border-radius) !important;
   font-family: var(--header-font-family) !important;
@@ -671,7 +687,9 @@ my-app .main-panel .main-content .card {
 
 .btn-tdblu-no-boxshadow:hover {
   box-shadow: unset !important;
-  background: var(--primary-btn-hover-background) !important;
+  // background: var(--primary-btn-hover-background) !important;
+  background: var(--blue-40) !important;
+ 
 }
 
 
@@ -3778,6 +3796,10 @@ div:where(.swal2-container) .swal2-select {
   stroke: var(--blue-light) !important;
 }
 
+
+.radio > label {
+  color: #7695a5 !important //var(--secondary-text-color) !important
+}
 
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   transition: border-color 0.3s ease; /* Smooth transition */

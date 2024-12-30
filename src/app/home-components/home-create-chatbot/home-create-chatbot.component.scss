@@ -138,7 +138,7 @@
 
 .suggested-templates-card {
   display: flex;
-  border-radius: 6px;
+  border-radius: var(--card-border-radius);
   cursor: pointer;
   background: #f5f7f9;
   padding: 8px;
@@ -157,8 +157,61 @@
   box-shadow: rgba(0, 27, 71, 0.12) 0px 12px 32px;
 }
 
+
+.all-template {
+  // background-image: url(https://tiledesk.com/wp-content/uploads/2024/01/Explore_all_templates_v3.png);
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: -16px -0px;
+  background: #fff !important;
+  border: 1px solid var(--blue-20);
+  // border: 1px solid var(--blue-light);
+
+}
+
+.customer-satisfaction {
+  // background-image: url(https://tiledesk.com/wp-content/uploads/2023/12/Customer_satifaction.png);
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: -16px -0px;
+  background: #fff !important;
+  border: 1px solid var(--blue-20);
+  // border: 1px solid var(--blue-light);
+}
+
+.increase-sales {
+  // background-image: url(https://tiledesk.com/wp-content/uploads/2024/01/Increase-sales.png);
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: -16px -0px;
+  background: #fff !important;
+  border: 1px solid var(--blue-20);
+  // border: 1px solid var(--blue-light);
+}
+
 .no-category-tempalte {
   width: 203px  !important;
+}
+
+.svg-icon>svg {
+  width: 50px;
+  height: auto;
+  fill: var(--blue-20);
+  // fill: var(--blue-light);
+}
+
+.explore-templates {
+  text-align: center;
+  font-weight: 400;
+  line-height: 1.3em;
+  // color: var(--blue-light);
+  color: var(--blue-20);
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  flex: 1 auto;
+  font-family: var(--header-font-family);
+  font-size: 14px;
 }
 
 
@@ -185,9 +238,6 @@
   text-decoration: underline;
 }
 
-// .suggested-templates-card {
-
-// }
 
 .suggested-templates-card-title {
   font-size: 16px;
@@ -286,6 +336,10 @@
       display: none;
     }
   }
+}
+.chatbots-created-num {
+  cursor: pointer;
+  font-weight: 400;
 }
 
 .chatbots-created-num:hover {
@@ -808,32 +862,7 @@ body {
 }
 
 
-.all-template {
-  // background-image: url(https://tiledesk.com/wp-content/uploads/2024/01/Explore_all_templates_v3.png);
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-position: -16px -0px;
-  background: #fff !important;
-  border: 1px solid var(--blue-light);
-}
 
-.customer-satisfaction {
-  // background-image: url(https://tiledesk.com/wp-content/uploads/2023/12/Customer_satifaction.png);
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-position: -16px -0px;
-  background: #fff !important;
-  border: 1px solid var(--blue-light);
-}
-
-.increase-sales {
-  // background-image: url(https://tiledesk.com/wp-content/uploads/2024/01/Increase-sales.png);
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-position: -16px -0px;
-  background: #fff !important;
-  border: 1px solid var(--blue-light);
-}
 
 .button-card-content {
   display: flex;
@@ -845,22 +874,7 @@ body {
   margin-top: 16px;
 }
 
-.svg-icon>svg {
-  width: 50px;
-  height: auto;
-  fill: var(--blue-light);
-}
 
-.explore-templates {
-  text-align: center;
-  font-weight: 400;
-  line-height: 1.3em;
-  color: var(--blue-light);
-  margin-top: 12px;
-  display: flex;
-  align-items: center;
-  flex: 1 auto;
-}
 
 .left-title {
   font-size: 26px;
@@ -884,7 +898,8 @@ body {
 .right-title>.right-title-icon svg {
   width: auto;
   height: 28px;
-  fill: var(--blue-light);
+  // fill: var(--blue-light);
+  fill: var(--blue-20);
 }
 
 .right-title>.right-title-text {
@@ -944,7 +959,7 @@ body {
   color: #fff;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   line-height: 1.3;
@@ -957,4 +972,5 @@ body {
   align-items: center;
   gap: 3px;
   margin-top: 16px;
+  font-family: var(--header-font-family);
 }

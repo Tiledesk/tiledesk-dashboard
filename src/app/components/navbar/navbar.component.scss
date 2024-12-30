@@ -795,13 +795,12 @@ button.close.custom-hover:hover {
 }
 
 .upgrade-btn-trial-expired:hover {
-  color: #3ea9f5 !important;
+  color: var(--blue-light) !important; // #3ea9f5 !important; 
 }
 
 .project-plan-nav {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family:var(--header-font-family) ;
   cursor: pointer;
-  // background-color: #039be5;
   background-color: $brand-primary;
   color: #fff;
   border-radius: 30px;

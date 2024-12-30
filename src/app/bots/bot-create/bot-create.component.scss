@@ -257,7 +257,7 @@ input[type="text"]:disabled::placeholder {
 }
 
 .change-file-browse-btn {
-  background-color: $brand-primary;
+  background-color: var(--blue-light); // $brand-primary;
   padding-top: 14px;
   padding-bottom: 8px;
   padding-left: 12px;
@@ -2068,7 +2068,7 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
 }
 
 .stretchspinner > div {
-  background-color: $brand-primary;
+  background-color: var(--blue-light); //$brand-primary;
   height: 100%;
   width: 6px;
   display: inline-block;
@@ -2171,7 +2171,7 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
 
 .border-from-center {
   &:hover {
-    color: $brand-primary;
+    color: var(--blue-light); // $brand-primary;
   }
 
   // Set up base styles, we're going to scale instead of animating width/height
@@ -2188,7 +2188,7 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
   // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
   &::before {
     // border-top: 2px solid $purple;
-    border-bottom: 3px solid $brand-primary;
+    border-bottom: 3px solid var(--blue-light); //$brand-primary;
     transform: scale3d(0, 1, 1); // Shrink only width
   }
 
@@ -2236,10 +2236,10 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
 }
 
 .li-active {
-  border-bottom: 3px solid $brand-primary !important;
+  border-bottom: 3px solid var(--blue-light) !important;
 }
 .li-active a {
-  color: $brand-primary !important;
+  color: var(--blue-light) !important;
 }
 .disabled-li {
   pointer-events: none;
@@ -2294,9 +2294,10 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
 }
 
 .btn--as--link {
-  color: #3ea9f5;
+  color: var(--blue-light); //#3ea9f5;
   cursor: pointer;
 }
+
 .btn--as--link:hover {
   text-decoration: underline;
 }

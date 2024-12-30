@@ -391,12 +391,12 @@ input:-webkit-autofill:active {
 }
 
 .nav-contacts-li-active:hover {
-    background-color: #3ea9f5;
+    background-color: var(--blue-light); // #3ea9f5;
     color: #fff !important;
 }
 
 .nav-contacts-li-active {
-    background-color: #3ea9f5;
+    background-color: var(--blue-light); // #3ea9f5;
     color: #fff !important;
 }
 
@@ -537,7 +537,7 @@ input:-webkit-autofill:active {
 
 .display-more-tags-btn {
     font-size: 11px;
-    color: #3ea9f5;
+    color: var(--blue-light); // #3ea9f5;
     position: relative;
     top: -2px;
 }

@@ -101,7 +101,8 @@
         Your chatbots
       </div>
       <div class="hc-chatbot-count-btn-wpr">
-        <button id="hc-chatbot-count-btn" class="btn btn-size-xl btn-p-outline btn-p-ripple"
+        <!-- btn-p-outline btn-p-ripple -->
+        <button id="hc-chatbot-count-btn" class="btn btn-size-xl  btn-outlined-blu"
           (click)="goToMyChatbots()">
           <div class="btn-content">
             <div class="btn--text">
@@ -115,8 +116,8 @@
       </div>
 
       <div class="start-from-scratch-btn-wpr">
-        <!-- border-radius: 4px!important; -->
-        <button id="start-from-scratch-btn" class="btn btn-size-xl btn-p btn-p-ripple"
+        <!-- btn-p btn-p-ripple -->
+        <button id="start-from-scratch-btn" class="btn btn-size-xl btn-tdblu-no-boxshadow"
           (click)="createBlankTilebot()">
           <div class="btn-content">
             <div class="btn--text">
@@ -290,8 +291,7 @@
       #tooltip="matTooltip" 
       matTooltipPosition='below' 
       matTooltipHideDelay="100" (click)="goToMyChatbots()"
-      [ngStyle]="{'color': countOfChatbots > chatBotLimit ? '#f44336' : '#3ea9f5'}"
-      style="cursor: pointer;" >
+      [ngStyle]="{'color': countOfChatbots > chatBotLimit ? '#f44336' : 'var(--blue-20)'}">
       {{ countOfChatbots }} chatbots
     </span>
     <span>

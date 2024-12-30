@@ -190,7 +190,7 @@
                 matTooltipPosition='below'
                 matTooltipHideDelay="100" 
                 (click)="goToTeammates()"
-                [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#3ea9f5'}">
+                [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : 'var(--blue-20)'}">
                     {{countOfPendingInvites + projectUsersLength}} seats redeemed
                 <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
                     ({{ countOfPendingInvites }} pending )
