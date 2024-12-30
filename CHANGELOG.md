@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.57
+- Improves the Changelog notification
+
 ### 2.7.56
 - Fixed the bug: if a new Changelog notification is opened from the popup, the badge indicating the number of new Changelog remains visible
 
