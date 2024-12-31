@@ -50,7 +50,7 @@ export class RoleService {
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
         }
       } else {
-        this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
+        this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
         const _projectUserRole = await this.getProjectUser(userId, projectId)
         this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  _projectUserRole GET from remote', _projectUserRole)
         if (_projectUserRole === 'agent') {
