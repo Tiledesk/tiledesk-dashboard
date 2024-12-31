@@ -48,6 +48,10 @@ export class RequestsComponent implements OnInit {
     ... CHANNELS
   ];
 
+  percentageOfRequestsHandledByBots: any;
+  totalHuman: number;
+  totalBot: number;
+
   constructor(
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
@@ -120,7 +124,7 @@ export class RequestsComponent implements OnInit {
       this.lastdays = value;
     } else if ((value === 90) || (value === 180)) {
       this.lastdays = value / 30;
-    } else if (value === 360) {
+    } else if (value === 365) {
       this.lastdays = 1;
     }
     this.lineChart.destroy();
@@ -168,10 +172,10 @@ export class RequestsComponent implements OnInit {
     this.subscription.unsubscribe();
     if (!this.selectedAgentId) {
       this.getRequestByLastNDayMerge(this.selectedDaysId, this.selectedDeptId, selectedChannelId)
-      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
+      console.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDayMerge REQUEST:', this.selectedDaysId, this.selectedDeptId)
     } else {
       this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
-      this.logger.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDay REQUEST:', this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
+      console.log('[ANALYTICS - CONVS] agentSelected getRequestByLastNDay REQUEST:', this.selectedDaysId, this.selectedDeptId, this.selectedAgentId, selectedChannelId)
     }
   }
 
@@ -282,12 +286,12 @@ export class RequestsComponent implements OnInit {
 
   getAggregateValue() {
     this.analyticsService.getLastMountConversationsCount().subscribe((res: any) => {
-      this.logger.log("[ANALYTICS - CONVS] LAST MONTH CONVERSATIONS COUNT: ", res);
+      console.log("[ANALYTICS - CONVS] LAST MONTH CONVERSATIONS COUNT: ", res);
       if (res && res[0]) {
         this.conversationsCountLastMonth = res[0].totalCount;
-        this.logger.log("[ANALYTICS - CONVS] Conversations Count: ", this.conversationsCountLastMonth);
+        console.log("[ANALYTICS - CONVS] --> Conversations Last Month Count: ", this.conversationsCountLastMonth);
       } else {
-        this.logger.log("[ANALYTICS - CONVS] Conversations Count - THERE ARE NOT CONVS IN THE LAST MONTH");
+        console.log("[ANALYTICS - CONVS] --> Conversations Last Month Count - THERE ARE NOT CONVS IN THE LAST MONTH");
         this.conversationsCountLastMonth = 0;
       }
     }, (error) => {
@@ -297,10 +301,12 @@ export class RequestsComponent implements OnInit {
   }
 
   getRequestByLastNDay(lastdays, depID, participantID, channelID) {
-
+    console.log("[ANALYTICS - CONVS] user has filter participantID");
+    let  agentIsAChatbot = false
     if (participantID.includes("bot")) {
-      this.logger.log("[ANALYTICS - CONVS] Selected Agent is a BOT");
+      console.log("[ANALYTICS - CONVS] Selected Agent is a BOT");
       // try to change chart's colors
+      agentIsAChatbot = true
     }
     this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: For Agent/Bot")
     this.subscription = this.analyticsService.requestsByDay(lastdays, depID, participantID, channelID).subscribe((requestsByDay: any) => {
@@ -357,7 +363,21 @@ export class RequestsComponent implements OnInit {
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 
+      if (agentIsAChatbot) {
+        this.totalBot = _requestsByDay_series_array.reduce((sum, val) => sum + val, 0);
+        this.totalHuman = 0
+        this.percentageOfRequestsHandledByBots = 100
+      } else {
+        this.totalHuman = _requestsByDay_series_array.reduce((sum, val) => sum + val, 0);
+        this.totalBot = 0
+        this.percentageOfRequestsHandledByBots = 0
+      }
+    
 
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - _requestsByDay_series_array', _requestsByDay_series_array);
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - this.totalBot', this.totalBot);
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - this.totalBot', this.totalHuman);
+      
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
@@ -365,7 +385,8 @@ export class RequestsComponent implements OnInit {
 
       //get higher value of xvalue array 
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - -> HIGHTER COUNT ', higherCount);
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - ->_requestsByDay_series_array ', _requestsByDay_series_array);
 
       //set the stepsize 
       var stepsize;
@@ -453,7 +474,7 @@ export class RequestsComponent implements OnInit {
                 },
                 display: true,
                 fontColor: 'black',
-                suggestedMax: higherCount + 2,
+                suggestedMax: higherCount + 1,
 
 
                 // callback: function (value, index, values) {
@@ -521,17 +542,21 @@ export class RequestsComponent implements OnInit {
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY * COMPLETE *');
     })
   }
-
+  getMaxValueFromArrays(array1: number[], array2: number[]): number {
+    const mergedArray = [...array1, ...array2];
+    console.log('mergedArray', mergedArray)
+    return Math.max(...mergedArray);
+  }
 
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDayMerge(lastdays, depID, channelID) {
 
-    this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged")
+    console.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged lastdays" , lastdays)
     this.subscription = this.analyticsService.requestsByDay(lastdays, depID, '', channelID).subscribe((requestsByDay: any) => {
-      this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
 
       this.analyticsService.requestsByDayBotServed(lastdays, depID, '', channelID).subscribe((requestsByDayBotServed: any) => {
-        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
@@ -565,8 +590,8 @@ export class RequestsComponent implements OnInit {
           }
         }
 
-        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
 
         /**
          * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
@@ -575,10 +600,10 @@ export class RequestsComponent implements OnInit {
         // If not, then the same element in last7days i.e. obj is returned.
         // human
         const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
         // bot
         const requestByDaysBotServed_final_array = last7days_initarray.map(obj => requestByDayBotServed_array.find(o => o.day === obj.day) || obj);
-        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
+       console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
 
         // human
         const _requestsByDay_series_array = [];
@@ -607,15 +632,33 @@ export class RequestsComponent implements OnInit {
         })
 
 
+        
+        const humanCounts = requestByDays_final_array.map(req => req.count);
+        const botCounts = requestByDaysBotServed_final_array.map(req => req.count);
+
+       console.log('[ANALYTICS - CONVS] - humanCounts ', humanCounts);
+       console.log('[ANALYTICS - CONVS] - botCounts ', botCounts);
+
+      this.totalHuman = humanCounts.reduce((sum, val) => sum + val, 0);
+      this.totalBot = botCounts.reduce((sum, val) => sum + val, 0);
+      this.percentageOfRequestsHandledByBots =  this.totalBot > 0 ? ((this.totalBot / (this.totalHuman + this.totalBot)) * 100).toFixed(1).replace('.', ',') : '0';
+
+        console.log('[ANALYTICS - CONVS] - totalHuman ',  this.totalHuman);
+        console.log('[ANALYTICS - CONVS] - totalBot ',  this.totalBot);
+        console.log('[ANALYTICS - CONVS] - percentageOfRequestsHandledByBots ',  this.percentageOfRequestsHandledByBots);
+
         this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
         this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
         this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDayBotServed_series_array);
         this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
         this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
+       
         //get higher value of xvalue array 
-        const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        // const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+        const higherCount = this.getMaxValueFromArrays(humanCounts, botCounts);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY -> HIGHTER COUNT ', higherCount);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY -> _requestsByDay_series_array ', _requestsByDay_series_array);
 
         //set the stepsize 
         var stepsize;
@@ -716,7 +759,7 @@ export class RequestsComponent implements OnInit {
                   },
                   display: true,
                   fontColor: 'black',
-                  suggestedMax: higherCount + 2,
+                  suggestedMax: higherCount + 1,
 
 
                   // callback: function (value, index, values) {
