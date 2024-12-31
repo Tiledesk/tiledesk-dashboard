@@ -537,9 +537,9 @@ my-app .main-panel .main-content .card {
 /* DROP-DOWN MENU
 /* ------------------------- */
 .dropdown-menu-custom li a:hover,
-.dropdown-menu li a:focus, 
-.dropdown-menu li a:active{
-  background-color:var(--dropdown-menu-hover-color) !important;
+.dropdown-menu li a:focus,
+.dropdown-menu li a:active {
+  background-color: var(--dropdown-menu-hover-color) !important;
   color: #fff;
 }
 
@@ -552,12 +552,12 @@ my-app .main-panel .main-content .card {
   color: var(--outlined-btn-blu-color);
   border-radius: var(--btn-border-radius) !important;
   padding: 7px !important;
-  border: 1px solid var(--outlined-btn-blu-color)!important;
+  border: 1px solid var(--outlined-btn-blu-color) !important;
   font-size: 14px;
   // height: 38px;
 }
 
-.btn-outlined-round-blu>span>svg { 
+.btn-outlined-round-blu>span>svg {
   fill: var(--outlined-btn-blu-color);
 }
 
@@ -589,12 +589,12 @@ my-app .main-panel .main-content .card {
   color: var(--outlined-btn-blu-color);
   border-radius: var(--btn-border-radius) !important;
   padding: 9px 20px !important;
-  border: 1px solid var(--outlined-btn-blu-color)!important;
+  border: 1px solid var(--outlined-btn-blu-color) !important;
   font-size: 14px;
   // height: 38px;
 }
 
-.btn-outlined-blu>span>svg { 
+.btn-outlined-blu>span>svg {
   fill: var(--outlined-btn-blu-color);
 }
 
@@ -1375,6 +1375,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -1390,10 +1391,15 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
-.custom-swal>.swal-title {
-  color: black;
-  font-weight: 500;
-}
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
+
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
 
 
 
@@ -1573,7 +1579,7 @@ span.navbar-brand-sidebar-settings {
 }
 
 span.navbar-brand-sidebar-settings.is_opened {
-  width: 226px; 
+  width: 226px;
   // width: 236px; // increased for the new sidebar width  
 }
 
@@ -1651,7 +1657,7 @@ span.navbar-brand-title {
 .custom--modal-content {
   border-radius: 16px !important;
   padding: 15px !important;
-  
+
 }
 
 .custom--modal-content>.modal-header {
@@ -1663,13 +1669,13 @@ span.navbar-brand-title {
   font-weight: 400 !important;
 }
 
-.custom--modal-content>.modal-header>h4.warning { 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.custom--modal-content>.modal-header>h4.warning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.custom--modal-content>.modal-header>h4.warning > .modal-header-icon-wpr{  
+.custom--modal-content>.modal-header>h4.warning>.modal-header-icon-wpr {
   background-color: rgb(254, 226, 226);
   border-radius: 9999px;
   padding: 2px 5px 5px 5px;
@@ -1679,7 +1685,8 @@ span.navbar-brand-title {
   align-items: center;
   justify-content: center;
 }
-.custom--modal-content>.modal-header>h4.warning > .modal-header-icon-wpr >svg{  
+
+.custom--modal-content>.modal-header>h4.warning>.modal-header-icon-wpr>svg {
   fill: #dc2626;
 }
 
@@ -2603,14 +2610,14 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   border: 1px solid var(--blue-light) !important;
   color: var(--blue-light);
   background-color: #fff;
-  border-radius:var(--btn-border-radius) !important;
+  border-radius: var(--btn-border-radius) !important;
   box-shadow: unset;
   font-family: var(--header-font-family); //"Poppins", "Roboto", "Arial", sans-serif;
   text-transform: unset;
 }
 
 .btn.btn-p-outline:hover {
-  background-color: var(--outlined-btn-blu-hover-backgound-color);//rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
   // border: 1px solid var(--indigo-deep);
   // color: var(--indigo-deep);
   border: 1px solid var(--blue-light); // --vivid-blue
@@ -2619,14 +2626,14 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .btn.btn-p-outline:focus {
-  background-color:  var(--outlined-btn-blu-hover-backgound-color);//rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
   border: var(--blue-light);
   color: var(--blue-light);
   box-shadow: unset;
 }
 
 .btn.btn-p-outline:active {
-  background-color:  var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
   border: 1px solid var(--blue-light);
   color: var(--blue-light);
   box-shadow: unset;
@@ -2642,7 +2649,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 // }
 
 .btn.btn-p-outline-ripple:active {
-  background-color:  var(--outlined-btn-blu-hover-backgound-color) !important; //rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color) !important; //rgba(104, 131, 208, .2);
   background-size: 100%;
   transition: background 0s;
 }
@@ -2975,7 +2982,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .custom-mat-tooltip {
-  background-color:  var(--dark-background) !important;
+  background-color: var(--dark-background) !important;
   font-size: 12px !important;
   border-radius: 2px !important;
   font-family: var(--header-font-family);
@@ -3291,7 +3298,7 @@ li.active-item a i.settings-sidebar-icons {
 }
 
 .toggle-setting-sidebar-icon-wpr.is_opened {
-  left: 215px; 
+  left: 215px;
   // left: 225px; // increased fro the new sidebar width
 }
 
@@ -3500,7 +3507,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 div:where(.swal2-container) .swal2-select {
   margin-top: 0px !important;
   border-radius: 4px !important;
-    border-color: #ccc!important;
+  border-color: #ccc !important;
 
   // appearance: none;
   // border: 1px solid #ccc;
@@ -3514,12 +3521,12 @@ div:where(.swal2-container) .swal2-select {
   // background-color: var(--card-background-color);
 }
 
-.swal-size-sm > .swal2-icon {
-    width: 3em;
-    height: 3em;
+.swal-size-sm>.swal2-icon {
+  width: 3em;
+  height: 3em;
 }
 
-.swal-size-sm > .swal2-icon > .swal2-icon-content{
+.swal-size-sm>.swal2-icon>.swal2-icon-content {
   font-size: 2.75em;
 }
 
@@ -3535,7 +3542,7 @@ div:where(.swal2-container) .swal2-select {
   // color: var(--secondary-text-color);
 }
 
-.swal-size-sm>.swal2-select { 
+.swal-size-sm>.swal2-select {
   font-size: 1em;
 }
 
@@ -3612,7 +3619,7 @@ div:where(.swal2-container) .swal2-select {
   height: 100vh !important;
 }
 
-.i-sl-wrapper.right { 
+.i-sl-wrapper.right {
   right: 0px !important;
   top: 0px !important;
 }
@@ -3624,10 +3631,27 @@ div:where(.swal2-container) .swal2-select {
   border-radius: var(--btn-border-radius);
 }
 
+
 /* Use case KB > Upload CSV 
-/* ************************************* */ 
+/* ************************************* */
 .mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
+}
+
+.mat-dialog-actions > button  {
+  border-radius: var(--btn-border-radius) !important;
+}
+
+// Sleek widget overwrite iframe css
+.i-sl-wrapper {
+  // display: none!important;
+  border-radius: 0px !important;
+  height: 100vh !important;
+}
+
+.i-sl-wrapper.right { 
+  right: 0px !important;
+  top: 0px !important;
 }
 
 /* Graph card
@@ -3778,6 +3802,45 @@ div:where(.swal2-container) .swal2-select {
   stroke: var(--blue-light) !important;
 }
 
+.date-picker-wpr>.analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr {
+  position: relative;
+  top: -2px;
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr>i {
+  font-size: 18px;
+  color: #566787;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.chart-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  height: 375px;
+  justify-content: center;
+}
+
+.chart-loading-spinner > p {
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: var(--blue-light) !important;
+}
+
+
+
 
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   transition: border-color 0.3s ease; /* Smooth transition */
@@ -3789,4 +3852,3 @@ div:where(.swal2-container) .swal2-select {
 //     border: 1px solid #ccc !important; /* Change to your desired hover color */
 //   }
 // }
-

@@ -352,7 +352,8 @@ td {
         margin-left: 8px;
         margin-top: 0px;
         margin-bottom: 0px;
-        padding: 7px 20px !important;
+        padding: 6px 20px !important;
+        height: 38px;
     }
 }
 
@@ -383,7 +384,8 @@ td {
     // text-transform: capitalize;
     color: white;
     border: none;
-    height: 36px;
+    // height: 36px;
+    height: 40px;
     border-radius: 999px;
     font-weight: 400;
     display: flex;
@@ -406,11 +408,13 @@ td {
 
 .custom--button.preview-settings {
     background-color: #38414a;
-    // padding: 0 8px;
-    width: 36px;
-    height: 36px;
+    // width: 36px;
+    // height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
+    box-shadow: unset !important;
 
     // span {
     //     font-size: 20px !important;
@@ -424,10 +428,16 @@ td {
 .custom--button.preview {
     background-color: #38414a;
     padding: 0 12px;
+    box-shadow: unset !important;
 
-    // span {
-    //     margin-right: 6px;
-    // }
+    .preview-icon > svg{
+        // margin-right: 6px;
+        fill: #fff;
+    }
+
+    .preview-text {
+        font-size: 14px;
+    }
 
     &:hover {
         background: #38414ae0;

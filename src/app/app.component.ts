@@ -446,6 +446,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
     //                     this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
 
+                       
     //                     this.USER_ROLE = this.current_selected_prjct_user.role
     //                     this.logger.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
     //                 }
