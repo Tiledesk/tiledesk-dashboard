@@ -10,20 +10,28 @@
 <div class="row" style="text-align: center; margin-top:6px">
   <!-- left side card -->
   <div class="col-md-3">
-    <div class="card" style="border-radius: 10px; min-height: 445px;">
+    <div class="card" style="border-radius: 10px; min-height: 440px;">
       <div
         style="padding-bottom: 28px; padding-top:30px; font-size: 18px; font-family: 'Poppins', 'Roboto',  'Arial', sans-serif">
         {{ "Analytics.Satisfaction.SatisfactionStar" | translate }}
       </div>
       <div class="card-content star">
-        <p class="number-stars">{{ avgSatisfaction | number : '1.2-2'}}</p>
+        <p class="number-stars">
+          <!-- {{ avgSatisfaction | number : '1.2-2'}} -->
+          {{ avgSatisfaction }}
+        </p>
         <!-- <p *ngIf="avgSatisfaction == null" class="number-stars" style="font-size: 35px;">0</p> -->
       </div>
       <!-- rating available -->
       <div *ngIf="avgSatisfaction != null" class="card-footer request_count_footer"
         style="font-size: 16px; margin-top: 9px; padding-top: 21px;  padding-bottom: 19px;">
-        {{ "Analytics.Satisfaction.StatisfactionValueLabel" | translate}} <span
-          style="display: block"><b>{{ avgSatisfaction | number : '1.2-2'}}</b></span>
+        {{ "Analytics.Satisfaction.StatisfactionValueLabel" | translate}} 
+        <span style="display: block">
+          <b>
+            <!-- {{ avgSatisfaction | number : '1.2-2'}} -->
+            {{ avgSatisfaction }}
+          </b>
+        </span>
       </div>
       <!-- no rating value -->
       <div *ngIf="avgSatisfaction == null" class="card-footer request_count_footer"
