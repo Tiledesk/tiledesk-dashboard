@@ -1111,7 +1111,7 @@
         "DialogflowQuickTips_7": "إذا كنت بحاجة إلى برنامج تعليمي مفصل حول كيفية إنشاء ملف بيانات الاعتماد من فضلك",
         "TheBotIsAssociatedWithTheDepartment": "يرتبط الروبوت بالقسم",
         "TheBotIsAssociatedWithDepartments": "الروبوت مرتبط بالإدارات",
-        "DisassociateTheBot": "افصل الروبوت عن التوجيه أو الأقسام قبل حذفه."
+        "DisassociateTheBot": "قم بفصل الروبوت عن التوجيه والأقسام قبل حذفه."
     },
     "BotsAddEditPage": {
         "AddBot": "أضف بوت",

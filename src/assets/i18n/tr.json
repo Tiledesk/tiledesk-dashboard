@@ -1113,7 +1113,7 @@
         "DialogflowQuickTips_7": "Bir kimlik bilgisi dosyasının nasıl oluşturulacağına dair ayrıntılı bir eğitime ihtiyacınız varsa lütfen",
         "TheBotIsAssociatedWithTheDepartment": "Bot, departmanla ilişkilidir",
         "TheBotIsAssociatedWithDepartments": "Bot departmanlarla ilişkilidir",
-        "DisassociateTheBot": "Silmeden önce botu Yönlendirme veya Departmanlardan ayırın."
+        "DisassociateTheBot": "Silmeden önce botun Yönlendirme ve Departmanlar ile ilişkisini kesin."
     },
     "BotsAddEditPage": {
         "AddBot": "Bot Ekle",

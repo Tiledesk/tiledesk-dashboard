@@ -1111,7 +1111,7 @@
         "DialogflowQuickTips_7": "Əgər etimadnamə faylının yaradılması ilə bağlı ətraflı təlimata ehtiyacınız varsa, zəhmət olmasa",
         "TheBotIsAssociatedWithTheDepartment": "Bot şöbə ilə əlaqələndirilir",
         "TheBotIsAssociatedWithDepartments": "Bot şöbələrlə əlaqələndirilir",
-        "DisassociateTheBot": "Botu silməzdən əvvəl onu Marşrutlaşdırma və ya Departamentlərdən ayırın."
+        "DisassociateTheBot": "Botu silməzdən əvvəl onu Marşrutlaşdırma və Departamentlərdən ayırın."
     },
     "BotsAddEditPage": {
         "AddBot": "Bot əlavə edin",

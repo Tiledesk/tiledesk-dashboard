@@ -1110,7 +1110,7 @@
 		"DialogflowQuickTips_7": "Wenn Sie ein detailliertes Tutorial zum Erstellen einer Anmeldeinformationsdatei benötigen, wenden Sie sich bitte an",
 		"TheBotIsAssociatedWithTheDepartment": "Der Bot ist der Abteilung zugeordnet",
 		"TheBotIsAssociatedWithDepartments": "Der Bot ist Abteilungen zugeordnet",
-		"DisassociateTheBot": "Trennen Sie den Bot vom Routing oder den Abteilungen, bevor Sie ihn löschen."
+		"DisassociateTheBot": "Trennen Sie den Bot von Routing und Abteilungen, bevor Sie ihn löschen."
 	},
 	"BotsAddEditPage": {
 		"AddBot": "Bot hinzufügen",

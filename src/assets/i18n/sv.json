@@ -1112,7 +1112,7 @@
         "DialogflowQuickTips_7": "Om du behöver en detaljerad handledning om hur man skapar en referensfil",
         "TheBotIsAssociatedWithTheDepartment": "Boten är kopplad till avdelningen",
         "TheBotIsAssociatedWithDepartments": "Boten är associerad med avdelningar",
-        "DisassociateTheBot": "Ta bort boten från Routing eller Departments innan du tar bort den."
+        "DisassociateTheBot": "Ta bort boten från Routing och Departments innan du tar bort den."
     },
     "BotsAddEditPage": {
         "AddBot": "Lägg till bot",

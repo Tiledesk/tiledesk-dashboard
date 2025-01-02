@@ -1111,7 +1111,7 @@
         "DialogflowQuickTips_7": "Agar sizga hisob ma'lumotlari faylini yaratish bo'yicha batafsil qo'llanma kerak bo'lsa, iltimos",
         "TheBotIsAssociatedWithTheDepartment": "Bot bo'lim bilan bog'langan",
         "TheBotIsAssociatedWithDepartments": "Bot bo'limlar bilan bog'langan",
-        "DisassociateTheBot": "Botni o'chirishdan oldin uni Marshrutlash yoki Bo'limlardan ajratib oling."
+        "DisassociateTheBot": "Botni o'chirishdan oldin uni Marshrutlash va Bo'limlardan ajrating."
     },
     "BotsAddEditPage": {
         "AddBot": "Bot qo'shish",

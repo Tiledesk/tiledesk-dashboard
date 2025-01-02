@@ -1110,7 +1110,7 @@
         "DialogflowQuickTips_7": "Si necesita un tutorial detallado sobre cómo crear un archivo de credenciales por favor",
         "TheBotIsAssociatedWithTheDepartment": "El bot está asociado con el departamento",
         "TheBotIsAssociatedWithDepartments": "El bot está asociado con los departamentos",
-        "DisassociateTheBot": "Desasocie el bot de Enrutamiento o Departamentos antes de eliminarlo."
+        "DisassociateTheBot": "Desasocie el bot de Enrutamiento y Departamentos antes de eliminarlo."
     },
     "BotsAddEditPage": {
         "AddBot": "Añadir bot",

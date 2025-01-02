@@ -1110,7 +1110,7 @@
         "DialogflowQuickTips_7": "Егер сізге тіркелгі деректері файлын жасау туралы егжей-тегжейлі оқулық қажет болса",
         "TheBotIsAssociatedWithTheDepartment": "Бот бөліммен байланысты",
         "TheBotIsAssociatedWithDepartments": "Бот бөлімдермен байланысты",
-        "DisassociateTheBot": "Жою алдында ботты Маршруттаудан немесе Бөлімдерден ажыратыңыз."
+        "DisassociateTheBot": "Жою алдында ботты Маршруттау мен Бөлімдерден ажыратыңыз."
     },
     "BotsAddEditPage": {
         "AddBot": "Бот қосыңыз",

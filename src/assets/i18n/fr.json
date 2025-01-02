@@ -1110,7 +1110,7 @@
         "DialogflowQuickTips_7": "Si vous avez besoin d'un tutoriel détaillé sur la façon de créer un fichier d'informations d'identification, veuillez",
         "TheBotIsAssociatedWithTheDepartment": "Le bot est associé au département",
         "TheBotIsAssociatedWithDepartments": "Le bot est associé à des départements",
-        "DisassociateTheBot": "Dissociez le bot du routage ou des services avant de le supprimer."
+        "DisassociateTheBot": "Dissociez le bot du routage et des départements avant de le supprimer."
     },
     "BotsAddEditPage": {
         "AddBot": "Ajouter un robot",

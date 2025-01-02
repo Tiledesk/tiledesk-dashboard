@@ -1111,7 +1111,7 @@
         "DialogflowQuickTips_7": "Если вам нужно подробное руководство по созданию файла учетных данных, пожалуйста,",
         "TheBotIsAssociatedWithTheDepartment": "Бот связан с отделом",
         "TheBotIsAssociatedWithDepartments": "Бот связан с отделами",
-        "DisassociateTheBot": "Перед удалением отсоедините бота от маршрутизации или отделов."
+        "DisassociateTheBot": "Перед удалением отключите бот от маршрутизации и отделов."
     },
     "BotsAddEditPage": {
         "AddBot": "Добавить бота",
