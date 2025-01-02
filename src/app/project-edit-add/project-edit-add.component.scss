@@ -372,134 +372,10 @@ button.close {
 }
 
 // - start - BOTTOM NAVBAR  //
-.bottom-nav {
-  background-color: #fff;
-  width: 100%;
-  // z-index: 1028;
-  position: relative;
-  top: -5px;
-  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
-  padding-bottom: 5px;
-  float: left;
-  height: 50px;
-  padding-left: 0px;
-  display: flex;
-  flex-grow: 1;
-}
-
-.bottom-nav li {
-  float: left;
-  padding: 15px;
-  list-style: none;
-  position: relative;
-  display: block;
-  height: 52px;
-  cursor: pointer;
-  // z-index: 1049;
-  white-space: nowrap;
-}
-
-// @media (max-width: 991px) {
-//   .bottom-nav li {
-//     // z-index: 1049
-//   }
-// }
-
-.bottom-nav li a {
-  padding: 18px 15px;
-  color: #797979;
-  line-height: 20px;
-}
-
-.bottom-nav li a:hover {
-  text-decoration: none;
-  //  background-color: #eee;
-}
-
-.li-active {
-  border-bottom: 3px solid $brand-primary !important;
-}
-
-.li-active a {
-  color: $brand-primary !important;
-}
-
-.disabled-li {
-  pointer-events: none;
-}
-
-/*
-.a-active {
-    border-bottom: 3px solid #039be5;
-    color: #039be5 !important;
-    padding-bottom: 16px;
-}
-*/
-
-$f21blue: #039be5;
-
-.btn-with-border-effect {
-  background: none;
-  border: 0;
-  box-sizing: border-box;
-  // margin: 1em;
-  // padding: 1em 2em;
-  //   padding-bottom: 37px;
-  font-size: 14px;
-  font-weight: 300;
-
-  // Required, since we're setting absolute on pseudo-elements
-  position: relative;
-  vertical-align: middle;
-
-  &::before,
-  &::after {
-    box-sizing: inherit;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.border-from-center {
-  &:hover {
-    color: $brand-primary;
-  }
-
-  // Set up base styles, we're going to scale instead of animating width/height
-  &::before,
-  &::after {
-    //   top: 3px;
-    top: 0px;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
-  }
-
-  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
-  &::before {
-    // border-top: 2px solid $purple;
-    border-bottom: 3px solid $brand-primary;
-    transform: scale3d(0, 1, 1); // Shrink only width
-  }
-
-  &:hover::before,
-  &:hover::after {
-    transform: scale3d(1, 1, 1); // Show full-size
-    transition: transform 0.5s;
-  }
-}
-
 @media (max-width: 991px) {
   .bottom-nav {
     top: -2px !important;
   }
-
-  // .chart-wrapper {
-  //     margin-top:60px !important;
-  // }
 }
 
 @media (max-width: 370px) {
@@ -524,7 +400,7 @@ $f21blue: #039be5;
   text-transform: none;
   color: #566787;
   //   font-weight: 400;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   height: 30px;
   font-size: 16px;
   margin-top: 10px;

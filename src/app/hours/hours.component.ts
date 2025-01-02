@@ -307,7 +307,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   updateProject(data) {
     Swal.fire({
       text: this.translate.instant("HoursPage.UpdateHours"),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       didOpen: () => {
         Swal.showLoading();
         if (this.selectedSlot.active === false && !this.selectedSlot.hours.tzname) {
@@ -516,14 +516,14 @@ export class HoursComponent implements OnInit, OnDestroy {
       showDenyButton: true,
       denyButtonText: this.translate.instant("HoursPage.NoDelete"),
       confirmButtonText: this.translate.instant("HoursPage.YesDelete"),
-      confirmButtonColor: "#ff5c48",
+      // confirmButtonColor: "#ff5c48",
       denyButtonColor: "#ccc",
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed === true) {
         Swal.fire({
           text: this.translate.instant("HoursPage.UpdateHours"),
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           didOpen: () => {
             Swal.showLoading();
             delete this.timeSlots[this.selectedSlot.id];

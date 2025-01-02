@@ -996,7 +996,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             icon: "warning",
             showCancelButton: false,
             confirmButtonText: this.translate.instant('Ok') ,
-            confirmButtonColor: "var(--blue-light)",
+            // confirmButtonColor: "var(--blue-light)",
             focusConfirm: false,
             // reverseButtons: true
             // button: true,
@@ -1011,7 +1011,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             icon: "warning",
             showCancelButton: false,
             confirmButtonText: this.translate.instant('Ok') ,
-            confirmButtonColor: "var(--blue-light)",
+            // confirmButtonColor: "var(--blue-light)",
             focusConfirm: false,
             // button: true,
             // dangerMode: false,

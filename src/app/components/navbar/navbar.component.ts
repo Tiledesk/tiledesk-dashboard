@@ -1220,8 +1220,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('ContactUs'),
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     }).then((result) => {

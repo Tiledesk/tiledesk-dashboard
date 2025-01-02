@@ -223,7 +223,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         showCloseButton: false,
         showCancelButton: true,
         confirmButtonText: this.translate.instant('YesImSure'),
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: false,
         reverseButtons: true
       }).then((result) => {
@@ -504,7 +504,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           showCancelButton: true,
           confirmButtonText: this.upgradePlan,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: true,
           reverseButtons: true,
           // buttons: {
@@ -559,7 +559,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 

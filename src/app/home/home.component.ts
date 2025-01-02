@@ -2337,7 +2337,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         showCancelButton: true,
         confirmButtonText: this.upgradePlan,
         cancelButtonText: this.cancel,
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: true,
         reverseButtons: true,
 
@@ -2444,7 +2444,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 

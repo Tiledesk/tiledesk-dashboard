@@ -537,9 +537,9 @@ my-app .main-panel .main-content .card {
 /* DROP-DOWN MENU
 /* ------------------------- */
 .dropdown-menu-custom li a:hover,
-.dropdown-menu li a:focus, 
-.dropdown-menu li a:active{
-  background-color:var(--dropdown-menu-hover-color) !important;
+.dropdown-menu li a:focus,
+.dropdown-menu li a:active {
+  background-color: var(--dropdown-menu-hover-color) !important;
   color: #fff;
 }
 
@@ -554,12 +554,12 @@ my-app .main-panel .main-content .card {
   border-radius: var(--btn-border-radius) !important;
   padding: 7px !important;
   // border: 1px solid var(--outlined-btn-blu-color)!important;
-  border: 1px solid var(--blue-20)!important;
+  border: 1px solid var(--blue-20) !important;
   font-size: 14px;
   // height: 38px;
 }
 
-.btn-outlined-round-blu>span>svg { 
+.btn-outlined-round-blu>span>svg {
   // fill: var(--outlined-btn-blu-color);
   fill: var(--blue-20);
 }
@@ -598,12 +598,12 @@ my-app .main-panel .main-content .card {
   border-radius: var(--btn-border-radius) !important;
   padding: 9px 20px !important;
   // border: 1px solid var(--outlined-btn-blu-color)!important;
-  border: 1px solid var(--blue-20)!important;
+  border: 1px solid var(--blue-20) !important;
   font-size: 14px;
   // height: 38px;
 }
 
-.btn-outlined-blu>span>svg { 
+.btn-outlined-blu>span>svg {
   // fill: var(--outlined-btn-blu-color);
   fill: var(--blue-20);
 }
@@ -615,7 +615,7 @@ my-app .main-panel .main-content .card {
   background-color: var(--blu-01);
   // color: var(--outlined-btn-blu-color);
   color: var(--blue-40);
-  border: 1px solid var(--blue-40)!important;
+  border: 1px solid var(--blue-40) !important;
 }
 
 .btn-outlined-blu:focus {
@@ -689,7 +689,7 @@ my-app .main-panel .main-content .card {
   box-shadow: unset !important;
   // background: var(--primary-btn-hover-background) !important;
   background: var(--blue-40) !important;
- 
+
 }
 
 
@@ -1591,7 +1591,7 @@ span.navbar-brand-sidebar-settings {
 }
 
 span.navbar-brand-sidebar-settings.is_opened {
-  width: 226px; 
+  width: 226px;
   // width: 236px; // increased for the new sidebar width  
 }
 
@@ -1669,7 +1669,7 @@ span.navbar-brand-title {
 .custom--modal-content {
   border-radius: 16px !important;
   padding: 15px !important;
-  
+
 }
 
 .custom--modal-content>.modal-header {
@@ -1681,13 +1681,13 @@ span.navbar-brand-title {
   font-weight: 400 !important;
 }
 
-.custom--modal-content>.modal-header>h4.warning { 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.custom--modal-content>.modal-header>h4.warning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.custom--modal-content>.modal-header>h4.warning > .modal-header-icon-wpr{  
+.custom--modal-content>.modal-header>h4.warning>.modal-header-icon-wpr {
   background-color: rgb(254, 226, 226);
   border-radius: 9999px;
   padding: 2px 5px 5px 5px;
@@ -1697,7 +1697,8 @@ span.navbar-brand-title {
   align-items: center;
   justify-content: center;
 }
-.custom--modal-content>.modal-header>h4.warning > .modal-header-icon-wpr >svg{  
+
+.custom--modal-content>.modal-header>h4.warning>.modal-header-icon-wpr>svg {
   fill: #dc2626;
 }
 
@@ -2621,14 +2622,14 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   border: 1px solid var(--blue-light) !important;
   color: var(--blue-light);
   background-color: #fff;
-  border-radius:var(--btn-border-radius) !important;
+  border-radius: var(--btn-border-radius) !important;
   box-shadow: unset;
   font-family: var(--header-font-family); //"Poppins", "Roboto", "Arial", sans-serif;
   text-transform: unset;
 }
 
 .btn.btn-p-outline:hover {
-  background-color: var(--outlined-btn-blu-hover-backgound-color);//rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
   // border: 1px solid var(--indigo-deep);
   // color: var(--indigo-deep);
   border: 1px solid var(--blue-light); // --vivid-blue
@@ -2637,14 +2638,14 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .btn.btn-p-outline:focus {
-  background-color:  var(--outlined-btn-blu-hover-backgound-color);//rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
   border: var(--blue-light);
   color: var(--blue-light);
   box-shadow: unset;
 }
 
 .btn.btn-p-outline:active {
-  background-color:  var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color); //rgba(104, 131, 208, .2);
   border: 1px solid var(--blue-light);
   color: var(--blue-light);
   box-shadow: unset;
@@ -2660,7 +2661,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 // }
 
 .btn.btn-p-outline-ripple:active {
-  background-color:  var(--outlined-btn-blu-hover-backgound-color) !important; //rgba(104, 131, 208, .2);
+  background-color: var(--outlined-btn-blu-hover-backgound-color) !important; //rgba(104, 131, 208, .2);
   background-size: 100%;
   transition: background 0s;
 }
@@ -2993,7 +2994,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 }
 
 .custom-mat-tooltip {
-  background-color:  var(--dark-background) !important;
+  background-color: var(--dark-background) !important;
   font-size: 12px !important;
   border-radius: 2px !important;
   font-family: var(--header-font-family);
@@ -3309,7 +3310,7 @@ li.active-item a i.settings-sidebar-icons {
 }
 
 .toggle-setting-sidebar-icon-wpr.is_opened {
-  left: 215px; 
+  left: 215px;
   // left: 225px; // increased fro the new sidebar width
 }
 
@@ -3504,7 +3505,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 
 .swal2-actions>.swal2-confirm {
   border-radius: 9999px !important;
-  // background-color: var(--primary-btn-background)  !important;
+  background-color: var(--blue-20) !important;
 }
 
 .swal2-actions>.swal2-cancel {
@@ -3518,7 +3519,7 @@ mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
 div:where(.swal2-container) .swal2-select {
   margin-top: 0px !important;
   border-radius: 4px !important;
-    border-color: #ccc!important;
+  border-color: #ccc !important;
 
   // appearance: none;
   // border: 1px solid #ccc;
@@ -3532,12 +3533,12 @@ div:where(.swal2-container) .swal2-select {
   // background-color: var(--card-background-color);
 }
 
-.swal-size-sm > .swal2-icon {
-    width: 3em;
-    height: 3em;
+.swal-size-sm>.swal2-icon {
+  width: 3em;
+  height: 3em;
 }
 
-.swal-size-sm > .swal2-icon > .swal2-icon-content{
+.swal-size-sm>.swal2-icon>.swal2-icon-content {
   font-size: 2.75em;
 }
 
@@ -3553,7 +3554,7 @@ div:where(.swal2-container) .swal2-select {
   // color: var(--secondary-text-color);
 }
 
-.swal-size-sm>.swal2-select { 
+.swal-size-sm>.swal2-select {
   font-size: 1em;
 }
 
@@ -3630,7 +3631,7 @@ div:where(.swal2-container) .swal2-select {
   height: 100vh !important;
 }
 
-.i-sl-wrapper.right { 
+.i-sl-wrapper.right {
   right: 0px !important;
   top: 0px !important;
 }
@@ -3643,7 +3644,7 @@ div:where(.swal2-container) .swal2-select {
 }
 
 /* Use case KB > Upload CSV 
-/* ************************************* */ 
+/* ************************************* */
 .mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
 }
@@ -3787,28 +3788,183 @@ div:where(.swal2-container) .swal2-select {
   justify-content: center;
 }
 
-.chart-loading-spinner > p {
+.chart-loading-spinner>p {
   font-weight: 400;
   font-family: var(--header-font-family);
 }
 
-.mat-progress-spinner circle, .mat-spinner circle {
+.mat-progress-spinner circle,
+.mat-spinner circle {
   stroke: var(--blue-light) !important;
 }
 
 
-.radio > label {
+.radio>label {
   color: #7695a5 !important //var(--secondary-text-color) !important
 }
 
-// .mat-form-field-appearance-outline .mat-form-field-outline {
-//   transition: border-color 0.3s ease; /* Smooth transition */
+
+/* Bottom nav
+/* - analytics
+/* - analytics > metrics
+/* - analytics > requests
+/* ************************************************* */
+
+/* analytics */
+
+.bottom-nav-analytics {
+  background-color: #fff;
+  width: 100%;
+  // z-index: 1028;
+  position: relative;
+  top: -5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+  display: flex;
+  flex-grow: 1;
+
+}
+
+.bottom-nav-analytics li {
+  float: left;
+  padding: 15px 25px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav-analytics li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.bottom-nav-analytics li a:hover {
+  text-decoration: none;
+  //  background-color: #eee;
+}
+
+/* Bot create */
+.bottom-nav {
+  background-color: #fff;
+  width: 100%;
+  // z-index: 1028;
+  position: relative;
+  top: -5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+  // display: flex;
+  // flex-grow: 1;
+}
+
+.bottom-nav li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.bottom-nav li a:hover {
+  text-decoration: none;
+  //  background-color: #eee;
+}
+
+
+/* Common */
+.btn-with-border-effect {
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 300;
+  // Required, since we're setting absolute on pseudo-elements
+  position: relative;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.border-from-center {
+  &:hover {
+    color: var(--blue-20);
+  }
+
+  // Set up base styles, we're going to scale instead of animating width/height
+  &::before,
+  &::after {
+    //   top: 3px;
+    top: 0px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+  }
+
+
+  &::before {
+    border-bottom: 3px solid var(--blue-20);
+    transform: scale3d(0, 1, 1); // Shrink only width
+  }
+
+  &:hover::before,
+  &:hover::after {
+    transform: scale3d(1, 1, 1); // Show full-size
+    transition: transform 0.5s;
+  }
+}
+
+.li-active {
+  border-bottom: 3px solid var(--blue-20) !important; // $brand-primary !important;
+  color: var(--blue-20) !important; // $brand-primary !important;
+  cursor: default !important;
+}
+
+.li-active a {
+  color: var(--blue-20) !important; //$brand-primary!important;
+}
+
+.disabled-li {
+  pointer-events: none;
+}
+
+/* analytics > metrics */
+// .li-active  {
+//   border-bottom: 3px solid $brand-primary !important;
+//   color: $brand-primary !important;
+//   cursor: default !important;
 // }
 
-// .mat-form-field-flex:hover .mat-form-field-outline {
-
-//   .mat-form-field-outline-start {
-//     border: 1px solid #ccc !important; /* Change to your desired hover color */
-//   }
+// .li-active  a {
+//   color: $brand-primary!important;
 // }
 
+// /* analytics > requests */
+// .li-active{
+//   border-top: 3px solid rgba(30, 136, 229, 1) !important;
+//   border-bottom: 3px solid rgba(30, 136, 229, 1) !important;
+//   color:black !important;
+// }
