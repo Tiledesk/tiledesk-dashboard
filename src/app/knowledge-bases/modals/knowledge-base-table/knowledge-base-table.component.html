@@ -474,6 +474,39 @@
                                 class="material-icons-outlined status-icon status-error">error</span>
                         </td>
 
+                        <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
+                            <span *ngIf="kb.type === 'url'"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100" 
+                                [matTooltipDisabled]="isAvailableRefreshRateFeature">
+                                
+                            
+                                <span *ngIf="kb.refresh_rate === 'never' ">
+                                    {{'Never' | translate}}
+                                </span>
+                                <span *ngIf="kb.refresh_rate === 'daily' ">
+                                    {{'Daily' | translate}}
+                                </span>
+
+                                <span *ngIf="kb.refresh_rate === 'weekly' ">
+                                    {{'Weekly' | translate}}
+                                </span>
+
+                                <span *ngIf="kb.refresh_rate === 'monthly' ">
+                                    {{'Monthly' | translate}}
+                                </span>
+
+                                <!-- isAvailableRefreshRateFeature  {{isAvailableRefreshRateFeature}} -->
+                            </span>
+                            <span *ngIf="kb.type !== 'url'">
+                                —
+                            </span>
+                        </td>
+
+
                         <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
                             {{ kb.updatedAt | amTimeAgo }}
                         </td>

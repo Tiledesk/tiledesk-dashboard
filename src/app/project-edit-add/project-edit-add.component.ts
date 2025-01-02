@@ -2954,7 +2954,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   updateAdvancedSettings() {
     // if (this.advancedSettingBtnDisabled) {}
-    const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
+    const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn-edit-smart-assigment');
     this.logger.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
     this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
