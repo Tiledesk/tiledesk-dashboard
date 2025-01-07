@@ -72,8 +72,9 @@ export class ModalSiteMapComponent implements OnInit {
   listenToOnSenSitemapSiteListEvent() {
     document.addEventListener(
       "on-send-sitemap-site-list", (e: CustomEvent) => {
-        // this.logger.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
-        this.listSitesOfSitemap=e.detail
+        // console.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
+        this.listSitesOfSitemap=e.detail;
+        // console.log("[MODAL-SITE-MAP] on-send-sitemap-site-list listSitesOfSitemap length:", this.listSitesOfSitemap.length);
        
         if(this.listSitesOfSitemap.length > 0){
           this.buttonDisabled = false;
@@ -151,7 +152,6 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   onSendSitemap(){
-   
     let body = {
       'sitemap': this.kb.url
     }
@@ -161,6 +161,7 @@ export class ModalSiteMapComponent implements OnInit {
     const event = new CustomEvent("on-send-sitemap", { detail:  body  });
     document.dispatchEvent(event);
     // this.sendSitemap.emit(body);
+
   }
 
   onSaveKnowledgeBase(){

@@ -33,7 +33,7 @@
   <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
     <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
       (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow"
-      style="font-size: 12px;  margin-left: 15px;">
+      style="font-size: 12px;  margin-left: 15px;height: 36px;">
 
       <span aria-hidden="true" class="material-icons"
         style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
@@ -79,9 +79,7 @@
       #tooltip="matTooltip" 
       matTooltipPosition='below'
       matTooltipHideDelay="100">
-      <span aria-hidden="true" class="material-icons" style="margin-top: 3px; color:#3ea9f5; font-size: 27px;
-      position: relative;
-      top: -3px;">
+      <span aria-hidden="true" class="material-icons" style="">
         manage_search
       </span>
       <!-- <div class="bottom"
@@ -101,12 +99,12 @@
   </li>
 
   <!-- SHOW SERVED REQUEST MAP -->
-  <li class="see-no-realtime-request right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
+  <li class="show-request-on-map right-li" style="float: right; padding-right: 5px;" (click)='openRightSideBar()'>
     <a attr.aria-label="{{ 'ViewServedRequestsMap' | translate }}" class="tool_tip"
       style="cursor: pointer; display: unset;" matTooltipClass="mat-white-tooltip"
       matTooltip="{{'ViewServedRequestsMap' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
       matTooltipHideDelay="100">
-      <span class="material-icons" style="margin-top: 3px; color:#3ea9f5">
+      <span class="material-icons" style="">
         pin_drop
       </span>
       <!-- <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content;

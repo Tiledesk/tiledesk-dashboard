@@ -325,9 +325,9 @@ export class HoursComponent implements OnInit, OnDestroy {
             setTimeout(() => {
               Swal.hideLoading();
               Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.OperatingHoursSuccessfullyUpdated"), icon: 'success' })
-              setTimeout(() => {
-                Swal.close();
-              }, 2000);
+              // setTimeout(() => {
+              //   Swal.close();
+              // }, 2000);
             }, 500);
           }, (error) => {
             this.logger.error("update project error: ", error);
@@ -514,13 +514,19 @@ export class HoursComponent implements OnInit, OnDestroy {
       title: this.translate.instant("HoursPage.DeleteSlot"),
       html: this.translate.instant("HoursPage.SureDeleteSlot", { slotName: this.selectedSlot.name }),
       showDenyButton: true,
-      denyButtonText: this.translate.instant("HoursPage.NoDelete"),
-      confirmButtonText: this.translate.instant("HoursPage.YesDelete"),
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      // cancelButtonText: this.translate.instant("HoursPage.NoDelete"),
+      cancelButtonText: this.translate.instant('Cancel'),
+      denyButtonText: this.translate.instant("HoursPage.YesDelete"),
+      focusConfirm: false,
+      icon: "warning",
       // confirmButtonColor: "#ff5c48",
-      denyButtonColor: "#ccc",
+      // denyButtonColor: "#ccc",
       reverseButtons: true
     }).then((result) => {
-      if (result.isConfirmed === true) {
+      if (result.isDenied === true) {
         Swal.fire({
           text: this.translate.instant("HoursPage.UpdateHours"),
           // confirmButtonColor: "var(--blue-light)",
@@ -530,11 +536,11 @@ export class HoursComponent implements OnInit, OnDestroy {
             this.saveSlots(null).then((response) => {
               setTimeout(() => {
                 Swal.hideLoading();
-                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.SlotDeletedSuccess"), icon: 'success' })
+                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.SlotDeleteSuccess"), icon: 'success' })
   
-                setTimeout(() => {
-                  Swal.close();
-                }, 2000);
+                // setTimeout(() => {
+                //   Swal.close();
+                // }, 2000);
               }, 500);
             }).catch((err) => {
               this.logger.log("Error saving slot: ", err)

@@ -67,7 +67,7 @@ export class LogRequestsInterceptor implements HttpInterceptor {
       showCloseButton: false,
       showCancelButton: true,
       confirmButtonText: this.translate.instant('ContactUs'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       // cancelButtonColor: "var(--red-color)",
       focusConfirm: false,
       reverseButtons: true,

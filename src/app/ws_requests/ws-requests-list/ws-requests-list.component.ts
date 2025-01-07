@@ -1022,7 +1022,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancelLbl,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -1069,7 +1069,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       icon: "info",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok') ,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // button: {
       //   text: "OK",

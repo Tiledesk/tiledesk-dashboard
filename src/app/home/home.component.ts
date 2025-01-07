@@ -691,7 +691,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
 
 
-      this.getApps();
+      // this.getApps();
     });
   }
 
@@ -1927,16 +1927,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onClickOnGoToLearnMoreOrManageApp() {
-    this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
-    if (this.whatsAppIsInstalled === false) {
-      this.goToWhatsAppDetails()
-    } else {
-      this.openInAppStoreInstall()
-    }
+   console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+    this.goToWhatsAppDetails()
+    // if (this.whatsAppIsInstalled === false) {
+    //   this.goToWhatsAppDetails()
+    // } else {
+    //   this.openInAppStoreInstall()
+    // }
   }
 
   checkPlanAndPresentModal(appTitle) {
-    this.logger.log('[HOME] checkPlanAndPresentModal appTitle', appTitle, 'appSumoProfile ', this.appSumoProfile)
+   console.log('[HOME] checkPlanAndPresentModal appTitle', appTitle, 'appSumoProfile ', this.appSumoProfile)
     if (
       (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
@@ -1969,9 +1970,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToWhatsAppDetails() {
-    this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    this.appTitle = "WhatsApp Business"
+    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
+    console.log('[HOME] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }

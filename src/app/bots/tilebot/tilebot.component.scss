@@ -7,6 +7,7 @@ input[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     border-top: 1px solid #c0c0c0;
@@ -25,6 +26,7 @@ textarea[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     border-top: 1px solid #c0c0c0;
@@ -138,6 +140,7 @@ select {
 
 button.close {
     -webkit-appearance: none;
+    appearance: none;
     padding: 0;
     cursor: pointer;
     background: 0 0;
@@ -744,6 +747,7 @@ input[type="text"]:disabled::placeholder {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    user-select: none;
 }
 .nw-onoffswitch-checkbox {
     position: absolute;
@@ -1150,6 +1154,7 @@ input[type="text"]:disabled::placeholder {
 
 .btn--title {
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     max-height: 46px;
     -webkit-box-orient: vertical;
     overflow-wrap: break-word;
@@ -1171,6 +1176,7 @@ input[type="text"]:disabled::placeholder {
     text-overflow: ellipsis;
     overflow: hidden;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     max-height: 60px;
     color: rgb(81, 97, 115);
     font-size: 16px;

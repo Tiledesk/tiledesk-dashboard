@@ -75,7 +75,7 @@ button.close {
 }
 
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.material-icons {
-  color:var(--blue-light); // #0f62ff;
+  color: var(--blue-light); // #0f62ff;
   vertical-align: middle;
   font-size: 16px;
 }
@@ -612,16 +612,37 @@ span .switch-agent-admin-requests-btn {
     margin-right: 0px;
   }
 
+  .show-request-on-map {
+    margin-top: 13px;
+    margin-left: 23px;
+    margin-right: 0px;
+  }
+
   .served-unserved-sum {
     left: 324px !important;
     top: 16px !important;
   }
 }
 
+
+
 @media (max-width: 724px) {
   .right-li {
     display: none !important;
   }
+}
+
+.show-request-on-map>a>span {
+  margin-top: 3px;
+  color: var(--blue-20) !important;
+}
+
+.see-no-realtime-request>a>span {
+  margin-top: 3px;
+  color: var(--blue-20) !important;
+  font-size: 27px;
+  position: relative;
+  top: -3px;
 }
 
 .navbar-btn {
@@ -1047,13 +1068,13 @@ $f21blue: #039be5;
   color: #f44336 !important;
 }
 
-::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-icon {
-  vertical-align: middle; 
-  color:var(--ng-select-footer-btn-color) // #0f62ff
+::ng-deep ng-select.internal-request-custom-select>ng-dropdown-panel>.ng-dropdown-footer>div>.add-requester-btn-icon {
+  vertical-align: middle;
+  color: var(--ng-select-footer-btn-color) // #0f62ff
 }
 
-::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-text {
- color: var(--ng-select-footer-btn-color) // #0f62ff
+::ng-deep ng-select.internal-request-custom-select>ng-dropdown-panel>.ng-dropdown-footer>div>.add-requester-btn-text {
+  color: var(--ng-select-footer-btn-color) // #0f62ff
 }
 
 /* moved in /node_modules/@ng-select/ng-select/themes/default.theme.css - in the template this style works only encapsulation: ViewEncapsulation.None 

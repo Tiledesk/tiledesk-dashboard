@@ -217,7 +217,7 @@
      --contact-tag-letter-spacing: -0.01em;
      --delete-tag-icon-color: rgb(100, 116, 145);
      --delete-tag-btn-hover: rgb(248, 166, 178);
-     --manage-tag-font-color: #03a5e8;
+     --manage-tag-font-color: var(--blue-20); // #03a5e8;
      --manage-tag-font-size: 12px;
      --manage-tag-font-weight: 400;
      --manage-tag-margin-top: 12px;

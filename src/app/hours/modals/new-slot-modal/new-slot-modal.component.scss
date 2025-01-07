@@ -2,17 +2,24 @@
     width: 100%;
 }
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
-
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
-
-}
-
 .mat-dialog-title {
     font-size: 24px;
 }
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: var(--blue-20) !important
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: var(--blue-20) !important
+}
+
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
+
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+// }

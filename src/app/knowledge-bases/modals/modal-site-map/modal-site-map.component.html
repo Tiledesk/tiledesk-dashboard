@@ -153,11 +153,14 @@
         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
         <textarea type="text" class="custom-textarea" 
             [(ngModel)]="listOfUrls" 
+            (input)="onChangeList($event)"
             [ngClass]="{'invalid':errorLimit }"
-            placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}" (input)="onChangeList($event)" rows="4"
+            placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}"  rows="4"
         ></textarea>
-        <span *ngIf="!errorLimit"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
-        <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
+        <span *ngIf="!errorLimit && listSitesOfSitemap?.length <= KB_LIMIT_CONTENT"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
+        <span *ngIf="errorLimit || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" class="input-label-error">
+            {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
+        </span>
         </div>
     </div>
 </div>
@@ -167,7 +170,7 @@
         {{ "Cancel" | translate }}
     </button>
 
-    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0" (click)="onSaveKnowledgeBase()">
+    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" (click)="onSaveKnowledgeBase()">
         {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
     </button>
 </div>

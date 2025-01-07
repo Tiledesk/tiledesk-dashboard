@@ -1098,7 +1098,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       icon: "info",
       showCloseButton: false,
       showCancelButton: false,
-      confirmButtonColor: "var(--primary-btn-background)",
+      // confirmButtonColor: "var(--primary-btn-background)",
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: 'OK',
       // dangerMode: false,
@@ -1113,7 +1113,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCancelButton: true,
       confirmButtonText: this.joinToChatMsg,
       cancelButtonText: this.cancelMsg,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       reverseButtons: true,
       icon: "info",
@@ -2838,7 +2838,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -2932,7 +2932,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -3283,7 +3283,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               showCloseButton: false,
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
 
 
 
@@ -3296,7 +3296,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               icon: "success",
               showCloseButton: false,
               showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.getRequests();
@@ -3354,7 +3354,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
 
       // button: "OK",

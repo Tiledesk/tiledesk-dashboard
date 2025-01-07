@@ -462,7 +462,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             icon: "success",
             showCloseButton: false,
             showCancelButton: false,
-            confirmButtonColor: "var(--primary-btn-background)",
+            // confirmButtonColor: "var(--primary-btn-background)",
             confirmButtonText: this.translate.instant('Ok'),
           }).then((okpressed) => {
             this.logger.log("[INTEGRATION-COMP]  ok pressed")
@@ -478,7 +478,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             showCloseButton: false,
             showCancelButton: false,
             confirmButtonText: this.translate.instant('Ok'),
-            confirmButtonColor: "var(--primary-btn-background)",
+            // confirmButtonColor: "var(--primary-btn-background)",
           });
         })
       } else {

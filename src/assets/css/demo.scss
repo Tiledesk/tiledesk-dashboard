@@ -539,11 +539,12 @@ my-app .main-panel .main-content .card {
 .dropdown-menu-custom li a:hover,
 .dropdown-menu li a:focus,
 .dropdown-menu li a:active {
-  background-color: var(--dropdown-menu-hover-color) !important;
-  color: #fff;
+  background-color: rgba(0, 0, 0, .04); // var(--dropdown-menu-hover-color) !important;
+  color: var(--blue-20);
+  box-shadow: unset;
 }
 
-/* Btn outlined blu
+/* Btn outlined round blu
 /* ------------------------- */
 .btn-outlined-round-blu {
   box-shadow: unset !important;
@@ -552,11 +553,12 @@ my-app .main-panel .main-content .card {
   // color: var(--outlined-btn-blu-color);
   color: var(--blue-20);
   border-radius: var(--btn-border-radius) !important;
-  padding: 7px !important;
+  padding: 6px 6px !important;
   // border: 1px solid var(--outlined-btn-blu-color)!important;
-  border: 1px solid var(--blue-20) !important;
+  border: 2px solid var(--blue-20) !important;
   font-size: 14px;
-  // height: 38px;
+  height: 40px;
+  width: 40px;
 }
 
 .btn-outlined-round-blu>span>svg {
@@ -596,11 +598,12 @@ my-app .main-panel .main-content .card {
   // color: var(--outlined-btn-blu-color);
   color: var(--blue-20);
   border-radius: var(--btn-border-radius) !important;
-  padding: 9px 20px !important;
+  padding: 7px 20px !important;
   // border: 1px solid var(--outlined-btn-blu-color)!important;
-  border: 1px solid var(--blue-20) !important;
+  border: 2px solid var(--blue-20) !important;
   font-size: 14px;
-  // height: 38px;
+  height: 40px;
+  font-weight: 500;
 }
 
 .btn-outlined-blu>span>svg {
@@ -615,7 +618,7 @@ my-app .main-panel .main-content .card {
   background-color: var(--blu-01);
   // color: var(--outlined-btn-blu-color);
   color: var(--blue-40);
-  border: 1px solid var(--blue-40) !important;
+  border: 2px solid var(--blue-40) !important;
 }
 
 .btn-outlined-blu:focus {
@@ -643,7 +646,7 @@ my-app .main-panel .main-content .card {
   border-radius: var(--btn-border-radius) !important;
   font-family: var(--header-font-family) !important;
   color: var(--red-btn-color) !important;
-  height: 38px;
+  height: 40px;
 }
 
 .btn-round-red:hover {
@@ -662,6 +665,7 @@ my-app .main-panel .main-content .card {
   border-radius: var(--btn-border-radius) !important;
   font-family: var(--header-font-family) !important;
   color: var(--primary-btn-color) !important;
+  height: 40px;
 }
 
 .btn-red:hover {
@@ -683,6 +687,7 @@ my-app .main-panel .main-content .card {
   font-family: var(--header-font-family) !important;
   color: var(--primary-btn-color) !important;
   // border: unset;
+  height: 40px;
 }
 
 .btn-tdblu-no-boxshadow:hover {
@@ -1743,14 +1748,18 @@ span.navbar-brand-title {
   background-color: unset !important;
   padding: 7px !important;
 }
-
-
-
 /* ************************* */
 
+
+/* Checkbox
+/* ***************** */
 .pre-chat-form-fields-wpr .checkbox .checkbox-material .check {
   background: #fff;
   border: 1px solid #ccc;
+}
+
+.checkbox input[type=checkbox]:checked+.checkbox-material .check {
+  background: var(--blue-20) !important;
 }
 
 // fix for CHROME version 101.XXX
@@ -3621,6 +3630,21 @@ div:where(.swal2-container) .swal2-select {
 
 .mat-option {
   font-family: var(--header-font-family) !important;
+}
+
+.mat-dialog-actions > .mat-dialog-ok-btn {
+  background-color: var(--blue-20);
+  color: #fff !important;
+}
+
+.mat-dialog-actions > .mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.mat-dialog-actions > .mat-dialog-close-btn { 
+  background-color: #647491;
+  color: #fff;
 }
 
 

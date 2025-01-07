@@ -999,7 +999,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -1019,7 +1019,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -1043,7 +1043,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCancelButton: false,
       confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
       // cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       reverseButtons: true,
       // dangerMode: false
     }).then((result: any) => {
@@ -1898,7 +1898,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           icon: "warning",
           showCloseButton: false,
           showCancelButton: false,
-          confirmButtonColor: "var(--primary-btn-background)",
+          // confirmButtonColor: "var(--primary-btn-background)",
           confirmButtonText: this.translate.instant('Ok'),
        
         })
@@ -1920,7 +1920,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         icon: "warning",
         showCloseButton: false,
         showCancelButton: false,
-        confirmButtonColor: "var(--primary-btn-background)",
+        // confirmButtonColor: "var(--primary-btn-background)",
         confirmButtonText: this.translate.instant('Ok'),
        
       })
@@ -1990,10 +1990,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           reverseButtons: true,
-          // buttons: [this.cancel, this.upgrade],
-          // dangerMode: false
         }).then((result: any) => {
 
           if (result.isConfirmed) {
@@ -2019,11 +2017,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.contactUs,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true,
-          // buttons: [null, this.cancel],
-          // dangerMode: false
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2039,11 +2035,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.contactUs,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true,
-          // dangerMode: false
-           // buttons: [this.cancel, this.contactUs],
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2096,10 +2090,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
-          // buttons: [this.cancel, this.upgrade],
-          // dangerMode: false
         }).then((result: any) => {
 
           if (result.isConfirmed) {
@@ -2122,10 +2114,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCloseButton: false,
           showCancelButton: false,
           confirmButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
-          focusConfirm: false,
-          // buttons: [null, this.cancel],
-          // dangerMode: false
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
         // this.logger.log('here 1')
@@ -2136,11 +2126,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           canecelButtonText: this.cancel,
           focusConfirm: false,
-            // buttons: [this.cancel, this.contactUs],
-          // dangerMode: false
         }).then((result) => {
           if (result.isConfirmed) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2728,8 +2716,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: 'Ok',
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     })

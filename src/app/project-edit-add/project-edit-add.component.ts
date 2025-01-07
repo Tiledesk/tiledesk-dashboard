@@ -1113,7 +1113,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
       icon: "info",
@@ -3245,7 +3245,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         showCancelButton: true,
         confirmButtonText: this.upgradePlan,
         cancelButtonText: this.cancel,
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: true,
         reverseButtons: true,
 

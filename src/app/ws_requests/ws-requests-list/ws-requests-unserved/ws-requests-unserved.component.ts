@@ -675,7 +675,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
       showCancelButton: true,
       confirmButtonText: this.translate.instant('Ok'),
       cancelButtonText: this.cancelMsg,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 

@@ -309,7 +309,7 @@ input:checked+.slider:before {
 }
 
 .info {
-  border-left-color: var(--blue-light); // #5bc0de;
+  border-left-color: var(--blue-20); // #5bc0de;
   // background-color: rgba(91, 192, 222, 0.1);
 }
 
@@ -1009,7 +1009,7 @@ button.close {
 
 .mat-menu-custom-btn>.mat-icon {
   margin-right: 0;
-  color: var(--blue-light);
+  color: var(--blue-20);
   margin-top: 1px;
   font-size: 21px;
   width: 20px;
@@ -1019,7 +1019,7 @@ button.close {
   // background-color: var(--blue-light);
   // border-color: var(--blue-light);
   padding: 6px;
-  color: var(--blue-light);
+  color: var(--blue-20);
   border-radius: 4px;
   font-weight: 600;
 }
@@ -1048,7 +1048,7 @@ button.close {
   .link {
     display: flex;
     align-items: center;
-    color: var(--blue-light);
+    color: var(--blue-20);
     font-weight: 400;
     margin-right: 4px;
     cursor: pointer;
