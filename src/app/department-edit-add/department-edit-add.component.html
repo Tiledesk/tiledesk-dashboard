@@ -205,11 +205,10 @@
                         <!-- ------------------------------------------------------------------- -->
                         <!-- Create a new bot link -->
                         <!-- ------------------------------------------------------------------- -->
-                        <span class="create-new-bot-wpr"
-                          style="">
+                        <span class="create-new-bot-wpr">
                           {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
                           <!-- openCreateBotRightSideBar() -->
-                          <span class="create-new-bot-btn" style="" (click)="goTo_BotEditAddPage_CREATE()">
+                          <span class="create-new-bot-btn" (click)="goTo_BotEditAddPage_CREATE()">
 
                             {{ "DeptsAddEditPage.orCreateABot" | translate }}
                           </span>
@@ -450,10 +449,9 @@
                           <!-- ------------------------------------------------------------------- -->
                           <!-- Create a new group link -->
                           <!-- ------------------------------------------------------------------- -->
-                          <span class="create-new-group-wpr" *ngIf="isVisibleGroups"
-                            style="">
+                          <span class="create-new-group-wpr" *ngIf="isVisibleGroups">
                             {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                            <span  class="create-new-group-btn" style="" (click)="openCreateGroupRightSideBar()">
+                            <span  class="create-new-group-btn" (click)="openCreateGroupRightSideBar()">
 
                               {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
                             </span>

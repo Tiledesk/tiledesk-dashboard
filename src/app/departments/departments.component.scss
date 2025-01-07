@@ -76,6 +76,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -255,6 +256,7 @@ button.close {
 .line-clamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -311,6 +313,7 @@ table > tbody > tr.default-dept-disabled > td {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .nw-onoffswitch-checkbox {
   position: absolute;
@@ -358,6 +361,7 @@ table > tbody > tr.default-dept-disabled > td {
 .line-clamp-dept-description-in-tooltip {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

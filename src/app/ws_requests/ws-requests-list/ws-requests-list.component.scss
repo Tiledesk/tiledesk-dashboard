@@ -68,14 +68,21 @@ button.close {
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr {
   float: right;
   cursor: pointer;
+  background-color: transparent;
+  border-radius: 4px;
+  padding: 0px 3px;
+}
+
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr:hover { 
+  background-color: var(--only-text-btn-hover-background);
 }
 
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.view-requester-details {
-  color: var(--blue-light);
+  color: var(--blue-20);
 }
 
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.material-icons {
-  color: var(--blue-light); // #0f62ff;
+  color: var(--blue-20); // #0f62ff;
   vertical-align: middle;
   font-size: 16px;
 }
