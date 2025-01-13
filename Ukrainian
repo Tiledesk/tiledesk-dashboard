@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
+    "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2276,8 +2278,9 @@
     "GroupWithThisNameAlreadyExists": "Група з такою назвою вже існує",
     "EnterTheGroupName": "Введіть назву групи (зазвичай таке ж, як назва відділу)",
     "TheNewGroupCreatedCanAlso": "Створену групу також можна призначити до будь-якого іншого відділу",
-    "PercentageHandledByBots": "відсоток, оброблений ботами",
-    "HandledByBots": "обробляються ботами",
+    "PercentageHandledByBots": "Percentage handled by bots",
+    "HandledByBots": "Handled by bots",
+    "HandledByHuman": "Handled by human",
     "ConversationsInLast30Days": "Розмови за останні 30 днів",
     "TotalConversations": "Всього розмов",
     "FilterConversations": "Відфільтруйте бесіди",
