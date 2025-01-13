@@ -402,10 +402,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectId = this.project._id;
           this.projectName = this.project.name
 
-          // if (this.projectId) {
-          //   this.getProjectQuotes();
-          //   this.getQuotasCount()
-          // }
+          if (this.projectId) {
+            this.getProjectQuotes();
+            this.getQuotasCount()
+          }
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
