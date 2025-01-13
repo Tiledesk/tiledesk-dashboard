@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
+    "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2276,8 +2278,9 @@
     "GroupWithThisNameAlreadyExists": "Bu adda qrup artıq mövcuddur",
     "EnterTheGroupName": "Qrup adını daxil edin (adətən şöbənin adı ilə eynidir)",
     "TheNewGroupCreatedCanAlso": "Yaradılan yeni qrup istənilən başqa şöbəyə də təyin edilə bilər",
-    "PercentageHandledByBots": "botlar tərəfindən idarə olunan faiz",
-    "HandledByBots": "botlar tərəfindən idarə olunur",
+    "PercentageHandledByBots": "Percentage handled by bots",
+    "HandledByBots": "Handled by bots",
+    "HandledByHuman": "Handled by human",
     "ConversationsInLast30Days": "Son 30 gündəki söhbətlər",
     "TotalConversations": "Ümumi söhbətlər",
     "FilterConversations": "Söhbətləri süzün",
