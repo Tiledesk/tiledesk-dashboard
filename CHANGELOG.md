@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.59-rc2
+- Improves the UI
+- Bug fixing
+
 ### 2.7.59-rc1
 - Minor improvements and bug fixing
 
