@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
+    "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2276,8 +2278,9 @@
     "GroupWithThisNameAlreadyExists": "توجد بالفعل مجموعة بهذا الاسم",
     "EnterTheGroupName": "أدخل اسم المجموعة (عادةً ما يكون هو نفسه اسم القسم)",
     "TheNewGroupCreatedCanAlso": "يمكن أيضًا تعيين المجموعة الجديدة التي تم إنشاؤها إلى أي قسم آخر",
-    "PercentageHandledByBots": "النسبة المئوية التي تم التعامل معها بواسطة برامج الروبوت",
-    "HandledByBots": "يتم التعامل معها بواسطة برامج الروبوت",
+    "PercentageHandledByBots": "Percentage handled by bots",
+    "HandledByBots": "Handled by bots",
+    "HandledByHuman": "Handled by human",
     "ConversationsInLast30Days": "المحادثات في آخر 30 يومًا",
     "TotalConversations": "مجموع المحادثات",
     "FilterConversations": "تصفية المحادثات",
