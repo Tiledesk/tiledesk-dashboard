@@ -78,14 +78,15 @@
 
         <div class="conv-analytics-indicator-value-wpr">
           <h2 color="disabled" class="conv-analytics-indicator-value">
-            {{totalHuman + totalBot | number:'1.0-0'}}
+            <!-- {{totalHuman + totalBot | number:'1.0-0'}} -->
+            {{totalHuman | number:'1.0-0'}}
           </h2>
         </div>
 
       </div>
 
        <!-- Handled by human -->
-       <div class="conv-analytics-indicator-container">
+       <!-- <div class="conv-analytics-indicator-container">
         <div class="conv-analytics-indicator-title-wpr">
           <h2 class="conv-analytics-indicator-title">
             {{'HandledByHuman' | translate}}
@@ -99,7 +100,7 @@
           </h2>
         </div>
 
-      </div>
+      </div> -->
 
       <!-- Handled by bots -->
       <div class="conv-analytics-indicator-container">

@@ -333,7 +333,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
 
   getMaxValueFromArrays(array1: number[], array2: number[]): number {
     const mergedArray = [...array1, ...array2];
-    console.log('mergedArray', mergedArray)
+    this.logger.log('mergedArray', mergedArray)
     return Math.max(...mergedArray);
   }
 
@@ -419,7 +419,8 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
             lineTension: 0.4,
           },
           {
-            label: this.servedByHumans,
+            // label: this.servedByHumans,
+            label: this.translate.instant('TotalConversations'),
             data: humanCounts,
             fill: true,
             backgroundColor: 'rgba(30, 136, 229, 0.6)',

@@ -75,7 +75,8 @@
     <div class="flex flex-col flex-auto overflow-hidden items-center">
       
       <span  class="graph-footer-num">
-        {{totalHuman + totalBot | number:'1.0-0'}}
+        <!-- {{totalHuman + totalBot | number:'1.0-0'}} -->
+        {{totalHuman  | number:'1.0-0'}}
       </span>
       <!-- <span *ngIf="numOfDays === 7" class="graph-footer-num">  {{countOfLastSevenDaysRequests + countOfLastSevenDaysRequestsHandledByBot | number:'1.0-0'}} </span>
       <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequests | number:'1.0-0'}} </span> -->
