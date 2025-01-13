@@ -210,7 +210,7 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
       elemNavbar.setAttribute('style', 'display:block;');
 
       // Show Footer
-      elemFooter.setAttribute('style', '');
+      // elemFooter.setAttribute('style', '');
 
     }
   }

@@ -35,10 +35,10 @@ h4.title {
     padding: 0px 10px 0 0px;
     display: flex;
     &:hover {
-        border: 2px solid var(--blue-light);
+        border: 2px solid var(--blue-20);
     }
     &.selected{
-        border: 2px solid var(--blue-light); //#3ea9f5;
+        border: 2px solid var(--blue-20); //#3ea9f5;
     }
     .content-button{
         margin: auto;

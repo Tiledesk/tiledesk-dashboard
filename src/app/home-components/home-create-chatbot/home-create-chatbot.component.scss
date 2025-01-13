@@ -74,16 +74,16 @@
 }
 
 #home-material-btn {
-  background-color: var(--blue-light);
+  background-color: var(--blue-20);
   color: #fff;
   margin-right: 4px;
 }
 
 #start-from-scratch-btn {
   min-width: 270px;
-  max-height: 45px;
+  max-height: 40px;
   font-size: 16px;
-  background-color: var(--blue-light);
+  background-color: var(--blue-20);
 }
 
 #start-from-scratch-btn>.btn-content {
@@ -100,7 +100,7 @@
 
 #hc-chatbot-count-btn {
   margin-top: 0px;
-  max-height: 45px;
+  max-height: 40px;
   min-width: 270px;
   font-size: 16px;
 }

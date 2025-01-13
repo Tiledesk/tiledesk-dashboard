@@ -843,7 +843,7 @@ button.close {
   letter-spacing: 1px;
   background: transparent;
   border: 1px solid #d1d9e0;
-  color: #3ea9f5;
+  color: var(--blue-20);
   font-weight: 400;
   box-shadow: unset !important;
   text-transform: none !important;
@@ -859,12 +859,12 @@ button.close {
 .btn-get-feature-no-boxshadow:hover {
   background-color: #eff2f6;
   border: 1px solid #acb8cb;
-  color: #333;
+  color: var(--blue-40);
 }
 
 .get-feature-upgrade-plan-icon {
   vertical-align: middle;
-  color: #3ea9f5;
+  color: var(--blue-20);
   font-size: 21px;
 }
 
@@ -1146,7 +1146,7 @@ button.close {
   font-weight: 500;
   cursor: pointer;
   background-color: rgb(255, 255, 255);
-  color: rgb(5, 102, 255);
+  color: var(--blue-20); // rgb(5, 102, 255);
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
 }
 
@@ -1293,8 +1293,8 @@ button.close {
 }
 
 .check-icon {
-  fill: rgb(5, 102, 255);
-  color: rgb(5, 102, 255);
+  fill: var(--blue-20); //rgb(5, 102, 255);
+  color: var(--blue-20); // rgb(5, 102, 255);
 }
 
 .plan-card-vertical-line {

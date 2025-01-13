@@ -201,8 +201,8 @@
                   <!-- --------------------- -->
                   <!-- From here -->
                   <!-- --------------------- -->
-                  <!-- 
-                   <button mat-menu-item (click)="$event.stopPropagation()">
+                  
+                   <!-- <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
                       (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
                     <span>Connect WhatsApp </span>
@@ -226,7 +226,7 @@
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayCustomizeWidget"
                       (change)="switchCustomizeWidget($event.checked)"></mat-checkbox>
                     <span>Customize widget</span>
-                  </button>    -->
+                  </button>     -->
 
                   <!-- --------------------- -->
                   <!-- To here -->
@@ -656,7 +656,7 @@
                 <!-- ----------------------- -->
                 <!-- Child 3 Whatsapp Wizard -->
                 <!-- ----------------------- -->
-                <!-- <ng-container *ngIf="item.type === 'child3'">
+                <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
                     style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
                     (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
@@ -666,7 +666,7 @@
                     [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
                     [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
                   </appdashboard-home-whatsapp-account-wizard>
-                </ng-container> -->
+                </ng-container>
 
                 <!-- ----------------------- -->
                 <!-- Child 4 Whatsapp Account-->

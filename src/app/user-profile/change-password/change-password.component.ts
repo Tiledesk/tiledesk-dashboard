@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidation } from 'app/reset-psw/password-validation';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 @Component({
@@ -355,12 +356,15 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   presentModalSelectAProjectToManageEmailNotification() {
-    swal({
+    Swal.fire({
       title: this.warning,
       text: this.selectAProjectToManageNotificationEmails,
       icon: "warning",
-      button: "Ok",
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      focusConfirm: false,
+      // button: "Ok",
+      // dangerMode: false,
     })
   }
 

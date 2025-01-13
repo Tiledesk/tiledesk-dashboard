@@ -865,9 +865,16 @@
                           'contact-location-chat-two-agent': CHAT_PANEL_MODE === true && agents_array?.length === 2,
                           'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length === 3}">
                             <!-- (click)="openMapRightSideBar()" -->
+                            <span *ngIf="locationCity || locationCountry" class="material-icons contact-location-pin-icon"
+                              (click)="viewInGooleMaps()">
+                              location_on
+                            </span>
                             <span (click)="viewInGooleMaps()" *ngIf="locationCity || locationCountry"
-                              class="location-wpr" matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                              class="location-wpr" 
+                              matTooltipClass="custom-mat-tooltip"
+                              matTooltip="{{ 'Location' | translate }}" 
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right'
                               matTooltipHideDelay="100">
                               <span *ngIf="locationCity && locationCountry">{{ locationCity }},</span>
                               <span *ngIf="locationCity && !locationCountry">{{ locationCity }}</span>
@@ -1605,17 +1612,20 @@
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === true && tab1 === false && tab2 === false && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab0()">
-                            {{ 'UserProfile.Profile' | translate }}
+                            <span> {{ 'UserProfile.Profile' | translate }} </span>
+                            
                           </div>
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === true && tab2 === false && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab1()">
-                            Ticket
+                            <span>Ticket </span>
+                            
                           </div>
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === true && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab2()">
-                            {{'Notes.Notes' | translate}} ({{ notesArray?.length }})
+                            <span> {{'Notes.Notes' | translate}} ({{ notesArray?.length }}) </span>
+                            
                           </div>
                           <!-- ------------------------------------- -->
                           <!-- Other tabs -->
@@ -1623,12 +1633,14 @@
                           <div *ngIf="otherTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === false && tab3 === true && tab4 === false}"
                             (click)="hasSelectedTab3()">
-                            {{'Conversations' | translate}}
+                            <span> {{'Conversations' | translate}} </span>
+                            
                           </div>
                           <div *ngIf="otherTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab2 === false && tab1 === false && tab3 === false && tab4 === true}"
                             (click)="hasSelectedTab4()">
-                            {{'Attributes' | translate }}
+                            <span> {{'Attributes' | translate }} </span>
+                            
                           </div>
                           <!-- ------------------------------------- -->
                           <!-- Arrow right -->

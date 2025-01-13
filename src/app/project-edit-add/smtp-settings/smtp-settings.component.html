@@ -125,8 +125,8 @@
                           name="smtpswd" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
                           autocomplete="new-password">
                         <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                          <button class="btn btn-primary show-password-btn" (click)="showPassword()"
-                            style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                          <button id="smtp-show-password-btn" class="btn btn-primary show-password-btn" (click)="showPassword()"
+                            style="">
                             <span *ngIf="!showPswd" class="material-icons">
                               visibility_off
                             </span>

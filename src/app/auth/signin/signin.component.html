@@ -156,10 +156,17 @@
             <label for="password">Password</label>
             <input type="password" id="password" class="input" formControlName="password" autocomplete="on" required>
 
-            <div *ngIf="formErrors.password" class="is-danger" translate>
+            <!-- <div *ngIf="formErrors.password" class="is-danger" translate>
               {{ formErrors.password }}
-            </div>
-            <!-- [disabled]="!userForm.valid" -->
+            </div> -->
+
+            <p class="signin-forgot-pswrd">
+              {{ "ForgotYourPassword" | translate }}?
+              <span (click)="goToResetPsw()">
+                {{ "ClickHere" | translate }}
+              </span>
+            </p>
+           
             <button type="submit" class="btn signin-button" [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
               <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- Login  -->
@@ -168,22 +175,35 @@
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>
 
-            <!-- <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span> -->
-            <div class="left-panel-signup-link" (click)="goToSignup()">
-              <!-- <a routerLink="/signup"> -->
+         
+            <!-- <div class="left-panel-signup-link" (click)="goToSignup()">
+             
                 {{ "DontHaveAnAccountYet" | translate }}
                 <span style="color: #03a5e8; cursor: pointer;">
                   {{ "SignUp" | translate }}
                 </span>
-              <!-- </a> -->
-            </div>
-            <!-- style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;" -->
-            <p class="signin-forgot-pswrd">
+             
+            </div> -->
+      
+            <!-- <p class="signin-forgot-pswrd">
               {{ "ForgotYourPassword" | translate }}?
               <span style="color: #03a5e8; cursor:pointer" (click)="goToResetPsw()">
                 {{ "ClickHere" | translate }}
               </span>
-            </p>
+            </p> -->
+
+            <div class="h-20"></div> 
+            <div *ngIf="hideGoogleAuthBtn" class="auth---divider"></div>
+  
+
+            <div class="left-panel-signup-link" (click)="goToSignup()">
+             
+              {{ "DontHaveAnAccountYet" | translate }}
+              <span>
+                {{ "SignUp" | translate }}
+              </span>
+           
+            </div>
             <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
         <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
 

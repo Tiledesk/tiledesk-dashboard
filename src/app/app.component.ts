@@ -1080,23 +1080,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.runOnRouteChange();
-        // this.setPrechatFormInWidgetSettings();
+        this.hideFooter();
+    }
+
+    hideFooter() {
         const elemFooter = <HTMLElement>document.querySelector('footer');
-        // const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
-        // this.logger.log('APP.COMP - elem FOOTER ', elemFooter);
-        // setTimeout(() => {
-        // this.logger.log('[APP-COMPONENT] window', window)
-        // var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
-        // this.logger.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
-        // if (tiledeskiframe) {
-        //     if (window && window['tiledesk'] && window['tiledesk']['angularcomponent']) {
-        //         window['tiledesk'].angularcomponent.component.g.preChatForm = false
-        //     }
-        // }
-        // }, 3000);
-
-
-
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
@@ -1140,31 +1128,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     elemFooter.setAttribute('style', '');
                 }
 
-                // WIDGET HIDDEN IF THE ROUTE IS request-for-panel
-                // if (this.route.indexOf('/request-for-panel') !== -1) {
-
-                //     if (eleWidget) {
-                //         eleWidget.style.display = 'none';
-                //     } else {
-                //         this.logger.log('APP.COMP - elem WIDGET ', eleWidget) 
-                //     }
-                // }
-
             } else {
                 // this.logger.log('»> * ', this.route)
             }
         });
 
         const elemAppFooter = <HTMLElement>document.querySelector('app-footer');
+
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
                 // this.logger.log('»> ', this.route)
                 if (this.route.indexOf('/verify') !== -1) {
-
                     elemAppFooter.setAttribute('style', 'display:none;');
-                    // this.logger.log('DETECT LOGIN PAGE')
-                    // tslint:disable-next-line:max-line-length
                 } else {
 
                     elemAppFooter.setAttribute('style', '');
@@ -1174,36 +1150,35 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // this.logger.log('»> * ', this.route)
             }
         });
-
     }
 
 
-    // setPrechatFormInWidgetSettings() {
-    //     this.router.events.subscribe((val) => {
-    //         if (this.location.path() !== '') {
-    //             this.route = this.location.path();
-    //             // this.logger.log('»> ', this.route)
-    //             // tslint:disable-next-line:max-line-length
-    //             if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
+    setPrechatFormInWidgetSettings() {
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // this.logger.log('»> ', this.route)
+                // tslint:disable-next-line:max-line-length
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
 
-    //                 this.isPageWithNav = false;
+                    this.isPageWithNav = false;
 
-    //                 if (window && window['tiledeskSettings']) {
-    //                     window['tiledeskSettings']['preChatForm'] = true
-    //                 }
-    //             } else {
+                    if (window && window['tiledeskSettings']) {
+                        window['tiledeskSettings']['preChatForm'] = true
+                    }
+                } else {
 
-    //                 this.isPageWithNav = true;
-    //                 if (window && window['tiledeskSettings']) {
-    //                     if (window['tiledeskSettings']['preChatForm']) {
-    //                         delete window['tiledeskSettings']['preChatForm'];
-    //                     }
-    //                 }
-    //             }
-    //             // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
-    //         }
-    //     });
-    // }
+                    this.isPageWithNav = true;
+                    if (window && window['tiledeskSettings']) {
+                        if (window['tiledeskSettings']['preChatForm']) {
+                            delete window['tiledeskSettings']['preChatForm'];
+                        }
+                    }
+                }
+                // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+            }
+        });
+    }
 
     isMaps(path) {
         var titlee = this.location.prepareExternalUrl(this.location.path());

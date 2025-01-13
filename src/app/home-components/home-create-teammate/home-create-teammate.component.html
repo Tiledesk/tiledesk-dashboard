@@ -253,34 +253,30 @@
         </div> -->
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
-            <!-- goToTeammates() presentModalInviteTeammate()  -->
-            <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
+
+
+            <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="btn btn-tdblu-no-boxshadow"
+            [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit"
+            [ngClass]="{'invite-teammate-btn-disabled': projectUsersLength + countOfPendingInvites >= seatsLimit}"
+            (click)="inviteTeammate()">
+                Invite teammate
+            </button>
+           
+            <!-- <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
                 [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit"
                 [ngClass]="{'invite-teammate-btn-disabled': projectUsersLength + countOfPendingInvites >= seatsLimit}"
                 (click)="inviteTeammate()">
                 <span class="mat-button-wrapper">
-
                     <span class="ml-2" style="font-size: 15px;">
                         Invite teammate
                     </span>
-
                 </span>
                 <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
                     ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
                 </span>
                 <span class="mat-button-focus-overlay"> </span>
-            </button>
+            </button> -->
 
-            <!-- <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
-                style="box-shadow: unset; background-color: #2196f3; display: none;">
-                <mat-icon style="color: #fff;">more_horiz</mat-icon>
-            </button>
-            <mat-menu style="display: none;" #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
-                <button mat-menu-item (click)="goToTeammates()">
-                    <mat-icon>group_add</mat-icon>
-                    <span>Invite teammates</span>
-                </button>
-            </mat-menu> -->
         </div>
     </div>
 

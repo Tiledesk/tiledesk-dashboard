@@ -493,58 +493,58 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
     this.logger.log('[DEPT-EDIT-ADD] presentModalFeautureAvailableFromTier2Plan projectId', this.projectId)
-    
-      if (this.isVisiblePAY) {
-        Swal.fire({
-          // content: el,
-          title: this.upgradePlan,
-          text: planName,
-          icon: "info",
-          showCloseButton: false,
-          showCancelButton: true,
-          confirmButtonText: this.upgradePlan,
-          cancelButtonText: this.cancel,
-          // confirmButtonColor: "var(--blue-light)",
-          focusConfirm: true,
-          reverseButtons: true,
-          // buttons: {
-          //   cancel: this.cancel,
-          //   catch: {
-          //     text: this.upgradePlan,
-          //     value: "catch",
-          //   },
-          // },
-          // dangerMode: false,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            if (this.isVisiblePAY) {
-              this.logger.log('[DEPT-EDIT-ADD] HERE 1')
-              if (this.USER_ROLE === 'owner') {
-                this.logger.log('[DEPT-EDIT-ADD] HERE 2')
-                if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-                  this.logger.log('[DEPT-EDIT-ADD] HERE 3')
-                  this.notify._displayContactUsModal(true, 'upgrade_plan');
-                } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
-                  this.notify._displayContactUsModal(true, 'upgrade_plan');
-                } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-                  this.logger.log('[DEPT-EDIT-ADD] HERE 4')
-                  this.router.navigate(['project/' + this.projectId + '/pricing']);
-                }
-              } else {
-                this.logger.log('[DEPT-EDIT-ADD] HERE 5')
-                this.presentModalAgentCannotManageAvancedSettings();
+
+    if (this.isVisiblePAY) {
+      Swal.fire({
+        // content: el,
+        title: this.upgradePlan,
+        text: planName,
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.upgradePlan,
+        cancelButtonText: this.cancel,
+        // confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
+        // buttons: {
+        //   cancel: this.cancel,
+        //   catch: {
+        //     text: this.upgradePlan,
+        //     value: "catch",
+        //   },
+        // },
+        // dangerMode: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (this.isVisiblePAY) {
+            this.logger.log('[DEPT-EDIT-ADD] HERE 1')
+            if (this.USER_ROLE === 'owner') {
+              this.logger.log('[DEPT-EDIT-ADD] HERE 2')
+              if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+                this.logger.log('[DEPT-EDIT-ADD] HERE 3')
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+                this.logger.log('[DEPT-EDIT-ADD] HERE 4')
+                this.router.navigate(['project/' + this.projectId + '/pricing']);
               }
-             
             } else {
-              this.logger.log('[DEPT-EDIT-ADD] HERE 6')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
+              this.logger.log('[DEPT-EDIT-ADD] HERE 5')
+              this.presentModalAgentCannotManageAvancedSettings();
             }
+
+          } else {
+            this.logger.log('[DEPT-EDIT-ADD] HERE 6')
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
           }
-        });
-      } else {
-        this.notify._displayContactUsModal(true, 'upgrade_plan');
-      }
-    
+        }
+      });
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
@@ -654,7 +654,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
     const elemFooter = <HTMLElement>document.querySelector('footer');
     elemFooter.setAttribute('style', 'display:none;');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: unset !important;');
   }
 
 
@@ -1026,8 +1025,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.project = project
-        this.projectId = project._id
+        if (project) {
+          this.project = project
+          this.projectId = project._id
+        }
         // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
       });
   }

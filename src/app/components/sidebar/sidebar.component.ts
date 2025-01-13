@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input, Renderer2 } from '@angular/core';
 
 import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 import { Location } from '@angular/common';
@@ -98,7 +98,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('openchatbtn') private elementRef: ElementRef;
   @ViewChild('homebtn') private homeBtnElement: ElementRef;
-
+  // @ViewChild('.item-active', { static: false }) svgPath: ElementRef;
 
   countClickOnOpenUserDetailSidebar: number = 0
   menuItems: any[];
@@ -203,6 +203,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
   CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
+  TRANSLATIONS_ROUTE_IS_ACTIVE: boolean;
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
@@ -273,7 +274,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   ARE_NEW_KB: boolean;
   kbNameSpaceid : string = '';
   currentProjectUser: any;
-  isVisibleSupportMenu: boolean
+  isVisibleSupportMenu: boolean;
+  company_brand_color: string
 
   constructor(
     private router: Router,
@@ -297,6 +299,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private prjctPlanService: ProjectPlanService,
     private shepherdService: ShepherdService,
     public localDbService: LocalDbService,
+    private element: ElementRef,
+    private renderer: Renderer2
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -308,7 +312,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.companySiteUrl = brand["COMPANY_SITE_URL"]
       this.companyName = brand["COMPANY_NAME"]
       this.isVisibleSupportMenu = brand["SUPPORT_MENU"]
-
+      this.company_brand_color = brand['BRAND_PRIMARY_COLOR'];
     }
   }
 
@@ -341,9 +345,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // this.getProjectPlan()
     this.getBaseUrlAndThenProjectPlan();
     this.listenToKbVersion()
+   
+    // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {
+    // const pathElement = this.svgPath.nativeElement;
+    // console.log('[SIDEBAR] pathElement ', pathElement)
+    // this.renderer.setStyle(this.element.nativeElement, '--brandColor', this.company_brand_color);
+    if (this.company_brand_color) {
+      // this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
+    }
+   }
+
+
+  // ngAfterContentInit(): void { 
+  //   if (this.company_brand_color) { 
+  //     console.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
+  //     // const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
+  //     // console.log('[SIDEBAR] pathElement ', pathElement)
+
+  //     // this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
+  //     this.renderer.setStyle(document.body, '--sidebar-active-icon', this.company_brand_color);
+  //   }
+  // }
 
 
   getBaseUrlAndThenProjectPlan() {
@@ -1241,6 +1266,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
         }
 
+        // if (event.url.indexOf('/messages') !== -1) {
         if (event.url.indexOf('/messages') !== -1) {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
@@ -1294,6 +1320,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.INTEGRATIONS_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/widget/translations') !== -1) {
+          this.TRANSLATIONS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TRANSLATIONS_ROUTE_IS_ACTIVE ', this.TRANSLATIONS_ROUTE_IS_ACTIVE);
+        } else {
+          this.TRANSLATIONS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TRANSLATIONS_ROUTE_IS_ACTIVE ', this.TRANSLATIONS_ROUTE_IS_ACTIVE);
+        }
+
+        
 
         if (event.url.indexOf('/installation') !== -1) {
           this.INSTALLATION_ROUTE_IS_ACTIVE = true;

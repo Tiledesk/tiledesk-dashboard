@@ -114,7 +114,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
    this.logger.log('[CNP-TEMPLATES] HELLO !!! ');
     this.createProjectFromTemplates.emit()
 
-    this.getCreateChatbotBtnWidth()
+    // this.getCreateChatbotBtnWidth()
 
   }
 

@@ -429,7 +429,7 @@
                 <!-- ------------ -->
 
                 <div class="quotas-upgrade-btn-wpr">
-                  <button *ngIf="isVisiblePay" mat-flat-button class="quotas-upgrade-btn" (click)="goToPricing()">
+                  <button *ngIf="isVisiblePay" class="btn upgrade--btn" (click)="goToPricing()">
                     <span class="material-icons-outlined">bolt</span>
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
@@ -617,6 +617,8 @@
               </li>
             </ng-container>
 
+
+           
           </ul>
         </li>
 
@@ -628,7 +630,7 @@
         <!-- -------------------------------------------- -->
         <!-- <button (click)="openFeedback()">Give Feedback</button> -->
         <ng-container *ngIf="isVisiblePay" style="position: relative;">
-          <li>
+          <li *ngIf="project">
             <a>
               <button class="give-feedback" (click)="openFeedback()">
 
@@ -645,14 +647,23 @@
           </li>
           <!-- *ngIf="newChangelogCount" -->
           <!-- newChangelogCount >  {{newChangelogCount }} -->
-          <div *ngIf="newChangelogCount === true" class="changelog-count">
-            <span>
-              1
-            </span>
+          <div *ngIf="project">
+            <div *ngIf="newChangelogCount === true" class="changelog-count">
+              <span>
+                1
+              </span>
 
+            </div>
           </div>
 
         </ng-container>
+
+        <li *ngIf="!project">
+          <a style="cursor: pointer;" (click)="goToProjects()">
+            <i class="material-icons">close</i>
+          </a>
+        </li>
+
 
 
         <!--  ------------------------------------------------ -->

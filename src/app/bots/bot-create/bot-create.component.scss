@@ -2187,11 +2187,13 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
 }
 
 .create-tilebot-sub-header {
-  font-size: 36px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.3em;
   margin-top: 10px;
-  margin-bottom: 0.5em;
+  margin-bottom: 10px;
+  color: var(--secondary-text-color);
+  font-family: var(--header-font-family);
 }
 
 .btn--as--link {

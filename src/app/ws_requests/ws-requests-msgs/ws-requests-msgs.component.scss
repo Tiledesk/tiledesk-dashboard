@@ -3807,6 +3807,13 @@ label {
   font-weight: 400;
 }
 
+.contact-location > .contact-location-pin-icon {
+  font-size: 16px;
+  position: relative;
+  top: -1px;
+  padding-right: 3px;
+}
+
 .contact-location-chat-one-agent {
   width: 180px !important;
 }
@@ -4114,12 +4121,19 @@ label {
   font-size: 14px;
   line-height: 18px;
   letter-spacing: -0.01em;
+  font-weight: 400;
 }
 
 .sidebar-select-tab {
   color: var(--active-tab-text-color);
   border-bottom: var(--conv-details-sidebar-active-tab-border-bottom);
   transition: transform 0.2s ease-in-out 0s, width 0.05s ease-in-out 0.1s;
+}
+
+.sidebar-select-tab > span { 
+  position: relative;
+  top: 1px;
+  color: var(--blue-20);
 }
 
 .sidebar-tabs>*+* {

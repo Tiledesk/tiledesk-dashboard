@@ -16,6 +16,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-settings',
@@ -404,12 +405,15 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
 
 
   presentModalSelectAProjectToManageEmailNotification() {
-    swal({
+    Swal.fire({
       title: this.warning,
       text: this.selectAProjectToManageNotificationEmails,
       icon: "warning",
-      button: "Ok",
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      focusConfirm: false,
+      // button: "Ok",
+      // dangerMode: false,
     })
   }
 

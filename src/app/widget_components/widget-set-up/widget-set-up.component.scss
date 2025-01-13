@@ -3024,22 +3024,23 @@ pre {
   letter-spacing: 1px;
   background: transparent;
   border: 1px solid #d1d9e0;
-  color: #3ea9f5;
+  color: var(--blue-20);
   font-weight: 400;
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 6px 15px !important;
+  border-radius: 9999px;
 }
 
 .btn-get-feature-no-boxshadow:hover {
   background-color: #eff2f6;
   border: 1px solid #acb8cb;
-  color: #333;
+  color: var(--blue-40);
 }
 
 .get-feature-upgrade-plan-icon {
   vertical-align: middle;
-  color: #3ea9f5;
+  color: var(--blue-20);
   font-size: 21px;
 }
 

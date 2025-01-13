@@ -3290,7 +3290,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openChatbotAttributesAccordion(isOpenChatbotAttributesAccordion) {
     // this.logger.log('[WS-REQUESTS-MSGS] isOpenChatbotAttributesAccordion ', isOpenChatbotAttributesAccordion)
 
-    var footerEl = <HTMLElement>document.querySelector('footer')
+    // var footerEl = <HTMLElement>document.querySelector('footer')
     // this.logger.log('[WS-REQUESTS-MSGS] footerEl ', footerEl)
     // if (isOpenChatbotAttributesAccordion) {
     //   if (footerEl) {
