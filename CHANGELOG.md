@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.58
+- Minor improvements and bug fixing
+
 ### 2.7.57
 - Improves the Changelog notifications
 
