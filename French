@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
+    "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2276,8 +2278,9 @@
     "GroupWithThisNameAlreadyExists": "Un groupe portant ce nom existe déjà",
     "EnterTheGroupName": "Entrez le nom du groupe (généralement le même que le nom du département)",
     "TheNewGroupCreatedCanAlso": "Le nouveau groupe créé peut également être affecté à tout autre service",
-    "PercentageHandledByBots": "pourcentage géré par les bots",
-    "HandledByBots": "géré par des bots",
+    "PercentageHandledByBots": "Percentage handled by bots",
+    "HandledByBots": "Handled by bots",
+    "HandledByHuman": "Handled by human",
     "ConversationsInLast30Days": "Conversations au cours des 30 derniers jours",
     "TotalConversations": "Conversations totales",
     "FilterConversations": "Filtrer les conversations",
