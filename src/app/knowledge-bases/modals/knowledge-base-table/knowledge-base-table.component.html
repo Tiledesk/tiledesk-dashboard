@@ -313,20 +313,20 @@
                         </button>
 
                         <!-- ---------------------------------------- -->
-                        <!-- KB preview custom--button preview -->
+                        <!-- KB preview custom--button preview btn-outlined-blu-->
                         <!-- ---------------------------------------- -->
                         <button id="kb-preview" class="btn btn-dark" aria-label="Preview"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- <span class="material-icons-round">play_arrow</span> -->
-                            <span>
+                            <span class="preview-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                     width="24px" fill="none" style="vertical-align: middle;">
                                     <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
                                 </svg>
                             </span>
-                            <span> {{'Preview' | translate}} </span>
+                            <span class="preview-text"> {{'Preview' | translate}} </span>
                         </button>
 
                         <!-- ---------------------------------------- -->
@@ -367,6 +367,16 @@
                         <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
                             <span>{{ 'KbPage.Status' | translate }}</span>
                         </th>
+
+                        <!-- ------------------------- -->
+                        <!-- Refresh rate -->
+                        <!-- ------------------------- -->
+                        <th class="column-th-span" style="width:1%; text-align:center; cursor: default;  white-space: nowrap;">
+                            <span>{{ 'KbPage.RefreshRate' | translate }}</span>
+                        </th>
+                        <!-- ------------------------------ -->
+                        <!-- Created at -->
+                        <!-- ------------------------------ -->
                         <th class="column-th-span" style="width:1%;white-space: nowrap;" (click)="onOrderBy('updatedAt')">
                             <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
                             <span style="margin: 0px;">{{'LastUpdated' | translate }}</span>
@@ -375,6 +385,7 @@
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
+
                         <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
                             <div>
                                 <span style="margin: 0px;">{{'Name' | translate }}</span>
@@ -463,6 +474,39 @@
                                 class="material-icons-outlined status-icon status-error">error</span>
                         </td>
 
+                        <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
+                            <span *ngIf="kb.type === 'url'"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100" 
+                                [matTooltipDisabled]="isAvailableRefreshRateFeature">
+                                
+                            
+                                <span *ngIf="kb.refresh_rate === 'never' ">
+                                    {{'Never' | translate}}
+                                </span>
+                                <span *ngIf="kb.refresh_rate === 'daily' ">
+                                    {{'Daily' | translate}}
+                                </span>
+
+                                <span *ngIf="kb.refresh_rate === 'weekly' ">
+                                    {{'Weekly' | translate}}
+                                </span>
+
+                                <span *ngIf="kb.refresh_rate === 'monthly' ">
+                                    {{'Monthly' | translate}}
+                                </span>
+
+                                <!-- isAvailableRefreshRateFeature  {{isAvailableRefreshRateFeature}} -->
+                            </span>
+                            <span *ngIf="kb.type !== 'url'">
+                                —
+                            </span>
+                        </td>
+
+
                         <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
                             {{ kb.updatedAt | amTimeAgo }}
                         </td>
@@ -484,7 +528,7 @@
 
                         <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
                             <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
-                                class="ellipsis-text" style="max-width: 100%; font-size: 16px;">
+                                class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
                                 {{ kb.name }}
                             </div>
 
