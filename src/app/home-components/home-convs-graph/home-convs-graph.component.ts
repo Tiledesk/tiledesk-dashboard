@@ -382,9 +382,9 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
       this.totalBot = botCounts.reduce((sum, val) => sum + val, 0);
       
       const higherCount = this.getMaxValueFromArrays(humanCounts, botCounts);
-  
-      this.percentageOfRequestsHandledByBots =  this.totalBot > 0 ? ((this.totalBot / (this.totalHuman + this.totalBot)) * 100).toFixed(1).replace('.', ',') : '0';
-  
+      // + this.totalBot
+      this.percentageOfRequestsHandledByBots =  this.totalBot > 0 ? ((this.totalBot / (this.totalHuman )) * 100).toFixed(2).replace('.', ',') : '0';
+      
      
        this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Human Total:', this.totalHuman);
        this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Bot Total:',  this.totalBot);

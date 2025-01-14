@@ -79,7 +79,13 @@
         <div class="conv-analytics-indicator-value-wpr">
           <h2 color="disabled" class="conv-analytics-indicator-value">
             <!-- {{totalHuman + totalBot | number:'1.0-0'}} -->
-            {{totalHuman | number:'1.0-0'}}
+              <span *ngIf="!agentIsAChatbot">
+                {{totalHuman | number:'1.0-0'}}
+              </span>
+              <span *ngIf="agentIsAChatbot">
+                {{totalBot | number:'1.0-0'}}
+              </span>
+           
           </h2>
         </div>
 

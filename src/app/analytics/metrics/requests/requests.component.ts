@@ -51,7 +51,7 @@ export class RequestsComponent implements OnInit {
   percentageOfRequestsHandledByBots: any;
   totalHuman: number;
   totalBot: number;
-
+  agentIsAChatbot: boolean = false;
   constructor(
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
@@ -302,11 +302,14 @@ export class RequestsComponent implements OnInit {
 
   getRequestByLastNDay(lastdays, depID, participantID, channelID) {
     this.logger.log("[ANALYTICS - CONVS] user has filter participantID");
-    let agentIsAChatbot = false
+    this.totalBot = 0;
+    this.totalHuman = 0;
+    this.agentIsAChatbot = false
+
     if (participantID.includes("bot")) {
       this.logger.log("[ANALYTICS - CONVS] Selected Agent is a BOT");
       // try to change chart's colors
-      agentIsAChatbot = true
+      this.agentIsAChatbot = true
     }
     this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: For Agent/Bot")
     this.subscription = this.analyticsService.requestsByDay(lastdays, depID, participantID, channelID).subscribe((requestsByDay: any) => {
@@ -363,15 +366,24 @@ export class RequestsComponent implements OnInit {
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 
-      if (agentIsAChatbot) {
+      if (this.agentIsAChatbot) {
         this.totalBot = _requestsByDay_series_array.reduce((sum, val) => sum + val, 0);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - totalBot 1', this.totalBot);
         this.totalHuman = 0
-        this.percentageOfRequestsHandledByBots = 100
+        if (this.totalBot > 0) {
+          this.percentageOfRequestsHandledByBots = 100
+        } else {
+          this.percentageOfRequestsHandledByBots = 0
+        }
+        
       } else {
         this.totalHuman = _requestsByDay_series_array.reduce((sum, val) => sum + val, 0);
+        this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - totalHuman 1', this.totalBot);
         this.totalBot = 0
         this.percentageOfRequestsHandledByBots = 0
       }
+
+      // this.percentageOfRequestsHandledByBots = this.totalBot > 0 ? ((this.totalBot / (this.totalHuman)) * 100).toFixed(1).replace('.', ',') : '0';
 
 
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - _requestsByDay_series_array', _requestsByDay_series_array);
@@ -551,6 +563,11 @@ export class RequestsComponent implements OnInit {
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDayMerge(lastdays, depID, channelID) {
 
+    this.logger.log("[ANALYTICS - CONVS] user NOT has filter participantID");
+    this.totalBot = 0;
+    this.totalHuman = 0;
+    this.agentIsAChatbot = false
+
     this.logger.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged lastdays", lastdays)
     this.subscription = this.analyticsService.requestsByDay(lastdays, depID, '', channelID).subscribe((requestsByDay: any) => {
       this.logger.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
@@ -641,7 +658,9 @@ export class RequestsComponent implements OnInit {
 
         this.totalHuman = humanCounts.reduce((sum, val) => sum + val, 0);
         this.totalBot = botCounts.reduce((sum, val) => sum + val, 0);
-        this.percentageOfRequestsHandledByBots = this.totalBot > 0 ? ((this.totalBot / (this.totalHuman + this.totalBot)) * 100).toFixed(1).replace('.', ',') : '0';
+        // + this.totalBot
+        this.percentageOfRequestsHandledByBots = this.totalBot > 0 ? ((this.totalBot / (this.totalHuman )) * 100).toFixed(2).replace('.', ',') : '0';
+       
 
         this.logger.log('[ANALYTICS - CONVS] - totalHuman ', this.totalHuman);
         this.logger.log('[ANALYTICS - CONVS] - totalBot ', this.totalBot);
