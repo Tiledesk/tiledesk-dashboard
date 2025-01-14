@@ -612,6 +612,7 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "GoToHome": "Go to Home",
     "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
     "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
@@ -1128,7 +1129,7 @@
         "DialogflowQuickTips_7": "Якщо вам потрібен докладний посібник зі створення файлу облікових даних, будь ласка",
         "TheBotIsAssociatedWithTheDepartment": "Бот пов'язаний з відділом",
         "TheBotIsAssociatedWithDepartments": "Бот пов'язаний з відділами",
-        "DisassociateTheBot": "Перед видаленням від’єднайте бота від маршрутизації або відділів."
+        "DisassociateTheBot": "Disassociate the bot from Routing and Departments before deleting it."
     },
     "BotsAddEditPage": {
         "AddBot": "Додати бота",
@@ -1178,7 +1179,7 @@
         "ImportCsvFile": "Імпортувати файл CSV",
         "ColumnsSeparatedWith": "Стовпці, розділені:",
         "DelimiterOptionMustBe": "Параметр роздільника має містити один символ",
-        "ChooseFile": "ВИБЕРІТЬ ФАЙЛ",
+        "ChooseFile": "Choose file",
         "UploadCsv": "Завантажте CSV",
         "Completed": "Завершено",
         "FaqsSuccessfullyUploaded": "Поширені запитання успішно завантажено",
@@ -1866,6 +1867,7 @@
         "AddContentsToUseTheKBPreview": "Add contents to use the Knowledge Base preview",
         "KBpreview": "Knowledge Base preview",
         "AddNewKbOrSelectExistingOne": "Add a new Knowledge Base or select an existing one",
+        "AddMoreContents": "Add more contents",
         "AddsURLSDescription": "Adds specific web pages or blog articles to your Knowledge Base",
         "AddsSitemapDescription": "Use your sitemap to fastly add the URLs you need",
         "AddsFAQsDescription": "Manually write your own specific Q&As or add multiple Q&As from .CSV file at once",
