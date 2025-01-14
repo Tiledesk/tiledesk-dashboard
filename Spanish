@@ -612,6 +612,7 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "GoToHome": "Go to Home",
     "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
     "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
@@ -1128,7 +1129,7 @@
         "DialogflowQuickTips_7": "Si necesita un tutorial detallado sobre cómo crear un archivo de credenciales por favor",
         "TheBotIsAssociatedWithTheDepartment": "El bot está asociado con el departamento",
         "TheBotIsAssociatedWithDepartments": "El bot está asociado con los departamentos",
-        "DisassociateTheBot": "Desasocie el bot de Enrutamiento o Departamentos antes de eliminarlo."
+        "DisassociateTheBot": "Disassociate the bot from Routing and Departments before deleting it."
     },
     "BotsAddEditPage": {
         "AddBot": "Añadir bot",
@@ -1178,7 +1179,7 @@
         "ImportCsvFile": "Importar archivo CSV",
         "ColumnsSeparatedWith": "Columnas separadas con:",
         "DelimiterOptionMustBe": "La opción de delimitador debe tener un carácter de largo",
-        "ChooseFile": "ARCHIVO DE CHOSE",
+        "ChooseFile": "Choose file",
         "UploadCsv": "Cargar CSV",
         "Completed": "Completado",
         "FaqsSuccessfullyUploaded": "FAQ subidos correctamente",
@@ -1866,6 +1867,7 @@
         "AddContentsToUseTheKBPreview": "Add contents to use the Knowledge Base preview",
         "KBpreview": "Knowledge Base preview",
         "AddNewKbOrSelectExistingOne": "Add a new Knowledge Base or select an existing one",
+        "AddMoreContents": "Add more contents",
         "AddsURLSDescription": "Adds specific web pages or blog articles to your Knowledge Base",
         "AddsSitemapDescription": "Use your sitemap to fastly add the URLs you need",
         "AddsFAQsDescription": "Manually write your own specific Q&As or add multiple Q&As from .CSV file at once",
