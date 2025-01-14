@@ -612,6 +612,7 @@
     "HideChatbotAttributesWidget": "Hide Chatbot Attributes widget",
     "EnablingThisOptionHidesChatbotAttributes": "Enabling this option hides the chatbot's attributes",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas": "Contact us to increase your monthly resources quotas",
+    "GoToHome": "Go to Home",
     "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
     "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
     "TYPE_GPT_MODEL": {
@@ -1128,7 +1129,7 @@
         "DialogflowQuickTips_7": "Егер сізге тіркелгі деректері файлын жасау туралы егжей-тегжейлі оқулық қажет болса",
         "TheBotIsAssociatedWithTheDepartment": "Бот бөліммен байланысты",
         "TheBotIsAssociatedWithDepartments": "Бот бөлімдермен байланысты",
-        "DisassociateTheBot": "Жою алдында ботты Маршруттаудан немесе Бөлімдерден ажыратыңыз."
+        "DisassociateTheBot": "Disassociate the bot from Routing and Departments before deleting it."
     },
     "BotsAddEditPage": {
         "AddBot": "Бот қосыңыз",
@@ -1178,7 +1179,7 @@
         "ImportCsvFile": "CSV файлын импорттау",
         "ColumnsSeparatedWith": "Бөлінген бағандар:",
         "DelimiterOptionMustBe": "Бөлгіш опция ұзындығы бір таңба болуы керек",
-        "ChooseFile": "ФАЙЛДЫ ТАҢДАУ",
+        "ChooseFile": "Choose file",
         "UploadCsv": "CSV жүктеп салу",
         "Completed": "Аяқталды",
         "FaqsSuccessfullyUploaded": "Жиі қойылатын сұрақтар сәтті жүктеп салынды",
@@ -1866,6 +1867,7 @@
         "AddContentsToUseTheKBPreview": "Add contents to use the Knowledge Base preview",
         "KBpreview": "Knowledge Base preview",
         "AddNewKbOrSelectExistingOne": "Add a new Knowledge Base or select an existing one",
+        "AddMoreContents": "Add more contents",
         "AddsURLSDescription": "Adds specific web pages or blog articles to your Knowledge Base",
         "AddsSitemapDescription": "Use your sitemap to fastly add the URLs you need",
         "AddsFAQsDescription": "Manually write your own specific Q&As or add multiple Q&As from .CSV file at once",
