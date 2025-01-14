@@ -839,7 +839,7 @@ export function containsXSS(jsonData) {
     const xssPatterns = [
         /<script.*?>.*?<\/script.*?>/gi,  // script tags
         // /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
-        /on[a-z]+=/gi,
+        // /on[a-z]+=/gi,
         /eval\s*\(.*?\)/gi,               // eval calls
         /javascript\s*:\s*.*/gi,          // javascript protocol
         /document\.cookie/gi,             // access to cookies
@@ -860,7 +860,7 @@ export function isMaliciousHTML(input) {
     // List of common XSS attack patterns
     const xssPatterns = [
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, // Script tags
-        /on\w+="[^"]*"/gi,                                    // Event handlers
+        // /on\w+="[^"]*"/gi,                                    // Event handlers
         /javascript:[^'"]*/gi,                               // JavaScript URLs
         /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, // Iframe tags
         /data:text\/html;base64,[A-Za-z0-9+/=]+/gi          // Base64 encoded scripts

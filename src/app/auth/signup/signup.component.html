@@ -420,8 +420,8 @@
 
             <div class="signup-subtitle" *ngIf="!appSumoActivationEmail">
               {{ "AlreadyHaveAnAccount" | translate }}
-              <span class="auth-link-button-signup" (click)="goToSigninPage()">
-                Login
+              <span class="auth-link-button-signin" (click)="goToSigninPage()">
+                {{ 'SignIn' | translate}}
               </span>
             </div>
 

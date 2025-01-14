@@ -541,6 +541,16 @@ input.secure {
   opacity: 1 !important;
 }
 
+.auth-link-button-signin {
+  text-transform: capitalize;
+  color: var(--blue-20);
+  cursor: pointer;
+}
+
+.auth-link-button-signin:hover { 
+  text-decoration: underline;
+}
+
 
 // @import "./src/assets/sass/md/_variables.scss";
 // /****** LOGIN ******/

@@ -91,7 +91,7 @@
           </svg> -->
         </div>
         <div class="signin-title">
-          <h2>
+          <h2 style="text-transform: capitalize;">
             {{ "SignIn" | translate}}
           
           </h2>
@@ -170,7 +170,8 @@
             <button type="submit" class="btn signin-button" [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
               <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- Login  -->
-                {{ 'Login' | translate}}
+                <!-- {{ 'Login' | translate}} -->
+                {{ 'SignIn' | translate}}
               </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>

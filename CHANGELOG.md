@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.59
+- Improves and fixes the conversations report in Analytics > Metrics > Conversations
+
+### 2.7.58
+- Minor improvements and bug fixing
+
 ### 2.7.57
 - Improves the Changelog notifications
 
