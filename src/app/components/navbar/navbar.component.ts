@@ -1178,12 +1178,31 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   goToPricingPlanFree() {
     // if (this.ROLE_IS_AGENT === false) {
-    if (this.USER_ROLE === 'owner') {
+    // if (this.USER_ROLE === 'owner') {
 
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
+    //   this.router.navigate(['project/' + this.projectId + '/pricing']);
+    // } else {
+
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    // }
+
+    if (this.isVisiblePay) {
+      if (this.USER_ROLE === 'owner') {
+       
+        if (this.prjct_profile_type === 'payment') {
+          // this.notify._displayContactUsModal(true, 'upgrade_plan');
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+        else {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
     } else {
-
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      // this.presentModalIncreaseMonltlResource()
     }
   }
 

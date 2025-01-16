@@ -512,7 +512,7 @@ li:before {
 .pricing-page-header-title-text {
   -webkit-box-flex: 1;
   flex-grow: 1;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
 }
 
 .pricing-page-header-period-switch-wpr {
@@ -562,7 +562,7 @@ li:before {
   font-weight: 500;
   cursor: pointer;
   background-color: rgb(255, 255, 255);
-  color: rgb(5, 102, 255);
+  color: var(--blue-20);
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
 }
 
@@ -613,9 +613,9 @@ li:before {
   font-weight: 500;
   cursor: pointer;
   background-color: rgb(255, 255, 255);
-  color: rgb(5, 102, 255);
+  color: var(--blue-20);
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
-  font-family: Poppins, Roboto, Arial, sans-serif;
+  font-family: var(--header-font-family);
 }
 
 .span-24 {
@@ -636,7 +636,7 @@ li:before {
   align-items: stretch;
   -webkit-box-pack: justify;
   justify-content: space-between;
-  border-radius: 8px;
+  border-radius: var(--card-border-radius);
   border: 2px solid rgb(239, 242, 246);
   gap: 40px;
 }
@@ -653,7 +653,7 @@ li:before {
   line-height: 31px;
   letter-spacing: -0.01em;
   color: rgb(8, 15, 26);
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
 }
 
 .span-8 {
@@ -835,7 +835,7 @@ li:before {
   text-transform: unset;
   font-weight: 400;
   box-shadow: unset;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
 }
 
 .btn-new {
@@ -910,5 +910,19 @@ li:before {
   font-weight: 400;
   /* text-align: center; */
   font-size: 16px;
-  font-family: Poppins, Roboto, Arial, sans-serif;
+  font-family: var(--header-font-family);
+}
+
+
+.trial-has-expired-date {
+  margin-bottom: 18px;
+  margin-top: -28px;
+  padding: 12px 20px;
+  background-color: rgb(255, 204, 207);
+  color: rgb(183, 57, 74);
+  width: 100%;
+  text-align: center;
+  border-radius: var(--card-border-radius);
+  font-weight: 400;
+  font-family: var(--header-font-family);
 }

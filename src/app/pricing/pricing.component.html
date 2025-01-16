@@ -62,6 +62,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
             </div>
             <div class="css-sjtw19 eg3bate2 plan-switch-wpr">
+
+            <!-- <div class="trial-has-expired-date-wpr" *ngIf="trialHasExpired">  -->
+              <div class="trial-has-expired-date" *ngIf="trialHasExpired"> 
+                {{ 'TrialExpirationDate' | translate: {expiration_date: trialExpirationDate} }}
+              </div>
+            <!-- </div> -->
+
               <div class="css-rx6g2d eg3bate1 plan-switch-btns-wpr">
                 <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.D}"
                   (click)="selected_Plan(PLAN_NAME.D)">

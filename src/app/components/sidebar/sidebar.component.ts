@@ -272,7 +272,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   areVisibleChatbot: boolean;
   isVisibleKNB: boolean;
   ARE_NEW_KB: boolean;
-  kbNameSpaceid : string = '';
+  kbNameSpaceid: string = '';
   currentProjectUser: any;
   isVisibleSupportMenu: boolean;
   company_brand_color: string
@@ -345,7 +345,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // this.getProjectPlan()
     this.getBaseUrlAndThenProjectPlan();
     this.listenToKbVersion()
-   
+
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
   }
 
@@ -356,7 +356,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (this.company_brand_color) {
       // this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
     }
-   }
+  }
 
 
   // ngAfterContentInit(): void { 
@@ -408,7 +408,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         if (kbnValue === 'T') {
           this.getProjectPlan()
-        
+
         } else if (kbnValue === 'F') {
           this.isVisibleKNB = false;
         }
@@ -519,10 +519,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     } else if (projectProfileData['customization'] === undefined) {
       this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility USECASE C customization is  ', projectProfileData['customization'], 'get value from FT')
       // if (this.public_Key.includes("KNB")) {
-        // this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+      // this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
 
-        this.isVisibleKNB = this.getKnbValue()
-        this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+      this.isVisibleKNB = this.getKnbValue()
+      this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
 
     }
   }
@@ -725,7 +725,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    // this.logger.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
+    console.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
 
@@ -908,7 +908,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
+
 
 
   getCurrentRoute() {
@@ -1257,7 +1257,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - EDIT_PROJECT_USER_ROUTE_IS_ACTIVE ', this.EDIT_PROJECT_USER_ROUTE_IS_ACTIVE);
         }
 
-       
+
         if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'wsrequests') {
           this.MONITOR_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
@@ -1283,7 +1283,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
         }
 
-        
+
 
 
 
@@ -1329,7 +1329,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TRANSLATIONS_ROUTE_IS_ACTIVE ', this.TRANSLATIONS_ROUTE_IS_ACTIVE);
         }
 
-        
+
 
         if (event.url.indexOf('/installation') !== -1) {
           this.INSTALLATION_ROUTE_IS_ACTIVE = true;
@@ -1775,10 +1775,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // FOR KB
         const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
         this.logger.log('[BOTS-SIDEBAR] storedNamespace', storedNamespace);
-        if(storedNamespace) {
+        if (storedNamespace) {
           let storedNamespaceObjct = JSON.parse(storedNamespace)
           this.logger.log('[BOTS-SIDEBAR] storedNamespaceObjct', storedNamespaceObjct);
-          this.kbNameSpaceid= storedNamespaceObjct.id
+          this.kbNameSpaceid = storedNamespaceObjct.id
         }
 
         this.projectId = this.project._id
@@ -1788,11 +1788,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] getProjects projects ', projects)
           if (projects) {
             this.currentProjectUser = projects.find(prj => prj.id_project.id === this.projectId);
-            this.logger.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+            console.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+
           }
         });
-
-
         this.getProjectUserRole();
 
         this.getProjectUser();
@@ -1801,6 +1800,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+
 
 
   getKnowledgeBaseSettings() {
@@ -2135,7 +2136,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.displayLogoutModal = 'none';
   }
 
-  
+
 
   removeChatBtnFocus() {
     this.notify.publishHasClickedChat(true);
@@ -2174,7 +2175,50 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // } else {
     //     this.openWindow('Tiledesk - Open Source Live Chat', url);
     // }
+    // this.redirectToPricing(this.currentProjectUser)
   }
+
+  redirectToPricing(projectUser) {
+    const role = projectUser.role;
+    const project = projectUser.id_project;
+
+    const projectCreationDate = new Date(project.createdAt);
+    const dateLimit = new Date('2025-01-16T00:00:00');
+    // const dateLimit = new Date('2022-07-04T00:00:00') // for test purpose
+
+    console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectUser ', projectUser)
+    console.log('[APP-COMPONENT] REDIRECT TO PRICING - project ', project)
+    console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate ', projectCreationDate)
+    console.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
+    console.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
+    console.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
+
+    if (projectCreationDate >= dateLimit) {
+      console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
+      if (project) {
+        if (project.profile.type === 'free' && project.trialExpired === true) {
+          if (role === 'owner') {
+            this.router.navigate(['project/' + project._id + '/pricing/te']);
+          } else {
+            this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
+          }
+        } else {
+          this.goToChat()
+        }
+      }
+
+    } else {
+      console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
+      this.goToChat()
+    }
+  }
+
+  goToChat() {
+    const url = this.CHAT_BASE_URL;
+    window.open(url, '_self');
+  }
+
+
 
   @HostListener('document:mousedown', ['$event'])
   onMouseDown(event) {

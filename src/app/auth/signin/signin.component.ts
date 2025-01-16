@@ -105,7 +105,7 @@ export class SigninComponent implements OnInit {
 
   getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    this.logger.log('[SIGN-IN] storedRoute ', this.storedRoute)
+    console.log('[SIGN-IN] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {

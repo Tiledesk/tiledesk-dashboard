@@ -14,7 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
 import {  additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPlanEE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanEE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanEE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
-
+import moment from "moment";
 declare var Stripe: any;
 
 
@@ -62,6 +62,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   planName: string;
   planDecription: string;
   profileType: string;
+  trialExpired: boolean;
   planFeatures: Array<string>;
   additionalFeatures: Array<any>;
   annualPrice: string;
@@ -151,6 +152,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   learnMoreAboutDefaultRoles: string;
   salesEmail: string;
 
+  trialHasExpired: boolean;
+  trialExpirationDate: string
 
   constructor(
     public location: Location,
@@ -190,12 +193,12 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    // this.auth.checkRoleForCurrentProjectAndRedirectAdminAndAgent(); // redirect admin and ahent -- only owner has access to payment
+    // this.auth.checkRoleForCurrentProjectAndRedirectAdminAndAgent(); // redirect admin and agent -- only owner has access to payment
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
     this.getBaseUrl()
     // this.getAllUsersOfCurrentProject();
-    this.getNoOfProjectUsersAndPendingInvitations();
+    // this.getNoOfProjectUsersAndPendingInvitations();
     this.getProjectPlan();
     this.setPlansPKandCode();
     this.setpaymentLinks()
@@ -220,11 +223,20 @@ export class PricingComponent implements OnInit, OnDestroy {
     var n = current_url.lastIndexOf('/');
     var valueAfterLastString = current_url.substring(n + 1);
     // console.log('[PRICING] valueAfterLastString ', valueAfterLastString)
-    if (valueAfterLastString === 'pricing') {
-      this.displayClosePricingPageBtn = true;
-    } else {
+    // if (valueAfterLastString === 'pricing') {
+    if (valueAfterLastString === 'chat-pricing') {  
       this.displayClosePricingPageBtn = false;
+    } else {
+      this.displayClosePricingPageBtn = true;
     }
+
+    if (valueAfterLastString === 'te') {
+      this.trialHasExpired = true;
+    } else {
+      this.trialHasExpired = false;
+    }
+
+    console.log('[PRICING] trialHasExpired ', this.trialHasExpired )
 
   }
 
@@ -715,7 +727,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.logger.log('[PRICING] GET ROUTE-PARAMS & APPID - APP ID: ', appID);
 
     this.route.queryParams.subscribe((params) => {
-      this.logger.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
+     console.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.nk) {
         this.logger.log('[PRICING] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.nk)
         // if (params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
@@ -760,16 +772,26 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      console.log('[PRICING] - getProjectPlan - trialHasExpired ', this.trialHasExpired)
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
         this.projectCurrenPlan = projectProfileData.profile_name
         this.profileType = projectProfileData.profile_type
+        this.trialExpired = projectProfileData.trial_expired
 
-        // console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
-        // console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
-        // console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
+        console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
+        console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
+        console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
+        console.log('[PRICING]  - getProjectPlan > trialExpired ', this.trialExpired)
+
+
+        if (this.profileType === 'free'  &&  this.trialExpired === true) {
+          
+          this.trialExpirationDate = moment(projectProfileData.createdAt).add(14, 'days').format('LL');;
+          console.log('[PRICING] - trialExpirationDate' , this.trialExpirationDate); // Outputs the new date as an ISO string
+        }
       }
     }, error => {
 
@@ -905,7 +927,13 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   goBack() {
-    this.location.back();
+    if (this.trialHasExpired) {
+      // this.auth.signOut('pricing');
+      this.router.navigate(['/projects']);
+    } else {
+      this.location.back();
+    }
+
   }
 
 

@@ -151,6 +151,7 @@ import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { RoleGuard } from './core/role.guard';
+import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
@@ -247,6 +248,15 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: [{ roles: ['owner'] }]
   },
+
+  // Pricing  trial expired
+  {
+    path: 'project/:projectid/pricing/te',
+    loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner'] }]
+  },
+
   // { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] }, // now Lazy
   {
     path: 'project/:projectid/chat-pricing',
@@ -1167,7 +1177,8 @@ const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
   { path: 'project/:projectid/unauthorized_access', component: UnauthorizedForProjectComponent },
-
+  { path: 'project/:projectid/unauthorized-to-upgrade', component: UnauthorizedToUpgradeComponent },
+  
 
 
 

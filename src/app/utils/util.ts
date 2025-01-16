@@ -596,6 +596,8 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     }
 }
 
+
+
 export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 

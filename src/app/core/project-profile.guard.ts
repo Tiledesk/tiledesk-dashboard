@@ -60,10 +60,10 @@ export class ProjectProfileGuard implements CanActivate {
     const isActiveSubscription = project['isActiveSubscription'];
     const trialExpired = project['trialExpired'];
 
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * type * ', type);
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * planName * ', planName);
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
-    // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
+   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * type * ', type);
+   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * planName * ', planName);
+   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
+   console.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
 
 
     if (type === 'free') {

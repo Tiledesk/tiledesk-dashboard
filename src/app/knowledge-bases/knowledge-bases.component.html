@@ -393,15 +393,15 @@
                 <!-- --------------------------------------- -->
                 <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                   <!-- This namespace is not used by any chatbot -->
-                  {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
+                  {{ 'KbPage.ThisKBisReadyToUse' | translate }}
 
                   <!-- esportingKBChatBotTemplate >  {{ esportingKBChatBotTemplate}} -->
                   <button class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
                     
                     <span *ngIf="!esportingKBChatBotTemplate">
-                      <!-- Create chatbot  -->
-                      <!-- {{ 'CreateChatbot' | translate }} -->
-                      {{ 'CreateYuorAIAgent' | translate }}
+                   
+                      <!-- {{ 'CreateYuorAIAgent' | translate }} -->
+                      {{ 'CreateYourAIAgentWithOneClick' | translate }}
                     </span>
                     <span *ngIf="esportingKBChatBotTemplate">
                       {{ 'Processing' | translate }}

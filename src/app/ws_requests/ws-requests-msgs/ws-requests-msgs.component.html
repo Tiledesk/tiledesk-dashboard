@@ -2616,11 +2616,21 @@
                       <div class="ng-select-tags-wpr" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }">
 
                         <ng-select style="margin-right: 13px;" class="convs-tags" id="select-tag" #ngSelect
-                          (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id" [clearable]="false"
-                          [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="{{ typeALabelAndPressEnter}}"
-                          [(ngModel)]="tag" addTagText="Create New" [addTag]="createNewTag"
-                          (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag"
-                          [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
+                          (change)="addTag()" 
+                          [items]="tagsList" 
+                          bindLabel="tag" 
+                          bindValue="_id" 
+                          [clearable]="false"
+                          [clearSearchOnAdd]="true" 
+                          [hideSelected]="true" 
+                          placeholder="{{ typeALabelAndPressEnter}}"
+                          [(ngModel)]="tag" 
+                          addTagText="Create New" 
+                          [addTag]="createNewTag"
+                          (keyup.enter)="ngSelect.close()" 
+                          notFoundText="No tags found. Type to create a tag"
+                          [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true"
+                          [ngClass]="{'conversation-tag-panel-mode': CHAT_PANEL_MODE === true }">
 
                           <ng-template ng-label-tmp let-item="item">
                             <i [style.color]="item.color" class="fa fa-tag"
