@@ -592,6 +592,7 @@
     "ManageYourContents": "Мазмұныңызды басқарыңыз",
     "CreateChatbot": "Чат-бот жасау",
     "CreateYuorAIAgent": "AI агентіңізді жасаңыз",
+    "CreateYourAIAgentWithOneClick": "Бір рет басу арқылы AI агентін жасаңыз",
     "ChooseNameForYourAIAgent":"AI агенті үшін атау таңдаңыз",
     "MyAIAgentName": "Менің AI агент атым",
     "ChatbotName": "Чатбот атауы",
@@ -615,6 +616,7 @@
     "GoToHome":"Үйге өтіңіз",
     "ConversationsInTheLastDays": "Соңғы {{range_count}} күндегі сөйлесулер",
     "ConversationsInTheLastMonths": "Соңғы {{range_count}} айдағы әңгімелер",
+    "TrialExpirationDate": "Есептік жазбаңыздың сынақ мерзімі {{expiration_date}} күні аяқталды",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1845,6 +1847,7 @@
         "UploadFile": "Файлды жүктеп салу",
         "AiQuotaExceeded": "Ой! Токен квотасы асып кетті. Жобаңызды жаңартыңыз",
         "ThisKBisNotUsedByAnyChatbot": "Бұл білім қорын кез келген чат-бот пайдаланбайды",
+        "ThisKBisReadyToUse":"Бұл білім қоры пайдалануға дайын",
         "NoOverrides": "Қайта анықтау жоқ",
         "ResetOverrides": "{{override_count }} қайта анықтауды бастапқы күйге қайтарыңыз",
         "ResetToDefault": "Әдепкіге қайта орнату",

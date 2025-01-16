@@ -592,6 +592,7 @@
     "ManageYourContents": "Manage your Contents",
     "CreateChatbot":"Create chatbot",
     "CreateYuorAIAgent": "Create your AI Agent",
+    "CreateYourAIAgentWithOneClick": "Create your AI Agent with one click",
     "ChooseNameForYourAIAgent":"Choose a name for your AI Agent",
     "MyAIAgentName": "My AI agent name",
     "ChatbotName":"Chatbot name",
@@ -615,6 +616,7 @@
     "GoToHome":"Go to Home",
     "ConversationsInTheLastDays": "Conversations in the last {{range_count}} days",
     "ConversationsInTheLastMonths": "Conversations in the last {{range_count}} months",
+    "TrialExpirationDate": "Your account trial period ended on {{expiration_date}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1844,6 +1846,7 @@
         "UploadFile": "Upload file",
         "AiQuotaExceeded":"Oops! Token quota exceeed. Please upgrade your project",
         "ThisKBisNotUsedByAnyChatbot":"This Knowledge Base is not used by any chatbot",
+        "ThisKBisReadyToUse":"This Knowledge Base is ready to use",
         "NoOverrides": "No overrides",
         "ResetOverrides": "Reset {{override_count }} overrides",
         "ResetToDefault": "Reset to default",

@@ -592,6 +592,7 @@
     "ManageYourContents": "إدارة المحتوى الخاص بك",
     "CreateChatbot": "إنشاء روبوت الدردشة",
     "CreateYuorAIAgent": "قم بإنشاء وكيل AI الخاص بك",
+    "CreateYourAIAgentWithOneClick": "قم بإنشاء وكيل الذكاء الاصطناعي الخاص بك بنقرة واحدة",
     "ChooseNameForYourAIAgent":"اختر اسمًا لوكيل AI الخاص بك",
     "MyAIAgentName": "اسم وكيل AI الخاص بي",
     "ChatbotName": "اسم الشات بوت",
@@ -615,6 +616,7 @@
     "GoToHome":"انتقل إلى الصفحة الرئيسية",
     "ConversationsInTheLastDays": "المحادثات في آخر {{range_count}} يومًا",
     "ConversationsInTheLastMonths": "المحادثات في آخر {{range_count}} شهرًا",
+    "TrialExpirationDate": "انتهت فترة التجربة لحسابك في {{expiration_date}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1846,6 +1848,7 @@
         "UploadFile": "رفع الملف",
         "AiQuotaExceeded": "أُووبس! تم تجاوز حصة الرمز المميز. يرجى ترقية المشروع الخاص بك",
         "ThisKBisNotUsedByAnyChatbot": "لا يتم استخدام قاعدة المعرفة هذه بواسطة أي برنامج chatbot",
+        "ThisKBisReadyToUse":"قاعدة المعرفة هذه جاهزة للاستخدام",
         "NoOverrides": "لا تجاوزات",
         "ResetOverrides": "إعادة ضبط التجاوزات {{override_count }}.",
         "ResetToDefault": "إعادة تعيين إلى الافتراضي",

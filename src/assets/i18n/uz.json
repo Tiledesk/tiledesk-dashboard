@@ -593,6 +593,7 @@
     "ManageYourContents": "Tarkibingizni Boshqaring",
     "CreateChatbot": "Chatbot yaratish",
     "CreateYuorAIAgent": "AI agentingizni yarating",
+    "CreateYourAIAgentWithOneClick": "Bir marta bosish bilan AI agentingizni yarating",
     "ChooseNameForYourAIAgent":"AI agentingiz uchun nom tanlang",
     "MyAIAgentName": "Mening AI agentim nomi",
     "ChatbotName":"Chatbot nomi",
@@ -616,6 +617,7 @@
     "GoToHome":"Bosh sahifaga o'ting",
     "ConversationsInTheLastDays": "Oxirgi {{range_count}} kundagi suhbatlar",
     "ConversationsInTheLastMonths": "Oxirgi {{range_count}} oydagi suhbatlar",
+    "TrialExpirationDate": "Hisobingizning sinov muddati {{expiration_date}} da tugadi",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1845,6 +1847,7 @@
         "UploadFile": "Faylni yuklash",
         "AiQuotaExceeded":"Voy! Token kvotasi oshib ketdi. Iltimos, loyihangizni yangilang",
         "ThisKBisNotUsedByAnyChatbot":"Ushbu ma'lumotlar bazasi hech qanday chatbot tomonidan ishlatilmaydi",
+        "ThisKBisReadyToUse":"Ushbu bilimlar bazasi foydalanishga tayyor",
         "NoOverrides": "Qayta yozish yo'q",
         "ResetOverrides": "{{override_count }} ta bekor qilishni asliga qaytaring",
         "ResetToDefault": "Standart holatga qaytarish",

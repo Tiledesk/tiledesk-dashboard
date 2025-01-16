@@ -594,6 +594,7 @@
     "ManageYourContents": "Управляйте своим Содержимым",
     "CreateChatbot": "Креирајте цхатбот",
     "CreateYuorAIAgent": "Креирајте свог АИ агента",
+    "CreateYourAIAgentWithOneClick": "Креирајте свог АИ агента једним кликом",
     "ChooseNameForYourAIAgent":"Изаберите име за свог АИ агента",
     "MyAIAgentName": "Име мог АИ агента",
     "ChatbotName":"Име цхат бота",
@@ -617,6 +618,7 @@
     "GoToHome":"Иди на Дом",
     "ConversationsInTheLastDays": "Конверзације у последњих {{range_count}} дана",
     "ConversationsInTheLastMonths": "Конверзације у последњих {{range_count}} месеци",
+    "TrialExpirationDate": "Пробни период вашег налога је истекао {{expiration_date}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1847,6 +1849,7 @@
         "UploadFile": "Уплоад филе",
         "AiQuotaExceeded":"Упс! Премашена је квота токена. Молимо надоградите свој пројекат",
         "ThisKBisNotUsedByAnyChatbot":"Ову базу знања не користи ниједан цхат бот",
+        "ThisKBisReadyToUse":"Ова база знања је спремна за употребу",
         "NoOverrides": "Нема преписивања",
         "ResetOverrides": "Ресетујте замене {{override_count }}",
         "ResetToDefault": "Ресетујте на подразумеване вредности",

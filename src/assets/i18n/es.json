@@ -592,6 +592,7 @@
     "ManageYourContents": "Gestiona tus Contenidos",
     "CreateChatbot": "Crear chatbot",
     "CreateYuorAIAgent": "Crea tu agente de IA",
+    "CreateYourAIAgentWithOneClick": "Crea tu agente de IA con un solo clic",
     "ChooseNameForYourAIAgent":"Elige un nombre para tu agente de IA",
     "MyAIAgentName": "Mi nombre de agente AI",
     "ChatbotName": "Nombre del chatbot",
@@ -615,6 +616,7 @@
     "GoToHome":"Ir a Inicio",
     "ConversationsInTheLastDays": "Conversaciones en los últimos {{range_count}} días",
     "ConversationsInTheLastMonths": "Conversaciones en los últimos {{range_count}} meses",
+    "TrialExpirationDate": "El período de prueba de su cuenta finalizó el {{expiration_date}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1845,6 +1847,7 @@
         "UploadFile": "Datei hochladen",
         "AiQuotaExceeded": "¡Ups! Se superó la cuota de tokens. Por favor actualiza tu proyecto",
         "ThisKBisNotUsedByAnyChatbot": "Esta base de conocimientos no es utilizada por ningún chatbot.",
+        "ThisKBisReadyToUse":"Esta base de conocimientos está lista para usarse",
         "NoOverrides": "Sin sobrescritura",
         "ResetOverrides": "Reiniciar {{override_count }} anulaciones",
         "ResetToDefault": "Restablecen a los predeterminados",

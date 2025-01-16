@@ -595,6 +595,7 @@
     "ManageYourContents": "İçeriğinizi Yönetin",
     "CreateChatbot": "Sohbet robotu oluştur",
     "CreateYuorAIAgent": "AI Temsilcinizi oluşturun",
+    "CreateYourAIAgentWithOneClick": "Tek tıklamayla AI Agent'ınızı oluşturun",
     "ChooseNameForYourAIAgent":"AI Agent'ınız için bir isim seçin",
     "MyAIAgentName": "AI ajanımın adı",
     "ChatbotName":"Sohbet robotu adı",
@@ -618,6 +619,7 @@
     "GoToHome":"Ana Sayfaya Git",
     "ConversationsInTheLastDays": "Son {{range_count}} gündeki konuşmalar",
     "ConversationsInTheLastMonths": "Son {{range_count}} aydaki konuşmalar",
+    "TrialExpirationDate": "Hesabınızın deneme süresi {{expiration_date}} tarihinde sona erdi",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1847,6 +1849,7 @@
         "UploadFile": "Dosya yükle",
         "AiQuotaExceeded":"Hata! Jeton kotası aşıldı. Lütfen projenizi yükseltin",
         "ThisKBisNotUsedByAnyChatbot":"Bu bilgi tabanı herhangi bir chatbot tarafından kullanılmaz",
+        "ThisKBisReadyToUse":"Bu Bilgi Tabanı kullanıma hazır",
         "NoOverrides": "Geçersiz kılma yok",
         "ResetOverrides": "{{override_count }} geçersiz kılmayı sıfırla",
         "ResetToDefault": "Varsayılana sıfırla",
