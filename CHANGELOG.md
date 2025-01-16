@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.61-rc1
+- Redirect to pricing page if trial has expired
+
 ### 2.7.60
 - Improves the UI
 - Bug fixing
