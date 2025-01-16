@@ -49,6 +49,18 @@ export class ModalSiteMapComponent implements OnInit {
   unwanted_tags = [];
   unwanted_classnames = [];
 
+  refresh_rate: Array<any> = [ 
+    { name: "Never", value: 'never' },
+    { name: "Daily", value: 'daily' },
+    { name: "Weekly", value: 'weekly' },
+    { name: "Monthly", value: 'monthly'}
+  ]
+
+  // selectedRefreshRate = 0;
+  selectedRefreshRate: any;
+  isAvailableRefreshRateFeature: boolean;
+  t_params: any;
+
   kb: KB = {
     _id: null,
     type: '',
@@ -62,7 +74,16 @@ export class ModalSiteMapComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder,
     private logger: LoggerService
-  ) { }
+  ) { 
+    this.selectedRefreshRate = this.refresh_rate[0].value;
+    this.logger.log("[MODALS-SITEMAP] data: ", data);
+    if (data ) {
+      this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
+      this.t_params = data.t_params
+      this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
+      this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+    }
+  }
 
   ngOnInit(): void {
     this.kbForm = this.createConditionGroup();
@@ -141,6 +162,12 @@ export class ModalSiteMapComponent implements OnInit {
     this.countSitemap = this.listSitesOfSitemap.length;
   }
 
+
+  goToPricing() {
+    let body: any = { upgrade_plan: true}
+    this.dialogRef.close(body);
+  }
+
   onCloseBaseModal() {
     this.listSitesOfSitemap = [];
     this.listOfUrls = "";
@@ -164,6 +191,10 @@ export class ModalSiteMapComponent implements OnInit {
 
   }
 
+  onSelectRefreshRate(refreshRateSelected) {
+    this.logger.log("[MODALS-SITEMAP] onSelectRefreshRate: ", refreshRateSelected);
+  }
+
   onSaveKnowledgeBase(){
     if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
       this.errorLimit = true;
@@ -175,6 +206,7 @@ export class ModalSiteMapComponent implements OnInit {
       let body = {
         'list': arrayURLS,
         scrape_type: this.selectedScrapeType,
+        refresh_rate: this.selectedRefreshRate
       }
 
       if (this.selectedScrapeType === 4) {

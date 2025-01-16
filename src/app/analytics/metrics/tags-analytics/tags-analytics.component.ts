@@ -91,11 +91,11 @@ export class TagsAnalyticsComponent implements OnInit {
 
   getUserChartTypePreference(currentUserId: string) {
     let storedChartTypeUserPreference = localStorage.getItem(`chartStackedColumns-${currentUserId}`)
-    this.logger.log('[TAG-ANALYTICS] STORED CHART TYPE PREFERENCE', storedChartTypeUserPreference)
+    console.log('[TAG-ANALYTICS] STORED CHART TYPE PREFERENCE', storedChartTypeUserPreference)
     if (!storedChartTypeUserPreference) {
       this.chartStackedColumns = true;
       this.chartBasicColumns = false;
-      this.logger.log('[TAG-ANALYTICS] NO STORED CHART TYPE PREFERENCE chartStackedColumns', this.chartStackedColumns, 'chartBasicColumns ', this.chartBasicColumns)
+      console.log('[TAG-ANALYTICS] NO STORED CHART TYPE PREFERENCE chartStackedColumns', this.chartStackedColumns, 'chartBasicColumns ', this.chartBasicColumns)
     } else {
       if (storedChartTypeUserPreference === 'false') {
         this.chartStackedColumns = false;

@@ -450,7 +450,7 @@
 
                           <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
 
-                            <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn" style=""
+                            <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
                               (click)="sendChatMessage()"
                               [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
                               <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
@@ -2553,8 +2553,7 @@
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-                              <i class="material-icons"
-                                style="">
+                              <i class="material-icons">
                                 help_outline
                               </i>
                             </span>
