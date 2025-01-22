@@ -482,19 +482,30 @@
                       <label class="checkbox--label">
                         <input type="checkbox" [(ngModel)]="_preflight" class="form-check-input" id="exampleCheck1"
                           (change)="onChangePreflight($event)">
-                        <div class="checkbox--label-text">
-                          <!-- Include Chatbot only converations -->
-                          {{'IncludeChatbotsOnlyConversations' | translate}}
-                          <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
-                            matTooltipClass="mat-white-tooltip"
-                            matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='below' 
-                            matTooltipHideDelay="100">
-                            help
-                          </span> -->
-                        </div>
+                          <div class="checkbox--label-text">
+                            <!-- Include Chatbot only converations -->
+                            {{'IncludeChatbotsOnlyConversations' | translate}}
+                            <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
+                              matTooltipClass="mat-white-tooltip"
+                              matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below' 
+                              matTooltipHideDelay="100">
+                              help
+                            </span> -->
+                          </div>
                       </label>
+                      
+                    </div>
+                    <div class="help-icon-wpr">
+                      <i  class="material-icons" 
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{'IncludeChatbotsOnlyConversationsDesc' | translate}}" 
+                        #tooltip="matTooltip"
+                        matTooltipPosition='below' 
+                        matTooltipHideDelay="100"> 
+                        help_outline 
+                      </i>
                     </div>
                   </div>
                 </div>
