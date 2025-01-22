@@ -3749,7 +3749,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       showCancelButton: true,
       confirmButtonText: this.translate.instant('Ok'),
       cancelButtonText: this.translate.instant('Cancel'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -3913,17 +3913,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   async presentSwalModalReassignConversationToBot(botid, botname, blocks) {
     this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - blocks 2', blocks);
     const { value: block } = await Swal.fire({
-      html: `${this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo')} ${botname} <label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>`,
+      html: this.CHAT_PANEL_MODE === true ? `<label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>` :  `${this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo')} ${botname} <label for="my-input"> ${this.translate.instant('SelectAblockThatWillAutomaticallyExecute')} </label>` ,
       title: this.translationMap.get('VisitorsPage.ReassignRequest'),
-      text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + botname,
+      // text: this.translationMap.get('VisitorsPage.TheRequestWillBeReassignedTo') + ' ' + botname, // if there is the html this is not diplayed
       // icon: "info",
       showCancelButton: true,
-
+      backdrop: this.CHAT_PANEL_MODE === true ? 'rgba(0,0,0,.1)' : 'rgba(0, 0, 0, 0.4)',
       // buttons: true,
       // dangerMode: false,
       confirmButtonText: this.translate.instant('Ok'),
       cancelButtonText: this.translationMap.get('Cancel'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
       customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
