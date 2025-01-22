@@ -20,6 +20,12 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
   trialExpirationDate: string
   public_Key: string;
   isVisiblePAY: boolean;
+  CHAT_MODE:  boolean;
+  userRole: string;
+  dshbrdBaseUrl: string;
+  id_project: string;
+  salesEmail: string;
+
   constructor(
     private router: Router,
     public brandService: BrandService,
@@ -31,11 +37,17 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
     this.company_name = brand['BRAND_NAME'];
     // console.log('[ON-BOARDING-WELCOME company_name]' , this.company_name)
     this.companyNameParams = { 'BRAND_NAME': this.company_name }
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   ngOnInit(): void {
     this.getProjectPlan()
     this.getOSCODE();
+
+
+    this.CHAT_MODE = window.self !== window.top;
+    console.log('[UNAUTHORIZED-TO-UPGRADE] Is in iframe (CHAT_MODE) :', this.CHAT_MODE);
+   
   }
 
   getOSCODE() {
@@ -74,6 +86,9 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
       console.log('[UNAUTHORIZED-TO-UPGRADE] - getProjectPlan - project Profile Data ', projectProfileData)
 
       if (projectProfileData) {
+        this.userRole  = projectProfileData.user_role
+        this.id_project = projectProfileData._id;
+        console.log('[UNAUTHORIZED-TO-UPGRADE] - getProjectPlan - userRole ', this.userRole)
 
         if (projectProfileData.profile_type === 'free' && projectProfileData.trial_expired === true) {
 
@@ -98,6 +113,24 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
 
   goToYourProjects() {
     this.router.navigate(['/projects']);
+  }
+
+  goToPricingFromChat() {
+    if (this.isVisiblePAY) {
+     
+        const href = window.location.href;
+        this.logger.log('[UNAUTHORIZED-TO-UPGRADE] href ', href)
+
+        const hrefArray = href.split('/#/');
+        this.dshbrdBaseUrl = hrefArray[0]
+        const pricingUrl = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/pricing/te';
+        window.open(pricingUrl, '_blank');
+      
+    }
+  }
+
+  contactUs() {
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
   }
 
 }

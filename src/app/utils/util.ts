@@ -878,6 +878,9 @@ export function isMaliciousHTML(input) {
     return false; // No XSS detected
 }
 
+// Projects created after this date will no longer be able to use the free plan when the trial expires.
+export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
+
 
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'

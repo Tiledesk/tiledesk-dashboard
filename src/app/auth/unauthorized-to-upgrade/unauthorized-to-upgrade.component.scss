@@ -42,9 +42,11 @@
 
 .unauthorized-to-upgrade-logo-container {
     border-radius: 50%;
-    min-height: 82px;
-    min-width: 82px;
-    box-shadow: rgba(17, 49, 96, 0.16) 0px 8px 16px 0px, rgba(17, 49, 96, 0.06) 0px 0px 0px 1px;
+    // min-height: 82px;
+    // min-width: 82px;
+    min-height: 60px;
+    min-width: 60px;
+    // box-shadow: rgba(17, 49, 96, 0.16) 0px 8px 16px 0px, rgba(17, 49, 96, 0.06) 0px 0px 0px 1px;
     /* background-image: linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68)); */
     margin-bottom: 51px;
     margin-top: -80px;
@@ -53,10 +55,14 @@
 .unauthorized-to-upgrade-logo-svg-wpr {
     transition: opacity 0.15s ease 0s, background 0.15s ease 0s, color 0.15s ease 0s, transform 0.15s ease 0s;
     box-sizing: content-box;
-    width: 82px;
-    height: 82px;
+    // width: 82px;
+    // height: 82px;
+    width: 60px;
+    height: 60px;
     color: rgb(255, 255, 255);
-    background: transparent;
+    // background: transparent;
+    background: rgba(183, 57, 74, .2);
+    border-radius: 9999px;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -80,6 +86,11 @@
     text-align: center;
     margin-bottom: 16px;
     font-family: var(--header-font-family);
+    line-height: 1.5em;
+}
+
+.unauthorized-to-upgrade-title.panel-mode {
+    max-width: 260px;
 }
 
 .unauthorized-to-upgrade-subtitle {
@@ -90,6 +101,10 @@
     text-align: center;
     font-weight: 400;
     font-size: 16px;
+}
+
+.unauthorized-to-upgrade-subtitle.panel-mode {
+    max-width: 260px;
 }
 
 .unauthorized-to-upgrade-btn-wpr {
@@ -109,9 +124,10 @@
 
 .unauthorized-to-upgrade-go-to-project {
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--blue-20);
+    font-family: var(--header-font-family);
 }
 
 .unauthorized-to-upgrade-go-to-project:hover { 
