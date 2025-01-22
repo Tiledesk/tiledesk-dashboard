@@ -725,7 +725,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
-    console.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
+    this.logger.log('[SIDEBAR] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
 
@@ -1788,7 +1788,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] getProjects projects ', projects)
           if (projects) {
             this.currentProjectUser = projects.find(prj => prj.id_project.id === this.projectId);
-            console.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+            this.logger.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
 
           }
         });
