@@ -248,7 +248,7 @@
         <!--  *ngIf="!displayQuotaSkeleton"-->
         <!-- <div class="test">  -->
         <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
-          [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
+          [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut || voiceRunnedOut }">
 
           <!-- <div class="home-quota-banner-title-wpr">
 
@@ -344,8 +344,38 @@
                 </div>
               </div>
             </div>
+
+            <!-- -------------------------- -->
+            <!-- Voice -->
+            <!-- -------------------------- -->
+            <div *ngIf="diplayTwilioVoiceQuota || diplayVXMLVoiceQuota" class="home-quote-container" [ngClass]="{'home-quote-container-voice-runned-out': voiceRunnedOut}">
+
+              <div class="home-quote-title-count-wpr">
+                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                  {{'Voice' | translate}}
+                </p>
+                <div class="quote-count">{{voice_count_min_sec}} / {{voice_limit | number:'1.0-0'}}m</div>
+                <div class="quota-runned-out-msg" *ngIf="voiceRunnedOut">
+                  You run out of voice
+                </div>
+              </div>
+
+              <div class="quote">
+                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                  [mode]="'determinate'" [value]="voice_perc"
+                  [ngClass]="{'mat-progress-spinner-voice-runned-out': voiceRunnedOut}">
+                </mat-progress-spinner>
+
+                <div class="percentage" [ngClass]="{'percentage-voice-runned-out': voiceRunnedOut}">
+                  {{ voice_perc }}
+                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
+          <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut || voiceRunnedOut">
             <div class="home-quota-banner-icon">
               <svg xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
