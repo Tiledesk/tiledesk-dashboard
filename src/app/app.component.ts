@@ -492,7 +492,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 2', url)
                 console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 2 ', this.auth.user_bs.value)
-                if (!project && this.auth.user_bs.value) {
+                if (!project && this.auth.user_bs.value && !this.auth.hasChangedProject.value) {
                     const url_segments = url.split('/');
                     const nav_project_id = url_segments[2];
                     console.log('[APP-COMPONENT] -->> project from $ubscription 2 nav_project_id', nav_project_id)

@@ -66,6 +66,7 @@ export class AuthService {
   public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public botsSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  public hasChangedProject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
 
   show_ExpiredSessionPopup: boolean
 
@@ -883,7 +884,8 @@ export class AuthService {
   // }
 
   hasClickedGoToProjects() {
-    this.project_bs.next(null)
+    this.project_bs.next(null);
+    this.hasChangedProject.next(true)
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ', this.project_bs.next(null))
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
     // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
