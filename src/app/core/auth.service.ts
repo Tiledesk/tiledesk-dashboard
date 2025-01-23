@@ -884,8 +884,12 @@ export class AuthService {
   // }
 
   hasClickedGoToProjects() {
-    this.project_bs.next(null);
+    console.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT')
     this.hasChangedProject.next(true)
+    console.log('[AUTH-SERV] After Update:', this.hasChangedProject.value); // Debugging
+    this.project_bs.next(null);
+    
+    
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ', this.project_bs.next(null))
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
     // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
