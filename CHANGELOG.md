@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.61-rc2
+- Improves redirect handling for plans with expired trial
+- Adds a tooltip to the history page to explain the "Include chatbot-only conversations" checkbox
+- Display a message in the right bar of chat conversation details when the plan trial period has expired
+- Improves the "Reassign Conversation to chatbot" modal window displayed in chat
+
 ### 2.7.61-rc1
 - Redirect to pricing page if trial has expired
 
