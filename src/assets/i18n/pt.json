@@ -615,6 +615,10 @@
     "GoToHome":"Ir para a página inicial",
     "ConversationsInTheLastDays": "Conversas nos últimos {{range_count}} dias",
     "ConversationsInTheLastMonths": "Conversas nos últimos {{range_count}} meses",
+    "DisableAttachments": "Desativar anexos",
+    "WhenEnabledAttachments":"Quando ativado, os utilizadores podem enviar anexos. Quando desativado, o botão de anexo ficará oculto",
+    "DisableEmoji": "Desativar emoji",
+    "WhenEnabledEmoji": "Quando ativado, os utilizadores podem enviar emojis. Quando desativado, o botão emoji ficará oculto",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

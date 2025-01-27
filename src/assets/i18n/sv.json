@@ -617,6 +617,10 @@
     "GoToHome":"Gå till Hem",
     "ConversationsInTheLastDays": "Konversationer under de senaste {{range_count}} dagarna",
     "ConversationsInTheLastMonths": "Konversationer under de senaste {{range_count}} månaderna",
+    "DisableAttachments": "Inaktivera bilagor",
+    "WhenEnabledAttachments":"När det är aktiverat kan användare skicka bilagor. När den är inaktiverad döljs bilagaknappen",
+    "DisableEmoji": "Inaktivera emoji",
+    "WhenEnabledEmoji":"När det är aktiverat kan användare skicka emoji. När den är inaktiverad döljs emoji-knappen",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -616,6 +616,10 @@
     "GoToHome":"Перейти на главную",
     "ConversationsInTheLastDays": "Разговоры за последние {{range_count}} дней",
     "ConversationsInTheLastMonths": "Разговоры за последние {{range_count}} месяцев",
+    "DisableAttachments": "Отключить вложения",
+    "WhenEnabledAttachments":"При включении пользователи могут отправлять вложения. При отключении кнопка вложения будет скрыта",
+    "DisableEmoji": "Онемогући емоџи",
+    "WhenEnabledEmoji":"При включении пользователи могут отправлять эмодзи. При отключении кнопка эмодзи будет скрыта",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
