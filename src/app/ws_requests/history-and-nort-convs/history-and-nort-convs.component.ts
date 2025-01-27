@@ -32,6 +32,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -399,28 +400,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
 
-  }
-
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
-        }
-        if (user_role) {
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-
-          } else {
-            this.ROLE_IS_AGENT = false
-          }
-        }
-      });
   }
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
@@ -796,7 +775,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
 
     // if (this.requestList.length > 0) {
     //   this.requestList.forEach(request => {
@@ -1492,8 +1473,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               let newFillColour = '';
 
               if (request.lead && request.lead.fullname) {
+                this.logger.log('request.lead.fullname', request.lead.fullname)
+                this.logger.log('request.lead.fullname is a number', !isNaN(Number(request.lead.fullname)) )
                 newInitials = avatarPlaceholder(request.lead.fullname);
                 newFillColour = getColorBck(request.lead.fullname)
+                if (!isNaN(Number(request.lead.fullname))) {
+                  request['fullnameIsNumber'] = true
+                }
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';
@@ -1626,6 +1612,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
+  getProjectUserRole() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role
+          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
+          if (this.USER_ROLE === 'agent') {
+            this.ROLE_IS_AGENT = true
+          } else {
+            this.ROLE_IS_AGENT = false
+          }
+        }
+      });
+  }
 
 
   // requestWillBePermanentlyDeleted
@@ -2566,7 +2566,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -2991,12 +2992,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);

@@ -32,7 +32,7 @@ import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
-import { avatarPlaceholder, getColorBck } from './utils/util';
+import { avatarPlaceholder, freePlanLimitDate, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
 import { HttpClient } from '@angular/common/http';
@@ -114,8 +114,35 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                // this.logger.log('NavigationEnd event ', event)
+                console.log('[APP-COMPONENT] - NavigationEnd event ', event)
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
+
+                if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup' && event.urlAfterRedirects !== '/create-new-project') {
+                    console.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
+                    this.getCurrentProject(event.urlAfterRedirects)
+                }
+                
+                // if (this.router.url.indexOf('/request-for-panel') !== -1) { 
+                //    const CHAT_PANEL_MODE = true
+                //     console.log('[APP-COMPONENT] ------>  CHAT_PANEL_MODE 1 ', CHAT_PANEL_MODE)
+                //     console.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
+
+                    
+                // } else if (this.router.url.indexOf('/request-for-panel') === -1) {
+                //     const CHAT_PANEL_MODE = false
+                //     console.log('[APP-COMPONENT] ------>  CHAT_PANEL_MODE 2 ', CHAT_PANEL_MODE)
+                //     if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup') {
+                //         console.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
+                //         this.getCurrentProject(event.urlAfterRedirects, CHAT_PANEL_MODE)
+                //     }
+                // }
+                   
+
+                
+
+               
+
+               
 
                 const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
                 if (event.url !== '/signup') {
@@ -244,7 +271,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.subscription = router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
                 browserRefresh = !router.navigated;
-                this.logger.log('APP-COMP browserRefresh ', browserRefresh)
+                this.logger.log('[APP-COMPONENT] browserRefresh ', browserRefresh)
+                this.logger.log('[APP-COMPONENT] browserRefresh ', event)
                 if (browserRefresh === true) {
                     window.addEventListener('load', () => {
                         this.logger.log('Page fully loaded');
@@ -252,8 +280,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                         // Check if there is the sleelplan chagenlog live announcemnt popup
                         this.checkSPPopupIframeWithRetries(5, 1000); // Retry 5 times with a 1-second delay
                     });
-
-
                 }
             }
         });
@@ -268,7 +294,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const checkForIframe = () => {
             attempts++;
-             this.logger.log(`Attempt ${attempts} to find the iframe...`);
+            this.logger.log(`Attempt ${attempts} to find the iframe...`);
 
             const wrapper = document.getElementById('sleek-widget-wrap');
             this.logger.log('wrapper 1', wrapper)
@@ -435,24 +461,123 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
-    // getCurrentProject() {
-    //     this.auth.project_bs.subscribe((project) => {
-    //         if (project) {
-    //             this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
-    //             // this.current_selected_prjct = project
-    //             this.projectService.getProjects().subscribe((projects: any) => {
-    //                 this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
-    //                 if (projects) {
-    //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-    //                     this.logger.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
+    getCurrentProject(url) {
+        // console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 1', url)
+        console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 1 ', this.auth.user_bs.value)
+        this.auth.project_bs.subscribe((project) => {
+            if (project) {
+                console.log('[APP-COMPONENT] -->> project from $ubscription 1 ', project)
+                // this.current_selected_prjct = project
+                this.projectService.getProjects().subscribe((projects: any) => {
+                    this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
+                    if (projects) {
+                        this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
+                        console.log('[APP-COMPONENT] -->> current_selected_prjct_user 1', this.current_selected_prjct_user)
+                        if (this.current_selected_prjct_user) {
+                            // console.log('[APP-COMPONENT] xxxxx  1 -->> url.indexOf(/request-for-panel', url.indexOf('/request-for-panel') !== -1)
+                            // console.log('[APP-COMPONENT] xxxxx -->> url', url)
+                            // if(CHAT_PANEL_MODE === false) {
+                           
+                            this.redirectToPricing(this.current_selected_prjct_user)
 
-    //                     this.USER_ROLE = this.current_selected_prjct_user.role
-    //                     this.logger.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
-    //                 }
-    //             })
-    //         }
-    //     });
-    // }
+                            // } else if(CHAT_PANEL_MODE === true) {
+                            //     this.redirectToPricingFromChat(this.current_selected_prjct_user)
+                            // }
+                        }
+                        // this.router.navigate(['project/' + project._id + '/pricing']);
+                        // this.USER_ROLE = this.current_selected_prjct_user.role
+                        // this.logger.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
+                    }
+                })
+            } else {
+                console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 2', url)
+                console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - project 2 ', project)
+                console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 2 ', this.auth.user_bs.value)
+                console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.hasChangedProject.value 2 ', this.auth.hasChangedProject.value)
+                if (!project && this.auth.user_bs.value && this.auth.hasChangedProject.value === false) {
+                    const url_segments = url.split('/');
+                    const nav_project_id = url_segments[2];
+                    console.log('[APP-COMPONENT] -->> project from $ubscription 2 nav_project_id', nav_project_id)
+                    // console.log('[APP-COMPONENT] project from $ubscription 2 nav_project_id', nav_project_id)
+
+                    const navProjectIdContainsNumber = this.containsNumber(nav_project_id)
+                    console.log('[APP-COMPONENT] -->> project from $ubscription 2 projectIdIsNumber', navProjectIdContainsNumber)
+
+                    if (navProjectIdContainsNumber === true) {
+                        this.projectService.getProjects().subscribe((projects: any) => {
+                            this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
+                            if (projects) {
+                                this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === nav_project_id);
+                                console.log('[APP-COMPONENT] current_selected_prjct_user 2', this.current_selected_prjct_user)
+                                console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 3 ', this.auth.user_bs.value)
+                                if (this.current_selected_prjct_user) {
+                                    this.redirectToPricing(this.current_selected_prjct_user)
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        });
+    }
+
+    redirectToPricing(projectUser) {
+        console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectUser ', projectUser)
+
+        const role = projectUser.role;
+        const project = projectUser.id_project;
+        console.log('[APP-COMPONENT] REDIRECT TO PRICING - project ', project)
+
+      
+        // const dateLimit = new Date('2025-01-16T00:00:00');
+        // const dateLimit = new Date('2022-07-04T00:00:00') // for test purpose
+        // console.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
+        console.log('[APP-COMPONENT] REDIRECT TO PRICING - freePlanLimitDate ', freePlanLimitDate)
+       
+
+        if (project) {
+
+            const projectCreationDate = new Date(project.createdAt);
+            console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate ', projectCreationDate)
+            console.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
+            console.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
+            
+            if (projectCreationDate >= freePlanLimitDate) {
+                console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
+
+
+                if (project.profile.type === 'free' && project.trialExpired === true) {
+                    if (role === 'owner') {
+                        
+                            this.router.navigate(['project/' + project._id + '/pricing/te']);
+                        // } else if (CHAT_PANEL_MODE) {
+                        //     this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade/cm']);
+                        // }
+                        
+                    } else {
+                        // if (!CHAT_PANEL_MODE) {
+                        this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
+                        // } else if (CHAT_PANEL_MODE) {
+                        //     this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade/cm']);
+                        // }
+                    }
+                }
+            } else {
+                console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
+            }
+        }
+    }
+
+
+    redirectToPricingFromChat(projectUser) {
+        const project = projectUser.id_project;
+        console.log('[APP-COMPONENT] redirectToPricingFromChat')
+        this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
+    }
+
+    containsNumber(str: string): boolean {
+        return /\d/.test(str);
+    }
 
     listenToSwPostMessage() {
         this.logger.log('[APP-COMPONENT] listenToNotificationCLick - CALLED: ')
@@ -1118,8 +1243,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1) ||
                     (this.route.indexOf('/desktop--access') !== -1) ||
-                    (this.route.indexOf('/projects') !== -1)
-
+                    (this.route.indexOf('/projects') !== -1) ||
+                    (this.route.indexOf('/pricing') !== -1)
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // this.logger.log('DETECT LOGIN PAGE')

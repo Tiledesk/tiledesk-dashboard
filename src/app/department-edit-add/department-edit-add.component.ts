@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs/operators'
 import { FaqKb } from 'app/models/faq_kb-model';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
 declare const $: any;
 const swal = require('sweetalert');
@@ -426,16 +427,13 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[DEPT-EDIT-ADD] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[DEPT-EDIT-ADD] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getBrowserVersion() {
@@ -1365,12 +1363,12 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
 
-    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[DEPT-EDIT-ADD] GET projectUser by USER-ID ', projectUser)
       if (projectUser) {
-        this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+        this.logger.log('[DEPT-EDIT-ADD] - GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-        this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser[0]._id]);
+        this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser._id]);
       }
     }, (error) => {
       this.logger.error('[DEPT-EDIT-ADD] GET projectUser by USER-ID - ERROR ', error);

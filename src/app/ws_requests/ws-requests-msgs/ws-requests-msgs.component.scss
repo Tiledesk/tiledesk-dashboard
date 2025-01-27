@@ -4463,7 +4463,8 @@ label {
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 6px 15px !important;
-  font-family: var(--content-font-family)
+  font-family: var(--content-font-family);
+  border-radius: var(--btn-border-radius)
 }
 
 .btn-get--feature-no-boxshadow:hover {
@@ -4864,6 +4865,10 @@ label {
 
 .ng-select-tags-wpr {
   height: 30px;
+}
+
+.conversation-tag-panel-mode {
+  max-width: 250px !important;
 }
 
 .no-conv-tags-wpr {
@@ -5724,7 +5729,7 @@ label {
 
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
 .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background-color: #0566ff;
+  background-color: var(--blue-20);
 }
 
 
