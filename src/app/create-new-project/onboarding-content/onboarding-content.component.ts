@@ -179,6 +179,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (this.translate.currentLang) {
       langDashboard = this.translate.currentLang;
     }
+    // console.log('[ONBOARDING-CONTENT] browser lang' ,this.translate.currentLang)
     let jsonWidgetLangURL = 'assets/i18n/' + langDashboard + '.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data => {
       try {
@@ -730,6 +731,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       segmentTrackAttr["userId"] = this.user._id;
       segmentTrackAttr["username"] = this.user.firstname + ' ' + this.user.lastname;
       segmentTrackAttr["botId"] = this.botId;
+      segmentTrackAttr["browserLang"] = this.translate.currentLang
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
