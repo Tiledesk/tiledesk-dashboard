@@ -375,7 +375,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (this.projectId) {
             this.getProjectQuotes();
-            this.getQuotasCount()
+            // this.getQuotasCount()
           }
           this.prjct_name = this.project.name
 
