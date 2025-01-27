@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.61-rc3
+- Adds the ability from the widget settings > advanced section to disable sending attachments and emojis
+
 ### 2.7.61-rc2
 - Improves redirect handling for plans with expired trial
 - Adds a tooltip to the history page to explain the "Include chatbot-only conversations" checkbox
