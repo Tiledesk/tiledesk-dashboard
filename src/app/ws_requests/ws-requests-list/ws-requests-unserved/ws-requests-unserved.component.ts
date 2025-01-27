@@ -125,7 +125,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // -------------------------------------------------------------
   ngOnInit() {
     this.getCurrentProject();
-    this.getDepartments();
+    // this.getDepartments();
     this.detectBrowserRefresh();
     this.getTranslations();
     this.getLoggedUser();
