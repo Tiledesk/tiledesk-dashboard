@@ -35,7 +35,7 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
-    // console.log('[ON-BOARDING-WELCOME company_name]' , this.company_name)
+    // this.logger.log('[ON-BOARDING-WELCOME company_name]' , this.company_name)
     this.companyNameParams = { 'BRAND_NAME': this.company_name }
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
@@ -46,7 +46,7 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
 
 
     this.CHAT_MODE = window.self !== window.top;
-    console.log('[UNAUTHORIZED-TO-UPGRADE] Is in iframe (CHAT_MODE) :', this.CHAT_MODE);
+    this.logger.log('[UNAUTHORIZED-TO-UPGRADE] Is in iframe (CHAT_MODE) :', this.CHAT_MODE);
    
   }
 
@@ -83,17 +83,17 @@ export class UnauthorizedToUpgradeComponent implements OnInit {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[UNAUTHORIZED-TO-UPGRADE] - getProjectPlan - project Profile Data ', projectProfileData)
+      this.logger.log('[UNAUTHORIZED-TO-UPGRADE] - getProjectPlan - project Profile Data ', projectProfileData)
 
       if (projectProfileData) {
         this.userRole  = projectProfileData.user_role
         this.id_project = projectProfileData._id;
-        console.log('[UNAUTHORIZED-TO-UPGRADE] - getProjectPlan - userRole ', this.userRole)
+        this.logger.log('[UNAUTHORIZED-TO-UPGRADE] - getProjectPlan - userRole ', this.userRole)
 
         if (projectProfileData.profile_type === 'free' && projectProfileData.trial_expired === true) {
 
           this.trialExpirationDate = moment(projectProfileData.createdAt).add(14, 'days').format('LL');;
-          console.log('[UNAUTHORIZED-TO-UPGRADE] - trialExpirationDate', this.trialExpirationDate); // Outputs the new date as an ISO string
+          this.logger.log('[UNAUTHORIZED-TO-UPGRADE] - trialExpirationDate', this.trialExpirationDate); // Outputs the new date as an ISO string
         }
       }
     }, error => {
