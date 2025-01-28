@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.62
+- Minor improvements and bug fixing
+
 ### 2.7.61
 - Handles the loading of the Changelog script
 
