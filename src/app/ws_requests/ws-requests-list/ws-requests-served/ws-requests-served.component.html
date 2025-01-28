@@ -545,21 +545,6 @@
                 </span>
 
                 <!-- ---------------------------------------- -->
-                <!-- Channel - SMS  -->
-                <!-- ---------------------------------------- -->
-                <span  *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO" class="tool_tip">
-                  <img style="width: 24px;height: 24px;" src="assets/img/channel_icons/sms.svg"
-                    class="img-fluid">
-                  <span class="bottom tool-tip-bottom--custom">
-                    <span style="font-weight: 400;">
-                      {{'MessageChannel' | translate}}:
-                    </span>
-                    <span style="font-weight: 400;">SMS </span>
-                    <i></i>
-                  </span>
-                </span>
-
-                <!-- ---------------------------------------- -->
                 <!-- Channel - WhatsApp -->
                 <!-- ---------------------------------------- -->
                 <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP" class="tool_tip">
