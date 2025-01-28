@@ -621,6 +621,10 @@
     "ConversationsInTheLastDays": "Son {{range_count}} gündeki konuşmalar",
     "ConversationsInTheLastMonths": "Son {{range_count}} aydaki konuşmalar",
     "TrialExpirationDate": "Hesabınızın deneme süresi {{expiration_date}} tarihinde sona erdi",
+    "DisableAttachments": "Ekleri Devre Dışı Bırak",
+    "WhenEnabledAttachments":"Etkinleştirildiğinde, kullanıcılar ekler gönderebilir. Devre dışı bırakıldığında, ek düğmesi gizlenecektir",
+    "DisableEmoji": "Emojiyi devre dışı bırak",
+    "WhenEnabledEmoji":"Etkinleştirildiğinde, kullanıcılar emoji gönderebilir. Devre dışı bırakıldığında, emoji düğmesi gizlenecektir",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

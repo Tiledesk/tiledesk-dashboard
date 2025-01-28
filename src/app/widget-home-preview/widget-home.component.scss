@@ -283,7 +283,7 @@ $col-msg-sent: #ffffff;
 #chat21-home-component .c21-body {
     // position: absolute;
     position: relative;
-    top: -65px;
+    top: -100px;
     z-index: 1050;
     width: 100%;
     // height: 100%;
@@ -295,7 +295,7 @@ $col-msg-sent: #ffffff;
 
 #chat21-home-component .c21-body .c21-body-container {
     // padding: 0 16px;
-    padding: 0 10px;
+    padding: 0 22px;
     position: relative;
 }
 
@@ -467,6 +467,18 @@ div.clear {
     background-size: cover;
 }
 
+
+.pu-avatar-no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+}
 #c21-app-list-conversations .c21-body .c21-item-conversation .c21-body-conv .c21-right-conv {
     width: calc(100% - 50px);
     margin-left: 15px;
@@ -579,13 +591,15 @@ div.clear {
 #chat21-home-component .c21-footer_nk #c21-powered-by {
     width: 100%;
     height: 34px;
-    text-align: center;
-    padding: 0;
+    text-align: left;
+    padding: 12px;
     margin: 2px 0;
-    color: #777;
-    border-top: 1px solid rgba(191, 191, 191, 0.2);
-    -webkit-box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
-    box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
+    color: #5f6368;
+    font-weight: 500;
+    font-size: 12px;
+    // border-top: 1px solid rgba(191, 191, 191, 0.2);
+    // -webkit-box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
+    // box-shadow: 0 0 10px 0 rgba(191, 191, 191, 0.2);
     z-index: 20;
 }
 #chat21-home-component .c21-header-container {
@@ -598,7 +612,7 @@ div.clear {
 }
 .c21-header-container .c21-text .c21-text-wellcome {
     line-height: normal;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--content-font-family);
     max-height: 80px;
 }
 
@@ -678,11 +692,11 @@ div.clear {
 
 ::ng-deep #c21-powered-by > div > a {
     position: relative;
-    top: 7px;
+    top: -4px;
 }
 
 ::ng-deep #c21-powered-by > div > a > span {
-    color: #aaa;
+    color: #5f6368;
     position: relative;
     // top: 1px;
 }

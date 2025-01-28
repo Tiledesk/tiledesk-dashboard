@@ -689,8 +689,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // this.logger.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        // COMMENTED NK
-        // this.getDeptsByProjectId(this.projectUserArray)
+   
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
@@ -1190,7 +1189,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       });
 
-      this.getDeptsAndCountOfDeptsInRequests(wsrequests);
+      // No more used 
+      // this.getDeptsAndCountOfDeptsInRequests(wsrequests);
     });
   }
   // DEPTS_LAZY: add this 
@@ -1302,7 +1302,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (this.ONLY_MY_REQUESTS === false) {
             this.ws_requests = wsrequests;
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-            this.addDeptObject(this.ws_requests)
+            // this.addDeptObject(this.ws_requests)
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
@@ -1320,7 +1320,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            this.addDeptObject(this.ws_requests)
+            // this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1340,7 +1340,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            this.addDeptObject(this.ws_requests)
+            // this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1881,7 +1881,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(5000))
+      .pipe(throttleTime(30000))
       .pipe(
         takeUntil(this.unsubscribe$)
       )

@@ -620,6 +620,10 @@
     "ConversationsInTheLastDays": "Конверзације у последњих {{range_count}} дана",
     "ConversationsInTheLastMonths": "Конверзације у последњих {{range_count}} месеци",
     "TrialExpirationDate": "Пробни период вашег налога је истекао {{expiration_date}}",
+    "DisableAttachments": "Онемогући прилоге",
+    "WhenEnabledAttachments":"Када је омогућено, корисници могу да шаљу прилоге. Када је онемогућено, дугме за прилог ће бити скривено",
+    "DisableEmoji": "Онемогући емоџи",
+    "WhenEnabledEmoji":"Када је омогућено, корисници могу да шаљу емоџије. Када је онемогућено, дугме емоџија ће бити скривено",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

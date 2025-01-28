@@ -618,6 +618,10 @@
     "ConversationsInTheLastDays": "Conversaciones en los últimos {{range_count}} días",
     "ConversationsInTheLastMonths": "Conversaciones en los últimos {{range_count}} meses",
     "TrialExpirationDate": "El período de prueba de su cuenta finalizó el {{expiration_date}}",
+    "DisableAttachments": "Deshabilitar archivos adjuntos",
+    "WhenEnabledAttachments":"Cuando está habilitado, los usuarios pueden enviar archivos adjuntos. Cuando está deshabilitado, el botón de archivos adjuntos estará oculto.",
+    "DisableEmoji": "Desactivar emoji",
+    "WhenEnabledEmoji":"Cuando está habilitado, los usuarios pueden enviar emojis. Cuando está deshabilitado, el botón de emojis estará oculto.",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -364,7 +364,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] - on open quotes menu' )
     // this.logger.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
-    this.getQuotasCount()
+    // this.getQuotasCount()
     this.getQuotes();
     const currentURL = this.router.url;
     this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);

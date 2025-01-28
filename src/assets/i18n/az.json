@@ -619,6 +619,10 @@
     "ConversationsInTheLastDays": "Son {{range_count}} gündə söhbətlər",
     "ConversationsInTheLastMonths": "Son {{range_count}} ayda söhbətlər",
     "TrialExpirationDate": "Hesabınızın sınaq müddəti {{expiration_date}} tarixində bitdi",
+    "DisableAttachments": "Qoşmaları deaktiv edin",
+    "WhenEnabledAttachments":"Aktivləşdirildikdə, istifadəçilər qoşmalar göndərə bilər. Deaktiv edildikdə, qoşma düyməsi gizlənəcək",
+    "DisableEmoji": "Emojiləri söndürün",
+    "WhenEnabledEmoji": "Aktivləşdirildikdə, istifadəçilər emoji göndərə bilər. Deaktiv edildikdə, emoji düyməsi gizlənəcək",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

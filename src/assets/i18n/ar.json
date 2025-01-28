@@ -618,6 +618,10 @@
     "ConversationsInTheLastDays": "المحادثات في آخر {{range_count}} يومًا",
     "ConversationsInTheLastMonths": "المحادثات في آخر {{range_count}} شهرًا",
     "TrialExpirationDate": "انتهت فترة التجربة لحسابك في {{expiration_date}}",
+    "DisableAttachments": "تعطيل المرفقات",
+    "WhenEnabledAttachments":"عند تمكين هذه الميزة، يمكن للمستخدمين إرسال المرفقات. وعند تعطيلها، سيتم إخفاء زر المرفقات",
+    "DisableEmoji": "تعطيل الرموز التعبيرية",
+    "WhenEnabledEmoji":"عند تمكينه، يمكن للمستخدمين إرسال الرموز التعبيرية. عند تعطيله، سيتم إخفاء زر الرموز التعبيرية",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

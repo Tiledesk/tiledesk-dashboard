@@ -104,7 +104,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
-
         private sleekplanSsoService: SleekplanSsoService,
         private sleekplanService: SleekplanService,
         private sleekplanApiService: SleekplanApiService
@@ -188,6 +187,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.log('[APP-COMPONENT] getConfig chatEngine', appConfigService.getConfig().chatEngine)
         this.logger.log('[APP-COMPONENT] getConfig uploadEngine', appConfigService.getConfig().uploadEngine)
         this.logger.log('[APP-COMPONENT] getConfig pushEngine', appConfigService.getConfig().pushEngine)
+        
+
         // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
         if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
             this.logger.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
@@ -799,6 +800,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
+        this.logger.log('[APP-COMP] calling sleekplanSso ')
+
         // this.logger.log('APP-COMP sleekplanSso ')
         // window['$sleek'].setUser = { 
         //     mail: user.email, 
@@ -844,10 +847,33 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
+    getPAYValue() {
+        this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+        
+        let parts = this.public_Key.split('-');
+        // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
+    
+        let pay = parts.find((part) => part.startsWith('PAY'));
+        this.logger.log('[APP-COMPONENT] pay ', pay);
+        let payParts = pay.split(':');
+        this.logger.log('[APP-COMPONENT] payParts ', payParts);
+        let payValue = payParts[1]
+        this.logger.log('[APP-COMPONENT] payParts ', payParts);
+        if (payValue === 'T') {
+          return true
+        } else if (payValue === 'F') {
+          return false
+        }
+    
+      }
+
     getCurrentUserAndConnectToWs() {
+        let isActivePAY = this.getPAYValue()
         this.auth.user_bs.subscribe((user) => {
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-            if (user) {
+           
+            this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - isActivePAY ', isActivePAY);
+            if (user && isActivePAY) {
                 this.sleekplanSso(user)
             }
             if (!user) {

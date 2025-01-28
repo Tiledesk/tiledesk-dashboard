@@ -618,6 +618,10 @@
     "ConversationsInTheLastDays": "Соңғы {{range_count}} күндегі сөйлесулер",
     "ConversationsInTheLastMonths": "Соңғы {{range_count}} айдағы әңгімелер",
     "TrialExpirationDate": "Есептік жазбаңыздың сынақ мерзімі {{expiration_date}} күні аяқталды",
+    "DisableAttachments": "Тіркемелерді өшіру",
+    "WhenEnabledAttachments":"Қосылған кезде пайдаланушылар тіркемелерді жібере алады. Өшірілген кезде тіркеме түймесі жасырылады",
+    "DisableEmoji": "Эмодзиді өшіру",
+    "WhenEnabledEmoji":"Қосылған кезде пайдаланушылар эмодзилерді жібере алады. Өшірілген кезде эмодзи түймесі жасырылады",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
