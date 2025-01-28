@@ -32,13 +32,13 @@
 
 .chart-container {
     //background-color: #1e88e5;
-    font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+    font-family: var(--header-font-family); //'Poppins', 'Roboto', 'Arial', sans-serif;
 }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
-}
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+// }
 
 .chart-container {
     position: relative;

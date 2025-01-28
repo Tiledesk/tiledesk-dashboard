@@ -17,6 +17,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -269,16 +270,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
 
@@ -563,20 +560,35 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
   deleteNewApp(appId, appTitle) {
     this.logger.log('[APP-STORE] - deleteNewApp appId ', appId, 'appTitle ', appTitle)
-    swal({
+    Swal.fire({
       title: this.areYouSureMsg,
       text: this.appWillBeDeletedMsg,
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
     })
-      .then((WillDelete) => {
-        if (WillDelete) {
+      .then((result) => {
+        // console.log('XXXX ' , result) 
+        if (result.isDenied) {
           this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
             this.logger.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
           }, (error) => {
-            swal(this.errorWhileDeletingApp, {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.errorWhileDeletingApp, 
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
             });
             this.logger.error('[FAQ-EDIT-ADD] DELETE FAQ ERROR ', error);
           }, () => {
@@ -595,8 +607,14 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
               }
             }
 
-            swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
+            Swal.fire( {
+              title: this.done_msg + "!",
+              text: this.appHasBeenDeletedMsg,
               icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
 
             });
@@ -806,7 +824,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           showCloseButton: true,
           showCancelButton: false,
           confirmButtonText: this.upgradePlan,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
         }).then((result) => {
           if (result.isConfirmed) {
@@ -847,23 +865,30 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = this.translate.instant('AvailableFrom') + ' ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      title: this.translate.instant('Oops'),
+      text:  this.translate.instant('AvailableFrom') + ' ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      // content: el,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      cancelButtonText: this.cancel,
+      confirmButtonText: this.upgradePlan,
+      focusConfirm: false,
+      reverseButtons: true,
+      // confirmButtonColor: "var(--blue-light)",
+      // buttons: {
+      //   cancel: this.cancel,
+      //   catch: {
+      //     text: this.upgradePlan,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {

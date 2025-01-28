@@ -24,7 +24,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 import scrollToWithAnimation from 'scrollto-with-animation'
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -405,15 +407,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role;
+          if (this.USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
           } else {
             this.ROLE_IS_AGENT = false
@@ -616,12 +614,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser ', projectUser)
         if (projectUser) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser[0]._id);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - ERROR ', error);
@@ -762,36 +760,44 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   presentModalYouCannotJoinChat() {
-    swal({
+    Swal.fire({
       title: this.joinChatTitle,
       text: this.youCannotJoinChat,
       icon: "info",
-      buttons: 'OK',
-      dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      // confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+      // buttons: 'OK',
+      // dangerMode: false,
     })
   }
 
   displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id) {
-    swal({
+    Swal.fire({
       title: this.areYouSureMsg,
       text: this.youAreAboutToJoinMsg + ': ' + chatAgent,
-
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.joinToChatMsg,
+      cancelButtonText: this.cancelMsg,
+      // confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+      reverseButtons: true,
       icon: "info",
-      buttons: {
-        cancel: this.cancelMsg,
-        catch: {
-          text: this.joinToChatMsg,
-          value: "catch",
-        },
-      },
-
-      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-      dangerMode: false,
+      // buttons: {
+      //   cancel: this.cancelMsg,
+      //   catch: {
+      //     text: this.joinToChatMsg,
+      //     value: "catch",
+      //   },
+      // },
+      // dangerMode: false,
     })
-      .then((value) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', value)
+      .then((result) => {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] ARE YOU SURE TO JOIN THIS CHAT ... result', result)
 
-        if (value === 'catch') {
+        if (result.isConfirmed) {
           this.onJoinHandled(request_id, this.currentUserID);
         }
       })
@@ -879,7 +885,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   _getProjectUserByUserId(member_id) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
           this.logger.log('WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID projectUser id', projectUser);

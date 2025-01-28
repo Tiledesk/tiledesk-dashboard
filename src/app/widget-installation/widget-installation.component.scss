@@ -156,12 +156,13 @@
 
   .collapsible-body {
     border: 0px;
-    border-radius: 3px;
+    // border-radius: 3px;
     cursor: pointer;
     margin-bottom: 15px;
+    border-radius: var(--card-border-radius);
 
     &.active {
-      border: 1px solid #3ea9f5;
+      border: 1px solid var(--blue-20); // #3ea9f5;
 
       .collapsible-header {
         border: 0px;
@@ -185,7 +186,7 @@
     height: auto;
     text-align: left;
     border: 1px solid #ddd;
-    border-radius: 12px;
+    border-radius: var(--card-border-radius);
   }
 
   .collapsible-content {

@@ -205,11 +205,10 @@
                         <!-- ------------------------------------------------------------------- -->
                         <!-- Create a new bot link -->
                         <!-- ------------------------------------------------------------------- -->
-                        <span
-                          style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                        <span class="create-new-bot-wpr">
                           {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
                           <!-- openCreateBotRightSideBar() -->
-                          <span style="color: #03a5e8; cursor:pointer;" (click)="goTo_BotEditAddPage_CREATE()">
+                          <span class="create-new-bot-btn" (click)="goTo_BotEditAddPage_CREATE()">
 
                             {{ "DeptsAddEditPage.orCreateABot" | translate }}
                           </span>
@@ -450,10 +449,9 @@
                           <!-- ------------------------------------------------------------------- -->
                           <!-- Create a new group link -->
                           <!-- ------------------------------------------------------------------- -->
-                          <span *ngIf="isVisibleGroups"
-                            style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                          <span class="create-new-group-wpr" *ngIf="isVisibleGroups">
                             {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                            <span style="color: #03a5e8; cursor:pointer;" (click)="openCreateGroupRightSideBar()">
+                            <span  class="create-new-group-btn" (click)="openCreateGroupRightSideBar()">
 
                               {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
                             </span>
@@ -479,15 +477,15 @@
                 <div class="row" *ngIf="CREATE_VIEW">
                   <div class="col-sm-12">
                     <span *ngIf="has_selected_bot === true">
-                      <button class="btn btn-primary"
+                      <button class="btn btn-tdblu-no-boxshadow  create-dept-has-selected-bot"
                         [disabled]="deptName_toUpdate?.length < 2 || BOT_NOT_SELECTED === true"
                         (click)="createDepartment()">
                         {{ "DeptsAddEditPage.CreateDept" | translate}}
                       </button>
                     </span>
-
+                    <!-- btn-primary  -->
                     <span *ngIf="has_selected_bot !== true">
-                      <button class="btn btn-primary" [disabled]="deptName_toUpdate?.length < 2"
+                      <button class="btn btn-tdblu-no-boxshadow create-dept-not-has-selected-bot" [disabled]="deptName_toUpdate?.length < 2"
                         (click)="createDepartment()">
 
                         {{ "DeptsAddEditPage.CreateDept" | translate}}
@@ -504,7 +502,8 @@
                   <div class="col-sm-12">
 
                     <span *ngIf="has_selected_bot === true">
-                      <button class="btn btn-primary update-dept-btn" (click)="edit()"
+                      <!-- btn-primary  -->
+                      <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
                         [disabled]="BOT_NOT_SELECTED === true">
                         <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                         {{ "DeptsAddEditPage.UpdateDept" | translate }}
@@ -516,7 +515,7 @@
                     </span>
 
                     <span *ngIf="has_selected_bot !== true">
-                      <button class="btn btn-primary update-dept-btn" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
+                      <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                         <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                         {{ "DeptsAddEditPage.UpdateDept" | translate }}
                         <!-- </span> -->

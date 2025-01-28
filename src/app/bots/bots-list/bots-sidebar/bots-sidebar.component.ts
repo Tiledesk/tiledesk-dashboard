@@ -68,7 +68,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
    
     this.getCurrentProject();
     this.IS_OPEN = true
-    this.listenToKbVersion()
+    // this.listenToKbVersion()
     this.getDahordBaseUrlThenOSCODE()
     // this.getProjectPlan()
     // this.logger.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
@@ -256,20 +256,21 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
 
   // getOSCODE() {
   //   this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-
-
   // }
-
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+  
+  // ------------------------------
+  // Moved on the sidebar
+  // ------------------------------
+  // listenToKbVersion() {
+  //   this.kbService.newKb
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((newKb) => {
+  //       this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
+  //       this.ARE_NEW_KB = newKb;
+  //     })
+  // }
 
  
 

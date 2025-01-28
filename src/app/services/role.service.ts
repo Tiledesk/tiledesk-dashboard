@@ -26,7 +26,7 @@ export class RoleService {
   async checkRoleForCurrentProject(calledby) {
     this.logger.log('[ROLE-SERV] checkRoleForCurrentProject is called by ', calledby)
     const storedUser = localStorage.getItem('user')
-    // this.logger.log('[ROLE-SERV] storedUser ', storedUser) 
+    this.logger.log('[ROLE-SERV] storedUser ', storedUser) 
     let userId = ''
     if (storedUser) {
       const storedUserObject = JSON.parse(storedUser)
@@ -34,11 +34,11 @@ export class RoleService {
       userId = storedUserObject._id
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > userId ', userId)
       const currentProject = this.auth.project_bs.value
-      // this.logger.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
+      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
 
       const projectId = currentProject._id
-
-      const projectUserRole = this.usersService.project_user_role_bs.value
+      // console.log('[ROLE-SERV] checkRoleForCurrentProject is.usersService.projectUser_bs ', this.usersService.projectUser_bs)
+      const projectUserRole = this.usersService.projectUser_bs.value.role
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
       if (projectUserRole) {
@@ -50,7 +50,13 @@ export class RoleService {
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
         }
       } else {
-        this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
+        this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
+        const _projectUserRole = await this.getProjectUser(userId, projectId)
+        this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  _projectUserRole GET from remote', _projectUserRole)
+        if (_projectUserRole === 'agent') {
+          this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
+          this.router.navigate([`project/${projectId}/unauthorized`])
+        }
       }
 
       // if (userId && projectId) {
@@ -75,21 +81,21 @@ export class RoleService {
     }
   }
 
-  // getProjectUser(currentUserId: string, prjct_id: string): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe((projectUser) => {
+  getProjectUser(currentUserId: string, prjct_id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe((projectUser) => {
 
-  //       console.log('[ROLE-SERV] projectUser ', projectUser)
-  //       console.log('[ROLE-SERV] projectUser role', projectUser[0]['role'])
-  //       resolve(projectUser[0]['role'])
+        this.logger.log('[ROLE-SERV] projectUser ', projectUser)
+        this.logger.log('[ROLE-SERV] projectUser role', projectUser[0]['role'])
+        resolve(projectUser[0]['role'])
       
-  //     }, (error) => {
-  //       console.error('[ROLE-SERV] getProjectUserRole --> ERROR:', error)
-  //       resolve('error')
-  //     })
+      }, (error) => {
+        this.logger.error('[ROLE-SERV] getProjectUserRole --> ERROR:', error)
+        resolve('error')
+      })
 
-  //   })
-  // }
+    })
+  }
 
 
 }

@@ -16,6 +16,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from 'app/services/app-config.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FaqKbService } from 'app/services/faq-kb.service';
 
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
@@ -58,6 +59,7 @@ export class AuthGuard implements CanActivate {
     private usersService: UsersService,
     private logger: LoggerService,
     public localDbService: LocalDbService,
+    private faqKbService: FaqKbService,
     private _snackBar: MatSnackBar,
     public appConfigService: AppConfigService,
     private _httpClient: HttpClient,
@@ -205,7 +207,7 @@ export class AuthGuard implements CanActivate {
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-        this.usersService.getBotsByProjectIdAndSaveInStorage();
+        this.faqKbService.getBotsByProjectIdAndSaveInStorage();
 
       } else {
         this.logger.log('[AUTH-GUARD] - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND - GO TO UNAUTHORIZED PAGE ');

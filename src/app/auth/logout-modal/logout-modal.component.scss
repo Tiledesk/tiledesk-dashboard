@@ -1,0 +1,31 @@
+.mat-dialog-content-wpr>.logout-modal-message {
+    margin-top: 0px;
+    text-align: center;
+    color: var(--text-color); // #566787;
+    font-size: 16px;
+    font-weight: 400
+}
+
+.mat-dialog-content-wpr>.logout-modal-alert-message {
+    text-align: center;
+    color:#f44336
+}
+
+.mat-dialog-content-wpr>.logout-modal-alert-message>span {
+    margin-bottom: 0px;
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
+}
+
+
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
+
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+
+// }

@@ -1,5 +1,5 @@
 <!-- style="z-index: 1050;position: relative;padding-left:30px" -->
-<span class="navbar-brand navbar-brand-sidebar-settings" 
+<span class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
@@ -24,26 +24,26 @@
 <div class="main-content" style="padding-top:0px">
 
   <div class="page-title--sidebar-settings"
-  [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    
-      <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
-        (click)="goBack()">keyboard_arrow_left</i>
-  
-        <span *ngIf="CREATE_VIEW">
-          {{ "GroupsAddEditPage.AddGroup" | translate }}
-        </span>
-      
-        <span *ngIf="EDIT_VIEW">
-          {{ "GroupsAddEditPage.EditGroup" | translate }}
-          <span style="color: #566787; font-weight:400">
-            {{ groupNameToUpdate }}
-          </span>
-        </span>
-    
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+      (click)="goBack()">keyboard_arrow_left</i>
+
+    <span *ngIf="CREATE_VIEW">
+      {{ "GroupsAddEditPage.AddGroup" | translate }}
+    </span>
+
+    <span *ngIf="EDIT_VIEW">
+      {{ "GroupsAddEditPage.EditGroup" | translate }}
+      <span style="color: #566787; font-weight:400">
+        {{ groupNameToUpdate }}
+      </span>
+    </span>
+
   </div>
 
 
-  <div class="container-fluid" style="padding-top: 0px; margin-left: -20px;">
+  <div class="container-fluid" style="padding-top: 0px; margin-left: -5px; padding-left: 0px;">
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
@@ -53,8 +53,9 @@
           <span *ngIf="!showSpinner">
 
             <div class="row">
-              <div class="col-md-8">
-                <div class="card card--no-border" style="padding-top:25px; padding-bottom:25px">
+              <div class="col-md-8 card-wpr">
+                <!-- card--no-border -->
+                <div class="card">
                   <div class="card-content">
                     <label class="col-sm-2 custom-label">
                       {{ "GroupsAddEditPage.GroupName" | translate }}
@@ -69,7 +70,8 @@
 
                     <label class="col-sm-2"></label>
                     <div class="col-sm-10">
-                      <button class="btn btn-primary" [disabled]="groupName?.length < 2" (click)="create()">
+                      <!-- btn-primary -->
+                      <button class="btn btn-tdblu-no-boxshadow" [disabled]="groupName?.length < 2" (click)="create()">
                         {{ "GroupsAddEditPage.CreateGroup" | translate }}
                       </button>
                     </div>
@@ -123,7 +125,7 @@
           <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
           <!-- <span *ngIf="!showSpinner"> -->
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 card-wpr">
               <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
 
                 <!-- style="margin-top: 16px" -->
@@ -144,7 +146,7 @@
 
                   <!-- <label class="col-sm-2"></label> -->
                   <div class="col-sm-10 col-sm-offset-2">
-                    <button class="btn btn-primary" (click)="editGroupName()">
+                    <button class="btn btn-tdblu-no-boxshadow" (click)="editGroupName()">
                       {{ "GroupsAddEditPage.UpdateGroupName" | translate }}
                     </button>
                   </div>
@@ -224,40 +226,33 @@
         </div> -->
 
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8 card-wpr">
               <div class="card" style="padding-top:0px; padding-bottom:0px; margin-top: 5px;">
 
-                <div class="card-header card-header-custom-bkgrnd">
-                  <h4 class="title"
-                    style="margin-bottom:2px; font-size:1.1em; color: #566787; font-family: 'Poppins','Roboto', 'Arial', sans-serif">
+                <div class="card-header card-header-custom-bkgrnd card-header-flex">
+                  <h4 class="card-header-title">
 
-                    <span style="top: 2px;position: relative;"> {{ "GroupsAddEditPage.Members" | translate }}
-                      <span style="font-weight: 500">
-                        <!-- old (bugged) ({{ group_members?.length }})  -->
-                        ({{ count }})
+                    {{ "GroupsAddEditPage.Members" | translate }}
+                    <span style="font-weight: 500">
 
-                      </span>
+                      ({{ count }})
                     </span>
-
-
                     <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
                     (click)='open_users_list_modal()'>
                     <i class="material-icons" style="padding-top: 1px;">add</i>
                   </button> -->
-
-                    <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
-                    <button class="btn btn-white tooltipx"
-                      style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;"
-                      (click)="open_users_list_modal()">
-                      <span class="icon" style="padding-right:0px">
-                        <i class="material-icons text_primary" style="font-size:18px; top:0px">add</i>
-                      </span>
-                      <span class="tooltiptext" style="text-transform:capitalize"> {{ 'GroupsAddEditPage.AddMembers' |
-                        translate }} </span>
-                    </button>
-
                   </h4>
-                  <!-- <p class="category">Here is a subtitle for this table</p> -->
+                  <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
+                  <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="open_users_list_modal()">
+                    {{ 'GroupsAddEditPage.AddMembers' | translate }}
+                    <!-- <span class="icon" style="padding-right:0px">
+                        <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                      </span> -->
+                    <!-- <span class="tooltiptext" style="text-transform:capitalize"> 
+                        {{ 'GroupsAddEditPage.AddMembers' |  translate }} 
+                      </span> -->
+                  </button>
+
                 </div>
 
                 <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -326,7 +321,8 @@
                         </td>
                       </tr>
 
-                      <tr *ngFor="let projectUser of projectUsersList">
+                      <tr *ngFor="let projectUser of projectUsersList"
+                          >
                         <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
                         <!-- <td *ngIf="projectUser?.is_group_member">
                         {{ projectUser?._id }}
@@ -337,7 +333,12 @@
 
                         <!-- click)="goToMemberProfile(projectUser?.id_user?._id) -->
                         <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
-                          style="cursor:pointer">
+                          style="cursor:pointer"
+                          matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{'ViewDetails' | translate}}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='above'
+                          matTooltipHideDelay="100">
 
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE uploadEngine Firebase -->
@@ -353,24 +354,34 @@
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/no_image_user.png'" />
 
-                          <span class="tooltipx">
+                          <!-- <span class="tooltipx">
                             <span style="font-size:13px"> {{ projectUser?.id_user?.firstname }} </span>
                             <span style="font-size:13px"> {{ projectUser?.id_user?.lastname }}
                             </span>
 
                             <span class="tooltiptext"> {{ "GroupsAddEditPage.UserId" | translate }}: {{
                               projectUser?.id_user?._id }} </span>
-                          </span>
+                          </span> -->
                         </td>
                         <!-- (click)="goToMemberProfile(projectUser?.id_user?._id) -->
                         <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
-                          style="cursor:pointer;font-size:13px">
+                          style="cursor:pointer;font-size:13px"
+                          matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{'ViewDetails' | translate}}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='above'
+                          matTooltipHideDelay="100">
                           {{ projectUser?.role | translate }}
                         </td>
 
                         <!-- (click)="goToMemberProfile(projectUser?.id_user?._id)"  -->
                         <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)"
-                          style="cursor:pointer; font-size:13px">
+                          style="cursor:pointer; font-size:13px"
+                          matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{'ViewDetails' | translate}}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='above'
+                          matTooltipHideDelay="100">
                           {{ projectUser?.id_user?.email }}
                         </td>
 
@@ -389,7 +400,7 @@
                           <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
                             class="btn btn-danger btn-simple btn-xs"
                             (click)='openDeleteModal(projectUser?.id_user?._id, projectUser?.id_user?.email)'>
-                            <i class="material-icons">close</i>
+                            <i class="material-icons" style="padding-top: 3px;">delete</i>
                           </button>
                           <!-- </span> -->
                         </td>
@@ -417,19 +428,19 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display_users_list_modal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content custom--modal-content">
       <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" style="font-family: 'Poppins'">
+        <h4 class="modal-title">
           {{ "GroupsAddEditPage.AddMembersToTheGroup" | translate }}
 
           <!-- <span style="font-weight: 500;"> {{ groupNameToUpdate }} </span> -->
         </h4>
       </div>
 
-      <div class="modal-body" style="padding-top: 10px; padding-bottom: 0px; padding-right: 15px;">
+      <div class="modal-body" style="padding-bottom: 0px!important;">
         <div class="row">
           <div class="col-md-12">
             <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
@@ -514,14 +525,14 @@
         </div>
       </div>
 
-      <div class="modal-footer" style="padding-right: 16px;">
-        <button type="button" class="btn btn-white" (click)="onCloseModal()">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
           <!-- {{ "GroupsAddEditPage.Cancel" | translate }}  -->
           {{ "Cancel" | translate }}
         </button>
 
         <!-- [disabled]="add_btn_disabled" -->
-        <button type="button" class="btn btn-primary" (click)="addMembersToTheGroup()">
+        <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="addMembersToTheGroup()">
           <!-- ADD -->
           {{ "GroupsAddEditPage.Add" | translate }}
         </button>
@@ -538,7 +549,7 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAddingMembersModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
+    <div class="modal-content custom--modal-content">
       <div class="modal-header">
         <!-- onClosedisplayCreateGroupModal() -->
         <button type="button" class="close" aria-label="Close" (click)="onCloseAddingMembersModal()">
@@ -603,7 +614,8 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseAddingMembersModal()">
+        <button class="btn btn-tdblu-no-boxshadow" [disabled]="SHOW_CIRCULAR_SPINNER"
+          (click)="onCloseAddingMembersModal()">
           {{ "GroupsAddEditPage.Continue" | translate }}
         </button>
       </div>
@@ -619,36 +631,34 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateGroupModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content custom-modal-content">
+    <div class="modal-content custom-modal-content custom--modal-content">
       <div class="modal-header">
-        <!-- onClosedisplayCreateGroupModal() -->
         <button type="button" class="close" aria-label="Close" (click)="onCloseCreateGroupModal()">
           <span aria-hidden="true">&times;</span>
         </button>
 
         <h4 class="modal-title">
-          <!-- Create Group -->
           {{ "GroupsAddEditPage.CreateGroup" | translate }}
         </h4>
       </div>
 
-      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
-        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+      <div class="modal-body">
+        <span class="modal-loader-wpr" *ngIf="SHOW_CIRCULAR_SPINNER">
           <div class="loader" style="top:25%">
             <svg class="circular" viewBox="25 25 50 50">
               <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
             </svg>
           </div>
-          <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+          <p>
             {{ "UserEditAddPage.Processing" | translate }}
           </p>
         </span>
 
-        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+        <span class="no-error-modal-ms-wpr" *ngIf="!SHOW_CIRCULAR_SPINNER">
           <!-- class="loader" style="top:5%" -->
           <div style="text-align: center">
             <!--      WHEN NO ERROR OCCUR      -->
-            <span *ngIf="!CREATE_GROUP_ERROR">
+            <span class="no-error-modal-msg" *ngIf="!CREATE_GROUP_ERROR">
               <i class="material-icons" style="color:#70b665">done</i>
               <p style="color:#70b665; font-weight: 500">
                 {{ "UserEditAddPage.Completed" | translate }}
@@ -666,18 +676,14 @@
           </div>
 
           <!--      WHEN NO ERROR OCCUR      -->
-          <span *ngIf="!CREATE_GROUP_ERROR">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
-              <!-- The group -->
+          <span class="no-error-modal-content" *ngIf="!CREATE_GROUP_ERROR">
+            <p>
               {{ "GroupsAddEditPage.GroupCreated1" | translate }}
-              <span style="color: #566787">
-                <strong>{{ group_name }} </strong>
-              </span>
-              <!-- was created -->
+              <strong>{{ group_name }} </strong>
               {{ "GroupsAddEditPage.GroupCreated2" | translate }}
             </p>
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12" style="text-align: center;  padding-right: 26px;padding-left: 8px;"
                 [ngClass]="{'it_custom_add_members_now' : browser_lang == 'it'}">
                 <label class="form-check">
@@ -685,26 +691,22 @@
                   <input class="form-check-input" type="radio" name="mode" [checked]="true"
                     (change)="actionAfterGroupCreation(goToEditGroup = true)">
                   <span style="margin-left: 8px; color:#7695a5; font-weight: 500;">
-                    <!-- Add now members to the group -->
                     {{ "GroupsAddEditPage.AddNow" | translate }}
                   </span>
                 </label>
               </div>
-            </div>
-            <div class="row">
-              <!-- col-xs-8 col-xs-offset-2 -->
+            </div> -->
+            <!-- <div class="row">
               <div class="col-md-12" style="text-align: center">
                 <label class="form-check">
-
                   <input class="form-check-input" type="radio" name="mode" [value]="false"
                     (change)="actionAfterGroupCreation(goToEditGroup = false)">
                   <span style="margin-left: 8px; color:#7695a5; font-weight: 500">
-                    <!-- Return to the group list (add later) -->
                     {{ "GroupsAddEditPage.AddLater" | translate }}
                   </span>
                 </label>
               </div>
-            </div>
+            </div> -->
           </span>
 
           <!--    ERROR     -->
@@ -718,7 +720,8 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseCreateGroupModal()">
+        <button class="btn btn-tdblu-no-boxshadow" [disabled]="SHOW_CIRCULAR_SPINNER"
+          (click)="onCloseCreateGroupModal()">
           {{ "GroupsAddEditPage.Continue" | translate }}
         </button>
       </div>
@@ -733,41 +736,35 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
-          <span aria-hidden="true" style="color: #fff">&times;</span>
+          <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" style="color: #fff">
-          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+        <h4 class="modal-title warning">
+          <!-- <i class="material-icons" style="vertical-align: middle">report_problem</i> -->
+          <span class="modal-header-icon-wpr"> 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
           <span style="vertical-align: middle; padding-left:8px">
-            <!-- Rimuovi membro -->
             {{ "GroupsAddEditPage.RemoveMember" | translate }}
           </span>
         </h4>
-        <!-- padding-left: 36px  -->
-        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
-          <!-- Il membro con ID:  -->
-          {{ "GroupsAddEditPage.TheMemberWithId" | translate }}
-          <code>{{ id_user_to_delete }}</code>
-          <!-- verrà eliminato -->
-          {{ "GroupsAddEditPage.WillBeRemoved" | translate }}
-        </h4>
+
       </div>
       <div class="modal-body">
-        <p style="font-weight:300; text-align: left; margin-top: 10px; color: rgba(0,0,0,0.87)">
-          <!-- Sei sicuro di voler rimuovere il membro selezionato dal gruppo  -->
-          {{ "GroupsAddEditPage.AreYouSureRemoveMember" | translate }}
-          <span style="font-weight:700;">{{ groupNameToUpdate }}</span>?
+        <p class="modal-body--content">
+          {{ "GroupsAddEditPage.AreYouSureRemoveMember" | translate }}?
         </p>
       </div>
-      <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
-          <!-- {{ "GroupsAddEditPage.Cancel" | translate }} -->
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseDeleteModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button style="margin-top:0px" class="btn btn-danger" (click)="deleteMemberFromTheGroup()">
-          <!-- Rimuovi Membro -->
+        <button class="btn btn-red" (click)="deleteMemberFromTheGroup()">
           {{ "GroupsAddEditPage.RemoveMember" | translate }}
         </button>
       </div>

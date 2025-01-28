@@ -28,8 +28,8 @@
 
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-        <div *ngIf="hideHelpLink" class="row">
-          <div class="col-xs-12 link-to-webhook-doc">
+        <!-- <div *ngIf="hideHelpLink" class="row"> -->
+          <!-- <div class="col-xs-12 link-to-webhook-doc">
             <div class="link-to-doc-icon-wpr">
               <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="readme"
                 class="svg-inline--fa fa-readme fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -44,18 +44,35 @@
               </span>
             </div>
           </div>
+        </div> -->
+        <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
+          <div class="row link-to-docs">
+            <div class="col-md-12">
+              <span>
+                
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="none">
+                  <path
+                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                </svg>
+              </span>
+              <a class="custom-anchor-to-docs" (click)="goCannedResponseDocs()">
+                {{'HowWebhooksWorks' | translate}}
+              </a>
+            </div>
+          </div>
         </div>
 
         <div class="row">
           <div class="col-sm-8 left-col-custom-padding">
-            <div class="card card--no-border card-custom-margin">
+            <div class="card card-custom-margin" style="">
               <div class="card-header card-header-custom-bkgrnd">
-
-                <button class="btn btn-primary webhook-add-subscription-btn"
-                  style="padding: 8px 16px; margin: 0px;min-width: 146px;" (click)="presentWebhookModal_inAddMode()">
-                  <span class="icon" style="padding-right: 8px;">
+                <!-- btn-primary -->
+                <button class="btn btn-tdblu-no-boxshadow webhook-add-subscription-btn pull-right"
+                   (click)="presentWebhookModal_inAddMode()">
+                  <!-- <span class="icon" style="padding-right: 8px;">
                     <i class="material-icons">add_circle</i>
-                  </span>
+                  </span> -->
                   {{ "Webhook.AddSubscription" | translate }}
                 </button>
               </div>
@@ -168,53 +185,56 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModal_SecretGeneratedModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
-        <button type="button" class="close" aria-label="Close" (click)="closeModal_JwtSecretGenerated()"
-          style="color: #ffffff;">
-          <span aria-hidden="true">&times;</span>
+    <div class="modal-content  custom--modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeModal_JwtSecretGenerated()">
+          <span aria-hidden="true">
+            <!-- &times; -->
+            <svg class="tide-icon" width="18" height="18" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+
+          </span>
         </button>
-        <h4 class="modal-title" style="color: #fff">
-          <i class="material-icons" style="vertical-align: middle">info</i>
+        <h4 class="modal-title">
+          <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
           <span style="vertical-align: middle; padding-left:8px">
             {{ "Webhook.SharedSecretGenerated" | translate }}
           </span>
         </h4>
-        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-            {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
-        </h4> -->
+      
       </div>
-      <div class="modal-body webhook-modal-body">
-        <label style="color: rgb(118, 149, 165); font-weight:100; text-align: left;" class="col-sm-10 ">
+      <div class="modal-body">
+        <p class="modal-body--content col-sm-10 " style="margin-bottom: 0px;">
           {{ "Webhook.ThisIsYourSharedSecret" | translate }}:
-        </label>
+        </p>
         <div class="col-sm-10">
           <div class="input-group">
             <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text"
               style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
             <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-              <button class="btn btn-white" (click)="copySharedSecret()"
-                style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+              <button class="btn btn-tdblu-no-boxshadow" (click)="copySharedSecret()"
+                style="margin-bottom: 10px; border-top-left-radius: 5px !important;
+                border-bottom-left-radius: 5px !important;
+                height: 36px; padding-top: 7px !important;">
                 {{ "Webhook.Copy" | translate }}
               </button>
             </span>
           </div>
         </div>
-        <label style="color: rgb(118, 149, 165); font-weight:100; text-align: left;" class="col-sm-10 ">
-          {{ "Webhook.UseThisSecret" | translate }}:
-        </label>
-        <label style="color:#f44336; text-align: left; margin-top: 5px;" class="col-sm-10 ">
+        <p  class="col-sm-10 modal-body--content">
+          {{ "Webhook.UseThisSecret" | translate }}
+        </p>
+        <p style="color:#f44336 !important; margin-bottom: 24px;" class="col-sm-10 modal-body--content">
           {{ "Webhook.NoteThatWillBeDisplayedOnce" | translate }}.
-        </label>
+        </p>
       </div>
-      <div class="modal-footer" style="margin-top: 75px; text-align: center">
-        <button class="btn btn-primary" (click)="closeModal_JwtSecretGenerated()" style="padding:12px 16px;">
-          Ok
+      <div class="modal-footer">
+        <button class="btn btn-tdblu-no-boxshadow" (click)="closeModal_JwtSecretGenerated()">
+          {{ "Continue" | translate }}
         </button>
-        <!-- <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
-
-          {{ "ProjectEditPage.DeleteProject" | translate }}
-        </button> -->
       </div>
     </div>
   </div>
@@ -224,36 +244,36 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModal_ConfirmDeleteModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
-        <button type="button" class="close" aria-label="Close" (click)="closeModal_ConfirmDeleteModal()"
-          style="color: #ffffff;">
+    <div class="modal-content custom--modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeModal_ConfirmDeleteModal()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" style="color: #fff">
-          <i class="material-icons" style="vertical-align: middle">info</i>
+        <h4 class="modal-title warning">
+          <span class="modal-header-icon-wpr"> 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
           <span style="vertical-align: middle; padding-left:8px">
             {{ "Webhook.ConfirmSubscriptionDeleteTitle" | translate }}
           </span>
         </h4>
-        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-            {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
-        </h4> -->
       </div>
       <div class="modal-body">
-        {{ "Webhook.ConfirmSubscriptionDeleteBody" | translate }}
+        <p class="modal-body--content">
+          {{ "Webhook.ConfirmSubscriptionDeleteBody" | translate }}
+        </p>
       </div>
-      <div class="modal-footer" style="margin-top: 25px; text-align: center">
-        <button class="btn btn-secondary" (click)="closeModal_ConfirmDeleteModal()" style="padding:12px 16px;">
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="closeModal_ConfirmDeleteModal()">
           {{ "Webhook.CancelButton" | translate }}
         </button>
-        <button class="btn btn-primary" (click)="deleteSubscription()" style="padding:12px 16px;">
+        <button class="btn btn-red" (click)="deleteSubscription()">
           {{ "Webhook.ConfirmButton" | translate }}
         </button>
-        <!-- <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
-
-          {{ "ProjectEditPage.DeleteProject" | translate }}
-        </button> -->
+        
       </div>
     </div>
   </div>

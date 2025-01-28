@@ -76,6 +76,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -192,17 +193,7 @@ button.close {
   visibility: visible;
 }
 
-.card-header-custom-bkgrnd {
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  margin: 0px;
-  border-radius: 3px 3px 0px 0px;
-  // background-color: #f2f6f8;
-  background-color: #ffffff;
-  border-bottom: 1px solid #eff3f5;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
+
 
 .r-d--column-th-span {
   font-size: 12px;
@@ -242,14 +233,30 @@ button.close {
   line-height: 33px;
   position: relative;
   top: 4px;
-  color: #3ea9f5;
-  background: rgba(62, 169, 245, 0.1);
+  color: var(--blue-20);
+  // background: rgba(62, 169, 245, 0.1);
   border-style: dotted;
+}
+
+.dept-avatar-add-dept:hover { 
+  color: var(--blue-40);
+  background-color: var(--blu-01);
+}
+
+.add-department {
+  color: var(--blue-20);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.add-department:hover { 
+  color: var(--blue-40);
 }
 
 .line-clamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -306,6 +313,7 @@ table > tbody > tr.default-dept-disabled > td {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .nw-onoffswitch-checkbox {
   position: absolute;
@@ -353,6 +361,7 @@ table > tbody > tr.default-dept-disabled > td {
 .line-clamp-dept-description-in-tooltip {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

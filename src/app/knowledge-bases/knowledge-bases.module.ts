@@ -41,6 +41,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
+import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -68,7 +69,8 @@ const routes: Routes = [
     ModalChatbotNameComponent,
     ModalHookBotComponent,
     ModalNsLimitReachedComponent,
-    ModalConfirmGotoCdsComponent
+    ModalConfirmGotoCdsComponent,
+    ModalAddContentComponent
   ],
   imports: [
     ClipboardModule,

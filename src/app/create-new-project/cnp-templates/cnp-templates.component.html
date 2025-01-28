@@ -27,7 +27,7 @@
                 <div class="create-new-kb-assistant-wpr"> 
                     
 
-                    <button [ngStyle]="{ 'min-width': createChatbotBtnWidth }" id="create-kb-assistant-btn" class="create-kb-assistant-btn"
+                    <button [ngStyle]="{ 'min-width': createChatbotBtnWidth }" id="create-kb-assistant-btn" class="btn-tdblu-no-boxshadow create-kb-assistant-btn"
                         (click)="createChatbotfromKbOfficialResponderTemplate()" [disabled]="spinnerInBtn">
                         <!-- Create your chatbot -->
                         <span *ngIf="!spinnerInBtn"> 
@@ -176,16 +176,20 @@
 
 
                                 <div class="template-preview-card-import-and-start-from-scratch">
-                                    <div  class="btn btn-primary" 
+                                    <button  class="btn btn-tdblu-no-boxshadow" 
                                         (click)="forkTemplate()">
-                               
                                         {{ 'ImportChatbot' | translate}}
-                                    </div>
-                                    <div style="color: #3c4858;"> {{ 'Or' | translate}} </div>
-                                    <div style="color: #3ea9f5;" class="template-preview--link"
+                                    </button>
+                                    <!-- <div style="color: #3c4858;"> {{ 'Or' | translate}} </div> -->
+                                    <!-- <div style="color: #3ea9f5;" class="template-preview--link"
                                         (click)="presentModalAddBotFromScratch()">
                                         {{ 'StartFromScratch' | translate}}
-                                    </div>
+                                    </div> -->
+                                    <button  class="btn btn-outlined" 
+                                        (click)="presentModalAddBotFromScratch()">
+                                        {{ 'StartFromScratch' | translate}}
+                                    </button>
+
                                 </div>
 
 

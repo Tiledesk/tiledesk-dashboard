@@ -507,6 +507,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.router.navigate(['project/' + this.projectId + '/all-conversations']);
   }
 
+  goToEditUser(projectUser_id) {
+    if (this.CURRENT_USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser_id])
+    }
+  }
+
   showRequestsMap() {
     this.displayRequestsMap = true;
   }
@@ -541,15 +547,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getProjectUserRole() {
     // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
         // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE user_role ', user_role);
-        if (user_role) {
-          this.CURRENT_USER_ROLE = user_role;
-          if (user_role === 'agent') {
+        if (projectUser) {
+          this.CURRENT_USER_ROLE = projectUser.role;
+          if (this.CURRENT_USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
             this.displayBtnLabelSeeYourRequets = true
 
@@ -683,8 +685,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // this.logger.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        // COMMENTED NK
-        // this.getDeptsByProjectId(this.projectUserArray)
+   
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
@@ -1016,7 +1017,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancelLbl,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -1063,7 +1064,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       icon: "info",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok') ,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // button: {
       //   text: "OK",
@@ -1184,7 +1185,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       });
 
-      this.getDeptsAndCountOfDeptsInRequests(wsrequests);
+      // No more used 
+      // this.getDeptsAndCountOfDeptsInRequests(wsrequests);
     });
   }
   // DEPTS_LAZY: add this 
@@ -1296,7 +1298,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (this.ONLY_MY_REQUESTS === false) {
             this.ws_requests = wsrequests;
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-            this.addDeptObject(this.ws_requests)
+            // this.addDeptObject(this.ws_requests)
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
@@ -1314,7 +1316,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            this.addDeptObject(this.ws_requests)
+            // this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1334,7 +1336,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            this.addDeptObject(this.ws_requests)
+            // this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1873,7 +1875,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(5000))
+      .pipe(throttleTime(30000))
       .pipe(
         takeUntil(this.unsubscribe$)
       )

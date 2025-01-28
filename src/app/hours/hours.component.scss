@@ -74,7 +74,7 @@
 // }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.container input:checked~.checkmark {
   background-color: var(--blue-light);
 }
 
@@ -86,7 +86,7 @@
 }
 
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.container input:checked~.checkmark:after {
   display: block;
 }
 
@@ -109,6 +109,7 @@
 .chekboxCustomHeight {
   margin-bottom: 26px !important;
 }
+
 // end CHECKBOX
 
 // <!-- SWITCH  -->
@@ -156,15 +157,15 @@
   transition: 0.4s;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   background-color: #1eb848;
 }
 
-input:checked + .slider.open_close_switch_disabled::before {
+input:checked+.slider.open_close_switch_disabled::before {
   background-color: #ccc;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   // background-color: #2196F3;
   background: #fff;
 }
@@ -173,7 +174,7 @@ input:checked + .slider {
 //     box-shadow: 0 0 1px #2196F3;
 //   }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(20px);
   -ms-transform: translateX(20px);
   transform: translateX(20px);
@@ -187,6 +188,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 // <!-- END SWITCH BTN -->
 
 .disabled {
@@ -209,6 +211,7 @@ input:checked + .slider:before {
   .edithours_btnlabel {
     display: none;
   }
+
   .edithours_btnlabelTo {
     display: none;
   }
@@ -248,30 +251,31 @@ input:checked + .slider:before {
   background-color: #f44336 !important;
   color: #fff !important;
 }
+
 .close_pm {
-  margin-top: 0px; 
-  margin-bottom: 0px; 
-  border-radius: 50%; 
-  padding-top:1px; 
-  padding-left:0px;
-  padding-right:0px;
-  padding-bottom:0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-radius: 50%;
+  padding-top: 1px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
   // margin-left:15px;
-  border: solid 1px; 
+  border: solid 1px;
   width: 16px;
   height: 16px
 }
 
 .open_pm {
-  margin-top: 0px; 
-  margin-bottom: 0px; 
-  border-radius: 50%; 
-  padding-top:1px; 
-  padding-left:0px;
-  padding-right:0px;
-  padding-bottom:0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-radius: 50%;
+  padding-top: 1px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
   // margin-left:15px;
-  border: solid 1px; 
+  border: solid 1px;
   width: 16px;
   height: 16px
 }
@@ -282,30 +286,34 @@ input:checked + .slider:before {
   border-color: #4caf50 !important;
 }
 
-  // START - CUSTOM NOTIFICATION 
-  // https://bootsnipp.com/snippets/featured/a-different-approach-to-bootstrap-alert
-  .oaerror {
-    width: 100%; /* Configure it fit in your design  */
-    margin: 0 auto; /* Centering Stuff */
-    background-color: #FFFFFF; /* Default background */
-    // padding: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left:20px;
-    padding-right:20px;
-    border: 1px solid #eee;
-    border-left-width: 5px;
-    border-radius: 3px;
-    margin: 0 auto;
-    font-family:'Poppins','Roboto', 'Arial', sans-serif;
-    font-size: 14px;
-  }
+// START - CUSTOM NOTIFICATION 
+// https://bootsnipp.com/snippets/featured/a-different-approach-to-bootstrap-alert
+.oaerror {
+  width: 100%;
+  /* Configure it fit in your design  */
+  margin: 0 auto;
+  /* Centering Stuff */
+  background-color: #FFFFFF;
+  /* Default background */
+  // padding: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 12px;
+  margin: 0 auto;
+  font-family: var(--header-font-family);
+  font-size: 14px;
+}
 
-  .info {
-    border-left-color: #5bc0de;
-    // background-color: rgba(91, 192, 222, 0.1);
-  }
-   // END - CUSTOM NOTIFICATION
+.info {
+  border-left-color: var(--blue-20); // #5bc0de;
+  // background-color: rgba(91, 192, 222, 0.1);
+}
+
+// END - CUSTOM NOTIFICATION
 
 // start TOOLTIP
 /* Tooltip container */
@@ -331,17 +339,19 @@ input:checked + .slider:before {
   /* Position the tooltip text - TOP */
   // width: 420px;
   bottom: 100%;
-  left: 50%; 
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-   // NEW
-   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
-   background-color: #394f5a;
+  left: 50%;
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltipx:hover .tooltiptext {
   visibility: visible;
 }
+
 // /.end TOOLTIP 
 
 
@@ -356,11 +366,11 @@ input:checked + .slider:before {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   border: 1px solid #999;
-  border: 1px solid rgba(0,0,0,.2);
+  border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 6px;
   outline: 0;
-  -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
-  box-shadow: 0 3px 9px rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
 }
 
 .modal-header {
@@ -375,11 +385,13 @@ input:checked + .slider:before {
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -405,8 +417,9 @@ button.close {
   border-top: 1px solid #e5e5e5;
   /* // background-color: #edf0f1; */
   background-color: #eeeeee;
-  padding-top:10px !important;
+  padding-top: 10px !important;
 }
+
 /*  MODAL END */
 
 .opened_label {
@@ -464,7 +477,7 @@ button.close {
 
 .open_close_switch_disabled {
   cursor: not-allowed;
-  
+
   .slider.round:before {
     background-color: #397dff;
   }
@@ -474,15 +487,16 @@ button.close {
 .day_label_disabled {
   color: #ddd !important
 }
+
 // /.end DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
 
 .row.vdivide [class*='col-']:not(:last-child):after {
   background: #e0e0e0;
   width: 1px;
   content: "";
-  display:block;
+  display: block;
   position: absolute;
-  top:0;
+  top: 0;
   bottom: 0;
   right: 0;
   min-height: 70px;
@@ -490,9 +504,9 @@ button.close {
 
 // WHEN IS > 
 @media (min-width: 768px) {
-  .custom_col {
-    //border-right: 1px solid #e0e0e0;
-  }
+  // .custom_col {
+  //   border-right: 1px solid #e0e0e0;
+  // }
 }
 
 .oh-table td {
@@ -504,202 +518,328 @@ button.close {
 
 
 // NG-SELECT css
-.ng-select.ng-select-opened>.ng-select-container{
-  background:#fff;border-color:#b3b3b3 #ccc #d9d9d9
+.ng-select.ng-select-opened>.ng-select-container {
+  background: #fff;
+  border-color: #b3b3b3 #ccc #d9d9d9
 }
-.ng-select.ng-select-opened>.ng-select-container:hover{
-  box-shadow:none
+
+.ng-select.ng-select-opened>.ng-select-container:hover {
+  box-shadow: none
 }
-.ng-select.ng-select-opened>.ng-select-container .ng-arrow{
-  top:-2px;border-color:transparent transparent #999;border-width:0 5px 5px
+
+.ng-select.ng-select-opened>.ng-select-container .ng-arrow {
+  top: -2px;
+  border-color: transparent transparent #999;
+  border-width: 0 5px 5px
 }
-.ng-select.ng-select-opened>.ng-select-container .ng-arrow:hover{
-  border-color:transparent transparent #666
+
+.ng-select.ng-select-opened>.ng-select-container .ng-arrow:hover {
+  border-color: transparent transparent #666
 }
-.ng-select.ng-select-opened.ng-select-bottom>.ng-select-container{
-  border-bottom-right-radius:0;border-bottom-left-radius:0
+
+.ng-select.ng-select-opened.ng-select-bottom>.ng-select-container {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0
 }
-.ng-select.ng-select-opened.ng-select-top>.ng-select-container{
-  border-top-right-radius:0;border-top-left-radius:0
+
+.ng-select.ng-select-opened.ng-select-top>.ng-select-container {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0
 }
-.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container{
-  border-color:#007eff;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 0 3px rgba(0,126,255,0.1)
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  border-color: #007eff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px rgba(0, 126, 255, 0.1)
 }
-.ng-select.ng-select-disabled>.ng-select-container{
-  background-color:#f9f9f9
+
+.ng-select.ng-select-disabled>.ng-select-container {
+  background-color: #f9f9f9
 }
-.ng-select .ng-has-value .ng-placeholder{
-  display:none
+
+.ng-select .ng-has-value .ng-placeholder {
+  display: none
 }
-.ng-select .ng-select-container{
-  background-color:#fff;border-radius:4px;border:1px solid #ccc;min-height:36px;align-items:center
+
+.ng-select .ng-select-container {
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-height: 36px;
+  align-items: center
 }
-.ng-select .ng-select-container:hover{
-  box-shadow:0 1px 0 rgba(0,0,0,0.06)
+
+.ng-select .ng-select-container:hover {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06)
 }
-.ng-select .ng-select-container .ng-value-container{
-  align-items:center;padding-left:10px
+
+.ng-select .ng-select-container .ng-value-container {
+  align-items: center;
+  padding-left: 10px
 }
-.ng-select .ng-select-container .ng-value-container .ng-placeholder{
-  color:#aaa;
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: #aaa;
 }
-.ng-select.ng-select-single .ng-select-container{
-  height:36px
+
+.ng-select.ng-select-single .ng-select-container {
+  height: 36px
 }
-.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
-  left:0;padding-left:10px;padding-right:50px;top:5px
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  left: 0;
+  padding-left: 10px;
+  padding-right: 50px;
+  top: 5px
 }
-.ng-select.ng-select-multiple.ng-select-disabled>.ng-select-container .ng-value-container .ng-value{
-  background-color:#f9f9f9;border:1px solid #e3e3e3
+
+.ng-select.ng-select-multiple.ng-select-disabled>.ng-select-container .ng-value-container .ng-value {
+  background-color: #f9f9f9;
+  border: 1px solid #e3e3e3
 }
-.ng-select.ng-select-multiple.ng-select-disabled>.ng-select-container .ng-value-container .ng-value .ng-value-label{
-  padding:0px 5px
+
+.ng-select.ng-select-multiple.ng-select-disabled>.ng-select-container .ng-value-container .ng-value .ng-value-label {
+  padding: 0px 5px
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container{
-  padding-left:7px;padding-top:5px
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+  padding-left: 7px;
+  padding-top: 5px
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value{
-  font-size:0.9em;margin-right:5px;margin-bottom:5px;background-color:#f5faff;border-radius:2px;border:1px solid #c2e0ff
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  font-size: 0.9em;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background-color: #f5faff;
+  border-radius: 2px;
+  border: 1px solid #c2e0ff
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value.ng-select-disabled{
-  background-color:#f9f9f9;border:1px solid #e3e3e3
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value.ng-select-disabled {
+  background-color: #f9f9f9;
+  border: 1px solid #e3e3e3
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label{
-  display:inline-block;padding:0px 5px 0px 1px
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
+  display: inline-block;
+  padding: 0px 5px 0px 1px
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon{
-  display:inline-block;padding:0px 5px
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon {
+  display: inline-block;
+  padding: 0px 5px
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover{
-  background-color:#d8eafd
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
+  background-color: #d8eafd
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left{
-  border-right:1px solid #c2e0ff
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  border-right: 1px solid #c2e0ff
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.right{
-  border-left:1px solid #c2e0ff
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.right {
+  border-left: 1px solid #c2e0ff
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input{
-  padding-bottom:3px;padding-left:3px
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input {
+  padding-bottom: 3px;
+  padding-left: 3px
 }
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder{
-  top:5px;padding-bottom:5px;padding-left:3px
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  top: 5px;
+  padding-bottom: 5px;
+  padding-left: 3px
 }
-.ng-select .ng-clear-wrapper{
-  color:#999
+
+.ng-select .ng-clear-wrapper {
+  color: #999
 }
-.ng-select .ng-clear-wrapper .ng-clear:hover{
-  color:#D0021B
+
+.ng-select .ng-clear-wrapper .ng-clear:hover {
+  color: #D0021B
 }
-.ng-select .ng-spinner-zone{
-  padding-right:5px;padding-top:5px
+
+.ng-select .ng-spinner-zone {
+  padding-right: 5px;
+  padding-top: 5px
 }
-.ng-select .ng-arrow-wrapper{
-  padding-right:5px;width:25px
+
+.ng-select .ng-arrow-wrapper {
+  padding-right: 5px;
+  width: 25px
 }
-.ng-select .ng-arrow-wrapper .ng-arrow{
-  border-color:#999 transparent transparent;border-style:solid;border-width:5px 5px 2.5px
+
+.ng-select .ng-arrow-wrapper .ng-arrow {
+  border-color: #999 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px
 }
-.ng-select .ng-arrow-wrapper .ng-arrow:hover{
-  border-top-color:#666
+
+.ng-select .ng-arrow-wrapper .ng-arrow:hover {
+  border-top-color: #666
 }
-.ng-dropdown-panel{
-  background-color:#fff;border:1px solid #ccc;box-shadow:0 1px 0 rgba(0,0,0,0.06)
+
+::ng-deep .ng-select.ng-select-disabled .ng-select-container {
+  color: #ddd
 }
-.ng-dropdown-panel.ng-select-bottom{
-  top:100%;border-bottom-right-radius:4px;border-bottom-left-radius:4px;border-top-color:#e6e6e6;margin-top:-1px
+
+.ng-dropdown-panel {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06)
 }
-.ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child{
-  border-bottom-right-radius:4px;border-bottom-left-radius:4px
+
+.ng-dropdown-panel.ng-select-bottom {
+  top: 100%;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-top-color: #e6e6e6;
+  margin-top: -1px
 }
-.ng-dropdown-panel.ng-select-top{
-  bottom:100%;border-top-right-radius:4px;border-top-left-radius:4px;border-bottom-color:#e6e6e6;margin-bottom:-1px
+
+.ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px
 }
-.ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child{
-  border-top-right-radius:4px;border-top-left-radius:4px
+
+.ng-dropdown-panel.ng-select-top {
+  bottom: 100%;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-color: #e6e6e6;
+  margin-bottom: -1px
 }
-.ng-dropdown-panel .ng-dropdown-header{
-  border-bottom:1px solid #ccc;padding:5px 7px
+
+.ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px
 }
-.ng-dropdown-panel .ng-dropdown-footer{
-  border-top:1px solid #ccc;padding:5px 7px
+
+.ng-dropdown-panel .ng-dropdown-header {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 7px
 }
-.ng-dropdown-panel .ng-dropdown-panel-items{
-  margin-bottom:1px
+
+.ng-dropdown-panel .ng-dropdown-footer {
+  border-top: 1px solid #ccc;
+  padding: 5px 7px
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup{
-  user-select:none;cursor:default;padding:8px 10px
+
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  margin-bottom: 1px
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-select-disabled{
-  color:rgba(0,0,0,0.54)
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup {
+  user-select: none;
+  cursor: default;
+  padding: 8px 10px
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-marked{
-  background-color:#ebf5ff;color:#333
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-select-disabled {
+  color: rgba(0, 0, 0, 0.54)
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-selected{
-  color:#333;background-color:#f5faff;font-weight:600
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-marked {
+  background-color: #ebf5ff;
+  color: #333
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
-  background-color:#fff;color:rgba(0,0,0,0.87);padding:8px 10px
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup.ng-option-selected {
+  color: #333;
+  background-color: #f5faff;
+  font-weight: 600
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected{
-  color:#333;background-color:#f5faff
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 8px 10px
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label{
-  font-weight:600
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  color: #333;
+  background-color: #f5faff
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked{
-  background-color:#ebf5ff;color:#333
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected .ng-option-label {
+  font-weight: 600
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled{
-  color:#cccccc
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: #ebf5ff;
+  color: #333
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-child{
-  padding-left:22px
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #cccccc
 }
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option .ng-tag-label{
-  padding-right:5px;font-size:80%;font-weight:400
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-child {
+  padding-left: 22px
 }
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option .ng-tag-label {
+  padding-right: 5px;
+  font-size: 80%;
+  font-weight: 400
+}
+
 // NG-SELECT css end
 
 // start SWITCH BTN
 .onoffswitch {
-  position: relative; width: 90px;
-  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+  position: relative;
+  width: 90px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
+
 .onoffswitch-checkbox {
   display: none;
 }
+
 .onoffswitch-label {
-  display: block; overflow: hidden; cursor: pointer;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
   // border: 2px solid #999999; 
   border: 1px solid #d9d9d9 !important;
   border-radius: 22px;
 }
+
 .onoffswitch-inner {
-  display: block; 
-  width: 200%; 
+  display: block;
+  width: 200%;
   margin-left: -100%;
   transition: margin 0.3s ease-in 0s;
 }
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-  display: block; 
-  float: left; 
-  width: 50%; 
-  height: 30px; 
-  padding: 0; 
+
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
   line-height: 30px;
-  font-size: 14px; 
-  color: white; 
-  font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+  font-size: 14px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
   box-sizing: border-box;
 }
+
 .onoffswitch-inner:before {
   content: "ON";
   padding-left: 10px;
   // background-color: #EEEEEE; 
   color: #4CAF50;
 }
+
 .onoffswitch-inner:after {
   content: "OFF";
   padding-right: 10px;
@@ -707,25 +847,31 @@ button.close {
   color: #F44336;
   text-align: right;
 }
+
 .onoffswitch-switch {
-  display: block; 
-  width: 22px; 
+  display: block;
+  width: 22px;
   margin: 5px;
   background: #F44336;
-  position: absolute; top: 0; bottom: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
   right: 56px;
   // border: 2px solid #999999;
   border: 1px solid #d9d9d9 !important;
   border-radius: 22px;
-  transition: all 0.3s ease-in 0s; 
+  transition: all 0.3s ease-in 0s;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
   margin-left: 0;
 }
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-  right: 0px; 
-  background-color: #4CAF50; 
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+  right: 0px;
+  background-color: #4CAF50;
 }
+
 // ./end SWITCH BTN
 
 
@@ -755,8 +901,8 @@ button.close {
   margin-left: 8px;
 
   &:hover {
-      // background: #256ffd;
-      opacity: .8;
+    // background: #256ffd;
+    opacity: .8;
   }
 }
 
@@ -781,10 +927,10 @@ button.close {
 //   justify-content: center;
 //   min-width: 100px;
 //   margin-left: 8px;
-  
+
 //   //height: 36px;
 //   height: 40px;
-  
+
 //   //border-radius: 14px;
 //   border-radius: 10px;
 
@@ -823,16 +969,16 @@ button.close {
 //   }
 // }
 
-p.slot-description {
-  width: 70%;
+.slot-description {
+  // width: 70%;
   min-width: 460px;
   font-size: 13px;
-  font-weight: 400;
-  color: #92aab7;
+  font-weight: 300;
+  color: var(--secondary-text-color); // #92aab7;
 }
 
 .template-content {
-  flex: 1 1 auto; 
+  flex: 1 1 auto;
   margin-left: 40px;
   margin-right: 40px;
   margin-top: 20;
@@ -849,10 +995,10 @@ p.slot-description {
   margin-bottom: 10px;
 }
 
-.card-content {
-  padding-top: 24px;
+// .card-content {
+//   padding-top: 24px;
 
-}
+// }
 
 .selector-bar {
   font-family: 'Poppins';
@@ -863,7 +1009,7 @@ p.slot-description {
 
 .mat-menu-custom-btn>.mat-icon {
   margin-right: 0;
-  color: var(--blue-light);
+  color: var(--blue-20);
   margin-top: 1px;
   font-size: 21px;
   width: 20px;
@@ -873,17 +1019,17 @@ p.slot-description {
   // background-color: var(--blue-light);
   // border-color: var(--blue-light);
   padding: 6px;
-  color: var(--blue-light);
+  color: var(--blue-20);
   border-radius: 4px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .slot-add-selector {
-
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+  gap: 6px;
+
   .slot-name {
     font-size: 24px;
     font-weight: 400;
@@ -902,13 +1048,14 @@ p.slot-description {
   .link {
     display: flex;
     align-items: center;
-    color: #3ea9f5;
+    color: var(--blue-20);
     font-weight: 400;
     margin-right: 4px;
     cursor: pointer;
 
     &:hover {
-      color: #269ef4;
+      // color: #269ef4;
+      text-decoration: underline;
     }
   }
 
@@ -918,8 +1065,58 @@ p.slot-description {
   }
 }
 
-.time-input{
+.reset-timezone-disabled > .link{
+  color: #ddd !important;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.reset-timezone-disabled > .your-current-tz-disabled{ 
+  color: #ddd !important;
+}
+
+.reset-timezone-disabled:hover > .link{
+  text-decoration: none;
+}
+
+
+.time-input {
   padding: 4px;
   border-radius: 8px;
   border: solid 1px #62666d3b;
+}
+
+.table-wpr > div > div {
+ border-radius: 12px;
+}
+
+.link-to-docs-wpr {
+  margin-bottom: 16px;
+}
+.link-to-docs-wpr > div > div > span > svg {
+  fill: var(--blue-light);
+  vertical-align: middle;
+} 
+
+.link-to-docs {
+  // background-color: rgb(241, 241, 241);
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-left: -14px;
+  // padding-bottom: 12px;
+  // padding-top: 12px;
+  padding: 10px 0px;
+}
+
+.custom-anchor-to-docs {
+  color: var(--blue-light); // #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+  text-decoration: underline;
 }

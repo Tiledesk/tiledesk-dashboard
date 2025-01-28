@@ -42,14 +42,14 @@
         <!--  PROJECT PROFILE INFO  -->
         <!-- -------------------------------------------------- -->
         <div class="row">
-
+          
           <div class="row" *ngIf="areActivePay">
             <div class="col-md-12">
               <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
                 <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
-            (prjct_profile_type === 'free' && trial_expired === false) || 
-            (prjct_profile_type === 'free' && trial_expired === true)) && 
-            (projectUsersLength + countOfPendingInvites <= seatsLimit))">
+                    (prjct_profile_type === 'free' && trial_expired === false) || 
+                    (prjct_profile_type === 'free' && trial_expired === true)) && 
+                    (projectUsersLength + countOfPendingInvites <= seatsLimit))">
 
                   <i class="material-icons" style="vertical-align: middle;"
                     [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }">
@@ -61,8 +61,7 @@
                     {{ this.projectUsersLength + this.countOfPendingInvites }}
                     {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                     <span style="text-transform: capitalize">
-                      {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                      (click)="getMoreOperatorsSeats()">
+                      {{ prjct_profile_name }}</span> - <span class="link-string" (click)="getMoreOperatorsSeats()">
                       <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
                         {{ "GetMore" | translate }}
                       </span>
@@ -74,11 +73,7 @@
                   </span>
 
                 </div>
-                <!-- <div class="card-content alert-exceed-numb-of-seats-allowed-sub-active" 
-            *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-            (prjct_profile_type === 'free' && trial_expired === false) || 
-            (prjct_profile_type === 'free' && trial_expired === true))  &&
-            (projectUsersLength + countOfPendingInvites > seatsLimit))"> -->
+            
                 <div class="card-content  alert-exceed-numb-of-seats-allowed"
                   style="background: #f44336;color: #fff;text-align: center;"
                   *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
@@ -87,7 +82,8 @@
                     {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
                   </span>
                   <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                    <button class="upgrade---plan-btn" (click)="presentGoToPricingModal()">
+                    <!-- upgrade---plan-btn  -->
+                    <button class="btn btn-white-rounded" (click)="presentGoToPricingModal()">
                       {{ "Pricing.UpgradePlan" | translate }}
                     </button>
                   </div>
@@ -100,14 +96,16 @@
                   <span class="msg-alert">
                     {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
                   </span>
-                  <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
+                  
                   <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                    <button class="upgrade---plan-btn" (click)="presentContactUsModal()">
+
+                    <!-- upgrade---plan-btn -->
+                    <button class="btn btn-white-rounded" (click)="presentContactUsModal()">
                       {{ "Pricing.UpgradePlan" | translate }}
                     </button>
                   </div>
                 </div>
-
+               
                 <div class="card-content  alert-exceed-numb-of-seats-allowed"
                   style="background: #f44336;color: #fff;text-align: center;"
                   *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
@@ -124,7 +122,7 @@
                     </span>
 
                     <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                      <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
+                      <button class="btn btn-white-rounded" (click)="openModalSubsExpired()">
                         {{ "Pricing.UpgradePlan" | translate }}
                       </button>
                     </div>
@@ -141,10 +139,10 @@
           <!-- -------------------------------------------------- -->
 
           <!-- CREATE VIEW -->
-          <span *ngIf="CREATE_VIEW">
+          <span *ngIf="CREATE_VIEW" class="create-view">
             <div class="col-md-8">
 
-              <div class="card" style="padding-top:25px; padding-bottom:25px;margin-top: 15px;">
+              <div class="card invite-teammate-card">
                 <div class="card-content">
                   <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
                   <label class="col-sm-2 custom-label">
@@ -189,8 +187,8 @@
                   <div class="col-sm-10">
                     <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
                     <!-- email length {{ user_email?.length }}  -->
-
-                    <button class="btn btn-primary"
+                    <!-- btn-primary  -->
+                    <button class="btn btn-tdblu-no-boxshadow invite-button"
                       [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || projectUsersLength + countOfPendingInvites >= seatsLimit"
                       (click)="invite()">
                       {{ "UserEditAddPage.Invites" | translate }}
@@ -203,13 +201,13 @@
             <!-- /. end col-md-8 -->
           </span>
 
-          <!-- 
-      // -------------------------------------------------------------------------------------
-      //  EDIT VIEW 
-      // ------------------------------------------------------------------------------------- -->
+
+          <!-- ---------------------------------------------------------------------------- -->
+          <!--  EDIT VIEW -->
+          <!-- ---------------------------------------------------------------------------- -->
           <span *ngIf="EDIT_VIEW">
             <div class="col-md-8 left-col-custom-padding">
-              <div class="card card--no-border" style="padding-top:25px; padding-bottom:0px; margin-top: 15px;">
+              <div class="card card--no-border edit-view-card" style="padding-bottom:0px; margin-top: 0px;">
                 <loading-spinner *ngIf="showSpinner"></loading-spinner>
                 <div *ngIf="!showSpinner" class="card-content">
 
@@ -451,8 +449,8 @@
 
                     <div class="col-sm-10">
 
-
-                      <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-primary update-pu-btn"
+                      <!-- btn-primary update-pu-btn -->
+                      <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-tdblu-no-boxshadow update-pu-btn"
                         (click)="updateUserRoleAndMaxchat(); ">
                         {{ "UserEditAddPage.Update" | translate }}
                       </button>
@@ -524,18 +522,24 @@
                   {{ "RelatedKnowledgeBase" | translate }}
 
                 </p>
-                <p *ngIf="hideHelpLink" style="color:#7695a5">
+                <p class="help-link" *ngIf="hideHelpLink">
 
                   <span>
-                    <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
+                    <!-- <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                       data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
                       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                       <path fill="#0f62ff"
                         d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
                       </path>
+                    </svg> -->
+
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                      fill="none" style="vertical-align: middle;">
+                      <path
+                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
                     </svg>
                   </span>
-                  <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;cursor: pointer; margin-left: 8px; text-decoration: underline;"
+                  <a 
                     href="{{KNOWLEDGE_BASE_USER_ROLE_URL}}" target="_blank">
 
                     {{ 'LearnMoreAboutDefaultRoles' | translate }}
@@ -558,7 +562,7 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
+    <div class="modal-content custom--modal-content">
       <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
@@ -566,20 +570,19 @@
 
         <h4 class="modal-title">
           {{ "UserEditAddPage.modalInviteUser" | translate }}
-          <!-- <code>{{id_toDelete}}</code> -->
         </h4>
       </div>
 
-      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+      <div class="modal-body">
 
-        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+        <span class="modal-loader-wpr" *ngIf="SHOW_CIRCULAR_SPINNER">
           <div class="loader" style="top:25%">
             <svg class="circular" viewBox="25 25 50 50">
               <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
             </svg>
 
           </div>
-          <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+          <p>
             {{ "UserEditAddPage.Processing" | translate }}
           </p>
         </span>
@@ -672,8 +675,8 @@
         </span>
       </div>
 
-      <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
+      <div class="modal-footer">
+        <button class="btn btn-tdblu-no-boxshadow" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
           {{ "UserEditAddPage.Continue" | translate }}
         </button>
       </div>

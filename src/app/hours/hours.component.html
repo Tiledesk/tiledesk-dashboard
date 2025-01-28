@@ -20,18 +20,36 @@
 
 
 
-<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+<div class="main-content" style="padding-top:0px; padding-right: 5px;margin-left: -5px;">
   
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     {{ 'Hours' | translate }}
   </div>
 
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 5px;">
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
 
       <div class="template-content">
+
+        <div *ngIf="hideHelpLink" class="link-to-docs-wpr" style="margin-bottom: 0px !important;">
+          <div class="row link-to-docs">
+            <div class="col-md-12">
+              <span>
+                
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="none">
+                  <path
+                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                </svg>
+              </span>
+              <a class="custom-anchor-to-docs" href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank">
+                {{ 'HoursPage.LearnMoreAboutOH' | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
@@ -75,12 +93,13 @@
               </mat-menu>
             </div>
             <div class="header-buttons">
-
-              <button *ngIf="selectedSlot.id !== 0" class="custom-button delete" (click)="presentModalDeleteSlot()">
+              <!-- custom-button delete -->
+              <button *ngIf="selectedSlot.id !== 0" class="btn btn-red" (click)="presentModalDeleteSlot()">
                 {{ "Delete" | translate }}
               </button>
 
-              <button class="custom-button save" (click)="save()">
+              <!-- custom-button save  -->
+              <button class="btn btn-tdblu-no-boxshadow" (click)="save()" style="margin-left: 20px;">
                 {{ "Save" | translate }}
               </button>
 
@@ -88,14 +107,22 @@
           </div>
 
           <div class="oaerror info" style="margin-bottom: 16px;">
-            <p *ngIf="selectedSlot.id === 0" class="slot-description">
+            <div *ngIf="selectedSlot.id === 0" class="slot-description">
               <span [innerHTML]="'HoursPage.GeneralOperatingHoursDescription' | translate"></span>
-              <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a>
-            </p>
-            <p *ngIf="selectedSlot.id !== 0" class="slot-description">
+
+              <!-- <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a> -->
+
+           
+
+            </div>
+
+
+            <div *ngIf="selectedSlot.id !== 0" class="slot-description">
               <span [innerHTML]="'HoursPage.TimeSlotDescription' | translate"></span>
-              <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a>
-            </p>
+
+              <!-- <a href="https://gethelp.tiledesk.com/articles/define-the-operating-hours/" target="_blank"> {{ 'LearnMore' | translate }}</a> -->
+
+            </div>
           
             <div class="checkbox">
               <label class="title-attribute">
@@ -138,8 +165,8 @@
           </div> -->
 
           <div class="oaerror info" [ngClass]="{'oaerror_info_disabled' : !selectedSlot.active}">
+            
             <div class="row">
-              
               <div class="col-sm-12">
                 <!-- style=" font-size: 16px; font-family: 'Poppins', sans-serif !important; color: #394f5a;" -->
                 <p style="font-size: 14px; color: #3c4858; font-weight: 400;"
@@ -163,7 +190,8 @@
                 <!-- [(ngModel)]="this.selectedSlot.hours.tzname" -->
                 <!-- (change)="setSelectedTimeZone()" -->
                 <ng-select #selectElem class="custom" [(ngModel)]="selectedSlot.hours.tzname"
-                  style="margin-bottom: 6px;"
+                  style="margin-bottom: 6px;" 
+                  [ngClass]="{'ng-select-disabled': !selectedSlot.active}"
                   [disabled]="!selectedSlot.active">
                   <ng-option *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value"
                     style="height: 16px !important" [disabled]="!selectedSlot.active">
@@ -171,14 +199,14 @@
                   </ng-option>
                 </ng-select>
 
-                <div class="reset-timezone">
+                <div class="reset-timezone" [ngClass]="{'reset-timezone-disabled': !selectedSlot.active}">
                   <span class="link" (click)="resetToCurrentTimezone()">
-                    <span class="material-icons-outlined">restore</span>
-                    <!-- <span>Reset to (UTC {{currentUTCOffset}}) {{currentUTCName}}</span> -->
+                    <!-- <span class="material-icons-outlined">restore</span> -->
+                
                     <span>{{ 'HoursPage.ResetToTz' | translate }} (UTC {{currentUTCOffset}}) {{currentUTCName}}</span>
                   </span>
-                  <!-- <span>(Your current Timezone)</span> -->
-                  <span>({{ 'HoursPage.YourCurrentTz' | translate }})</span>
+                 
+                  <span [ngClass]="{'your-current-tz-disabled': !selectedSlot.active}">({{ 'HoursPage.YourCurrentTz' | translate }})</span>
                 </div>
               </div>
 
@@ -207,7 +235,7 @@
 
 
           <!-- // TABLE -->
-          <div class="row">
+          <div class="row table-wpr">
             <div class="col-md-12">
               <div class="card" [ngClass]="{'card_disabled' : !selectedSlot.active}">
 

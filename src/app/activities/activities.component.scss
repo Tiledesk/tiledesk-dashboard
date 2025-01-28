@@ -1,9 +1,9 @@
 .column-th-span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #353f45;
-    // color: #566787;
-  }
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+  // color: #566787;
+}
 
 // .icon-user-plus:before {
 //   content: "\f234"; /* FontAwesome Unicode */
@@ -39,13 +39,14 @@
 }
 
 .highlight {
-  background-color:#FFFF00;
+  background-color: #FFFF00;
 }
 
 
 // up arrow in sort button
 .sorting:before {
-  content: "\f0de"; /* FontAwesome Unicode */
+  content: "\f0de";
+  /* FontAwesome Unicode */
   font-family: FontAwesome;
   display: inline-block;
   font-weight: 900;
@@ -53,12 +54,13 @@
   right: -8px;
 }
 
-.sorting_asc:before  {
+.sorting_asc:before {
   opacity: 0.5;
 }
 
 .sorting:after {
-  content: "\f0dd"; /* FontAwesome Unicode */
+  content: "\f0dd";
+  /* FontAwesome Unicode */
   font-family: FontAwesome;
   display: inline-block;
   font-weight: 900;
@@ -68,13 +70,42 @@
   opacity: 0.5;
 }
 
-@media (max-width: 768px){ 
+@media (max-width: 768px) {
   .filter-card {
     margin-bottom: 8px !important;
   }
+
   .activity-label {
     margin-top: 5px !important;
   }
 
 }
 
+
+
+.btn-gray-no-boxshadow {
+  border-radius: 999px;
+}
+
+.actvity-btn-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.search-btn > span {
+  color: #fff;
+  padding-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.card-footer > .pagination-wpr {
+  display: flex;
+  align-items: center;
+}
+.card-footer > .pagination-wpr > .pagination { 
+  width: 120px; margin: 0 auto; margin-top: 10px
+}

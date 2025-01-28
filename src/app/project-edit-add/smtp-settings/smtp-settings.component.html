@@ -125,8 +125,8 @@
                           name="smtpswd" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px"
                           autocomplete="new-password">
                         <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                          <button class="btn btn-primary show-password-btn" (click)="showPassword()"
-                            style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                          <button id="smtp-show-password-btn" class="btn btn-primary show-password-btn" (click)="showPassword()"
+                            style="">
                             <span *ngIf="!showPswd" class="material-icons">
                               visibility_off
                             </span>
@@ -163,7 +163,8 @@
                 <div class="row"
                   style="border-top:1px solid  #ddd !important;width: calc((100% / 3) + 360px); margin-left:18px">
                   <div class="col-xs-6" style=" padding-left:0px">
-                    <button class="btn btn-primary send-smtp-test-email" (click)="sendSMTPTestEmail()">
+                    <!-- btn-primary send-smtp-test-email -->
+                    <button class="btn btn-outlined" (click)="sendSMTPTestEmail()">
                       <span class="material-icons">
                         play_arrow
                       </span>
@@ -171,13 +172,13 @@
                     </button>
                   </div>
                   <div class="col-xs-6" style="text-align: right; padding-right:0px">
-
-                    <button type="submit" class="btn btn-white reset-to-default-smtp-configuration"
-                      (click)="resetToDefaultSMTPConfiguration()" style="color:#ff9800">
+                    <!-- btn-white reset-to-default-smtp-configuration -->
+                    <button type="submit" class="btn btn-gray-no-boxshadow"
+                      (click)="resetToDefaultSMTPConfiguration()" style="margin-right: 8px;">
                       {{ "ResetToDefaults" | translate }}
                     </button>
-
-                    <button type="submit" class="btn btn-primary update-smtp-configuration"
+                    <!-- btn-primary update-smtp-configuration -->
+                    <button type="submit" class="btn btn-tdblu-no-boxshadow"
                       (click)="updateSMTPConfiguration()">
                       {{ "Update" | translate }}
                     </button>

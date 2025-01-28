@@ -7,6 +7,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9;
   // border-top: 1px solid #c0c0c0;
@@ -25,6 +26,7 @@ select {
   border-radius: 0px;
   border-color: #d9d9d9;
 }
+
 .card form [class*="col-"] {
   padding: 0px;
 }
@@ -73,11 +75,13 @@ select {
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -105,6 +109,7 @@ button.close {
   background-color: #eeeeee;
   padding-top: 10px !important;
 }
+
 /*  MODAL END */
 
 @media (max-width: 767px) {
@@ -117,7 +122,8 @@ button.close {
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #999999;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
 :-ms-input-placeholder {
@@ -129,6 +135,7 @@ button.close {
   /* Microsoft Edge */
   color: #999999;
 }
+
 /* end CHANGE PLACEHOLDER COLOR */
 
 :disabled:hover {
@@ -149,9 +156,9 @@ button.close {
   color: #f44336 !important;
 }
 
-.nav-pills.nav-pills-info.custom > li.active > a,
-.nav-pills.nav-pills-info.custom > li.active > a:focus,
-.nav-pills.nav-pills-info.custom > li.active > a:hover {
+.nav-pills.nav-pills-info.custom>li.active>a,
+.nav-pills.nav-pills-info.custom>li.active>a:focus,
+.nav-pills.nav-pills-info.custom>li.active>a:hover {
   /* background-color: #00bcd4;  */
   background-color: #039be5 !important;
   -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12),
@@ -159,6 +166,7 @@ button.close {
   box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12),
     0 7px 8px -5px rgba(3, 115, 229, 0.2) !important;
 }
+
 /* height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; */
 .custom-label {
   color: #7695a5;
@@ -169,121 +177,18 @@ button.close {
   text-align: right !important;
 }
 
-// - start - BOTTOM NAVBAR  //
-.bottom-nav {
-  background-color: #fff;
-  width: 100%;
-  // z-index: 1028;
-  position: relative;
-  top: -5px;
-  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
-  padding-bottom: 5px;
-  float: left;
-  height: 50px;
-  padding-left: 0px;
-  display: flex;
-  flex-grow: 1;
-  // z-index: 1049;
-}
-
-
-
-.bottom-nav li {
-  float: left;
-  padding: 15px;
-  list-style: none;
-  position: relative;
-  display: block;
-  height: 52px;
-  cursor: pointer;
-}
 
 @media (max-width: 991px) {
-  .bottom-nav li { 
+  .bottom-nav li {
     z-index: 1049
   }
 }
 
-.bottom-nav li a {
-  padding: 18px 15px;
-  color: #797979;
-  line-height: 20px;
-}
-
-.bottom-nav li a:hover {
-  text-decoration: none;
-  //  background-color: #eee;
-}
-
-.li-active {
-  border-bottom: 3px solid $brand-primary !important;
-  color: $brand-primary !important;
-  cursor: default !important;
-}
-
-.li-active a {
-  color: $brand-primary !important;
-}
-
-//   $f21blue: $brand-primary;
-.btn-with-border-effect {
-  background: none;
-  border: 0;
-  box-sizing: border-box;
-  // margin: 1em;
-  // padding: 1em 2em;
-  //   padding-bottom: 37px;
-  font-size: 14px;
-  font-weight: 300;
-
-  // Required, since we're setting absolute on pseudo-elements
-  position: relative;
-  vertical-align: middle;
-
-  &::before,
-  &::after {
-    box-sizing: inherit;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.border-from-center {
-  &:hover {
-    color: $brand-primary;
-  }
-
-  // Set up base styles, we're going to scale instead of animating width/height
-  &::before,
-  &::after {
-    //   top: 3px;
-    top: 0px;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
-  }
-
-  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
-  &::before {
-    // border-top: 2px solid $purple;
-    border-bottom: 3px solid $brand-primary;
-    transform: scale3d(0, 1, 1); // Shrink only width
-  }
-
-  &:hover::before,
-  &:hover::after {
-    transform: scale3d(1, 1, 1); // Show full-size
-    transition: transform 0.5s;
-  }
-}
 
 @media (max-width: 991px) {
-  .bottom-nav {
-    // top: -2px !important;
-  }
+  // .bottom-nav {
+  //   // top: -2px !important;
+  // }
 
   .chart-wrapper {
     margin-top: 60px !important;
@@ -300,10 +205,11 @@ button.close {
     height: 39px;
   }
 }
+
 // - end - BOTTOM NAVBAR  //
 
-.card-avatar{
-  padding-bottom:15px; 
+.card-avatar {
+  padding-bottom: 15px;
   min-height: 85px;
   display: flex;
   align-items: center;
@@ -324,7 +230,7 @@ button.close {
 .user-profile-altenative-user-avatar {
   display: block;
   font-size: 25px;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family); // 'Poppins','Roboto', 'Arial', sans-serif;
   font-weight: 400;
   position: absolute;
   color: #fff;
@@ -343,7 +249,28 @@ button.close {
   color: #7695a5;
 }
 
+.delete-user-image-btn {
+  margin-left: 12px;
+  width: 40px;
+}
 
+
+.delete-user-image-btn>span>svg {
+  fill: var(--red-btn-color);
+}
+
+.upload-user-photo-tips {
+  color: var(--secondary-text-color); // #7695a5;
+  font-size: 12px;
+  width: fit-content;
+  font-weight: 400;
+}
+
+
+.resend-verification-email {
+  cursor: pointer; 
+  color: var(--blue-light) // #03a5e8
+}
 
 
 .browser-lang-wpr {
@@ -370,6 +297,7 @@ button.close {
   margin-left: 35px;
   margin-top: 8px;
 }
+
 .not-available-language {
   color: #f44336;
   text-transform: uppercase;
@@ -381,3 +309,6 @@ button.close {
 }
 
 
+// .automatic-dshbrd-lang > div > label {
+//   color:  #7695a5 // var(--secondary-text-color)
+// }

@@ -624,23 +624,16 @@
                 </ng-template>
               </ng-select>
             </div>
-
-            <!-- <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" (click)="goToTags()"
-              class="manage_tags-cnctc-info">
-              {{ 'Tags.ManageTags' | translate}}
-            </div> -->
-
           </div>
         </form>
-
-        
       </div>
-      
     </li>
     <li>
-      <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" (click)="goToTags()"
-              class="manage_tags-cnctc-info">
+      <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" 
+              >
+              <button (click)="goToTags()" class="manage_tags-cnctc-info"> 
               {{ 'Tags.ManageTags' | translate}}
+              </button>
             </div>
 
     </li>

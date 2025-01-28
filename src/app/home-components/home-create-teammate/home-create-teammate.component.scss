@@ -170,7 +170,8 @@
 }
 
 #home-material-btn {
-  background-color: var(--blue-light);
+  // background-color: var(--blue-light);
+  background-color: var(--blue-20);
   color: #fff;
   margin-right: 4px;
 }
@@ -180,11 +181,14 @@
   flex-direction: row;
   align-items: center;
   gap: 6px;
+  font-size: 14px;
+  font-family: var(--header-font-family);
 }
 
 .redeemed-temmates-redeemed-num {
   // color:#2196f3;
   cursor: pointer;
+  font-weight: 400;
 }
 
 .redeemed-temmates-redeemed-num:hover {

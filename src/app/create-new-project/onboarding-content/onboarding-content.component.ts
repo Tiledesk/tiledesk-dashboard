@@ -179,6 +179,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (this.translate.currentLang) {
       langDashboard = this.translate.currentLang;
     }
+    // console.log('[ONBOARDING-CONTENT] browser lang' ,this.translate.currentLang)
     let jsonWidgetLangURL = 'assets/i18n/' + langDashboard + '.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data => {
       try {
@@ -223,8 +224,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-     this.logger.log('[ONBOARDING-CONTENT] projects ', projects)
-     this.logger.log('[ONBOARDING-CONTENT] projects length ', projects.length)
+      this.logger.log('[ONBOARDING-CONTENT] projects ', projects)
+      this.logger.log('[ONBOARDING-CONTENT] projects length ', projects.length)
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
@@ -261,7 +262,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
     let parts = this.public_Key.split('-');
-  
+
 
     let mtt = parts.find((part) => part.startsWith('MTT'));
     this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mtt ', mtt);
@@ -302,8 +303,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           if (this.isMTT) {
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
 
-            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
-          } else  if (this.isMTT === false) {
+            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps, ' isMTT ', this.isMTT)
+          } else if (this.isMTT === false) {
             this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT)
             this.router.navigate(['/unauthorized']);
           }
@@ -488,7 +489,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // } 
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
     }
-   
+
     this.nextNumberStep();
     this.checkPrevButton();
     // else {
@@ -518,7 +519,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   userSelection(event) {
     this.logger.log('[ONBOARDING-CONTENT] userSelection event: ', event)
-   this.hasSelectChatBotOrKb = event
+    this.hasSelectChatBotOrKb = event
+    this.segmentIdentifyAttributes['onboarding_type'] = this.hasSelectChatBotOrKb
+    this.logger.log('[ONBOARDING-CONTENT] userSelection segmentIdentifyAttributes', this.segmentIdentifyAttributes)
   }
 
   goToTemplatesInstallation($event) {
@@ -552,7 +555,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         localStorage.setItem(project._id, JSON.stringify(project));
         this.newProject = project;
 
-        
+
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
         // const newproject: Project = {
@@ -582,10 +585,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
       this.trackNewProjectCreated(trialStarDate, trialEndDate)
-      
+
       this.projectService.newProjectCreated(true);
       this.getProjectsAndSaveLastProject(this.newProject._id)
-      
+
       // this.getProjectsAndSaveInStorage();
       this.callback('createNewProject');
     });
@@ -728,6 +731,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       segmentTrackAttr["userId"] = this.user._id;
       segmentTrackAttr["username"] = this.user.firstname + ' ' + this.user.lastname;
       segmentTrackAttr["botId"] = this.botId;
+      segmentTrackAttr["browserLang"] = this.translate.currentLang
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 

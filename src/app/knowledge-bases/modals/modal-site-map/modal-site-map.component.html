@@ -153,13 +153,61 @@
         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
         <textarea type="text" class="custom-textarea" 
             [(ngModel)]="listOfUrls" 
+            (input)="onChangeList($event)"
             [ngClass]="{'invalid':errorLimit }"
-            placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}" (input)="onChangeList($event)" rows="4"
+            placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}"  rows="4"
         ></textarea>
-        <span *ngIf="!errorLimit"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
-        <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
+        <span *ngIf="!errorLimit && listSitesOfSitemap?.length <= KB_LIMIT_CONTENT"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
+        <span *ngIf="errorLimit || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" class="input-label-error">
+            {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
+        </span>
         </div>
     </div>
+
+    <!-- ----------------------------------------------- -->
+    <!-- Refresh rate - How often will the URL(s) sync -->
+    <!-- ----------------------------------------------- -->
+    <div class="refresh-rate-wpr">
+        <div class="refresh-rate-select">
+            <span class="input-label">
+               
+                {{'KbPage.RefreshRate' | translate}}
+            </span>
+
+            <ng-select class="scrape-types-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+                appendTo="body" 
+                [items]="refresh_rate | selectOptionsTranslate" 
+                bindLabel="name" bindValue="value" 
+                placeholder="Refresh rate"
+                [clearable]="false" [searchable]="false" 
+                [(ngModel)]="selectedRefreshRate"
+                (change)="onSelectRefreshRate(selectedRefreshRate)" 
+                [disabled]="!isAvailableRefreshRateFeature" >
+            </ng-select>
+
+            <span class="input-label input-label-on-bottom">
+                <!-- How often will the data source sync -->
+                {{'KbPage.URLsSyncFrequency' | translate}}
+            </span>
+        </div>
+
+
+        <div class="refresh-rate-upgrade-plan">
+            <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
+                *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
+                matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
+                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                    upgrade
+                </span>
+                <span>
+                    {{ 'Pricing.UpgradePlan' | translate }}
+                </span>
+            </button>
+        </div>
+    </div>
+
+
 </div>
 
 <div *ngIf="isSitemapLoaded" mat-dialog-actions style="justify-content: center;">  
@@ -167,7 +215,7 @@
         {{ "Cancel" | translate }}
     </button>
 
-    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0" (click)="onSaveKnowledgeBase()">
+    <button class="mat-dialog-ok-btn" mat-button [disabled]="buttonDisabled || countSitemap === 0 || selectedScrapeType === 4 && extract_tags.length === 0 || listSitesOfSitemap?.length > KB_LIMIT_CONTENT" (click)="onSaveKnowledgeBase()">
         {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
     </button>
 </div>

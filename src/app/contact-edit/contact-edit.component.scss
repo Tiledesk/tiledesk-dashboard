@@ -6,6 +6,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   // border-top: 1px solid #c0c0c0;
@@ -20,6 +21,7 @@ input[type="text"] {
 
 .custom-label {
   color: rgb(118, 149, 165);
+  // color: rgb(118, 149, 165);
   height: 36px;
   padding-top: 7px !important;
   padding-left: 16px !important;
@@ -80,6 +82,7 @@ textarea[type="text"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     // border-top: 1px solid #c0c0c0;

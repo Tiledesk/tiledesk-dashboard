@@ -13,9 +13,9 @@
 
 
 
-<div class="main-content" style="padding-top:0px; padding-left: 0px;margin-left: -5px;">
+<div class="main-content" style="padding-top:0px; padding-left: 10px;margin-left: -5px; padding-right: 0px;">
 
-  <div class="container-fluid">
+  <div class="container-fluid" style="padding-left: 5px; padding-right:0px">
 
     <div class="page-title--sidebar-settings"
       [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
@@ -29,8 +29,8 @@
     <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
-
-      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+      <!-- margin-left: 20px; -->
+      <div class="teplate-content" style="flex: 1 1 auto; ">
 
         <ul class="bottom-nav-widget-translations">
 
@@ -77,8 +77,8 @@
 
 
         <div class="row">
-          <div class="col-md-12">
-            <div class="card" style="padding-top:0px; padding-bottom:0px;">
+          <div class="col-md-12 w-m-card-wpr">
+            <div class="card multilanguage-card">
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
 
 
@@ -135,34 +135,36 @@
 
                     </h4>
 
-                    <!--
-                // --------------------------------------------------------------
-                // @ Delete translation
-                // -------------------------------------------------------------- -->
-                    <!-- deleteLang() -->
+                 
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- @ Delete translation -->
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- deleteLang() btn-danger-->
                     <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== defaultLangCode"
-                      class="btn btn-danger btn_delete_lang" style="margin-top: 2px; margin-bottom: 1px; float: right;"
+                      class="btn btn-red btn_delete_lang" style="margin-top: 2px; margin-bottom: 1px; float: right;"
                       (click)="presentSwalModalDeleteLanguage()">
                       {{ 'Delete' | translate }}
                     </button>
 
 
-                    <!--
-                // --------------------------------------------------------------
-                // @ Save modified translation
-                // -------------------------------------------------------------- -->
-                    <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
+                    
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- @ Save modified translation -->
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- btn-primary -->
+                    <button *ngIf="selectedTranslationCode !== 'add'" class="btn  btn-tdblu-no-boxshadow btn_edit_lang"
                       style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()"
                       [disabled]="currentTraslationClone === undefined">
                       {{ 'ScriptPage.Save' | translate }}
                     </button>
 
-                    <!--
-                // --------------------------------------------------------------
-                // @ Make default language
-                // -------------------------------------------------------------- -->
+                   
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- @ Make default language -->
+                    <!-- -------------------------------------------------------------- -->
+                    <!-- btn-primary  -->
                     <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== defaultLangCode"
-                      class="btn btn-primary btn_edit_lang" style="margin-top: 2px; margin-bottom: 1px; float: right;"
+                      class="btn btn-tdblu-no-boxshadow btn-make-default" style="margin-top: 2px; margin-bottom: 1px; float: right;"
                       (click)="makeDefaultLanguage(selectedTranslationCode)">
                       {{ 'MakeDefault' | translate }}
                     </button>
@@ -199,10 +201,10 @@
                   </span>
                 </section>
 
-                <!-- 
-            // -----------------------------------------------------------------------------
-            // @ Select language combo-box
-            // ----------------------------------------------------------------------------- -->
+                 
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- @ Select language combo-box -->
+                <!-- ----------------------------------------------------------------------------- -->
                 <section id="selected-lang" *ngIf="selectedTranslationCode === 'add'">
                   <div class="row" style="padding-bottom: 25px;">
                     <div class="col-md-4">
@@ -215,12 +217,12 @@
 
                     </div>
 
-                    <!-- 
-                // -----------------------------------------------------------------------------
-                // @ Add language
-                // ----------------------------------------------------------------------------- -->
+                     
+                    <!-- ----------------------------------------------------------------------------- -->
+                    <!-- @ Add language -->
+                    <!-- ----------------------------------------------------------------------------- -->
                     <div class="col-md-5">
-                      <button class="btn btn-primary" style="padding-top: 10px; padding-bottom: 10px;"
+                      <button id="add-language-btn" class="btn btn-tdblu-no-boxshadow" style="padding-top: 10px; padding-bottom: 10px;"
                         (click)="addNewLanguage()" [disabled]="disableAddBtn">
                         {{ 'Add' | translate }}
                       </button>
@@ -233,12 +235,13 @@
 
               <div *ngIf="selectedTranslationCode !== 'add'" class="card-footer"
                 style="border-color: #e8f0f5 !important;">
-                <button [disabled]="currentTraslationClone === undefined" class="btn btn-primary btn_edit_lang"
+                <!-- btn-primary -->
+                <button [disabled]="currentTraslationClone === undefined" class="btn  btn-tdblu-no-boxshadow btn_edit_lang"
                   (click)="editLang()">
                   {{ 'ScriptPage.Save' | translate }}
                 </button>
-
-                <button *ngIf="selectedTranslationCode !== defaultLangCode" class="btn btn-danger"
+                <!-- btn-danger -->
+                <button *ngIf="selectedTranslationCode !== defaultLangCode" class="btn btn-red btn_delete_lang"
                   (click)="deleteLang()">
                   {{ 'Delete' | translate }}
                 </button>

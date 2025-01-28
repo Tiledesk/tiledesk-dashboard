@@ -227,15 +227,15 @@
     text-transform: none;
 }
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
-}
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+// }
 
 
 .mat-dialog-traspatent-btn {
@@ -342,8 +342,8 @@
 }
 
 .csv-file-delimiter-container {
-    // margin-bottom: 24px;
-    margin-bottom: 25px;
+    margin-bottom: 9px;
+    margin-top: 16px;
 }
 
 .csv-file-delimiter-wpr {
@@ -481,7 +481,7 @@
     margin: 0 auto;
     width: 15%;
     height: 15%;
-    background-color: var(--blue-light); // #333;
+    background-color: var(--blue-20); // #333;
     border-radius: 100%;
     -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
     animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
@@ -632,4 +632,104 @@
     40% {
         opacity: 1;
     }
+}
+
+.span-8 {
+    display: block;
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
+    min-height: 8px;
+}
+
+
+.span-32 {
+    display: block;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+}
+
+.add-faqs-cards-wpr {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+    gap: 20px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    // padding-bottom: 12px;
+}
+
+.add-faqs-card-wpr {
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    border: 2px solid rgb(226, 232, 239);
+    // box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
+    outline: none;
+    cursor: pointer;
+    min-height: 162px;
+    pointer-events: auto;
+}
+.add-faqs-card-wpr:hover {
+    // box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
+    // box-shadow: rgba(0, 20, 51, 0.12) 0px 2px 6px;
+    border:2px solid var(--blue-20); // rgb(5, 102, 255);
+    outline:var(--blue-20); // rgb(5, 102, 255) solid 1px;
+}
+
+.add-content-card-content {
+    padding: 20px;
+}
+
+.add-content-card-content-icon-wpr {
+    text-align: left;
+}
+
+.add-content-card-content-icon-wpr > span > svg  {
+ fill: var(--sidebar-inactive-icon);
+}
+
+.add-faqs-card-wpr:hover > .add-content-card-content .add-content-card-content-icon-wpr > span > svg {
+    fill: var(--icon-hover-color);
+}
+
+.add-content-card-content-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.add-content-card-content-subtitle {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+    color: rgb(100, 116, 145);
+    text-align: left;
+}
+
+.download--example-csv-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.download--example-csv {
+    border: unset;
+    background-color: transparent;
+    color: var(--only-text-btn-color);
+    padding: 0px 3px;
+    border-radius: 4px;
+}
+
+.download--example-csv:hover {
+    background-color: var(--only-text-btn-hover-background);
 }

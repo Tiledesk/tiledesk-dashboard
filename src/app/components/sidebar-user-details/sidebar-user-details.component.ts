@@ -21,6 +21,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 import { BrandService } from 'app/services/brand.service';
 import { Project } from 'app/models/project-model';
+import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { ProjectUser } from 'app/models/project-user';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -71,6 +73,8 @@ export class SidebarUserDetailsComponent implements OnInit {
   currentUserId: string;
   selectedStatus: any;
   isChromeVerGreaterThan100: boolean;
+    NOTIFICATION_SOUND: string;
+  storedValuePrefix = 'dshbrd----'
   teammateStatus = [
     { id: 1, name: 'Available', avatar: 'assets/img/teammate-status/avaible.svg' },
     { id: 2, name: 'Unavailable', avatar: 'assets/img/teammate-status/unavaible.svg' },
@@ -129,7 +133,27 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.getWsCurrentUserAvailability$()
     this.getWsCurrentUserIsBusy$()
     this.getBrowserVersion()
+    // this.setNotificationSound();
   }
+
+
+  // setNotificationSound() {
+  //   // NOTIFICATION_SOUND = 'enabled';
+  //   const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+  //   this.logger.log('[NAVBAR] NOTIFICATION_SOUND STORED ', storedNotificationSound)
+
+  //   if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
+  //     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+  //     this.NOTIFICATION_SOUND = storedNotificationSound;
+  //   } else {
+
+  //     this.NOTIFICATION_SOUND = 'enabled';
+
+  //     localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+  //     this.logger.log('[NAVBAR] NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+  //   }
+
+  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -312,23 +336,43 @@ export class SidebarUserDetailsComponent implements OnInit {
       });
   }
 
+  openLogoutModal() {
+    // this.notifyService.presentLogoutModal()
+    this.auth.hasOpenedLogoutModal(true);
+    this.logger.log('[PROJECTS] PRESENT LOGOUT-MODAL ')
+    const dialogRef = this.dialog.open(LogoutModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        calledby: 'userdetailsidebar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(calledBy => {
+      if (calledBy) {
+        this.logger.log(`[PROJECTS] LOGOUT-MODAL AFTER CLOSED :`, calledBy);
+        this.logout()
+      }
+    });
+  }
+  
+
   logout() {
     this.closeUserDetailSidePanel()
-    this.notifyService.presentLogoutModal()
+    
+    this.auth.signOut('userdetailsidebar');
   }
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         // this.logger..log('[SIDEBAR-USER-DETAILS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -390,6 +434,8 @@ export class SidebarUserDetailsComponent implements OnInit {
           this.teammateStatus = this.teammateStatus.slice(0)
           this.logger.log('[SIDEBAR-USER-DETAILS] - PROFILE_STATUS selected option', this.teammateStatus[0].name);
         }
+
+
       }
       //  this.teammateStatus = this.teammateStatus.slice(0)
     });
@@ -397,11 +443,13 @@ export class SidebarUserDetailsComponent implements OnInit {
   }
 
   getUserUserIsBusy() {
-    this.usersService.user_is_busy$.subscribe((user_isbusy) => {
-      this.IS_BUSY = user_isbusy;
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
       // this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
+      if(projectUser){
+        this.IS_BUSY = projectUser.isBusy;
+      }
     });
   }
 
@@ -409,36 +457,31 @@ export class SidebarUserDetailsComponent implements OnInit {
 
   getProjectUser() {
     this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: ProjectUser) => {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-      // this.logger..log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
-      if ((projectUser) && (projectUser.length !== 0)) {
-        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      if (projectUser) {
+        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser._id)
+        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser.user_available)
+        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser.isBusy)
         // this.user_is_available_bs = projectUser.user_available;
 
-        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
-        this.subsTo_WsCurrentUser(projectUser[0]._id)
+        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser._id)
+        this.subsTo_WsCurrentUser(projectUser._id)
 
-        if (projectUser[0].user_available !== undefined) {
-
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
+        if (projectUser.user_available !== undefined) {
+          this.usersService.setProjectUser(projectUser)
 
         }
 
         // ADDED 21 AGO
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+        if (projectUser.role !== undefined) {
+          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser.role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-          this.USER_ROLE = projectUser[0].role;
-
-          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
+          this.USER_ROLE = projectUser.role;
 
         }
       } else {

@@ -17,12 +17,12 @@
 
 <div mat-dialog-actions style="justify-content: center;">
     <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
-        <!-- {{ "Cancel" | translate }} -->
-        Cancel
+        {{ "Cancel" | translate }}
+       
     </button>
     <!-- [mat-dialog-close]="newKb.url" -->
     <button [disabled]="chatbotName?.length < 2" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed(chatbotName)"
         cdkFocusInitial>
-        Create chatbot
+        {{'CreateChatbot' | translate}}
     </button>
 </div>

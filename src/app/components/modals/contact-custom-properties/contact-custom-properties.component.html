@@ -54,12 +54,13 @@
 
 </mat-dialog-content>
 <!-- class="btn-size-xl btn-new btn--primary" -->
-<mat-dialog-actions align="center" class="contact-property-modal-action">
-    <button tabindex="-1" mat-button mat-dialog-close>
+<mat-dialog-actions align="center" class="contact-property-modal-action mat-dialog-actions">
+    <button tabindex="-1" mat-button mat-dialog-close class="mat-dialog-close-btn">
         {{'Cancel' | translate}}
     </button>
-    <button tabindex="-1" mat-button (click)="createContactProperty()"
-        [disabled]="leadPropertyLabel?.length === 0 || propertyNameIsValid === false">
+    
+    <button tabindex="-1" mat-button  class="mat-dialog-ok-btn" (click)="createContactProperty()"
+        [disabled]="leadPropertyLabel?.length === 0 || propertyNameIsValid === false || !leadPropertyLabel">
         {{'Create' | translate}}
     </button>
 </mat-dialog-actions>

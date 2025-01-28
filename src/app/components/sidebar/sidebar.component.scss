@@ -1,11 +1,11 @@
 @import "./src/assets/sass/md/_variables.scss";
 
 
-:host {
-  --sidebar-icon-color: #647491;
-  --sidebar-hover-icon-color: #a9afbb;
-  --sidebar-active-icon: #fff
-}
+// :host {
+//   --sidebar-icon-color: #647491;
+//   --sidebar-hover-icon-color: #a9afbb;
+//   --sidebar-active-icon: #fff
+// }
 .nav-container {
   height: 100%;
 }
@@ -21,18 +21,20 @@
 
 .sidebar-wrapper {
   position: relative;
+  // height: calc(100vh - 44px);
   height: calc(100vh - 60px);
   overflow: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 60px;
+  width: 70px;
   z-index: 4;
-
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
   transition-timing-function: linear, linear, ease;
-  background-color: $brand-sidebar-bckgrnd-bottom-section !important;
+  background-color: var(--sidebar-bckgrnd-bottom-section-drk) !important;
+  // background-color: var(--sidebar-bckgrnd-bottom-section-lgt) !important;
+  // border-right: 1px solid rgb(226, 232, 239); // for light sidebar
 }
 
 
@@ -42,20 +44,88 @@
   flex-direction: column;
 
   > div {
-    height: 40px;
-    width: 60px;
+    // &:hover {
+    //   background-color: var(--sidebar-bckgrnd-item-hover); 
+    // }
+    // height: 50px;
+    // width: 50px;
     margin-top: 5px;
     margin-bottom: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-
+    
+    > a {
+      &:hover {
+        background-color: var(--sidebar-bckgrnd-item-hover); 
+      }
+      height: 50px;
+      width: 50px;
+      border-radius: var(--sidebar-bckgrnd-item-border-radius);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
     span{
       display: flex;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+      
     }
   }
+}
 
+.nav-custom > div:hover > a > span > svg > path {
+ fill:  var(--sidebar-hover-icon-color);
+}
+
+.nav-custom > div > #openchat-a {
+  position: relative;
+}
+
+.nav-custom > div > #openchat-a > span > svg > g > path {
+  stroke: var(--sidebar-icon-color);
+}
+
+.nav-custom > div:hover > #openchat-a > span > svg > g > path {
+  stroke: var(--sidebar-hover-icon-color);
+}
+// New chat icon
+.nav-custom > div > #openchat-a > span > svg {
+  fill: var(--sidebar-icon-color);
+}
+
+// New chat icon
+.nav-custom > div:hover > #openchat-a > span > svg  {
+  fill: var(--sidebar-hover-icon-color);
+}
+
+
+.item-active svg path,
+.item-active svg ellipse{
+  height: 40px;
+  // background-color: #3ea9f5;
+  fill: var(--sidebar-active-icon) !important;
+  pointer-events: none;
+}
+
+
+div.item-active > a  {
+  background-color: var(--sidebar-bckgrnd-item-hover);
+}
+
+div.is-active > a  {
+  background-color: var(--sidebar-bckgrnd-item-hover);
+}
+
+div.is-active a span svg path {
+  height: 40px;
+  fill: var(--sidebar-active-icon) !important;
+  pointer-events: none;
 }
 
 svg path,
@@ -68,12 +138,23 @@ div > a > i {
   // float: left;
   // margin-right: 15px;
   // line-height: 30px;
-  width: 60px;
+  // width: 60px;
   text-align: center;
   // color: #a9afbb;
   color: var(--sidebar-icon-color);
 }
 
+.sidebar-separator > svg > path {
+  fill: var(--sidebar-inactive-icon);
+}
+
+.sidebar-separator:hover > svg > path {
+  fill: var(--sidebar-inactive-icon);
+}
+
+// .sidebar-separator >  svg {
+//   color: var(--sidebar-icon-color);
+// }
 
 
 svg:hover path,
@@ -89,13 +170,12 @@ div.item-active > a > i {
   color: var(--sidebar-active-icon) !important;
 }
 
-.item-active svg path,
-.item-active svg ellipse{
-  height: 40px;
-  // background-color: #3ea9f5;
-  fill: var(--sidebar-active-icon) !important;
-  pointer-events: none;
+div.is-active > a > i {
+  color: var(--sidebar-active-icon) !important;
 }
+
+
+
 
 // li.active a span.sidebar-mini {
 //   color: #ffffff !important;
@@ -443,7 +523,7 @@ button.close {
   background-color: #2d323e !important;
   padding-bottom: 5px;
   min-height: 60px;
-  width: 60px; // for SMALL SIDEBAR
+  width: 70px; // for SMALL SIDEBAR
 }
 
 .logo-img-wpr {
@@ -624,11 +704,12 @@ button.close {
   border-radius: 3px;
 }
 
-#user-details.active {
-  transform: translate(0);
-  display: block;
-  left: 60px;
-}
+// #user-details.active {
+//   transform: translate(0);
+//   display: block;
+//   // left: 60px;
+//   left: 70px;
+// }
 
 /* NK end CUSTOM SCROLL BAR */
 
@@ -1451,8 +1532,8 @@ button.close {
   line-height: 12px;
   letter-spacing: 0px;
   position: absolute;
-  right: 6px;
-  bottom: 18px;
+  right: 5px;
+  bottom: 30px;
 }
 
 

@@ -114,7 +114,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
    this.logger.log('[CNP-TEMPLATES] HELLO !!! ');
     this.createProjectFromTemplates.emit()
 
-    this.getCreateChatbotBtnWidth()
+    // this.getCreateChatbotBtnWidth()
 
   }
 
@@ -738,7 +738,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       icon: "success",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('LetsGo'), //"Let\'s go!",
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
     }).then((result) => {
       if (result.isConfirmed) {

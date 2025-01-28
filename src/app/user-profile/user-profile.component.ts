@@ -21,7 +21,9 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 
 @Component({
@@ -512,16 +514,11 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[USER-PROFILE] - USER ROLE ', user_role);
-        if (user_role) {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[USER-PROFILE] - USER ROLE ', projectUser);
+        if (projectUser) {
           // this.userRole = user_role
-
-          this.translate.get(user_role)
+          this.translate.get(projectUser.role)
             .subscribe((text: string) => {
               this.userRole = text;
             });
@@ -908,12 +905,15 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   presentModalSelectAProjectToManageEmailNotification() {
-    swal({
+    Swal.fire({
       title: this.translationsMap.get('Warning'),
       text: this.translationsMap.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails'),
       icon: "warning",
-      button: "Ok",
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      focusConfirm: false,
+      // button: "Ok",
+      // dangerMode: false,
     })
   }
 }

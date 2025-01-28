@@ -604,6 +604,8 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     }
 }
 
+
+
 export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
@@ -847,7 +849,7 @@ export function containsXSS(jsonData) {
     const xssPatterns = [
         /<script.*?>.*?<\/script.*?>/gi,  // script tags
         // /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
-        /on[a-z]+=/gi,
+        // /on[a-z]+=/gi,
         /eval\s*\(.*?\)/gi,               // eval calls
         /javascript\s*:\s*.*/gi,          // javascript protocol
         /document\.cookie/gi,             // access to cookies
@@ -868,7 +870,7 @@ export function isMaliciousHTML(input) {
     // List of common XSS attack patterns
     const xssPatterns = [
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, // Script tags
-        /on\w+="[^"]*"/gi,                                    // Event handlers
+        // /on\w+="[^"]*"/gi,                                    // Event handlers
         /javascript:[^'"]*/gi,                               // JavaScript URLs
         /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, // Iframe tags
         /data:text\/html;base64,[A-Za-z0-9+/=]+/gi          // Base64 encoded scripts
@@ -884,13 +886,17 @@ export function isMaliciousHTML(input) {
     return false; // No XSS detected
 }
 
+// Projects created after this date will no longer be able to use the free plan when the trial expires.
+export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
+
 
 // Links to documentation
 export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
 export const URL_getting_started_with_email_ticketing = "https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
-
+export const URL_canned_responses_doc = "https://gethelp.tiledesk.com/articles/canned-responses-in-the-agent-chat/"
+export const URL_tag_doc = "https://gethelp.tiledesk.com/articles/tag-chats-and-requests/"
 export const URL_microlanguage_for_dialogflow_images_videos = 'https://docs.tiledesk.com/knowledge-base/microlanguage-for-dialogflow-images-videos/'; // NOT FOUND on gethelp
 export const URL_dialogflow_connector_handoff_to_human_agent_example = 'https://gethelp.tiledesk.com/articles/dialogflow-connector-handoff-to-human-agent-example/' // 'https://docs.tiledesk.com/knowledge-base/dialogflow-connector-handoff-to-human-agent-example/'
 export const URL_styling_your_chatbot_replies = 'https://gethelp.tiledesk.com/articles/styling-your-chatbot-replies/'  // https://docs.tiledesk.com/knowledge-base/styling-your-chatbot-replies/ 

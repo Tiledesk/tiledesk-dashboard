@@ -7,6 +7,7 @@ import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-
 import { SharedModule } from 'app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { MomentModule } from 'ngx-moment';
 
 const routes: Routes = [
   { path: "", component: UserEditAddComponent},
@@ -23,7 +24,8 @@ const routes: Routes = [
     SettingsSidebarModule,
     SharedModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    MomentModule,
   ]
 })
 export class UserEditAddModule { }

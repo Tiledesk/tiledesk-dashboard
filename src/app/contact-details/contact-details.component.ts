@@ -10,7 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
-const swal = require('sweetalert');
+// const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-contact-details',
   templateUrl: './contact-details.component.html',
@@ -216,16 +217,24 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     })
     this.logger.log('[CONTACTS-DTLS] - moveContactToTrash ', this.moveContactToTrash_msg);
 
-    swal({
+    Swal.fire({
       title: this.moveToTrash_msg,
       text: this.moveContactToTrash_msg,
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: true,
+      // dangerMode: true,
     })
-      .then((willDelete) => {
-        if (willDelete) {
-          this.logger.log('[CONTACTS-DTLS] swal willDelete', willDelete)
+      .then((result) => {
+        if (result.isDenied) {
+          this.logger.log('[CONTACTS-DTLS] swal result', result)
 
           this.contactsService.deleteLead(contactid).subscribe((res: any) => {
             this.logger.log('[CONTACTS-DTLS] in swal deleteRequest res ', res)
@@ -233,22 +242,34 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           }, (error) => {
             this.logger.error('[CONTACTS-DTLS] in swal deleteRequest res - ERROR ', error);
 
-            swal(this.errorDeleting, this.pleaseTryAgain, {
+            Swal.fire(  {
+              title: this.errorDeleting + '!',
+              text: this.pleaseTryAgain,
               icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
             });
 
           }, () => {
             this.logger.log('[CONTACTS-DTLS]in swal deleteRequest res * COMPLETE *');
 
-            swal(this.done_msg + "!", this.contactHasBeenMovedToTheTrash, {
+            Swal.fire({
+              title: this.done_msg + "!",
+              text: this.contactHasBeenMovedToTheTrash,
               icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.goToContactList();
             });
 
           });
         } else {
-          this.logger.log('[CONTACTS-DTLS] swal willDelete', willDelete)
+          this.logger.log('[CONTACTS-DTLS] swal result', result)
           // swal("Your imaginary file is safe!");
         }
       });

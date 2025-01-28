@@ -48,9 +48,19 @@ export class CloneBotComponent implements OnInit {
     this.selectedProjectId = selectedprojectid
   }
 
+  onOkPresssed(){
+    // console.log('[MODAL-CHATBOT-NAME] chatbot ', this.chatbot)
+    this.duplicateChatbot();
+    
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 
   duplicateChatbot() {
-    // console.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
+    this.logger.log('[CLONE-BOT] - DUPLICATE CHATBOT selectedProjectId ', this.selectedProjectId)
     
     this.projects.forEach(project => {
       // this.logger.log('[CLONE-BOT] - GET PROJECTS  project ', project);

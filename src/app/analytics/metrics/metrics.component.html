@@ -24,6 +24,9 @@
   <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'satisfaction', 'border-from-center': selected !== 'satisfaction'}" (click)="goTo('satisfaction')">
     <a>{{ 'Analytics.Metrics.Satisfaction' | translate }}</a>
   </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'tags', 'border-from-center': selected !== 'tags'}" (click)="goTo('tags')">
+    <a>{{'Tags.Tags' | translate}}</a>
+  </li>
 </ul>
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -35,5 +38,6 @@
     <appdashboard-convsduration *ngIf="selected=='durataConv'"></appdashboard-convsduration>
     <appdashboard-events-analytics *ngIf="selected=='events'"></appdashboard-events-analytics>
     <appdashboard-satisfaction *ngIf="selected=='satisfaction'"></appdashboard-satisfaction>
+    <appdashboard-tags-analytics *ngIf="selected=='tags'"> </appdashboard-tags-analytics>
   </div>
 </div>

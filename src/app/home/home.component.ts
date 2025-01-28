@@ -41,6 +41,7 @@ import { AnalyticsService } from 'app/services/analytics.service';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -320,12 +321,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getProjectUser();
 
     // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-    this.usersService.getBotsByProjectIdAndSaveInStorage();
+    this.faqKbService.getBotsByProjectIdAndSaveInStorage();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     // this.getAvailableProjectUsersByProjectId();
 
-    this.getUserRole();
+    // this.getUserRole();
     // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
@@ -376,7 +377,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((hasOpen) => {
 
-       console.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
         if (this.projectId) {
           if(hasOpen !== null ) {
             this.getQuotes()
@@ -401,10 +402,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectId = this.project._id;
           this.projectName = this.project.name
 
-          // if (this.projectId) {
-          //   this.getProjectQuotes();
-          //   this.getQuotasCount()
-          // }
+          if (this.projectId) {
+            this.getProjectQuotes();
+            // this.getQuotasCount()
+          }
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
@@ -473,12 +474,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
 
 
-      this.getApps();
-
-      if (this.projectId) {
-        this.getProjectQuotes();
-        this.getQuotasCount()
-      }
+      // this.getApps();
     });
   }
 
@@ -498,10 +494,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("[HOME] getAllQuotes response: ", resp)
+      this.logger.log("[HOME] getAllQuotes response: ", resp)
       this.quotes = resp
 
-      console.log("[HOME] project_limits: ", this.project_limits)
+      this.logger.log("[HOME] project_limits: ", this.project_limits)
       this.logger.log("[HOME] resp.quotes: ", resp.quotes)
       if (this.project_limits) {
         this.messages_limit = this.project_limits.messages;
@@ -621,7 +617,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
         // if (3342 >= this.voice_limit_in_sec) {   
         this.voiceRunnedOut = true;
-        console.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+        this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
       } else {
         this.voiceRunnedOut = false;
         this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
@@ -1898,15 +1894,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // this.areYouSureMsg
   presentModalConfirmUnistallWatsApp() {
-    swal({
-      title: "Are you sure",
-      text: "The app will be deleted", // this.appWillBeDeletedMsg,
+    Swal.fire({
+      title: this.translate.instant('AreYouSure'), // "Are you sure", 
+      text: this.translate.instant('TheAppWillBeDeleted'), // "The app will be deleted", // this.appWillBeDeletedMsg, 
       icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      // confirmButtonText: this.translate.instant('Delete'),
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      // confirmButtonColor: "var(--red-btn-background-color)",
+      focusConfirm: false,
+      reverseButtons: true,
+
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
     })
-      .then((WillDelete) => {
-        if (WillDelete) {
+      .then((result) => {
+        if (result.isDenied) {
           this.logger.log('[HOME] UNINSTALL WA APP - app_id', this.whatsAppAppId);
           this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
             this.logger.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
@@ -2012,11 +2019,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onClickOnGoToLearnMoreOrManageApp() {
     this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
-    if (this.whatsAppIsInstalled === false) {
-      this.goToWhatsAppDetails()
-    } else {
-      this.openInAppStoreInstall()
-    }
+    this.goToWhatsAppDetails()
+    // if (this.whatsAppIsInstalled === false) {
+    //   this.goToWhatsAppDetails()
+    // } else {
+    //   this.openInAppStoreInstall()
+    // }
   }
 
   checkPlanAndPresentModal(appTitle) {
@@ -2053,6 +2061,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToWhatsAppDetails() {
+    this.appTitle = "WhatsApp Business"
     this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
     this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
@@ -2266,9 +2275,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // /. --- step 3
 
 
-  presentModalWaSuccessfullyConnected() {
-    swal("Good job!", "WhatsApp connected successfully!", "success");
-  }
+  // presentModalWaSuccessfullyConnected() {
+  //   swal("Good job!", "WhatsApp connected successfully!", "success");
+  // }
 
 
   updateProjectWithHasCompletedWAWizard() {
@@ -2421,7 +2430,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         showCancelButton: true,
         confirmButtonText: this.upgradePlan,
         cancelButtonText: this.cancel,
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: true,
         reverseButtons: true,
 
@@ -2528,7 +2537,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -3410,30 +3419,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
-        this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
-        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
-        this.logger.log('[HOME] USER IS BUSY ', projectUser[0].isBusy)
+        this.logger.log('[HOME] PROJECT-USER ID ', projectUser._id)
+        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser.user_available)
+        this.logger.log('[HOME] USER IS BUSY ', projectUser.isBusy)
         // this.user_is_available_bs = projectUser.user_available;
 
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
+        if (projectUser.user_available !== undefined) {
+          this.usersService.setProjectUser(projectUser);
         }
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+        if (projectUser.role !== undefined) {
+          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
+          this.USER_ROLE = projectUser.role;
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
-          // this.auth.user_role(projectUser[0].role);
-          // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-
-          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-          this.USER_ROLE = projectUser[0].role;
+          // this.auth.user_role(projectUser.role);
+          // this.usersLocalDbService.saveUserRoleInStorage(projectUser.role);
         }
 
       }
@@ -3515,18 +3521,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // CON getUserRole() AGGIORNO this.USER_ROLE QUANDO LA SIDEBAR, NEL MOMENTO
   // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
   // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+  // getUserRole() {
+  //   this.usersService.project_user_role_bs
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((userRole) => {
 
-        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
-  }
+  //       this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+  //       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+  //       this.USER_ROLE = userRole;
+  //     })
+  // }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
   getAvailableProjectUsersByProjectId() {
@@ -3671,12 +3677,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HOME] - GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HOME] - GET projectUser > projectUser id', projectUser[0]._id);
+          this.logger.log('[HOME] - GET projectUser > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HOME] - GET projectUser by USER-ID - ERROR ', error);

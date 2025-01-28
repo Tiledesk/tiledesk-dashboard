@@ -22,6 +22,7 @@ import { FaqService } from 'app/services/faq.service';
 import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
 import { DepartmentService } from 'app/services/department.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ProjectUser } from 'app/models/project-user';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-home-kb',
@@ -100,14 +101,12 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[HOME-KB] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-KB] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getCurrentProject() {
@@ -494,7 +493,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -526,7 +525,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       showCancelButton: false,
       confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
       // cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       reverseButtons: true,
       // dangerMode: false
     }).then((result: any) => {

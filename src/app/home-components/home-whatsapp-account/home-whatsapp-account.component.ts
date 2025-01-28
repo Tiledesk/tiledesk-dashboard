@@ -13,7 +13,9 @@ import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { ProjectService } from 'app/services/project.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-home-whatsapp-account',
@@ -133,16 +135,14 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HOME-WA] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-WA] - GET PROJECT-USER ROLE ', projectUser);
+        if (projectUser.role) {
+          this.USER_ROLE = projectUser.role;
         }
-      });
+      }
+    });
   }
 
   translateLabels() {
@@ -430,23 +430,23 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    Swal.fire({
+      title: this.translate.instant('Oops'),
+      text:  this.translate.instant('AvailableFrom') + ' ' + this.appSumoProfilefeatureAvailableFromBPlan,
+      // content: el,
       icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
+      showCloseButton: false,
+      showCancelButton: true,
+      cancelButtonText: this.cancel,
+      confirmButtonText: this.upgradePlan,
+      focusConfirm: false,
+      reverseButtons: true,
+      // confirmButtonColor: "var(--blue-light)",
+    
+    }).then((result) => {
+      if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {

@@ -1,0 +1,10 @@
+{
+    "dates": ["26/11/2024", "27/11/2024"],
+    "series": [
+      { "name": "tag-ex-12", "values": [2, 0] },
+      { "name": "sales", "values": [0, 1] },
+      { "name": "support", "values": [0, 2] },
+      { "name": "info", "values": [0, 1] }
+    ]
+  }
+  

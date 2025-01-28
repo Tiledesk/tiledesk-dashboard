@@ -201,7 +201,7 @@ export class GroupsComponent implements OnInit {
             icon: "warning",
             showCloseButton: true,
             showCancelButton: false,
-            confirmButtonColor: "var(--blue-light)",
+            // confirmButtonColor: "var(--blue-light)",
             focusConfirm: false
           })
         }
@@ -213,7 +213,7 @@ export class GroupsComponent implements OnInit {
             icon: "warning",
             showCloseButton: true,
             showCancelButton: false,
-            confirmButtonColor: "var(--blue-light)",
+            // confirmButtonColor: "var(--blue-light)",
             focusConfirm: false,
           })
         }
@@ -233,12 +233,12 @@ export class GroupsComponent implements OnInit {
     }, (error) => {
       this.logger.error('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification('An error occurred while deleting the group', 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification('An error occurred while deleting the group', 4, 'report_problem');
     }, () => {
       this.logger.log('[GROUPS] - UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
 
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification('group successfully deleted', 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification('group successfully deleted', 2, 'done');
       // UPDATE THE GROUP LIST
       this.ngOnInit()
     });

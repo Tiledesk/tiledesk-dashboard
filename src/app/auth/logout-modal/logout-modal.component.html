@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>
+
+    {{ 'NavBar.TiledeskLogOut' | translate: tparams }}
+</h1>
+
+<div mat-dialog-content>
+
+    <div class="mat-dialog-content-wpr">
+
+        <p class="logout-modal-message">
+            <!-- Are you sure you want to log out? -->
+            {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
+        </p>
+
+        <p class="logout-modal-alert-message" *ngIf="myAvailabilityCount > 0">
+            <!-- <i class="material-icons" style="display: block; color:#f44336">warning</i> -->
+            <span> {{ "NavBar.AttentionYouAreAvailable" | translate }}
+                {{myAvailabilityCount}}
+                <span *ngIf="myAvailabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
+                <span *ngIf="myAvailabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
+                <span style="display: block;"> 
+                    {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}.
+                </span>
+            </span>
+        </p>
+
+    </div>
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+
+    </button>
+
+    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+
+        {{'NavBar.LogOut' | translate }}
+
+    </button>
+</div>

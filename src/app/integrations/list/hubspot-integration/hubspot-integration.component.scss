@@ -24,6 +24,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
   }
 }
 
@@ -82,13 +83,27 @@ p {
   }
 }
 
-.footer {
+.integration-footer {
   border: none !important;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  justify-content: flex-end;
+  max-width: 500px;
 }
+
+.integration-footer > .btn-tdblu-no-boxshadow {
+  margin-right: 8px;
+}
+// @font-face {
+//   font-family: text-security-disc;
+//   src: url('https://raw.githubusercontent.com/noppa/text-security/master/dist/text-security-disc.woff');
+// }
+// #api-key-input.disk {
+//   -webkit-text-security: disc;
+//   font-family: text-security-disc;
+// }
 
 .custom-primary-button {
   color: white;
@@ -128,8 +143,8 @@ p {
   }
 }
 
-svg {
-  width: 14px;
+.status > svg {
+  width: 20px;
   //display: block;
   //margin: 40px auto 0;
 }

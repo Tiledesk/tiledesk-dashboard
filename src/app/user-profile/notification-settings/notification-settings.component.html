@@ -4,15 +4,15 @@
     (click)="goBack()">keyboard_arrow_left</i>
   {{ "Notification" | translate }}
 </div>
-
-<ul class="bottom-nav" style="top: 5px;">
+<!-- style="top: 5px;" -->
+<ul class="bottom-nav" >
   <li class="btn-with-border-effect border-from-center" (click)="goToUserProfile()">
     <a> {{ "UserProfile.Profile" | translate }} </a>
   </li>
   <li *ngIf="displayChangePwd" class="btn-with-border-effect border-from-center" (click)="goToChangePsw()">
     <a>{{ "UserProfile.ChangePsw" | translate }} </a>
   </li>
-  <li class="btn-with-border-effect" (click)="goToAccountSettings()">
+  <li class="btn-with-border-effect border-from-center" (click)="goToAccountSettings()">
     <a>{{ "Settings" | translate }} </a>
   </li>
   <li class="btn-with-border-effect li-active">
@@ -32,7 +32,7 @@
 
             <!-- ASSIGNED CONVERSATION -->
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline">
                     {{ "NotificationSettings.AssignedConversations" | translate }}
@@ -40,8 +40,16 @@
                 </h3>
               </div>
 
+              
+              
+
+              <div class="col-md-12">
+                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"></div>
+                <p class="section-subtitle-paragraph">{{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}</p>
+              </div>
+
               <!-- SWITCH BUTTON -->
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <h3 class="card-title onoffswitch_container_first_line">
 
                   <div class="onoffswitch">
@@ -55,16 +63,11 @@
                 </h3>
               </div>
 
-              <div class="col-md-12">
-                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"></div>
-                <p style="margin-top: -10px;">{{ "NotificationSettings.AssignedConversationsSubtitle" | translate }}</p>
-              </div>
-
             </div>
 
             <!-- UNASSIGNED CONVERSATION -->
             <div class="row" style="margin-top: 60px;">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <h3 class="card_title__underlined">
                   <span class="card_title__underline">
                     {{ "NotificationSettings.UnassignedConversations" | translate }}
@@ -72,8 +75,15 @@
                 </h3>
               </div>
 
+              
+
+              <div class="col-md-12">
+                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"></div>
+                <p class="section-subtitle-paragraph">{{ "NotificationSettings.UnassignedConversationsSubtitle" | translate }}</p>
+              </div>
+
               <!-- SWITCH BUTTON -->
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <h3 class="card-title onoffswitch_container_first_line">
 
                   <div class="onoffswitch">
@@ -85,11 +95,6 @@
                     </label>
                   </div>
                 </h3>
-              </div>
-
-              <div class="col-md-12">
-                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"></div>
-                <p style="margin-top: -10px;">{{ "NotificationSettings.UnassignedConversationsSubtitle" | translate }}</p>
               </div>
 
             </div>

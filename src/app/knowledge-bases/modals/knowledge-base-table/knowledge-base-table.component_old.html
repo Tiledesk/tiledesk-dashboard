@@ -1,0 +1,566 @@
+<div *ngIf="SHOW_TABLE == false" class="card-empty">
+    <div class="menu-container">
+
+        <div style="width: 100%;">
+            <div class="lock-container">
+                <!-- <img src="assets/img/int/getstarted.svg" alt=""> -->
+                <div class="no-bot-msg">
+                    <!-- <div class="add-content-btn-wpr">
+                        <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
+                            [matMenuTriggerFor]="menu"> 
+                            {{ 'KbPage.Add' | translate }} 
+                        </button>
+                    </div> -->
+                    <!-- ---------------------------- -->
+                    <!-- Welcome To KB  -->
+                    <!-- ---------------------------- -->
+                    <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-msg">
+                        👋 {{'KbPage.WelcomeToKB' | translate:{company_name: companyName} }}
+                    </div> -->
+                    
+                    <!-- <div *ngIf="hasAlreadyVisitedKb === 'false'" class="kb-welcome-sub-msg">
+                        You've just created your first AI Assistant
+                    </div> -->
+                    <!-- <span class="upgrade-title">{{'KbPage.NoKbAdded' | translate }}</span> -->
+
+                    <!-- ---------------------------------- -->
+                    <!-- New -->
+                    <!-- ---------------------------------- -->
+
+                    <div class="add-content-container ">
+
+                        <div class="upgrade-title">
+                            <!-- {{'KbPage.NoContentAdded' | translate }} -->
+                            You don't have any contents yet
+                        </div>
+                        <span class="span-12"> </span>
+                        <div class="upgrade-subtitle">
+                            {{'KbPage.NoKbAddedText' | translate }}
+                            <!-- <span *ngIf="hideHelpLink" class="upgrade-subtitle-learn-how" >{{'LearnHow' | translate }} </span> -->
+                        </div>
+                        <span class="span-32"> </span>
+
+                        <div class="add-content-cards-wpr">
+
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('urls')">
+
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none"
+                                                style="transform: rotate(-45deg);">
+                                                <path
+                                                    d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbURL' | translate }}
+                                    </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Adds specific web pages or articles to your Knowledge Base
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('site-map')">
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.AddKbSitemap' | translate }}
+                                    </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Provide your sitemap to feed AI assistant with the information it contains.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('faq')">
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="M560-360q17 0 29.5-12.5T602-402q0-17-12.5-29.5T560-444q-17 0-29.5 12.5T518-402q0 17 12.5 29.5T560-360Zm-30-128h60q0-29 6-42.5t28-35.5q30-30 40-48.5t10-43.5q0-45-31.5-73.5T560-760q-41 0-71.5 23T446-676l54 22q9-25 24.5-37.5T560-704q24 0 39 13.5t15 36.5q0 14-8 26.5T578-596q-33 29-40.5 45.5T530-488ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> FAQs </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Manually write your own specific FAQ or add multiple FAQs from .CSV file at
+                                        once.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('text-file')">
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="M280-280h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm-80 480q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> Plain text </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Manually write your own textual information that users might ask for
+                                    </p>
+                                </div>
+                            </div>
+
+
+                            <div class="add-content-card-wpr" (click)="onOpenAddKnowledgeBaseModal('file-upload')">
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <span class="span-12"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.UploadFile' | translate }} </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        Upload detailed documentation, technical guides, user manuals, and other
+                                        extensive documents
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- ---------------------------------- -->
+
+
+
+
+                    <div class="link-to-docs-container">
+                        <!-- <button class="btn custom-button-l add-content center" style="box-shadow: unset;"
+                            [matMenuTriggerFor]="menu">
+                            {{ 'KbPage.Add' | translate }}
+                        </button> -->
+
+
+                        <div *ngIf="hideHelpLink" class="kb-link-to-docs-wpr">
+                            <span>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#0f62ff" style="vertical-align: middle;">
+                                    <path
+                                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                                </svg>
+
+                            </span>
+
+                            <span class="kb-link-to-docs" (click)="goToKbDoc()">
+                                {{'KbPage.LearnMoreAboutKB' | translate}}
+                            </span>
+                        </div>
+
+                        <!-- *ngIf="hasAlreadyVisitedKb === 'false'" -->
+                        <!-- <div  class="getting-started-add-content">
+                            <div class="getting-started-add-content-text"> {{ 'KbPage.GetStartedByAddingContents' | translate }}  </div> 
+                            <button class="btn custom-button-round add-content center" style="box-shadow: unset;"
+                            [matMenuTriggerFor]="menu"> 
+                            <span class="material-icons-round">add</span>
+                        </button>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <mat-menu #menu="matMenu" xPosition="before" class="second-add-contents-menu">
+                    <add-content-menu class="mat-menu"
+                        (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
+                    </add-content-menu>
+                </mat-menu> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div *ngIf="SHOW_TABLE == true" class="card">
+
+    <div class="search-filters-card-header">
+
+        <div class="filters">
+            <!-- <span class="material-icons-outlined filter-icon">filter_list</span> -->
+            <div class="selector status-selector">
+                <ng-select class="custom--input" editable="false" [clearable]='false' [editable]='false'
+                    [(ngModel)]='filterStatus' dropdownPosition='bottom'
+                    (ngModelChange)="onLoadByFilter($event, 'status')">
+                    <!-- <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option> -->
+                    <ng-option value="">{{ 'KbPage.AllStatuses' | translate }}</ng-option>
+                    <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
+                    <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
+                    <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
+                    <ng-option value="300"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
+                    <ng-option value="400"> {{ 'KbPage.StatusError' | translate }}</ng-option>
+                </ng-select>
+            </div>
+
+            <div class="selector type-selector">
+                <ng-select class="custom--input" editable="false" [clearable]='false' [editable]='false'
+                    [(ngModel)]='filterType' dropdownPosition='bottom' (ngModelChange)="onLoadByFilter($event, 'type')">
+                    <ng-option value="">
+                        <!-- All types -->
+                        {{ 'KbPage.AllTypes' | translate }}
+                    </ng-option>
+                    <ng-option value="text">
+                        <!-- Text -->
+                        {{ 'Text' | translate }}
+                    </ng-option>
+                    <ng-option value="url">
+                        URL
+                    </ng-option>
+                    <ng-option value="pdf">
+                        PDF
+                    </ng-option>
+                    <!-- <ng-option value="txt">
+                        TXT
+                    </ng-option> -->
+                    <ng-option value="docx">
+                        DOCX
+                    </ng-option>
+                    <ng-option value="faq">
+                        FAQs
+                    </ng-option>
+                </ng-select>
+            </div>
+
+        </div>
+
+        <div class="fake-input">
+            <!-- <label for="search">{{ 'KbPage.TextSearch' | translate }}</label> -->
+            <!-- <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}"> -->
+            <input (keyup)="onLoadByFilter($event.target.value, 'name')"
+                placeholder="{{ 'KbPage.SearchByName' | translate }}">
+            <span class="material-icons-outlined">search</span>
+        </div>
+    </div>
+
+    <div class="form-group preview-count">
+        <div class="preview-count-left">
+            <div>
+                <button mat-icon-button aria-label="Refresh" style="color: grey;" (click)="onLoadByFilter()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+            <div class="contents-count"> {{ 'KbPage.TotalContents' | translate }}: <b>{{ kbsListCount }}</b></div>
+        </div>
+
+        <div class="preview-settings">
+            <div class="btn-preview">
+
+
+                <!-- <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+                  <span class="material-icon material-icons-round">play_arrow</span>
+                  {{'Preview' | translate}}
+                </button> -->
+
+
+                <!-- ---------------------------------------- -->
+                <!-- AI Settings -->
+                <!-- ---------------------------------------- -->
+                <button id="ai-settings" class="custom--button preview-settings"
+                    (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
+                    matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
+                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff" style="vertical-align: middle;">
+                            <path
+                                d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
+                        </svg>
+
+                    </span>
+                    <!-- <span class="material-icons-round">settings</span> -->
+                </button>
+
+                <!-- ---------------------------------------- -->
+                <!-- KB preview -->
+                <!-- ---------------------------------------- -->
+                <button id="kb-preview" class="custom--button preview" aria-label="Preview"
+                    (click)="$event.stopPropagation(); onOpenBaseModalPreview()" matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{'KbPage.KBpreview' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltipHideDelay="100">
+                    <!-- <span class="material-icons-round">play_arrow</span> -->
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff" style="vertical-align: middle;">
+                            <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
+                        </svg>
+                    </span>
+                    <span> {{'Preview' | translate}} </span>
+                </button>
+
+                <!-- ---------------------------------------- -->
+                <!-- Add Content -->
+                <!-- ---------------------------------------- -->
+                <!-- custom--button add-content -->
+                <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                    (click)="$event.stopPropagation(); onOpenAddContent()" matTooltipClass="kb-custom-mat-tooltip"
+                    matTooltip="{{'KbPage.Add' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltipHideDelay="100">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#fff" style="vertical-align: middle;">
+                            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                        </svg>
+                    </span>
+                    <span> </span> {{ 'Add' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- <div class="form-group">
+        <div class="cerca">
+            <label class="col-sm-12 control-label">
+                
+            </label>
+            <div class="col-sm-12">
+                <input (keyup)="onLoadByFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}">
+            </div>
+        </div>
+
+        <div class="stato">
+            <label class="col-sm-12 control-label">
+                {{ 'KbPage.StateFilter' | translate }}
+            </label>
+            <div class="col-sm-12">
+                <ng-select class="custom-input" 
+                    editable="false"
+                    [clearable]='false' 
+                    [editable]='false'
+                    [ngModel]='filterType'
+                    dropdownPosition='bottom' 
+                    (ngModelChange)="onLoadByFilter($event, 'type')">
+                    <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option>
+                    <ng-option value="-1"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
+                    <ng-option value="100"> {{ 'KbPage.StatusQueued' | translate }}</ng-option>
+                    <ng-option value="200"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
+                    <ng-option value="300"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
+                    <ng-option value="400"> {{ 'KbPage.StatusError' | translate }}</ng-option>
+                  </ng-select>
+
+            </div>
+        </div>
+    </div> -->
+
+
+    <div *ngIf="!isLoading || SHOW_MORE_BTN" #tableBody class="table-body card-content table-responsive">
+        <!-- <div class="btn-preview">
+            <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+              <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
+            </button>
+        </div> -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="column-th-span" style="width:80px; cursor: default; text-align: center;">
+                        <span>{{ 'KbPage.Type' | translate }}</span>
+                    </th>
+                    <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
+                        <span>{{ 'KbPage.Status' | translate }}</span>
+                    </th>
+                    <th class="column-th-span" style="width:150px;" (click)="onOrderBy('updatedAt')">
+                        <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span>
+                        <span *ngIf="directionDesc === 1" id="expand_more"
+                            class="th-label material-icons-outlined icon-direction">expand_more</span>
+                        <span *ngIf="directionDesc === -1" id="expand_less"
+                            class="th-label material-icons-outlined icon-direction">expand_less</span>
+                    </th>
+                    <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
+                        <div>
+                            <span style="margin: 0px;">{{'Name' | translate }}</span>
+                            <span *ngIf="directionDesc === 1" id="expand_more"
+                                class="th-label material-icons-outlined icon-direction">expand_more</span>
+                            <span *ngIf="directionDesc === -1" id="expand_less"
+                                class="th-label material-icons-outlined icon-direction">expand_less</span>
+                        </div>
+                    </th>
+                    <th class="column-th-span" style="min-width: 40px; width: 40px; cursor: default;">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngIf="kbsList?.length == 0">
+                    <td colspan="5" style="width: 100%; ">
+                        <div class="ellipsis-text" style="width: 100%;
+                        display: inline-block;
+                        text-align: center;
+                        padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                    </td>
+                </tr>
+
+
+                <tr *ngFor="let kb of kbsList">
+                    <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
+
+                        <div *ngIf="kb.type == 'docx'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #346ca2; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">DOCX</span>
+                        </div>
+                        <div *ngIf="kb.type == 'txt'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">TXT</span>
+                        </div>
+                        <div *ngIf="kb.type == 'pdf'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #e55254; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">PDF</span>
+                        </div>
+                        <div *ngIf="kb.type == 'text'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white">description</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Text</span>
+                        </div>
+                        <div *ngIf="kb.type == 'url'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #333652; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white;">link</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">URL</span>
+                        </div>
+                        <div *ngIf="kb.type == 'faq'" class="chip"
+                            style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
+                            <span id="description" class="material-icons-outlined"
+                                style="font-size: 16px; color: white;">quiz</span>
+                            <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">FAQ</span>
+                        </div>
+                        <!-- <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span> -->
+                        <!-- <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span> -->
+                    </td>
+
+                    <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
+                        <!-- <loading-spinner *ngIf="kb.status < -1 || kb.status > 4" class="custom-spinner"></loading-spinner> -->
+                        <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
+                        <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
+                        <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
+                        <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span> -->
+                        <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
+                            class="material-icons-outlined status-icon">done</span>
+                        <span *ngIf="kb.status == 100" id="done"
+                            class="material-icons-outlined status-icon">done_all</span>
+                        <span *ngIf="kb.status == 200 || kb.status == 2" id="cached"
+                            class="material-icons-outlined status-icon animated-icon">cached</span>
+                        <span *ngIf="kb.status == 300 || kb.status == 3" id="close"
+                            class="material-icons-outlined status-icon status-done">done_all</span>
+                        <span *ngIf="kb.status == 400 || kb.status == 4" id="error"
+                            class="material-icons-outlined status-icon status-error">error</span>
+                    </td>
+
+                    <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
+                        {{ kb.createdAt | amTimeAgo }}
+                    </td>
+
+                    <!-- <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
+                        <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}" class="ellipsis-text" style="max-width: 100%; font-size: 16px;">{{ kb.name }}</div>
+                        
+                        <div *ngIf="kb.type === 'text'" class="subtitle ellipsis-text" style="max-width: 100%;">
+                           
+                            {{kb.content | slice:0:500 }}
+
+                        </div>
+                        <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
+          
+                            {{kb.source }}
+
+                        </div>
+                    </td> -->
+
+                    <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
+                        <div [ngClass]="{'imported-file': kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx'}"
+                            class="ellipsis-text" style="max-width: 100%; font-size: 16px;">
+                            {{ kb.name }}
+                        </div>
+
+                        <div *ngIf="kb.type === 'text' || kb.type === 'faq'" class="subtitle ellipsis-text"
+                            style="max-width: 100%;">
+
+                            {{kb.content | slice:0:500 }}
+
+                        </div>
+                        <div *ngIf="kb.type === 'url'" class="subtitle ellipsis-text" style="max-width: 100%;">
+
+                            {{kb.source }}
+
+                        </div>
+                    </td>
+
+                    <td style="max-width: 40px; text-align: end;">
+                        <div
+                            style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
+                                <button *ngIf="kb.type !== 'pdf' && kb.type !== 'txt' && kb.type !== 'docx'"
+                                    mat-menu-item (click)="onRunIndexing(kb)">
+                                    <mat-icon>play_arrow</mat-icon>
+                                    <!-- <span>{{'KbPage.RunIndexing' | translate}}</span> -->
+                                    <span>{{'KbPage.ReIndex' | translate}}</span>
+                                </button>
+                                <button mat-menu-item (click)="onCheckStatus(kb)">
+                                    <mat-icon>published_with_changes</mat-icon>
+                                    <span>{{'KbPage.RunCheckStatus' | translate}}</span>
+                                </button>
+                                <button mat-menu-item (click)="onOpenBaseModalDetail(kb)">
+                                    <mat-icon>edit</mat-icon>
+                                    <span>{{'Edit' | translate}}</span>
+                                </button>
+                                <button mat-menu-item [disabled]="kb.deleting == true"
+                                    (click)="onOpenBaseModalDelete(kb)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>{{'KbPage.DeleteKb' | translate}}</span>
+                                </button>
+
+
+                            </mat-menu>
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <!-- btn btn-more btn-new btn-size-m btn--primary btn-xs center -->
+    </div>
+    <div *ngIf="isLoading" [ngStyle]="{'margin-top':SHOW_MORE_BTN === true ? '20px' : '80px' }"
+        class="loading-indicator">{{'KbPage.Loading' | translate}}</div>
+    <div *ngIf="!isLoading && SHOW_MORE_BTN" class="btn-more btn--default" (click)="loadMoreData()">
+        {{'KbPage.LoadMore' | translate}}
+    </div>
+
+</div>

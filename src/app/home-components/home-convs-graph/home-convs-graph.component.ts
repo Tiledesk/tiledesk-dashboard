@@ -12,6 +12,8 @@ import { ContactsService } from 'app/services/contacts.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { forkJoin } from 'rxjs';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-home-convs-graph',
@@ -32,6 +34,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   countOfLastSevenDaysRequests: number = 0;
   countOfLastSevenDaysRequestsHandledByBot: number = 0;
   percentageOfSevenDaysRequestsHandledByBots: any;
+ 
 
   countOfLastMonthRequests: number; // USED FOR COUNT OF LAST 30 DAYS
   countOfLastMonthRequestsHandledByBots: number;
@@ -45,6 +48,11 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   public_Key: string;
   isVisibleANA: boolean;
 
+  // For new method
+  percentageOfRequestsHandledByBots: any;
+  totalHuman: number;
+  totalBot: number;
+  higherCount: number;
   /**
    * Constructor
    */
@@ -93,8 +101,9 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   }
 
   inizializeHomeStatic() {
+    // this._getRequestByLastNDayMerge(this.numOfDays);
     this.getRequestByLastNDayMerge(this.numOfDays);
-    // this.getLastMounthRequestsCount();
+    // this.getLastMounthRequestsCount(); // Not used 
     // this.getActiveContactsCount();
     // this.getVisitorsCount();
     // this.getLastMounthMessagesCount();
@@ -226,13 +235,11 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
  
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getMonthsName() {
@@ -253,17 +260,18 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
     }
   }
 
+  // !!! No more used
   getLastMounthRequestsCount() {
     this.analyticsService.getLastMountConversationsCount()
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((convcount: any) => {
-        this.logger.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
+        this.logger.log('[HOME-CONVS-GRAPH] - >>> GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
 
         if (convcount && convcount.length > 0) {
           this.countOfLastMonthRequests = convcount[0]['totalCount'];
-          this.logger.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
+          this.logger.log('[HOME-CONVS-GRAPH] - >>> GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
         } else {
           this.countOfLastMonthRequests = 0;
         }
@@ -291,8 +299,8 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
           this.countOfLastMonthRequestsHandledByBots = 0
         }
 
-        this.logger.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
-        this.logger.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
+        this.logger.log("[HOME-CONVS-GRAPH] - >>> getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
+        this.logger.log("[HOME-CONVS-GRAPH] - >>> getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
         // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
 
         if (this.countOfLastMonthRequestsHandledByBots > 0 && this.countOfLastMonthRequests) {
@@ -300,10 +308,11 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
           this.logger.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
           this.logger.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
           this.logger.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
-          this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1);
+          this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1).replace('.', ',');
         } else {
           this.percentageOfLastMonthRequestsHandledByBots = 0
         }
+        this.logger.log("[HOME-CONVS-GRAPH] - >>> getRequestsHasBotCount percentageOfLastMonthRequestsHandledByBots: ", this.percentageOfLastMonthRequestsHandledByBots);
       }, (error) => {
         this.logger.error('[HOME-CONVS-GRAPH] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
 
@@ -317,18 +326,190 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
     this.numOfDays = rangeDays;
     this.lineChart.destroy();
 
-    this.getRequestByLastNDayMerge(rangeDays)
+    // this._getRequestByLastNDayMerge(rangeDays) // old 
+    this.getRequestByLastNDayMerge(rangeDays) 
   }
 
 
-  getRequestByLastNDayMerge(lastdays) {
+  getMaxValueFromArrays(array1: number[], array2: number[]): number {
+    const mergedArray = [...array1, ...array2];
+    this.logger.log('mergedArray', mergedArray)
+    return Math.max(...mergedArray);
+  }
 
-    this.logger.log("[HOME-CONVS-GRAPH] GET REQUEST TYPE: Merged")
+  getRequestByLastNDayMerge(lastdays) {
+    this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD lastdays ', lastdays);
+    // Combine two observables into a single request
+    forkJoin({
+      requestsByDay: this.analyticsService.requestsByDay(lastdays),
+      requestsByDayBotServed: this.analyticsService.requestsByDayBotServed(lastdays)
+    }).subscribe(({ requestsByDay, requestsByDayBotServed }) => {
+      this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD HUMAN REQUESTS:', requestsByDay);
+      this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD BOT REQUESTS:', requestsByDayBotServed);
+  
+      // Step 1: Initialize the array with last N days
+      const lastNdaysInitArray = Array.from({ length: lastdays }, (_, i) => ({
+        count: 0,
+        day: moment().subtract(i, 'd').format('D/M/YYYY')
+      })).reverse();
+  
+      // Step 2: Format API responses
+      const formatRequests = (data, filterBot = false) =>
+        data
+          .filter(item => !filterBot || item['_id']['hasBot'] === true)
+          .map(item => ({
+            count: item['count'],
+            day: `${item['_id']['day']}/${item['_id']['month']}/${item['_id']['year']}`
+          }));
+  
+      const humanRequests = formatRequests(requestsByDay);
+      const botRequests = formatRequests(requestsByDayBotServed, true);
+  
+      // Step 3: Merge formatted data with initialized array
+      const finalHumanRequests = lastNdaysInitArray.map(obj => humanRequests.find(o => o.day === obj.day) || obj);
+      const finalBotRequests = lastNdaysInitArray.map(obj => botRequests.find(o => o.day === obj.day) || obj);
+  
+      // Step 4: Extract series data for Chart.js
+      const humanCounts = finalHumanRequests.map(req => req.count);
+      const botCounts = finalBotRequests.map(req => req.count);
+      const labels = finalHumanRequests.map(req => {
+        const [day, month] = req.day.split('/');
+        return `${day} ${this.monthNames[month]}`;
+      });
+  
+      // Step 5: Calculate statistics
+      this.totalHuman = humanCounts.reduce((sum, val) => sum + val, 0);
+      this.totalBot = botCounts.reduce((sum, val) => sum + val, 0);
+      
+      const higherCount = this.getMaxValueFromArrays(humanCounts, botCounts);
+      // + this.totalBot
+      this.percentageOfRequestsHandledByBots =  this.totalBot > 0 ? ((this.totalBot / (this.totalHuman )) * 100).toFixed(2).replace('.', ',') : '0';
+      
+     
+       this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Human Total:', this.totalHuman);
+       this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Bot Total:',  this.totalBot);
+       this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Bot %:', this.percentageOfRequestsHandledByBots);
+       this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  labels:', labels);
+  
+      // Step 6: Render the chart
+      this.renderChart(labels, humanCounts, botCounts,higherCount);
+    }, (error) => {
+      this.logger.error('[HOME-CONVS-GRAPH] - -> NEW METHOD ERROR:', error);
+    });
+  }
+  
+  renderChart(labels, humanCounts, botCounts, higherCount) {
+    
+    this.lineChart =  new Chart('lastNdayChart', {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: this.servedByBots,
+            data: botCounts,
+            fill: true,
+            backgroundColor: 'rgba(129,140,248, 0.6)',
+            borderColor: 'rgba(129,140,248, 1)',
+            borderWidth: 3,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: 'rgba(129,140,248, 1)', //'rgba(255, 255, 255, 0.8)',
+            pointBorderColor: 'rgba(129,140,248, 1)', //'#b00e0e'
+            lineTension: 0.4,
+          },
+          {
+            // label: this.servedByHumans,
+            label: this.translate.instant('TotalConversations'),
+            data: humanCounts,
+            fill: true,
+            backgroundColor: 'rgba(30, 136, 229, 0.6)',
+            borderColor: 'rgba(30, 136, 229, 1)',
+            borderWidth: 3,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: 'rgba(30, 136, 229, 1)',
+            pointBorderColor: 'rgba(30, 136, 229, 1)',
+            lineTension: 0.4,
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        title: {
+          text: 'AVERAGE TIME RESPONSE',
+          display: false
+        },
+        legend: {
+          display: true,
+          position: 'top',
+          align: "center",
+          fullWidth: false,
+          labels: {
+            usePointStyle: false,
+            // padding: 10
+          }
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              display: true,
+              fontColor: 'white',
+            },
+            gridLines: {
+              display: true,
+              borderDash: [8, 4],
+              color: 'rgba(255, 255, 255, 0.5)',
+              lineWidth: 0.5
+            }
+
+          }],
+          yAxes: [{
+            gridLines: {
+              display: true,
+              borderDash: [8, 4],
+              color: 'rgba(255, 255, 255, 0.5)',
+              lineWidth: 0.5
+
+            },
+            ticks: {
+              beginAtZero: true,
+              userCallback: function (label, index, labels) {
+                //userCallback is used to return integer value to ylabel
+                if (Math.floor(label) === label) {
+                  return label;
+                }
+              },
+              display: true,
+              fontColor: 'white',
+              suggestedMax: higherCount + 1,
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: (tooltipItem, data) => {
+              const currentItemValue = tooltipItem.yLabel
+
+              return this.translate.instant('Requests') + ':' + currentItemValue;
+
+            }
+          }
+        }
+      },
+    });
+  }
+  
+ 
+  // NO MORE USED replaced by getRequestByLastNDayMerge
+  _getRequestByLastNDayMerge(lastdays) {
+    //  this.logger.log("[HOME-CONVS-GRAPH] - GET REQUESTS BY LAST N DAYS Merge")
     this.analyticsService.requestsByDay(lastdays).subscribe((requestsByDay: any) => {
-      this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY  N-DAY ', requestsByDay);
+      this.logger.log('[HOME-CONVS-GRAPH] - GET REQUESTS (HUMAN) BY LAST' ,lastdays,  'DAYS - RESP', requestsByDay);
 
       this.analyticsService.requestsByDayBotServed(lastdays).subscribe((requestsByDayBotServed: any) => {
-        this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+        this.logger.log('[HOME-CONVS-GRAPH] - GET REQUESTS (BOT) BY LAST ', lastdays, ' DAYS - RESP' ,requestsByDayBotServed );
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
@@ -410,8 +591,8 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
         this.countOfLastSevenDaysRequests = _requestsByDay_series_array.reduce((partialSum, a) => partialSum + a, 0);
         this.countOfLastSevenDaysRequestsHandledByBot = _requestsByDayBotServed_series_array.reduce((partialSum, a) => partialSum + a, 0);
 
-        this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV HUMAN HANDLED ', this.countOfLastSevenDaysRequests);
-        this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV BOT HANDLED ', this.countOfLastSevenDaysRequestsHandledByBot);
+        this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV HUMAN HANDLED countOfLastSevenDaysRequests ', this.countOfLastSevenDaysRequests);
+        this.logger.log('[HOME-CONVS-GRAPH] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV BOT HANDLED countOfLastSevenDaysRequestsHandledByBot', this.countOfLastSevenDaysRequestsHandledByBot);
 
         if (this.countOfLastSevenDaysRequestsHandledByBot > 0 && this.countOfLastSevenDaysRequests) {
           const totalSevendaysConvs = this.countOfLastSevenDaysRequestsHandledByBot + this.countOfLastSevenDaysRequests
@@ -419,10 +600,11 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
 
           this.logger.log("[HOME-CONVS-GRAPH] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", lastdays, " DAYS: ", _percentageOfLastSevenDaysRequestsHandledByBots);
           // this.logger.log("[HOME-CONVS-GRAPH] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", numOfDays ," DAYS typeof: ", typeof _percentageOfLastSevenDaysRequestsHandledByBots);
-          this.percentageOfSevenDaysRequestsHandledByBots = _percentageOfLastSevenDaysRequestsHandledByBots.toFixed(1);
+          this.percentageOfSevenDaysRequestsHandledByBots = _percentageOfLastSevenDaysRequestsHandledByBots.toFixed(1).replace('.', ',');
         } else {
           this.percentageOfSevenDaysRequestsHandledByBots = 0
         }
+        this.logger.log("[HOME-CONVS-GRAPH] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", lastdays, " DAYS: ", this.percentageOfSevenDaysRequestsHandledByBots);
 
         //get higher value of xvalue array 
         const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
@@ -432,6 +614,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
           type: 'line',
           data: {
             labels: _requestsByDay_labels_array,
+            
             datasets: [
               {
                 label: this.servedByBots, // this.translate.instant('ServedByBots'), // 'Served by bots', //active labet setting to true the legend value

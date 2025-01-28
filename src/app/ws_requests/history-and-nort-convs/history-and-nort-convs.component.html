@@ -13,7 +13,7 @@
 </div>
 
 
-<div class="main-content" style="padding-top:0px">
+<div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
 
     <!-- ---------------------------------------------------------------- -->
@@ -162,9 +162,9 @@
           <!-- ---------------------------------------------------------------- -->
           <!-- Filters - right section [ngStyle]="{'opacity':payIsVisible === true ? '1' : '0' }" -->
           <!-- ---------------------------------------------------------------- -->
-          <div class="filters-on-right" >
-            <button class="btn pull-right export-to-csv-btn btn-gray-no-boxshadow"
-              style="max-height: 38px; margin-top: 20px;" (click)="exportRequestsToCSV()">
+          <div class="filters-on-right">
+            <button class="btn pull-right export-to-csv-btn btn-outlined"
+              style="margin-top: 14px;" (click)="exportRequestsToCSV()">
               <span class="material-icons" style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
                 save_alt
               </span>
@@ -249,9 +249,9 @@
                       <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="Start date">
+                          placeholder="{{'StartDate' | translate}}">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="End date">
+                          placeholder="{{'EndDate' | translate}}">
                       </mat-date-range-input>
                       <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -292,25 +292,34 @@
                     {{ "Tags.Tags" | translate }}
                   </label>
                   <div class="col-sm-12">
+                    <!-- placeholder="{{'Tags.SelectTag' | translate}}"  -->
                     <ng-select [items]="tags_array" bindLabel="name" bindValue="name"
-                      placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selecteTagName"
-                      (change)="tagNameSelected()" [clearable]='false' [loading]=loadingTags loadingText='Loading...'>
+                      placeholder="{{'SelectOrTypeTheTagToSearch' | translate }}"
+                      [(ngModel)]="selecteTagName"
+                      (change)="onSelectedTagName()" 
+                      (search)="onSearchTagName($event)"
+                      [clearable]='true' 
+                      [loading]=loadingTags 
+                      notFoundText="{{'TagNotFoundInTheList' | translate}}"
+                      [editableSearchTerm]="true"
+                      loadingText="{{'Loading' | translate}}"
+                      >
                       <ng-template ng-label-tmp let-item="item">
-                        <!-- <img height="15" width="15" [src]="item.avatar" /> -->
-                        <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
-                        <span style="margin-left:6px;">{{item.name}}</span>
+                        <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                        <!-- style="margin-left:6px;" -->
+                        <span>{{item.name}}</span>
                       </ng-template>
                       <ng-template ng-option-tmp let-item="item" let-index="index">
-                        <!-- <img height="15" width="15" [src]="item.avatar" /> -->
-                        <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div>
-                        <span style="margin-left:6px;">{{item.name}}</span>
+                        <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
+                        <!-- style="margin-left:6px;" -->
+                        <span>{{item.name}}</span>
                       </ng-template>
                     </ng-select>
                   </div>
                 </div>
               </div>
               <!-- style="margin-bottom: 8px;" -->
-              <div class="row" >
+              <div class="row">
                 <div class="col-sm-6" *ngIf="!IS_HERE_FOR_HISTORY">
                   <label class="col-sm-12 label-7695a5">
                     {{ "Status" | translate }}
@@ -372,7 +381,7 @@
                 <!--  -->
                 <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY" style="display: flex;">
 
-                  <div class="called-phone-wpr"> 
+                  <div class="called-phone-wpr">
                     <!--  -->
                     <label class="col-sm-12 label-7695a5" style="padding-right: 3px;">
                       {{'CalledNumber' | translate}}
@@ -384,7 +393,7 @@
                     </div>
                   </div>
 
-                  <div class="call-id-wpr"> 
+                  <div class="call-id-wpr">
                     <label class="col-sm-12 label-7695a5" style="padding-left: 3px;">
                       {{'CallID' | translate }}
                     </label>
@@ -473,19 +482,30 @@
                       <label class="checkbox--label">
                         <input type="checkbox" [(ngModel)]="_preflight" class="form-check-input" id="exampleCheck1"
                           (change)="onChangePreflight($event)">
-                        <div class="checkbox--label-text">
-                          <!-- Include Chatbot only converations -->
-                          {{'IncludeChatbotsOnlyConversations' | translate}}
-                          <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
-                            matTooltipClass="mat-white-tooltip"
-                            matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='below' 
-                            matTooltipHideDelay="100">
-                            help
-                          </span> -->
-                        </div>
+                          <div class="checkbox--label-text">
+                            <!-- Include Chatbot only converations -->
+                            {{'IncludeChatbotsOnlyConversations' | translate}}
+                            <!-- <span class="material-icons-outlined" style="vertical-align: middle; font-size: 18px; cursor:pointer"
+                              matTooltipClass="mat-white-tooltip"
+                              matTooltip="Preflight conversations refer to the preliminary discussions that occur before the live chat session begins" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below' 
+                              matTooltipHideDelay="100">
+                              help
+                            </span> -->
+                          </div>
                       </label>
+                      
+                    </div>
+                    <div class="help-icon-wpr">
+                      <i  class="material-icons" 
+                        matTooltipClass="mat-white-tooltip"
+                        matTooltip="{{'IncludeChatbotsOnlyConversationsDesc' | translate}}" 
+                        #tooltip="matTooltip"
+                        matTooltipPosition='below' 
+                        matTooltipHideDelay="100"> 
+                        help_outline 
+                      </i>
                     </div>
                   </div>
                 </div>
@@ -498,11 +518,11 @@
               <div class="row">
                 <div class="col-sm-12" style="margin-top: 16px;">
                   <button #searchbtnbottom id="search_in_advanced_filter" type="submit"
-                    class="btn btn-tdblu-no-boxshadow pull-right" (click)="search()"
-                    style="padding:9px 30px;     margin-right: 15px;">
-
+                    class="btn btn-tdblu-no-boxshadow pull-right search-btn" (click)="search()">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     {{ 'Search' | translate}}
                   </button>
+
                   <button type="submit" class="btn btn-gray-no-boxshadow  clearsearchbtn pull-right"
                     (click)="clearSearch()" style="margin-right: 12px;">
 
@@ -659,12 +679,12 @@
 
     <!-- || conversation_type  === 'chat21'  && conversation_type !== 'all'-->
     <div id="conversation-type" *ngIf="
-          conversationTypeValue === CHANNELS_NAME.CHAT21 ||
-          conversationTypeValue === CHANNELS_NAME.FORM ||
-          conversationTypeValue === CHANNELS_NAME.MESSANGER ||
-          conversationTypeValue === CHANNELS_NAME.TELEGRAM || 
-          conversationTypeValue === CHANNELS_NAME.WHATSAPP || 
-          conversationTypeValue === CHANNELS_NAME.EMAIL ||
+          conversationTypeValue  === CHANNELS_NAME.CHAT21 ||
+          conversationTypeValue  === CHANNELS_NAME.FORM ||
+          conversationTypeValue  === CHANNELS_NAME.MESSANGER ||
+          conversationTypeValue  === CHANNELS_NAME.TELEGRAM || 
+          conversationTypeValue  === CHANNELS_NAME.WHATSAPP || 
+          conversationTypeValue  === CHANNELS_NAME.EMAIL ||
           conversationTypeValue === CHANNELS_NAME.VOICE_VXML || 
           conversationTypeValue === CHANNELS_NAME.VOICE_TWILIO || 
           conversationTypeValue === CHANNELS_NAME.SMS_TWILIO" class="applied-filter">
@@ -837,11 +857,8 @@
                   <div class="refresh-icon-wpr"
                     [ngClass]="{'not_is_owner': USER_ROLE !== 'owner' && IS_HERE_FOR_HISTORY, 'is_agent': USER_ROLE === 'agent' && !IS_HERE_FOR_HISTORY }">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      matTooltipClass="mat-white-tooltip" 
-                      matTooltip="{{ 'Refresh' | translate }}"
-                      #tooltip="matTooltip"
-                      matTooltipPosition='below'
-                       matTooltipHideDelay="100">
+                      matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Refresh' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
                       <span class="material-icons refresh-page-icon" style="vertical-align:middle; cursor: pointer;position: relative;
                     top: 1px; color:grey;">
                         refresh
@@ -860,12 +877,9 @@
                   <!-- Action Delete selected if IS_HERE_FOR_HISTORY -->
                   <!-- --------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0 && USER_ROLE === 'owner'" class="delete-selected-wpr">
-                    <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="deleteSelected()" 
-                      matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ 'Delete' | translate }}" 
-                      #tooltip="matTooltip" 
-                      matTooltipPosition='below'
+                    <button class="custom-input-group---btn" type="button" style="height: 37px;"
+                      (click)="deleteSelected()" matTooltipClass="mat-white-tooltip"
+                      matTooltip="{{ 'Delete' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
                       matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
@@ -888,12 +902,9 @@
                   <!-- ---------------------------------------------------------------------------------------- -->
                   <div *ngIf="request_selected.length > 0" class="archive-selected-wpr">
                     <button class="custom-input-group---btn tool_tip" type="button" style="height: 37px;"
-                      (click)="archiveSelected()" 
-                      matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" 
-                      #tooltip="matTooltip"
-                      matTooltipPosition='below' 
-                      matTooltipHideDelay="100">
+                      (click)="archiveSelected()" matTooltipClass="mat-white-tooltip"
+                      matTooltip="{{ 'VisitorsPage.Resolve' | translate }}" #tooltip="matTooltip"
+                      matTooltipPosition='below' matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
                         style="vertical-align:middle; cursor: pointer; color:grey;">
@@ -1581,6 +1592,7 @@
                         </span>
                       </span>
 
+                    
                       <!-- ---------------------------------------- -->
                       <!-- Channel - SMS -->
                       <!-- ---------------------------------------- -->
@@ -1594,6 +1606,7 @@
                           <i></i>
                         </span>
                       </span>
+                      
                       <!-- ---------------------------------------- -->
                       <!-- Channel - WhatsApp -->
                       <!-- ---------------------------------------- -->
@@ -1779,19 +1792,16 @@
                       <span class="requester-email-undefined"
                         *ngIf="!request?.lead?.email && (request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO)"
                         [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        
+
                         <span *ngIf="request?.lead?.fullname !== request?.lead?.phone">
                           <!-- <span class="material-icons-outlined" style="vertical-align: middle;font-size:12px">
                             call
                             </span> -->
-                          <span class="requester-phone"
-                            matTooltipClass="mat-white-tooltip"
-                            matTooltip="{{ 'RequesterPhoneNumber' | translate }}" 
-                            #tooltip="matTooltip"
-                            matTooltipPosition='above' 
-                            matTooltipHideDelay="100"> 
-                                {{request?.lead?.phone}}
-                          </span> 
+                          <span class="requester-phone" matTooltipClass="mat-white-tooltip"
+                            matTooltip="{{ 'RequesterPhoneNumber' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            {{request?.lead?.phone}}
+                          </span>
                         </span>
                       </span>
                     </span>
@@ -1906,7 +1916,7 @@
                 </td>
 
                 <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
-                <td >
+                <td>
                   <span *ngIf="request?.userAgent" class="tooltipx">
                     <!-- 
                       // ----------------------------------------------------------------
@@ -2154,10 +2164,21 @@
                         </span>
                       </span>
                       <span *ngIf="agent._id === 'no_agent'">
-                        <img class="user-img ws-requests-list-servedby-avatar"
-                          src="assets/img/user-alt-slash-solid.svg" />
+                        <!-- <img class="user-img ws-requests-list-servedby-avatar" src="assets/img/user-alt-slash-solid.svg" />
                         <span class="served-by-agent">
                           {{ "RequestMsgsPage." + agent?.firstname | translate }}
+                        </span> -->
+                        <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px"
+                            fill="none"
+                            matTooltipClass="mat-white-tooltip" 
+                            matTooltip="{{ 'RequestMsgsPage.' + agent?.firstname | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100">
+                            <path
+                              d="M594.67-508.67 404-699.33q16-11.34 35.17-17.34 19.16-6 40.83-6 58.33 0 98.17 39.84Q618-643 618-584.67q0 21.67-6 40.84-6 19.16-17.33 35.16ZM226-262q59-42.33 120.33-65.5 61.34-23.17 133.67-23.17 30.67 0 55.17 4.17T581-336L469.67-447.33q-51.67-3.34-86.5-37.5Q348.33-519 343-570.67l-122-122q-35.33 43.67-54.83 96.5-19.5 52.84-19.5 116.17 0 60.33 19.16 114.33Q185-311.67 226-262Zm513.33-6.67q34-41.66 54-95.16t20-116.17q0-141-96.16-237.17Q621-813.33 480-813.33q-65.33 0-117.83 20T268-740l471.33 471.33ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-66.67q57 0 106.33-16.5 49.34-16.5 96.34-51.5-47-33.66-98-51.5Q533.67-284 480-284t-104.67 17.83q-51 17.84-98 51.5 47 35 96.67 51.5t106 16.5Zm0-68.66Z" />
+                          </svg>
                         </span>
                       </span>
                     </div>
@@ -2176,12 +2197,9 @@
                       <span *ngIf="agent.is_bot === false">
 
                         <div [ngClass]="{ 'first-served-by': first }" class="served-by-desktop-c"
-                          (click)="goToAgentProfile(agent?._id)" 
-                          matTooltipClass="mat-white-tooltip"
-                          matTooltip="{{ agent?.firstname }} {{ agent?.lastname }}" 
-                          #tooltip="matTooltip"
-                          matTooltipPosition='above' 
-                          matTooltipHideDelay="100">
+                          (click)="goToAgentProfile(agent?._id)" matTooltipClass="mat-white-tooltip"
+                          matTooltip="{{ agent?.firstname }} {{ agent?.lastname }}" #tooltip="matTooltip"
+                          matTooltipPosition='above' matTooltipHideDelay="100">
                           <div class="served-by-desktop-d">
                             <div size="32" class="served-by-desktop-e">
                               <!-- --------------------------------------------------- -->
@@ -2240,8 +2258,11 @@
                       <div class="bot---avatar-wpr" *ngIf="agent.is_bot === true">
                         <div (click)="goToBotProfile(agent, agent?._id, agent?.type)"
                           [ngClass]="{'disable-link-if-is-agent' : ROLE_IS_AGENT}" class="bot---avatar"
-                          matTooltipClass="mat-white-tooltip" matTooltip="{{ agent.name}} (bot)" #tooltip="matTooltip"
-                          matTooltipPosition='above' matTooltipHideDelay="100">
+                          matTooltipClass="mat-white-tooltip" 
+                          matTooltip="{{ agent.name}} (bot)" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='above' 
+                          matTooltipHideDelay="100">
 
                           <!-- --------------------------------------------------- -->
                           <!-- USECASE uploadEngine Firebase -->
@@ -2314,12 +2335,47 @@
                       </div>
 
 
-                      <span *ngIf="agent._id === 'no_agent'">
-                        <img class="user-img ws-requests-list-servedby-avatar"
-                          src="assets/img/user-alt-slash-solid.svg" />
-                        <span class="served-by-agent">
-                          {{ "RequestMsgsPage." + agent?.firstname | translate }}
+                      <span class="no-agent" *ngIf="agent._id === 'no_agent'"
+                          matTooltipClass="mat-white-tooltip" 
+                          matTooltip="{{ 'RequestMsgsPage.' + agent?.firstname | translate }}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='above' 
+                          matTooltipHideDelay="100">
+                        <!-- {{agent | json }} -->
+                        <!-- <img class="user-img ws-requests-list-servedby-avatar" src="assets/img/user-alt-slash-solid.svg" /> -->
+                        <!-- <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px"
+                            fill="none"
+                            matTooltipClass="mat-white-tooltip" 
+                            matTooltip="{{ 'RequestMsgsPage.' + agent?.firstname | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100">
+                            <path
+                              d="M594.67-508.67 404-699.33q16-11.34 35.17-17.34 19.16-6 40.83-6 58.33 0 98.17 39.84Q618-643 618-584.67q0 21.67-6 40.84-6 19.16-17.33 35.16ZM226-262q59-42.33 120.33-65.5 61.34-23.17 133.67-23.17 30.67 0 55.17 4.17T581-336L469.67-447.33q-51.67-3.34-86.5-37.5Q348.33-519 343-570.67l-122-122q-35.33 43.67-54.83 96.5-19.5 52.84-19.5 116.17 0 60.33 19.16 114.33Q185-311.67 226-262Zm513.33-6.67q34-41.66 54-95.16t20-116.17q0-141-96.16-237.17Q621-813.33 480-813.33q-65.33 0-117.83 20T268-740l471.33 471.33ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-66.67q57 0 106.33-16.5 49.34-16.5 96.34-51.5-47-33.66-98-51.5Q533.67-284 480-284t-104.67 17.83q-51 17.84-98 51.5 47 35 96.67 51.5t106 16.5Zm0-68.66Z" />
+                          </svg>
+                        </span> -->
+
+                        <!-- -------------------- -->
+                        <span class="no-agent-icon-wpr">
+                          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve" height="32px" width="32px"
+                            >
+                            <g>
+                              <path  d="M25.5,17.3c0.2-0.5,0.2-1.1,0.2-1.7c0-1.6-0.6-3-1.7-4.1C23,10.4,21.6,9.9,20,9.9c-0.6,0-1.2,0.1-1.7,0.2
+                                c-0.5,0.2-1,0.4-1.5,0.7l7.9,7.9C25.1,18.4,25.3,17.9,25.5,17.3z"/>
+                              <path d="M11.2,9.2c-0.4,0.4-0.7,0.7-1.1,1.1c-0.1,0.1-0.5,0.6-0.8,1l4.9,4.9c0.1,1.4,0.7,2.6,1.7,3.6
+                                c1,0.9,2.2,1.5,3.6,1.6l4.6,4.6c-0.6-0.2-1.2-0.3-1.9-0.4s-1.4-0.2-2.3-0.2c-2,0-3.9,0.3-5.6,1c-1.6,0.6-3.1,1.4-4.7,2.5
+                                c0.2,0.2,0.4,0.5,0.6,0.7c0.2,0.2,0.3,0.3,0.5,0.5c0.1,0.1,0.2,0.3,0.4,0.5c0.2,0.2,0.3,0.3,0.5,0.5c1.3-0.9,2.6-1.6,3.9-2
+                                c1.4-0.5,2.9-0.7,4.4-0.7s2.9,0.2,4.4,0.7c1.4,0.5,2.7,1.2,4,2.1c0.4-0.4,0.8-0.8,1.2-1.2c0.2-0.2,0.6-0.8,1.1-1.2L11.2,9.2z"/>
+                            </g>
+                          </svg>
                         </span>
+
+                        <!-- -------------------- -->
+                        <!-- <span class="served-by-agent">
+                          {{ "RequestMsgsPage." + agent?.firstname | translate }}
+                        </span> -->
                       </span>
                     </div>
                   </div>
@@ -2381,11 +2437,8 @@
                 <td class="td-actions text-right" *ngIf="IS_HERE_FOR_HISTORY">
                   <button type="button" class="btn btn-danger btn-simple btn-xs"
                     (click)='deleteArchivedRequest(request?.request_id)' [disabled]="USER_ROLE !== 'owner'"
-                    matTooltipClass="mat-white-tooltip"
-                    matTooltip="{{ 'Delete' | translate }}" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='above' 
-                    matTooltipHideDelay="100">
+                    matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Delete' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='above' matTooltipHideDelay="100">
 
                     <i class="material-icons">delete_forever</i>
 
@@ -2395,14 +2448,12 @@
                     </span> -->
 
                   </button>
-                 <!-- {{ request['currentUserIsJoined'] }}  -->
+                  <!-- {{ request['currentUserIsJoined'] }}  -->
                   <button type="button" class="btn btn-danger btn-simple btn-xs"
-                    (click)='reopenArchivedRequest(request, request?.request_id)' [disabled]="USER_ROLE === 'agent' && !request['currentUserIsJoined']"
-                      matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ 'Reopen' | translate }}" 
-                      #tooltip="matTooltip"
-                      matTooltipPosition='above' 
-                      matTooltipHideDelay="100">
+                    (click)='reopenArchivedRequest(request, request?.request_id)'
+                    [disabled]="USER_ROLE === 'agent' && !request['currentUserIsJoined']"
+                    matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Reopen' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='above' matTooltipHideDelay="100">
 
 
                     <i class="material-icons" style="color: #3ea9f5; transform: rotate(180deg);">archive</i>

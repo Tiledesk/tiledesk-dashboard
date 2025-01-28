@@ -6,7 +6,7 @@
     {{ "UserProfile.Profile" | translate }}
 </div>
 
-<ul class="bottom-nav" style="top: 5px;">
+<ul class="bottom-nav">
     <li class="btn-with-border-effect li-active">
         <a> {{ "UserProfile.Profile" | translate }} </a>
     </li>
@@ -94,7 +94,8 @@
                                     <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
                                         id="teammate-image-profile" type="file" (change)="upload($event)"
                                         [accept]="fileUploadAccept"/>
-                                    <label class="btn btn-white" for="teammate-image-profile"
+                                        <!-- btn-white -->
+                                    <label class="btn btn-tdblu-no-boxshadow " for="teammate-image-profile"
                                         style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         <span *ngIf="!showSpinnerInUploadImageBtn">
                                             {{ "UserProfile.UploadImage" | translate }}
@@ -105,17 +106,25 @@
                                         </span>
                                     </label>
 
-                                    <button class="btn btn-white delete-user-image tool_tip"
-                                        (click)="deleteUserProfileImage()" style="padding: 9px 15px;">
-                                        <span class="material-icons" style="font-size: 24px; color: #f44336">
-                                            delete_forever
-                                        </span>
+                                    <button class="btn btn-round-red delete-user-image-btn"
+                                        (click)="deleteUserProfileImage()">
 
-                                        <span class="bottom"
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                              fill="none">
+                                              <path
+                                                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                                            </svg>
+                                        </span>
+                                        <!-- <span class="material-icons" style="font-size: 24px; color: #f44336">
+                                            delete_forever
+                                        </span> -->
+
+                                        <!-- <span class="bottom"
                                             style="min-width: fit-content;padding: 5px;border-radius: 3px; text-transform: none;">
                                             {{'RemovePhoto' | translate}}
                                             <i></i>
-                                        </span>
+                                        </span> -->
                                     </button>
                                 </div>
                             </div>
@@ -125,12 +134,12 @@
 
                             </label>
                             <div class="col-sm-10" style="margin-bottom: 12px;">
-                                <span style="display: block;color: #7695a5; font-size: 12px; display: block;">
+                                <div class="upload-user-photo-tips">
                                     {{ "UserProfile.AddYourOwnPicture" | translate }}
-                                </span>
-                                <span style="color: #7695a5; font-size: 12px; display: block;">
+                                </div>
+                                <div class="upload-user-photo-tips">
                                     {{ "UserProfile.PreferredSize" | translate }}
-                                </span>
+                                </div>
                             </div>
                         </div>
 
@@ -140,11 +149,10 @@
                             </label>
                             <div class="col-sm-10">
                                 <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname"
-                                    class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
+                                    class="user-firstname" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
                             </div>
 
                             <label class="col-sm-2 custom-label">
-                                <!-- Cognome -->
                                 {{ "UserProfile.Lastname" | translate }}
                             </label>
                             <div class="col-sm-10">
@@ -196,9 +204,8 @@
 
                                     </span>
                                     <span style="display: block; margin-left: 28px;">
-                                        <a (click)="resendVerificationEmail()"
-                                            style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" |
-                                            translate }}
+                                        <a (click)="resendVerificationEmail()" class="resend-verification-email">
+                                            {{ "UserProfile.ClickHereToResend" | translate }}
                                         </a>
                                     </span>
                                 </div>
@@ -212,7 +219,8 @@
                         <div class="row">
                             <label class="col-sm-2"></label>
                             <div class="col-sm-10 ">
-                                <button class="btn btn-primary" (click)="updateCurrentUserFirstnameLastname()"
+                                <!-- btn-primary -->
+                                <button class="btn btn-tdblu-no-boxshadow" (click)="updateCurrentUserFirstnameLastname()"
                                     [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME">
                                     {{ "UserProfile.UpdateProfile" | translate }}
                                 </button>
@@ -239,7 +247,7 @@
                         <div class="row" style="min-height:83px">
                             <div class="col-md-12 automatic-dshbrd-lang">
                                 <div class="radio" style="margin-bottom: 2px;">
-                                    <label style="color: #7695a5;">
+                                    <label>
                                         <input (change)="onSelectBrowserLangFromRadioBtn($event)" type="radio"
                                             name="dashboardLanguage" value="browserlang"
                                             [checked]="!HAS_SELECTED_PREFERRED_LANG">
@@ -298,7 +306,7 @@
                                     {{'PreferredDashboardLanguage' | translate }}
                                 </label> -->
                                 <div class="radio" style="margin-bottom: 6px;">
-                                    <label style="color: hsl(200, 21%, 55%);">
+                                    <label>
                                         <input type="radio" value="preferredlang"
                                             (change)="onSelectPreferredLangFromRadioBtn($event)"
                                             name="dashboardLanguage" [checked]="HAS_SELECTED_PREFERRED_LANG">

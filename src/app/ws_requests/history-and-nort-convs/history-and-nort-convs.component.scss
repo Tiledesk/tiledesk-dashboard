@@ -388,7 +388,7 @@ p.member:hover {
   top: 4px;
 }
 
-.requester-avatar--in-history-phone-number{
+.requester-avatar--in-history-phone-number {
   top: -4px !important;
 }
 
@@ -773,6 +773,7 @@ p.member:hover {
   padding: 5px 15px 5px 0px;
   max-width: 722px;
   box-shadow: 0 2px 6px 0 #e6e9ed;
+  border-radius: 12px;
   // position: absolute;
   // background: #fff;
   // top: 66px;
@@ -872,6 +873,7 @@ p.member:hover {
   max-width: 460px;
   border: 0.1px solid #ffffff;
   width: 100%;
+  border-radius: var(--search-bar-border-radius);
 }
 
 .full-text-search-full-width {
@@ -1038,7 +1040,7 @@ p.member:hover {
   background-color: #2d323e !important;
   font-size: 11px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
+  font-family:  var(--header-font-family) !important;
   padding-top: 6px !important;
   padding-bottom: 6px !important;
 }
@@ -1047,12 +1049,13 @@ p.member:hover {
   background-color: #fff !important;
   font-size: 11px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
   border: 1px solid #ccc;
   color: #000 !important;
   font-weight: 400 !important;
+  line-height: 1.5em;
 }
 
 
@@ -1070,7 +1073,18 @@ p.member:hover {
 
 .preflight-checkbox {
   margin-left: 15px;
-  margin-top: 30px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.preflight-checkbox>.help-icon-wpr>i {
+  font-size: 18px;
+  color: #7695a5;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 
@@ -1090,4 +1104,46 @@ p.member:hover {
   display: flex;
   align-items: center;
   gap: 2px;
+}
+
+.btn-gray-no-boxshadow {
+  border-radius: 999px;
+}
+
+.btn-tdblu-no-boxshadow {
+  border-radius: 999px;
+}
+
+
+
+.search-btn {
+  padding: 9px 30px;
+  margin-right: 15px;
+}
+
+.search-btn>span {
+  color: #fff;
+  padding-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.no-agent>span {
+  width: 30px;
+  cursor: pointer;
+  height: 30px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+}
+
+/* No more used 
+/* ********************************** */
+.no-agent>span>svg {
+  fill: var(--icon-color) // #8796af 
+}
+
+.no-agent>span>svg>g>path {
+  fill: var(--svg-icon-gray) // #8796af 
 }

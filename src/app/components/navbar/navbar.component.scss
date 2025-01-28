@@ -795,13 +795,12 @@ button.close.custom-hover:hover {
 }
 
 .upgrade-btn-trial-expired:hover {
-  color: #3ea9f5 !important;
+  color: var(--blue-light) !important; // #3ea9f5 !important; 
 }
 
 .project-plan-nav {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family:var(--header-font-family) ;
   cursor: pointer;
-  // background-color: #039be5;
   background-color: $brand-primary;
   color: #fff;
   border-radius: 30px;
@@ -887,6 +886,7 @@ button.close.custom-hover:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: var(--header-font-family);
 }
 
 .navbar-test-site-btn-wpr {
@@ -1037,7 +1037,7 @@ button.close.custom-hover:hover {
 
 .pie-red-stroke::ng-deep circle {
   // stroke: #ff0000 !important;
-  stroke: linear-gradient(90deg, rgba(0,128,0,1) 0%, rgba(255,255,0,1) 26%, rgba(255,165,0,1) 51%, rgba(255,165,0,1) 75%, rgba(255,0,0,1) 100%) !important;
+  stroke: linear-gradient(90deg, rgba(0, 128, 0, 1) 0%, rgba(255, 255, 0, 1) 26%, rgba(255, 165, 0, 1) 51%, rgba(255, 165, 0, 1) 75%, rgba(255, 0, 0, 1) 100%) !important;
 }
 
 // ::ng-deep .requests-circular-spinner circle {
@@ -1186,39 +1186,14 @@ button.close.custom-hover:hover {
 }
 
 #home-material-btn {
-  background-color: var(--blue-light);
-  color: #fff;
+  background-color: var(--primary-btn-background);
+  color: var(--primary-btn-color);
 }
 
 .quotas-upgrade-btn-wpr {
   text-align: center;
+  margin-bottom: 8px;
 }
-
-.quotas-upgrade-btn {
-  // width: 100%;
-  // background-color: #f5f7f9;
-  // color: #647491;
-  // height: 36px;
-  // border: solid 1px #f5f7f9;
-    background-color: transparent;
-    color: #1e88e5;
-    border: 2px solid #1e88e5;
-    border-radius: 999px;
-    text-transform: uppercase;
-    font-family: var(--header-font-family) ;
-}
-
-.quotas-upgrade-btn:hover {
-  // padding: 0 !important;
-  // width: 100%;
-  // background-color: #f5f7f9;
-  // color: #647491;
-  // height: 36px;
-  // border: solid 1px #d6dde3;
-  background-color: #1e88e5;
-  color: #fff;
-}
-
 
 // ---------
 
@@ -1259,7 +1234,7 @@ button.close.custom-hover:hover {
   padding-top: 16px;
 }
 
-.quota-section-main.last { 
+.quota-section-main.last {
   border-bottom: 1px solid rgb(255, 255, 255);
 }
 
@@ -1298,7 +1273,7 @@ button.close.custom-hover:hover {
   align-items: center;
 }
 
-.quota-title{
+.quota-title {
   margin-top: 0px;
   margin-bottom: 0px;
   font-weight: 500;
@@ -1545,13 +1520,13 @@ button.close.custom-hover:hover {
 }
 
 .quota-right-title.link { 
-  color: var(--blue-light) !important;
+  color: var(--blue-20) !important;
   cursor: pointer !important;
 }
 
-.quota-right-title.link:hover { 
+.quota-right-title.link:hover {
   text-decoration: underline;
-} 
+}
 
 .quota-limit-wpr {
   display: flex;
@@ -1571,6 +1546,70 @@ button.close.custom-hover:hover {
   letter-spacing: -0.01em;
   text-align: right;
   font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.give-feedback {
+  background: unset;
+  border: unset;
+}
+
+
+.changelog-count {
+  position: absolute;
+  right: 31px;
+  background: red;
+  font-size: 11px;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  border-radius: 9999px;
+  top: 12px;
+  border: 1px solid #fff;
+  font-weight: bold;
+  font-family: arial;
+  line-height: 18px;
+  letter-spacing: 0;
+  opacity: 1;
+}
+
+#upgrade-plan-btn-wpr>a {
+  right: 31px;
+  background: red;
+  font-size: 11px;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  border-radius: 9999px;
+  top: 12px;
+  border: 1px solid #fff;
+  font-weight: bold;
+  font-family: arial;
+  line-height: 18px;
+  letter-spacing: 0;
+  opacity: 1;
+}
+
+#upgrade-plan-btn-wpr>a {
+  padding-top: 8px;
+  padding-bottom: 0px;
+}
+
+.upgrade-plan-btn {
+  padding: 6px 15px !important;
+}
+
+.simulate-visitor-btn {
+  background: transparent;
+  border: unset;
+}
+
+
+#usage-stats> ::ng-deep button>span>span {
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  padding-left: 3px;
 }
 
 // .quota-resets {

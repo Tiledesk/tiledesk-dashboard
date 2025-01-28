@@ -8,7 +8,7 @@
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   
     <div class="chatbot-svg-icon"> 
-      <svg   version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      <!-- <svg   version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;width: 29px;height: 29px;" xml:space="preserve">
         <style type="text/css">
           .cb--0{fill:#3C4858;}
@@ -23,7 +23,12 @@
           <path class="cb--0" d="M14.5,5.3v1.1h1V5.3C15.8,5.1,16,4.8,16,4.5c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
             C14.1,4.8,14.2,5.1,14.5,5.3z"/>
         </g>
-        </svg>
+        </svg> -->
+
+        <svg xmlns="http://www.w3.org/2000/svg" height="29px" viewBox="0 -960 960 960" width="29px" fill="#3C4858">
+            <path
+              d="M151.33-370.67q-46.66 0-79-32.47Q40-435.61 40-482t32.47-78.86q32.47-32.47 78.86-32.47V-702q0-27 19.84-46.83Q191-768.67 218-768.67h150.67q0-46.66 32.47-79Q433.61-880 480-880t78.86 32.47q32.47 32.47 32.47 78.86H742q27 0 46.83 19.84Q808.67-729 808.67-702v108.67q46.66 0 79 32.47Q920-528.39 920-482t-32.47 78.86q-32.47 32.47-78.86 32.47v184q0 27-19.84 46.84Q769-120 742-120H218q-27 0-46.83-19.83-19.84-19.84-19.84-46.84v-184ZM348.82-464q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.65-33.01-13.66-13.5-33.17-13.5t-33.01 13.65Q302-530.02 302-510.51t13.66 33.01q13.65 13.5 33.16 13.5Zm262.67 0q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.66-33.01-13.65-13.5-33.16-13.5-19.51 0-33.01 13.65-13.5 13.66-13.5 33.17t13.65 33.01q13.66 13.5 33.17 13.5ZM314.67-283.33h330.66V-350H314.67v66.67ZM218-186.67h524V-702H218v515.33Zm262-258Z" />
+          </svg>
 
     </div>
 
@@ -63,7 +68,8 @@
                 <div class="row button-row">
                     <div class="col-sm-12">
                         <div class="t--btn-wpr">
-                            <button type="button" class="btn btn-new btn-size-m btn--primary"
+                            <!-- btn-new btn-size-m btn--primary -->
+                            <button type="button" class="btn btn-tdblu-no-boxshadow"
                                 (click)="createBlankTilebot()">
                                 <span>Create from scratch</span>
                             </button>
@@ -230,8 +236,9 @@
                                         </span> -->
                                     </p>
                                     <div class="use-template-btn-row use-template-btn-wpr">
-                                        <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
-                                            (click)="openDialog(template)">
+                                        <!-- btn-new btn-size-l btn--primary btn-block -->
+                                        <button type="button" class="btn btn-tdblu-no-boxshadow"
+                                            (click)="openDialog(template)" style="width: 100%;">
 
                                             <span>Use template</span>
 
@@ -241,7 +248,7 @@
                                         <div class="template-tags-wpr">
                                             <div class="template-tags" *ngIf="template.certifiedTags">
 
-                                                <span aria-label="tag" class="template-tag"
+                                                <span aria-label="tag" class="template-tag template-tag-custom-radius"
                                                     [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
                                                     *ngFor="let tag of template.certifiedTags">
                                                     <p weight="normal" class="template-tag-name">
@@ -362,7 +369,8 @@
                             </div>
 
                             <div class="cmnty-btn">
-                                <button type="button" class="btn btn-new btn-size-xl btn--primary"
+                                <!-- btn-new btn-size-xl btn--primary -->
+                                <button type="button" class="btn btn-tdblu-no-boxshadow"
                                 (click)="goToExternalCommunity()">
                                 <span>Chatbots Community</span>
                             </button>

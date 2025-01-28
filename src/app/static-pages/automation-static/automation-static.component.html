@@ -16,7 +16,7 @@
 </span>
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-right: 5px;padding-left: 5px;">
     <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
@@ -70,11 +70,12 @@
               <div class="row">
                 <div class="col-sm-12">
                   <div style="text-align: center;">
-                    <!-- (click)="goToPricing()" -->
-                    <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px"
+                    <!-- outline-btn-analytics btn-lg style="padding:11px 22px" -->
+                    <span class="span-20"> </span>
+                    <button type="button" class="btn upgrade--btn" 
                       (click)="goToPricing()">
-
-                      <span> {{ 'UpgradeNow' | translate }} </span>
+                      <span class="material-icons-outlined">bolt</span>
+                      {{ 'UpgradeNow' | translate }} 
 
                     </button>
                   </div>

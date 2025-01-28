@@ -131,7 +131,21 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
             <div class="row-navigation" *ngIf="nameStep !== typeStep.NAME_PROJECT"
             [ngClass]="{'row-navigation-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
                 <div class="navigation-btn">
-                    <button type="button" class="btn-back" 
+                    <!-- <button type="button" class=" btn-back" 
+                        [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
+                        [disabled]="DISABLED_PREV_BUTTON"
+                        (click)="goToPrevCustomStep()">
+                        <em class="material-icons">arrow_back</em>
+                        <span class="onbording-btn-back-text"> 
+                            {{'Back' | translate }}
+                        </span>
+                    </button> -->
+                    <!-- <button class="btn btn-lg btn-primary" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
+                        [disabled]="DISABLED_NEXT_BUTTON"
+                        (click)="goToNextCustomStep()">
+                        {{'OnboardPage.Next' | translate}}
+                    </button> -->
+                    <button type="button" class="btn btn-gray-no-boxshadow onboarding-btn back" 
                         [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
                         [disabled]="DISABLED_PREV_BUTTON"
                         (click)="goToPrevCustomStep()">
@@ -140,10 +154,15 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
                             {{'Back' | translate }}
                         </span>
                     </button>
-                    <button class="btn btn-lg btn-primary" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
+                    
+                    <button class="btn btn-tdblu-no-boxshadow onboarding-btn next" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
                         [disabled]="DISABLED_NEXT_BUTTON"
                         (click)="goToNextCustomStep()">
-                        {{'OnboardPage.Next' | translate}}
+                        
+                        <span class="onbording-btn-next-text"> 
+                            {{'OnboardPage.Next' | translate}}
+                        </span>
+                        <em class="material-icons">arrow_forward</em>
                     </button>
                 </div>
             </div>

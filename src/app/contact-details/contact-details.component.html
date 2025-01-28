@@ -14,7 +14,7 @@
       <div class="col-sm-7">
         <div class="card card--no-border" style="margin-top: 10px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px;     padding-left: 0px;">
 
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
@@ -52,8 +52,10 @@
                     <span *ngIf="request?.status === 1000 && !request?.subject"
                       (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
                       matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
-                      matTooltipPosition='right' matTooltipHideDelay="100">
+                      matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" 
+                      #tooltip="matTooltip"
+                      matTooltipPosition='right' 
+                      matTooltipHideDelay="100">
 
                       <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                         <style type="text/css">
@@ -265,8 +267,10 @@
                     <span *ngIf="request?.status === 200 && !request?.currentUserIsJoined && request?.subject"
                       (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer"
                       matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" #tooltip="matTooltip"
-                      matTooltipPosition='right' matTooltipHideDelay="100">
+                      matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}" 
+                      #tooltip="matTooltip"
+                      matTooltipPosition='right' 
+                      matTooltipHideDelay="100">
 
                       <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
                         <style type="text/css">
@@ -441,16 +445,38 @@
                   </span>
                 </div> -->
 
-                <div class="contact-action tool_tip" style="margin-left: 8px;"
-                  (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'>
-                  <span class="material-icons" style="color:#f44336;; margin-left: 12px">
+                <!-- (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'
+                  matTooltipClass="custom-mat-tooltip"
+                  matTooltip="{{ 'MoveToTrash' | translate }}" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='above' 
+                  matTooltipHideDelay="100" -->
+
+                <div class="contact-action" style="margin-left: 8px;">
+
+                  <button class="btn btn-round-red" aria-label="Delete"
+                    (click)='moveContactToTrash(contact_details?._id, contact_details?.fullname)'
+                    matTooltipClass="custom-mat-tooltip" 
+                    matTooltip="{{ 'MoveToTrash' | translate }}"
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='above' 
+                    matTooltipHideDelay="100"
+                    style="height: 32px !important;padding: 4px 7px 7px 7px !important;">
+                 
+                  <span class="material-icons-round" style="vertical-align: middle; font-size: 18px;">
                     delete
-                  </span>
-                  <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
+                  </span> 
+                  
+                </button>
+
+                  <!-- <span class="material-icons" style="color:#f44336;; margin-left: 12px">
+                    delete
+                  </span> -->
+                  <!-- <span class="top" style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;text-align: center;
                   line-height: 16px;font-size: 12px; left: -100%;">
                     {{ "MoveToTrash" | translate }}
                     <i style="top: 88%;margin-left: 12px"></i>
-                  </span>
+                  </span> -->
                 </div>
 
                 <div class="lead-dropdown__menu-form" [ngStyle]="{'left':CHAT_PANEL_MODE === false ? '0px' : '-48px;' }">
@@ -513,63 +539,7 @@
 
 
 
-          <!-- ------------------------------------------------------ -->
-          <!-- @ Attributes decoded JWT accordion -->
-          <!-- ------------------------------------------------------ -->
-          <div *ngIf="contact_details?.attributes?.decoded_jwt && CONTACT_IS_VERIFIED" class="row"
-            style="padding-right: 15px; padding-left: 15px;">
-            <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="border-top: unset !important">
-              <p class="row-header  attributes-decoded-jwt-cntct-accordion"
-                (click)="openAttributesDecodedJWTAccordion()"
-                style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
-                <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good
-                </i>
-                <span style="vertical-align: middle; color: #555 ">
-                  {{ "decodedJWT" | translate }}
-                </span>
-              </p>
-              <!-- ------------------------------------------------------ -->
-              <!-- @ Attributes decoded JWT panel -->
-              <!-- ------------------------------------------------------ -->
-              <!-- attributesDecodedJWTArray -->
-              <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
-                <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
-                  <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-
-                    <div class="row">
-                      <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
-                        <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
-                          class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
-                              font-size: 11px;"> {{Attributes | translate}} </div>
-                        <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
-                          [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
-                          {{attribute?.attributeName }}:
-                        </div>
-
-                        <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
-                          [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
-                          {{attribute?.attributeValue }}
-                        </div>
-
-                      </div>
-                      <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                      <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                      <!-- white-space: nowrap;width: 1%; -->
-                      <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                        style="text-align: right;">
-                        <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                          style="cursor: pointer; color: #039be5; font-size:18px;"
-                          (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                          keyboard_arrow_down
-                        </i>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> <!-- ./ end attributes decoded JWT accordion-->
+ 
 
 
 
@@ -929,7 +899,7 @@
             <!-- -------------------------------------- -->
             <!-- @ ATTRIBUTES -->
             <!-- -------------------------------------- -->
-            <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
+
             <div id="attributes-row" *ngIf="contact_details?.attributes" class="row"
               [ngStyle]="{ 'margin-top': tagContainerElementHeight }">
               <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
@@ -1019,6 +989,75 @@
               </div> <!-- ./ col-sm-12 -->
 
             </div>
+
+            <!-- ------------------------------------------------------ -->
+            <!-- @ Attributes decoded JWT accordion -->
+            <!-- ------------------------------------------------------ -->
+    
+            <div *ngIf="contact_details?.attributes?.decoded_jwt && CONTACT_IS_VERIFIED"  id="attributes-row" class="row">
+            <div class="col-sm-12 attributes-jwt-decoded-cntct-accordion-wpr" style="padding-left: 0px; padding-right: 0px;">
+              <p class="row-header  attributes-decoded-jwt-accordion cnct-jwt-accordion"
+                (click)="openAttributesDecodedJWTAccordion()"
+                style="padding-left: 0px; padding-right: 0px;font-size: 14px;">
+                <!-- <i class="material-icons" style="vertical-align: middle; color: #8796af;margin-left: 6px;"> gpp_good </i> -->
+                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
+                viewBox="0 0 24 24" width="22px" fill="none" style="min-width: 22px; min-height: 22px;position: relative;
+                    top: 4px; left: 7px;">
+                <g>
+                  <path d="M0,0h24v24H0V0z" fill="none" />
+                </g>
+                <g>
+                  <path
+                    d="M12,2L4,5v6.09c0,5.05,3.41,9.76,8,10.91c4.59-1.15,8-5.86,8-10.91V5L12,2z M18,11.09c0,4-2.55,7.7-6,8.83 c-3.45-1.13-6-4.82-6-8.83V6.31l6-2.12l6,2.12V11.09z M8.82,10.59L7.4,12l3.54,3.54l5.66-5.66l-1.41-1.41l-4.24,4.24L8.82,10.59z" />
+                </g>
+              </svg>
+                
+                <span class="decoded-jwt-accordion-title-cnct">
+                  {{ "decodedJWT" | translate }}
+                </span>
+              </p>
+              <!-- ------------------------------------------------------ -->
+              <!-- @ Attributes decoded JWT panel -->
+              <!-- ------------------------------------------------------ -->
+              <!-- attributesDecodedJWTArray -->
+              <div class="attributes-decoded-jwt-panel" style="padding: 0px 5px !important;">
+                <div *ngFor="let attribute of  attributesDecodedJWTArrayMerged; let i = index">
+                  <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                    <div class="row">
+                      <div class="col-xs-10" style="padding-right: 1px;padding-bottom: 5px;">
+                        <div *ngIf="attribute?.decodedJWTType && attribute?.index === '0'"
+                          class="ws_requets_msgs__attribute" style="text-transform: uppercase;font-weight: 600;
+                              font-size: 11px;"> {{Attributes | translate}} </div>
+                        <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes"
+                          [ngClass]="{'decoded-jwt-attributes': attribute?.decodedJWTType}">
+                          {{attribute?.attributeName }}:
+                        </div>
+
+                        <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute"
+                          [ngClass]="{'attribute_cutted_text': !attribute?.decodedJWTType}">
+                          {{attribute?.attributeValue }}
+                        </div>
+
+                      </div>
+                      <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                      <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                      <!-- white-space: nowrap;width: 1%; -->
+                      <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                        style="text-align: right;">
+                        <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                          style="cursor: pointer; color: #039be5; font-size:18px;"
+                          (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                          keyboard_arrow_down
+                        </i>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- ./ end attributes decoded JWT accordion-->
 
 
           </div>

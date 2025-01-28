@@ -1,46 +1,75 @@
-<!-- margin-top:6px; -->
-<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
+
+<!-- <div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
 [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="go back"
     (click)="goBack()">keyboard_arrow_left</i>
 
   {{ 'ProjectEditPage.CustomizeEmailTemplateBtn' | translate }}
-</div>
-<!-- <ul class="email-tmplt-bottom-nav">
-  <li class="btn-with-border-effect" (click)="selectedTemplate(tmplt)" *ngFor="let tmplt of EMAIL_TEMPLATE_NAME"
-    [ngClass]="{'border-from-center' : tmplt !== active_template, 'li-active': tmplt === active_template}">
-    <a> {{tmplt | translate}} </a>
-  </li>
-</ul> -->
+</div> -->
 
-<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
-  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+<span #navbarbrand class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
+
+  <div class="page-title--sidebar-settings"
+    [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+      (click)="goBack()">keyboard_arrow_left</i>
+      {{ 'ProjectEditPage.CustomizeEmailTemplateBtn' | translate }}
+  </div>
+
+  <div class="container-fluid" style="padding-left: 0px;padding-right: 5px;">
+
+    <!-- <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+      <a mat-tab-link *ngFor="let tmplt of EMAIL_TEMPLATE_NAME"
+         (click)="selectedTemplate(tmplt)"
+         [active]="tmplt === active_template"   
+         [ngClass]="{'tab-active-color' : tmplt === active_template}" > {{tmplt | translate}} </a>
+    </nav>
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel> -->
 
 
     <div class="content-wpr" style="display: flex;">
-
-      <div class="notification-email-left-sidebar-menu">
-
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      <!-- <div class="notification-email-left-sidebar-menu">
         <ul style="padding-left: 0px;    list-style: none;">
           <li *ngFor="let tmplt of EMAIL_TEMPLATE_NAME" class="nav-email-tmplt-li"
             [ngClass]="{'nav-email-tmplt-li-active' : tmplt === active_template}" (click)="selectedTemplate(tmplt)">
             <span>{{tmplt | translate}}</span>
-
           </li>
         </ul>
+      </div> -->
 
-      </div>
+      
 
-      <div class="tempalte-content" style="flex: 1 1 auto;">
-        <div class="row">
-          <div class="col-xs-12 col-md-6">
+      <div class="tempalte-content" style="flex: 1 1 auto; width: calc(100% - 230px); margin-left: 12px;" >
+            <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+              <a mat-tab-link *ngFor="let tmplt of EMAIL_TEMPLATE_NAME"
+                 (click)="selectedTemplate(tmplt)"
+                 [active]="tmplt === active_template"   
+                 [ngClass]="{'tab-active-color' : tmplt === active_template}" > {{tmplt | translate}} </a>
+            </nav>
+            <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+
+        <div class="row template-html-code-row" style="margin-top: 16px;">
+          <div class="col-xs-12 col-md-6 template-html-code-col">
 
 
-            <textarea id="input" rows="24" [(ngModel)]="emailTemplate" (ngModelChange)="onChangeEmailTempalte($event)"
-              style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: none;"></textarea>
+            <textarea class="template-html-code" id="input" rows="24" [(ngModel)]="emailTemplate" 
+              (ngModelChange)="onChangeEmailTempalte($event)">
+            </textarea>
 
-
-            <button (click)="saveEmailNotificationTemplate()" class="btn btn-primary save_email_template"
+            <!-- btn-primary -->
+            <button (click)="saveEmailNotificationTemplate()" class="btn btn-tdblu-no-boxshadow save_email_template"
               style="margin-top:5px; font-weight: 500; ">
               {{ "Save" | translate }}
             </button>
@@ -54,7 +83,7 @@
             <!-- Search: <input id="search" placeholder='Search' /> -->
           </div>
 
-          <div class="col-xs-12 col-md-6">
+          <div class="col-xs-12 col-md-6 template-iframe-col">
 
 
             <!-- ---------------------------------------------------- -->
@@ -71,7 +100,7 @@
               <div class="rect5"></div>
             </div>
 
-            <iframe width="100%" height="522" style="border: 1px solid #ddd;border-radius: 5px;"
+            <iframe width="100%" height="522" style=""
               id="iframe-email-template-preview" srcdoc=""></iframe>
 
           </div>

@@ -1,5 +1,5 @@
 <!-- margin-top:6px; -->
-<p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
+<p style="z-index: 1050;position: relative;  padding-left:35px" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ 'Contacts' | translate }}
 </p>
@@ -58,7 +58,7 @@
               <!-- test start -->
               <div class="row">
                 <div class="col-sm-12">
-                  <div class="input-group">
+                  <div class="input-group full-text-input">
 
                     <!-- // SEARCH FULL-TEXT BTN -->
                     <span class="input-group-btn" style="padding-right: 2px;">
@@ -94,7 +94,7 @@
                       </button>
 
 
-                      <div class="dropdown-menu dropdown-menu-right" style="left: 0;padding: 15px; margin-top: 3px;"
+                      <div class="dropdown-menu dropdown-menu-right" style="left: 0;padding: 15px; margin-top: 3px;border-radius: 12px;"
                         (click)="$event.stopPropagation()">
                         <div class="lead-advanced-search-container"></div>
                         <!-- <div class="row"> -->
@@ -139,9 +139,12 @@
                               <label class="col-sm-12 label-7695a5">
                                 {{ 'Tags.SearchByTAG' | translate }}
                               </label>
-                              <ng-select [items]="tagsArray" bindLabel="name" bindValue="name"
-                                placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selectedContactTAG"
-                                (change)="tagNameSelected()" [clearable]='false'>
+                              <ng-select [items]="tagsArray" 
+                                bindLabel="name" bindValue="name"
+                                placeholder="{{'Tags.SelectTag' | translate}}" 
+                                [(ngModel)]="selectedContactTAG"
+                                (change)="tagNameSelected()" 
+                                [clearable]='false'>
                                 <ng-template ng-label-tmp let-item="item">
 
                                   <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->
@@ -159,12 +162,12 @@
                         <!-- </div> -->
 
                         <div class="col-sm-12" style="text-align: right;">
-                          <button style="padding: 9px 30px; margin-bottom: 0px;margin-top: 7px;margin-left: 12px;"
+                          <button id="cnct-search-btn"
                             type="submit" class="btn btn-tdblu-no-boxshadow searchbtn pull-right" (click)="search()">
-
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             {{'Search'|translate}}
                           </button>
-                          <button id="clear-search-btn" style="padding: 9px 30px; margin-bottom: 0px;margin-top: 7px;"
+                          <button id="clear-search-btn"
                             type="submit" class="btn btn-gray-no-boxshadow clearsearchbtn pull-right"
                             (click)="clearFullText()">
 
@@ -265,7 +268,7 @@
         <!-- ------------------------------------------------------- -->
         <div id="contacts-page">
           <div id="contacts-sideBar">
-            <div class="card nav-card" style="margin-bottom: 0px;margin-top: 0px; padding: 15px 0px;">
+            <div class="card nav-card">
               <div class="card-content"
                 style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;">
 
@@ -318,7 +321,7 @@
           <div id="contacts-content">
             <div class="row">
               <div class="col-xs-12">
-                <div class="card contact-list" style="margin-top:0px">
+                <div class="card contact-list" style="margin-top:0px; border-radius: 12px;">
                   <div class="card-header card-header-custom-bkgrnd"
                     [ngClass]="{'gray-bckgnd': hasClickedTrashed === true}">
 
@@ -326,11 +329,8 @@
                       <!-- [ngClass]="{'col-xs-6' : hasClickedTrashed === false, 'col-xs-12': hasClickedTrashed === true}"  -->
                       <div class="col-xs-6">
                         <span *ngIf="hasClickedTrashed === false">
-                          <!-- <span style="font-weight: 400;margin-right: 16px;">
-                    {{ contacts?.length }} {{ 'Contacts' | translate }} {{ '_Active' | translate}}
-                  </span> -->
-                          <button style="padding: 6px 14px; margin-top: 0px; margin-bottom: 0px;"
-                            class="btn btn-primary btn-simple export-to-csv-btn" (click)="exportContactsToCsv()">
+                          <button 
+                            class="btn btn-outlined export-to-csv-btn" (click)="exportContactsToCsv()">
                             {{ 'ExportToCSV' | translate }}
                             <span class="material-icons">
                               save_alt
@@ -341,14 +341,10 @@
                         <span *ngIf="hasClickedTrashed === true" style="font-weight: 400;margin-right: 16px;">
                           <i style="vertical-align: middle; color:rgba(32, 33, 36, 0.54)"
                             class="material-icons">delete</i>
-                          <!-- {{ trashedContanctCount }} {{ 'Contacts' | translate }} {{ 'inTheTrash' | translate}} -->
+                  
                           {{'TrashContacts' | translate}}
                         </span>
 
-                        <!--  <button style="padding: 9px 30px;margin-bottom:0px" class="btn btn-default"
-                  (click)="closeTrashContacts()">
-                   {{ 'CloseTrash' |translate}}
-                </button> -->
 
                       </div>
 
@@ -654,7 +650,7 @@
                           </td>
 
                           <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
-                            style="padding-left: 0px;padding-top: 17px;">
+                            style="padding-left: 0px;padding-top: 17px !important;">
                             <button type="button" class="btn btn-danger btn-simple btn-xs"
                               [disabled]="IS_CURRENT_USER_OWNER !== true"
                               (click)='deleteContactForever(contact?._id, contact?.fullname)'

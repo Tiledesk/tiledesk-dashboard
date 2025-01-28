@@ -1,14 +1,14 @@
 <!-- margin-top:6px; -->
-<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+<p style="z-index: 1050;position: relative; padding-left:40px" class="navbar-brand"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   {{ "Activities" | translate }}
 </p>
-<div class="main-content" style="padding-top:0px">
+<div class="main-content" style="padding-top:0px; padding-left: 15px;">
   <div class="container-fluid">
 
     <div class="row">
       <div class="col-md-12">
-        <div class="card filter-card" style="margin-bottom: 0px;">
+        <div class="card filter-card" style="margin-bottom: 0px; border-radius: 12px;">
           <!-- padding-top: 0px;padding-bottom: 0px; -->
           <div class="card-content">
 
@@ -33,9 +33,9 @@
                       <!-- <mat-label>Enter a date range</mat-label> -->
                       <mat-date-range-input [rangePicker]="picker">
                         <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
-                          placeholder="Start date">
+                          placeholder="{{'StartDate' | translate}}">
                         <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
-                          placeholder="End date">
+                          placeholder="{{'EndDate' | translate}}">
                       </mat-date-range-input>
                       <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -87,15 +87,19 @@
             <div style="margin-top:15px">
               <div class="row">
                 <div class="col-sm-12">
-                  <button #searchbtn type="submit" class="btn btn-white" (click)="search()" style="padding:9px 30px;">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true" style="color:#7695a5"></span>
-                  </button>
+                  <div class="actvity-btn-wpr">  
+                   
 
-                  <button #clearsearchbtn type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()"
-                    style="padding:9px 30px;color:#7695a5">
-                    <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
-                    {{ 'HistoryPage.ClearSearch' | translate }}
-                  </button>
+                    <button #clearsearchbtn type="submit" class="btn btn-gray-no-boxshadow clearsearchbtn" (click)="clearSearch()">
+                      <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                      {{ 'HistoryPage.ClearSearch' | translate }}
+                    </button>
+
+                    <button #searchbtn type="submit" class="btn btn-tdblu-no-boxshadow search-btn" (click)="search()">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      {{'Search' | translate}}
+                    </button>
+                  </div>
 
                   <!-- <button #exportcsvbtn class="btn btn-white pull-right export-to-csv-btn" (click)="exportActivitiesAsCSV()"
                     style="padding:9px 30px;color:#7695a5">
@@ -113,7 +117,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="card" style="margin-top: 0px;">
+        <div class="card" style="margin-top: 0px;border-radius: 12px;">
 
           <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px">
             <span style="cursor: pointer" (click)="sortDirection(asc = !asc)">
@@ -548,29 +552,29 @@
           </div>
 
           <div class="card-footer" style="text-align:right">
-            <div class="stats">
-              <div style="width: 120px; margin: 0 auto; margin-top: 10px ">
+            <div class="pagination-wpr">
+              <div class="pagination">
                 <div class="input-group">
 
                   <!-- -------====== BTN DECREASE PAGE  ======------ -->
                   <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button"
-                      (click)="decreasePageNumber()" style="padding: 6px 8px">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu-no-boxshadow" type="button"
+                      (click)="decreasePageNumber()" style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important;">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </button>
                   </span>
 
                   <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px;">
-                    <button class="btn btn-info" type="button" style="padding: 6px 8px">
+                  <span class="input-group-btn" style="padding-right:0px; padding-left: 0px;">
+                    <button class="btn btn-tdblu-no-boxshadow" type="button" style="border-radius: 0px !important;">
                       {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
                     </button>
                   </span>
 
                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px">
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
                     <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
-                      class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      class="btn btn-tdblu-no-boxshadow" type="button" (click)="increasePageNumber()" style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;">
                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </button>
                   </span>

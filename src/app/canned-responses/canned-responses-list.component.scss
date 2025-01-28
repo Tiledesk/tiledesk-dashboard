@@ -1,16 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
-.card-header-custom-bkgrnd {
-  // display:none;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  margin: 0px;
-  border-radius: 3px 3px 0px 0px;
-  // background-color: #f2f6f8;
-  background-color: #ffffff;
-  // border-bottom: 1px solid #eff3f5;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
+
 
 .column-th-span {
   font-size: 14px;
@@ -35,10 +24,20 @@
   padding-left: 5px !important;
 }
 
-.card-custom-margin {
-  margin-top: 5px;
+.left-card-custom-margin {
+  margin-top: 8px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
 }
 
+.right-card-custom-margin {
+  margin-top: -20px;
+}
+
+.table .td-actions .btn {
+  margin: 6px !important;
+}
 @media (max-width: 768px) {
   .left-col-custom-padding {
     padding-right: 10px !important;
@@ -62,3 +61,34 @@
   object-fit: cover;
 }
 
+
+.link-to-docs-wpr {
+  margin-bottom: 16px;
+}
+.link-to-docs-wpr > div > div > span > svg {
+  fill: var(--blue-light);
+  vertical-align: middle;
+} 
+
+.link-to-docs {
+  // background-color: rgb(241, 241, 241);
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-left: -14px;
+  // padding-bottom: 12px;
+  // padding-top: 12px;
+  padding: 10px 0px;
+}
+
+.custom-anchor-to-docs {
+  color: var(--blue-light); // #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+  text-decoration: underline;
+}

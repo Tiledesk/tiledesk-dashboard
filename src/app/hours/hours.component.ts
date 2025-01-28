@@ -16,7 +16,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { DAYS } from './utils';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
+import { BrandService } from 'app/services/brand.service';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -51,7 +53,7 @@ export class HoursComponent implements OnInit, OnDestroy {
 
   // System Variables
   USER_ROLE: string;
-
+  public hideHelpLink: boolean;
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
@@ -63,10 +65,13 @@ export class HoursComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public dialog: MatDialog,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public brandService: BrandService,
   ) { 
     // this.auth.checkRoleForCurrentProject();
     this.roleService.checkRoleForCurrentProject('hours')
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit() {
@@ -103,11 +108,12 @@ export class HoursComponent implements OnInit, OnDestroy {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOURS] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getOSCODE() {
@@ -303,7 +309,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   updateProject(data) {
     Swal.fire({
       text: this.translate.instant("HoursPage.UpdateHours"),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       didOpen: () => {
         Swal.showLoading();
         if (this.selectedSlot.active === false && !this.selectedSlot.hours.tzname) {
@@ -321,9 +327,9 @@ export class HoursComponent implements OnInit, OnDestroy {
             setTimeout(() => {
               Swal.hideLoading();
               Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.OperatingHoursSuccessfullyUpdated"), icon: 'success' })
-              setTimeout(() => {
-                Swal.close();
-              }, 2000);
+              // setTimeout(() => {
+              //   Swal.close();
+              // }, 2000);
             }, 500);
           }, (error) => {
             this.logger.error("update project error: ", error);
@@ -510,27 +516,33 @@ export class HoursComponent implements OnInit, OnDestroy {
       title: this.translate.instant("HoursPage.DeleteSlot"),
       html: this.translate.instant("HoursPage.SureDeleteSlot", { slotName: this.selectedSlot.name }),
       showDenyButton: true,
-      denyButtonText: this.translate.instant("HoursPage.NoDelete"),
-      confirmButtonText: this.translate.instant("HoursPage.YesDelete"),
-      confirmButtonColor: "#ff5c48",
-      denyButtonColor: "#ccc",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      // cancelButtonText: this.translate.instant("HoursPage.NoDelete"),
+      cancelButtonText: this.translate.instant('Cancel'),
+      denyButtonText: this.translate.instant("HoursPage.YesDelete"),
+      focusConfirm: false,
+      icon: "warning",
+      // confirmButtonColor: "#ff5c48",
+      // denyButtonColor: "#ccc",
       reverseButtons: true
     }).then((result) => {
-      if (result.isConfirmed === true) {
+      if (result.isDenied === true) {
         Swal.fire({
           text: this.translate.instant("HoursPage.UpdateHours"),
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           didOpen: () => {
             Swal.showLoading();
             delete this.timeSlots[this.selectedSlot.id];
             this.saveSlots(null).then((response) => {
               setTimeout(() => {
                 Swal.hideLoading();
-                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.SlotDeletedSuccess"), icon: 'success' })
+                Swal.update({ title: this.translate.instant("HoursPage.Completed"), text: this.translate.instant("HoursPage.SlotDeleteSuccess"), icon: 'success' })
   
-                setTimeout(() => {
-                  Swal.close();
-                }, 2000);
+                // setTimeout(() => {
+                //   Swal.close();
+                // }, 2000);
               }, 500);
             }).catch((err) => {
               this.logger.log("Error saving slot: ", err)

@@ -1,4 +1,4 @@
-<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:35px" class="navbar-brand">
   Home
   <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
 </p>
@@ -79,7 +79,7 @@
                   <!-- (click)="goToSubscriptionOrOpenModalSubsExpired()" -->
                   <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
                     (click)="goToSubscription()">
-                    <div class="home-project-plan-badge" [ngClass]="{
+                    <div *ngIf="isVisiblePay" class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
                       'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
@@ -168,7 +168,7 @@
                   [matMenuTriggerFor]="dashletMenu" matTooltipClass="custom-mat-tooltip" matTooltip="Dashlets filter"
                   #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                   <!-- <span class="mat-button-wrapper"> -->
-                  <mat-icon style="color: #3ea9f5;position: relative; top: -1px;">
+                  <mat-icon>
                     tune
                   </mat-icon>
                   <!-- <span class="ml-2 button-dashlet-settings">
@@ -201,8 +201,8 @@
                   <!-- --------------------- -->
                   <!-- From here -->
                   <!-- --------------------- -->
-                  <!-- 
-                   <button mat-menu-item (click)="$event.stopPropagation()">
+                  
+                   <!-- <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
                       (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
                     <span>Connect WhatsApp </span>
@@ -226,7 +226,7 @@
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayCustomizeWidget"
                       (change)="switchCustomizeWidget($event.checked)"></mat-checkbox>
                     <span>Customize widget</span>
-                  </button>    -->
+                  </button>     -->
 
                   <!-- --------------------- -->
                   <!-- To here -->

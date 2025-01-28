@@ -96,6 +96,7 @@
 
 .tracking-tight {
     letter-spacing: -0.025em !important;
+    font-family: var(--header-font-family);
 }
 
 .leading-7 {
@@ -111,7 +112,7 @@
 }
 
 .graph-title {
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-family: var(--header-font-family);
     margin-bottom: 12px;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
@@ -200,27 +201,30 @@
     color: #fff;
 }
 
-// ---
+
 .text-accent-link-on-white {
-    // color: #673ab7;
-    color: var(--blue-light);
+    // color: var(--blue-light);
+    color: var(--blue-20);
     font-weight: 400;
     cursor: pointer;
+    font-family: var(--header-font-family)
 }
 
 .text-accent-link-on-white .m-i-arrow-on-white {
     vertical-align: middle;
-    // color: #673ab7;
-    color: var(--blue-light);
+    // color: var(--blue-light);
+    color: var(--blue-20);
     margin-left: -4px;
     transition: 0.1s ease-in;
 }
 .text-accent-link-on-white:hover {
-    color: #0a2540;
+    // color: #0a2540;
+    color: var(--blue-40);
 }
 .text-accent-link-on-white:hover .m-i-arrow-on-white {
     // transform: translateX(10%);
-    color: #0a2540;
+    // color: #0a2540;
+    color: var(--blue-40);
 }
 
 // .graph-period-badge {
@@ -286,7 +290,7 @@
     }
 
     .sm\:text-8xl {
-        font-size: 64px !important;
+        // font-size: 64px !important;
         // color: #303f9f;
         color: #1e293b;
     }

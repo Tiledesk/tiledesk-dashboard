@@ -9,6 +9,7 @@ import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
+import { ProjectUser } from 'app/models/project-user'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -45,6 +46,7 @@ export class SettingsSidebarComponent implements OnInit {
   ADD_DEPT_ROUTE_IS_ACTIVE: boolean;
   TRIGGER_ROUTE_IS_ACTIVE: boolean;
   TEAMMATES_ROUTE_IS_ACTIVE: boolean;
+  EDIT_TEAMMATE_ROUTE_IS_ACTIVE: boolean;
   TEAMMATES_ADD_ROUTE_IS_ACTIVE: boolean;
   GROUPS_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
@@ -61,6 +63,7 @@ export class SettingsSidebarComponent implements OnInit {
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   APPS_ROUTE_IS_ACTIVE: boolean;
   TRANSLATIONS_ROUTE_IS_ACTIVE: boolean;
+  NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE: boolean;
   public_Key: string;
   USER_ROLE: any;
   CHAT_BASE_URL: string;
@@ -119,14 +122,12 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         //  this.logger.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   listenSidebarIsOpened() {
@@ -573,6 +574,17 @@ export class SettingsSidebarComponent implements OnInit {
       this.logger.log( '[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ROUTE_IS_ACTIVE)
     }
 
+    if (this.route.indexOf('/user/edit') !== -1) {
+      this.EDIT_TEAMMATE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - EDIT_TEAMMATE_ROUTE_IS_ACTIVE  ', this.EDIT_TEAMMATE_ROUTE_IS_ACTIVE)
+    } else {
+      this.EDIT_TEAMMATE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - EDIT_TEAMMATE_ROUTE_IS_ACTIVE  ', this.EDIT_TEAMMATE_ROUTE_IS_ACTIVE)
+    }
+
+
+    
+
     if (this.route.indexOf('/user/add') !== -1) {
       this.TEAMMATES_ADD_ROUTE_IS_ACTIVE = true
       this.logger.log( '[SETTING-SIDEBAR] - TEAMMATES_ROUTE_IS_ACTIVE  ', this.TEAMMATES_ADD_ROUTE_IS_ACTIVE)
@@ -682,6 +694,18 @@ export class SettingsSidebarComponent implements OnInit {
       this.TRANSLATIONS_ROUTE_IS_ACTIVE = false
       this.logger.log('[SETTING-SIDEBAR] - TRANSLATIONS_ROUTE_IS_ACTIVE  ', this.TRANSLATIONS_ROUTE_IS_ACTIVE)
     }
+
+
+    if (this.route.indexOf('/notification-email') !== -1) {
+      this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE  ', this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE)
+    } else {
+      this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE  ', this.NOTIFICATION_EMAIL_ROUTE_IS_ACTIVE)
+    }
+
+
+    
 
 
     if (this.route.indexOf('/project-settings/') !== -1) {

@@ -30,7 +30,7 @@
 }
 
 .gap-3 {
-    gap: 3px!important;
+    gap: 3px !important;
 }
 
 .flex-auto {
@@ -158,6 +158,10 @@
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
     font-weight: 400;
+}
+
+.home-percentage-symbol {
+    font-size: 21px;
 }
 
 // @media (min-width: 600px) {

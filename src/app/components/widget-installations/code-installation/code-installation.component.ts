@@ -32,7 +32,7 @@ export class CodeInstallationComponent implements OnInit {
 
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
-  // console.log('[WIDGET-INSTALLATION] getAppConfig WIDGET_URL ', this.WIDGET_URL)
+  // this.logger.log('[WIDGET-INSTALLATION] getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 
 

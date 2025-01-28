@@ -1,4 +1,4 @@
-<span class="navbar-brand navbar-brand-sidebar-settings"
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
@@ -27,20 +27,25 @@
 
   <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Chatbots </span>
 
-</span>
+</span> -->
+
+<p style="z-index: 1050;position: relative;  padding-left:30px" class="navbar-brand"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+  {{ 'KnowledgeBases' | translate }}
+</p>
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
 
-  <div class="page-title--sidebar-settings"
+  <!-- <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     Manage your Knowledge Bases
-  </div>
+  </div> -->
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-    <div class="content-wpr" style="display: flex;">
+    <!-- <div class="content-wpr" style="display: flex;"> -->
 
-      <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB"> </appdashboard-settings-sidebar>
+      <!-- <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB"> </appdashboard-settings-sidebar>
 
       <appdashboard-bots-sidebar *ngIf="ARE_NEW_KB" [allTemplatesCount]="allTemplatesCount"
         [allCommunityTemplatesCount]="allCommunityTemplatesCount"
@@ -48,7 +53,7 @@
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
         [increaseSalesBotsCount]="increaseSalesBotsCount" [kbCount]="kbCount">
-      </appdashboard-bots-sidebar>
+      </appdashboard-bots-sidebar> -->
 
 
       <div class="kb-content">
@@ -57,7 +62,7 @@
 
         <div class="kb-container-wpr">
           
-          <div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
+          <!-- <div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
             <span>
               <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
                 data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
@@ -67,48 +72,55 @@
                 </path>
               </svg>
             </span>
-            <!-- (click)="goToWidgetWebSdk()" -->
+          
             <span class="widget-set-up-link-to-docs" (click)="goToKbDoc()">
               {{'KbPage.LearnMoreAboutKB' | translate}}
             </span>
-          </div>
-
-
-
-
-
+          </div> -->
 
           <div class="kb-content-container">
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
             <div class="card-content" *ngIf="!showSpinner">
 
-
-
-
               <div class="header">
                 <!-- <p class="header-title">{{ 'KbPage.AllContents' | translate }}</p> -->
 
                 <div style="display: flex; flex-direction: column;">
-                  <div style="display: flex; flex-direction: row; align-items: center;">
+                  <!-- <div style="display: flex; flex-direction: row; align-items: center;">
                     <div class="selected-namespace-label" style="font-size: 14px; margin-right: 4px;">Knowledge Base</div>
                     <div *ngIf="selectedNamespace.default" class="default-badge" style="background-color: #677693ab; color: white; padding: 0px 4px; border-radius: 6px; font-size: 12px; font-weight: 400;">Default</div>
-                  </div>
+                  </div> -->
                   <div class="selected-namespace-content">
                     <div id="selected-namespace-name" class="selected-namespace-name" (mouseover)="onMouseOver()"
                       (mouseout)="onMouseOut()">
               
                       <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output" style="padding: 0px;"
-                        (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
-                        matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                        (click)="hasClickedNamespaceName()" 
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{'Rename' | translate}}" 
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='below'
                         matTooltipHideDelay="100">
-                        {{selectedNamespace?.name}}
+                        <!-- <div class="selected-namespace-wpr" style="display: flex; flex-direction: row; gap: 12px; align-items: center;">  -->
+                          <div class="selected-namespace"> 
+                            {{selectedNamespace?.name}}
+                          </div>
+                          
+                        <!-- </div> -->
                       </div>
               
-                      <input *ngIf="namespaceIsEditable" id="namespace-name-input" [ngStyle]="{ 'width': namespaceNameOutputElWidth }"
-                        class="namespace-name-input" type="text" [(ngModel)]="selectedNamespace.name"
-                        (keypress)="onPressEnterUpdateNamespaceName($event)" (focus)="onFocusNamespaceName($event.target.value)"
-                        (ngModelChange)="onChangeNamespaceName($event)" (blur)="onBlurUpdateNamespaceName($event)">
+                      <input *ngIf="namespaceIsEditable" 
+                        id="namespace-name-input" 
+                        [ngStyle]="{ 'width': namespaceNameOutputElWidth }"
+                        class="namespace-name-input" type="text" 
+                        [(ngModel)]="selectedNamespace.name"
+                        (keypress)="onPressEnterUpdateNamespaceName($event)" 
+                        (focus)="onFocusNamespaceName($event.target.value)"
+                        (ngModelChange)="onChangeNamespaceName($event)" 
+                        (blur)="onBlurUpdateNamespaceName($event)">
+
+                        <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div>
                     </div>
               
                     <!-- <button mat-icon-button (click)="openDialogKbList()">
@@ -118,7 +130,7 @@
                     <!-- ----------- MAT-MENU ----------- -->
                     <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
                       matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                       <mat-icon>unfold_more</mat-icon>
                     </button>
               
@@ -133,7 +145,15 @@
               
                       <button [ngClass]="{'active--namespace': namespace.name === selectedNamespace.name}" mat-menu-item
                         *ngFor="let namespace of namespaces" (click)="onSelectNamespace(namespace)">
-                        <span>{{namespace?.name}}</span>
+                        <div class="namespace-name-in-menu-wpr"> 
+                          <div class="namespace-name-in-menu">{{namespace?.name}}</div>
+                         <div *ngIf="namespace?.default" class="kb-default-badge-in-menu-wpr">
+                          <span class="kb-default-badge-in-menu">
+                            Default
+                          </span>
+                         
+                        </div>
+                        </div>
                       </button>
                     </mat-menu>
                   </div>
@@ -196,46 +216,49 @@
                 <!-- --------- ./ MAT-MENU ---------- -->
 
                 <!-- ---------------------------------------- -->
-                <!-- Delete -->
+                <!-- Delete KB / CONTENT -->
                 <!-- ---------------------------------------- -->
                 <div class="buttons-div">
-                  <button id="delete-kb" class="custom-button delete" [disabled]="addButtonDisabled" aria-label="Delete"
+                  <button id="delete-kb" class="btn btn-red" [disabled]="addButtonDisabled" aria-label="Delete"
                     style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
-                    matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
-                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    matTooltipClass="kb-custom-mat-tooltip" 
+                    matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below' matTooltipHideDelay="100">
                     <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
-                    <span class="material-icons-round">
+                    <!-- <span class="material-icons-round" style="vertical-align: middle;">
                       delete
-                    </span>
+                    </span> -->
                     <!-- {{ 'KbPage.DeleteNamespace' | translate }} -->
+                    {{ 'Delete' | translate }}
                   </button>
 
                   <!-- ---------------------------------------- -->
                   <!-- AI Settings -->
                   <!-- ---------------------------------------- -->
-                  <button id="ai-settings" class="custom-button preview-settings"
+                  <!-- <button id="ai-settings" class="custom-button preview-settings"
                     (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                     matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                     matTooltipPosition='below' matTooltipHideDelay="100">
                     <span class="material-icons-round">settings</span>
-                  </button>
+                  </button> -->
 
                   <!-- ---------------------------------------- -->
                   <!-- KB preview -->
                   <!-- ---------------------------------------- -->
-                  <button id="kb-preview" class="custom-button preview" aria-label="Preview"
+                  <!-- <button id="kb-preview" class="custom-button preview" aria-label="Preview"
                     (click)="$event.stopPropagation(); onOpenBaseModalPreview()" [disabled]="kbsListCount === 0"
                     [ngClass]="{'preview-btn-disabled': kbsListCount === 0}" matTooltipClass="kb-custom-mat-tooltip"
                     [matTooltip]="kbsListCount === 0 ? ( 'KbPage.AddContentsToUseTheKBPreview' | translate ) : ( 'KbPage.KBpreview' | translate ) "
                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                     <span class="material-icons-round">play_arrow</span>
                     <span class=""> {{'Preview' | translate}} </span>
-                  </button>
+                  </button> -->
 
                   <!-- ---------------------------------------- -->
                   <!-- Add Content -->
                   <!-- ---------------------------------------- -->
-                  <div class="add-kb-div">
+                  <!-- <div class="add-kb-div">
                     <button id="kb-add-content" class="custom-button add-content" [disabled]="addButtonDisabled"
                       [matMenuTriggerFor]="menu">
                       <span class=""> {{ 'KbPage.Add' | translate }} </span>
@@ -245,9 +268,9 @@
                         (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
                       </add-content-menu>
                     </mat-menu>
-                  </div>
+                  </div> -->
 
-                  <div id="other-actions" class="other-actions">
+                  <!-- <div id="other-actions" class="other-actions">
                     <button mat-icon-button [matMenuTriggerFor]="otherActions" aria-label="other-actions">
                       <mat-icon>more_horiz</mat-icon>
                     </button>
@@ -258,7 +281,7 @@
                         <span>{{ 'KbPage.RestartTour' | translate }}</span>
                       </button>
                     </mat-menu>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -285,13 +308,17 @@
                 <div id="kb-chatbot" class="served-by-cb-wpr">
                   <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
                     <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                      class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)">
+                      class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip=" {{'ViewOption' | translate}}" 
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='left'
+                        matTooltipHideDelay="100">
 
-                      <!-- UPLOAD_ENGINE_IS_FIREBASE - {{ UPLOAD_ENGINE_IS_FIREBASE }}  (click)="cbPopover.toggle() (mouseenter)="cbPopover.toggle()"  "
-                    -->
-
-                      <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover"
-                        (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot" (mouseleave)="cbPopover.toggle()">
+                      <!-- [satPopoverAnchor]="cbPopover"
+                      (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot" 
+                      (mouseleave)="cbPopover.toggle()" -->
+                      <div class="served-by-cb-d">
                         <div size="32" class="served-by-cb-e">
 
                           <!-- --------------------------------------------------- -->
@@ -366,15 +393,15 @@
                 <!-- --------------------------------------- -->
                 <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                   <!-- This namespace is not used by any chatbot -->
-                  {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
+                  {{ 'KbPage.ThisKBisReadyToUse' | translate }}
 
                   <!-- esportingKBChatBotTemplate >  {{ esportingKBChatBotTemplate}} -->
                   <button class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
                     
                     <span *ngIf="!esportingKBChatBotTemplate">
-                      <!-- Create chatbot  -->
-                      <!-- {{ 'CreateChatbot' | translate }} -->
-                      {{ 'CreateYuorAIAgent' | translate }}
+                   
+                      <!-- {{ 'CreateYuorAIAgent' | translate }} -->
+                      {{ 'CreateYourAIAgentWithOneClick' | translate }}
                     </span>
                     <span *ngIf="esportingKBChatBotTemplate">
                       {{ 'Processing' | translate }}
@@ -393,15 +420,27 @@
               </div>
 
               <!-- START TABLE -->
-              <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
-                [hasRemovedKb]="hasRemovedKb" [hasUpdatedKb]="hasUpdatedKb" [getKbCompleted]="getKbCompleted"
-                [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
+              <knowledge-base-table 
+                [kbsList]="kbsList" 
+                [kbsListCount]="kbsListCount" 
+                [refresh]="refreshKbsList"
+                [hasRemovedKb]="hasRemovedKb" 
+                [hasUpdatedKb]="hasUpdatedKb" 
+                [getKbCompleted]="getKbCompleted"
+                [selectedNamespaceName]="selectedNamespaceName" 
+                [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
+                [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature"
+                [t_params]="t_params"
                 (openBaseModalDetail)="onOpenBaseModalDetail($event)"
                 (openBaseModalDelete)="onOpenBaseModalDelete($event)"
                 (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
                 (openBaseModalPreview)="onOpenBaseModalPreview()"
-                (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
-                (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                (onOpenAddContents)="onOpenAddContent()"
+                (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
+                (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" 
+                (checkStatus)="onCheckStatus($event)"
+                (runIndexing)="onRunIndexing($event)" 
+                (loadPage)="onLoadPage($event)"
                 (loadByFilter)="onLoadByFilter($event)">
               </knowledge-base-table>
               <!-- END TABLE -->
@@ -412,7 +451,7 @@
         </div>
 
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </div>
 

@@ -344,8 +344,8 @@
 
                 <!-- ------------ -->
 
-                <div class="quotas-upgrade-btn-wpr">  
-                  <button *ngIf="isVisiblePay" mat-flat-button class="quotas-upgrade-btn" (click)="goToPricing()">
+                <div class="quotas-upgrade-btn-wpr">
+                  <button *ngIf="isVisiblePay" class="btn upgrade--btn" (click)="goToPricing()">
                     <span class="material-icons-outlined">bolt</span>
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
@@ -461,6 +461,10 @@
           </li>
         </ng-container>
 
+    
+
+
+
         <!-- <ng-container class="operating-hours">
           <li *ngIf="project">
             <a class="tool_tip" style="cursor: pointer;" *ngIf="!OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
@@ -495,12 +499,23 @@
         <!-- test site btn -->
         <!-- ------------------------------------------------------ -->
         <ng-container class="test-site">
-          <li *ngIf="project">
-            <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
+          <li *ngIf="project"
+          matTooltipClass="custom-mat-tooltip-navbar"
+          matTooltip="{{ 'VisitorsPage.SimulateVisitor' | translate }}"
+          #tooltip="matTooltip" 
+          matTooltipPosition='above' 
+          matTooltipHideDelay="100" >
+            <a role="button" >
+              <button class="simulate-visitor-btn" (click)="testWidgetPage()">
+                <i class="material-icons">play_arrow</i>
+              </button>
+             
+            </a>
+            <!-- <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
             font-family: 'Poppins';" (click)="testWidgetPage()">
               <i class="material-icons" style="padding-top: 0px;font-size: 24px;">play_arrow</i>
               <span>{{ 'VisitorsPage.SimulateVisitor' | translate }} </span>
-            </button>
+            </button> -->
           </li>
         </ng-container>
         <!-- <ng-container class="test-site">
@@ -520,12 +535,27 @@
         </ng-container> -->
 
         <!--  ------------------------------------------------ -->
+        <!--  Sound on / off -->
+        <!--  ------------------------------------------------ -->
+        <li *ngIf="project">
+          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
+            <i class="material-icons">volume_up</i>
+          </a>
+          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
+            <i class="material-icons">volume_off</i>
+            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
+          </a>
+        </li>
+
+        <!--  ------------------------------------------------ -->
         <!--  ------ PROJECTS  DROPDOWN ------ -->
         <!--  ------------------------------------------------ -->
         <li *ngIf="project">
           <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
-            <i id="navbar-dropdown" class="material-icons" style="margin-right: 3px;">keyboard_arrow_down</i>
+            
             <span style="text-transform: none"> {{ project.name }} </span>
+            <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
+            <!-- <b class="caret"></b> -->
             <!-- <p class="hidden-lg hidden-md">Projects</p> -->
           </a>
 
@@ -607,31 +637,63 @@
               </li>
             </ng-container>
 
+
+           
           </ul>
         </li>
 
 
-        <!--  ------------------------------------------------ -->
-        <!--  Sound on / off -->
-        <!--  ------------------------------------------------ -->
-        <li *ngIf="project">
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
-            <i class="material-icons">volume_up</i>
-            <!-- <p class="hidden-lg hidden-md">soundon</p> -->
-          </a>
-          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
-            <i class="material-icons">volume_off</i>
-            <!-- <p class="hidden-lg hidden-md">soundoff</p> -->
+      
+
+        <!-- -------------------------------------------- -->
+        <!-- Sleekplan -->
+        <!-- -------------------------------------------- -->
+       
+        <ng-container *ngIf="isVisiblePay" style="position: relative;">
+          <li *ngIf="project">
+            <a>
+              <button class="give-feedback" (click)="openFeedback()">
+
+                <i class="material-icons">notifications</i>
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#555">
+                  <path d="M0 0h24v24H0V0z" fill="none"  style="vertical-align: middle;"/>
+                  <path
+                    d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
+                </svg> -->
+              </button>
+
+            </a>
+
+          </li>
+          <!-- *ngIf="newChangelogCount" -->
+          <!-- newChangelogCount >  {{newChangelogCount }} -->
+          <div *ngIf="project">
+            <div *ngIf="newChangelogCount === true" class="changelog-count">
+              <span>
+                1
+              </span>
+
+            </div>
+          </div>
+
+        </ng-container>
+
+        <li *ngIf="!project">
+          <a style="cursor: pointer;" (click)="goToProjects()">
+            <i class="material-icons">close</i>
           </a>
         </li>
+
 
 
         <!--  ------------------------------------------------ -->
         <!--  NOTIFICATION -->
         <!--  ------------------------------------------------ -->
-        <!-- <li *ngIf="project" class="dropdown" matTooltipClass="custom-mat-tooltip-navbar"
+        <!-- <li *ngIf="project" class="dropdown" 
+          matTooltipClass="custom-mat-tooltip-navbar"
           matTooltip="{{ 'Unserved' | translate }}: {{ unservedRequestCount }} - {{ 'AssignedToYou' | translate}}: {{currentUserRequestCount}}"
-          #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100">
+          #tooltip="matTooltip" matTooltipPosition='left' 
+          matTooltipHideDelay="100">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons">notifications</i>
 

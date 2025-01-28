@@ -6,7 +6,7 @@ import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
 import { BrandService } from 'app/services/brand.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-const swal = require('sweetalert');
+// const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 // import Swal from 'sweetalert2';
 // import Swal from 'sweetalert2';
@@ -82,7 +82,8 @@ export class NotifyService {
     public brandService: BrandService,
     private logger: LoggerService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    // private projectService: ProjectService,
   ) {
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -129,7 +130,7 @@ export class NotifyService {
         showCloseButton: true,
         showCancelButton: false,
         confirmButtonText: this.translate.instant('ContactUs'),
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: false,
         // reverseButtons: true,
         // cancelButtonColor: "var(--red-color)",
@@ -166,7 +167,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: upgrade,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       // cancelButtonColor: "var(--red-color)",
       focusConfirm: false,
       // reverseButtons: true,
@@ -195,8 +196,7 @@ export class NotifyService {
         showCloseButton: true,
         showCancelButton: false,
         confirmButtonText: this.translate.instant('ContactUs'),
-        confirmButtonColor: "var(--blue-light)",
-        // cancelButtonColor: "var(--red-color)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: false,
         // reverseButtons: true,
       }).then((result) => {
@@ -258,8 +258,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('ContactUs'),
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     }).then((result) => {
@@ -305,8 +304,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: "OK",
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     })
@@ -399,15 +397,7 @@ export class NotifyService {
     this.cancelSubscriptionCompleted$.next(hasDone);
   }
 
-  presentLogoutModal() {
-    this.displayLogoutModal = 'block';
-  }
-
-  closeLogoutModal() {
-    this.displayLogoutModal = 'none';
-  }
-
-
+ 
   update(content: string, style: 'error' | 'info' | 'success') {
     const msg: Msg = { content, style };
     this._msgSource.next(msg);
@@ -829,6 +819,16 @@ export class NotifyService {
     })
   }
 
+  // No more used - called by sidebar user details
+  presentLogoutModal() {
+    this.displayLogoutModal = 'block';
+  }
+
+  closeLogoutModal() {
+    this.displayLogoutModal = 'none';
+  }
+
+
 
   presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
     // console.log('NOTIFY SERVICE presentModalOnlyOwnerCanManageTheAccountPlan hideHelpLink', this.hideHelpLink)
@@ -857,10 +857,9 @@ export class NotifyService {
       icon: "warning",
       showCloseButton: true,
       showCancelButton: false,
-      confirmButtonText: "OK",
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      confirmButtonText: this.translate.instant('Ok'),
       focusConfirm: false,
+      // cancelButtonColor: "var(--red-color)",
       // reverseButtons: true,
     })
 
@@ -874,15 +873,20 @@ export class NotifyService {
     } else {
       el.innerHTML = agentsCannotManageChatbots + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
+      html: el,
       icon: "warning",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      // confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+    
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
   }
 
@@ -911,15 +915,21 @@ export class NotifyService {
     } else {
       el.innerHTML = onlyOwnerCanManageSMTPSettings + '. '
     }
-    swal({
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
+      html: el,
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      // confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+
       // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      // button: {
+      //   text: "OK",
+      // },
+      // dangerMode: false,
     })
   }
 
@@ -933,12 +943,11 @@ export class NotifyService {
     Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       html: el,
-      icon: "info",
+      icon: "warning",
       showCancelButton: false,
-      confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: false,
-
+      confirmButtonText: this.translate.instant('Ok') ,
+      // confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
       // button: {
       //   text: "OK",
       // },

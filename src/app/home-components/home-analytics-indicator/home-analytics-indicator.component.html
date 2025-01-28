@@ -19,7 +19,7 @@
 
       <div class="flex flex-col items-center mt-2">
         <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none other-analytics-num">
-          {{countOfActiveContacts}}
+          {{countOfActiveContacts | number:'1.0-0'}}
         </div>
         <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
           <!-- truncate -->
@@ -58,7 +58,7 @@
 
       <div class="flex flex-col items-center mt-2">
         <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none other-analytics-num">
-          {{countOfVisitors}}
+          {{countOfVisitors | number:'1.0-0'}}
         </div>
         <!-- <div class="other-analytics-text truncate">
           {{'Last30DaysVisitors' | translate }}
@@ -102,7 +102,7 @@
 
       <div class="flex flex-col items-center mt-2">
         <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none other-analytics-num">
-          {{countOfLastMonthMsgs}}
+          {{countOfLastMonthMsgs | number:'1.0-0'}}
         </div>
         <!-- <div class="other-analytics-text truncate">
           {{'Last30DaysMessages' | translate}}

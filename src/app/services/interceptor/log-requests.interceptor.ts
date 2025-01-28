@@ -45,7 +45,7 @@ export class LogRequestsInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (request.method === 'GET') {
           // Handle GET request error
-          console.error('[HTTP-INTERCEPTOR] GET request error:', error);
+          // console.error('[HTTP-INTERCEPTOR] GET request error:', error);
           // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
           if ( error.status === 429) {
             this.presentAlert()
@@ -67,7 +67,7 @@ export class LogRequestsInterceptor implements HttpInterceptor {
       showCloseButton: false,
       showCancelButton: true,
       confirmButtonText: this.translate.instant('ContactUs'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       // cancelButtonColor: "var(--red-color)",
       focusConfirm: false,
       reverseButtons: true,

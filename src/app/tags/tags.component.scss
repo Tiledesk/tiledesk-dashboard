@@ -1,17 +1,6 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-.card-header-custom-bkgrnd {
-  // display:none;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  margin: 0px;
-  border-radius: 3px 3px 0px 0px;
-  // background-color: #f2f6f8;
-  background-color: #ffffff;
-  // border-bottom: 1px solid #eff3f5;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
+
 
 .column-th-span {
   font-size: 14px;
@@ -20,12 +9,21 @@
   // color: #566787;
 }
 
+.tag-input-wrapper {
+  // height: 36px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 10px 0px;
+}
+
 .tag-input-wrapper input[type="text"] {
-  height: 35px;
+  height: 36px;
   font-size: 14px;
   //   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9;
   padding-right: 8px;
@@ -33,15 +31,27 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   //   border-radius: 5px;
-  float: left;
-  margin-right: 15px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  // float: left;
+  // margin-right: 15px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   margin-bottom: 0px;
+  position: relative;
 }
 
-.tag-input-wrapper .dropdown .dropdown-toggle {
+.tag-input-wrapper .dropdown .tag-dropdown-toggle {
   box-shadow: none !important;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: -1px !important;
+  padding: 8px 15px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  height: 36px;
 }
 
 .tag-input-wrapper .dropdown .dropdown-toggle:hover {
@@ -57,8 +67,10 @@
 
 .tag-color-round-div--in-input {
   position: absolute;
-  top: 22px;
-  left: 61px;
+  // top: 22px;
+  // left: 7px;
+  top: 10px;
+  left: 7px;
   height: 16px;
   width: 16px;
   border-radius: 50%;
@@ -89,7 +101,7 @@
   margin-top: -1px !important;
 }
 
-.table-hover > tbody > tr:hover {
+.table-hover>tbody>tr:hover {
   .open-dropdown-icon {
     background-color: #f5f5f5;
     opacity: 1;
@@ -103,7 +115,8 @@
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #d9d9d9;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
 :-ms-input-placeholder {
@@ -146,10 +159,23 @@
 // }
 
 .create-tag-btn {
-  padding: 8px 16px; margin: 0px;
+  margin: 0px;
+  padding-top: 6px !important;
+  height: 36px;
+  position: relative;
+  top: -1px;
 }
+
+.tag-error-message {
+  color: #f6303a;
+  font-size: 14px;
+  position: relative;
+  // left: -197px;
+  top: 4px;
+}
+
 .add-tag-icon {
-  padding-right:8px
+  padding-right: 8px
 }
 
 @media (max-width: 705px) {
@@ -158,14 +184,53 @@
   }
 
   .add-tag-icon {
-    padding-right:0px
+    padding-right: 0px
   }
+
   .create-tag-btn {
     padding: 8px 4px;
   }
 
-  .tag-input-wrapper input[type="text"] { 
+  .tag-input-wrapper input[type="text"] {
     margin-right: 3px;
   }
 }
 
+.link-to-docs-wpr {
+  margin-bottom: 16px;
+}
+.link-to-docs-wpr > div > div > span > svg {
+  fill: var(--blue-light);
+  vertical-align: middle;
+} 
+
+.link-to-docs {
+  // background-color: rgb(241, 241, 241);
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-left: -14px;
+  // padding-bottom: 12px;
+  // padding-top: 12px;
+  padding: 10px 0px;
+}
+
+.custom-anchor-to-docs {
+  color: var(--blue-light); // #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.custom-anchor-to-docs:hover {
+  text-decoration: underline;
+}
+
+.table .td-actions .btn {
+  margin: 6px !important;
+}
+
+.quick-tips-right-bar {
+  margin-top: -20px;
+}

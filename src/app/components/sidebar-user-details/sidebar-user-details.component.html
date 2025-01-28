@@ -83,18 +83,7 @@
     </div>
 
     <section class="availability-section">
-        <!-- <mat-slide-toggle (change)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)"
-            class="custom-mat-slide-toggle" [checked]="IS_AVAILABLE" labelPosition="before">
-
-            <span *ngIf="IS_AVAILABLE"
-                style="font-weight: 400 !important; text-transform: capitalize; font-size:14px; color:#a9afbb;  -webkit-font-smoothing: antialiased;">
-                {{ 'Available' | translate }}
-            </span>
-            <span *ngIf="!IS_AVAILABLE"
-                style="font-weight: 400 !important;text-transform: capitalize;font-size:14px;color:#a9afbb;  -webkit-font-smoothing: antialiased;">
-                {{ 'Unavailable' | translate }}
-            </span>
-        </mat-slide-toggle> -->
+       
 
         <ng-select style="text-align: left;" (change)="changeAvailabilityState(selectedStatus)"
             [(ngModel)]="selectedStatus" 
@@ -153,7 +142,26 @@
         </span>
     </section>
 
-    <section *ngIf="hideHelpLink" class="user-details-help-center">
+    <!-- <section class="notification-sound"> 
+
+        <div>
+            Notification sound 
+
+            <span *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
+                <i class="material-icons">volume_up</i>
+            </span>
+
+            <span style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
+                <i class="material-icons">volume_off</i>
+            </span>
+        </div>
+
+
+
+    </section> -->
+
+
+    <!-- <section *ngIf="hideHelpLink" class="user-details-help-center">
         <span class="material-icons user-details-help-center-icon">
             support
         </span>
@@ -161,7 +169,7 @@
         <span class="user-details-help-center" (click)="goToHelpCenter()">
             Help center
         </span>
-    </section>
+    </section> -->
 
     <!-- <hr class="second-divider" style="margin-top: 20px;border: 0;
     border-top: 1px solid rgba(255, 255,255, 0.2);"> -->
@@ -173,7 +181,7 @@
             logout
         </i>
         <div> Logout</div> -->
-        <div role="button" class="logout-btn-wpr" (click)=logout()>
+        <div role="button" class="logout-btn-wpr" (click)=openLogoutModal()>
             <i class="material-icons user-details-logout-icon">
                 logout
             </i>

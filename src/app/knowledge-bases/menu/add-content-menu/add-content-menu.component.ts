@@ -72,7 +72,7 @@ export class AddContentMenuComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(event){
-    //  this.logger.log('onOpenAddKnowledgeBaseModal:', event);
+    this.logger.log('onOpenAddKnowledgeBaseModal:', event);
     this.openAddKnowledgeBaseModal.emit(event);
   }
 }

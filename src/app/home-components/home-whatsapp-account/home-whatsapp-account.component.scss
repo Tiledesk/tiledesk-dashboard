@@ -36,7 +36,7 @@
 .home-block-title {
   font-size: 20px;
   font-weight: 400;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   margin-right: 16px;
 }
 
@@ -47,11 +47,18 @@
 }
 
 .home-block-description {
-  color: #000000;
+  color: var(--text-color);
   font-size: 15px;
   font-weight: 400;
   line-height: 20px;
   margin: 0px;
+}
+
+#unistall-icon-btn {
+  box-shadow: unset!important;
+  margin-right: 16px!important;
+  background-color: var(--red-color)!important; // #f44336!important;
+  position: relative!important;
 }
 
 .unistall-app-btn-disabled {
@@ -81,8 +88,15 @@
   align-self: center;
 }
 
+.actions-btn-wpr > button {
+  background-color: var(--blue-20);
+  color: #fff;
+  font-family: var(--header-font-family);
+  font-weight: 400;
+}
+
 .wa-status-label {
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 400;
   font-size: 12px;
 }
@@ -99,7 +113,7 @@
 }
 
 .wa-connection-status {
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 500;
   font-size: 12px;
 }
@@ -125,7 +139,7 @@
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   color: #fff !important;

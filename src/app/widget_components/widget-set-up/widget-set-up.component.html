@@ -23,7 +23,7 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
 
 	<div class="page-title--sidebar-settings"
-	[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+		[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 		{{ 'WidgetSetUp' | translate }}
 	</div>
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
@@ -49,13 +49,18 @@
 
 						<div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
 							<span>
-								<svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true"
+								<!-- <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true"
 									focusable="false" data-prefix="fab" data-icon="readme"
 									class="svg-inline--fa fa-readme fa-w-18" role="img"
 									xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
 									<path fill="#0f62ff"
 										d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
 									</path>
+								</svg> -->
+								<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+									width="24px" fill="none" style="vertical-align: middle;">
+									<path
+										d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
 								</svg>
 							</span>
 							<span class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
@@ -327,14 +332,14 @@
 					</div>
 				</div> -->
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-xs-12">
 						<div
 							style="margin-left: 20px;font-size: 18px;font-weight: 600;	margin-bottom: 6px;line-height: 28px;">
 							{{ 'CustomizeTheExperience' | translate }}
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="widget-all-settings-wrap" role="main">
 					<div class="row no-gap" style="margin-left: 0; margin-right: 0;">
@@ -794,7 +799,7 @@
 													style="padding-top:12px; padding-bottom: 2px;">
 
 													{{'HeaderLogo' | translate }}
-													<!-- class="widget_design__Tooltip"  -->
+													
 													<span class="info-icon---wpr"
 														matTooltipClass="custom-mat-tooltip-in-widget-setup" matTooltip="• {{ 'YourLogoMustBeSmallerThan50kB' | translate }}
 													• {{ 'TheOptimumImageSizeIs78x78' | translate }}
@@ -808,20 +813,6 @@
 																help_outline
 															</i>
 														</span>
-														<!-- <span  dclass="widget_design__Tooltiptext"
-															style="margin-left: -108px;min-width: 305px;height:fit-content">
-															<ul class="logo-note-in-tooltip">
-																<li>
-																	{{ 'YourLogoMustBeSmallerThan50kB' | translate }}
-																</li>
-																<li>
-																	{{ 'TheOptimumImageSizeIs78x78' | translate }}
-																</li>
-																<li>
-																	{{ 'PNGorGIFwithTransparentBackgroundWorksBest' | translate }}
-																</li>
-															</ul>
-														</span> -->
 													</span>
 
 												</label>
@@ -942,8 +933,8 @@
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
-												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  appearance_save_btn_bottom"
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" btn-success-no-boxshadow-->
+												<button class="btn btn-tdblu-no-boxshadow appearance_save_btn_bottom"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveWidgetAppearance()">
 
@@ -1167,7 +1158,7 @@
 																	for="nw-singleconversation-switch"></label>
 															</div>
 														</div>
-														<div class="on-off-singleconversation-lbl-wpr">
+														<div class="on-off-enabled-disabled-lbl-wpr">
 															<div *ngIf="singleConversation">
 																{{ 'Enabled' | translate }} </div>
 															<div *ngIf="!singleConversation">
@@ -1299,11 +1290,11 @@
 										<h4 class="widget-section-header__title-underlined">
 											Unbranding
 											<ng-container *ngIf="payIsVisible">
-												<span  class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
-													<span *ngIf="!isAppSumo">  
+												<span class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
+													<span *ngIf="!isAppSumo">
 														{{'AvailableFromThePlans' | translate: t_params }}
 													</span>
-													<span *ngIf="isAppSumo">  
+													<span *ngIf="isAppSumo">
 														{{'AvailableFromThePlan' | translate: t_params }}
 													</span>
 												</span>
@@ -1687,8 +1678,9 @@
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 
 											<div class="col-sm-12">
-
-												<button id="btn-save-footer-brand--launcher-btn" class="btn btn-success-no-boxshadow  footerbrand-save-btn"
+												<!-- btn-success-no-boxshadow -->
+												<button id="btn-save-footer-brand--launcher-btn"
+													class="btn  btn-tdblu-no-boxshadow  footerbrand-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveFooterBrandAndLauncherBtn()"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
@@ -1951,10 +1943,7 @@
 													</span>
 													<span class="widget_design__Tooltiptext"
 														style="margin-left: -108px;min-width: 225px;height:fit-content">
-														{{ 'TheClosedOfficeMessageIsWhatSiteVisitors' |
-														translate:
-														tparams
-														}}
+														{{ 'TheClosedOfficeMessageIsWhatSiteVisitors' |	translate:	tparams }}
 													</span>
 												</span>
 											</label>
@@ -1981,7 +1970,8 @@
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
 												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  appearance_save_btn_bottom"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn  btn-tdblu-no-boxshadow appearance_save_btn_bottom"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation()">
 
@@ -2138,7 +2128,7 @@
 
 													<button class="btn btn-tdblu-no-boxshadow"
 														(click)="setReplyTimePlaceholder()"
-														style="font-size: 12px;padding:4px!important; display: block;"
+														style="font-size: 10px; display: block; letter-spacing: 1px; padding: 6px 12px !important;height: 30px;"
 														[disabled]='!HAS_SELECT_DYMANIC_REPLY_TIME_MSG || HAS_SELECT_STATIC_REPLY_TIME_MSG'>
 
 														<span aria-hidden="true" class="material-icons"
@@ -2183,7 +2173,8 @@
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
 												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  save_replytime_btn"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn btn-tdblu-no-boxshadow save_replytime_btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation(); saveReplyTime()">
 
@@ -2272,12 +2263,12 @@
 											</label>
 
 											<div class="col-sm-12">
-												<ng-select id="set-selected-callout" class="custom-input ajustar"
+												<ng-select id="set-selected-callout" class="custom--input ajustar"
 													#selectElemCallout [clearable]='false'
 													[disabled]="CALLOUT_IS_DISABLED === true"
 													[(ngModel)]="calloutTimerSecondSelected"
 													(change)="setSelectedCalloutTimer()" dropdownPosition='bottom'
-													style="background-color:#fff; color:#333333">
+													style="background-color:#fff; color:#333333; max-width: 300px;">
 													<ng-option *ngFor="let option of calloutTimerOptions"
 														[value]="option.value">
 														{{ option.seconds }}
@@ -2373,8 +2364,8 @@
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px;">
 											<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
 											<div class="col-sm-12">
-												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" -->
-												<button class="btn btn-success-no-boxshadow  callout-settings-save-btn"
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" btn-success-no-boxshadow-->
+												<button class="btn btn-tdblu-no-boxshadow callout-settings-save-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveCalloutSettings();saveTranslation()"
 													[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
@@ -2605,7 +2596,8 @@
 										<div class="form-group" *ngIf="preChatFormCustomFieldsEnabled === false"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<div class="col-sm-12">
-												<button class="btn btn-success-no-boxshadow  prechatform-savejson-btn"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn btn-tdblu-no-boxshadow prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation()"
 													(click)="hasClickedUpdatePrechatformCustomFields()">
@@ -2799,7 +2791,8 @@
 										<div class="form-group" *ngIf="preChatFormCustomFieldsEnabled === true"
 											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
 											<div class="col-sm-12">
-												<button class="btn btn-success-no-boxshadow  prechatform-savejson-btn"
+												<!-- btn-success-no-boxshadow -->
+												<button class="btn  btn-tdblu-no-boxshadow prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="savePrechatFormCustomFields(); saveTranslation()">
 													{{ 'UpdateWidget' | translate }}
@@ -2848,31 +2841,39 @@
 											class="row language-row"
 											[ngClass]="{'selected-language-row': translation?.code === selectedLangCode}">
 											<div class="col-xs-6" style="padding-left:5px ;padding: 5px 0px;">
+												<div class="select-language-preview">
+													<div class="material-icons language-icon"
+														[ngClass]="{'selected-language-icon': translation?.code === selectedLangCode}">
+														flag
+													</div>
+													<div class="language-name"
+														[ngClass]="{'selected-language-name': translation?.code === selectedLangCode}">
+														{{translation?.name }}
 
-												<span class="material-icons language-icon"
-													[ngClass]="{'selected-language-icon': translation?.code === selectedLangCode}">
-													flag
-												</span>
-												<span class="language-name" style="position: relative;top:3px"
-													[ngClass]="{'selected-language-name': translation?.code === selectedLangCode}">
-													{{translation?.name }}
-
-													<span *ngIf="translation?.code === defaultLangCode "
-														style="font-weight: 400;color: #7695a5;">
-														(default)
-													</span>
-
-													<span *ngIf="translation?.code !== defaultLangCode " style="font-weight: 400;
-											color: #7695a5;
-											font-size: 11px;
-											background: rgba(0,0,0,0.1);
-											padding: 2px 4px;
-											border-radius: 4px;
-											cursor: pointer;" (click)="makeDefaultLanguage(translation?.code)">
+														<span *ngIf="translation?.code === defaultLangCode "
+															style="position: relative;top: -1px;font-size:9px" class="default-lang-badge">
+															default
+														</span>
+													</div>
+													<!-- <div *ngIf="translation?.code !== defaultLangCode " style="font-weight: 400;
+															color: #7695a5;
+															font-size: 11px;
+															background: rgba(0,0,0,0.1);
+															padding: 2px 4px;
+															border-radius: 4px;
+															cursor: pointer;" (click)="makeDefaultLanguage(translation?.code)">
 														{{'MakeDefault' | translate}}
-													</span>
-												</span>
+													</div> -->
 
+													<div *ngIf="translation?.code !== defaultLangCode "
+														(click)="makeDefaultLanguage(translation?.code)">
+														<button class="btn btn-outlined"
+															style="padding: 4px 9px !important;font-size: 11px;">
+															{{'MakeDefault' | translate}}
+														</button>
+													</div>
+
+												</div>
 											</div>
 											<div class="col-xs-6">
 												<!-- <i role="button" class="ion-close-round" data-placement="left" tabindex="0"></i> -->
@@ -2911,75 +2912,242 @@
 										</li>
 									</div>
 								</div>
-								<!-- adanced start -->
+								
+							
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- @ Advanced SECTION -->
 								<!-- ---------------------------------------------------------------------------- -->
-								<!-- <button type="button" class="widget-section-accordion widget-section-header">
-							<div class="widget-section-title">
-								<div class="widget-setting-icon-wrap">
-									<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-										<title>Settings</title>
-										<path
-											d="M262.29 192.31a64 64 0 1057.4 57.4 64.13 64.13 0 00-57.4-57.4zM416.39 256a154.34 154.34 0 01-1.53 20.79l45.21 35.46a10.81 10.81 0 012.45 13.75l-42.77 74a10.81 10.81 0 01-13.14 4.59l-44.9-18.08a16.11 16.11 0 00-15.17 1.75A164.48 164.48 0 01325 400.8a15.94 15.94 0 00-8.82 12.14l-6.73 47.89a11.08 11.08 0 01-10.68 9.17h-85.54a11.11 11.11 0 01-10.69-8.87l-6.72-47.82a16.07 16.07 0 00-9-12.22 155.3 155.3 0 01-21.46-12.57 16 16 0 00-15.11-1.71l-44.89 18.07a10.81 10.81 0 01-13.14-4.58l-42.77-74a10.8 10.8 0 012.45-13.75l38.21-30a16.05 16.05 0 006-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 00-6.07-13.94l-38.19-30A10.81 10.81 0 0149.48 186l42.77-74a10.81 10.81 0 0113.14-4.59l44.9 18.08a16.11 16.11 0 0015.17-1.75A164.48 164.48 0 01187 111.2a15.94 15.94 0 008.82-12.14l6.73-47.89A11.08 11.08 0 01213.23 42h85.54a11.11 11.11 0 0110.69 8.87l6.72 47.82a16.07 16.07 0 009 12.22 155.3 155.3 0 0121.46 12.57 16 16 0 0015.11 1.71l44.89-18.07a10.81 10.81 0 0113.14 4.58l42.77 74a10.8 10.8 0 01-2.45 13.75l-38.21 30a16.05 16.05 0 00-6.05 14.08c.33 4.14.55 8.3.55 12.47z"
-											fill="none" stroke="currentColor" stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="32" />
-									</svg>
+								<button type="button" class="widget-section-accordion widget-section-header" (click)="hasOpenedAdvancedSettigs()">
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+												<title>Settings</title>
+												<path
+													d="M262.29 192.31a64 64 0 1057.4 57.4 64.13 64.13 0 00-57.4-57.4zM416.39 256a154.34 154.34 0 01-1.53 20.79l45.21 35.46a10.81 10.81 0 012.45 13.75l-42.77 74a10.81 10.81 0 01-13.14 4.59l-44.9-18.08a16.11 16.11 0 00-15.17 1.75A164.48 164.48 0 01325 400.8a15.94 15.94 0 00-8.82 12.14l-6.73 47.89a11.08 11.08 0 01-10.68 9.17h-85.54a11.11 11.11 0 01-10.69-8.87l-6.72-47.82a16.07 16.07 0 00-9-12.22 155.3 155.3 0 01-21.46-12.57 16 16 0 00-15.11-1.71l-44.89 18.07a10.81 10.81 0 01-13.14-4.58l-42.77-74a10.8 10.8 0 012.45-13.75l38.21-30a16.05 16.05 0 006-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 00-6.07-13.94l-38.19-30A10.81 10.81 0 0149.48 186l42.77-74a10.81 10.81 0 0113.14-4.59l44.9 18.08a16.11 16.11 0 0015.17-1.75A164.48 164.48 0 01187 111.2a15.94 15.94 0 008.82-12.14l6.73-47.89A11.08 11.08 0 01213.23 42h85.54a11.11 11.11 0 0110.69 8.87l6.72 47.82a16.07 16.07 0 009 12.22 155.3 155.3 0 0121.46 12.57 16 16 0 0015.11 1.71l44.89-18.07a10.81 10.81 0 0113.14 4.58l42.77 74a10.8 10.8 0 01-2.45 13.75l-38.21 30a16.05 16.05 0 00-6.05 14.08c.33 4.14.55 8.3.55 12.47z"
+													fill="none" stroke="currentColor" stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											{{ 'ProjectEditPage.Advanced' | translate}}
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
+
+								<!-- ------------------------------------------------------ -->
+								<!-- Enable / Disable Emoji or/and Attachment-->
+								<!-- ------------------------------------------------------ -->
+								<div class="widget-section-container" style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+										<!-- ---------------------------------- -->
+										<!-- Enable / Disable Attachment -->
+										<!-- ---------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-sm-12 control-label widget-settings-control-head-label">
+										
+												 {{'DisableAttachments' | translate}}
+												<!-- <span class="widget-settings-control-subhead-label">
+													When enabled, users can send attachments. When disabled, the attachment button will be hidden
+												</span> -->
+												<span class="info-icon---wpr"
+														matTooltipClass="custom-mat-tooltip-in-widget-setup" 
+														matTooltip="{{'WhenEnabledAttachments' | translate}}" 
+														#tooltip="matTooltip"
+														matTooltipPosition='above' 
+														matTooltipHideDelay="100">
+														<span>
+															<i class="material-icons" style="font-size: 18px;
+															color: #566787;
+															cursor: pointer;
+															vertical-align: middle;">
+																help_outline
+															</i>
+														</span>
+													</span>
+											</label>
+											<div class="col-sm-12">
+												<div class="nw-attachment-button-onoffswitch-wrapper">
+													<div class="nw-onoffswitch-wrapper" style="clear: both;">
+														<div class="nw-onoffswitch">
+															<input (change)="toggleDiplayAttachmentButton($event)" type="checkbox"
+																name="nw-attachment-button-switch" class="nw-onoffswitch-checkbox"
+																id="nw-attachment-button-switch" tabindex="0" [checked]="!showAttachmentButton">
+															<label class="nw-onoffswitch-label" for="nw-attachment-button-switch"></label>
+														</div>
+													</div>
+
+													<div class="on-off-enabled-disabled-lbl-wpr">
+														<div *ngIf="!showAttachmentButton">
+															<!-- <span class="material-icons-outlined">
+																attach_file
+															</span> -->
+															{{ 'Disabled' | translate }} 
+														</div>
+														<div *ngIf="showAttachmentButton">
+															
+															{{ 'Enabled' | translate }} 
+														</div>
+													</div>
+												</div>
+											</div>										
+										</div>
+										<!-- ---------------------------------- -->
+										<!-- Enable / Disable Emoji -->
+										<!-- ---------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-sm-12 control-label widget-settings-control-head-label">
+												
+												 <!-- Disable emoji -->
+												 {{ 'DisableEmoji' | translate }}
+												<!-- <span class="widget-settings-control-subhead-label">
+													When enabled, users can send emoji. When disabled, the emoji button will be hidden
+												</span> -->
+												<span class="info-icon---wpr"
+														matTooltipClass="custom-mat-tooltip-in-widget-setup" 
+														matTooltip="{{'WhenEnabledEmoji' | translate}}" 
+														#tooltip="matTooltip"
+														matTooltipPosition='above' 
+														matTooltipHideDelay="100">
+														<span>
+															<i class="material-icons" style="font-size: 18px;
+															color: #566787;
+															cursor: pointer;
+															vertical-align: middle;">
+																help_outline
+															</i>
+														</span>
+													</span>
+											</label>
+											
+
+
+											<div class="col-sm-12">
+												<div class="nw-emoji-button-onoffswitch-wrapper">
+													<div class="nw-onoffswitch-wrapper" style="clear: both;">
+														<div class="nw-onoffswitch">
+															<input (change)="toggleDiplayEmojiButton($event)" type="checkbox"
+																name="nw-emoji-button-switch" class="nw-onoffswitch-checkbox"
+																id="nw-emoji-button-switch" tabindex="0" [checked]="!showEmojiButton">
+															<label class="nw-onoffswitch-label" for="nw-emoji-button-switch"></label>
+														</div>
+													</div>
+
+													<div class="on-off-enabled-disabled-lbl-wpr">
+														<div *ngIf="!showEmojiButton">
+														
+															{{ 'Disabled' | translate }} 
+														</div>
+														<div *ngIf="showEmojiButton">
+															
+															{{ 'Enabled' | translate }} 
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- ---------------------------------- -->
+										<!-- Enable / Disable Audio recorder -->
+										<!-- ---------------------------------- -->
+										<!-- <div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-sm-12 control-label widget-settings-control-head-label">
+											
+												 Disable Voice recoder
+												<span class="widget-settings-control-subhead-label">
+													When enabled, users can record voice messages. When disabled, the voice recoder button will be hidden
+												</span>
+											</label>
+											
+											<div class="col-sm-12">
+												<div class="nw-audio-recorder-button-onoffswitch-wrapper">
+													<div class="nw-onoffswitch-wrapper" style="clear: both;">
+														<div class="nw-onoffswitch">
+															<input (change)="toggleAudioRecorderButton($event)" type="checkbox"
+																name="nw-audio-recorder-button-switch" class="nw-onoffswitch-checkbox"
+																id="nw-audio-recorder-button-switch" tabindex="0" [checked]="!showAudioRecorderButton">
+															<label class="nw-onoffswitch-label" for="nw-audio-recorder-button-switch"></label>
+														</div>
+													</div>
+
+													<div class="on-off-enabled-disabled-lbl-wpr">
+														<div *ngIf="!showAudioRecorderButton">
+												
+															{{ 'Disabled' | translate }} 
+														</div>
+														<div *ngIf="showAudioRecorderButton">
+															
+															{{ 'Enabled' | translate }} 
+														</div>
+													</div>
+												</div>
+											</div>
+										</div> -->
+
+										<!-- ------------------------------------- -->
+										<!-- Save widget advanced setting -->
+										<!-- ------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											<div class="col-sm-12">
+												
+												<button class="btn btn-tdblu-no-boxshadow"
+													style="margin-top: 16px; font-size: 12px; letter-spacing: 1px;"
+													(click)="saveWidgetAdvancedSetting()">
+													{{ 'UpdateWidget' | translate }}
+												</button>
+											</div>
+										</div>
+
+
+									</div>
 								</div>
-								<h4 class="widget-section-header__title-underlined">
-									{{ 'ProjectEditPage.Advanced' | translate}}
-								</h4>
-							</div>
-							<div class="widget-section-arrow">
-								<i class="material-icons widget-section-arrow-icon">
-									keyboard_arrow_down
-								</i>
-							</div>
-						</button> -->
 
 								<!-- ------------------------------------------------------ -->
 								<!-- Enable / Disable Native RATING -->
 								<!-- ------------------------------------------------------ -->
 								<!-- <div class="widget-section-container" style="height: auto; transition-duration: 0.613s;">
-							<div class="section-offset">
-								<div class="form-group"
-									style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
-									<label class="col-sm-12 control-label widget-settings-control-head-label">
-										{{'AutoRating' | translate}}
-										<span class="widget-settings-control-subhead-label">
-											{{'AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation' |
-											translate}}
-										</span>
-									</label>
-									<div class="col-sm-12">
-										<div class="nw-onoffswitch-wrapper" style="clear: both;">
-											<div class="nw-onoffswitch">
-												<input (change)="toggleAutoRating($event)" type="checkbox"
-													name="nw-autorating-switch" class="nw-onoffswitch-checkbox"
-													id="nw-autorating-switch" tabindex="0" [checked]="nativeRating">
-												<label class="nw-onoffswitch-label" for="nw-autorating-switch"></label>
+									<div class="section-offset">
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
+											<label class="col-sm-12 control-label widget-settings-control-head-label">
+												{{'AutoRating' | translate}}
+												<span class="widget-settings-control-subhead-label">
+													{{'AtTheEndOfThConversationAFormIsProposedToEvaluateTheConversation' |
+													translate}}
+												</span>
+											</label>
+											<div class="col-sm-12">
+												<div class="nw-onoffswitch-wrapper" style="clear: both;">
+													<div class="nw-onoffswitch">
+														<input (change)="toggleAutoRating($event)" type="checkbox"
+															name="nw-autorating-switch" class="nw-onoffswitch-checkbox"
+															id="nw-autorating-switch" tabindex="0" [checked]="nativeRating">
+														<label class="nw-onoffswitch-label" for="nw-autorating-switch"></label>
+													</div>
+												</div>
 											</div>
+											
+											<label class="col-sm-12 control-label widget-settings-control-label"
+												style="position: relative;top: -6px;">
+												{{ 'EnableDisable' | translate }}
+											</label>
 										</div>
 									</div>
-									
-									<label class="col-sm-12 control-label widget-settings-control-label"
-										style="position: relative;top: -6px;">
-										{{ 'EnableDisable' | translate }}
-									</label>
-								</div>
-							</div>
-						</div> -->
+								</div> -->
+
 							</div>
 						</div>
 
 						<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
-						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr"
-							style="overflow: hidden;
-					position: sticky;
-					position: -webkit-sticky;
-					top: -20px;
-					padding-left: 0px;
-					padding-right: 0px;">
+						<div class="col-xs-12 col-sm-5 appearance-preview-wrapper" id="appearance-widget-preview-wpr">
 
 							<div class="widget-preview-container">
 								<div id="appearance-widget-preview"
@@ -3000,7 +3168,9 @@
 											[C21_BODY_HOME]="C21_BODY_HOME"
 											[waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
 											[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
-											[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
+											[waitingTimeFoundMsg]="waitingTimeFoundMsg" 
+											[currentUserId]="currentUserId"
+											[user]="user"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
 											[imageUrl]="imageUrl" [newConversation]="newConversation"
 											[noConversation]="noConversation"
@@ -3019,30 +3189,40 @@
 
 										<appdashboard-widget-callout *ngIf="DISPLAY_CALLOUT"
 											[newInnerWidth]="newInnerWidth" [callout_emoticon]="callout_emoticon"
-											[calloutTitleForPreview]="calloutTitleForPreview" [calloutMsg]="calloutMsg"
-											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[calloutTitleForPreview]="calloutTitleForPreview" 
+											[calloutMsg]="calloutMsg"
+											[primaryColor]="primaryColor" 
+											[secondaryColor]="secondaryColor"
 											[hasSelectedRightAlignment]="hasSelectedRightAlignment"
 											[hasSelectedLeftAlignment]="hasSelectedLeftAlignment"
 											[hasOwnLauncherBtn]="hasOwnLauncherBtn"
 											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
 											[customLauncherURL]="customLauncherURL"
-											[featureIsAvailable]="featureIsAvailable" [id_project]="id_project"
+											[featureIsAvailable]="featureIsAvailable" 
+											[id_project]="id_project"
 											[imageStorage]="imageStorage">
 										</appdashboard-widget-callout>
 
 
 										<appdashboard-widget-chat *ngIf="DISPLAY_WIDGET_CHAT"
-											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[primaryColor]="primaryColor" 
+											[secondaryColor]="secondaryColor"
 											[themeColorOpacity]="themeColorOpacity"
 											[HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
 											[HAS_FOCUSED_OFFLINE_MSG]="HAS_FOCUSED_OFFLINE_MSG"
 											[HAS_FOCUSED_OFFICE_CLOSED_MSG]="HAS_FOCUSED_OFFICE_CLOSED_MSG"
 											[selected_translation]="selected_translation"
-											[officeClosedMsg]="officeClosedMsg" [onlineMsg]="onlineMsg"
-											[offlineMsg]="offlineMsg" [projectName]="projectName"
+											[officeClosedMsg]="officeClosedMsg" 
+											[onlineMsg]="onlineMsg"
+											[offlineMsg]="offlineMsg" 
+											[projectName]="projectName"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" [currentUserId]="currentUserId"
-											[current_user_name]="current_user_name">
+											[imageUrl]="imageUrl" 
+											[currentUserId]="currentUserId"
+											[current_user_name]="current_user_name"
+											[showAttachmentButton]="showAttachmentButton"
+											[showEmojiButton]="showEmojiButton"
+											[showAudioRecorderButton]="showAudioRecorderButton">
 										</appdashboard-widget-chat>
 
 										<appdashboard-widget-prechat-form *ngIf="DISPLAY_WIDGET_PRECHAT_FORM"

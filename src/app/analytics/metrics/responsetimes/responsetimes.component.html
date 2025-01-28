@@ -37,7 +37,7 @@
               <p style="font-style: italic; font-size: 12px; line-height: 0px; padding-top: 10px; margin-top: 0px">{{dateRangeAvg}}</p> -->
         <span
           style="padding-bottom: 18px; display: block; font-size: 18px; font-family: 'Poppins', 'Roboto',  'Arial', sans-serif">
-          {{'Analytics.DailyMedianResponseTime' | translate}} {{lastdays}}
+             {{'Analytics.DailyMedianResponseTime' | translate}} {{lastdays}}
           <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
           <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
           <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>

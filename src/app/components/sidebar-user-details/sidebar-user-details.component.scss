@@ -32,7 +32,8 @@
 #user-details.active {
     transform: translate(0);
     display: block;
-    left: 60px;
+    // left: 60px;
+    left: 70px; // increased for the new sidebar width
 }
 
 #user-details .user-details-btn-close svg {
@@ -48,6 +49,7 @@
 
 button.user-details-btn-close {
     -webkit-appearance: none;
+    appearance: none;
     background: 0 0;
     border: 0;
     cursor: pointer;

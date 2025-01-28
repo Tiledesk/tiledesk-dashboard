@@ -115,7 +115,7 @@
         color: rgb(98, 119, 140);
         background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
         color: #fff;
-        background: var(--blue-light);
+        background: var(--blue-20);
         // box-shadow: rgb(212, 217, 230) 0px 1px 0px;
     }
 
@@ -283,16 +283,16 @@
 }
 
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
 
-}
+// }
 
 .mat-dialog-reuse-last-question-btn {
     // background-color: #647491;
@@ -303,7 +303,7 @@
 
 
 .close-ai-settings {
-    color:   var(--blue-light) !important; 
+    color:   var(--blue-20) !important; 
 }
 
 .horizontal-line {

@@ -64,27 +64,27 @@
 
 
 .onboarding-welcome-title-wpr {
-    color: rgb(19, 33, 68);
+    color: var(--text-color);
     font-weight: 600;
     font-size: 28px;
     text-align: center;
     margin-bottom: 16px;
-    font-family: Poppins, Roboto, Arial, sans-serif;
+    font-family: var(--header-font-family);
 }
 
 .onboarding-welcome-title {
-    color: rgb(19, 33, 68);
+    color: var(--text-color);
     font-weight: 600;
     font-size: 28px;
     text-align: center;
     margin-bottom: 16px;
-    font-family: Poppins, Roboto, Arial, sans-serif;
+    font-family: var(--header-font-family);
 }
 
 .onboarding-welcome-subtitle {
     width: 370px;
     margin-bottom: 40px;
-    color: rgb(98, 119, 140);
+    color: var(--secondary-text-color);
     line-height: 1.47;
     text-align: center;
     font-weight: 400;
@@ -98,6 +98,13 @@
     -webkit-box-pack: center;
     justify-content: center;
 }
+
+.onboarding-welcome-btn-wpr > button {
+    border-radius: var(--btn-border-radius) !important;
+    height: 55px !important;
+    padding: 9px 35px !important;
+}
+
 
 
 @media (max-width: 668px){
