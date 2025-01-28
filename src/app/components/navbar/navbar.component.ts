@@ -205,7 +205,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokensRunnedOut: boolean = false;
   voiceRunnedOut: boolean = false;
 
-  diplayTwilioVoiceQuota: boolean;
+  // diplayTwilioVoiceQuota: boolean;
   diplayVXMLVoiceQuota: boolean;
 
   startSlot: string;
@@ -343,21 +343,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   manageVoiceQuotaVisibility() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
+      console.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         if (projectProfileData['customization']) {
 
-          if (projectProfileData['customization'] && ((projectProfileData['customization']['voice-twilio'] !== undefined) || (projectProfileData['customization']['voice'] !== undefined) )) {
+          // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+          if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined) )) {
     
-            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-            if (projectProfileData['customization']['voice-twilio'] === true) {
-              this.diplayTwilioVoiceQuota = true
-            } else if (projectProfileData['customization']['voice-twilio'] === false) {
-              this.diplayTwilioVoiceQuota = false
-            } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-              this.diplayTwilioVoiceQuota = false
-            } 
+            console.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+            // this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+            // if (projectProfileData['customization']['voice-twilio'] === true) {
+            //   this.diplayTwilioVoiceQuota = true
+            // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+            //   this.diplayTwilioVoiceQuota = false
+            // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+            //   this.diplayTwilioVoiceQuota = false
+            // } 
     
             if (projectProfileData['customization']['voice'] === true) {
               this.diplayVXMLVoiceQuota = true
@@ -366,12 +367,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             } else if (projectProfileData['customization']['voice'] === undefined) {
               this.diplayVXMLVoiceQuota = false
             } 
+          } else {
+            console.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+            this.diplayVXMLVoiceQuota = false
           }
     
         } else {
     
-          this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-          this.diplayTwilioVoiceQuota = false
+          console.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+          // this.diplayTwilioVoiceQuota = false
           this.diplayVXMLVoiceQuota = false
         }
 

@@ -346,14 +346,15 @@
             </div>
 
             <!-- -------------------------- -->
-            <!-- Voice -->
+            <!-- Voice diplayTwilioVoiceQuota || -->
             <!-- -------------------------- -->
-            <div *ngIf="diplayTwilioVoiceQuota || diplayVXMLVoiceQuota" class="home-quote-container" [ngClass]="{'home-quote-container-voice-runned-out': voiceRunnedOut}">
+            <div *ngIf="diplayVXMLVoiceQuota" class="home-quote-container" [ngClass]="{'home-quote-container-voice-runned-out': voiceRunnedOut}">
 
               <div class="home-quote-title-count-wpr">
                 <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
                   #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                  {{'Voice' | translate}}
+                  <!-- {{'Voice' | translate}} -->
+                  Voice
                 </p>
                 <div class="quote-count">{{voice_count_min_sec}} / {{voice_limit | number:'1.0-0'}}m</div>
                 <div class="quota-runned-out-msg" *ngIf="voiceRunnedOut">
