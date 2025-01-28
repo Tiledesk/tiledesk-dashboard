@@ -616,7 +616,7 @@
     "ConversationsInTheLastDays": "Conversazioni negli ultimi {{range_count}} giorni",
     "ConversationsInTheLastMonths": "Conversazioni negli ultimi {{range_count}} mesi",
     "DisableAttachments": "Disabilita allegati",
-    "WhenEnabledAttachments":"Se abilitato, gli utenti possono inviare allegati. Se disabilitato, il pulsante per iviare allegati sarà nascosto",
+    "WhenEnabledAttachments":"Se abilitato, gli utenti possono inviare allegati. Se disabilitato, il pulsante per inviare allegati sarà nascosto",
     "DisableEmoji": "Disattiva emoji",
     "WhenEnabledEmoji":"Se abilitato, gli utenti possono inviare emoji. Se disabilitato, il pulsante emoji sarà nascosto",
     "TYPE_GPT_MODEL": {

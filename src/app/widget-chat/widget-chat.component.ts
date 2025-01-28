@@ -30,8 +30,8 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   @Input() IS_ONBOARDING_PAGE: boolean = false;
   @Input() showAttachmentButton: boolean;
   @Input() showEmojiButton: boolean;
-  @Input() showAudioRecorderButton: boolean;
-  
+  // @Input() showAudioRecorderButton: boolean; // to activate whwn is ready on the widget
+  showAudioRecorderButton: boolean =false;
   
   primaryColorRGBA_1: any
   primaryColorRGBA_050: any
