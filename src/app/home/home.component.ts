@@ -253,7 +253,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
   voiceRunnedOut: boolean = false;
-  diplayTwilioVoiceQuota: boolean;
+  // diplayTwilioVoiceQuota: boolean;
   diplayVXMLVoiceQuota: boolean;
 
   // ---------------------------------------
@@ -614,9 +614,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
     }
 
-    console.log('[HOME] voiceRunnedOut diplayTwilioVoiceQuota', this.diplayTwilioVoiceQuota)
+    // console.log('[HOME] voiceRunnedOut diplayTwilioVoiceQuota', this.diplayTwilioVoiceQuota)
     console.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
-    if (this.diplayTwilioVoiceQuota || this.diplayVXMLVoiceQuota) {
+    // this.diplayTwilioVoiceQuota ||
+    if ( this.diplayVXMLVoiceQuota) {
       if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
         // if (3342 >= this.voice_limit_in_sec) {   
         this.voiceRunnedOut = true;
@@ -653,18 +654,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   manageVoiceQuotaVisibility(projectProfileData) {
     if (projectProfileData['customization']) {
+      console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
+      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+      if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined))) {
 
-      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice-twilio'] !== undefined) || (projectProfileData['customization']['voice'] !== undefined))) {
-
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-        if (projectProfileData['customization']['voice-twilio'] === true) {
-          this.diplayTwilioVoiceQuota = true
-        } else if (projectProfileData['customization']['voice-twilio'] === false) {
-          this.diplayTwilioVoiceQuota = false
-        } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-          this.diplayTwilioVoiceQuota = false
-        }
+        console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+        // console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+        // if (projectProfileData['customization']['voice-twilio'] === true) {
+        //   this.diplayTwilioVoiceQuota = true
+        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+        //   this.diplayTwilioVoiceQuota = false
+        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+        //   this.diplayTwilioVoiceQuota = false
+        // }
 
         if (projectProfileData['customization']['voice'] === true) {
           this.diplayVXMLVoiceQuota = true
@@ -673,12 +675,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (projectProfileData['customization']['voice'] === undefined) {
           this.diplayVXMLVoiceQuota = false
         }
+      } else {
+        console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+        this.diplayVXMLVoiceQuota = false
       }
 
     } else {
 
       this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-      this.diplayTwilioVoiceQuota = false
+      // this.diplayTwilioVoiceQuota = false
       this.diplayVXMLVoiceQuota = false
     }
 
