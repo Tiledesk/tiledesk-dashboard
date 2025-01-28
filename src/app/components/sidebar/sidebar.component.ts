@@ -2186,15 +2186,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     const dateLimit = new Date('2025-01-16T00:00:00');
     // const dateLimit = new Date('2022-07-04T00:00:00') // for test purpose
 
-    console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectUser ', projectUser)
-    console.log('[APP-COMPONENT] REDIRECT TO PRICING - project ', project)
-    console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate ', projectCreationDate)
-    console.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
-    console.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
-    console.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
+    this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectUser ', projectUser)
+    this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project ', project)
+    this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate ', projectCreationDate)
+    this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
+    this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
+    this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
 
     if (projectCreationDate >= dateLimit) {
-      console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
+      this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
       if (project) {
         if (project.profile.type === 'free' && project.trialExpired === true) {
           if (role === 'owner') {
@@ -2208,7 +2208,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       }
 
     } else {
-      console.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
+      this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
       this.goToChat()
     }
   }

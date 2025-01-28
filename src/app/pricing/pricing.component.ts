@@ -209,20 +209,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
 
     this.CHAT_PANEL_MODE = window.self !== window.top;
-    console.log('[PRICING] Is in iframe (CHAT_PANEL_MODE) :', this.CHAT_PANEL_MODE);
+    this.logger.log('[PRICING] Is in iframe (CHAT_PANEL_MODE) :', this.CHAT_PANEL_MODE);
 
-
-    console.log('[PRICING] .router.url ' , this.router.url)
-    // this.CHAT_PANEL_MODE = false
-   
-    // if (this.router.url.indexOf('/request-for-panel') !== -1) {
-    //   this.CHAT_PANEL_MODE = true;
-    //   console.log('[PRICING] CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE )
-    // } else {
-
-    //   this.CHAT_PANEL_MODE = false;
-    //   console.log('[PRICING] CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE )
-    // }
   }
 
   /**
@@ -281,7 +269,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   
 
     this.planDAnnualPricePerMonth = +ANNUAL_PRICE[PLAN_NAME.D] / 12;
-    console.log('[PRICING] planDAnnualPricePerMonth ', this.planDAnnualPricePerMonth )
+    this.logger.log('[PRICING] planDAnnualPricePerMonth ', this.planDAnnualPricePerMonth )
    
     this.planEAnnualPricePerMonth = ""
     // +ANNUAL_PRICE[PLAN_NAME.E] / 12;
@@ -304,12 +292,12 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
 
-    // console.log('[PRICING] ROUTER URL ', this.router.url)
+    // this.logger.log('[PRICING] ROUTER URL ', this.router.url)
     const current_url = this.router.url;
-    // console.log('[PRICING] current_url ', current_url)
+    // this.logger.log('[PRICING] current_url ', current_url)
     var n = current_url.lastIndexOf('/');
     var valueAfterLastString = current_url.substring(n + 1);
-    console.log('[PRICING] valueAfterLastString ', valueAfterLastString)
+    this.logger.log('[PRICING] valueAfterLastString ', valueAfterLastString)
     // if (valueAfterLastString === 'pricing') {
     if (valueAfterLastString === 'chat-pricing') {  
       this.displayClosePricingPageBtn = false;
@@ -331,7 +319,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.trialHasExpired = false;
     }
 
-    console.log('[PRICING] trialHasExpired ', this.trialHasExpired )
+    this.logger.log('[PRICING] trialHasExpired ', this.trialHasExpired )
 
   }
 
@@ -858,7 +846,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    // console.log('[PRICING] - browser_lang ', this.browser_lang)
+    // this.logger.log('[PRICING] - browser_lang ', this.browser_lang)
   }
 
   getRouteParamsAndAppId() {
@@ -866,7 +854,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.logger.log('[PRICING] GET ROUTE-PARAMS & APPID - APP ID: ', appID);
 
     this.route.queryParams.subscribe((params) => {
-     console.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
+      this.logger.log('[PRICING] - GET ROUTE-PARAMS & APPID - params: ', params)
       if (params.nk) {
         this.logger.log('[PRICING] -  GET ROUTE-PARAMS & APPID - params.nk: ', params.nk)
         // if (params.nk === 'y' && appID === "1:92907897826:web:f255664014a7cc14ee2fbb") {
@@ -875,7 +863,7 @@ export class PricingComponent implements OnInit, OnDestroy {
         // }
         if (params.nk === 'y' && appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") {
           this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE = true;
-          // console.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
+          // this.logger.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
         }
       }
       // if (appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") { // prod
@@ -911,8 +899,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
-      console.log('[PRICING] - getProjectPlan - trialHasExpired ', this.trialHasExpired)
+      this.logger.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      this.logger.log('[PRICING] - getProjectPlan - trialHasExpired ', this.trialHasExpired)
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
@@ -920,16 +908,16 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.profileType = projectProfileData.profile_type
         this.trialExpired = projectProfileData.trial_expired
 
-        console.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
-        console.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
-        console.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
-        console.log('[PRICING]  - getProjectPlan > trialExpired ', this.trialExpired)
+        this.logger.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
+        this.logger.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
+        this.logger.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
+        this.logger.log('[PRICING]  - getProjectPlan > trialExpired ', this.trialExpired)
 
 
         if (this.profileType === 'free'  &&  this.trialExpired === true) {
           
           this.trialExpirationDate = moment(projectProfileData.createdAt).add(14, 'days').format('LL');;
-          console.log('[PRICING] - trialExpirationDate' , this.trialExpirationDate); // Outputs the new date as an ISO string
+          this.logger.log('[PRICING] - trialExpirationDate' , this.trialExpirationDate); // Outputs the new date as an ISO string
         }
       }
     }, error => {
@@ -937,7 +925,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
     }, () => {
 
-      // console.log('[PRICING] - getProjectPlan * COMPLETE *')
+      // this.logger.log('[PRICING] - getProjectPlan * COMPLETE *')
 
     });
   }
