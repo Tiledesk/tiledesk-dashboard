@@ -91,6 +91,7 @@ export class AuthService {
   prjct_profile_name_for_segment: string;
   customRedirectAfterLogout: boolean;
   afterLogoutRedirectURL: string
+  isActivePAY: boolean;
 
   constructor(
     private _httpClient: HttpClient,
@@ -110,9 +111,12 @@ export class AuthService {
     // private projectService: ProjectService,
     // public myapp: AppComponent
     // private prjctPlanService: ProjectPlanService,
-  ) // public ssoService: SsoService
-  {
 
+  ) // public ssoService: SsoService
+
+  {
+    this.isActivePAY = this.getPAYValue()
+    this.logger.log('[AUTH-SERV] isActivePAY ', this.isActivePAY)
     const brand = brandService.getBrand();
     this.customRedirectAfterLogout = brand['custom_redirect_after_logout'];
     this.logger.log('[AUTH-SERV] customRedirectAfterLogout ', this.customRedirectAfterLogout)
@@ -137,6 +141,25 @@ export class AuthService {
     this.checkIfExpiredSessionModalIsOpened()
     this.getAppConfigAnBuildUrl()
     // this.getProjectPlan()
+  }
+
+  getPAYValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+    let parts = this.public_Key.split('-');
+
+    let pay = parts.find((part) => part.startsWith('PAY'));
+    this.logger.log('[AUTH-SERV] pay ', pay);
+    let payParts = pay.split(':');
+    this.logger.log('[AUTH-SERV] payParts ', payParts);
+    let payValue = payParts[1]
+    this.logger.log('[AUTH-SERV] payParts ', payParts);
+    if (payValue === 'T') {
+      return true
+    } else if (payValue === 'F') {
+      return false
+    }
+
   }
 
 
@@ -568,6 +591,9 @@ export class AuthService {
 
   }
 
+
+
+
   /**
    * NODEJS SIGN-IN: SIGN-IN THE USER AND CREATE THE 'OBJECT USER' INCLUDED THE RETURNED (FROM SIGNIN) JWT TOKEN
    * NODEJS FIREBASE SIGN-IN: GET FIREBASE TOKEN THEN USED FOR
@@ -577,6 +603,7 @@ export class AuthService {
    */
   signin(email: string, password: string, baseUrl: string, callback) {
     const self = this
+
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -604,10 +631,11 @@ export class AuthService {
           // used in signOut > removeInstanceId
           this.userId = user._id;
 
-
-          this.sleekplanSso(user)
+          // console.log('[AUTH-SERV] isActivePAY in signin ', this.isActivePAY)
+          this.sleekplanSso(user, this.isActivePAY)
 
         }
+
 
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes['token']
@@ -693,8 +721,9 @@ export class AuthService {
       })
   }
 
-  sleekplanSso(user) {
-
+  sleekplanSso(user, isActivePAY) {
+    this.logger.log('[AUTH-SERV] isActivePAY in sleekplanSso ', isActivePAY)
+    
     // this.logger.log('AUT-SERV sleekplanSs')
     // window['$sleek'].setUser = { 
     //     mail: user.email, 
@@ -707,44 +736,34 @@ export class AuthService {
     //   id: user._id,
     //   name: user.firstname,
     // }
+    if (isActivePAY) {
+      //  this.logger.log('[Auth-SERV] calling sleekplanSso ')
+      this.sleekplanSsoService.getSsoToken(user).subscribe(
+        (response) => {
+          this.logger.log('[Auth-SERV] sleekplanSso response ', response)
+          this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
+          this.logger.log('[Auth-SERV] sleekplanSso response $sleek', window['$sleek'])
 
-    this.sleekplanSsoService.getSsoToken(user).subscribe(
-      (response) => {
-        this.logger.log('[Auth-SERV] sleekplanSso response ', response)
-        this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
-        this.logger.log('[Auth-SERV] sleekplanSso response $sleek', window['$sleek'])
-        // Configure Sleekplan with SSO
-        // window['Sleekplan'] = {
-        //   id: 'YOUR_SLEEKPLAN_ID',
-        //   sso: response.token,
-        // };
 
-        // window['$sleek'].setUser({
-        //   token: response['token'],
-        // });
+          window['SLEEK_USER'] = { token: response['token'] }
 
-        // window.document.addEventListener('sleek:init', () => {
-        //   window['$sleek'].setUser({ token: response['token'] });
-        // }, false);
+          // Load the Sleekplan widget
+          this.sleekplanService.loadSleekplan()
 
-        // window['$sleek'].sso = { token: response['token'] }
-
-        window['SLEEK_USER'] = { token: response['token'] }
-
-        // Load the Sleekplan widget
-        this.sleekplanService.loadSleekplan()
-
-        // .then(() => {
-        //  this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
-        // })
-        //   .catch(err => {
-        //     this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
-        //   });
-      },
-      (error) => {
-        this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
-      }
-    );
+          // .then(() => {
+          //  this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
+          // })
+          //   .catch(err => {
+          //     this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
+          //   });
+        },
+        (error) => {
+          this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
+        }
+      );
+    } else {
+      this.logger.log('[Auth-SERV] NOT calling sleekplanSso ')
+    }
   }
 
 
