@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.63
+- Adds the ability from the Widget settings > Advanced section to disable sending attachments and emojis
+- Handles the loading of the Changelog script
+
 ### 2.7.60
 - Improves the UI
 - Bug fixing
