@@ -34,7 +34,7 @@ export class RoleService {
       userId = storedUserObject._id
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > userId ', userId)
       const currentProject = this.auth.project_bs.value
-      console.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
+      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
 
       const projectId = currentProject._id
       // console.log('[ROLE-SERV] checkRoleForCurrentProject is.usersService.projectUser_bs ', this.usersService.projectUser_bs)

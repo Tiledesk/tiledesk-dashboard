@@ -903,9 +903,9 @@ export class AuthService {
   // }
 
   hasClickedGoToProjects() {
-    console.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT')
+    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT')
     this.hasChangedProject.next(true)
-    console.log('[AUTH-SERV] After Update:', this.hasChangedProject.value); // Debugging
+    this.logger.log('[AUTH-SERV] After Update:', this.hasChangedProject.value); // Debugging
     this.project_bs.next(null);
     
     

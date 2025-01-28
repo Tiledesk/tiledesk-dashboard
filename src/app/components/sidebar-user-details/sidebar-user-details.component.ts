@@ -461,7 +461,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
       this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-      console.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      this.logger.log('[SIDEBAR-USER-DETAILS] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
       if (projectUser) {
         // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser._id)
         // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser.user_available)
