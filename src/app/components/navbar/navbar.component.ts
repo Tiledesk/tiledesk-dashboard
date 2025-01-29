@@ -372,14 +372,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   manageVoiceQuotaVisibility() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         if (projectProfileData['customization']) {
 
           // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
           if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined) )) {
     
-            console.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
             // this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
             // if (projectProfileData['customization']['voice-twilio'] === true) {
             //   this.diplayTwilioVoiceQuota = true
@@ -397,13 +397,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
               this.diplayVXMLVoiceQuota = false
             } 
           } else {
-            console.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
             this.diplayVXMLVoiceQuota = false
           }
     
         } else {
     
-          console.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+          this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
           // this.diplayTwilioVoiceQuota = false
           this.diplayVXMLVoiceQuota = false
         }

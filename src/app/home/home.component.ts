@@ -318,7 +318,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
-    this.getProjectUser();
+    // this.getProjectUser();
 
     // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
     this.faqKbService.getBotsByProjectIdAndSaveInStorage();
@@ -326,7 +326,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     // this.getAvailableProjectUsersByProjectId();
 
-    // this.getUserRole();
+    this.getUserRole();
     // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
@@ -393,9 +393,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
+
+          // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
+          // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
+          this.getProjectUser();
 
 
           this.project = project
@@ -430,7 +434,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getUserRole() {
     this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
-     console.log('[HOME] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      this.logger.log('[HOME] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
       if(projectUser){
         this.USER_ROLE = projectUser.role;
       }
@@ -621,8 +625,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
     }
 
-    // console.log('[HOME] voiceRunnedOut diplayTwilioVoiceQuota', this.diplayTwilioVoiceQuota)
-    console.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
+    // this.logger.log('[HOME] voiceRunnedOut diplayTwilioVoiceQuota', this.diplayTwilioVoiceQuota)
+    this.logger.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
     // this.diplayTwilioVoiceQuota ||
     if ( this.diplayVXMLVoiceQuota) {
       if (resp.quotes.voice_duration?.quote >= this.voice_limit_in_sec) {
@@ -661,12 +665,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   manageVoiceQuotaVisibility(projectProfileData) {
     if (projectProfileData['customization']) {
-      console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
       // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
       if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined))) {
 
-        console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-        // console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
         // if (projectProfileData['customization']['voice-twilio'] === true) {
         //   this.diplayTwilioVoiceQuota = true
         // } else if (projectProfileData['customization']['voice-twilio'] === false) {
@@ -683,7 +687,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.diplayVXMLVoiceQuota = false
         }
       } else {
-        console.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
         this.diplayVXMLVoiceQuota = false
       }
 
@@ -3431,7 +3435,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: ProjectUser) => {
-      console.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser._id)
         this.logger.log('[HOME] USER IS AVAILABLE ', projectUser.user_available)
@@ -3442,10 +3446,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.usersService.setProjectUser(projectUser);
         }
         if (projectUser.role !== undefined) {
-          console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
+          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.USER_ROLE = projectUser.role; // commented NK
+          this.USER_ROLE = projectUser.role; 
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
@@ -3540,7 +3544,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //     .subscribe((userRole) => {
 
   //       this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-  //       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+  //       // used to display / hide 'WIDGET' and 'ANALYTCS' in home.component.html
   //       this.USER_ROLE = userRole;
   //     })
   // }
