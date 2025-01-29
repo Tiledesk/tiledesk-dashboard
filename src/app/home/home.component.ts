@@ -393,7 +393,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        // this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
 
@@ -417,6 +417,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
           this.getProjectBots();
+          // this.getUserRole()
           // this.init()
         }
       }, (error) => {
@@ -425,6 +426,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
+  }
+
+  getUserRole() {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+     console.log('[HOME] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getProjectById(projectId) {
@@ -3420,7 +3430,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: ProjectUser) => {
-      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      console.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser._id)
         this.logger.log('[HOME] USER IS AVAILABLE ', projectUser.user_available)
@@ -3431,10 +3441,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.usersService.setProjectUser(projectUser);
         }
         if (projectUser.role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
+          console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.USER_ROLE = projectUser.role;
+          this.USER_ROLE = projectUser.role; // commented NK
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
