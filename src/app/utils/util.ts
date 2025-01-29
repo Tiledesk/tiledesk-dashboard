@@ -596,6 +596,8 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     }
 }
 
+
+
 export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
@@ -875,6 +877,10 @@ export function isMaliciousHTML(input) {
     }
     return false; // No XSS detected
 }
+
+// Projects created after this date will no longer be able to use the free plan when the trial expires.
+// export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
+export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation

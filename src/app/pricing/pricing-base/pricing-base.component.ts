@@ -15,6 +15,7 @@ import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, KB_MAX_NUM, PL
   styles: [
   ]
 })
+
 export class PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
