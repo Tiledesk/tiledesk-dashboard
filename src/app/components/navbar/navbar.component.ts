@@ -996,7 +996,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/desktop-access') !== -1) ||
           (this.route.indexOf('/desktop--access') !== -1) ||
           (this.route.indexOf('/onboarding-templates') !== -1) ||
-          (this.route.indexOf('/onboarding') !== -1)
+          (this.route.indexOf('/onboarding') !== -1) ||
+          (this.route.indexOf('/unauthorized-to-upgrade') !== -1) ||
+          (this.route.indexOf('/pricing/te') !== -1) ||
+          (this.route.indexOf('/projects') !== -1)
+          
 
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
