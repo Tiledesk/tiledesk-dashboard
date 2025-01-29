@@ -1298,7 +1298,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (this.ONLY_MY_REQUESTS === false) {
             this.ws_requests = wsrequests;
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-            // this.addDeptObject(this.ws_requests)
+            this.addDeptObject(this.ws_requests)
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
@@ -1316,7 +1316,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            // this.addDeptObject(this.ws_requests)
+            this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1336,7 +1336,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            // this.addDeptObject(this.ws_requests)
+            this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
