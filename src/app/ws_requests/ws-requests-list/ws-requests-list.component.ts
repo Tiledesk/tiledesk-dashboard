@@ -1162,7 +1162,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      // console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1269,14 +1269,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    // console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
 
       .subscribe((wsrequests) => {
-        this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1302,7 +1302,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (this.ONLY_MY_REQUESTS === false) {
             this.ws_requests = wsrequests;
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-            // this.addDeptObject(this.ws_requests)
+            this.addDeptObject(this.ws_requests)
           }
 
           if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
@@ -1320,7 +1320,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            // this.addDeptObject(this.ws_requests)
+            this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
@@ -1340,7 +1340,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 }
               }
             });
-            // this.addDeptObject(this.ws_requests)
+            this.addDeptObject(this.ws_requests)
             // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
