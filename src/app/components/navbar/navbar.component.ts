@@ -525,7 +525,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         resp.quotes.tokens.quote = 0;
       }
 
-      if (resp.quotes.voice_duration.quote === null) {
+      if (resp.quotes.voice_duration && resp.quotes.voice_duration.quote === null) {
         resp.quotes.voice_duration.quote = 0;
       }
 
