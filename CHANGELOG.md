@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.66
+- Removes the free plan for the new sign ups
+
 ### 2.7.64
 - Fixes the bug: departments are no longer visible in the request list
 
