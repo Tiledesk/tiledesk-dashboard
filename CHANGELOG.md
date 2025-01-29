@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.64
+- Fixes the bug: departments are no longer visible in the request list
+
 ### 2.7.63
 - Adds the ability from the Widget settings > Advanced section to disable sending attachments and emojis
 - Handles the loading of the Changelog script
