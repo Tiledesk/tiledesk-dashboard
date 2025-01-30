@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.68
+- Fixes logo position in widget setup page preview
+
 ### 2.7.67
 - Improves the widget preview available in the widget setup page
 
