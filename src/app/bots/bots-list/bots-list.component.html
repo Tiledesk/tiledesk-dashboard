@@ -244,6 +244,9 @@
                       </div>
 
                       <div class="cl-card-second-column">
+                        <div *ngIf="faqkb.agents_available === true"  class="cl-availble-for-agent" style="position: relative; top: 4px;">
+                          <span class="material-icons">boy</span>
+                        </div>
                         <div class="cl-card-stats-wpr">
 
                           <div *ngIf="faqkb.type === 'tilebot'" class="cl-card-item-stats">
