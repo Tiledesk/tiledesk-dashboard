@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.69
+- Improves the widget preview available in the widget setup page
+
 ### 2.7.65
 - Minor improvements and bug fixing
 
