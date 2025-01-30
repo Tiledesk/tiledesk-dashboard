@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.67
+- Improves the widget preview available in the widget setup page
+
 ### 2.7.66
 - Removes the free plan for the new sign ups
 
