@@ -79,8 +79,7 @@
               style="margin-right: 20px">
               Create from scratch
             </button>
-            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()"
-              style="margin-right: 16px">
+            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               Add from template
             </button>
           </div>
@@ -157,15 +156,37 @@
                     <span style="display: block;">
                       <!-- <span class="btn---link" (click)="createBlankTilebot()"> create a new one from scratch
                         </span> -->
-                        <!-- btn-new btn-size-m btn--primary -->
+                      <!-- btn-new btn-size-m btn--primary -->
                       <button class="btn btn-tdblu-no-boxshadow center" (click)="createBlankTilebot()"
                         style="margin-right: 20px; box-shadow: unset;">
                         Create from scratch
                       </button>
                     </span>
                   </p>
-
                 </div>
+
+                <!-- ---------------------------------------------- -->
+                <!-- Popover for the icon human in the loop -->
+                <!-- ---------------------------------------------- -->
+                <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
+                  panelClass="custom-panel-sat-popover" 
+                  closeTransition="1ms ease-in"
+                  (mouseenter)="cancelClosePopover()" 
+                  (mouseleave)="scheduleClosePopover()" 
+                  forceAlignment="true">
+
+                  <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
+
+                    <div class="custom-panel-sat-popover-title">
+                      Available to agents
+                    </div>
+
+                    <div class="custom-panel-sat-popover-description">
+                      Chatbot visible to agents for the purpose to be put back in the conversation
+                    </div>
+
+                  </div>
+                </sat-popover>
 
                 <div class="card-list" *ngFor="let faqkb of faqkbList; let i = index">
 
@@ -243,8 +264,15 @@
                         </div>
                       </div>
 
+                      <!-- ---------------------------------------------- -->
+                      <!-- Icon human in the loop -->
+                      <!-- ---------------------------------------------- -->
                       <div class="cl-card-second-column">
-                        <div *ngIf="faqkb.agents_available === true"  class="cl-availble-for-agent" style="position: relative; top: 4px;">
+                        <div *ngIf="faqkb.agents_available === true" class="cl-availble-for-agent"
+                          style="position: relative; top: 1px;height: 24px;" 
+                          [satPopoverAnchor]="botAvailableForAgents"
+                          (mouseenter)="openPopover()" 
+                          (mouseleave)="scheduleClosePopover()">
                           <span class="material-icons">boy</span>
                         </div>
                         <div class="cl-card-stats-wpr">
@@ -358,6 +386,7 @@
                         </div>
 
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -396,7 +425,7 @@
         </button>
         <h4 class="modal-title warning">
           <!-- <i class="material-icons" style="vertical-align: middle"> report_problem </i> -->
-          <span class="modal-header-icon-wpr"> 
+          <span class="modal-header-icon-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
                 d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
@@ -423,8 +452,8 @@
 
         <label class="col-sm-10 modal-body--content">
           {{ "BotsPage.ToDeleteTheBotType" | translate }}
-            <strong> {{id_toDelete}}</strong>
-         
+          <strong> {{id_toDelete}}</strong>
+
         </label>
         <div class="col-sm-10">
           <input [(ngModel)]="bot_id_typed" (input)="checkIdBotTyped()" class="" type="text" placeholder="ID bot">
