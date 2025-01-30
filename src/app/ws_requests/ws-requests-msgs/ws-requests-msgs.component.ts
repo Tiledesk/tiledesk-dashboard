@@ -3877,8 +3877,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayConfirmReassignmentModal = 'block'
     let blocks = {}
     this.faqService.getAllFaqByFaqKbId(botid).subscribe((faqs: any) => {
-      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
-      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID CURRENT_USER_ROLE', this.CURRENT_USER_ROLE);
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID CURRENT_USER_ROLE', this.CURRENT_USER_ROLE);
 
       // const intent_display_name_array = []
 
@@ -3894,8 +3894,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // intent_display_name_array.push(block)
 
           if (processedItems === faqs.length) {
-            console.log('loop finished');
-            console.log('[MODAL-CHATBOT-REASSIGNMENT] - HERE 0 blocks', blocks);
+            this.logger.log('loop finished');
+            this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - HERE 0 blocks', blocks);
 
 
             this.presentSwalModalReassignConversationToBot(this.userid_selected, this.userfirstname_selected, blocks)
