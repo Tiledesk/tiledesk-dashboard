@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.70-rc1
+- Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
+- Filters the blocks of the chatbots in the "Reassign conversation" page
+
 ### 2.7.69
 - Improves the widget preview available in the widget setup page
 
