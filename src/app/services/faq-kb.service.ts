@@ -8,6 +8,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BotLocalDbService } from './bot-local-db.service';
 @Injectable()
 export class FaqKbService {
 
@@ -26,6 +27,7 @@ export class FaqKbService {
   constructor(
     private auth: AuthService,
     public appConfigService: AppConfigService,
+    private botLocalDbService: BotLocalDbService,
     private _httpClient: HttpClient,
     private logger: LoggerService
   ) {
@@ -410,6 +412,28 @@ export class FaqKbService {
 
     return this._httpClient
       .delete(url, httpOptions)
+  }
+
+  // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+  public getBotsByProjectIdAndSaveInStorage() {
+    this.getFaqKbByProjectId().subscribe((bots: any) => {
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
+      if (bots && bots !== null) {
+
+        bots.forEach(bot => {
+          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT', bot);
+          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT-ID', bot._id);
+          this.botLocalDbService.saveBotsInStorage(bot._id, bot);
+        });
+
+      }
+    }, (error) => {
+      this.logger.error('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - ERROR ', error);
+    }, () => {
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE * COMPLETE');
+
+    });
+
   }
 
   /**
