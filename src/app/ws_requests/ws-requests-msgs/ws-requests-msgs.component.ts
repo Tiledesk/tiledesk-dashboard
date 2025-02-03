@@ -1,5 +1,5 @@
 import { CHANNELS_NAME, checkAcceptedFile } from './../../utils/util';
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges, isDevMode } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -3561,7 +3561,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (pair && pair._bots) {
           this.bots = pair._bots
             .filter(bot => {
-              if (bot['trashed'] === false) {
+              if (bot['trashed'] === false && bot['type'] === 'tilebot') {
                 return true
               } else {
                 return false
@@ -3877,7 +3877,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayConfirmReassignmentModal = 'block'
     let blocks = {}
     this.faqService.getAllFaqByFaqKbId(botid).subscribe((faqs: any) => {
-      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
       // const intent_display_name_array = []
 
       if (faqs) {
@@ -3946,7 +3946,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (block) {
       // this.logger.log(`You selected: ${block}`);
       this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
 
       }, (error) => {
         this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
@@ -3954,12 +3954,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal willReassign to Bot setParticipants * COMPLETE *');
         this.sendMessage(block)
-
-
+        this.trackReassignToBot(botid, botname)
       })
-
     }
-
   }
 
   sendMessage(block) {
@@ -3969,7 +3966,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
       .subscribe((msg) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
@@ -3982,6 +3979,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
+
   presentDoneDialog() {
     Swal.fire({
       title: this.translationMap.get('Done') + "!",
@@ -3993,6 +3991,44 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }).then((okpressed) => {
       this.displayUsersListModal = 'none';
     })
+  }
+
+  trackReassignToBot(botid, botname) {
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname) {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+     if (!isDevMode()) {
+          try {
+            window['analytics'].track('Reassign to chatbot', {
+              "type": "organic",
+              "username": userFullname,
+              "email": this.user.email,
+              'userId': this.user._id,
+              'chatbotName': botname,
+              'chatbotId': botid,
+              'page': 'Conversation detail, Reassign conversation',
+              'button': 'Reassign',
+            });
+          } catch (err) {
+            this.logger.error(`Track Reassign to chatbot error`, err);
+          }
+    
+          try {
+            window['analytics'].identify(this.user._id, {
+              username: userFullname,
+              email: this.user.email,
+              logins: 5,
+    
+            });
+          } catch (err) {
+            this.logger.error(`Identify Reassign to chatbot error`, err);
+          }
+    
+        }
+
   }
 
 
