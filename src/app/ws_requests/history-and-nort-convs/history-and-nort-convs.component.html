@@ -123,7 +123,9 @@
                 </button>
               </span>
               <!-- {{ 'HistoryPage.ContainsTheWords' | translate }} -->
-              <input name="fullText" [(ngModel)]="fullText" (ngModelChange)="fulltextChange($event)" autocomplete="off"
+              <input name="fullText" [(ngModel)]="fullText" 
+                (ngModelChange)="fulltextChange($event)" 
+                autocomplete="off"
                 class="search-field" placeholder=" {{ 'HistoryPage.SearchByWordsOrByTicketID' | translate }} "
                 (keypress)="searchOnEnterPressed($event)">
 

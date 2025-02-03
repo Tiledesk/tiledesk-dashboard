@@ -292,6 +292,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   current_selected_prjct: any;
   isChromeVerGreaterThan100: boolean;
   SEARCH_FOR_TICKET_ID: boolean = false;
+  SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX: boolean = false;
   queryParams: any;
   allDeptsLabel: string;
   qs_tags_value: string;
@@ -440,7 +441,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getQueryParams() {
     this.route.queryParamMap
       .subscribe(params => {
-        this.logger.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
+        console.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
         this.queryParams = params['params']
         // this.logger.log('[HISTORY & NORT-CONVS]  this.queryParams', this.queryParams);
 
@@ -470,7 +471,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
-            this.logger.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+            console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
 
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
@@ -481,6 +482,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 this.fullText_temp = this.fullText
               }
             }
+
+            if (paramArray[0] === 'snap_lead_email' && paramArray[1] !== '') {
+              const email_value = paramArray[1]
+              // this.logger.log('[HISTORY & NORT-CONVS]  queryParams email_value value', email_value)
+              if (email_value) {
+                this.fullText =  email_value;
+                // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > this.fullText:', this.fullText)
+                this.fullText_temp = this.fullText
+              }
+            }
+            
 
             if (paramArray[0] === 'full_text' && paramArray[1] !== '') {
               const full_text_value = paramArray[1]
@@ -671,7 +683,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-      if (this.current_selected_prjct.id_project.profile) {
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project.profile) {
         const projectProfile = this.current_selected_prjct.id_project.profile
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
@@ -2086,7 +2098,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   fulltextChange($event) {
-    //  this.logger.log('[HISTORY & NORT-CONVS] - fulltextChange ', $event);
     //  this.logger.log('[HISTORY & NORT-CONVS] - fulltextChange length ', $event.length);
     if ($event.length === 0) {
       this.clearFullText()
@@ -2266,11 +2277,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     if (this.fullText) {
-      // this.logger.log('searchOnEnterPressed this.fullText ', this.fullText)
+      console.log('searchOnEnterPressed this.fullText ', this.fullText)
+      // Regular Expression for Email Validation
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX = emailPattern.test(this.fullText)
+      console.log('[HISTORY & NORT-CONVS] - has entered an email', this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX)
+
       if (this.fullText.indexOf('#') !== -1) {
-        // this.logger.log('String contains # ');
+        console.log('String contains # ');
         const indexOfHash = this.fullText.indexOf("#");
-        // this.logger.log('indexOfHash # ', indexOfHash);
+        console.log('indexOfHash # ', indexOfHash);
         if (indexOfHash === 0) {
           const stringWithoutHash = this.fullText.substring(1);
           // this.logger.log('string Without Hash ', stringWithoutHash);
@@ -2287,6 +2303,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         // this.logger.log('String Not contains # ');
         this.SEARCH_FOR_TICKET_ID = false
       }
+
+
 
       if (this.SEARCH_FOR_TICKET_ID === false) {
         this.fullTextValue = this.fullText;
@@ -2410,6 +2428,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     let variable_parameter = 'full_text='
     if (this.SEARCH_FOR_TICKET_ID === true) {
       variable_parameter = "ticket_id="
+    }
+    
+    if (this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX === true) {
+      variable_parameter =  "snap_lead_email="  
     }
 
     if (!this.duration) {
