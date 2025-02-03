@@ -1,23 +1,24 @@
 {
   "steps":[
     {
-      "title": "👋 Ciao ${userFullname}",
+      "title": "👋 Hi ${userFullname} ",
       "buttons": {
-        "back": "Indietro",
-        "next": "Continua"
+        "back": "Go back",
+        "next": "Continue"
       },
       "questions": [
         {
-          "title": "Qual è il tuo obiettivo principale con Tiledesk?",
+          "title": "What’s your main goal with Tiledesk?",
           "type": "button",
           "attribute_name": "use_case",
           "buttons": [
-            {"icon":"🛠", "label": "Risolvere i problemi dei clienti", "value": "solve_customer_problems"},
-            {"icon": "💰", "label": "Aumentare le vendite online", "value": "increase_online_sales"}
+            {"icon":"🛠", "label": "Solve customer problems", "value": "solve_customer_problems"},
+            {"icon": "💰", "label": "Increase online sales", "value": "increase_online_sales"}
           ]
         },
+       
         {
-          "title": "Quali canali ti interessano di più?",
+          "title": "Which channel most interests you?",
           "type": "button",
           "attribute_name": "solution_channel",
           "buttons": [
