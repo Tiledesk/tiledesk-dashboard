@@ -39,9 +39,10 @@
                 line-height: 52px;">
                   <!-- <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
                     src="https://tiledesk.com/tiledesk-logo-white.png/"> -->
-                  <img *ngIf="!hasOwnLogo" style="height: 55px; width: auto;margin-bottom: 20px;" alt="logo"
+                    <!-- height: 55px; width: auto;margin-bottom: 20px; -->
+                  <img *ngIf="!hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="logo"
                     [src]="widgetLogoURL ">
-                  <img *ngIf="hasOwnLogo" style="height: 55px; width: auto;margin-bottom: 20px;" alt="myLogo"
+                  <img *ngIf="hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="myLogo"
                     [src]="logoUrl">
                 </div>
 
