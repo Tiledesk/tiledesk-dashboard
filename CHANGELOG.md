@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.70-rc2
+- Improves the icon display method on chatbot cards that indicates the chatbot is available to agents
+
 ### 2.7.70-rc1
 - Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
 - Filters the blocks of the chatbots in the "Reassign conversation" page
