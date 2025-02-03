@@ -536,11 +536,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-    redirectToPricingFromChat(projectUser) {
-        const project = projectUser.id_project;
-        console.log('[APP-COMPONENT] redirectToPricingFromChat')
-        this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
-    }
 
     containsNumber(str: string): boolean {
         return /\d/.test(str);
