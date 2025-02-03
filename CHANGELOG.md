@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.71-rc1
+- Improves full text search in history and non-real-time conversation pages
+- Improves user onboarding
+- Fixes the bug: Live Changelog announcements are displayed during user onboarding
+- Fixes the bug: In conversation details > Reassignment: conversation can be assigned to external chatbots
+
 ### 2.7.70-rc2
 - Improves the icon display method on chatbot cards that indicates the chatbot is available to agents
 
