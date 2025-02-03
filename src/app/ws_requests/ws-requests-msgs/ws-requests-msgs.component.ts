@@ -3886,7 +3886,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         let processedItems = 0;
         if (this.CURRENT_USER_ROLE === 'agent') {
-          faqs = faqs.filter(faq => faq.agents_available === true);
+          faqs = faqs.filter(faq => faq.agents_available === true || faq.agents_available === undefined);
         }
         faqs.forEach((faq, index) => {
           processedItems++;
