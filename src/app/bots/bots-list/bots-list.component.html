@@ -268,7 +268,7 @@
                       <!-- Icon human in the loop -->
                       <!-- ---------------------------------------------- -->
                       <div class="cl-card-second-column">
-                        <div *ngIf="faqkb.agents_available === true" class="cl-availble-for-agent"
+                        <div *ngIf="faqkb.agents_available === true || faqkb.agents_available === undefined" class="cl-availble-for-agent"
                           style="position: relative; top: 1px;height: 24px;" 
                           [satPopoverAnchor]="botAvailableForAgents"
                           (mouseenter)="openPopover()" 
