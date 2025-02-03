@@ -444,6 +444,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     getCurrentProject(url) {
         // this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 1', url)
+        // console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 1', url)
         this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 1 ', this.auth.user_bs.value)
         this.auth.project_bs.subscribe((project) => {
             if (project) {
@@ -473,6 +474,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     const url_segments = url.split('/');
                     const nav_project_id = url_segments[2];
                     this.logger.log('[APP-COMPONENT] -->> project from $ubscription 2 nav_project_id', nav_project_id)
+                    // console.log('[APP-COMPONENT] project from $ubscription 2 nav_project_id', nav_project_id)
 
                     const navProjectIdContainsNumber = this.containsNumber(nav_project_id)
                     this.logger.log('[APP-COMPONENT] -->> project from $ubscription 2 projectIdIsNumber', navProjectIdContainsNumber)
@@ -507,14 +509,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
         this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - freePlanLimitDate ', freePlanLimitDate)
 
-
         if (project) {
 
             const projectCreationDate = new Date(project.createdAt);
             this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate ', projectCreationDate)
             this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
             this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
-
             if (projectCreationDate >= freePlanLimitDate) {
                 this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
 
@@ -538,7 +538,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     redirectToPricingFromChat(projectUser) {
         const project = projectUser.id_project;
-        console.log('[APP-COMPONENT] redirectToPricingFromChat')
+        this.logger.log('[APP-COMPONENT] redirectToPricingFromChat')
         this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
     }
 
