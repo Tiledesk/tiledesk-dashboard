@@ -39,7 +39,7 @@ const Swal = require('sweetalert2')
 })
 
 export class BotListComponent extends PricingBaseComponent implements OnInit, OnDestroy {
-  @ViewChild('botAvailableForAgents') botAvailableForAgents!: SatPopover;
+  // @ViewChild('botAvailableForAgents') botAvailableForAgents!: SatPopover;
   closeTimeout: any;
   popoverCloseTimeout: any;
   PLAN_NAME = PLAN_NAME;
@@ -178,19 +178,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
-  openPopover() {
-    this.botAvailableForAgents.open();
-  }
+  // openPopover() {
+  //   this.botAvailableForAgents.open();
+  // }
 
-  scheduleClosePopover() {
-    this.closeTimeout = setTimeout(() => {
-      this.botAvailableForAgents.close();
-    }, 100); // Delay before closing (adjust as needed)
-  }
+  // scheduleClosePopover() {
+  //   this.closeTimeout = setTimeout(() => {
+  //     this.botAvailableForAgents.close();
+  //   }, 100); // Delay before closing (adjust as needed)
+  // }
 
-  cancelClosePopover() {
-    clearTimeout(this.closeTimeout); // Cancel close if mouse re-enters
-  }
+  // cancelClosePopover() {
+  //   clearTimeout(this.closeTimeout); // Cancel close if mouse re-enters
+  // }
 
 
   ngOnInit() {
