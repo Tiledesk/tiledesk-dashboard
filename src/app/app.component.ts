@@ -39,6 +39,7 @@ import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
+
 // import { UsersService } from './services/users.service';
 
 
@@ -86,6 +87,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     current_selected_prjct_user: any;
 
     wsInitialized: boolean = false;
+    currenturl: string
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -113,7 +115,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                this.logger.log('[APP-COMPONENT] - NavigationEnd event ', event)
+                console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                this.currenturl = event.url
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
 
                 if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup' && event.urlAfterRedirects !== '/create-new-project') {
@@ -275,7 +278,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const checkForIframe = () => {
             attempts++;
-            this.logger.log(`Attempt ${attempts} to find the iframe...`);
+            console.log(`Attempt ${attempts} to find the iframe...`);
 
             const wrapper = document.getElementById('sleek-widget-wrap');
             this.logger.log('wrapper 1', wrapper)
@@ -283,7 +286,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.logger.log('wrapper', wrapper)
                 // this.observeClassChange('.i-sl-wrapper.right.popup.active', 'expanded', () => {
                 this.observeClassChange(wrapper, 'expanded', () => {
-                    this.logger.log('The "expanded" class was added!');
+                    console.log('The "expanded" class was added!');
                     this.sleekplanApiService.hasOpenedSPChangelogFromPopup()
                 });
 
@@ -304,7 +307,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // observeClassChange(targetSelector: any, classToDetect: string, callback: () => void): void {
     observeClassChange(targetElement: any, classToDetect: string, callback: () => void): void {
         // const targetElement = document.querySelector(targetSelector);
-        this.logger.log('targetElement ', targetElement);
+        console.log('targetElement ', targetElement);
         // if (!targetElement) {
         //     this.logger.error('Target element not found');
         //     return;
@@ -800,8 +803,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
-        this.logger.log('[APP-COMP] calling sleekplanSso ')
-
+        console.log('[APP-COMP] calling sleekplanSso ')
+      
         // this.logger.log('APP-COMP sleekplanSso ')
         // window['$sleek'].setUser = { 
         //     mail: user.email, 
@@ -874,7 +877,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
            
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - isActivePAY ', isActivePAY);
             if (user && isActivePAY) {
-                this.sleekplanSso(user)
+               
+               console.log('[APP-COMPONENT] before to call sleekplanSso router.url ', this.router.url);
+               
+               const url = window.location.href;
+                const lastPart = url.substring(url.lastIndexOf('/') + 1);
+                console.log('[APP-COMPONENT] before to call sleekplanSso window.location.href lastPart', lastPart);
+              
+                if (lastPart !== 'onboarding' && lastPart !== 'signup' && lastPart !== 'create-new-project') {
+                    this.sleekplanSso(user)
+                }
             }
             if (!user) {
                 this.wsInitialized = false;

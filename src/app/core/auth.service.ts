@@ -633,7 +633,7 @@ export class AuthService {
           this.userId = user._id;
 
           // console.log('[AUTH-SERV] isActivePAY in signin ', this.isActivePAY)
-          this.sleekplanSso(user, this.isActivePAY)
+          // this.sleekplanSso(user, this.isActivePAY)
 
         }
 
@@ -723,7 +723,8 @@ export class AuthService {
   }
 
   sleekplanSso(user, isActivePAY) {
-    this.logger.log('[AUTH-SERV] isActivePAY in sleekplanSso ', isActivePAY)
+    console.log('[AUTH-SERV] calling sleekplanSso ')
+    console.log('[AUTH-SERV] isActivePAY in sleekplanSso ', isActivePAY)
     
     // this.logger.log('AUT-SERV sleekplanSs')
     // window['$sleek'].setUser = { 

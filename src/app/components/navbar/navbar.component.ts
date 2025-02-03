@@ -44,6 +44,9 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from '
 import { SleekplanApiService } from 'app/services/sleekplan-api.service';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SleekplanSsoService } from 'app/services/sleekplan-sso.service';
+import { SleekplanService } from 'app/services/sleekplan.service';
+import { browserRefresh } from 'app/app.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -54,7 +57,7 @@ const Swal = require('sweetalert2')
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent extends PricingBaseComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
-
+  public browserRefresh: boolean;
   PLAN_NAME = PLAN_NAME;
   // PLANS_LIST = PLANS_LIST;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -229,6 +232,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private quotesService: QuotesService,
     private sleekplanApi: SleekplanApiService,
     public dialog: MatDialog,
+    private sleekplanSsoService: SleekplanSsoService,
+    private sleekplanService: SleekplanService,
   ) {
 
     super(prjctPlanService, notifyService);
@@ -273,7 +278,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.getActiveRoute();
     this.hidePendingEmailNotification();
-    this.detectUserProfilePage();
+    this.detectRouteAndInitSleekPlan();
 
     this.checkUserImageUploadIsComplete();
 
@@ -1051,16 +1056,26 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   }
 
-  /**
-   * WHEN IS DETECTED THE USER-PROFILE PAGE (NOTE: THE ROUTE '/user-profile' IS THAT IN WHICH THERE IS NOT THE SIDEBAR)
-   * TO THE "PENDING EMAIL VERIFICATION ALERT " IS ASIGNED THE CLASS is-user-profile-page THAT MODIFIED THE LEFT POSITION 
-   * USE THE SAME CLASS ALSO FOR create-new-project and pricing THAT are OTHER PAGE WITHOUT SIDEABAR */
-  detectUserProfilePage() {
+ 
+  detectRouteAndInitSleekPlan() {
+    
     this.router.events.subscribe((val) => {
 
       if (this.location.path() !== '') {
         this.route = this.location.path();
-        //  this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+        this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+         if (this.route !== '/signup' && this.route !== '/onboarding'&& this.route !== "/create-new-project") {
+          this.logger.log('[NAVBAR] window[$sleek]', window['$sleek'])
+          this.browserRefresh = browserRefresh
+          this.logger.log('[NAVBAR] browserRefresh', this.browserRefresh)
+          if (window['$sleek']) {
+            // Sleekplan is already loaded
+            return;
+          }
+        if (this.user && this.isVisiblePay && !this.browserRefresh)
+            this.sleekplanSso(this.user)
+         }
+         this.logger.log('[NAVBAR] this.user' , this.user) 
         if (
           this.route === '/user-profile' ||
           this.route === '/create-new-project' ||
@@ -1094,6 +1109,53 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     });
   }
 
+  sleekplanSso(user) {
+    console.log('[NAVBAR] calling sleekplanSso ')
+  
+    // this.logger.log('APP-COMP sleekplanSso ')
+    // window['$sleek'].setUser = { 
+    //     mail: user.email, 
+    //     id: user._id, 
+    //     name: user.firstname, 
+    // }
+
+    this.sleekplanSsoService.getSsoToken(user).subscribe(
+        (response) => {
+            this.logger.log('[NAVBAR] sleekplanSso response ', response)
+            this.logger.log('[NAVBAR] sleekplanSso response token', response['token'])
+
+            // Configure Sleekplan with SSO
+            // window['Sleekplan'] = {
+            //   id: 'YOUR_SLEEKPLAN_ID',
+            //   sso: response.token,
+            // };
+
+            // window['$sleek'].setUser({
+            //   token: response['token'],
+            // });
+
+            // window.document.addEventListener('sleek:init', () => {
+            //   window['$sleek'].setUser({ token: response['token'] });
+            // }, false);
+
+            // window['$sleek'].sso = { token: response['token'] }
+
+            window['SLEEK_USER'] = { token: response['token'] }
+
+            // Load the Sleekplan widget
+            this.sleekplanService.loadSleekplan().then(() => {
+                this.logger.log('[NAVBAR] - Sleekplan successfully initialized');
+            })
+                .catch(err => {
+                    this.logger.error('[NAVBAR] - Sleekplan initialization failed', err);
+                });
+        },
+        (error) => {
+            this.logger.error('[NAVBAR] - Failed to fetch Sleekplan SSO token', error);
+
+        }
+    );
+}
 
 
   getTrialLeft() {
@@ -1586,7 +1648,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   playSoundForUnservedNotifications() {
-    this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
+    console.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
       // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
       // if (this.hasPlayed === false) {
@@ -2068,6 +2130,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.logger.log('[NAVBAR] open Sleekplan this.user', this.user)
     this.logger.log('[NAVBAR] open Sleekplan ', window['$sleek'])
     window['$sleek'].toggle();
+
     const lastSeen = Date.now()
     this.logger.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
     // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
@@ -2075,6 +2138,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.newChangelogCount = false
 
   }
+
+
+
 
   listenToLiveAnnouncementOpened() {
     this.sleekplanApi.hasOpenedChangelogfromPopup$
@@ -2102,7 +2168,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sleekplanApi.getNewChangelogCount().subscribe(
       (resp) => {
         // this.newChangelogCount = data.count;
-        this.logger.log('[NAVBAR] changelog count resp', resp);
+        console.log('[NAVBAR] changelog count resp', resp);
         this.logger.log('[NAVBAR] changelog count  resp data ', resp['data']);
         this.logger.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']
