@@ -441,7 +441,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   getQueryParams() {
     this.route.queryParamMap
       .subscribe(params => {
-        console.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
+        this.logger.log('[HISTORY & NORT-CONVS]  queryParams', params['params']);
         this.queryParams = params['params']
         // this.logger.log('[HISTORY & NORT-CONVS]  this.queryParams', this.queryParams);
 
@@ -471,7 +471,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
-            console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+            this.logger.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
 
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
@@ -2277,16 +2277,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     if (this.fullText) {
-      console.log('searchOnEnterPressed this.fullText ', this.fullText)
+      this.logger.log('searchOnEnterPressed this.fullText ', this.fullText)
       // Regular Expression for Email Validation
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX = emailPattern.test(this.fullText)
-      console.log('[HISTORY & NORT-CONVS] - has entered an email', this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX)
+      this.logger.log('[HISTORY & NORT-CONVS] - has entered an email', this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX)
 
       if (this.fullText.indexOf('#') !== -1) {
-        console.log('String contains # ');
+        this.logger.log('String contains # ');
         const indexOfHash = this.fullText.indexOf("#");
-        console.log('indexOfHash # ', indexOfHash);
+        this.logger.log('indexOfHash # ', indexOfHash);
         if (indexOfHash === 0) {
           const stringWithoutHash = this.fullText.substring(1);
           // this.logger.log('string Without Hash ', stringWithoutHash);
