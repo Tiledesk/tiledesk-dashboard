@@ -1110,15 +1110,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   sleekplanSso(user) {
-    console.log('[NAVBAR] calling sleekplanSso ')
-  
-    // this.logger.log('APP-COMP sleekplanSso ')
-    // window['$sleek'].setUser = { 
-    //     mail: user.email, 
-    //     id: user._id, 
-    //     name: user.firstname, 
-    // }
-
+    this.logger.log('[NAVBAR] calling sleekplanSso ')
     this.sleekplanSsoService.getSsoToken(user).subscribe(
         (response) => {
             this.logger.log('[NAVBAR] sleekplanSso response ', response)
@@ -1648,7 +1640,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   playSoundForUnservedNotifications() {
-    console.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
+    this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
       // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
       // if (this.hasPlayed === false) {
@@ -2168,7 +2160,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.sleekplanApi.getNewChangelogCount().subscribe(
       (resp) => {
         // this.newChangelogCount = data.count;
-        console.log('[NAVBAR] changelog count resp', resp);
+        this.logger.log('[NAVBAR] changelog count resp', resp);
         this.logger.log('[NAVBAR] changelog count  resp data ', resp['data']);
         this.logger.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']

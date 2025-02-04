@@ -201,7 +201,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
+    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
 
     // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
 

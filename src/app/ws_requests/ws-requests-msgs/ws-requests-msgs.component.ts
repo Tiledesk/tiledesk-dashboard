@@ -3877,7 +3877,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayConfirmReassignmentModal = 'block'
     let blocks = {}
     this.faqService.getAllFaqByFaqKbId(botid).subscribe((faqs: any) => {
-      console.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
+      this.logger.log('[MODAL-CHATBOT-REASSIGNMENT] - GET ALL FAQ BY BOT ID', faqs);
       // const intent_display_name_array = []
 
       if (faqs) {
@@ -3946,7 +3946,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (block) {
       // this.logger.log(`You selected: ${block}`);
       this.wsRequestsService.setParticipants(this.id_request, botid).subscribe((res: any) => {
-        console.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
+        this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants res ', res)
 
       }, (error) => {
         this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToBot in swal result to Bot setParticipants - ERROR ', error);
@@ -3966,7 +3966,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
       .subscribe((msg) => {
 
-        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 

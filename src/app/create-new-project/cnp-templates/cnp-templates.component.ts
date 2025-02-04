@@ -278,7 +278,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
           this.templatename = this.template.name
           this.templateid = this.template._id
         } else {
-          console.error('[CNP-TEMPLATES] no template')
+          this.logger.error('[CNP-TEMPLATES] no template')
         }
         // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
 

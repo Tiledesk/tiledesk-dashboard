@@ -33,7 +33,7 @@ export class SleekplanService {
       script.async = true;
 
       script.onload = () => {
-        console.log('[SLEEKPLAN-SERV] - Sleekplan script loaded successfully');
+        this.logger.log('[SLEEKPLAN-SERV] - Sleekplan script loaded successfully');
         resolve();
         
       };

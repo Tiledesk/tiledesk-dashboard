@@ -179,7 +179,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (this.translate.currentLang) {
       langDashboard = this.translate.currentLang;
     }
-    // console.log('[ONBOARDING-CONTENT] browser lang' ,this.translate.currentLang)
+    this.logger.log('[ONBOARDING-CONTENT] browser lang' ,this.translate.currentLang)
     let jsonWidgetLangURL = 'assets/i18n/' + langDashboard + '.json';
     this.httpClient.get(jsonWidgetLangURL).subscribe(data => {
       try {
@@ -296,7 +296,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           }
           this.setFirstStep();
 
-         console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
           this.isMTT = this.getMTTValue()
           this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
@@ -342,7 +342,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    console.log('loadJsonOnboardingConfig:: onboardingConfig', onboardingConfig);
+    this.logger.log('loadJsonOnboardingConfig:: onboardingConfig', onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -350,7 +350,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       let jsonParse = JSON.parse(jsonString);
       if (jsonParse) {
         jsonSteps = jsonParse['steps'];
-        console.log('loadJsonOnboardingConfig:: jsonSteps', jsonSteps);
+        this.logger.log('loadJsonOnboardingConfig:: jsonSteps', jsonSteps);
         jsonSteps.forEach(step => {
           this.customSteps.push(step);
           this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
@@ -386,7 +386,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private nextNumberStep() {
 
     this.activeTypeStepNumber++;
-    console.log('[ONBOARDING-CONTENT] nextNumberStep activeTypeStepNumber', this.activeTypeStepNumber)
+    this.logger.log('[ONBOARDING-CONTENT] nextNumberStep activeTypeStepNumber', this.activeTypeStepNumber)
     this.translateY = 'translateY(' + (-(this.activeTypeStepNumber + 1) * 20 + 20) + 'px)';
   }
 
@@ -478,7 +478,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     // this.logger.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
 
     if (this.segmentIdentifyAttributes && this.segmentIdentifyAttributes["solution_channel"] === "whatsapp_fb_messenger") {
-      console.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
+      this.logger.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.WIDGET_INSTALLATION) {
 
       // this.logger.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
@@ -736,7 +736,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      console.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -843,8 +843,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   segment(pageName, trackName, trackAttr, segmentIdentifyAttributes) {
-    console.log('[ONBOARDING-D] segmentIdentifyAttributes',  segmentIdentifyAttributes);
-    console.log('[ONBOARDING-D] trackAttr',  trackAttr);
+    this.logger.log('[ONBOARDING-D] segmentIdentifyAttributes',  segmentIdentifyAttributes);
+    this.logger.log('[ONBOARDING-D] trackAttr',  trackAttr);
 
     segmentIdentifyAttributes['name'] = this.user.firstname + ' ' + this.user.lastname;
     segmentIdentifyAttributes['email'] = this.user.email;

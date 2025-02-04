@@ -115,7 +115,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                this.logger.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
                 this.currenturl = event.url
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
 
@@ -278,7 +278,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const checkForIframe = () => {
             attempts++;
-            console.log(`Attempt ${attempts} to find the iframe...`);
+            this.logger.log(`Attempt ${attempts} to find the iframe...`);
 
             const wrapper = document.getElementById('sleek-widget-wrap');
             this.logger.log('wrapper 1', wrapper)
@@ -286,7 +286,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.logger.log('wrapper', wrapper)
                 // this.observeClassChange('.i-sl-wrapper.right.popup.active', 'expanded', () => {
                 this.observeClassChange(wrapper, 'expanded', () => {
-                    console.log('The "expanded" class was added!');
+                    this.logger.log('The "expanded" class was added!');
                     this.sleekplanApiService.hasOpenedSPChangelogFromPopup()
                 });
 
@@ -307,7 +307,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // observeClassChange(targetSelector: any, classToDetect: string, callback: () => void): void {
     observeClassChange(targetElement: any, classToDetect: string, callback: () => void): void {
         // const targetElement = document.querySelector(targetSelector);
-        console.log('targetElement ', targetElement);
+        this.logger.log('targetElement ', targetElement);
         // if (!targetElement) {
         //     this.logger.error('Target element not found');
         //     return;
@@ -538,12 +538,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-
-    redirectToPricingFromChat(projectUser) {
-        const project = projectUser.id_project;
-        console.log('[APP-COMPONENT] redirectToPricingFromChat')
-        this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
-    }
 
     containsNumber(str: string): boolean {
         return /\d/.test(str);
@@ -803,35 +797,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
-        console.log('[APP-COMP] calling sleekplanSso ')
+        this.logger.log('[APP-COMP] calling sleekplanSso ')
       
-        // this.logger.log('APP-COMP sleekplanSso ')
-        // window['$sleek'].setUser = { 
-        //     mail: user.email, 
-        //     id: user._id, 
-        //     name: user.firstname, 
-        // }
-
         this.sleekplanSsoService.getSsoToken(user).subscribe(
             (response) => {
                 this.logger.log('[APP-COMP] sleekplanSso response ', response)
                 this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
 
-                // Configure Sleekplan with SSO
-                // window['Sleekplan'] = {
-                //   id: 'YOUR_SLEEKPLAN_ID',
-                //   sso: response.token,
-                // };
-
-                // window['$sleek'].setUser({
-                //   token: response['token'],
-                // });
-
-                // window.document.addEventListener('sleek:init', () => {
-                //   window['$sleek'].setUser({ token: response['token'] });
-                // }, false);
-
-                // window['$sleek'].sso = { token: response['token'] }
 
                 window['SLEEK_USER'] = { token: response['token'] }
 
@@ -878,11 +850,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - isActivePAY ', isActivePAY);
             if (user && isActivePAY) {
                
-               console.log('[APP-COMPONENT] before to call sleekplanSso router.url ', this.router.url);
+                this.logger.log('[APP-COMPONENT] before to call sleekplanSso router.url ', this.router.url);
                
                const url = window.location.href;
                 const lastPart = url.substring(url.lastIndexOf('/') + 1);
-                console.log('[APP-COMPONENT] before to call sleekplanSso window.location.href lastPart', lastPart);
+                this.logger.log('[APP-COMPONENT] before to call sleekplanSso window.location.href lastPart', lastPart);
               
                 if (lastPart !== 'onboarding' && lastPart !== 'signup' && lastPart !== 'create-new-project') {
                     this.sleekplanSso(user)

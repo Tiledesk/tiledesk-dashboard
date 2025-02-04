@@ -671,7 +671,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
               bot['published'] = true
             }
           } else {
-            this.logger.error('[BOTS-LIST] bot not has url ', bot)
+            this.logger.log('[BOTS-LIST] bot not has url ', bot)
           }
 
           this.getBotProfileImage(bot)
