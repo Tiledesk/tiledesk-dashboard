@@ -539,6 +539,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
+
     containsNumber(str: string): boolean {
         return /\d/.test(str);
     }
@@ -1220,7 +1221,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/desktop-access') !== -1) ||
                     (this.route.indexOf('/desktop--access') !== -1) ||
                     (this.route.indexOf('/projects') !== -1) ||
-                    (this.route.indexOf('/pricing') !== -1)
+                    (this.route.indexOf('/pricing') !== -1) ||
+                    (this.route.indexOf('/get-chatbot') !== -1) 
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // this.logger.log('DETECT LOGIN PAGE')

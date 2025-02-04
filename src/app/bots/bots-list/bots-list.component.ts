@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnInit, OnDestroy } from '@angular/core';
+import { Component, isDevMode, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { Chatbot, FaqKb } from '../../models/faq_kb-model';
 import { Router } from '@angular/router';
@@ -27,6 +27,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { SatPopover } from '@ncstate/sat-popover';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -37,6 +38,9 @@ const Swal = require('sweetalert2')
 })
 
 export class BotListComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  // @ViewChild('botAvailableForAgents') botAvailableForAgents!: SatPopover;
+  closeTimeout: any;
+  popoverCloseTimeout: any;
   PLAN_NAME = PLAN_NAME;
   CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -172,6 +176,22 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
+
+  // openPopover() {
+  //   this.botAvailableForAgents.open();
+  // }
+
+  // scheduleClosePopover() {
+  //   console.log('scheduleClosePopover botAvailableForAgents ', this.botAvailableForAgents )
+  //   this.closeTimeout = setTimeout(() => {
+  //     this.botAvailableForAgents.close();
+  //   }, 100); // Delay before closing (adjust as needed)
+  // }
+
+  // cancelClosePopover() {
+  //   clearTimeout(this.closeTimeout); // Cancel close if mouse re-enters
+  // }
+
 
   ngOnInit() {
     this.getBrowserVersion();
@@ -592,7 +612,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
