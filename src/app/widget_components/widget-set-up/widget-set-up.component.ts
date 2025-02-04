@@ -4098,6 +4098,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.widget_preview_selected = '0002'
     this.HAS_FOCUSED_ONLINE_MSG = true;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
   }
 
   // -----------------------------------------------------------------------
