@@ -722,22 +722,12 @@ export class AuthService {
       })
   }
 
+  // No more used
   sleekplanSso(user, isActivePAY) {
-    console.log('[AUTH-SERV] calling sleekplanSso ')
-    console.log('[AUTH-SERV] isActivePAY in sleekplanSso ', isActivePAY)
+    this.logger.log('[AUTH-SERV] calling sleekplanSso ')
+    this.logger.log('[AUTH-SERV] isActivePAY in sleekplanSso ', isActivePAY)
     
-    // this.logger.log('AUT-SERV sleekplanSs')
-    // window['$sleek'].setUser = { 
-    //     mail: user.email, 
-    //     id: user._id, 
-    //     name: user.firstname, 
-    // }
-
-    // window['SLEEK_USER'] = {
-    //   mail: user.email,
-    //   id: user._id,
-    //   name: user.firstname,
-    // }
+  
     if (isActivePAY) {
       //  this.logger.log('[Auth-SERV] calling sleekplanSso ')
       this.sleekplanSsoService.getSsoToken(user).subscribe(
