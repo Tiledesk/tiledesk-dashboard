@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
-
+    private sleekPlanObserver: MutationObserver | null = null; // Store observer reference
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -113,17 +113,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
+
+
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                this.logger.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                // console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
                 this.currenturl = event.url
+
+                if (this.currenturl === '/projects' || this.currenturl === '/login') {
+                    this.hideSleekPlanRightPopup()
+                } else {
+                    this.stopObservingSleekPlan(); // Disconnect observer when navigating away
+                }
+
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
 
                 if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup' && event.urlAfterRedirects !== '/create-new-project') {
                     this.logger.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
                     this.getCurrentProject(event.urlAfterRedirects)
                 }
-
 
 
                 const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
@@ -190,7 +198,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.log('[APP-COMPONENT] getConfig chatEngine', appConfigService.getConfig().chatEngine)
         this.logger.log('[APP-COMPONENT] getConfig uploadEngine', appConfigService.getConfig().uploadEngine)
         this.logger.log('[APP-COMPONENT] getConfig pushEngine', appConfigService.getConfig().pushEngine)
-        
+
 
         // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
         if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
@@ -249,10 +257,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('[APP-COMPONENT] There is no logged in user')
         }
 
-        // --------------------------
-        // Get if page is refreshed
-        // --------------------------
+
         this.subscription = router.events.subscribe((event) => {
+            // ------------------------------------------------------
+            // if page is refreshed get if Sleekpan popoup is clicked
+            // ------------------------------------------------------
             if (event instanceof NavigationStart) {
                 browserRefresh = !router.navigated;
                 this.logger.log('[APP-COMPONENT] browserRefresh ', browserRefresh)
@@ -272,6 +281,87 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
 
     }
+
+    hideSleekPlanRightPopup = () => {
+        // console.log("Observing SleekPlan popup...");
+
+        // If an observer is already running, disconnect it first
+        if (this.sleekPlanObserver) {
+            this.sleekPlanObserver.disconnect();
+            this.sleekPlanObserver = null;
+        }
+
+        this.sleekPlanObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    // console.log('node ', node) 
+                    if (node instanceof HTMLElement && node.classList.contains('i-sl-wrapper')) {
+                        // console.log("✅ SleekPlan iframe found and removed!");
+                        // node.remove(); // Remove the iframe
+
+                        // console.log("✅ SleekPlan popup detected and hidden! node" , node) ;
+
+                        // Find the nested iframe inside this wrapper
+                        const iframe = node.querySelector('iframe');
+                        // console.log("✅ SleekPlan popup detected and hidden! iframe" , iframe) ;
+                        if (iframe) {
+                            iframe.style.display = 'none'; // Hide only the iframe
+                            // console.log("✅ SleekPlan iframe hidden!");
+                        }
+                        // node.style.display = 'none'
+                        if (this.sleekPlanObserver) {
+                            this.sleekPlanObserver.disconnect(); // Stop observing
+                            this.sleekPlanObserver = null;
+                        }
+                    }
+                });
+            });
+        });
+
+        this.sleekPlanObserver.observe(document.body, { childList: true, subtree: true });
+    };
+
+    stopObservingSleekPlan = () => {
+        if (this.sleekPlanObserver) {
+            // console.log("🛑 Stopping SleekPlan observer...");
+            this.sleekPlanObserver.disconnect();
+            this.sleekPlanObserver = null;
+        }
+
+        const iframe = document.querySelector('.i-sl-wrapper.right.popup.active iframe') as HTMLElement;
+        // console.log('stopObservingSleekPlan iframe ', iframe) 
+        if (iframe) {
+            iframe.style.display = ''; // Restore default style
+            //   console.log("✅ SleekPlan iframe shown again!");
+        }
+    };
+
+    // _hideSleekPlanRightPopup = (maxRetries = 25, delay = 1000) => {
+
+    //     console.log(`here 2 `);
+    //     let attempts = 0;
+    //     const checkForIframe = () => {
+    //         attempts++;
+    //         console.log(`Attempt ${attempts} to find the iframe...`);
+    //         const sleekPlanIframeWrp = document.querySelector('.i-sl-wrapper.right.popup.active');
+    //         console.log('[APP-COMPONENT] iframe ', sleekPlanIframeWrp)
+    //         if (sleekPlanIframeWrp) {
+
+    //             sleekPlanIframeWrp.remove(); // Remove the iframe
+
+    //             return; // Stop further retries once the iframe is found
+    //         }
+
+    //         if (attempts < maxRetries) {
+    //             setTimeout(checkForIframe, delay);
+    //         } else {
+    //             console.log('Max attempts reached to hide SS popoup. Iframe not found.');
+    //         }
+
+
+    //     };
+    //     checkForIframe();
+    // }
 
     checkSPPopupIframeWithRetries = (maxRetries = 5, delay = 1000) => {
         let attempts = 0;
@@ -799,7 +889,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sleekplanSso(user) {
         this.logger.log('[APP-COMP] calling sleekplanSso ')
-      
+
         this.sleekplanSsoService.getSsoToken(user).subscribe(
             (response) => {
                 this.logger.log('[APP-COMP] sleekplanSso response ', response)
@@ -825,10 +915,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     getPAYValue() {
         this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-        
+
         let parts = this.public_Key.split('-');
         // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
-    
+
         let pay = parts.find((part) => part.startsWith('PAY'));
         this.logger.log('[APP-COMPONENT] pay ', pay);
         let payParts = pay.split(':');
@@ -836,27 +926,27 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         let payValue = payParts[1]
         this.logger.log('[APP-COMPONENT] payParts ', payParts);
         if (payValue === 'T') {
-          return true
+            return true
         } else if (payValue === 'F') {
-          return false
+            return false
         }
-    
-      }
+
+    }
 
     getCurrentUserAndConnectToWs() {
         let isActivePAY = this.getPAYValue()
         this.auth.user_bs.subscribe((user) => {
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-           
+
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - isActivePAY ', isActivePAY);
             if (user && isActivePAY) {
-               
+
                 this.logger.log('[APP-COMPONENT] before to call sleekplanSso router.url ', this.router.url);
-               
-               const url = window.location.href;
+
+                const url = window.location.href;
                 const lastPart = url.substring(url.lastIndexOf('/') + 1);
                 this.logger.log('[APP-COMPONENT] before to call sleekplanSso window.location.href lastPart', lastPart);
-              
+
                 if (lastPart !== 'onboarding' && lastPart !== 'signup' && lastPart !== 'create-new-project') {
                     this.sleekplanSso(user)
                 }
@@ -1222,7 +1312,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/desktop--access') !== -1) ||
                     (this.route.indexOf('/projects') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1) ||
-                    (this.route.indexOf('/get-chatbot') !== -1) 
+                    (this.route.indexOf('/get-chatbot') !== -1)
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // this.logger.log('DETECT LOGIN PAGE')
