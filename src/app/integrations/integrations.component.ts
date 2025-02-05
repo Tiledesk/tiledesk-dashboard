@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -195,12 +195,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getIntegrations() {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
-      this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
+      console.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
      console.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
+        console.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
       }
     })
   }
@@ -208,7 +208,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
 
         this.showSpinner = false
@@ -355,15 +355,15 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   onIntegrationSelect(integration) {
-    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+    console.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
       console.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
+      console.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
+      console.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
@@ -400,8 +400,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // this.integrationSelectedName = 'none';
       // this.integrationLocked = true;
       // this.plan_require = integration.plan;
-      this.logger.log("Integration unavailable for your project")
-      this.logger.log("available for plan ", integration.plan)
+      console.log("Integration unavailable for your project")
+      console.log("available for plan ", integration.plan)
     })
   }
 
@@ -544,6 +544,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.OPENAI) {
       return new OpenaiIntegration();
     }
+
+    if (key === INTEGRATIONS_KEYS.GOOGLE) {
+      return new GoogleIntegration();
+    }
+
     if (key === INTEGRATIONS_KEYS.MAKE) {
       return new MakeIntegration();
     }

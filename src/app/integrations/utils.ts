@@ -99,7 +99,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customerio-icon_new.png",         src_logo: "assets/img/int/customerio-logo_new.svg",     pro: true,  plan: 'Premium' },
     { name: "HubSpot",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",                src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
     { name: "OpenAI",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",                 src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
-    { name: "Google Gemini",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GOOGLE,          src_icon: "assets/img/int/openai-icon.svg",                 src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
+    { name: "Google Gemini",    category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GOOGLE,          src_icon: "assets/img/int/google-gemini-icon.svg",                 src_logo: "assets/img/int/google_gemini_logo.svg",             pro: true,  plan: 'Custom' },
     { name: "Qapla'",           category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Premium' },
     //{ name: "Active Campaign",  category: INTEGRATIONS_CATEGORIES.COMMUNICATION,    key: INTEGRATIONS_KEYS.ACTIVE_CAMPAIGN, src_icon: "assets/img/int/active-campaign-icon.jpeg",     src_logo: "assets/img/int/active-campaign-logo.png",    pro: true,  plan: 'Premium' },
     //{ name: "Jira",             category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.JIRA,            src_icon: "assets/img/int/jira-icon.png",                 src_logo: "assets/img/int/jira-logo.png",               pro: true,  plan: 'Premium'},
@@ -145,6 +145,16 @@ export class OpenaiIntegration extends Integration {
         this.value = {
             apikey: null,
             organization: null
+        }
+    }
+}
+
+export class GoogleIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.GOOGLE;
+        this.value = {
+            apikey: null,
         }
     }
 }
