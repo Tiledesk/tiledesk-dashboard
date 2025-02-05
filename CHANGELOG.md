@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.73-rc1
+- Fixes visibility of blocks in Reassign Conversation
+
 ### 2.7.71-rc1
 - Improves full text search in history and non-real-time conversation pages
 - Improves user onboarding
