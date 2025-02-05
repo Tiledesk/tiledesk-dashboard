@@ -196,7 +196,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
       this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
-      this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
+     console.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
@@ -360,7 +360,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
+      console.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)

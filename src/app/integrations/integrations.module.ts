@@ -17,6 +17,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ExtIntegrationComponent } from './list/ext-integration/ext-integration.component';
 import { N8nIntegrationComponent } from './list/n8n-integration/n8n-integration.component';
+import { GoogleIntegrationComponent } from './list/google-integration/google-integration.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -34,7 +35,8 @@ const routes: Routes = [
     OpenaiIntegrationComponent,
     QaplaIntegrationComponent,
     ExtIntegrationComponent,
-    N8nIntegrationComponent
+    N8nIntegrationComponent,
+    GoogleIntegrationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

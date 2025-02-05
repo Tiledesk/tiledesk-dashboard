@@ -112,6 +112,12 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </openai-integration>
 
+                                <google-integration *ngIf="integrationSelectedName === INT_KEYS.GOOGLE"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </google-integration>
+
 
                                 <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
                                     [integration]="selectedIntegration"
