@@ -3890,9 +3890,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (faqs) {
 
         let processedItems = 0;
-        if (this.CURRENT_USER_ROLE === 'agent') {
-          faqs = faqs.filter(faq => faq.agents_available === true);
-        }
+        // if (this.CURRENT_USER_ROLE === 'agent') {
+        //   faqs = faqs.filter(faq => faq.agents_available === true);
+        // }
         faqs.forEach((faq, index) => {
           processedItems++;
           blocks[faq.intent_display_name] = faq.intent_display_name
