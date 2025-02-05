@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.72
+- Hides the live announcement Changelog on the login page and project list page
+
 ### 2.7.71
 - Improves full text search in history and non-real-time conversation pages
 - Improves user onboarding
