@@ -139,5 +139,17 @@ export class IntegrationService {
     return this.http.get(url, httpOptions);
   }
 
+  checkAnthropicKeyValidity(url: string, api_key?: string) {
+    
+    console.log('checkAnthropicKeyValidity api_key ', api_key)
+    const headers = new HttpHeaders({
+      'x-api-key': api_key,
+      'anthropic-version': '2023-06-01',
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get(url, { headers });
+  }
+
 
 }

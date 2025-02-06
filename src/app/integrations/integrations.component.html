@@ -118,6 +118,24 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </google-integration>
 
+                                <anthropic-integration *ngIf="integrationSelectedName === INT_KEYS.ANTHROPIC"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </anthropic-integration>
+
+                                <groq-integration *ngIf="integrationSelectedName === INT_KEYS.GROQ"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </groq-integration>
+
+                                <cohere-integration *ngIf="integrationSelectedName === INT_KEYS.COHERE"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </cohere-integration>
+
 
                                 <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
                                     [integration]="selectedIntegration"

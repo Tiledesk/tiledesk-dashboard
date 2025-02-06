@@ -23,7 +23,10 @@ export enum INTEGRATIONS_KEYS {
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',
     ZOHO = 'zoho',
-    GOOGLE = 'google'
+    GOOGLE = 'google',
+    ANTHROPIC = 'anthropic',
+    GROQ = 'groq',
+    COHERE = 'cohere'
 }
 
 export enum APPS_TITLE {
@@ -94,12 +97,15 @@ export const INTEGRATIONS_LIST: { [key: string]: { name: string, category: INTEG
 }
 
 export const INTEGRATION_LIST_ARRAY = [
-    { name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo-icon.png",                src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
-    { name: "N8N",              category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.N8N,             src_icon: "assets/img/int/n8n-icon.svg",                    src_logo: "assets/img/int/n8n-logo.png",                    pro: true,  plan: 'Basic'},
-    { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customerio-icon_new.png",         src_logo: "assets/img/int/customerio-logo_new.svg",     pro: true,  plan: 'Premium' },
-    { name: "HubSpot",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",                src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
-    { name: "OpenAI",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",                 src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
-    { name: "Google Gemini",    category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GOOGLE,          src_icon: "assets/img/int/google-gemini-icon.svg",                 src_logo: "assets/img/int/google_gemini_logo.svg",             pro: true,  plan: 'Custom' },
+    { name: "Brevo",                 category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo-icon.png",                  src_logo: "assets/img/int/brevo-logo.png",                pro: true,  plan: 'Premium' },
+    { name: "N8N",                   category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.N8N,             src_icon: "assets/img/int/n8n-icon.svg",                    src_logo: "assets/img/int/n8n-logo.png",                pro: true,  plan: 'Basic'},
+    { name: "Customer.io",           category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customerio-icon_new.png",         src_logo: "assets/img/int/customerio-logo_new.svg",     pro: true,  plan: 'Premium' },
+    { name: "HubSpot",               category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",                src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
+    { name: "OpenAI",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",                 src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
+    { name: "Google Gemini",         category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GOOGLE,          src_icon: "assets/img/int/google-gemini-icon.svg",          src_logo: "assets/img/int/google_gemini_logo.svg",      pro: true,  plan: 'Custom' },
+    { name: "Claude (by Anthropic)", category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/claude-icon.svg",                 src_logo: "assets/img/int/claude_logo.svg",      pro: true,  plan: 'Custom' },
+    { name: "Groq",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GROQ,       src_icon: "assets/img/int/groq-icon.svg",                 src_logo: "assets/img/int/groq_logo.svg",      pro: true,  plan: 'Custom' },
+    { name: "Cohere",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.COHERE,       src_icon: "assets/img/int/cohere_icon.svg",                 src_logo: "assets/img/int/cohere_logo.svg",      pro: true,  plan: 'Custom' },
     { name: "Qapla'",           category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Premium' },
     //{ name: "Active Campaign",  category: INTEGRATIONS_CATEGORIES.COMMUNICATION,    key: INTEGRATIONS_KEYS.ACTIVE_CAMPAIGN, src_icon: "assets/img/int/active-campaign-icon.jpeg",     src_logo: "assets/img/int/active-campaign-logo.png",    pro: true,  plan: 'Premium' },
     //{ name: "Jira",             category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.JIRA,            src_icon: "assets/img/int/jira-icon.png",                 src_logo: "assets/img/int/jira-logo.png",               pro: true,  plan: 'Premium'},
@@ -153,6 +159,36 @@ export class GoogleIntegration extends Integration {
     constructor() {
         super();
         this.name = INTEGRATIONS_KEYS.GOOGLE;
+        this.value = {
+            apikey: null,
+        }
+    }
+}
+
+export class AnthropicIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.ANTHROPIC;
+        this.value = {
+            apikey: null,
+        }
+    }
+}
+
+export class GroqIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.GROQ;
+        this.value = {
+            apikey: null,
+        }
+    }
+}
+
+export class CohereIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.COHERE;
         this.value = {
             apikey: null,
         }

@@ -18,6 +18,9 @@ import { FormsModule } from '@angular/forms';
 import { ExtIntegrationComponent } from './list/ext-integration/ext-integration.component';
 import { N8nIntegrationComponent } from './list/n8n-integration/n8n-integration.component';
 import { GoogleIntegrationComponent } from './list/google-integration/google-integration.component';
+import { AnthropicIntegrationComponent } from './list/anthropic-integration/anthropic-integration.component';
+import { GroqIntegrationComponent } from './list/groq-integration/groq-integration.component';
+import { CohereIntegrationComponent } from './list/cohere-integration/cohere-integration.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -36,7 +39,10 @@ const routes: Routes = [
     QaplaIntegrationComponent,
     ExtIntegrationComponent,
     N8nIntegrationComponent,
-    GoogleIntegrationComponent
+    GoogleIntegrationComponent,
+    AnthropicIntegrationComponent,
+    GroqIntegrationComponent,
+    CohereIntegrationComponent
   ],
   imports: [
     RouterModule.forChild(routes),
