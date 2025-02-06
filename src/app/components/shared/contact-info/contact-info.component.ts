@@ -14,6 +14,7 @@ import { browserRefresh } from 'app/app.component';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { TagsService } from 'app/services/tags.service';
 import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 @Component({
   selector: 'appdashboard-contact-info',
   templateUrl: './contact-info.component.html',
@@ -102,15 +103,13 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', projectUser)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.CURRENT_USER_ROLE = userRole;
-      })
+        this.CURRENT_USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   detectBrowserRefresh() {
