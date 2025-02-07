@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.74-rc2
+- Adds Deepseek integration
+- Adds Ollama integration
+
 ### 2.7.74-rc1
 - Adds Google Gemini integration
 - Adds Claude integration
