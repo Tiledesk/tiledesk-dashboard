@@ -136,6 +136,18 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </cohere-integration>
 
+                                <ollama-integration *ngIf="integrationSelectedName === INT_KEYS.OLLAMA"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </ollama-integration>
+
+                                <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </deepseek-integration>
+
 
                                 <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
                                     [integration]="selectedIntegration"

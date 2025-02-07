@@ -79,7 +79,7 @@ export class CohereIntegrationComponent implements OnInit {
     }
   }
 
-    // ---------------------------------------------------
+  // ---------------------------------------------------
   // Mask Api key without use input of password type
   // ---------------------------------------------------
   handleInput(event: Event): void {
