@@ -622,6 +622,7 @@
     "WhenEnabledAttachments":"Lorsque cette option est activée, les utilisateurs peuvent envoyer des pièces jointes. Lorsqu'elle est désactivée, le bouton de pièce jointe est masqué.",
     "DisableEmoji": "Désactiver les emojis",
     "WhenEnabledEmoji":"Lorsque cette option est activée, les utilisateurs peuvent envoyer des émoticônes. Lorsqu'elle est désactivée, le bouton émoticônes est masqué.",
+    "UploadLogo":"Charger le logo",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

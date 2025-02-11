@@ -625,6 +625,7 @@
     "WhenEnabledAttachments":"Etkinleştirildiğinde, kullanıcılar ekler gönderebilir. Devre dışı bırakıldığında, ek düğmesi gizlenecektir",
     "DisableEmoji": "Emojiyi devre dışı bırak",
     "WhenEnabledEmoji":"Etkinleştirildiğinde, kullanıcılar emoji gönderebilir. Devre dışı bırakıldığında, emoji düğmesi gizlenecektir",
+    "UploadLogo":"Logoyu yükle",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

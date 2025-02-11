@@ -622,6 +622,7 @@
     "WhenEnabledAttachments":"Cuando está habilitado, los usuarios pueden enviar archivos adjuntos. Cuando está deshabilitado, el botón de archivos adjuntos estará oculto.",
     "DisableEmoji": "Desactivar emoji",
     "WhenEnabledEmoji":"Cuando está habilitado, los usuarios pueden enviar emojis. Cuando está deshabilitado, el botón de emojis estará oculto.",
+    "UploadLogo":"Subir logotipo",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

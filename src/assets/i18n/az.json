@@ -623,6 +623,7 @@
     "WhenEnabledAttachments":"Aktivləşdirildikdə, istifadəçilər qoşmalar göndərə bilər. Deaktiv edildikdə, qoşma düyməsi gizlənəcək",
     "DisableEmoji": "Emojiləri söndürün",
     "WhenEnabledEmoji": "Aktivləşdirildikdə, istifadəçilər emoji göndərə bilər. Deaktiv edildikdə, emoji düyməsi gizlənəcək",
+    "UploadLogo":"Loqo yükləyin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

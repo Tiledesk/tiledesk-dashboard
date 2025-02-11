@@ -622,6 +622,7 @@
 	"WhenEnabledAttachments":"Wenn aktiviert, können Benutzer Anhänge senden. Wenn deaktiviert, wird die Schaltfläche für Anhänge ausgeblendet",
 	"DisableEmoji": "Emoji deaktivieren",
 	"WhenEnabledEmoji":"Wenn aktiviert, können Benutzer Emojis senden. Wenn deaktiviert, wird die Emoji-Schaltfläche ausgeblendet",
+	"UploadLogo":"Logo hochladen",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

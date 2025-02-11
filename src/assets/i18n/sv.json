@@ -624,6 +624,7 @@
     "WhenEnabledAttachments":"När det är aktiverat kan användare skicka bilagor. När den är inaktiverad döljs bilagaknappen",
     "DisableEmoji": "Inaktivera emoji",
     "WhenEnabledEmoji":"När det är aktiverat kan användare skicka emoji. När den är inaktiverad döljs emoji-knappen",
+    "UploadLogo":"Ladda upp logotyp",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
