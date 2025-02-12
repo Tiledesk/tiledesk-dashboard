@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.74-rc3
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
 
 ### 2.7.74-rc2
 - Adds Deepseek integration
