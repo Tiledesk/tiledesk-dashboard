@@ -626,6 +626,7 @@
     "DisableEmoji": "Emojiyi devre dışı bırak",
     "WhenEnabledEmoji":"Etkinleştirildiğinde, kullanıcılar emoji gönderebilir. Devre dışı bırakıldığında, emoji düğmesi gizlenecektir",
     "UploadLogo":"Logoyu yükle",
+    "FileTooLarge": "Dosya yüklenemeyecek kadar büyük. Maksimum dosya boyutu {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2059,7 +2060,7 @@
     "UserNotFound": "Kullanıcı bulunamadı",
     "SystemTrigger": "Sistem tetikleyici",
     "CustomTrigger": "Özel tetikleyici",
-    "YourLogoMustBeSmallerThan50kB": "Logonuz 50 KB'den küçük olmalıdır",
+    "YourLogoMustBeSmallerThan50kB": "Logonuz 1024KB'den küçük olmalıdır",
     "TheOptimumImageSizeIs78x78": "Optimum görüntü boyutu 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Saydam bir arka plana sahip bir PNG veya GIF en iyi sonucu verir",
     "HowWorks": "{{ helpdoc }} nasıl çalışır",

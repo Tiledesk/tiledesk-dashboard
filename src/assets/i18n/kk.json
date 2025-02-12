@@ -623,6 +623,7 @@
     "DisableEmoji": "Эмодзиді өшіру",
     "WhenEnabledEmoji":"Қосылған кезде пайдаланушылар эмодзилерді жібере алады. Өшірілген кезде эмодзи түймесі жасырылады",
     "UploadLogo":"Логотипті жүктеп салу",
+    "FileTooLarge": "Файл жүктеп салу үшін тым үлкен. Максималды файл өлшемі {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2057,7 +2058,7 @@
     "UserNotFound": "Пайдаланушы табылмады",
     "SystemTrigger": "Жүйе триггері",
     "CustomTrigger": "Арнаулы триггер",
-    "YourLogoMustBeSmallerThan50kB": "Сіздің логотипіңіз 50 КБ-тан аз болуы керек",
+    "YourLogoMustBeSmallerThan50kB": "Сіздің логотипіңіз 1024KB аз болуы керек",
     "TheOptimumImageSizeIs78x78": "Оңтайлы кескін өлшемі 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Мөлдір фоны бар PNG немесе GIF жақсы жұмыс істейді",
     "HowWorks": "{{ helpdoc }} қалай жұмыс істейді",

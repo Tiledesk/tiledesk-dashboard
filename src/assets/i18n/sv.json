@@ -625,6 +625,7 @@
     "DisableEmoji": "Inaktivera emoji",
     "WhenEnabledEmoji":"När det är aktiverat kan användare skicka emoji. När den är inaktiverad döljs emoji-knappen",
     "UploadLogo":"Ladda upp logotyp",
+    "FileTooLarge": "Filen är för stor för att ladda upp. Max filstorlek {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2059,7 +2060,7 @@
     "UserNotFound": "Användaren hittades inte",
     "SystemTrigger": "Systemutlösare",
     "CustomTrigger": "Anpassad utlösare",
-    "YourLogoMustBeSmallerThan50kB": "Din logotyp måste vara mindre än 50 KB",
+    "YourLogoMustBeSmallerThan50kB": "Din logotyp måste vara mindre än 1024KB",
     "TheOptimumImageSizeIs78x78": "Den optimala bildstorleken är 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "En PNG eller GIF med en genomskinlig bakgrund fungerar bäst",
     "HowWorks": "Hur {{ helpdoc }} fungerar",

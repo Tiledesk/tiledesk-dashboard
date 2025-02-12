@@ -623,6 +623,7 @@
     "DisableEmoji": "تعطيل الرموز التعبيرية",
     "WhenEnabledEmoji":"عند تمكينه، يمكن للمستخدمين إرسال الرموز التعبيرية. عند تعطيله، سيتم إخفاء زر الرموز التعبيرية",
     "UploadLogo":"قم بتحميل شعارك",
+    "FileTooLarge": "الملف كبير جدًا بحيث لا يمكن تحميله. الحد الأقصى لحجم الملف {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2058,7 +2059,7 @@
     "UserNotFound": "المستخدم ليس موجود",
     "SystemTrigger": "مشغل النظام",
     "CustomTrigger": "مشغل مخصص",
-    "YourLogoMustBeSmallerThan50kB": "يجب أن يكون شعارك أصغر من 50 كيلوبايت",
+    "YourLogoMustBeSmallerThan50kB": "يجب أن يكون شعارك أصغر من 1024 كيلو بايت",
     "TheOptimumImageSizeIs78x78": "الحجم الأمثل للصورة هو 78 بكسل × 78 بكسل",
     "PNGorGIFwithTransparentBackgroundWorksBest": "يعمل تنسيق PNG أو GIF بخلفية شفافة بشكل أفضل",
     "HowWorks": "كيف يعمل {{ helpdoc }}",

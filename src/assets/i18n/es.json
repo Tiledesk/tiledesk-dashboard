@@ -623,6 +623,7 @@
     "DisableEmoji": "Desactivar emoji",
     "WhenEnabledEmoji":"Cuando está habilitado, los usuarios pueden enviar emojis. Cuando está deshabilitado, el botón de emojis estará oculto.",
     "UploadLogo":"Subir logotipo",
+    "FileTooLarge": "El archivo es demasiado grande para cargarlo. Tamaño máximo de archivo: {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2057,7 +2058,7 @@
     "UserNotFound": "Usuario no encontrado",
     "SystemTrigger": "Activador del sistema",
     "CustomTrigger": "Activador personalizado",
-    "YourLogoMustBeSmallerThan50kB": "Tu logotipo debe ser menor de 50 KB",
+    "YourLogoMustBeSmallerThan50kB": "Tu logotipo debe ser menor de 1024KB",
     "TheOptimumImageSizeIs78x78": "El tamaño óptimo de la imagen es 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Un PNG o GIF con un fondo transparente funciona mejor",
     "HowWorks": "Cómo funciona {{ helpdoc }}",

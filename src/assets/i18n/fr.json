@@ -623,6 +623,7 @@
     "DisableEmoji": "Désactiver les emojis",
     "WhenEnabledEmoji":"Lorsque cette option est activée, les utilisateurs peuvent envoyer des émoticônes. Lorsqu'elle est désactivée, le bouton émoticônes est masqué.",
     "UploadLogo":"Charger le logo",
+    "FileTooLarge": "Le fichier est trop volumineux pour être téléchargé. Taille maximale du fichier: {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2057,7 +2058,7 @@
     "UserNotFound": "Utilisateur non trouvé",
     "SystemTrigger": "Déclencheur système",
     "CustomTrigger": "Déclencheur personnalisé",
-    "YourLogoMustBeSmallerThan50kB": "Votre logo doit être inférieur à 50 Ko",
+    "YourLogoMustBeSmallerThan50kB": "Votre logo doit être inférieur à 1024KB",
     "TheOptimumImageSizeIs78x78": "La taille d'image optimale est de 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Un PNG ou un GIF avec un fond transparent fonctionne mieux",
     "HowWorks": "Comment fonctionne {{ helpdoc }}",

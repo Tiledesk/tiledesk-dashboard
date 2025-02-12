@@ -626,6 +626,7 @@
     "DisableEmoji": "Вимкнути емодзі",
     "WhenEnabledEmoji":"Якщо ввімкнено, користувачі можуть надсилати емодзі. Якщо вимкнено, кнопка emoji буде прихована",
     "UploadLogo":"Завантажте логотип",
+    "FileTooLarge": "Файл завеликий для завантаження. Максимальний розмір файлу {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2060,7 +2061,7 @@
     "UserNotFound": "Користувач не знайдений",
     "SystemTrigger": "Системний тригер",
     "CustomTrigger": "Спеціальний тригер",
-    "YourLogoMustBeSmallerThan50kB": "Ваш логотип має бути менше 50 КБ",
+    "YourLogoMustBeSmallerThan50kB": "Ваш логотип має бути менше 1024KB",
     "TheOptimumImageSizeIs78x78": "Оптимальний розмір зображення – 78 x 78 пікселів",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Найкраще підходить PNG або GIF з прозорим фоном",
     "HowWorks": "Як працює {{ helpdoc }}",

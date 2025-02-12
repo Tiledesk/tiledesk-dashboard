@@ -625,6 +625,7 @@
     "DisableEmoji": "Онемогући емоџи",
     "WhenEnabledEmoji":"Када је омогућено, корисници могу да шаљу емоџије. Када је онемогућено, дугме емоџија ће бити скривено",
     "UploadLogo":"Отпремите лого",
+    "FileTooLarge": "Датотека је превелика за отпремање. Максимална величина датотеке {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -2059,7 +2060,7 @@
     "UserNotFound": "Корисник није пронађен",
     "SystemTrigger": "Системски окидач",
     "CustomTrigger": "Прилагођени окидач",
-    "YourLogoMustBeSmallerThan50kB": "Ваш логотип мора бити мањи од 50 КБ",
+    "YourLogoMustBeSmallerThan50kB": "Ваш логотип мора бити мањи од 1024KB",
     "TheOptimumImageSizeIs78x78": "Оптимална величина слике је 78 к 78 пиксела",
     "PNGorGIFwithTransparentBackgroundWorksBest": "ПНГ или ГИФ са провидном позадином најбоље функционише",
     "HowWorks": "Како {{ helpdoc }} ради",
