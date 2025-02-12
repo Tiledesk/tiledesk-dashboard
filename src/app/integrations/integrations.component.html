@@ -112,6 +112,42 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </openai-integration>
 
+                                <google-integration *ngIf="integrationSelectedName === INT_KEYS.GOOGLE"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </google-integration>
+
+                                <anthropic-integration *ngIf="integrationSelectedName === INT_KEYS.ANTHROPIC"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </anthropic-integration>
+
+                                <groq-integration *ngIf="integrationSelectedName === INT_KEYS.GROQ"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </groq-integration>
+
+                                <cohere-integration *ngIf="integrationSelectedName === INT_KEYS.COHERE"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </cohere-integration>
+
+                                <ollama-integration *ngIf="integrationSelectedName === INT_KEYS.OLLAMA"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </ollama-integration>
+
+                                <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </deepseek-integration>
+
 
                                 <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
                                     [integration]="selectedIntegration"

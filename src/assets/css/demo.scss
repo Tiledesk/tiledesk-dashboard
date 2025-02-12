@@ -1464,6 +1464,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -1479,10 +1480,15 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
-.custom-swal>.swal-title {
-  color: black;
-  font-weight: 500;
-}
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
+
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
 
 
 
@@ -3750,10 +3756,27 @@ div:where(.swal2-container) .swal2-select {
   border-radius: var(--btn-border-radius);
 }
 
+
 /* Use case KB > Upload CSV 
 /* ************************************* */
 .mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
+}
+
+.mat-dialog-actions > button  {
+  border-radius: var(--btn-border-radius) !important;
+}
+
+// Sleek widget overwrite iframe css
+.i-sl-wrapper {
+  // display: none!important;
+  border-radius: 0px !important;
+  height: 100vh !important;
+}
+
+.i-sl-wrapper.right { 
+  right: 0px !important;
+  top: 0px !important;
 }
 
 /* Graph card
@@ -3904,6 +3927,45 @@ div:where(.swal2-container) .swal2-select {
 .mat-spinner circle {
   stroke: var(--blue-light) !important;
 }
+
+.date-picker-wpr>.analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr {
+  position: relative;
+  top: -2px;
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr>i {
+  font-size: 18px;
+  color: #566787;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.chart-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  height: 375px;
+  justify-content: center;
+}
+
+.chart-loading-spinner > p {
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: var(--blue-light) !important;
+}
+
+
 
 
 .radio>label {

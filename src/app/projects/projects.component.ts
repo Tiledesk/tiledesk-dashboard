@@ -159,6 +159,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
       this.logger.log('[PROJECTS] - GET ROUTE-PARAMS & APPID - params: ', params)
