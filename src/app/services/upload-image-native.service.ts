@@ -255,5 +255,29 @@ export class UploadImageNativeService {
   
     }
 
+    deleteUploadAttachment_Native(path) {
+     
+     console.log('[NATIVE UPLOAD] - delete image path ',path)
+      const headers = new HttpHeaders({
+          Authorization: this.TOKEN,
+          //'Content-Type': 'multipart/form-data',
+      });
+      const requestOptions = { headers: headers };
+
+      //USE IMAGE API
+      const that = this;
+      const url = this.BASE_URL + 'images' + '/users' + '?path=' + path.split('path=')[1]
+      return new Promise((resolve, reject) => {
+          that._httpClient.delete(url, requestOptions).subscribe(data => {
+            console.log('deleteUploadAttachment_Native data' , data) 
+              // const downloadURL = this.URL_TILEDESK_IMAGES + '?path=' + data['filename'];
+              resolve(true)
+              // that.BSStateUpload.next({upload: upload});
+          }, (error) => {
+              reject(error)
+          });
+      });
+    }
+
 
 }

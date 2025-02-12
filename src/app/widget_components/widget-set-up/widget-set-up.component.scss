@@ -665,7 +665,8 @@ input[type="text"]:disabled {
 
 .display-logo-switch-and-logourl-wpr {
   display: flex;
-  width: 100%;
+  // width: 100%;
+  margin-left: 15px;
 }
 
 .display-logo-switch-wpr {
@@ -2216,7 +2217,7 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: var(--header-font-family); 
+  font-family: var(--header-font-family);
   font-weight: 500 !important;
 }
 
@@ -3204,6 +3205,93 @@ pre {
   font-weight: 400;
   padding: 3px 6px;
   border-radius: var(--badge-border-radius);
+}
+
+.upload-widget-logo-image {
+  display: grid;
+  place-items: center;
+  position: relative;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: rgb(245, 247, 249);
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.upload-widget-logo-image-container {
+  display: grid; 
+  place-items: center;
+  position: absolute;
+  inset: 0px;
+}
+
+.upload-widget-logo-image-container > svg {
+  fill: var(--icon-color);
+}
+
+.upload-widget-logo-image-container:not(.upload-logo-disabled):hover > svg {
+  fill: var(--icon-hover-color);
+}
+.upload-widget-logo-image-container.upload-logo-disabled {
+  cursor: not-allowed;
+}
+
+.widget-logo-image-uploaded-background-div {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: 0px;
+  background-position: center center;
+  background-size: contain, 24px;
+  background-repeat: no-repeat, repeat;
+  margin: 1px;
+}
+
+.delete-widget-logo-btn-wpr {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  position: absolute;
+  inset: 0px;
+  border-radius: 3px;
+}
+
+.widget-logo-image-uploaded-background-div:hover>.delete-widget-logo-btn-wpr {
+  background-color: rgba(100, 116, 145, 0.24);
+}
+
+.widget-logo-image-uploaded-background-div:hover>.delete-widget-logo-btn-wpr>.delete-widget-logo-image {
+  opacity: 1;
+}
+
+.widget-logo-image-uploaded-background-div:hover>.delete-widget-logo-btn-wpr>.delete-widget-logo-image > svg{ 
+  fill: var(--icon-color);
+}
+
+.widget-logo-image-uploaded-background-div>.delete-widget-logo-btn-wpr>.delete-widget-logo-image:hover > svg{ 
+  fill: #e81332;
+}
+
+.delete-widget-logo-image {
+  cursor: pointer;
+  opacity: 0;
+  width: 24px;
+  height: 24px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  padding: 0px;
+  border: none;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+
 }
 
 // .delete-custom-launcher-logo:hover {

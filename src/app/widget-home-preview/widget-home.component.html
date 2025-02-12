@@ -25,13 +25,14 @@
                   </button>
                 </div>
               </div>
-
+              <!-- logoUrl {{ logoUrl }} -->
               <div class="c21-header-content" style="margin: 39px 0px;
               width: auto;
               height: 97px;
               display: flex;
               align-items: stretch">
-                <div class="c21-logo" *ngIf="LOGO_IS_ON === true" style="position: relative;
+            <!-- LOGO_IS_ON === true &&  -->
+                <div class="c21-logo" *ngIf="logoUrl !== 'No Logo'" style="position: relative;
                 padding: 0;
                 margin: 0;
                 height: 70px;
@@ -40,9 +41,11 @@
                   <!-- <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
                     src="https://tiledesk.com/tiledesk-logo-white.png/"> -->
                     <!-- height: 55px; width: auto;margin-bottom: 20px; -->
-                  <img *ngIf="!hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="logo"
+                  <!-- <img *ngIf="!hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="logo"
                     [src]="widgetLogoURL ">
                   <img *ngIf="hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="myLogo"
+                    [src]="logoUrl"> -->
+                  <img style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="my-logo"
                     [src]="logoUrl">
                 </div>
 
