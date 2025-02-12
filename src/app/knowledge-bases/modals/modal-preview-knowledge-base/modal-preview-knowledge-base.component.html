@@ -1,4 +1,4 @@
-<div class="m-header">
+<div class="m-header"  (click)="handleClickInside($event)">
   <h1 mat-dialog-title> {{ 'Preview' | translate }} </h1>
   <div class="m-top-right-icon" >
 
@@ -19,7 +19,7 @@
   </div>
   
 </div>
-<div mat-dialog-content>
+<div mat-dialog-content (click)="handleClickInside($event)">
 
   <div class="form--container">
     <p class="answer-title">{{ 'FaqPage.Question' | translate }}</p>
@@ -92,7 +92,7 @@
 
 </div>
 
-<div mat-dialog-actions style="justify-content: center;">
+<div mat-dialog-actions style="justify-content: center;" (click)="handleClickInside($event)">
  
 
   <button class="mat-dialog-reuse-last-question-btn" mat-button
