@@ -5597,7 +5597,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log(`[WS-REQUESTS-MSGS] - Remove Attachment pushUploadSegment`, pushUploadSegment);
     const fileUID = pushUploadSegment[3];
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      this.uploadImageService.removeUpladedAttachment(this.currentUserID, fileUID, filename)
+      this.uploadImageService.removeUploadedAttachment(this.currentUserID, fileUID, filename)
     }
 
   }
