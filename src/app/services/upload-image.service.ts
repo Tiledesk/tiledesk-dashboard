@@ -435,11 +435,11 @@ export class UploadImageService {
   
     return ref.delete()
       .then(() => {
-        console.log('[FIREBASEUploadSERVICE] File deleted successfully');
+        // console.log('[FIREBASEUploadSERVICE] File deleted successfully');
         return true;  // ✅ Ensure success returns true
       })
       .catch((error) => {
-        console.error('[FIREBASEUploadSERVICE] Error deleting file:', error);
+        // console.error('[FIREBASEUploadSERVICE] Error deleting file:', error);
         return false; // ✅ Ensure failure returns false
       });
   }

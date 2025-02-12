@@ -137,9 +137,9 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     //  console.log('[WIDGET HOME COMP] - imageStorage  ', this.imageStorage)
 
     // console.log('[WIDGET HOME COMP] - imageUrl  ', this.imageUrl)
-    console.log('[WIDGET HOME COMP] - logoUrl  1 ', this.logoUrl)
+    // console.log('[WIDGET HOME COMP] - logoUrl  1 ', this.logoUrl)
     
-    //  console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
+    // console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
     // console.log('[WIDGET HOME COMP] - user  ', this.user  )
     this.createProjectUserAvatar(this.user)
 
