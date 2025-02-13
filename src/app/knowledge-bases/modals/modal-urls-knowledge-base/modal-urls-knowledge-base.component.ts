@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { BrandService } from 'app/services/brand.service';
 
 
 @Component({
@@ -51,21 +52,37 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   // selectedRefreshRate = 0;
   selectedRefreshRate: any;
   isAvailableRefreshRateFeature: boolean;
+  refreshRateIsEnabled : boolean;
+  id_project: string;
+  project_name : string;
+  payIsVisible:  boolean;
   t_params: any;
+  salesEmail: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
     private logger: LoggerService,
+    public brandService: BrandService,
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     console.log("[MODALS-URLS] data: ", data);
     if (data ) {
-      this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
-      this.t_params = data.t_params
+      this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature;
+      this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
+      this.t_params = data.t_params;
+      this.id_project = data.id_project;
+      this.project_name = data.project_name;
+      this.payIsVisible =  data.payIsVisible;
       console.log("[MODALS-URLS] data > t_params: ", this.t_params);
       console.log("[MODALS-URLS] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+      console.log("[MODALS-URLS] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
+      console.log("[MODALS-URLS] data > id_project: ", this.id_project);
+      console.log("[MODALS-URLS] data > project_name: ", this.project_name);
+      console.log("[MODALS-URLS] data > payIsVisible: ", this.payIsVisible);
     } 
+    const brand = brandService.getBrand();
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   /** */
@@ -191,5 +208,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     this.countSitemap = 0;
     this.dialogRef.close();
     // this.closeBaseModal.emit();
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 }

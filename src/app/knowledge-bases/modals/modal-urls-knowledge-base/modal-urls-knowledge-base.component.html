@@ -150,7 +150,7 @@
                 [clearable]="false" [searchable]="false" 
                 [(ngModel)]="selectedRefreshRate"
                 (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                [disabled]="!isAvailableRefreshRateFeature" >
+                [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible" >
             </ng-select>
 
             <span class="input-label input-label-on-bottom">
@@ -174,6 +174,15 @@
                 </span>
             </button>
         </div>
+
+        <ng-container *ngIf="payIsVisible">
+            <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
+                <div class="contact-sales-to-enable-feature"> 
+                    This feature is beta. 
+                    <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> Contact us to enable it </div> 
+                </div>
+            </div>
+        </ng-container>
     </div>
 
     <div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">

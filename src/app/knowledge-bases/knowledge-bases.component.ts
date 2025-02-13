@@ -91,6 +91,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   id_project: string;
 
 
+
   profile_name: string;
 
   isAvailableRefreshRateFeature: boolean;
@@ -188,6 +189,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasCickedAiSettingsModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
+  refreshRateIsEnabled: boolean
 
   constructor(
     private auth: AuthService,
@@ -338,12 +340,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
       const isActiveSubscription = project.isActiveSubscription
       const trialExpired = project.trialExpired
       const projectProfileType = project.profile.type
-      this.manageRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
+      this.managePlanRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
+      const projectProfile = project.profile
+      this.getIfRefreshRateIsEnabledInCustomization(projectProfile)
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - isActiveSubscription: ', isActiveSubscription);
     }, error => {
@@ -367,12 +371,40 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
   }
 
-  manageRefreshRateAvailability(profileName, isActiveSubscription, trialExpired, projectProfileType) {
-    this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - profile_name: ', profileName);
-    this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
-    this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', trialExpired);
-    this.logger.log('[KNOWLEDGE-BASES-COMP] - manageRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
-    this.t_params = { 'plan_name': PLAN_NAME.E }
+  getIfRefreshRateIsEnabledInCustomization(projectProfile) {
+    console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
+    if (projectProfile && projectProfile['customization']) {
+
+      if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] !== undefined) {
+
+        if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] === true) {
+
+          this.refreshRateIsEnabled = true
+          console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 1: ', this.refreshRateIsEnabled);
+
+        } else if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] === false) {
+
+          this.refreshRateIsEnabled = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 2: ', this.refreshRateIsEnabled);
+        }
+
+      } else {
+        this.refreshRateIsEnabled = false
+        console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 3: ', this.refreshRateIsEnabled);
+      }
+
+    } else {
+      this.refreshRateIsEnabled = false
+      console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 4: ', this.refreshRateIsEnabled);
+    }
+  }
+
+  managePlanRefreshRateAvailability(profileName, isActiveSubscription, trialExpired, projectProfileType) {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - profile_name: ', profileName);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', trialExpired);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
+    this.t_params = { 'plan_name': PLAN_NAME.EE }
     if (projectProfileType === 'free') {
       if (trialExpired === false) {
         // Trial active
@@ -429,7 +461,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           // Premium sub active
         } else if (profileName === PLAN_NAME.E) {
-          this.isAvailableRefreshRateFeature = true;
+          this.isAvailableRefreshRateFeature = false;
           this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
           // Team sub active
@@ -585,10 +617,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace nameSpaceId != 0 USE CASE  namespace not found', this.selectedNamespace);
           if (this.selectedNamespace) {
             this.selectedNamespaceName = this.selectedNamespace.name
-  
+
             this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
             this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
-  
+
             this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
             this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
             this.getChatbotUsingNamespace(this.selectedNamespace.id)
@@ -1604,7 +1636,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       width: '600px',
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-        t_params: this.t_params
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name:  this.project_name,
+        payIsVisible: this.payIsVisible
       },
     });
     dialogRef.afterClosed().subscribe(body => {
