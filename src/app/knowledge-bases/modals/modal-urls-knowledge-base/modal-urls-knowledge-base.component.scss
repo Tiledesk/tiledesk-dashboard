@@ -404,13 +404,20 @@ mat-expansion-panel ::ng-deep {
 
 .contact-sales-to-enable-feature {
     text-align: center;
+    font-size: 12px;
+    font-weight: 400;
 }
 
 .contact-sales-to-enable-feature > div{
     cursor: pointer;
-    color: var(--blue-20)
+    color:  var(--blue-20); //#2196f3;
+    padding: 0 4px;
+    border-radius: 4px;
+    max-width: fit-content;
+    margin: auto;
 }
 
 .contact-sales-to-enable-feature > div:hover {
-    text-decoration: underline;
+    // text-decoration: underline;
+    background-color: var(--only-text-btn-hover-background); // rgba( 55, 143, 233, 0.1) 
 }
