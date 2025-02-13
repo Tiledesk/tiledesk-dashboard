@@ -415,7 +415,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         } else if (profileName === 'Sandbox') {
 
-          this.isAvailableRefreshRateFeature = true;
+          this.isAvailableRefreshRateFeature = false;
           this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
 
         }
@@ -1666,7 +1666,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       width: '600px',
       data: {
         isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
-        t_params: this.t_params
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name:  this.project_name,
+        payIsVisible: this.payIsVisible
       },
     });
     dialogRef.afterClosed().subscribe(body => {

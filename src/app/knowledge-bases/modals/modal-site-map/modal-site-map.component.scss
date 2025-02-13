@@ -385,3 +385,16 @@ mat-expansion-panel ::ng-deep {
     color: var(--btn-get-feature-color); 
     font-size: 21px;
 }
+
+.contact-sales-to-enable-feature {
+    text-align: center;
+}
+
+.contact-sales-to-enable-feature > div{
+    cursor: pointer;
+    color: var(--blue-20)
+}
+
+.contact-sales-to-enable-feature > div:hover {
+    text-decoration: underline;
+}

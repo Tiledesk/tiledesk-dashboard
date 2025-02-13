@@ -63,7 +63,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalUrlsKnowledgeBaseComponent>,
     private logger: LoggerService,
-    public brandService: BrandService,
+    public brandService: BrandService
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
     console.log("[MODALS-URLS] data: ", data);

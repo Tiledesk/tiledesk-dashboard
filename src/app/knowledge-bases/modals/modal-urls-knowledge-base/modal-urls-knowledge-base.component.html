@@ -175,11 +175,16 @@
             </button>
         </div>
 
+        <!-- refreshRateIsEnabled  {{refreshRateIsEnabled }}  -->
         <ng-container *ngIf="payIsVisible">
             <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
                 <div class="contact-sales-to-enable-feature"> 
-                    This feature is beta. 
-                    <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> Contact us to enable it </div> 
+                    <!-- This feature is in beta.  -->
+                    {{'ThisFeatureIsInBeta' | translate}}.
+                    <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> 
+                        <!-- Contact us to enable it  -->
+                        {{'ContactUsToEnableIt' | translate}}
+                    </div> 
                 </div>
             </div>
         </ng-container>
