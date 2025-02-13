@@ -1,4 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
+
 input[type="text"] {
     // min-width: 307px !important;
     height: 36px;
@@ -81,7 +82,7 @@ input[type="email"].invalid-email {
     margin-bottom: 0px;
     height: 40px !important;
     position: relative;
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
     height: 30px;
     font-size: 16px;
     margin-top: 10px;
@@ -92,7 +93,7 @@ input[type="email"].invalid-email {
     top: 0;
     left: 0;
     bottom: -1px;
-    border-bottom: 2px solid $brand-primary;
+    border-bottom: 2px solid var(--blue-20);
     z-index: 2;
 }
 
@@ -117,4 +118,16 @@ input[type="email"].invalid-email {
     // box-shadow: unset !important;
 }
 
+#smtp-show-password-btn {
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+    padding-top: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: var(--blue-20)!important;
+    box-shadow: unset;
+}
 
+#smtp-show-password-btn:hover {
+    background-color: var(--blue-40)!important;
+}

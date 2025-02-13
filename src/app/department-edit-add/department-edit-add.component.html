@@ -102,9 +102,8 @@
 
                   <div class="row">
                     <div class="col-xs-12">
-                      <div class="alert"
-                        style="background-color: #d9edf7;border:1px solid; border-color: #bce8f1;color: #31708f; box-shadow: none;">
-                        <i style="vertical-align: middle; display: inline-flex; color:#00bcd4"
+                      <div class="alert dd-info-alert" style="">
+                        <i style=""
                           class="material-icons">info
                         </i>
                         <span style="vertical-align: middle; display: inline-flex;">
@@ -205,11 +204,10 @@
                         <!-- ------------------------------------------------------------------- -->
                         <!-- Create a new bot link -->
                         <!-- ------------------------------------------------------------------- -->
-                        <span
-                          style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                        <span class="create-new-bot-wpr">
                           {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
                           <!-- openCreateBotRightSideBar() -->
-                          <span style="color: #03a5e8; cursor:pointer;" (click)="goTo_BotEditAddPage_CREATE()">
+                          <span class="create-new-bot-btn" (click)="goTo_BotEditAddPage_CREATE()">
 
                             {{ "DeptsAddEditPage.orCreateABot" | translate }}
                           </span>
@@ -450,10 +448,9 @@
                           <!-- ------------------------------------------------------------------- -->
                           <!-- Create a new group link -->
                           <!-- ------------------------------------------------------------------- -->
-                          <span *ngIf="isVisibleGroups"
-                            style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
+                          <span class="create-new-group-wpr" *ngIf="isVisibleGroups">
                             {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                            <span style="color: #03a5e8; cursor:pointer;" (click)="openCreateGroupRightSideBar()">
+                            <span  class="create-new-group-btn" (click)="openCreateGroupRightSideBar()">
 
                               {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
                             </span>
@@ -504,7 +501,8 @@
                   <div class="col-sm-12">
 
                     <span *ngIf="has_selected_bot === true">
-                      <button class="btn btn-primary update-dept-btn" (click)="edit()"
+                      <!-- btn-primary  -->
+                      <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
                         [disabled]="BOT_NOT_SELECTED === true">
                         <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                         {{ "DeptsAddEditPage.UpdateDept" | translate }}
@@ -516,7 +514,7 @@
                     </span>
 
                     <span *ngIf="has_selected_bot !== true">
-                      <button class="btn btn-primary update-dept-btn" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
+                      <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                         <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
                         {{ "DeptsAddEditPage.UpdateDept" | translate }}
                         <!-- </span> -->

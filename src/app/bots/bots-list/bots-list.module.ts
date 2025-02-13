@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChatbotAlertComponent } from './chatbot-alert/chatbot-alert.component';
 import { ChatbotAlertModule } from './chatbot-alert/chatbot-alert.module';
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
   { path: "", component: BotListComponent},
@@ -34,7 +35,8 @@ const routes: Routes = [
     MatButtonModule,
     MatMenuModule,
     FormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    SatPopoverModule
   ]
 })
 export class BotsListModule { }

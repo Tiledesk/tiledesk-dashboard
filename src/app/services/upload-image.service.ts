@@ -414,7 +414,7 @@ export class UploadImageService {
     })
   }
   // /public/images/608ad02d3a4dc000344ade17/3ea5c718-3b1c-4be9-b8f9-2daf19aeeb9a/gundam.png
-  removeUpladedAttachment(currentUserID, fileUID, filename) {
+  removeUploadedAttachment(currentUserID, fileUID, filename) {
     const storageRef = firebase.storage().ref();
     var ref = storageRef.child('/public/images/' + currentUserID + '/' + fileUID + '/' + filename);
 
@@ -427,6 +427,21 @@ export class UploadImageService {
       // console.log('[FIREBASEUploadSERVICE]  Uh-oh, an error occurred! ', error);
       this.attachmentDeleted$.next(false)
     });
+  }
+
+  removeUploadedAttachmentPromise(currentUserID: string, fileUID: string, filename: string): Promise<boolean> {
+    const storageRef = firebase.storage().ref();
+    const ref = storageRef.child(`/public/images/${currentUserID}/${fileUID}/${filename}`);
+  
+    return ref.delete()
+      .then(() => {
+        // console.log('[FIREBASEUploadSERVICE] File deleted successfully');
+        return true;  // ✅ Ensure success returns true
+      })
+      .catch((error) => {
+        // console.error('[FIREBASEUploadSERVICE] Error deleting file:', error);
+        return false; // ✅ Ensure failure returns false
+      });
   }
 
 }

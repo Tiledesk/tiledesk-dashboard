@@ -169,6 +169,7 @@
 .cl-card-item-name-wpr {
   display: flex;
   flex-direction: row;
+  max-width: 450px;
 }
 
 .cl-card-item-name {
@@ -182,6 +183,7 @@
   word-wrap: normal;
   font-family: var(--header-font-family);
   color: var(--text-color);
+  
 }
 
 .cl-card-item-description-wpr {

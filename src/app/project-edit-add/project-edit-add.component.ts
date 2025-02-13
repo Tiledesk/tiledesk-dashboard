@@ -28,6 +28,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
 import { CacheService } from 'app/services/cache.service';
+import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
@@ -428,17 +429,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+        if(projectUser.role) {
+          this.USER_ROLE = projectUser.role
         }
-      });
+      }
+    });
   }
 
   translateStrings() {
@@ -1113,7 +1111,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
       icon: "info",
@@ -1293,6 +1291,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       //  this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
@@ -2955,7 +2954,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   updateAdvancedSettings() {
     // if (this.advancedSettingBtnDisabled) {}
-    const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
+    const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn-edit-smart-assigment');
     this.logger.log('[PRJCT-EDIT-ADD]  - UPDATE ADVANCED SETTINGS BTN ', updateAdvancedSettingBtn)
     updateAdvancedSettingBtn.blur();
     this.logger.log('[PRJCT-EDIT-ADD] - UPDATE ADVANCED SETTINGS - max_agent_assigned_chat ', this.max_agent_assigned_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
@@ -3245,7 +3244,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         showCancelButton: true,
         confirmButtonText: this.upgradePlan,
         cancelButtonText: this.cancel,
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: true,
         reverseButtons: true,
 

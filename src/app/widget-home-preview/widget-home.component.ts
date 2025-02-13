@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BrandService } from 'app/services/brand.service';
+import { avatarPlaceholder, getColorBck } from 'app/utils/util';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   @Input() waitingTimeNotFoundMsg: string;
   @Input() waitingTimeFoundMsg: string;
   @Input() currentUserId: string;
+  @Input() user: string;
   @Input() UPLOAD_ENGINE_IS_FIREBASE: boolean;
   @Input() imageUrl: string;
   @Input() newConversation: string;
@@ -48,6 +50,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   public footerImageHref: string
   public footerImageWidth: string
   public footerPoweredByString: string
+  public hasProfilePhoto:boolean;
 
   @Input() hasOwnLauncherBtn: boolean;
   @Input() hasOwnLauncherLogo: boolean;
@@ -91,6 +94,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     const extension = segments[segments.length - 1];
     return extension.toLowerCase(); // Convert to lowercase for consistency
   }
+
   ngOnInit() {
     this.colorBck = '#000000';
     // card-header-left
@@ -98,21 +102,66 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
 
   }
 
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image()
+    imageData.onload = function () {
+      callBack(true)
+    }
+    imageData.onerror = function () {
+      callBack(false)
+    }
+    imageData.src = imageUrl
+  }
+
+    createProjectUserAvatar(user) {
+      // console.log('[WIDGET HOME COMP] - createProjectUserAvatar ', user)
+      let fullname = ''
+      if (user && user.firstname && user.lastname) {
+        fullname = user.firstname + ' ' + user.lastname
+        user['fullname_initial'] = avatarPlaceholder(fullname)
+        user['fillColour'] = getColorBck(fullname)
+      } else if (user && user.firstname) {
+        fullname = user.firstname
+        user['fullname_initial'] = avatarPlaceholder(fullname)
+        user['fillColour'] = getColorBck(fullname)
+      } else {
+        user['fullname_initial'] = 'N/A'
+        user['fillColour'] = 'rgb(98, 100, 167)'
+      }
+    }
+
   ngOnChanges() {
     //  console.log('[WIDGET HOME COMP] - hasOwnLauncherBtn  ', this.hasOwnLauncherBtn)
     //  console.log('[WIDGET HOME COMP] - hasOwnLauncherLogo  ', this.hasOwnLauncherLogo)
     //  console.log('[WIDGET HOME COMP] - id_project  ', this.id_project)
     //  console.log('[WIDGET HOME COMP] - imageStorage  ', this.imageStorage)
 
-    //  console.log('[WIDGET HOME COMP] - imageUrl  ', this.imageUrl)
-    //  console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
-
+    // console.log('[WIDGET HOME COMP] - imageUrl  ', this.imageUrl)
+    // console.log('[WIDGET HOME COMP] - logoUrl  1 ', this.logoUrl)
+    
+    // console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
+    // console.log('[WIDGET HOME COMP] - user  ', this.user  )
+    this.createProjectUserAvatar(this.user)
 
     if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
       this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageStorage + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+
     } else {
       this.userProfileImageurl = this.imageStorage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
     }
+
+    this.checkImageExists(this.userProfileImageurl, (existsImage) => {
+      if (existsImage == true) {
+        
+        this.hasProfilePhoto = existsImage
+        // console.log('[USERS] - IMAGE EXIST ',  this.hasProfilePhoto)
+        // projectuser.hasImage = true
+      } else {
+        this.hasProfilePhoto = existsImage
+        // console.log('[USERS] - IMAGE EXIST ',  this.hasProfilePhoto)
+        // projectuser.hasImage = false
+      }
+    })
 
     // console.log('footerBrand  ', this.footerBrand)
     // console.log('prjct_profile_type  ', this.prjct_profile_type)

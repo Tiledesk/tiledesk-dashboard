@@ -375,16 +375,16 @@
             <label class="i-accept-label" for="terms">
               <!-- {{ "iAgree" | translate }} -->
               {{ "IAccept" | translate }}
-              <a *ngIf="display_terms_and_conditions_link" style="color: #03a5e8" target="_blank"
+              <a *ngIf="display_terms_and_conditions_link"  target="_blank"
                 [href]="terms_and_conditions_url">
                 {{ "TermsAndConditions" | translate }}<span *ngIf="display_dpa" style="color: #aaa;">, </span>
               </a>
-              <a *ngIf="display_dpa" style="color: #03a5e8" target="_blank"
+              <a *ngIf="display_dpa" target="_blank"
               [href]="dpa_url">
                 DPA
              </a>
               <span *ngIf="display_terms_and_conditions_link"> {{ "And" | translate }} </span>
-              <a style="color: #03a5e8" target="_blank" [href]="privacy_policy_url">
+              <a  target="_blank" [href]="privacy_policy_url">
                 {{ privacy_policy_link_text }}
               </a>
               <!-- [checked]="checkModel" -->
@@ -420,8 +420,8 @@
 
             <div class="signup-subtitle" *ngIf="!appSumoActivationEmail">
               {{ "AlreadyHaveAnAccount" | translate }}
-              <span class="auth-link-button-signup" (click)="goToSigninPage()">
-                Login
+              <span class="auth-link-button-signin" (click)="goToSigninPage()">
+                {{ 'SignIn' | translate}}
               </span>
             </div>
 

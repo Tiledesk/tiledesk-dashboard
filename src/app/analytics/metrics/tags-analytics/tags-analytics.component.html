@@ -1,10 +1,10 @@
 <div class="row" style="text-align: center; margin-top:35px">
     <div class="col-md-12">
-      <h4 class="section-title">
-        {{ 'Analytics.ConversationsTags' | translate }}
-      </h4>
+        <h4 class="section-title">
+            {{ 'Analytics.ConversationsTags' | translate }}
+        </h4>
     </div>
-  </div>
+</div>
 
 <div class="row" style="text-align: center; margin-top:6px">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -22,12 +22,14 @@
                 <div class="graph-options">
                     <div class="analytics-date-range-filter-wpr">
                         <div class="analytics-date-range-filter-label">
-                            {{ 'Analytics.FilterReport' | translate }}
+                            <!-- {{ 'Analytics.FilterReport' | translate }} -->
+                            {{ 'Analytics.FilterByTheLastNDays' | translate }}
+
                         </div>
 
                         <div class="analytics-date-range-filter-select">
                             <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false"
-                                (change)="daysSelect(selectedDaysId)">
+                                (change)="daysSelect(selectedDaysId)" placeholder="{{'SelectAnOption' | translate }}">
                                 <ng-option [value]="7">
                                     {{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' |translate}}
                                 </ng-option>
@@ -37,9 +39,9 @@
                                 <ng-option [value]="30">
                                     {{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}
                                 </ng-option>
-                                <ng-option [value]="90">
+                                <!-- <ng-option [value]="90">
                                     {{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' |translate}}
-                                </ng-option>
+                                </ng-option> -->
                                 <!-- <ng-option [value]="180">
                                     {{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}
                                 </ng-option>
@@ -50,6 +52,50 @@
 
                         </div>
                     </div>
+                   
+
+                    <!-- ------------------------------- -->
+                    <!-- Date Picker -->
+                    <!-- ------------------------------- -->
+                    <div class="date-picker-wpr">
+
+                        <div class="analytics-options-label">
+                            {{ 'Analytics.FilterByCustomRange' | translate}} 
+                            <span  class="info-icon-wpr"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{ 'Analytics.MaxRange30Days' | translate}}"
+                                #tooltip="matTooltip" 
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100"> 
+                                <i class="material-icons"> help_outline </i>
+                            </span>
+                        </div>
+
+                        <div class="analytics-date-picker">
+                            <mat-form-field class="tags-analytics-date-range-picker" appearance="standard">
+                                <!-- <mat-label>Select a date range</mat-label> -->
+                                <mat-date-range-input [rangePicker]="picker" [min]="minEndDate" [max]="maxEndDate">
+                                    <input matStartDate placeholder="{{'StartDate' | translate}}" [(ngModel)]="startDate"
+                                        (dateChange)="onSelectStartDate($event.value)">
+                                    <input matEndDate placeholder="{{'EndDate' | translate}}" [(ngModel)]="endDate"
+                                        (dateChange)="onSelectEndDate($event.value)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <div class="analytics-label-on-bottom">
+                            {{ 'Analytics.MaxRange30Days' | translate}}
+                        </div> -->
+                    </div>
+
+                    <!-- ------------------------------- -->
+                    <!-- Graph Type -->
+                    <!-- ------------------------------- -->
                     <div class="graph-type-options-wpr">
                         <div class="analytics-options-label">
                             {{ 'Analytics.GraphType' | translate}}
@@ -62,12 +108,9 @@
                                 <div class="graph-type-select-btn-wrp">
 
                                     <!-- Stacked columns -->
-                                    <button class="graph-type-select-btn"
-                                        matTooltipClass="custom-mat-tooltip" 
-                                        matTooltip="{{'Analytics.StackedColumns' | translate}}" 
-                                        #tooltip="matTooltip"
-                                        matTooltipPosition='below' 
-                                        matTooltipHideDelay="100"
+                                    <button class="graph-type-select-btn" matTooltipClass="custom-mat-tooltip"
+                                        matTooltip="{{'Analytics.StackedColumns' | translate}}" #tooltip="matTooltip"
+                                        matTooltipPosition='below' matTooltipHideDelay="100"
                                         (click)="onSelectStackedColmunsGraphType(true)"
                                         [ngClass]="{'active-column-graph': chartStackedColumns}">
 
@@ -92,12 +135,9 @@
                                 <div class="graph-type-btn-wrp">
 
                                     <!-- Basic columns -->
-                                    <button class="graph-type-select-btn"
-                                        matTooltipClass="custom-mat-tooltip" 
-                                        matTooltip="{{'Analytics.BasicColumns' | translate}}" 
-                                        #tooltip="matTooltip"
-                                        matTooltipPosition='below' 
-                                        matTooltipHideDelay="100"
+                                    <button class="graph-type-select-btn" matTooltipClass="custom-mat-tooltip"
+                                        matTooltip="{{'Analytics.BasicColumns' | translate}}" #tooltip="matTooltip"
+                                        matTooltipPosition='below' matTooltipHideDelay="100"
                                         (click)="onSelectBasicColmunsGraphType(true)"
                                         [ngClass]="{'active-column-graph': chartBasicColumns}">
 
@@ -114,8 +154,17 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <div class="card-content" style=" margin:0px auto; padding-top: 0px;padding-bottom: 10px;">
+           
+                <div *ngIf="isLoading" class="chart-loading-spinner">
+                    <!-- <mat-spinner></mat-spinner> -->
+                    <loading-spinner></loading-spinner>
+                    <p>{{ 'Processing' | translate}}</p>
+                </div>
+              
+                <div *ngIf="!isLoading" class="card-content"
+                    style=" margin:0px auto; padding-top: 0px;padding-bottom: 10px;">
                     <div id="chart" *ngIf='chartOptions'>
                         <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
                             [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
@@ -124,12 +173,7 @@
                             [legend]="chartOptions.legend">
                         </apx-chart>
                     </div>
-
-
                 </div>
-                <!-- <div class="card-footer request_count_footer" style="font-size: 14px">
-                        {{ "Analytics.ResponseDurationtime" | translate}} {{responseDurationtime}}
-                    </div> -->
             </div>
         </div>
     </div>

@@ -113,13 +113,6 @@
   pointer-events: none;
 }
 
-.is-active svg path,
-.is-active svg ellipse{
-  height: 40px;
-  // background-color: #3ea9f5;
-  fill: var(--sidebar-active-icon) !important;
-  pointer-events: none;
-}
 
 div.item-active > a  {
   background-color: var(--sidebar-bckgrnd-item-hover);
@@ -127,6 +120,12 @@ div.item-active > a  {
 
 div.is-active > a  {
   background-color: var(--sidebar-bckgrnd-item-hover);
+}
+
+div.is-active a span svg path {
+  height: 40px;
+  fill: var(--sidebar-active-icon) !important;
+  pointer-events: none;
 }
 
 svg path,

@@ -24,7 +24,6 @@
       <!-- <a class="navbar-brand" href="#">Testina</a> -->
     </div>
     <div class="collapse navbar-collapse">
-     
 
       <ul class="nav navbar-nav navbar-right">
         <!-- <li>
@@ -50,114 +49,6 @@
           </a>
         </li> -->
 
-
-        <!--  ------------------------------------------------ -->
-        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
-        <!--  ------------------------------------------------ -->
-        <!-- *ngIf="isVisiblePay" -->
-        <ng-container >
-          <li
-            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
-            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
-            <a>
-              <!--  ------------------------------------------------ -->
-              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
-              <!--  ------------------------------------------------ -->
-              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
-                (click)="openModalSubsExpired()" class="expired__Tooltip">
-                <i class="material-icons"
-                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
-                  error_outline
-                </i>
-                <span class="expired__Tooltiptext"
-                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-
-                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
-                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
-                  </span>
-                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
-                    {{ 'Pricing.ThePlanHasExpired' | translate }}
-                  </span>
-                </span>
-              </span>
-            </a>
-          </li>
-        </ng-container>
-
-        <!-- ------------------------------------------------  -->
-        <!--  UPGRADE (PROFILE TYPE = FREE) -->
-        <!-- ------------------------------------------------  -->
-        <ng-container *ngIf="isVisiblePay">
-          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
-
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
-              <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
-                <span class="progress-left">
-                  <span class="progress-bar"
-                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                </span>
-                <span class="progress-right">
-                  <span class="progress-bar"
-                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                </span>
-                <div class="progress-value">
-                  <div style="font-size: 14px;font-weight: 400;">
-                    <span *ngIf="prjct_trial_expired === false">
-                      {{ prjc_trial_days_left }}
-                    </span>
-                    <span *ngIf="prjct_trial_expired === true">
-                      0
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <ul class="dropdown-menu"
-              style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
-              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
-                {{ "Pricing.Your" | translate }}
-
-                <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
-                </span>
-
-                {{ "Pricing.WillExpireIn" | translate }}
-
-                <span *ngIf="prjc_trial_days_left < -1">
-                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                </span>
-
-                <span *ngIf="prjc_trial_days_left === -1">
-                  {{ "Pricing.Tomorrow" | translate }}
-                </span>
-              </p>
-
-              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
-                {{ "Pricing.Your" | translate }}
-                <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
-                </span>
-                {{ "Pricing.HasExpired" | translate }}
-              </p>
-            </ul>
-          </li>
-        </ng-container>
-
-
-        <!--  ------------------------------------------------ -->
-        <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
-        <!--  ------------------------------------------------ -->
-        <ng-container *ngIf="isVisiblePay">
-          <li id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> 
-              <button class="btn btn-success-no-boxshadow upgrade-plan-btn" >
-              {{ "Pricing.UpgradePlan" | translate }} 
-            </button>
-            </a>
-          </li>
-        </ng-container>
-
         <!-- -------------------------------------------- -->
         <!-- Quote - usage stats  indicator -->
         <!-- -------------------------------------------- -->
@@ -170,10 +61,10 @@
               class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
               (click)="onOpenQuoteMenu()">
               <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
-              <mat-icon class="data-usage-icon">
+              <mat-icon class="data-usage-icon" >
                 data_usage
               </mat-icon>
-              <span>{{'CurrentUsage' | translate}}</span>
+              <span style="padding-left: 3px;">{{'CurrentUsage' | translate}}</span>
               <mat-icon style="color: #555555"
                 [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
                 arrow_drop_down
@@ -272,8 +163,6 @@
                   </div>
                 </div> -->
 
-
-
                 <!-- ------- -->
                 <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
                   <div class="quotas-usage-container">
@@ -293,41 +182,21 @@
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
-                              <p class="quota-right-title link" (click)="goToHistoryAllConvs()">
+                              <p class="quota-right-title link"(click)="goToHistoryAllConvs()">
                                 <!-- Total conversations usage -->
                                 {{'TotalConversationsUsage' | translate}}
                               </p>
                               <div class="quota-limit-wpr">
-                                <p class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p  class="quota-limit">{{requests_count | number:'1.0-0'}} /&nbsp;</p>
                                 <!-- <p  class="quota-limit">{{openedConversations + closedConversations}} /&nbsp;</p> -->
-                                <p class="quota-limit">{{requests_limit | number:'1.0-0'}}</p>
+                                <p  class="quota-limit">{{requests_limit | number:'1.0-0'}}</p>
                               </div>
                             </div>
                             <div class="quota-pie" style="width: 50px; height: 50px;">
-                              <!-- <svg class="svg-pi"
-                                style="width: 32px; height: 32px;">
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3">
-                                </circle>
-                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#eff2f6" stroke-width="3"
-                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
-                                  stroke-linecap="round">
-                                </circle>
-                              </svg> -->
-                              <!-- [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}" -->
-                              <!-- <svg width="0" height="0">
-                                <defs>
-                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color: green; stop-opacity: 1;" />
-                                        <stop offset="50%" style="stop-color: yellow; stop-opacity: 1;" />
-                                        <stop offset="75%" style="stop-color: orange; stop-opacity: 1;" />
-                                        <stop offset="100%" style="stop-color: red; stop-opacity: 1;" />
-                                    </linearGradient>
-                                </defs>
-                            </svg> -->
-                              <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
-                              <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50"
-                                [color]="'primary'" [mode]="'determinate'" [value]="requests_perc"
-                                [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                     
+                            <!-- [ngClass]="{'pie-green-stroke': requestsPieGreenStroke, 'pie-yellow-stroke': requestsPieYellowStroke, 'pie-orange-stroke': requestsPieOrangeStroke, 'pie-red-stroke': requestsPieRedStroke}" -->
+                              <mat-progress-spinner class="requests-circular-spinner" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="requests_perc" [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">
                                 {{ requests_perc }}%
@@ -348,7 +217,7 @@
                               <h2 class="quota-title">AI Tokens</h2>
                               <!-- <span  class="quota-plan-badge">Free</span> -->
                             </div>
-
+                            
                           </div>
                           <div class="quota-right-column-wpr">
                             <div class="quota-count-and-limit-wpr">
@@ -357,8 +226,8 @@
                                 {{'TotalAITokensUsage' | translate}}
                               </p>
                               <div class="quota-limit-wpr">
-                                <p class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
-                                <p class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
+                                <p  class="quota-limit">{{tokens_count | number:'1.0-0'}} /&nbsp;</p>
+                                <p  class="quota-limit">{{tokens_limit | number:'1.0-0'}}</p>
                               </div>
                             </div>
                             <div class="quota-pie" style="width: 50px; height: 50px;">
@@ -370,19 +239,21 @@
                                   stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
                                   stroke-linecap="round"></circle>
                               </svg> -->
-                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
-                                [color]="'primary'" [mode]="'determinate'" [value]="tokens_perc"
+                             
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="tokens_perc" 
                                 [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">{{ tokens_perc }}%</div>
                             </div>
                           </div>
                         </div>
-
+                        
                       </div>
                     </div>
-
-                    <div aria-label="Usage limit for Email" class="quota-section-main last">
+                    
+                    <div aria-label="Usage limit for Email" class="quota-section-main"
+                    [ngClass]="{'last': !diplayTwilioVoiceQuota && !diplayVXMLVoiceQuota}">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
@@ -412,8 +283,8 @@
                                   stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
                                   stroke-linecap="round"></circle>
                               </svg> -->
-                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
-                                [color]="'primary'" [mode]="'determinate'" [value]="email_perc"
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="email_perc"
                                 [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
                               </mat-progress-spinner>
                               <div class="quota-pie-label">{{ email_perc }}% </div>
@@ -422,6 +293,51 @@
                         </div>
                       </div>
                     </div>
+                    <!-- --------------------------------------------- -->
+                    <!-- Voice -->
+                    <!-- --------------------------------------------- -->
+                    <div *ngIf="diplayTwilioVoiceQuota || diplayVXMLVoiceQuota"  aria-label="Usage limit for Voice" class="quota-section-main last"
+                      [ngClass]="{'last': diplayTwilioVoiceQuota || diplayVXMLVoiceQuota}">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">{{'Voice' | translate}}</h2>
+                              <!-- <span class="quota-plan-badge">Free</span> -->
+                            </div>
+                            <!-- <p  class="quota-resets">Quota resets on 19 Sep 2024</p> -->
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <p class="quota-right-title">
+                                <!-- Total email usage -->
+                                {{'TotalVoiceUsage' | translate}}
+                              </p>
+                              <div class="quota-limit-wpr">
+                                <p class="quota-limit">{{voice_count_min_sec}} /&nbsp;</p>
+                                <p class="quota-limit">{{voice_limit | number:'1.0-0'}}m</p>
+                              </div>
+                            </div>
+                            <div class="quota-pie" style="width: 50px; height: 50px;">
+                              <!-- <svg class="svg-pi"
+                                style="width: 32px; height: 32px;">
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#dce9ff" stroke-width="3">
+                                </circle>
+                                <circle cx="16" cy="16" fill="transparent" r="13" stroke="#0566ff" stroke-width="3"
+                                  stroke-dasharray="81.68140899333463" stroke-dashoffset="81.68140899333463"
+                                  stroke-linecap="round"></circle>
+                              </svg> -->
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                                [mode]="'determinate'" [value]="voice_perc"
+                                [ngClass]="{'mat-progress-spinner-voice-runned-out': voiceRunnedOut}">
+                              </mat-progress-spinner>
+                              <div class="quota-pie-label">{{ voice_perc }}% </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -429,7 +345,7 @@
                 <!-- ------------ -->
 
                 <div class="quotas-upgrade-btn-wpr">
-                  <button *ngIf="isVisiblePay" mat-flat-button class="quotas-upgrade-btn" (click)="goToPricing()">
+                  <button *ngIf="isVisiblePay" class="btn upgrade--btn" (click)="goToPricing()">
                     <span class="material-icons-outlined">bolt</span>
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
@@ -438,6 +354,110 @@
               </div>
 
             </mat-menu>
+          </li>
+        </ng-container>
+
+        <!-- ------------------------------------------------  -->
+        <!--  UPGRADE (PROFILE TYPE = FREE) -->
+        <!-- ------------------------------------------------  -->
+        <ng-container *ngIf="isVisiblePay">
+          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
+
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
+              <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
+                <span class="progress-left">
+                  <span class="progress-bar"
+                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                </span>
+                <span class="progress-right">
+                  <span class="progress-bar"
+                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                </span>
+                <div class="progress-value">
+                  <div style="font-size: 14px;font-weight: 400;">
+                    <span *ngIf="prjct_trial_expired === false">
+                      {{ prjc_trial_days_left }}
+                    </span>
+                    <span *ngIf="prjct_trial_expired === true">
+                      0
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <ul class="dropdown-menu"
+              style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
+              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
+                </span>
+
+                {{ "Pricing.WillExpireIn" | translate }}
+
+                <span *ngIf="prjc_trial_days_left < -1">
+                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                </span>
+
+                <span *ngIf="prjc_trial_days_left === -1">
+                  {{ "Pricing.Tomorrow" | translate }}
+                </span>
+              </p>
+
+              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
+                </span>
+                {{ "Pricing.HasExpired" | translate }}
+              </p>
+            </ul>
+          </li>
+        </ng-container>
+
+
+        <!--  ------------------------------------------------ -->
+        <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
+        <!--  ------------------------------------------------ -->
+        <ng-container *ngIf="isVisiblePay">
+          <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
+            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> {{ "Pricing.UpgradePlan" | translate }} </a>
+          </li>
+        </ng-container>
+
+
+        <!--  ------------------------------------------------ -->
+        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
+        <!--  ------------------------------------------------ -->
+        <!-- *ngIf="isVisiblePay" -->
+        <ng-container >
+          <li
+            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
+            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
+            <a>
+              <!--  ------------------------------------------------ -->
+              <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
+              <!--  ------------------------------------------------ -->
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
+                (click)="openModalSubsExpired()" class="expired__Tooltip">
+                <i class="material-icons"
+                  style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
+                  error_outline
+                </i>
+                <span class="expired__Tooltiptext"
+                  style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
+
+                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                  </span>
+                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
+                    {{ 'Pricing.ThePlanHasExpired' | translate }}
+                  </span>
+                </span>
+              </span>
+            </a>
           </li>
         </ng-container>
 
@@ -617,6 +637,8 @@
               </li>
             </ng-container>
 
+
+           
           </ul>
         </li>
 
@@ -626,9 +648,9 @@
         <!-- -------------------------------------------- -->
         <!-- Sleekplan -->
         <!-- -------------------------------------------- -->
-        <!-- <button (click)="openFeedback()">Give Feedback</button> -->
+       
         <ng-container *ngIf="isVisiblePay" style="position: relative;">
-          <li>
+          <li *ngIf="project">
             <a>
               <button class="give-feedback" (click)="openFeedback()">
 
@@ -645,14 +667,23 @@
           </li>
           <!-- *ngIf="newChangelogCount" -->
           <!-- newChangelogCount >  {{newChangelogCount }} -->
-          <div *ngIf="newChangelogCount === true" class="changelog-count">
-            <span>
-              1
-            </span>
+          <div *ngIf="project">
+            <div *ngIf="newChangelogCount === true" class="changelog-count">
+              <span>
+                1
+              </span>
 
+            </div>
           </div>
 
         </ng-container>
+
+        <li *ngIf="!project">
+          <a style="cursor: pointer;" (click)="goToProjects()">
+            <i class="material-icons">close</i>
+          </a>
+        </li>
+
 
 
         <!--  ------------------------------------------------ -->

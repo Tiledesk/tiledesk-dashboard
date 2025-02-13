@@ -372,7 +372,8 @@
         AUTOMATIONS_ROUTE_IS_ACTIVE ||
         OLD_KB_ROUTE_IS_ACTIVE ||
         APPS_ROUTE_IS_ACTIVE ||
-        INTEGRATIONS_ROUTE_IS_ACTIVE" (click)="goToWidgetSetUpOrToCannedResponses()" matTooltipClass="sb-mat-tooltip"
+        INTEGRATIONS_ROUTE_IS_ACTIVE ||
+        TRANSLATIONS_ROUTE_IS_ACTIVE" (click)="goToWidgetSetUpOrToCannedResponses()" matTooltipClass="sb-mat-tooltip"
       matTooltip="{{ 'Settings' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100">
 
@@ -405,7 +406,7 @@
     <!-- ---------------------------------------- -->
     <div class="sb-last-item" [class.item-active]="SUPPORT_ROUTE_IS_ACTIVE" id="support"
       matTooltipClass="sb-mat-tooltip"
-      [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )  " #tooltip="matTooltip"
+      [matTooltip]="isVisibleSupportMenu ? ( 'HelpCenter' | translate ) : ( companyName )" #tooltip="matTooltip"
       matTooltipPosition='right' matTooltipHideDelay="100" routerLinkActive="active" (click)="stopScroll()">
 
       <a id="support-anchor" *ngIf="isVisibleSupportMenu" class="customAncor" [matMenuTriggerFor]="menuSupport"

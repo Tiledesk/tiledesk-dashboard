@@ -38,6 +38,10 @@ export class UpgradePlanModalComponent implements OnInit {
     this.translateModalOnlyOwnerCanManageProjectAccount()
   }
 
+  onNoClick() {
+    this.closeDialog()
+  }
+  
   closeDialog() {
     this.dialogRef.close()
   }

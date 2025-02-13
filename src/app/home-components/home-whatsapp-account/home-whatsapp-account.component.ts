@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { ProjectService } from 'app/services/project.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -134,16 +135,14 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HOME-WA] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-WA] - GET PROJECT-USER ROLE ', projectUser);
+        if (projectUser.role) {
+          this.USER_ROLE = projectUser.role;
         }
-      });
+      }
+    });
   }
 
   translateLabels() {
@@ -444,16 +443,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
       confirmButtonText: this.upgradePlan,
       focusConfirm: false,
       reverseButtons: true,
-      confirmButtonColor: "var(--blue-light)",
-      // buttons: true,
-      // buttons: {
-      //   cancel: this.cancel,
-      //   catch: {
-      //     text: this.upgradePlan,
-      //     value: "catch",
-      //   },
-      // },
-      dangerMode: false,
+      // confirmButtonColor: "var(--blue-light)",
+    
     }).then((result) => {
       if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {

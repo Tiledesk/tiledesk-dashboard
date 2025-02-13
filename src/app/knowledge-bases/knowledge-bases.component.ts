@@ -44,6 +44,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { ProjectUser } from 'app/models/project-user';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -186,7 +187,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   private dialogRefHookBoot: MatDialogRef<any>;
   timer: number = 500;
-  hasCickedAiSettingsModalBackdrop: boolean = false;
+  hasClickedAiSettingsModalBackdrop: boolean = false;
+  hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
   refreshRateIsEnabled: boolean
@@ -604,28 +606,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespace = namespaces.find((el) => {
           return el.id === this.nameSpaceId;
         });
-        this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace nameSpaceId != 0', this.selectedNamespace);
-        if (this.selectedNamespace) {
-          this.selectedNamespaceName = this.selectedNamespace.name
-          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-          this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-          this.getChatbotUsingNamespace(this.selectedNamespace.id)
-        } else {
+        if (!this.selectedNamespace) {
+          // Fall back to default
           this.selectedNamespace = namespaces.find((el) => {
             return el.default === true
           });
-          this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace nameSpaceId != 0 USE CASE  namespace not found', this.selectedNamespace);
-          if (this.selectedNamespace) {
-            this.selectedNamespaceName = this.selectedNamespace.name
-
-            this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init this.selectedNamespace', this.selectedNamespace);
-            this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init  selectedNamespace', this.selectedNamespaceName);
-
-            this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-            this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
-            this.getChatbotUsingNamespace(this.selectedNamespace.id)
-          }
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
         }
+        this.selectedNamespaceName = this.selectedNamespace.name
+        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
+        this.getChatbotUsingNamespace(this.selectedNamespace.id)
       }
 
     } else {
@@ -1180,7 +1171,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -1200,7 +1191,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -1224,7 +1215,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCancelButton: false,
       confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
       // cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       reverseButtons: true,
       // dangerMode: false
     }).then((result: any) => {
@@ -1406,6 +1397,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         askBody: previedata
       },
     });
+    dialogRef.backdropClick().subscribe((event) => {
+      this.logger.log('Modal preview Backdrop clicked', event);
+       this.hasClickedPreviewModalBackdrop = true
+       const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
+       document.dispatchEvent(customevent);
+     });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
@@ -1425,7 +1422,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onOpenBaseModalPreviewSettings(previedata?: any) {
     // this.baseModalPreviewSettings = true;
-    // #191d2285;
+    //#191d2285;
     const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
       // backdropClass: 'cdk-overlay-transparent-backdrop',
       backdropClass: 'overlay-backdrop',
@@ -1438,8 +1435,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('AI model Backdrop clicked', event);
-      this.hasCickedAiSettingsModalBackdrop = true
-      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasCickedAiSettingsModalBackdrop });
+      this.hasClickedAiSettingsModalBackdrop = true
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedAiSettingsModalBackdrop });
       document.dispatchEvent(customevent);
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -1751,17 +1748,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
 
@@ -2150,7 +2142,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           icon: "warning",
           showCloseButton: false,
           showCancelButton: false,
-          confirmButtonColor: "var(--primary-btn-background)",
+          // confirmButtonColor: "var(--primary-btn-background)",
           confirmButtonText: this.translate.instant('Ok'),
 
         })
@@ -2172,7 +2164,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         icon: "warning",
         showCloseButton: false,
         showCancelButton: false,
-        confirmButtonColor: "var(--primary-btn-background)",
+        // confirmButtonColor: "var(--primary-btn-background)",
         confirmButtonText: this.translate.instant('Ok'),
 
       })
@@ -2242,10 +2234,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           reverseButtons: true,
-          // buttons: [this.cancel, this.upgrade],
-          // dangerMode: false
         }).then((result: any) => {
 
           if (result.isConfirmed) {
@@ -2271,11 +2261,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.contactUs,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true,
-          // buttons: [null, this.cancel],
-          // dangerMode: false
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2291,11 +2279,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.contactUs,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
           reverseButtons: true,
-          // dangerMode: false
-          // buttons: [this.cancel, this.contactUs],
         }).then((result) => {
           if (result) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2348,10 +2334,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: true,
           confirmButtonText: this.upgrade,
           cancelButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
-          // buttons: [this.cancel, this.upgrade],
-          // dangerMode: false
         }).then((result: any) => {
 
           if (result.isConfirmed) {
@@ -2374,10 +2358,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCloseButton: false,
           showCancelButton: false,
           confirmButtonText: this.cancel,
-          confirmButtonColor: "var(--blue-light)",
-          focusConfirm: false,
-          // buttons: [null, this.cancel],
-          // dangerMode: false
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
         // this.logger.log('here 1')
@@ -2388,11 +2370,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCloseButton: false,
           showCancelButton: true,
           confirmButtonText: this.contactUs,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           canecelButtonText: this.cancel,
           focusConfirm: false,
-          // buttons: [this.cancel, this.contactUs],
-          // dangerMode: false
         }).then((result) => {
           if (result.isConfirmed) {
             window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
@@ -2980,8 +2960,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: 'Ok',
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     })

@@ -2,8 +2,8 @@
 <!-- REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
 <!-- !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA -->
 <!-- ----------------------------------------------------------------------------------------------------------------------- -->
-<div class="script-wrap" style="">
-  <pre class="widget-design-pre" style="">
+<div class="script-wrap">
+  <pre class="widget-design-pre">
   <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
   <span>   window.tiledeskSettings=</span>
   <span>   {{'{'}}</span>
@@ -22,9 +22,9 @@
   </pre>
 
 
-  <button style="margin-top:0px; color: #039be5; margin: 0px; border-radius: 0em 0em 0.25px 0.25px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);" (click)="copyToClipboard()" class="btn btn-white btn-block">
-    <span> <i class="material-icons"
-      style="vertical-align: middle; color: #039be5">file_copy</i>
+  <button id="copy-js-code-btn" (click)="copyToClipboard()" class="btn btn-white btn-block">
+    <span> 
+      <i class="material-icons">file_copy</i>
     </span>
     {{ 'Resourcepage.CopyScript' | translate }}
   </button>

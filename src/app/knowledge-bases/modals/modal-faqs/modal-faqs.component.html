@@ -316,10 +316,11 @@
     <input style="display:inline" name="fileChangeUploadCSV" id="fileChangeUploadCSV" class="inputfile" type="file"
       (change)="fileChangeUploadCSV($event)" accept=".csv" />
       <!-- btn btn-primary  -->
-    <label class="btn btn-tdblu-no-boxshadow" for="fileChangeUploadCSV" [ngClass]="{'disabled': modalChoosefileDisabled }">
+    <label class="btn btn-tdblu-no-boxshadow" for="fileChangeUploadCSV" [ngClass]="{'disabled': modalChoosefileDisabled }"
+      style="height: 36px; padding: 8px 20px !important;">
       <!-- <i class="material-icons">file_upload</i> -->
-      <!-- CHOOSE FILE  -->
-      {{ 'FaqPage.ChooseFile' | translate }}
+     
+       {{ 'FaqPage.ChooseFile' | translate }} 
     </label>
   </div>
 

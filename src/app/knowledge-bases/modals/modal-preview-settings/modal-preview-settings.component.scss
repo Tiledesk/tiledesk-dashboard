@@ -24,6 +24,7 @@
 
 .setting-label {
     color: #000;
+    vertical-align: middle;
 }
 
 .row-container {
@@ -122,15 +123,15 @@
     min-height: 26px;
 }
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
-}
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+// }
 
 .mat-dialog-reset-btn {
     // color: #fff;
@@ -179,7 +180,7 @@
 }
 
 .reset-overrides {
-    color: var(--blue-light);
+    color: var(--blue-20);
     cursor: pointer;
     font-weight: 500;
 }
@@ -239,6 +240,20 @@
     .sat-popover-content-learn-more:hover { 
         background:  rgba(82, 89, 99, .8)
     }
+}
+
+.help--link {
+    color: var(--blue-20);
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 30px;
+    position: relative;
+    top: -6px;
+}
+
+.help--link:hover { 
+    text-decoration: underline;
 }
 
 

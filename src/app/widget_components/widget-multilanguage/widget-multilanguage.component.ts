@@ -7,7 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { ActivatedRoute } from '@angular/router';
-const swal = require('sweetalert');
+
+const Swal = require('sweetalert2')
 
 @Component({
   selector: 'appdashboard-widget-multilanguage',
@@ -358,7 +359,8 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
 
         this.showSheleton = false;
-        this.notify.presentModalSuccessCheckModal('AddTranslation', 'Completed')
+        // this.notify.presentModalSuccessCheckModal('AddTranslation', 'Completed')
+        this.presentModalAddTranslationSuccess()
       });
 
     // // ADD THE NEW LANGUAGE TO BOTTOM NAV
@@ -367,6 +369,20 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
     this.availableTranslations.push(newLang)
     this.logger.log('Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+  }
+
+  presentModalAddTranslationSuccess() {
+    Swal.fire( {
+      title: this.translate.instant('AddTranslation'),
+      text: this.translate.instant('Completed'),
+      icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      // confirmButtonColor: "var(--primary-btn-background)",
+      confirmButtonText: this.translate.instant('Ok'),
+    }).then((okpressed) => {
+
+    });
   }
 
   onChangeTranslation(event, labelName) {
@@ -481,19 +497,27 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
   presentSwalModalDeleteLanguage() {
     //  this.logger.log('Multilanguage deleteLang selected Translation Label', this.selectedTranslationLabel)
-    swal({
+    Swal.fire({
       title: this.areYouSureMsg + '?',
       text: this.translate.instant('TheLanguageWillBeRemovedFromYourProject', {language_name: this.selectedTranslationLabel }),
       icon: "warning",
-      buttons: [this.cancelMsg, this.deleteMsg],
-      dangerMode: true,
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: [this.cancelMsg, this.deleteMsg],
+      // dangerMode: true,
     })
-      .then((WillDelete) => {
-        if (WillDelete) {
+      .then((result) => {
+        if (result.isDenied) {
           this.deleteLang();
-          //  this.logger.log('[Multilanguage] swal WillDelete ', WillDelete)
+          //  this.logger.log('[Multilanguage] result.isDenied ', result.isDenied)
         } else {
-          //  this.logger.log('[Multilanguage] swal WillDelete (else)', swal)
+          //  this.logger.log('[Multilanguage] result.isDenied (else)', result.isDenied)
         }
       });
   }
