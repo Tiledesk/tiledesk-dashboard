@@ -26,11 +26,11 @@ export enum INTEGRATIONS_KEYS {
     GOOGLE = 'google',
     ANTHROPIC = 'anthropic',
     GROQ = 'groq',
-    COHERE = 'cohere',
-    OLLAMA = 'ollama',
-    DEEPSEEK = 'deepseek'
-
+    COHERE = 'cohere'
 }
+
+//  OLLAMA = 'ollama',
+//     DEEPSEEK = 'deepseek'
 
 export enum APPS_TITLE {
     WHATSAPP = "WhatsApp Business",
@@ -109,8 +109,8 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Claude (by Anthropic)", category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/claude-icon.svg",                 src_logo: "assets/img/int/claude_logo.svg",      pro: true,  plan: 'Custom' },
     { name: "Groq",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GROQ,       src_icon: "assets/img/int/groq-icon.svg",                 src_logo: "assets/img/int/groq_logo.svg",      pro: true,  plan: 'Custom' },
     { name: "Cohere",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.COHERE,       src_icon: "assets/img/int/cohere_icon.svg",                 src_logo: "assets/img/int/cohere_logo.svg",      pro: true,  plan: 'Custom' },
-    { name: "Ollama",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,       src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",      pro: true,  plan: 'Custom' },
-    { name: "Deepseek",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,       src_icon: "assets/img/int/deepseek-icon.svg",                 src_logo: "assets/img/int/deepseek-logo.svg",      pro: true,  plan: 'Custom' },
+    // { name: "Ollama",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,       src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",      pro: true,  plan: 'Custom' },
+    // { name: "Deepseek",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,       src_icon: "assets/img/int/deepseek-icon.svg",                 src_logo: "assets/img/int/deepseek-logo.svg",      pro: true,  plan: 'Custom' },
     { name: "Qapla'",           category: INTEGRATIONS_CATEGORIES.ECOMMERCE,           key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Premium' },
     //{ name: "Active Campaign",  category: INTEGRATIONS_CATEGORIES.COMMUNICATION,    key: INTEGRATIONS_KEYS.ACTIVE_CAMPAIGN, src_icon: "assets/img/int/active-campaign-icon.jpeg",     src_logo: "assets/img/int/active-campaign-logo.png",    pro: true,  plan: 'Premium' },
     //{ name: "Jira",             category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.JIRA,            src_icon: "assets/img/int/jira-icon.png",                 src_logo: "assets/img/int/jira-logo.png",               pro: true,  plan: 'Premium'},
@@ -200,25 +200,25 @@ export class CohereIntegration extends Integration {
     }
 }
 
-export class OllamaIntegration extends Integration {
-    constructor() {
-        super();
-        this.name = INTEGRATIONS_KEYS.OLLAMA;
-        this.value = {
-            apikey: null,
-        }
-    }
-}
+// export class OllamaIntegration extends Integration {
+//     constructor() {
+//         super();
+//         this.name = INTEGRATIONS_KEYS.OLLAMA;
+//         this.value = {
+//             apikey: null,
+//         }
+//     }
+// }
 
-export class DeepseekIntegration extends Integration {
-    constructor() {
-        super();
-        this.name = INTEGRATIONS_KEYS.DEEPSEEK;
-        this.value = {
-            apikey: null,
-        }
-    }
-}
+// export class DeepseekIntegration extends Integration {
+//     constructor() {
+//         super();
+//         this.name = INTEGRATIONS_KEYS.DEEPSEEK;
+//         this.value = {
+//             apikey: null,
+//         }
+//     }
+// }
 
 export class QaplaIntegration extends Integration {
     constructor() {
