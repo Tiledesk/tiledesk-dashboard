@@ -25,7 +25,7 @@ export class AnthropicIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("[INT-Anthropic] integration ", this.integration)
+    this.logger.log("[INT-Anthropic] integration ", this.integration)
     this.translateparams = { intname: 'Anthropic Claude' };
     // if (this.integration.value.apikey) {
     //   this.checkKey();
@@ -68,7 +68,7 @@ export class AnthropicIntegrationComponent implements OnInit {
       let url = 'https://api.anthropic.com/v1/models';
       let key = this.integration.value.apikey;
       this.integrationService.checkAnthropicKeyValidity(url, key).subscribe((resp) => {
-       console.log("[INT-Anthropic] Key verification resp : ", resp);
+        this.logger.log("[INT-Anthropic] Key verification resp : ", resp);
         this.isVerified = true;
         resolve(true);
       }, (error) => {

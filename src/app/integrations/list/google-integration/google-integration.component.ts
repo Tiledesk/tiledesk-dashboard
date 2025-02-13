@@ -27,7 +27,7 @@ export class GoogleIntegrationComponent implements OnInit {
 
   
   ngOnInit(): void {
-   console.log("[INT-GOOGLE-GEMINI] integration ", this.integration)
+    this.logger.log("[INT-GOOGLE-GEMINI] integration ", this.integration)
     this.translateparams = { intname: 'Google AI' };
     if (this.integration.value.apikey) {
       this.checkKey();
@@ -65,7 +65,7 @@ export class GoogleIntegrationComponent implements OnInit {
                 //  https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=YOUR_GEMINI_API_KEY
       let url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=" + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url).subscribe((resp: any) => {
-        console.log('[INT-GOOGLE-GEMINI] resp ' ,resp)
+        this.logger.log('[INT-GOOGLE-GEMINI] resp ' ,resp)
         if (resp) {
           this.isVerified = true;
           resolve(true);

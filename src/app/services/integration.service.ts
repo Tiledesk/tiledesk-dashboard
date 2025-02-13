@@ -89,7 +89,7 @@ export class IntegrationService {
   }
 
   saveIntegration(integration: any) {
-    console.log('integration ', integration) 
+    this.logger.log('integration ', integration) 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

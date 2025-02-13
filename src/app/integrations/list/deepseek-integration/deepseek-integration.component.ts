@@ -24,7 +24,7 @@ export class DeepseekIntegrationComponent implements OnInit {
    ) { }
  
    ngOnInit(): void {
-     console.log("[INT-deepseek] integration ", this.integration)
+    this.logger.log("[INT-deepseek] integration ", this.integration)
      this.translateparams = { intname: 'Deepseek' };
      if (this.integration.value.apikey) {
        this.checkKey();
@@ -61,11 +61,11 @@ export class DeepseekIntegrationComponent implements OnInit {
        let url = ""; //"https://api.cohere.com/v1/models";
        let key = "Bearer " + this.integration.value.apikey;
        this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
-         console.log("[INT-deepseek] Key verification resp: ", resp);
+        this.logger.log("[INT-deepseek] Key verification resp: ", resp);
          this.isVerified = true;
          resolve(true);
        }, (error) => {
-         console.error("[INT-deepseek] Key verification failed: ", error);
+        this.logger.error("[INT-deepseek] Key verification failed: ", error);
          this.isVerified = false;
          resolve(false);
        })

@@ -24,7 +24,7 @@ export class GroqIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("[INT-GROQ] integration ", this.integration)
+    this.logger.log("[INT-GROQ] integration ", this.integration)
     this.translateparams = { intname: 'Groq' };
     if (this.integration.value.apikey) {
       this.checkKey();
@@ -61,11 +61,11 @@ export class GroqIntegrationComponent implements OnInit {
       let url = "https://api.groq.com/openai/v1/models";
       let key = "Bearer " + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
-        console.log("[INT-GROQ] Key verification resp: ", resp);
+        this.logger.log("[INT-GROQ] Key verification resp: ", resp);
         this.isVerified = true;
         resolve(true);
       }, (error) => {
-        console.error("[INT-GROQ] Key verification failed: ", error);
+        this.logger.error("[INT-GROQ] Key verification failed: ", error);
         this.isVerified = false;
         resolve(false);
       })

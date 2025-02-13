@@ -195,12 +195,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getIntegrations() {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
-      console.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
-     console.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
+      this.logger.log("[INTEGRATION-COMP] getIntegrations intName: ", this.intName);
+      this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-        console.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
+        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
       }
     })
   }
@@ -208,7 +208,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
 
         this.showSpinner = false
@@ -355,15 +355,15 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   onIntegrationSelect(integration) {
-    console.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
-      console.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
-      console.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
-      console.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
@@ -400,8 +400,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // this.integrationSelectedName = 'none';
       // this.integrationLocked = true;
       // this.plan_require = integration.plan;
-      console.log("Integration unavailable for your project")
-      console.log("available for plan ", integration.plan)
+      this.logger.log("Integration unavailable for your project")
+      this.logger.log("available for plan ", integration.plan)
     })
   }
 
