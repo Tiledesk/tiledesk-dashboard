@@ -26,6 +26,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 import scrollToWithAnimation from 'scrollto-with-animation'
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -201,7 +202,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
+    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
 
     // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
 
@@ -406,15 +407,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role;
+          if (this.USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
           } else {
             this.ROLE_IS_AGENT = false
@@ -617,12 +614,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser ', projectUser)
         if (projectUser) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser[0]._id);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - ERROR ', error);
@@ -769,7 +766,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       icon: "info",
       showCloseButton: false,
       showCancelButton: false,
-      confirmButtonColor: "var(--primary-btn-background)",
+      // confirmButtonColor: "var(--primary-btn-background)",
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: 'OK',
       // dangerMode: false,
@@ -784,7 +781,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       showCancelButton: true,
       confirmButtonText: this.joinToChatMsg,
       cancelButtonText: this.cancelMsg,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       reverseButtons: true,
       icon: "info",
@@ -888,7 +885,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   _getProjectUserByUserId(member_id) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
           this.logger.log('WS-REQUESTS-LIST][SERVED] GET projectUser by USER-ID projectUser id', projectUser);

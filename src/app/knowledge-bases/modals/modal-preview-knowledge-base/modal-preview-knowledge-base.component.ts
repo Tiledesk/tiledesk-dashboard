@@ -10,6 +10,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 
 @Component({
@@ -22,6 +23,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
+  aiSettingsObject = [{
+    model: null,
+    maxTokens: null,
+    temperature: null,
+    top_k: null,
+    context: null,
+    advancedPrompt: null,
+    citations: null,
+  }]
 
   selectedNamespace: any;
   namespaceid: string;
@@ -60,7 +70,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   public citations: boolean // = false;
   public advancedPrompt: boolean // = false;
 
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalPreviewKnowledgeBaseComponent>,
@@ -72,6 +81,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     private kbService: KnowledgeBaseService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
+    private router: Router
   ) {
     super(prjctPlanService, notify);
     this.logger.log('[MODAL-PREVIEW-KB] data ', data)
@@ -101,6 +111,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       }
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
+      this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace preview_settings', this.selectedNamespace.preview_settings)
       this.logger.log('[MODAL-PREVIEW-KB] namespaceid', this.namespaceid)
       this.logger.log('[MODAL-PREVIEW-KB] selectedModel', this.selectedModel)
     }
@@ -109,6 +120,26 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // this.question = data.askBody.question
       // this.submitQuestion()
     }
+    this.listenToCurrentURL()
+  }
+
+  listenToCurrentURL() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.logger.log('[MODAL-PREVIEW-KB] - NavigationEnd event url ', event.url)
+        const currentUrl: string = event.url;
+            
+        if (currentUrl.includes('/knowledge-bases')) {
+          this.logger.log("✅ User is on the 'knowledge-bases' route.");
+        } else {
+          this.logger.log("❌ User is NOT on the 'knowledge-bases' route.");
+            this.dialogRef.close();
+            if (this.dialogRefAiSettings) {
+              this.dialogRefAiSettings.close()
+            }
+        }
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -120,7 +151,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
       this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-      
+
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
@@ -165,11 +196,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
   }
 
+  handleClickInside(event: MouseEvent): void {
+    const customevent = new CustomEvent("has-clicked-inside-modal-preview-kb", { detail: true });
+    document.dispatchEvent(customevent);
 
-  closeDialogAiSettings(isopenasetting) {
-    this.logger.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
-    this.dialogRefAiSettings.close()
   }
+
+
+
 
   reuseLastQuestion() {
     const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
@@ -178,7 +212,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
       this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-      
+
     } else {
       this.hasStoredQuestion = false;
       this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
@@ -216,40 +250,70 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
         if (editedAiSettings && editedAiSettings[0]['model']) {
           this.selectedModel = editedAiSettings[0]['model']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test', this.selectedModel)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from editedAiSettings 1', this.selectedModel)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use selectedNamespace > preview_settings', this.selectedNamespace.preview_settings)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from editedAiSettings 2', editedAiSettings[0]['model'])
+          this.selectedModel = this.selectedNamespace.preview_settings.model
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from selectedNamespace ', this.selectedModel)
         }
         if (editedAiSettings && editedAiSettings[0]['maxTokens']) {
           this.maxTokens = editedAiSettings[0]['maxTokens']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test', this.maxTokens)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from editedAiSettings 1', this.maxTokens)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from editedAiSettings 2', editedAiSettings[0]['maxTokens'])
+          this.maxTokens = this.selectedNamespace.preview_settings.max_tokens
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges maxTokens to use for test from selectedNamespace ', this.maxTokens)
         }
         if (editedAiSettings && editedAiSettings[0]['temperature']) {
           this.temperature = editedAiSettings[0]['temperature']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test', this.temperature)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test from editedAiSettings 1', this.temperature)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test from editedAiSettings 2', editedAiSettings[0]['temperature'])
+          this.temperature = this.selectedNamespace.preview_settings.temperature
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges temperature to use for test from selectedNamespace ', this.temperature)
         }
         if (editedAiSettings && editedAiSettings[0]['top_k']) {
           this.topK = editedAiSettings[0]['top_k']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test', this.topK)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from editedAiSettings 1', this.topK)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from editedAiSettings 2', editedAiSettings[0]['top_k'])
+          this.topK = this.selectedNamespace.preview_settings.top_k
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges topK to use for test from selectedNamespace ', this.topK)
         }
+
         if (editedAiSettings && editedAiSettings[0]['context']) {
           this.context = editedAiSettings[0]['context']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test', this.context)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from editedAiSettings 1', this.context)
+        } else {
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from editedAiSettings 2', editedAiSettings[0]['context'])
+          this.context = this.selectedNamespace.preview_settings.context
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges context to use for test from selectedNamespace ', this.context)
         }
 
-        if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true)  {
+        if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === true) {
           this.advancedPrompt = editedAiSettings[0]['advancedPrompt']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test',  this.advancedPrompt)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test from editedAiSettings 1', this.advancedPrompt)
         } else if (editedAiSettings && editedAiSettings[0]['advancedPrompt'] === false) {
           this.advancedPrompt = editedAiSettings[0]['advancedPrompt']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test',  this.advancedPrompt)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test from editedAiSettings 1', this.advancedPrompt)
+        } else if ((editedAiSettings && editedAiSettings[0]['advancedPrompt'] === null)) {
+          this.advancedPrompt = this.selectedNamespace.preview_settings.advancedPrompt
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges advancedPrompt to use for test from selectedNamespace ', this.advancedPrompt)
         }
 
-        if (editedAiSettings && editedAiSettings[0]['citations'] === true)  {
-          this.citations =  editedAiSettings[0]['citations']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test', this.citations)
-        } else if (editedAiSettings && editedAiSettings[0]['citations'] === false){
-          this.citations =  editedAiSettings[0]['citations']
-          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test', this.citations)
+        if (editedAiSettings && editedAiSettings[0]['citations'] === true) {
+          this.citations = editedAiSettings[0]['citations']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test from editedAiSettings 1', this.citations)
+        } else if (editedAiSettings && editedAiSettings[0]['citations'] === false) {
+          this.citations = editedAiSettings[0]['citations']
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test from editedAiSettings 1', this.citations)
+        } else if (editedAiSettings && editedAiSettings[0]['citations'] === null) {
+          this.citations = this.selectedNamespace.preview_settings.citations;
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges citations to use for test from selectedNamespace ', this.citations)
         }
+      } else {
+        this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings are empty')
       }
     })
 
@@ -286,14 +350,86 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.source_url = '';
     this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview body: ", this.body);
     const startTime = performance.now();
-    this.openaiService.askGpt(this.body).subscribe((response: any) => {
+    this.askAI(this.body, startTime)
+
+    // this.openaiService.askGpt(this.body).subscribe((response: any) => {
+
+    //   this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
+    //   response['ai_model'] = this.selectedModel
+    //   this.prompt_token_size = response.prompt_token_size;
+    //   this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
+    //   const endTime = performance.now();
+    //   this.responseTime = Math.round((endTime - startTime) / 1000); 
+    //   this.translateparam = { respTime: this.responseTime };
+    //   this.qa = response;
+    //   this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
+    //   // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
+    //   if (response.answer) {
+    //     this.answer = response.answer;
+    //   }
+
+    //   if (response && response.source && this.isValidURL(response.source)) {
+    //     this.source_url = response.source;
+    //   }
+
+    //   if (response.success == false) {
+    //     // this.error_answer = true;
+    //   } else {
+    //     //this.answer = response.answer;
+    //   }
+    //   this.show_answer = true;
+    //   this.searching = false;
+    // }, (err) => {
+    //   this.logger.log("ask gpt preview response error: ", err);
+    //   // this.logger.log("ask gpt preview response error message: ", error.message);
+    //   // this.logger.log("ask gpt preview response error error: ", error.error);
+    //   if (err && err.error && err.error.error_code === 13001) {
+    //     this.answer = this.translate.instant('KbPage.AiQuotaExceeded')
+    //     this.aiQuotaExceeded = true
+    //   } else if (err && err.error && err.error.message) {
+    //     this.answer = err.error.message;
+    //   } else if (err.error && err.error.error && err.error.error.answer)  {
+    //     this.answer = err.error.error.answer;
+    //     // && err.headers.statusText
+    //     if (err.statusText) {
+    //       this.logger.log("ask gpt preview  error h1 err.headers ", err.statusText);
+    //       this.answer = this.answer + ' (' + err.statusText + ')'
+    //     }
+    //   }
+
+    //   this.logger.error("ERROR ask gpt: ", err.message);
+
+    //   // this.error_answer = true;
+    //   this.show_answer = true;
+    //   this.searching = false;
+    // }, () => {
+    //   this.logger.log("ask gpt *COMPLETE*")
+    //   this.searching = false;
+    //   this.aiQuotaExceeded = false
+
+    //   const storedQuestion = this.localDbService.getFromStorage(`last_question-${this.namespaceid}`)
+    //   if (storedQuestion) {
+    //     this.hasStoredQuestion = true;
+    //     this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    //     this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
+    //     this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
+
+    //   } else {
+    //     this.hasStoredQuestion = false;
+    //     this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
+    //   }
+    // })
+  }
+
+  askAI(body, startTime) {
+    this.openaiService.askGpt(body).subscribe((response: any) => {
 
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
       response['ai_model'] = this.selectedModel
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
-      this.responseTime = Math.round((endTime - startTime) / 1000); 
+      this.responseTime = Math.round((endTime - startTime) / 1000);
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
@@ -322,7 +458,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.aiQuotaExceeded = true
       } else if (err && err.error && err.error.message) {
         this.answer = err.error.message;
-      } else if (err.error && err.error.error && err.error.error.answer)  {
+      } else if (err.error && err.error.error && err.error.error.answer) {
         this.answer = err.error.error.answer;
         // && err.headers.statusText
         if (err.statusText) {
@@ -347,7 +483,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
         this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion storedQuestion: ", storedQuestion);
         this.storedQuestionNoDoubleQuote = storedQuestion.substring(1, storedQuestion.length - 1)
-        
+
       } else {
         this.hasStoredQuestion = false;
         this.logger.log("[MODAL-PREVIEW-KB] reuseLastQuestion hasStoredQuestion: ", this.hasStoredQuestion);
@@ -371,6 +507,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   }
 
   onCloseBaseModal() {
+    this.logger.log('onCloseBaseModal')
     this.question = "";
     this.answer = "";
     this.source_url = null;
@@ -381,11 +518,19 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     element.style.display = 'none';
     // this.closeBaseModal.emit();
     this.dialogRef.close();
-    if (this.dialogRefAiSettings) { 
+    if (this.dialogRefAiSettings) {
+      this.kbService.hasChagedAiSettings(this.aiSettingsObject)
       this.dialogRefAiSettings.close()
     }
   }
 
+  closeDialogAiSettings(isopenasetting) {
+    this.logger.log(`[MODAL-PREVIEW-KB] closeDialogAiSettings isopenasetting:`, isopenasetting);
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+    this.dialogRefAiSettings.close()
+  }
+
+  // No more used
   closePreviewKBAndOpenSettingsModal() {
     // this.question = "";
     // this.answer = "";
@@ -397,5 +542,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     // element.style.display = 'none';
     this.dialogRef.close({ action: 'open-settings-modal', data: this.body });
   }
+
+
 
 }

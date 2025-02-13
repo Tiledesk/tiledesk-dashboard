@@ -32,6 +32,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -292,6 +293,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   current_selected_prjct: any;
   isChromeVerGreaterThan100: boolean;
   SEARCH_FOR_TICKET_ID: boolean = false;
+  SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX: boolean = false;
   queryParams: any;
   allDeptsLabel: string;
   qs_tags_value: string;
@@ -401,28 +403,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
-        }
-        if (user_role) {
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-
-          } else {
-            this.ROLE_IS_AGENT = false
-          }
-        }
-      });
-  }
-
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
     this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
     if (USER_ROLE === 'agent') {
@@ -481,6 +461,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 this.fullText_temp = this.fullText
               }
             }
+
+            if (paramArray[0] === 'snap_lead_email' && paramArray[1] !== '') {
+              const email_value = paramArray[1]
+              // this.logger.log('[HISTORY & NORT-CONVS]  queryParams email_value value', email_value)
+              if (email_value) {
+                this.fullText =  email_value;
+                // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > this.fullText:', this.fullText)
+                this.fullText_temp = this.fullText
+              }
+            }
+            
 
             if (paramArray[0] === 'full_text' && paramArray[1] !== '') {
               const full_text_value = paramArray[1]
@@ -671,7 +662,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
-      if (this.current_selected_prjct.id_project.profile) {
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project.profile) {
         const projectProfile = this.current_selected_prjct.id_project.profile
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > projectProfile ', projectProfile);
         //  this.logger.log('[HISTORY & NORT-CONVS] - GET PROJECTS - current_selected_prjct > conversationType ', this.conversationType);
@@ -796,7 +787,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
 
     // if (this.requestList.length > 0) {
     //   this.requestList.forEach(request => {
@@ -1098,7 +1091,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       icon: "info",
       showCloseButton: false,
       showCancelButton: false,
-      confirmButtonColor: "var(--primary-btn-background)",
+      // confirmButtonColor: "var(--primary-btn-background)",
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: 'OK',
       // dangerMode: false,
@@ -1113,7 +1106,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCancelButton: true,
       confirmButtonText: this.joinToChatMsg,
       cancelButtonText: this.cancelMsg,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       reverseButtons: true,
       icon: "info",
@@ -1492,8 +1485,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               let newFillColour = '';
 
               if (request.lead && request.lead.fullname) {
+                this.logger.log('request.lead.fullname', request.lead.fullname)
+                this.logger.log('request.lead.fullname is a number', !isNaN(Number(request.lead.fullname)) )
                 newInitials = avatarPlaceholder(request.lead.fullname);
                 newFillColour = getColorBck(request.lead.fullname)
+                if (!isNaN(Number(request.lead.fullname))) {
+                  request['fullnameIsNumber'] = true
+                }
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';
@@ -1626,6 +1624,20 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
+  getProjectUserRole() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role
+          this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
+          if (this.USER_ROLE === 'agent') {
+            this.ROLE_IS_AGENT = true
+          } else {
+            this.ROLE_IS_AGENT = false
+          }
+        }
+      });
+  }
 
 
   // requestWillBePermanentlyDeleted
@@ -1984,10 +1996,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // ------------------------------------------------------------------------------
   // @ Tags - on change tags get selected tag name
   // ------------------------------------------------------------------------------
-  tagNameSelected() {
-    // this.logger.log('[HISTORY & NORT-CONVS] - selecteTagName ', this.selecteTagName);
-
+  onSelectedTagName() {
+    this.logger.log('[HISTORY & NORT-CONVS] - selecteTagName ', this.selecteTagName);
+    this.logger.log('[HISTORY & NORT-CONVS] - tags_array ', this.tags_array);
     const selecteTag = this.tags_array.filter((tag: any) => {
+
       return tag.name === this.selecteTagName;
     });
     // this.logger.log('[HISTORY & NORT-CONVS] - selecteTag ', selecteTag);
@@ -1995,6 +2008,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.selecteTagColor_temp = selecteTag[0]['color']
     }
   }
+
+  onSearchTagName(event) {
+    this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName event term', event.term);
+    this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName tags_array ', this.tags_array);
+
+  
+    const existsInList  = this.tags_array.filter((tag: any) => {
+      return tag.name === event.term;
+      
+    });
+    this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName existsInList ', existsInList);
+
+    if (existsInList.length === 0) {
+      this.selecteTagName = event.term
+    }
+
+  }
+
 
   requestsTypeSelectFromAdvancedOption() {
     // this.logger.log('this.conversationTypeValue: ', this.conversationTypeValue)
@@ -2065,7 +2096,6 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   fulltextChange($event) {
-    //  this.logger.log('[HISTORY & NORT-CONVS] - fulltextChange ', $event);
     //  this.logger.log('[HISTORY & NORT-CONVS] - fulltextChange length ', $event.length);
     if ($event.length === 0) {
       this.clearFullText()
@@ -2245,11 +2275,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     if (this.fullText) {
-      // this.logger.log('searchOnEnterPressed this.fullText ', this.fullText)
+      this.logger.log('searchOnEnterPressed this.fullText ', this.fullText)
+      // Regular Expression for Email Validation
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX = emailPattern.test(this.fullText)
+      this.logger.log('[HISTORY & NORT-CONVS] - has entered an email', this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX)
+
       if (this.fullText.indexOf('#') !== -1) {
-        // this.logger.log('String contains # ');
+        this.logger.log('String contains # ');
         const indexOfHash = this.fullText.indexOf("#");
-        // this.logger.log('indexOfHash # ', indexOfHash);
+        this.logger.log('indexOfHash # ', indexOfHash);
         if (indexOfHash === 0) {
           const stringWithoutHash = this.fullText.substring(1);
           // this.logger.log('string Without Hash ', stringWithoutHash);
@@ -2266,6 +2301,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         // this.logger.log('String Not contains # ');
         this.SEARCH_FOR_TICKET_ID = false
       }
+
+
 
       if (this.SEARCH_FOR_TICKET_ID === false) {
         this.fullTextValue = this.fullText;
@@ -2389,6 +2426,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     let variable_parameter = 'full_text='
     if (this.SEARCH_FOR_TICKET_ID === true) {
       variable_parameter = "ticket_id="
+    }
+    
+    if (this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX === true) {
+      variable_parameter =  "snap_lead_email="  
     }
 
     if (!this.duration) {
@@ -2547,7 +2588,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -2819,7 +2861,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -2913,7 +2955,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -2972,12 +3014,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);
@@ -3264,7 +3306,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               showCloseButton: false,
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
 
 
 
@@ -3277,7 +3319,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               icon: "success",
               showCloseButton: false,
               showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.getRequests();
@@ -3335,7 +3377,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
 
       // button: "OK",

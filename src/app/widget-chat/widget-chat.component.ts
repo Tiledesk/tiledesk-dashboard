@@ -28,7 +28,11 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   @Input() questions: any;
   @Input() activeQuestion: number;
   @Input() IS_ONBOARDING_PAGE: boolean = false;
-
+  @Input() showAttachmentButton: boolean;
+  @Input() showEmojiButton: boolean;
+  // @Input() showAudioRecorderButton: boolean; // to activate whwn is ready on the widget
+  showAudioRecorderButton: boolean =false;
+  
   primaryColorRGBA_1: any
   primaryColorRGBA_050: any
   linearGradient: any
@@ -48,6 +52,9 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    // console.log('[WIDGET-CHAT-COMP] showAttachmentButton ', this.showAttachmentButton)
+    // console.log('[WIDGET-CHAT-COMP] showEmojiButton ', this.showEmojiButton)
+    // console.log('[WIDGET-CHAT-COMP] showAudioRecorderButton ', this.showAudioRecorderButton)
     // console.log('[WIDGET-CHAT-COMP] LABEL_PLACEHOLDER ', this.LABEL_PLACEHOLDER)
     // console.log('[WIDGET-CHAT-COMP] themeColorOpacity ', this.themeColorOpacity)
     if (this.themeColorOpacity === '0.50') {

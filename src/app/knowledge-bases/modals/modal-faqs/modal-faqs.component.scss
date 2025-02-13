@@ -227,15 +227,15 @@
     text-transform: none;
 }
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
-}
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+// }
 
 
 .mat-dialog-traspatent-btn {
@@ -481,7 +481,7 @@
     margin: 0 auto;
     width: 15%;
     height: 15%;
-    background-color: var(--blue-light); // #333;
+    background-color: var(--blue-20); // #333;
     border-radius: 100%;
     -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
     animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
@@ -665,7 +665,7 @@
     position: relative;
     background-color: rgb(255, 255, 255);
     border-radius: 12px;
-    border: 1px solid rgb(226, 232, 239);
+    border: 2px solid rgb(226, 232, 239);
     // box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
     outline: none;
     cursor: pointer;
@@ -675,8 +675,8 @@
 .add-faqs-card-wpr:hover {
     // box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
     // box-shadow: rgba(0, 20, 51, 0.12) 0px 2px 6px;
-    border:1px solid var(--blue-light); // rgb(5, 102, 255);
-    outline:var(--blue-light); // rgb(5, 102, 255) solid 1px;
+    border:2px solid var(--blue-20); // rgb(5, 102, 255);
+    outline:var(--blue-20); // rgb(5, 102, 255) solid 1px;
 }
 
 .add-content-card-content {

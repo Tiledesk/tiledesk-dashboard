@@ -547,15 +547,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getProjectUserRole() {
     // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
         // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE user_role ', user_role);
-        if (user_role) {
-          this.CURRENT_USER_ROLE = user_role;
-          if (user_role === 'agent') {
+        if (projectUser) {
+          this.CURRENT_USER_ROLE = projectUser.role;
+          if (this.CURRENT_USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
             this.displayBtnLabelSeeYourRequets = true
 
@@ -689,8 +685,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // this.logger.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        // COMMENTED NK
-        // this.getDeptsByProjectId(this.projectUserArray)
+   
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
@@ -1022,7 +1017,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancelLbl,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -1069,7 +1064,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       icon: "info",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok') ,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // button: {
       //   text: "OK",
@@ -1163,7 +1158,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      // console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1190,7 +1185,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       });
 
-      this.getDeptsAndCountOfDeptsInRequests(wsrequests);
+      // No more used 
+      // this.getDeptsAndCountOfDeptsInRequests(wsrequests);
     });
   }
   // DEPTS_LAZY: add this 
@@ -1269,14 +1265,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    // console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
 
       .subscribe((wsrequests) => {
-        this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1557,21 +1553,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 return true
               }
 
-
-
             });
           }
         }
 
-
-
         this.ws_requests.forEach((request) => {
 
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
-
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
-
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
 
           request['ua_browser'] = ua_browser;
@@ -1720,6 +1710,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
             request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
             request['requester_fullname'] = request.lead.fullname;
+
+            if (!isNaN(Number(request.lead.fullname))) {
+              request['fullnameIsNumber'] = true
+            }
           } else {
             request['requester_fullname_initial'] = 'N/A';
             request['requester_fullname_fillColour'] = '#6264a7';
@@ -1881,7 +1875,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(5000))
+      .pipe(throttleTime(30000))
       .pipe(
         takeUntil(this.unsubscribe$)
       )

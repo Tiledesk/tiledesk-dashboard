@@ -139,9 +139,12 @@
                               <label class="col-sm-12 label-7695a5">
                                 {{ 'Tags.SearchByTAG' | translate }}
                               </label>
-                              <ng-select [items]="tagsArray" bindLabel="name" bindValue="name"
-                                placeholder="{{'Tags.SelectTag' | translate}}" [(ngModel)]="selectedContactTAG"
-                                (change)="tagNameSelected()" [clearable]='false'>
+                              <ng-select [items]="tagsArray" 
+                                bindLabel="name" bindValue="name"
+                                placeholder="{{'Tags.SelectTag' | translate}}" 
+                                [(ngModel)]="selectedContactTAG"
+                                (change)="tagNameSelected()" 
+                                [clearable]='false'>
                                 <ng-template ng-label-tmp let-item="item">
 
                                   <!-- <div class="tag--color" [ngStyle]="{'background-color': item.color }"></div> -->

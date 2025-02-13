@@ -77,14 +77,20 @@
             <div class="row">
                 <div class="col-sm-12">
 
-                    <button *ngIf="projects && projects?.length > 1" class="btn btn-lg btn-primary" (click)="importTemplate()" [disabled]="!selectedProject && !getChatBotCompleted">
+                    <button *ngIf="projects && projects?.length > 1" class="btn btn-tdblu-no-boxshadow" 
+                        (click)="importTemplate()" [disabled]="!selectedProject && !getChatBotCompleted"
+                        style="height: 48px !important;">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
-                    <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="importTemplate()" [disabled]="!getChatBotCompleted">
+                    <button *ngIf="projects && projects?.length === 1" class="btn btn-tdblu-no-boxshadow" 
+                        (click)="importTemplate()" [disabled]="!getChatBotCompleted"
+                        style="height: 48px !important;">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
 
-                    <button *ngIf="projects && projects?.length === 0" class="btn btn-lg btn-primary" (click)="goToCreateProject()">
+                    <button *ngIf="projects && projects?.length === 0" class="btn btn-tdblu-no-boxshadow" 
+                        (click)="goToCreateProject()"
+                        style="height: 48px !important;">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
                 </div>

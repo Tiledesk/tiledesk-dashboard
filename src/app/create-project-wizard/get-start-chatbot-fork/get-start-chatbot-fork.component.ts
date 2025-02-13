@@ -18,6 +18,7 @@ import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'app/services/cache.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -113,12 +114,12 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-
-        this.logger.log('[GET START CHATBOT FORK] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[GET START CHATBOT FORK] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   // getCurrentProject() {
@@ -370,7 +371,7 @@ export class GetStartChatbotForkComponent implements OnInit {
       icon: "info",
       showCloseButton: false,
       showCancelButton: false,
-      confirmButtonColor: "var(--primary-btn-background)",
+      // confirmButtonColor: "var(--primary-btn-background)",
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: {
       //   catch: {

@@ -36,10 +36,11 @@
             <div class="col-sm-12">
               <div style="text-align: center;">
                 <!-- outline-btn-analytics btn-lg style="padding:11px 22px" -->
-                <button type="button" class="btn btn-tdblu-no-boxshadow" 
+                <span class="span-20"> </span>
+                <button  mat-flat-button class="btn upgrade--btn" 
                   (click)="goToPricing()">
-
-                  <span> {{ 'UpgradeNow' | translate }} </span>
+                  <span class="material-icons-outlined">bolt</span>
+                  {{ 'UpgradeNow' | translate }}
 
                 </button>
               </div>
@@ -64,8 +65,8 @@
                       <mat-form-field class="activity-date-range-picker" appearance="standard"
                         style="margin-left: 14px; width: 100%;">
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="Start date" disabled>
-                          <input matEndDate placeholder="End date" disabled>
+                          <input matStartDate placeholder="{{'StartDate' | translate}}" disabled>
+                          <input matEndDate placeholder="{{'EndDate' | translate}}" disabled>
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>

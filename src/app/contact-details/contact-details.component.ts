@@ -249,7 +249,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
               showCloseButton: false,
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
             });
 
           }, () => {
@@ -261,7 +261,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
               icon: "success",
               showCloseButton: false,
               showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.goToContactList();

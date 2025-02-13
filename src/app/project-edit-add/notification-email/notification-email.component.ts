@@ -51,11 +51,7 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
     // this.auth.checkRoleForCurrentProjectPermissionOnlyToOwner()
     this.getTranslations();
 
-    // if (window.matchMedia(`(min-width: 960px)`).matches) {
-    //   const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
-    //   let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
-    //   ps.update();
-    // }
+    
     this.getBrowserVersion();
     this.listenSidebarIsOpened()
   }
@@ -86,14 +82,6 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
       });
   }
 
-
-
-  // setPerfectScrollbar() {
-  //   const bottom_navbar = <HTMLElement>document.querySelector('.email-tmplt-bottom-nav');
-  //   console.log('[NOTIFICATION-EMAIL] bottom_navbar', bottom_navbar);
-  //   let ps = new PerfectScrollbar(bottom_navbar, {suppressScrollY: true});
-  //   ps.update();
-  // }
 
 
   subscribeToCurrentProjectAndGetProjectById() {

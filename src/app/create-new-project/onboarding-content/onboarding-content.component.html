@@ -10,14 +10,14 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 <!-- [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
 <div class="main-content css-create-project">
     <div *ngIf="showSpinner" class="on-bording-spinner"
-        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB}">
-        <div class="dot-spinner">
+        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP  || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB}">
+        <!-- <div class="dot-spinner">
             <div class="dot1"></div>
             <div class="dot2"></div>
-        </div>
+        </div> -->
     </div>
     <!-- <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
-    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB ||  arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
         <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
         <div class="close-wizard-page">
@@ -47,7 +47,7 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 
    
     <!-- <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
-    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width':  arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
         <!-- arrayOfSteps {{ arrayOfSteps }} arrayOfSteps length {{ arrayOfSteps.length}} -->
         <div *ngFor="let nameStep of arrayOfSteps; index as i" 
             class="step-page"
@@ -129,9 +129,23 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 
             <!-- BUTTONS -->
             <div class="row-navigation" *ngIf="nameStep !== typeStep.NAME_PROJECT"
-            [ngClass]="{'row-navigation-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+            [ngClass]="{'row-navigation-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
                 <div class="navigation-btn">
-                    <button type="button" class="btn-back" 
+                    <!-- <button type="button" class=" btn-back" 
+                        [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
+                        [disabled]="DISABLED_PREV_BUTTON"
+                        (click)="goToPrevCustomStep()">
+                        <em class="material-icons">arrow_back</em>
+                        <span class="onbording-btn-back-text"> 
+                            {{'Back' | translate }}
+                        </span>
+                    </button> -->
+                    <!-- <button class="btn btn-lg btn-primary" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
+                        [disabled]="DISABLED_NEXT_BUTTON"
+                        (click)="goToNextCustomStep()">
+                        {{'OnboardPage.Next' | translate}}
+                    </button> -->
+                    <button type="button" class="btn btn-gray-no-boxshadow onboarding-btn back" 
                         [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
                         [disabled]="DISABLED_PREV_BUTTON"
                         (click)="goToPrevCustomStep()">
@@ -140,10 +154,15 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
                             {{'Back' | translate }}
                         </span>
                     </button>
-                    <button class="btn btn-lg btn-primary" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
+                    
+                    <button class="btn btn-tdblu-no-boxshadow onboarding-btn next" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
                         [disabled]="DISABLED_NEXT_BUTTON"
                         (click)="goToNextCustomStep()">
-                        {{'OnboardPage.Next' | translate}}
+                        
+                        <span class="onbording-btn-next-text"> 
+                            {{'OnboardPage.Next' | translate}}
+                        </span>
+                        <em class="material-icons">arrow_forward</em>
                     </button>
                 </div>
             </div>
@@ -244,9 +263,9 @@ z-index: 1050;" > showSpinner > {{showSpinner}}  - arrayOfSteps > {{arrayOfSteps
 
 
 
-    <!-- <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"> -->
-    <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.SELECT_TEMPLATE_OR_KB && arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
+ 
+    <!-- <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber] !== typeStep.CUSTOM_STEP && arrayOfSteps[activeTypeStepNumber]!==typeStep.SELECT_TEMPLATE_OR_KB && arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
         <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
-    </div>
+    </div> -->
 
 </div>

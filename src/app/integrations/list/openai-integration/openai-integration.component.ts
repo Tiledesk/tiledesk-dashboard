@@ -25,7 +25,7 @@ export class OpenaiIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.logger.debug("[INT-OpenAI] integration ", this.integration)
+    console.log("[INT-OpenAI] integration ", this.integration)
     this.translateparams = { intname: 'OpenAI' };
     if (this.integration.value.apikey) {
       this.checkKey();

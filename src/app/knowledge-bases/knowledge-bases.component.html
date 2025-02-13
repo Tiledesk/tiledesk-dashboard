@@ -96,8 +96,11 @@
                       (mouseout)="onMouseOut()">
               
                       <div *ngIf="!namespaceIsEditable" id="namespace-name-output" class="namespace-name-output" style="padding: 0px;"
-                        (click)="hasClickedNamespaceName()" matTooltipClass="kb-custom-mat-tooltip"
-                        matTooltip="{{'Rename' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                        (click)="hasClickedNamespaceName()" 
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{'Rename' | translate}}" 
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='below'
                         matTooltipHideDelay="100">
                         <!-- <div class="selected-namespace-wpr" style="display: flex; flex-direction: row; gap: 12px; align-items: center;">  -->
                           <div class="selected-namespace"> 
@@ -305,13 +308,17 @@
                 <div id="kb-chatbot" class="served-by-cb-wpr">
                   <div class="served-by-cb-b" *ngFor="let chatbot of chatbotsUsingNamespace; let first = first;">
                     <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                      class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)">
+                      class="served-by-cb-c" (click)="presentDialogGoToCDS(chatbot)"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip=" {{'ViewOption' | translate}}" 
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='left'
+                        matTooltipHideDelay="100">
 
-                      <!-- UPLOAD_ENGINE_IS_FIREBASE - {{ UPLOAD_ENGINE_IS_FIREBASE }}  (click)="cbPopover.toggle() (mouseenter)="cbPopover.toggle()"  "
-                    -->
-
-                      <div class="served-by-cb-d" [satPopoverAnchor]="cbPopover"
-                        (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot" (mouseleave)="cbPopover.toggle()">
+                      <!-- [satPopoverAnchor]="cbPopover"
+                      (mouseenter)="cbPopover.open(); hoveredChatbot = chatbot" 
+                      (mouseleave)="cbPopover.toggle()" -->
+                      <div class="served-by-cb-d">
                         <div size="32" class="served-by-cb-e">
 
                           <!-- --------------------------------------------------- -->
@@ -386,15 +393,15 @@
                 <!-- --------------------------------------- -->
                 <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
                   <!-- This namespace is not used by any chatbot -->
-                  {{ 'KbPage.ThisKBisNotUsedByAnyChatbot' | translate }}
+                  {{ 'KbPage.ThisKBisReadyToUse' | translate }}
 
                   <!-- esportingKBChatBotTemplate >  {{ esportingKBChatBotTemplate}} -->
                   <button class="custom-button xs" style="margin-left: 6px;" (click)="createChatbotfromKbOfficialResponderTemplate()">
                     
                     <span *ngIf="!esportingKBChatBotTemplate">
-                      <!-- Create chatbot  -->
-                      <!-- {{ 'CreateChatbot' | translate }} -->
-                      {{ 'CreateYuorAIAgent' | translate }}
+                   
+                      <!-- {{ 'CreateYuorAIAgent' | translate }} -->
+                      {{ 'CreateYourAIAgentWithOneClick' | translate }}
                     </span>
                     <span *ngIf="esportingKBChatBotTemplate">
                       {{ 'Processing' | translate }}

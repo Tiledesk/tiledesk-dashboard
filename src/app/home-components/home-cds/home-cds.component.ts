@@ -8,6 +8,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { ProjectUser } from 'app/models/project-user';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
@@ -225,14 +226,12 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[HOME-CDS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-CDS] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -663,7 +662,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -694,7 +693,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       showCancelButton: false,
       confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
       // cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       reverseButtons: true,
       // dangerMode: false
     }).then((result: any) => {
@@ -737,7 +736,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       icon: "success",
       showCancelButton: false,
       confirmButtonText: "Let\'s go!",
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
     }).then((result) => {
       if (result.isConfirmed) {

@@ -44,7 +44,7 @@ export class CnpSelectTemplatesOrKbComponent implements OnInit, OnChanges {
     let event = { step: 'step4' }
     this.nextPage.emit(event);
 
-    this.segmentAttributes['onboarding_type'] = this.selectedOption
+    // this.segmentAttributes['onboarding_type'] = this.selectedOption 
     this.goToNext.emit(this.segmentAttributes);
 
     // this.goToNext.emit(this.segmentAttributes);

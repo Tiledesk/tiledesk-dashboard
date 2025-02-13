@@ -1,60 +1,7 @@
 {
   "steps":[
     {
-      "title": "Crea profilo",
-      "buttons": {
-        "next": "Continua"
-      },
-      "questions": [
-        {
-          "title": "Il tuo ruolo",
-          "attribute_name": "user_role",
-          "type": "select",
-          "labels": {
-            "placeholder":"Seleziona il tuo ruolo principale"
-          },
-          "options": [
-            {"label": "Titolare attività", "value": "business_owner"},
-            {"label": "Sviluppatore", "value": "developer"},
-            {"label": "Conversation Designer", "value": "conversation_designer"},
-            {"label": "No-Code Builder", "value": "no_code_builder"},
-            {"label": "Business Stakeholder", "value": "business_stakeholder"},
-            {"label": "Altro", "value": "other"}
-          ]
-        },
-        {
-          "title": "Dimensioni del team",
-          "type": "select",
-          "attribute_name": "company_size",
-          "labels": {
-            "placeholder":"Quanti collaboratori avrai?"
-          },
-          "options": [
-            {"label": "Solo io", "value": "1"},
-            {"label": "Piccolo team (2-5)", "value": "2-5"},
-            {"label": "Grande team (5+)", "value": "5+"}
-          ]
-        },
-        {
-          "title": "Come hai scoperto Tiledesk?",
-          "type": "select",
-          "attribute_name": "acquisition_source",
-          "labels": {
-            "placeholder":"LinkedIn, Amici, Blogs"
-          },
-          "options": [
-            {"label": "Motori di ricerca", "value": "search_engines"},
-            {"label": "Social Media (LinkedIn, Facebook, Instagram, ecc.)", "value": "social_media"},
-            {"label": "Amici o colleghi", "value": "friends_colleagues"},
-            {"label": "Website / blog / video altrui", "value": "third_party_websites_blogs_videos"},
-            {"label": "Altro", "value": "other"}
-          ]
-        }
-      ]
-    }, 
-
-    {
-      "title": "${userFullname} grazie 🙏 Ultime domande prima di iniziare...",
+      "title": "👋 Ciao ${userFullname}",
       "buttons": {
         "back": "Indietro",
         "next": "Continua"

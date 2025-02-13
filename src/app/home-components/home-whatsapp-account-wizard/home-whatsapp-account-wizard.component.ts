@@ -107,23 +107,23 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   }
 
   presentModalConnectWAfirstStep() {
-    // this.goToConnectWA.emit()
+    this.goToConnectWA.emit()
 
-    this.logger.log('[HOME-WA-WIZARD] - presentModalConnectWAfirstStep ');
-    const dialogRef = this.dialog.open(HomeWhatsappAccountWizardModalComponent, {
-      width: '600px',
-      data: {
-        calledBy: 'step1'
-      },
-    })
+    // this.logger.log('[HOME-WA-WIZARD] - presentModalConnectWAfirstStep ');
+    // const dialogRef = this.dialog.open(HomeWhatsappAccountWizardModalComponent, {
+    //   width: '600px',
+    //   data: {
+    //     calledBy: 'step1'
+    //   },
+    // })
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`Dialog result:`, result);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   this.logger.log(`Dialog result:`, result);
 
-      if (result === 'go-to-next-step') {
-        this.goToConnectWA.emit()
-      }
-    });
+    //   if (result === 'go-to-next-step') {
+    //     this.goToConnectWA.emit()
+    //   }
+    // });
   }
 
   presentModalCreateChatbotOnWaChannel() {
