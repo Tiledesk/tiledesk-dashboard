@@ -614,6 +614,8 @@
     "HideChatbotAttributesWidget":"Сакриј виџет Атрибути четбота",
     "EnablingThisOptionHidesChatbotAttributes": "Омогућавањем ове опције сакривају се атрибути робота за ћаскање са бочне траке са детаљима разговора",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Контактирајте нас да повећате своје месечне квоте ресурса",
+    "ThisFeatureIsInBeta":"Ова функција је у бета верзији",
+    "ContactUsToEnableIt":"Контактирајте нас да то омогућимо",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

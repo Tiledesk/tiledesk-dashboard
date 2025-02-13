@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget":"Chatbot атрибуттары виджетін жасыру",
     "EnablingThisOptionHidesChatbotAttributes": "Бұл опцияны қосу сөйлесу мәліметтерінің бүйірлік тақтасынан чатбот атрибуттарын жасырады",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Ай сайынғы ресурстар квотасын ұлғайту үшін бізге хабарласыңыз",
+    "ThisFeatureIsInBeta":"Бұл мүмкіндік бета нұсқасында",
+    "ContactUsToEnableIt":"Оны қосу үшін бізге хабарласыңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

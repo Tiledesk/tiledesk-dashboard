@@ -615,6 +615,8 @@
     "HideChatbotAttributesWidget":"Chatbot atributlari vidjetini yashirish",
     "EnablingThisOptionHidesChatbotAttributes": "Увімкнення цієї опції приховує атрибути чат-бота на бічній панелі деталей розмови",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Зв’яжіться з нами, щоб збільшити місячні квоти ресурсів",
+    "ThisFeatureIsInBeta":"Ця функція знаходиться в бета-версії",
+    "ContactUsToEnableIt":"Зв'яжіться з нами, щоб увімкнути його",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

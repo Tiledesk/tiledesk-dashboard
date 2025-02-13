@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget":"Nascondi widget Attributi Chatbot",
     "EnablingThisOptionHidesChatbotAttributes": "Abilitando questa opzione si nascondono gli attributi del chatbot dalla barra laterale dei dettagli della conversazione",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Contattaci per aumentare le tue quote di risorse mensili",
+    "ThisFeatureIsInBeta":"Questa funzionalità è in versione beta",
+    "ContactUsToEnableIt":"Contattaci per abilitarla",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

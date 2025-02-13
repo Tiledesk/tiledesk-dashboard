@@ -612,6 +612,8 @@
 	"HideChatbotAttributesWidget":"Wenn Sie diese Option aktivieren, werden die Attribute des Chatbots aus der Seitenleiste mit den Konversationsdetails ausgeblendet",
 	"EnablingThisOptionHidesChatbotAttributes": "Bu seçimin aktivləşdirilməsi chatbotun atributlarını söhbət detalları yan panelindən gizlədir",
 	"ContactUsToIncreaseYourMonthlyResourcesQuotas":"Kontaktieren Sie uns, um Ihr monatliches Ressourcenkontingent zu erhöhen",
+	"ThisFeatureIsInBeta":"Diese Funktion ist in der Betaphase",
+	"ContactUsToEnableIt":"Contactez-nous pour l'activer",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

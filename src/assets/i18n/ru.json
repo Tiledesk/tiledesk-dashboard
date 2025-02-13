@@ -613,6 +613,8 @@
     "HideChatbotAttributesWidget":"Скрыть виджет «Атрибуты чат-бота»",
     "EnablingThisOptionHidesChatbotAttributes": "Включение этой опции скрывает атрибуты чат-бота на боковой панели сведений о разговоре.",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Свяжитесь с нами, чтобы увеличить ежемесячные квоты ресурсов",
+    "ThisFeatureIsInBeta":"Эта функция находится в стадии бета-тестирования",
+    "ContactUsToEnableIt":"Свяжитесь с нами, чтобы включить его",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

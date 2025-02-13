@@ -612,6 +612,8 @@
     "HideChatbotAttributesWidget":"إخفاء سمات Chatbot",
     "EnablingThisOptionHidesChatbotAttributes": "يؤدي تمكين هذا الخيار إلى إخفاء سمات روبوت المحادثة من الشريط الجانبي لتفاصيل المحادثة",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"اتصل بنا لزيادة حصص الموارد الشهرية الخاصة بك",
+    "ThisFeatureIsInBeta":"هذه الميزة في مرحلة تجريبية",
+    "ContactUsToEnableIt":"اتصل بنا لتمكينه",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

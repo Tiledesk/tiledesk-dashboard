@@ -613,6 +613,8 @@
     "HideChatbotAttributesWidget":"Chatbot atributlari vidjetini yashirish",
     "EnablingThisOptionHidesChatbotAttributes": "Ushbu parametr yoqilsa, chatbotning atributlari suhbat tafsilotlari yon panelidan yashiriladi",
     "ContactUsToIncreaseYourMonthlyResourcesQuotas":"Oylik resurslar kvotalarini oshirish uchun biz bilan bog'laning",
+    "ThisFeatureIsInBeta":"Bu xususiyat beta-versiyada",
+    "ContactUsToEnableIt":"Uni yoqish uchun biz bilan bog'laning",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
