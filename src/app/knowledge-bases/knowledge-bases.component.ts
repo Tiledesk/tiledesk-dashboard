@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -44,6 +44,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { ProjectUser } from 'app/models/project-user';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -62,7 +63,7 @@ const Swal = require('sweetalert2')
   styleUrls: ['./knowledge-bases.component.scss']
 })
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
   typeKnowledgeBaseModal: string;
@@ -89,7 +90,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   project: Project;
   project_name: string;
   id_project: string;
+
+
+
   profile_name: string;
+
+  isAvailableRefreshRateFeature: boolean;
+  t_params: any
+
   callingPage: string;
   errorMessage: string;
 
@@ -137,10 +145,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   contactUs: string;
   upgrade: string;
   cancel: string;
-
   paramsDefault: string // = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
-
-
   selectedNamespace: any;
   hasChangedNameSpace: boolean = false;
 
@@ -182,9 +187,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   private dialogRefHookBoot: MatDialogRef<any>;
   timer: number = 500;
-  hasCickedAiSettingsModalBackdrop: boolean = false;
+  hasClickedAiSettingsModalBackdrop: boolean = false;
+  hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
+  refreshRateIsEnabled: boolean
 
   constructor(
     private auth: AuthService,
@@ -335,9 +342,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
+      const isActiveSubscription = project.isActiveSubscription
+      const trialExpired = project.trialExpired
+      const projectProfileType = project.profile.type
+      this.managePlanRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
+      const projectProfile = project.profile
+      this.getIfRefreshRateIsEnabledInCustomization(projectProfile)
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - isActiveSubscription: ', isActiveSubscription);
     }, error => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
@@ -357,6 +371,158 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.getAllNamespaces()
       }
     });
+  }
+
+  getIfRefreshRateIsEnabledInCustomization(projectProfile) {
+    console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
+    if (projectProfile && projectProfile['customization']) {
+
+      if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] !== undefined) {
+
+        if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] === true) {
+
+          this.refreshRateIsEnabled = true
+          console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 1: ', this.refreshRateIsEnabled);
+
+        } else if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] === false) {
+
+          this.refreshRateIsEnabled = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 2: ', this.refreshRateIsEnabled);
+        }
+
+      } else {
+        this.refreshRateIsEnabled = false
+        console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 3: ', this.refreshRateIsEnabled);
+      }
+
+    } else {
+      this.refreshRateIsEnabled = false
+      console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 4: ', this.refreshRateIsEnabled);
+    }
+  }
+
+  managePlanRefreshRateAvailability(profileName, isActiveSubscription, trialExpired, projectProfileType) {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - profile_name: ', profileName);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', trialExpired);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
+    this.t_params = { 'plan_name': PLAN_NAME.EE }
+    if (projectProfileType === 'free') {
+      if (trialExpired === false) {
+        // Trial active
+        if (profileName === 'free') {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+
+        } else if (profileName === 'Sandbox') {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else {
+        // Trial expired
+        if (profileName === 'free') {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        } else if (this.profile_name === 'Sandbox') {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    } else if (projectProfileType === 'payment') {
+
+      if (isActiveSubscription === true) {
+        // Growth sub active
+        if (profileName === PLAN_NAME.A) {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub active
+        } else if (profileName === PLAN_NAME.B) {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub active
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.isAvailableRefreshRateFeature = true;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Basic sub active
+        } else if (profileName === PLAN_NAME.D) {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Premium sub active
+        } else if (profileName === PLAN_NAME.E) {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Team sub active
+        } else if (profileName === PLAN_NAME.EE) {
+          this.isAvailableRefreshRateFeature = true;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub active
+        } else if (profileName === PLAN_NAME.F) {
+          this.isAvailableRefreshRateFeature = true;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else if (isActiveSubscription === false) {
+        // Growth sub expired
+        if (profileName === PLAN_NAME.A) {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub expired
+        } else if (profileName === PLAN_NAME.B) {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub expired
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Basic sub expired
+        } else if (profileName === PLAN_NAME.D) {
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Premium sub expired
+        } else if (profileName === PLAN_NAME.E) {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Team sub expired
+        } else if (profileName === PLAN_NAME.EE) {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub expired
+        } else if (profileName === PLAN_NAME.F) {
+
+          this.isAvailableRefreshRateFeature = false;
+          this.logger.log('[KNOWLEDGE-BASES-COMP]  isAvailableRefreshRateFeature', this.isAvailableRefreshRateFeature, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    }
   }
 
 
@@ -394,16 +560,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   selectLastUsedNamespaceAndGetKbList(namespaces) {
     const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.id_project}`)
-
+    //  this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList storedNamespace ', storedNamespace)
     if (!storedNamespace) {
       this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespace on init NOT EXIST storedNamespace', storedNamespace, ' RUN FILTER FOR DEFAULT')
 
       const currentUrl = this.router.url;
 
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList currentUrl ', currentUrl)
       let currentUrlSegment = currentUrl.split('/');
 
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
+      this.logger.log('[KNOWLEDGE-BASES-COMP] selectLastUsedNamespaceAndGetKbList stringBeforeLastBackslash ', currentUrlSegment)
       currentUrlSegment.forEach(segment => {
         if (segment === 'knowledge-bases') {
           this.nameSpaceId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
@@ -440,7 +606,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.selectedNamespace = namespaces.find((el) => {
           return el.id === this.nameSpaceId;
         });
-
+        if (!this.selectedNamespace) {
+          // Fall back to default
+          this.selectedNamespace = namespaces.find((el) => {
+            return el.default === true
+          });
+          this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        }
         this.selectedNamespaceName = this.selectedNamespace.name
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
         this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(this.selectedNamespace))
@@ -832,7 +1004,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         } else {
           this.logger.log('[KNOWLEDGE-BASES-COMP] Not exist kbOfficialResponderTemplate', kbOfficialResponderTemplate)
           this.esportingKBChatBotTemplate = false;
-          this.presentDialogNotExistThekbOfficialResponderTemplate() 
+          this.presentDialogNotExistThekbOfficialResponderTemplate()
         }
       }
     })
@@ -860,7 +1032,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.esportingKBChatBotTemplate = false
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - EXPORT BOT TO JSON - COMPLETE');
-      
+
 
     });
   }
@@ -1013,7 +1185,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot') , //"It is not possible to create the chatbot",
+      title: this.translate.instant('ItIsNotPossibleToCreateTheChatbot'), //"It is not possible to create the chatbot",
       text: this.translate.instant('YourProjectIsMissingTheTemplateNeededToCreateTheChatbot') + ' !',
       icon: "error",
       showCloseButton: false,
@@ -1225,6 +1397,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         askBody: previedata
       },
     });
+    dialogRef.backdropClick().subscribe((event) => {
+      this.logger.log('Modal preview Backdrop clicked', event);
+       this.hasClickedPreviewModalBackdrop = true
+       const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
+       document.dispatchEvent(customevent);
+     });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
@@ -1244,7 +1422,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onOpenBaseModalPreviewSettings(previedata?: any) {
     // this.baseModalPreviewSettings = true;
-    // #191d2285;
+    //#191d2285;
     const dialogRef = this.dialog.open(ModalPreviewSettingsComponent, {
       // backdropClass: 'cdk-overlay-transparent-backdrop',
       backdropClass: 'overlay-backdrop',
@@ -1257,8 +1435,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('AI model Backdrop clicked', event);
-      this.hasCickedAiSettingsModalBackdrop = true
-      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasCickedAiSettingsModalBackdrop });
+      this.hasClickedAiSettingsModalBackdrop = true
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedAiSettingsModalBackdrop });
       document.dispatchEvent(customevent);
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -1368,7 +1546,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-  onOpenAddContent(){
+  onOpenAddContent() {
     const dialogRef = this.dialog.open(ModalAddContentComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -1453,28 +1631,59 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
+      data: {
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name:  this.project_name,
+        payIsVisible: this.payIsVisible
+      },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add URLS AFTER CLOSED] Dialog body: ', body);
       if (body) {
-        this.onAddMultiKb(body)
+        if (!body.hasOwnProperty('upgrade_plan')) {
+          this.onAddMultiKb(body)
+        } else {
+          this.logger.log('Property "upgrade_plan" exist');
+          this.goToPricing()
+        }
+      } else {
+        this.logger.log(body);
       }
     });
 
   }
-
 
   presentModalImportSitemap() {
     const dialogRef = this.dialog.open(ModalSiteMapComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
-
+      data: {
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name:  this.project_name,
+        payIsVisible: this.payIsVisible
+      },
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal IMPORT SITEMAP AFTER CLOSED]  body: ', body);
+      // if (body) {
+      //   this.onAddMultiKb(body)
+      // }
       if (body) {
-        this.onAddMultiKb(body)
+        if (!body.hasOwnProperty('upgrade_plan')) {
+          this.onAddMultiKb(body)
+        } else {
+          this.logger.log('Property "upgrade_plan" exist');
+          this.goToPricing()
+        }
+      } else {
+        this.logger.log(body);
       }
 
     });
@@ -1498,18 +1707,53 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
+  goToPricing() {
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          if (this.profile_name === PLAN_NAME.C) {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 1 ')
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
 
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 2 ')
+          } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+            // this.notify._displayContactUsModal(true, 'upgrade_plan');
+            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 3 ')
+          }
+        } else if (this.prjct_profile_type === 'free') {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE
+
+        ) {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 4 ')
+          // this.presentModalFeautureAvailableOnlyWithPlanC()
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
-      });
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 5 ')
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 6 ')
+    }
+  }
+
+  getProjectUserRole() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
 
@@ -1900,7 +2144,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showCancelButton: false,
           // confirmButtonColor: "var(--primary-btn-background)",
           confirmButtonText: this.translate.instant('Ok'),
-       
+
         })
       } else {
         this.listSitesOfSitemap = resp.sites;
@@ -1922,7 +2166,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         showCancelButton: false,
         // confirmButtonColor: "var(--primary-btn-background)",
         confirmButtonText: this.translate.instant('Ok'),
-       
+
       })
 
     }, () => {
@@ -2008,7 +2252,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
-        this.logger.log('here 1 this.kbLimit ', this.kbLimit , 'error ', error)
+        this.logger.log('here 1 this.kbLimit ', this.kbLimit, 'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error,
@@ -2026,7 +2270,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           }
         })
       } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
-        this.logger.log('here 2 this.kbLimit ', this.kbLimit,  'error ', error)
+        this.logger.log('here 2 this.kbLimit ', this.kbLimit, 'error ', error)
         Swal.fire({
           title: this.warningTitle,
           text: error + '. ' + this.contactUsToUpgrade,
@@ -2059,7 +2303,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onAddMultiKb(body) {
-    this.logger.log('onAddMultiKb body' ,body) 
+    this.logger.log('onAddMultiKb body', body)
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
@@ -2169,9 +2413,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           showConfirmButton: false,
           cancelButtonText: this.cancel,
           focusConfirm: false,
-            // confirmButtonText: this.translate.instant('ContactUs'),
+          // confirmButtonText: this.translate.instant('ContactUs'),
           // confirmButtonColor: "var(--blue-light)",
-           // buttons: [null, this.cancel],
+          // buttons: [null, this.cancel],
           // dangerMode: false
         })
 

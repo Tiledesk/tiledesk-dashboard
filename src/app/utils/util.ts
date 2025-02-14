@@ -436,13 +436,21 @@ export enum KB_MAX_NUM {
     Custom = 1000
 };
 
+// export const PLANS_LIST = {
+//     FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+//     Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
+//     Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+//     Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+//     Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+//     Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+// }
 export const PLANS_LIST = {
-    FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
-    Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
-    Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
-    Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
-    Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
-    Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+    FREE_TRIAL: { requests: 200,    messages: 0,    tokens: 100000,     voice_duration: 0,       email: 200,     chatbots: 20,      namespace: 3,   kbs: 50     }, // same as PREMIUM
+    Sandbox:    { requests: 200,    messages: 0,    tokens: 100000,     voice_duration: 0,       email: 200,     chatbots: 2,       namespace: 1,   kbs: 50     },
+    Basic:      { requests: 800,    messages: 0,    tokens: 2000000,    voice_duration: 0,       email: 200,     chatbots: 5,       namespace: 1,   kbs: 150    },
+    Premium:    { requests: 3000,   messages: 0,    tokens: 5000000,    voice_duration: 0,       email: 200,     chatbots: 20,      namespace: 3,   kbs: 300    },
+    Team:       { requests: 5000,   messages: 0,    tokens: 10000000,   voice_duration: 0,       email: 200,     chatbots: 50,      namespace: 10,  kbs: 1000   },
+    Custom:     { requests: 5000,   messages: 0,    tokens: 10000000,   voice_duration: 120000,  email: 200,     chatbots: 50,      namespace: 10,  kbs: 1000   },
 }
 
 // Basic plan
@@ -926,6 +934,8 @@ export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advance
 export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
 export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
+export const URL_advanced_context_doc ='https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
+export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
 export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 
 

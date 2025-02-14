@@ -1118,7 +1118,7 @@ export class AuthService {
           if (window['analytics']) {
 
             let userFullname = ''
-            if (storedUserParsed.firstname && storedUserParsed.lastname) {
+            if (storedUserParsed && storedUserParsed.firstname && storedUserParsed.lastname) {
               userFullname = storedUserParsed.firstname + ' ' + storedUserParsed.lastname
             } else if (storedUserParsed.firstname && !storedUserParsed.lastname) {
               userFullname = storedUserParsed.firstname
