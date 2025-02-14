@@ -622,6 +622,8 @@
     "WhenEnabledAttachments": "When enabled, users can send attachments. When disabled, the attachment button will be hidden",
     "DisableEmoji": "Disable emoji",
     "WhenEnabledEmoji": "When enabled, users can send emoji. When disabled, the emoji button will be hidden",
+    "UploadLogo": "Upload logo",
+    "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2084,7 +2086,7 @@
     "UserNotFound": "Foydalanuvchi topilmadi",
     "SystemTrigger": "Tizim trigger",
     "CustomTrigger": "Maxsus trigger",
-    "YourLogoMustBeSmallerThan50kB": "Sizning logotipingiz 50 KB dan kichik bo'lishi kerak",
+    "YourLogoMustBeSmallerThan50kB": "Your logo must be smaller than 1024KB",
     "TheOptimumImageSizeIs78x78": "Optimal tasvir hajmi 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Shaffof fonga ega PNG yoki GIF eng yaxshi ishlaydi",
     "HowWorks": "{{ helpdoc }} qanday ishlaydi",
