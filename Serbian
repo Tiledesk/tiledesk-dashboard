@@ -622,6 +622,8 @@
     "WhenEnabledAttachments": "When enabled, users can send attachments. When disabled, the attachment button will be hidden",
     "DisableEmoji": "Disable emoji",
     "WhenEnabledEmoji": "When enabled, users can send emoji. When disabled, the emoji button will be hidden",
+    "UploadLogo": "Upload logo",
+    "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2084,7 +2086,7 @@
     "UserNotFound": "Корисник није пронађен",
     "SystemTrigger": "Системски окидач",
     "CustomTrigger": "Прилагођени окидач",
-    "YourLogoMustBeSmallerThan50kB": "Ваш логотип мора бити мањи од 50 КБ",
+    "YourLogoMustBeSmallerThan50kB": "Your logo must be smaller than 1024KB",
     "TheOptimumImageSizeIs78x78": "Оптимална величина слике је 78 к 78 пиксела",
     "PNGorGIFwithTransparentBackgroundWorksBest": "ПНГ или ГИФ са провидном позадином најбоље функционише",
     "HowWorks": "Како {{ helpdoc }} ради",
