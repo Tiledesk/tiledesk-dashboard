@@ -1,14 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { OpenaiService } from 'app/services/openai.service';
 
 @Component({
-  selector: 'openai-integration',
-  templateUrl: './openai-integration.component.html',
-  styleUrls: ['./openai-integration.component.scss']
+  selector: 'ollama-integration',
+  templateUrl: './ollama-integration.component.html',
+  styleUrls: ['./ollama-integration.component.scss']
 })
-export class OpenaiIntegrationComponent implements OnInit {
+export class OllamaIntegrationComponent implements OnInit {
 
   @Input() integration: any;
   @Output() onUpdateIntegration = new EventEmitter;
@@ -25,8 +24,8 @@ export class OpenaiIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.logger.log("[INT-OpenAI] integration ", this.integration)
-    this.translateparams = { intname: 'OpenAI' };
+    this.logger.log("[INT-Ollama] integration ", this.integration)
+    this.translateparams = { intname: 'Ollama' };
     if (this.integration.value.apikey) {
       this.checkKey();
     }
@@ -59,13 +58,14 @@ export class OpenaiIntegrationComponent implements OnInit {
 
   checkKey() {
     return new Promise((resolve) => {
-      let url = "https://api.openai.com/v1/models";
+      let url = "https://api.cohere.com/v1/models";
       let key = "Bearer " + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
+        this.logger.log("[INT-Cohere] Key verification resp: ", resp);
         this.isVerified = true;
         resolve(true);
       }, (error) => {
-        this.logger.error("[INT-OpenAI] Key verification failed: ", error);
+        this.logger.error("[INT-Cohere] Key verification failed: ", error);
         this.isVerified = false;
         resolve(false);
       })
@@ -117,5 +117,7 @@ export class OpenaiIntegrationComponent implements OnInit {
     }
     return this.isMasked ? '●'.repeat(this.integration.value.apikey.length) : this.integration.value.apikey;
   }
+
+
 
 }
