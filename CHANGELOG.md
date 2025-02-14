@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.75-rc1
+- Requires "Refresh rate" feature to be enabled in order to use it 
+
 ### 2.7.74-rc3
 - Improves the Knowledge base preview
 - Improves the method of uploading a custom logo for the widget
