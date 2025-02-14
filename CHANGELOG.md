@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.74
+- Adds Google Gemini integration
+- Adds Claude integration
+- Adds Croq integration
+- Adds Cohere integration
+
+### 2.7.73
+- Fixes visibility of blocks in Reassign Conversation
+
 ### 2.7.72
 - Hides the live announcement Changelog on the login page and project list page
 
