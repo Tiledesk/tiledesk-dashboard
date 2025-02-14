@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.76
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
+
 ### 2.7.75
 - Makes AI integrations available from the Premium plan
 
