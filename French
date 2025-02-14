@@ -622,6 +622,8 @@
     "WhenEnabledAttachments": "When enabled, users can send attachments. When disabled, the attachment button will be hidden",
     "DisableEmoji": "Disable emoji",
     "WhenEnabledEmoji": "When enabled, users can send emoji. When disabled, the emoji button will be hidden",
+    "UploadLogo": "Upload logo",
+    "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2084,7 +2086,7 @@
     "UserNotFound": "Utilisateur non trouvé",
     "SystemTrigger": "Déclencheur système",
     "CustomTrigger": "Déclencheur personnalisé",
-    "YourLogoMustBeSmallerThan50kB": "Votre logo doit être inférieur à 50 Ko",
+    "YourLogoMustBeSmallerThan50kB": "Your logo must be smaller than 1024KB",
     "TheOptimumImageSizeIs78x78": "La taille d'image optimale est de 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Un PNG ou un GIF avec un fond transparent fonctionne mieux",
     "HowWorks": "Comment fonctionne {{ helpdoc }}",
