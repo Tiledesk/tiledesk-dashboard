@@ -622,6 +622,8 @@
     "WhenEnabledAttachments": "When enabled, users can send attachments. When disabled, the attachment button will be hidden",
     "DisableEmoji": "Disable emoji",
     "WhenEnabledEmoji": "When enabled, users can send emoji. When disabled, the emoji button will be hidden",
+    "UploadLogo": "Upload logo",
+    "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2084,7 +2086,7 @@
     "UserNotFound": "Användaren hittades inte",
     "SystemTrigger": "Systemutlösare",
     "CustomTrigger": "Anpassad utlösare",
-    "YourLogoMustBeSmallerThan50kB": "Din logotyp måste vara mindre än 50 KB",
+    "YourLogoMustBeSmallerThan50kB": "Your logo must be smaller than 1024KB",
     "TheOptimumImageSizeIs78x78": "Den optimala bildstorleken är 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "En PNG eller GIF med en genomskinlig bakgrund fungerar bäst",
     "HowWorks": "Hur {{ helpdoc }} fungerar",
