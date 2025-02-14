@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.75
+- Makes AI integrations available from the Premium plan
+
 ### 2.7.74
 - Adds Google Gemini integration
 - Adds Claude integration
