@@ -622,6 +622,8 @@
     "WhenEnabledAttachments": "When enabled, users can send attachments. When disabled, the attachment button will be hidden",
     "DisableEmoji": "Disable emoji",
     "WhenEnabledEmoji": "When enabled, users can send emoji. When disabled, the emoji button will be hidden",
+    "UploadLogo": "Upload logo",
+    "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
@@ -2084,7 +2086,7 @@
     "UserNotFound": "Пайдаланушы табылмады",
     "SystemTrigger": "Жүйе триггері",
     "CustomTrigger": "Арнаулы триггер",
-    "YourLogoMustBeSmallerThan50kB": "Сіздің логотипіңіз 50 КБ-тан аз болуы керек",
+    "YourLogoMustBeSmallerThan50kB": "Your logo must be smaller than 1024KB",
     "TheOptimumImageSizeIs78x78": "Оңтайлы кескін өлшемі 78px x 78px",
     "PNGorGIFwithTransparentBackgroundWorksBest": "Мөлдір фоны бар PNG немесе GIF жақсы жұмыс істейді",
     "HowWorks": "{{ helpdoc }} қалай жұмыс істейді",
