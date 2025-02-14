@@ -494,7 +494,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       showCloseButton: false,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       // reverseButtons: true,
       // buttons: [null, this.cancel],
@@ -526,7 +526,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       showCancelButton: false,
       confirmButtonText: this.translate.instant('BotsPage.Continue') + ' ' + '<i class="fa fa-arrow-right">',
       // cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       reverseButtons: true,
       // dangerMode: false
     }).then((result: any) => {

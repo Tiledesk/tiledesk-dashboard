@@ -88,8 +88,15 @@
   align-self: center;
 }
 
+.actions-btn-wpr > button {
+  background-color: var(--blue-20);
+  color: #fff;
+  font-family: var(--header-font-family);
+  font-weight: 400;
+}
+
 .wa-status-label {
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 400;
   font-size: 12px;
 }
@@ -106,7 +113,7 @@
 }
 
 .wa-connection-status {
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 500;
   font-size: 12px;
 }
@@ -132,7 +139,7 @@
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   color: #fff !important;

@@ -32,12 +32,14 @@ import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
-import { avatarPlaceholder, getColorBck } from './utils/util';
+import { avatarPlaceholder, freePlanLimitDate, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
 import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
+import { SleekplanApiService } from './services/sleekplan-api.service';
+
 // import { UsersService } from './services/users.service';
 
 
@@ -53,7 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
-
+    private sleekPlanObserver: MutationObserver | null = null; // Store observer reference
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -85,6 +87,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     current_selected_prjct_user: any;
 
     wsInitialized: boolean = false;
+    currenturl: string
     // private logger: LoggerService = LoggerInstance.getInstance();
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -103,16 +106,33 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private notify: NotifyService,
         public usersLocalDbService: LocalDbService,
         private projectService: ProjectService,
-       
         private sleekplanSsoService: SleekplanSsoService,
-        private  sleekplanService: SleekplanService
+        private sleekplanService: SleekplanService,
+        private sleekplanApiService: SleekplanApiService
+
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
     ) {
+
+
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                // this.logger.log('NavigationEnd event ', event)
+                // console.log('[APP-COMPONENT] - NavigationEnd event url ', event.url)
+                this.currenturl = event.url
+
+                if (this.currenturl === '/projects' || this.currenturl === '/login') {
+                    this.hideSleekPlanRightPopup()
+                } else {
+                    this.stopObservingSleekPlan(); // Disconnect observer when navigating away
+                }
+
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
+
+                if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup' && event.urlAfterRedirects !== '/create-new-project') {
+                    this.logger.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
+                    this.getCurrentProject(event.urlAfterRedirects)
+                }
+
 
                 const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
                 if (event.url !== '/signup') {
@@ -178,6 +198,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.log('[APP-COMPONENT] getConfig chatEngine', appConfigService.getConfig().chatEngine)
         this.logger.log('[APP-COMPONENT] getConfig uploadEngine', appConfigService.getConfig().uploadEngine)
         this.logger.log('[APP-COMPONENT] getConfig pushEngine', appConfigService.getConfig().pushEngine)
+
+
         // if (appConfigService.getConfig().chatEngine && appConfigService.getConfig().chatEngine !== 'mqtt') {
         if (appConfigService.getConfig().uploadEngine === 'firebase' || appConfigService.getConfig().chatEngine === 'firebase' || appConfigService.getConfig().pushEngine === 'firebase') {
             this.logger.log('[APP-COMPONENT] - WORKS WITH FIREBASE ')
@@ -234,15 +256,179 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.logger.log('[APP-COMPONENT] There is no logged in user')
         }
+
+
         this.subscription = router.events.subscribe((event) => {
+            // ------------------------------------------------------
+            // if page is refreshed get if Sleekpan popoup is clicked
+            // ------------------------------------------------------
             if (event instanceof NavigationStart) {
                 browserRefresh = !router.navigated;
+                this.logger.log('[APP-COMPONENT] browserRefresh ', browserRefresh)
+                this.logger.log('[APP-COMPONENT] browserRefresh ', event)
+                if (browserRefresh === true) {
+                    window.addEventListener('load', () => {
+                        this.logger.log('Page fully loaded');
+
+                        // Check if there is the sleelplan chagenlog live announcemnt popup
+                        this.checkSPPopupIframeWithRetries(5, 1000); // Retry 5 times with a 1-second delay
+                    });
+                }
             }
         });
 
-       
+
         this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
+
     }
+
+    hideSleekPlanRightPopup = () => {
+        // console.log("Observing SleekPlan popup...");
+
+        // If an observer is already running, disconnect it first
+        if (this.sleekPlanObserver) {
+            this.sleekPlanObserver.disconnect();
+            this.sleekPlanObserver = null;
+        }
+
+        this.sleekPlanObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    // console.log('node ', node) 
+                    if (node instanceof HTMLElement && node.classList.contains('i-sl-wrapper')) {
+                        // console.log("✅ SleekPlan iframe found and removed!");
+                        // node.remove(); // Remove the iframe
+
+                        // console.log("✅ SleekPlan popup detected and hidden! node" , node) ;
+
+                        // Find the nested iframe inside this wrapper
+                        const iframe = node.querySelector('iframe');
+                        // console.log("✅ SleekPlan popup detected and hidden! iframe" , iframe) ;
+                        if (iframe) {
+                            iframe.style.display = 'none'; // Hide only the iframe
+                            // console.log("✅ SleekPlan iframe hidden!");
+                        }
+                        // node.style.display = 'none'
+                        if (this.sleekPlanObserver) {
+                            this.sleekPlanObserver.disconnect(); // Stop observing
+                            this.sleekPlanObserver = null;
+                        }
+                    }
+                });
+            });
+        });
+
+        this.sleekPlanObserver.observe(document.body, { childList: true, subtree: true });
+    };
+
+    stopObservingSleekPlan = () => {
+        if (this.sleekPlanObserver) {
+            // console.log("🛑 Stopping SleekPlan observer...");
+            this.sleekPlanObserver.disconnect();
+            this.sleekPlanObserver = null;
+        }
+
+        const iframe = document.querySelector('.i-sl-wrapper.right.popup.active iframe') as HTMLElement;
+        // console.log('stopObservingSleekPlan iframe ', iframe) 
+        if (iframe) {
+            iframe.style.display = ''; // Restore default style
+            //   console.log("✅ SleekPlan iframe shown again!");
+        }
+    };
+
+    // _hideSleekPlanRightPopup = (maxRetries = 25, delay = 1000) => {
+
+    //     console.log(`here 2 `);
+    //     let attempts = 0;
+    //     const checkForIframe = () => {
+    //         attempts++;
+    //         console.log(`Attempt ${attempts} to find the iframe...`);
+    //         const sleekPlanIframeWrp = document.querySelector('.i-sl-wrapper.right.popup.active');
+    //         console.log('[APP-COMPONENT] iframe ', sleekPlanIframeWrp)
+    //         if (sleekPlanIframeWrp) {
+
+    //             sleekPlanIframeWrp.remove(); // Remove the iframe
+
+    //             return; // Stop further retries once the iframe is found
+    //         }
+
+    //         if (attempts < maxRetries) {
+    //             setTimeout(checkForIframe, delay);
+    //         } else {
+    //             console.log('Max attempts reached to hide SS popoup. Iframe not found.');
+    //         }
+
+
+    //     };
+    //     checkForIframe();
+    // }
+
+    checkSPPopupIframeWithRetries = (maxRetries = 5, delay = 1000) => {
+        let attempts = 0;
+
+        const checkForIframe = () => {
+            attempts++;
+            this.logger.log(`Attempt ${attempts} to find the iframe...`);
+
+            const wrapper = document.getElementById('sleek-widget-wrap');
+            this.logger.log('wrapper 1', wrapper)
+            if (wrapper) {
+                this.logger.log('wrapper', wrapper)
+                // this.observeClassChange('.i-sl-wrapper.right.popup.active', 'expanded', () => {
+                this.observeClassChange(wrapper, 'expanded', () => {
+                    this.logger.log('The "expanded" class was added!');
+                    this.sleekplanApiService.hasOpenedSPChangelogFromPopup()
+                });
+
+                return; // Stop further retries once the iframe is found
+            }
+
+            if (attempts < maxRetries) {
+                setTimeout(checkForIframe, delay);
+            } else {
+                this.logger.log('Max attempts reached. Iframe not found.');
+            }
+        };
+
+        checkForIframe();
+    };
+
+
+    // observeClassChange(targetSelector: any, classToDetect: string, callback: () => void): void {
+    observeClassChange(targetElement: any, classToDetect: string, callback: () => void): void {
+        // const targetElement = document.querySelector(targetSelector);
+        this.logger.log('targetElement ', targetElement);
+        // if (!targetElement) {
+        //     this.logger.error('Target element not found');
+        //     return;
+        // }
+
+        // Create a MutationObserver instance
+        const observer = new MutationObserver((mutationsList) => {
+
+            for (const mutation of mutationsList) {
+                this.logger.log('mutation ', mutation);
+                if (
+                    mutation.type === 'attributes' &&
+                    mutation.attributeName === 'class'
+                ) {
+                    const element = mutation.target as HTMLElement;
+
+                    // Check if the target element has the specified class
+                    if (element.classList.contains(classToDetect)) {
+                        this.logger.log(`Class "${classToDetect}" added to the element`);
+                        callback(); // Trigger the callback
+                        observer.disconnect();
+                    }
+                }
+            }
+        });
+
+        // Observe the element for class attribute changes
+        observer.observe(targetElement, { attributes: true });
+    }
+
+
 
     async loadStyle(data) {
 
@@ -349,24 +535,104 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
-    // getCurrentProject() {
-    //     this.auth.project_bs.subscribe((project) => {
-    //         if (project) {
-    //             this.logger.log('[APP-COMPONENT] project from $ubscription ', project)
-    //             // this.current_selected_prjct = project
-    //             this.projectService.getProjects().subscribe((projects: any) => {
-    //                 console.log('[APP-COMPONENT] getProjects projects ', projects)
-    //                 if (projects) {
-    //                     this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
-    //                     console.log('[APP-COMPONENT] current_selected_prjct_user ', this.current_selected_prjct_user)
-                       
-    //                     this.USER_ROLE = this.current_selected_prjct_user.role
-    //                     console.log('[APP-COMPONENT] USER_ROLE ', this.USER_ROLE)
-    //                 }
-    //             })
-    //         }
-    //     });
-    // }
+    getCurrentProject(url) {
+        // this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 1', url)
+        this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 1 ', this.auth.user_bs.value)
+        this.auth.project_bs.subscribe((project) => {
+            if (project) {
+                this.logger.log('[APP-COMPONENT] -->> project from $ubscription 1 ', project)
+                // this.current_selected_prjct = project
+                this.projectService.getProjects().subscribe((projects: any) => {
+                    this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
+                    if (projects) {
+                        this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === project._id);
+                        this.logger.log('[APP-COMPONENT] -->> current_selected_prjct_user 1', this.current_selected_prjct_user)
+                        if (this.current_selected_prjct_user) {
+
+
+                            this.redirectToPricing(this.current_selected_prjct_user)
+
+
+                        }
+
+                    }
+                })
+            } else {
+                this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 2', url)
+                this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - project 2 ', project)
+                this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 2 ', this.auth.user_bs.value)
+                this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.hasChangedProject.value 2 ', this.auth.hasChangedProject.value)
+                if (!project && this.auth.user_bs.value && this.auth.hasChangedProject.value === false) {
+                    const url_segments = url.split('/');
+                    const nav_project_id = url_segments[2];
+                    this.logger.log('[APP-COMPONENT] -->> project from $ubscription 2 nav_project_id', nav_project_id)
+
+                    const navProjectIdContainsNumber = this.containsNumber(nav_project_id)
+                    this.logger.log('[APP-COMPONENT] -->> project from $ubscription 2 projectIdIsNumber', navProjectIdContainsNumber)
+
+                    if (navProjectIdContainsNumber === true) {
+                        this.projectService.getProjects().subscribe((projects: any) => {
+                            this.logger.log('[APP-COMPONENT] getProjects projects ', projects)
+                            if (projects) {
+                                this.current_selected_prjct_user = projects.find(prj => prj.id_project.id === nav_project_id);
+                                this.logger.log('[APP-COMPONENT] current_selected_prjct_user 2', this.current_selected_prjct_user)
+                                this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 3 ', this.auth.user_bs.value)
+                                if (this.current_selected_prjct_user) {
+                                    this.redirectToPricing(this.current_selected_prjct_user)
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        });
+    }
+
+    redirectToPricing(projectUser) {
+        this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectUser ', projectUser)
+
+        const role = projectUser.role;
+        const project = projectUser.id_project;
+        this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project ', project)
+
+
+        // const dateLimit = new Date('2022-07-04T00:00:00') // for test purpose
+        // console.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
+        this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - freePlanLimitDate ', freePlanLimitDate)
+
+
+        if (project) {
+
+            const projectCreationDate = new Date(project.createdAt);
+            this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate ', projectCreationDate)
+            this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
+            this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
+
+            if (projectCreationDate >= freePlanLimitDate) {
+                this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
+
+
+                if (project.profile.type === 'free' && project.trialExpired === true) {
+                    if (role === 'owner') {
+
+                        this.router.navigate(['project/' + project._id + '/pricing/te']);
+
+
+                    } else {
+                        this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
+                    }
+                }
+            } else {
+                this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
+            }
+        }
+    }
+
+
+
+    containsNumber(str: string): boolean {
+        return /\d/.test(str);
+    }
 
     listenToSwPostMessage() {
         this.logger.log('[APP-COMPONENT] listenToNotificationCLick - CALLED: ')
@@ -622,56 +888,68 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     sleekplanSso(user) {
-        // this.logger.log('APP-COMP sleekplanSso ')
-        // window['$sleek'].setUser = { 
-        //     mail: user.email, 
-        //     id: user._id, 
-        //     name: user.firstname, 
-        // }
-    
-        this.sleekplanSsoService.getSsoToken(user).subscribe(
-          (response) => {
-            this.logger.log('[APP-COMP] sleekplanSso response ', response)
-            this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
-    
-            // Configure Sleekplan with SSO
-            // window['Sleekplan'] = {
-            //   id: 'YOUR_SLEEKPLAN_ID',
-            //   sso: response.token,
-            // };
-    
-            // window['$sleek'].setUser({
-            //   token: response['token'],
-            // });
-    
-            // window.document.addEventListener('sleek:init', () => {
-            //   window['$sleek'].setUser({ token: response['token'] });
-            // }, false);
-           
-            // window['$sleek'].sso = { token: response['token'] }
-    
-            window['SLEEK_USER'] = { token: response['token'] }
+        this.logger.log('[APP-COMP] calling sleekplanSso ')
 
-            // Load the Sleekplan widget
-            this.sleekplanService.loadSleekplan().then(() => {
-                this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
-              })
-              .catch(err => {
-                this.logger.error('[APP-COMP] - Sleekplan initialization failed', err);
-              });
-          },
-          (error) => {
-            this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
-           
-          }
+        this.sleekplanSsoService.getSsoToken(user).subscribe(
+            (response) => {
+                this.logger.log('[APP-COMP] sleekplanSso response ', response)
+                this.logger.log('[APP-COMP] sleekplanSso response token', response['token'])
+
+
+                window['SLEEK_USER'] = { token: response['token'] }
+
+                // Load the Sleekplan widget
+                this.sleekplanService.loadSleekplan().then(() => {
+                    this.logger.log('[APP-COMP] - Sleekplan successfully initialized');
+                })
+                    .catch(err => {
+                        this.logger.error('[APP-COMP] - Sleekplan initialization failed', err);
+                    });
+            },
+            (error) => {
+                this.logger.error('[APP-COMP] - Failed to fetch Sleekplan SSO token', error);
+
+            }
         );
-      }
+    }
+
+    getPAYValue() {
+        this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+        let parts = this.public_Key.split('-');
+        // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
+
+        let pay = parts.find((part) => part.startsWith('PAY'));
+        this.logger.log('[APP-COMPONENT] pay ', pay);
+        let payParts = pay.split(':');
+        this.logger.log('[APP-COMPONENT] payParts ', payParts);
+        let payValue = payParts[1]
+        this.logger.log('[APP-COMPONENT] payParts ', payParts);
+        if (payValue === 'T') {
+            return true
+        } else if (payValue === 'F') {
+            return false
+        }
+
+    }
 
     getCurrentUserAndConnectToWs() {
+        let isActivePAY = this.getPAYValue()
         this.auth.user_bs.subscribe((user) => {
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-            if (user) {
-                this.sleekplanSso(user)
+
+            this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - isActivePAY ', isActivePAY);
+            if (user && isActivePAY) {
+
+                this.logger.log('[APP-COMPONENT] before to call sleekplanSso router.url ', this.router.url);
+
+                const url = window.location.href;
+                const lastPart = url.substring(url.lastIndexOf('/') + 1);
+                this.logger.log('[APP-COMPONENT] before to call sleekplanSso window.location.href lastPart', lastPart);
+
+                if (lastPart !== 'onboarding' && lastPart !== 'signup' && lastPart !== 'create-new-project') {
+                    this.sleekplanSso(user)
+                }
             }
             if (!user) {
                 this.wsInitialized = false;
@@ -913,11 +1191,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1) ||
-                    (this.route.indexOf('/desktop--access') !== -1) 
+                    (this.route.indexOf('/desktop--access') !== -1)
 
                 ) {
                     // && this.USER_ROLE === 'agent' 
-            
+
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
                     // margin-top: -70px
@@ -941,8 +1219,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     // elemSidebarWrapper.style.height = "calc(100vh - 44px)";
                     elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-                    
-                    
+
+
                 }
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {
@@ -994,23 +1272,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.runOnRouteChange();
-        // this.setPrechatFormInWidgetSettings();
+        this.hideFooter();
+    }
+
+    hideFooter() {
         const elemFooter = <HTMLElement>document.querySelector('footer');
-        // const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
-        // this.logger.log('APP.COMP - elem FOOTER ', elemFooter);
-        // setTimeout(() => {
-        // this.logger.log('[APP-COMPONENT] window', window)
-        // var tiledeskiframe = document.getElementById('tiledeskiframe') as HTMLIFrameElement;
-        // this.logger.log('[APP-COMPONENT] tiledeskiframe', tiledeskiframe)
-        // if (tiledeskiframe) {
-        //     if (window && window['tiledesk'] && window['tiledesk']['angularcomponent']) {
-        //         window['tiledesk'].angularcomponent.component.g.preChatForm = false
-        //     }
-        // }
-        // }, 3000);
-
-
-
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
@@ -1044,8 +1310,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1) ||
                     (this.route.indexOf('/desktop--access') !== -1) ||
-                    (this.route.indexOf('/projects') !== -1)
-
+                    (this.route.indexOf('/projects') !== -1) ||
+                    (this.route.indexOf('/pricing') !== -1) ||
+                    (this.route.indexOf('/get-chatbot') !== -1)
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // this.logger.log('DETECT LOGIN PAGE')
@@ -1054,31 +1321,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     elemFooter.setAttribute('style', '');
                 }
 
-                // WIDGET HIDDEN IF THE ROUTE IS request-for-panel
-                // if (this.route.indexOf('/request-for-panel') !== -1) {
-
-                //     if (eleWidget) {
-                //         eleWidget.style.display = 'none';
-                //     } else {
-                //         this.logger.log('APP.COMP - elem WIDGET ', eleWidget) 
-                //     }
-                // }
-
             } else {
                 // this.logger.log('»> * ', this.route)
             }
         });
 
         const elemAppFooter = <HTMLElement>document.querySelector('app-footer');
+
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
                 // this.logger.log('»> ', this.route)
                 if (this.route.indexOf('/verify') !== -1) {
-
                     elemAppFooter.setAttribute('style', 'display:none;');
-                    // this.logger.log('DETECT LOGIN PAGE')
-                    // tslint:disable-next-line:max-line-length
                 } else {
 
                     elemAppFooter.setAttribute('style', '');
@@ -1088,36 +1343,35 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 // this.logger.log('»> * ', this.route)
             }
         });
-
     }
 
 
-    // setPrechatFormInWidgetSettings() {
-    //     this.router.events.subscribe((val) => {
-    //         if (this.location.path() !== '') {
-    //             this.route = this.location.path();
-    //             // this.logger.log('»> ', this.route)
-    //             // tslint:disable-next-line:max-line-length
-    //             if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
+    setPrechatFormInWidgetSettings() {
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // this.logger.log('»> ', this.route)
+                // tslint:disable-next-line:max-line-length
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
 
-    //                 this.isPageWithNav = false;
+                    this.isPageWithNav = false;
 
-    //                 if (window && window['tiledeskSettings']) {
-    //                     window['tiledeskSettings']['preChatForm'] = true
-    //                 }
-    //             } else {
+                    if (window && window['tiledeskSettings']) {
+                        window['tiledeskSettings']['preChatForm'] = true
+                    }
+                } else {
 
-    //                 this.isPageWithNav = true;
-    //                 if (window && window['tiledeskSettings']) {
-    //                     if (window['tiledeskSettings']['preChatForm']) {
-    //                         delete window['tiledeskSettings']['preChatForm'];
-    //                     }
-    //                 }
-    //             }
-    //             // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
-    //         }
-    //     });
-    // }
+                    this.isPageWithNav = true;
+                    if (window && window['tiledeskSettings']) {
+                        if (window['tiledeskSettings']['preChatForm']) {
+                            delete window['tiledeskSettings']['preChatForm'];
+                        }
+                    }
+                }
+                // this.logger.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+            }
+        });
+    }
 
     isMaps(path) {
         var titlee = this.location.prepareExternalUrl(this.location.path());

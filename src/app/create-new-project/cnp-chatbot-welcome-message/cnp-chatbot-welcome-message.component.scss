@@ -164,7 +164,7 @@ $color-pro-plan: #3ea9f5;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         &:focus {
-            border: 1px solid $color-pro-plan;
+            border: 1px solid var(--blue-light); // $color-pro-plan;
         }
     }
 

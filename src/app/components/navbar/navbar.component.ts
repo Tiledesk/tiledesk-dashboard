@@ -29,7 +29,7 @@ import { AppConfigService } from '../../services/app-config.service';
 // import { public_Key } from '../../utils/util';
 // import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
-import { filter, takeUntil, throttleTime } from 'rxjs/operators'
+import { filter, skip, takeUntil, throttleTime } from 'rxjs/operators'
 import { Subscription } from 'rxjs'
 
 // import brand from 'assets/brand/brand.json';
@@ -44,6 +44,9 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from '
 import { SleekplanApiService } from 'app/services/sleekplan-api.service';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SleekplanSsoService } from 'app/services/sleekplan-sso.service';
+import { SleekplanService } from 'app/services/sleekplan.service';
+import { browserRefresh } from 'app/app.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -54,7 +57,7 @@ const Swal = require('sweetalert2')
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent extends PricingBaseComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
-
+  public browserRefresh: boolean;
   PLAN_NAME = PLAN_NAME;
   // PLANS_LIST = PLANS_LIST;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -229,6 +232,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private quotesService: QuotesService,
     private sleekplanApi: SleekplanApiService,
     public dialog: MatDialog,
+    private sleekplanSsoService: SleekplanSsoService,
+    private sleekplanService: SleekplanService,
   ) {
 
     super(prjctPlanService, notifyService);
@@ -273,7 +278,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.getActiveRoute();
     this.hidePendingEmailNotification();
-    this.detectUserProfilePage();
+    this.detectRouteAndInitSleekPlan();
 
     this.checkUserImageUploadIsComplete();
 
@@ -300,9 +305,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
-    
+
 
     this.listenSoundPreference()
+    this.listenToLiveAnnouncementOpened()
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
@@ -363,7 +369,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] - on open quotes menu' )
     // this.logger.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
-    this.getQuotasCount()
+    // this.getQuotasCount()
     this.getQuotes();
     const currentURL = this.router.url;
     this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);
@@ -995,7 +1001,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/desktop-access') !== -1) ||
           (this.route.indexOf('/desktop--access') !== -1) ||
           (this.route.indexOf('/onboarding-templates') !== -1) ||
-          (this.route.indexOf('/onboarding') !== -1)
+          (this.route.indexOf('/onboarding') !== -1) ||
+          (this.route.indexOf('/unauthorized-to-upgrade') !== -1) ||
+          (this.route.indexOf('/pricing/te') !== -1) ||
+          (this.route.indexOf('/projects') !== -1)
+          
 
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
@@ -1046,16 +1056,26 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   }
 
-  /**
-   * WHEN IS DETECTED THE USER-PROFILE PAGE (NOTE: THE ROUTE '/user-profile' IS THAT IN WHICH THERE IS NOT THE SIDEBAR)
-   * TO THE "PENDING EMAIL VERIFICATION ALERT " IS ASIGNED THE CLASS is-user-profile-page THAT MODIFIED THE LEFT POSITION 
-   * USE THE SAME CLASS ALSO FOR create-new-project and pricing THAT are OTHER PAGE WITHOUT SIDEABAR */
-  detectUserProfilePage() {
+ 
+  detectRouteAndInitSleekPlan() {
+    
     this.router.events.subscribe((val) => {
 
       if (this.location.path() !== '') {
         this.route = this.location.path();
-        //  this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+        this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+         if (this.route !== '/signup' && this.route !== '/onboarding'&& this.route !== "/create-new-project") {
+          this.logger.log('[NAVBAR] window[$sleek]', window['$sleek'])
+          this.browserRefresh = browserRefresh
+          this.logger.log('[NAVBAR] browserRefresh', this.browserRefresh)
+          if (window['$sleek']) {
+            // Sleekplan is already loaded
+            return;
+          }
+        if (this.user && this.isVisiblePay && !this.browserRefresh)
+            this.sleekplanSso(this.user)
+         }
+         this.logger.log('[NAVBAR] this.user' , this.user) 
         if (
           this.route === '/user-profile' ||
           this.route === '/create-new-project' ||
@@ -1089,6 +1109,45 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     });
   }
 
+  sleekplanSso(user) {
+    this.logger.log('[NAVBAR] calling sleekplanSso ')
+    this.sleekplanSsoService.getSsoToken(user).subscribe(
+        (response) => {
+            this.logger.log('[NAVBAR] sleekplanSso response ', response)
+            this.logger.log('[NAVBAR] sleekplanSso response token', response['token'])
+
+            // Configure Sleekplan with SSO
+            // window['Sleekplan'] = {
+            //   id: 'YOUR_SLEEKPLAN_ID',
+            //   sso: response.token,
+            // };
+
+            // window['$sleek'].setUser({
+            //   token: response['token'],
+            // });
+
+            // window.document.addEventListener('sleek:init', () => {
+            //   window['$sleek'].setUser({ token: response['token'] });
+            // }, false);
+
+            // window['$sleek'].sso = { token: response['token'] }
+
+            window['SLEEK_USER'] = { token: response['token'] }
+
+            // Load the Sleekplan widget
+            this.sleekplanService.loadSleekplan().then(() => {
+                this.logger.log('[NAVBAR] - Sleekplan successfully initialized');
+            })
+                .catch(err => {
+                    this.logger.error('[NAVBAR] - Sleekplan initialization failed', err);
+                });
+        },
+        (error) => {
+            this.logger.error('[NAVBAR] - Failed to fetch Sleekplan SSO token', error);
+
+        }
+    );
+}
 
 
   getTrialLeft() {
@@ -1177,12 +1236,31 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   goToPricingPlanFree() {
     // if (this.ROLE_IS_AGENT === false) {
-    if (this.USER_ROLE === 'owner') {
+    // if (this.USER_ROLE === 'owner') {
 
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
+    //   this.router.navigate(['project/' + this.projectId + '/pricing']);
+    // } else {
+
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    // }
+
+    if (this.isVisiblePay) {
+      if (this.USER_ROLE === 'owner') {
+       
+        if (this.prjct_profile_type === 'payment') {
+          // this.notify._displayContactUsModal(true, 'upgrade_plan');
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+        else {
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+      }
     } else {
-
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      // this.presentModalIncreaseMonltlResource()
     }
   }
 
@@ -1219,8 +1297,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('ContactUs'),
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     }).then((result) => {
@@ -2012,7 +2089,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.displayLogoutModal = 'none';
   }
 
- 
+
 
   testExpiredSessionFirebaseLogout() {
     this.auth.testExpiredSessionFirebaseLogout(true)
@@ -2038,19 +2115,37 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   openFeedback(): void {
-    // console.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
+    // this.logger.log('[NAVBAR] open Sleekplan ', window['Sleekplan']) 
     // if (window['Sleekplan']?.open) {
     //   window['Sleekplan'].open();
     // }this.user
     this.logger.log('[NAVBAR] open Sleekplan this.user', this.user)
     this.logger.log('[NAVBAR] open Sleekplan ', window['$sleek'])
     window['$sleek'].toggle();
+
     const lastSeen = Date.now()
     this.logger.log('[NAVBAR] open Sleekplan lastSeen ', lastSeen)
     // localStorage.setItem('lastSeenTimestamp', this.lastSeen.toString());
-    localStorage.setItem(`lastSeenTimestamp-${this.user._id}`,lastSeen.toString())
+    localStorage.setItem(`lastSeenTimestamp-${this.user._id}`, lastSeen.toString())
     this.newChangelogCount = false
-    
+
+  }
+
+
+
+
+  listenToLiveAnnouncementOpened() {
+    this.sleekplanApi.hasOpenedChangelogfromPopup$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .pipe(skip(1))
+      .subscribe((hasSeenChangelog) => {
+        // console.log('[NAVBAR] listenToLiveAnnouncementOpened hasSeenChangelog', hasSeenChangelog);
+        const lastSeen = Date.now()
+        localStorage.setItem(`lastSeenTimestamp-${this.user._id}`, lastSeen.toString())
+        this.newChangelogCount = false
+      })
   }
 
   fetchNewChangelogCount(user) {
@@ -2059,7 +2154,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.logger.log('[NAVBAR] changelog lastSeen form storedLastSeen', storedLastSeen);
     this.logger.log('[NAVBAR] changelog lastSeen form storage type of', typeof storedLastSeen);
     let lastSeen = 0
-    if (storedLastSeen !== null ) {
+    if (storedLastSeen !== null) {
       lastSeen = +storedLastSeen
     }
     this.sleekplanApi.getNewChangelogCount().subscribe(
@@ -2069,26 +2164,26 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] changelog count  resp data ', resp['data']);
         this.logger.log('[NAVBAR] changelog count  resp data items ', resp['data']['items']);
         const data = resp['data']['items']
-    
+
         const firstKey = Object.keys(data)[0]; // Get the first key in the object
         const createdValue = data[firstKey].created; // Access the created property
 
-        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue); 
+        this.logger.log('[NAVBAR] last changelog createdValue ', createdValue);
         const createdValueTimestamp = new Date(createdValue).getTime();
         this.logger.log('[NAVBAR] last changelog createdValue as Timestamp  ', createdValueTimestamp);
         this.logger.log('[NAVBAR] lastSeen ', lastSeen);
-        if (lastSeen ) {
+        if (lastSeen) {
           if (createdValueTimestamp > lastSeen) {
             this.newChangelogCount = true
-            this.logger.log('[NAVBAR]  there is A notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+            this.logger.log('[NAVBAR]  there is A notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen, ' newChangelogCount ', this.newChangelogCount);
           } else {
             this.newChangelogCount = false
-            this.logger.log('[NAVBAR]  there is NOT notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
+            this.logger.log('[NAVBAR]  there is NOT notification Changelog created at', createdValueTimestamp, ' last seen ', lastSeen, ' newChangelogCount ', this.newChangelogCount);
           }
         } else {
           this.newChangelogCount = true;
-          this.logger.log('[NAVBAR] there is A notification (else) Changelog created at', createdValueTimestamp, ' last seen ', lastSeen , ' newChangelogCount ', this.newChangelogCount);
-        
+          this.logger.log('[NAVBAR] there is A notification (else) Changelog created at', createdValueTimestamp, ' last seen ', lastSeen, ' newChangelogCount ', this.newChangelogCount);
+
         }
       },
       (error) => {

@@ -7,6 +7,7 @@
         line-height: 1.3em;
         margin-top: 0px;
         margin-bottom: 0.5em;
+        font-family: var(--header-font-family);
     }
     h4.title {
         color: #566787;
@@ -39,4 +40,10 @@
     button {
         margin-bottom: 30px;
     }
+}
+
+#create-project-btn {
+    height: 55px;
+    padding: 9px 35px !important;
+    font-size: 16px;
 }

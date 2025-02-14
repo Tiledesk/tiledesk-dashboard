@@ -67,12 +67,9 @@
                   <span *ngIf="showSpinnerInRequestNewPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
                 </button>
                 <!-- text-align: center -->
-                <div style="margin-top: 16px" routerLink="/login">
-                  <i class="material-icons"
-                    style="vertical-align: middle !important; cursor: pointer;">keyboard_arrow_left</i>
-                  <span
-                    style="font-size: 1.1em; vertical-align: middle !important; font-weight: 300; cursor:pointer; color: #0275d8">
-                    <!-- Back to login  -->
+                <div  class="reset-password-back-to-login" style="margin-top: 16px" routerLink="/login">
+                  <i class="material-icons" style="">keyboard_arrow_left</i>
+                  <span style="">
                     {{ "BackToLogin" | translate }}
                   </span>
                 </div>
@@ -115,24 +112,21 @@
               </div>
 
 
-              <div style="margin-top: 26px; float: left" routerLink="/login">
-                <i class="material-icons"
-                  style="vertical-align: middle !important; cursor: pointer;">keyboard_arrow_left</i>
-                <span
-                  style="font-size: 1.1em; vertical-align: middle !important; font-weight: 300; cursor:pointer; color: #0275d8">
-                  <!-- Back to login  -->
+              <div class="reset-password-back-to-login" style="margin-top: 26px; float: left" routerLink="/login">
+                <i class="material-icons" style="">keyboard_arrow_left</i>
+                <span style="">
                   {{ "BackToLogin" | translate }}
                 </span>
               </div>
 
-              <div class="contat-us" style="margin-top: 26px; float: right">
-                <!-- #014c8c -->
+              <div class="contat-us" style="">
+              
                 <h4 style="font-size: 1.1em; margin-top:0px">
-                  <!-- Having trouble?  -->
+              
                   {{ 'HavingTrouble' | translate }}?
 
-                  <a target="_blank" href="mailto:{{contact_us_email}}" style="text-transform: none; color: #0275d8 ">
-                    <!-- Contact us  -->
+                  <a target="_blank" href="mailto:{{contact_us_email}}" style="">
+                  
                     {{ 'ContactUs' | translate }}
                   </a>
 
@@ -279,12 +273,19 @@
               DOESN'T EXIST MORE BECAUSE THE USER HAS ALREADY RESETTED HIS PSW WITH THAT RESET REQUEST ID )
               *************************************************************************************************
             -->
-          <div *ngIf="!RESET_PSW_REQUEST_ID_IS_VALID" style="height:100px; line-height:100px; text-align: center;">
-            <!-- <i class="material-icons" style="vertical-align: middle !important; color:#f44336">report_problem</i> -->
-            <h4 style="display: inline-block; vertical-align: middle; line-height: normal;">
-              <!-- Invalid password reset key -->
+          <div class="invalid-psw-reset-key" *ngIf="!RESET_PSW_REQUEST_ID_IS_VALID">
+
+            <h4>
+            
               {{ "InvalidPswResetKey" | translate }}
             </h4>
+
+            <button type="submit" class="btn btn-forgotpsw" routerLink="/login"
+                  [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
+                  
+                  {{ "GoToLogin" | translate }}
+      
+            </button>
           </div>
         </div>
 

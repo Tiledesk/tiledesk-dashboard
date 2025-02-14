@@ -331,6 +331,11 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   }
 
 
+  getMaxValueFromArrays(array1: number[], array2: number[]): number {
+    const mergedArray = [...array1, ...array2];
+    this.logger.log('mergedArray', mergedArray)
+    return Math.max(...mergedArray);
+  }
 
   getRequestByLastNDayMerge(lastdays) {
     this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD lastdays ', lastdays);
@@ -376,11 +381,10 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
       this.totalHuman = humanCounts.reduce((sum, val) => sum + val, 0);
       this.totalBot = botCounts.reduce((sum, val) => sum + val, 0);
       
-      // const higherCount = this.getMaxOfArray(this.totalHuman + this.totalBot);
-  
-      this.percentageOfRequestsHandledByBots =
-       this.totalBot > 0 ? ((this.totalBot / (this.totalHuman + this.totalBot)) * 100).toFixed(1).replace('.', ',') : '0';
-  
+      const higherCount = this.getMaxValueFromArrays(humanCounts, botCounts);
+      // + this.totalBot
+      this.percentageOfRequestsHandledByBots =  this.totalBot > 0 ? ((this.totalBot / (this.totalHuman )) * 100).toFixed(2).replace('.', ',') : '0';
+      
      
        this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Human Total:', this.totalHuman);
        this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  Bot Total:',  this.totalBot);
@@ -388,13 +392,13 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
        this.logger.log('[HOME-CONVS-GRAPH] - -> NEW METHOD  labels:', labels);
   
       // Step 6: Render the chart
-      this.renderChart(labels, humanCounts, botCounts);
+      this.renderChart(labels, humanCounts, botCounts,higherCount);
     }, (error) => {
       this.logger.error('[HOME-CONVS-GRAPH] - -> NEW METHOD ERROR:', error);
     });
   }
   
-  renderChart(labels, humanCounts, botCounts) {
+  renderChart(labels, humanCounts, botCounts, higherCount) {
     
     this.lineChart =  new Chart('lastNdayChart', {
       type: 'line',
@@ -415,7 +419,8 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
             lineTension: 0.4,
           },
           {
-            label: this.servedByHumans,
+            // label: this.servedByHumans,
+            label: this.translate.instant('TotalConversations'),
             data: humanCounts,
             fill: true,
             backgroundColor: 'rgba(30, 136, 229, 0.6)',
@@ -478,7 +483,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
               },
               display: true,
               fontColor: 'white',
-              // suggestedMax: this.higherCount + 1,
+              suggestedMax: higherCount + 1,
             }
           }]
         },

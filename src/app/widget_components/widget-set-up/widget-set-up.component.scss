@@ -699,7 +699,7 @@ input[type="text"]:disabled {
   margin-top: 6px;
 }
 
-.on-off-singleconversation-lbl-wpr {
+.on-off-enabled-disabled-lbl-wpr {
   color: #737376;
   margin-left: 6px;
   font-size: 13px;
@@ -707,6 +707,32 @@ input[type="text"]:disabled {
   border-radius: 4px;
   position: relative;
   top: -4px;
+}
+
+.nw-attachment-button-onoffswitch-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.nw-emoji-button-onoffswitch-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.nw-audio-recorder-button-onoffswitch-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.info-icon---wpr {
+  position: relative;
+  top: -1px;
 }
 
 
@@ -2190,12 +2216,12 @@ button.buttonRounded:hover {
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
-  font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family); 
   font-weight: 500 !important;
 }
 
 .widget-settings-control-head-label-info {
-  font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
+  font-family: var(--header-font-family);
   color: #566787 !important;
   text-align: left;
   padding: 6px 12px;
@@ -2205,12 +2231,19 @@ button.buttonRounded:hover {
   font-size: 12px !important;
   cursor: pointer;
   margin-bottom: 12px !important;
+  border-radius: var(--card-border-radius);
+  max-width: 626px;
 }
 
 .widget-settings-control-subhead-label {
   display: block;
-  font-weight: 100 !important;
   margin-top: 3px;
+  font-weight: 400 !important;
+  line-height: 1.5em;
+  font-size: 12px !important;
+  font-family: var(--header-font-family);
+  color: var(--secondary-text-color);
+  text-align: left;
 }
 
 .padding-top-2 {
@@ -2941,7 +2974,7 @@ pre {
   text-decoration: underline;
 }
 
-.widget-set-up-link-to-docs-wpr >span > svg {
+.widget-set-up-link-to-docs-wpr>span>svg {
   fill: var(--blue-light);
 }
 
@@ -3023,23 +3056,23 @@ pre {
   letter-spacing: 1px;
   background: transparent;
   border: 1px solid #d1d9e0;
-  color: #3ea9f5;
+  color: var(--blue-20);
   font-weight: 400;
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 6px 15px !important;
-  border-radius: var(--btn-border-radius)
+  border-radius: 9999px;
 }
 
 .btn-get-feature-no-boxshadow:hover {
   background-color: #eff2f6;
   border: 1px solid #acb8cb;
-  color: #333;
+  color: var(--blue-40);
 }
 
 .get-feature-upgrade-plan-icon {
   vertical-align: middle;
-  color: #3ea9f5;
+  color: var(--blue-20);
   font-size: 21px;
 }
 

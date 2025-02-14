@@ -121,9 +121,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // calloutTimerSecondSelected = -1;
   calloutTimerSecondSelected: number;
 
-  // preChatForm = 'preChatForm'
-  // { seconds: 'immediately', value: 0 },
-
   calloutTitle: string;
   calloutTitleText: string;
   // _calloutTitle: string;
@@ -363,6 +360,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   public preChatForm: boolean;
   public nativeRating: boolean;
+  public showAttachmentButton: boolean;
+  public showEmojiButton: boolean;
+  public showAudioRecorderButton: boolean;
   public enablePrechatformFieldsCheckBox: boolean;
   public prechatFormTexareaJson: any;
   public prechatFormArray: Array<any> = [];
@@ -2262,7 +2262,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
       // this.logger.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
-      //  this.logger.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
+      this.logger.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -2518,7 +2518,63 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.nativeRating = false;
         }
 
+        // ----------------------------------------------------
+        // Display / hide  Attachment Button (if widget object)
+        // ----------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showAttachmentFooterButton',  project.widget.hasOwnProperty('showAttachmentFooterButton'));
+        if (project.widget.hasOwnProperty('showAttachmentFooterButton')) {
+          if (project.widget.showAttachmentFooterButton === true) {
+          
+            this.showAttachmentButton = true;
+          
+          } else if (project.widget.showAttachmentFooterButton === false) {
+            this.showAttachmentButton = false;
+          } 
+        } else {
+          this.showAttachmentButton = true;
+        }
 
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAttachmentButton ', this.showAttachmentButton);
+
+        // ----------------------------------------------------
+        // Display / hide Emoji Button (if widget object)
+        // ----------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showEmojiFooterButton',  project.widget.hasOwnProperty('showEmojiFooterButton'));
+     
+        if (project.widget.hasOwnProperty('showEmojiFooterButton')) {
+          if (project.widget.showEmojiFooterButton === true) {
+          
+            this.showEmojiButton = true;
+          
+          } else if (project.widget.showEmojiFooterButton === false) {
+            this.showEmojiButton = false;
+          }
+         
+          
+        } else {
+          this.showEmojiButton = true;
+        }
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showEmojiButton ', this.showEmojiButton);
+
+        // -------------------------------------------------------
+        // Display / hide Audio recorder button (if widget object)
+        // -------------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showAudioRecorderFooterButton',  project.widget.hasOwnProperty('showAudioRecorderFooterButton'));
+        
+        if (project.widget.hasOwnProperty('showAudioRecorderFooterButton')) {
+          if (project.widget.showAudioRecorderFooterButton === true) {
+          
+            this.showAudioRecorderButton = true;
+          
+          } else if (project.widget.showAudioRecorderFooterButton === false) {
+            this.showAudioRecorderButton = false;
+          }
+         
+          
+        } else {
+          this.showAudioRecorderButton = true;
+        }
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAudioRecorderButton ', this.showAudioRecorderButton);
 
         // ------------------------------------------------------------------------
         // @ themeColor
@@ -2706,11 +2762,27 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.nativeRating = false;
 
-
+        // -----------------------------------------------------------------------
+        // @ Attachment Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showAttachmentButton = true;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showAttachmentButton ', this.showAttachmentButton);
 
         // -----------------------------------------------------------------------
-        // @ Reply time
-        // WIDGET UNDEFINED
+        // @ Emoji Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showEmojiButton = true;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showEmojiButton ', this.showEmojiButton);
+
+        // -----------------------------------------------------------------------
+        // @ Audio recorder Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showAudioRecorderButton = true;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showAudioRecorderButton ', this.showAudioRecorderButton);
+        
+
+        // -----------------------------------------------------------------------
+        // @ Reply time - WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
         this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
@@ -4016,6 +4088,134 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       this.logger.log('[WIDGET-SET-UP] - IS ENABLED Auto Rating', event.target.checked)
     }
+  }
+
+  hasOpenedAdvancedSettigs() {
+    this.logger.log('[WIDGET-SET-UP] - hasOpenedAdvancedSettigs ')
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = true;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = '0002'
+    this.HAS_FOCUSED_ONLINE_MSG = true;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Attachment Button
+  // -----------------------------------------------------------------------
+  toggleDiplayAttachmentButton(event) {
+    // this.DISPLAY_WIDGET_HOME = false;
+    // this.DISPLAY_CALLOUT = false;
+    // this.DISPLAY_WIDGET_CHAT = true;
+    // this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    // this.widget_preview_selected = '0002'
+
+    this.logger.log('[WIDGET-SET-UP] - Display Attachment Button ', event.target.checked)
+    if (event.target.checked === true) {
+      
+      this.showAttachmentButton = false;
+      // *** ADD PROPERTY
+      // this.widgetObj['showAttachmentFooterButton'] = this.showAttachmentButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      this.showAttachmentButton = true;
+
+      // *** REMOVE PROPERTY
+      // delete this.widgetObj['showAttachmentFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Emoji Button
+  // -----------------------------------------------------------------------
+  toggleDiplayEmojiButton(event) {
+    // this.DISPLAY_WIDGET_HOME = false;
+    // this.DISPLAY_CALLOUT = false;
+    // this.DISPLAY_WIDGET_CHAT = true;
+    // this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    // this.widget_preview_selected = '0002'
+    this.logger.log('[WIDGET-SET-UP] - Display Emoji Button ', event.target.checked)
+    if (event.target.checked === true) {
+      
+      this.showEmojiButton = false;
+      // *** ADD PROPERTY
+      // this.widgetObj['showEmojiFooterButton'] = this.showEmojiButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      this.showEmojiButton = true;
+
+      // *** REMOVE PROPERTY
+      // delete this.widgetObj['showEmojiFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Audio Recorder Button
+  // -----------------------------------------------------------------------
+  toggleAudioRecorderButton(event) {
+ 
+    this.logger.log('[WIDGET-SET-UP] - Display Audio Recorder Button ', event.target.checked)
+    if (event.target.checked === true) {
+      
+      this.showAudioRecorderButton = false;
+    
+    } else {
+      this.showAudioRecorderButton = true;
+
+    }
+  }
+
+  // this.showAudioRecorderButton
+  // showAudioRecorderFooterButton
+
+  saveWidgetAdvancedSetting() {
+    this.logger.log('[WIDGET-SET-UP] showAttachmentButton ', this.showAttachmentButton)
+    this.logger.log('[WIDGET-SET-UP] showEmojiButton ', this.showEmojiButton) 
+
+    if (this.showAttachmentButton === false) {
+      // *** ADD PROPERTY
+      this.widgetObj['showAttachmentFooterButton'] = this.showAttachmentButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+
+      delete this.widgetObj['showAttachmentFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
+    }
+
+   
+    if (this.showEmojiButton === false) {
+      this.widgetObj['showEmojiFooterButton'] = this.showEmojiButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // console.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      delete this.widgetObj['showEmojiFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // console.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+
+    if (this.showAudioRecorderButton === false) {
+      this.widgetObj['showAudioRecorderFooterButton'] = this.showAudioRecorderButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // console.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      delete this.widgetObj['showAudioRecorderFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // console.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+
+    this.widgetService.updateWidgetProject(this.widgetObj)
+    this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
   }
 
 

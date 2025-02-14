@@ -60,12 +60,13 @@
             </nav>
             <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 
-        <div class="row" style="margin-top: 16px;">
-          <div class="col-xs-12 col-md-6">
+        <div class="row template-html-code-row" style="margin-top: 16px;">
+          <div class="col-xs-12 col-md-6 template-html-code-col">
 
 
-            <textarea id="input" rows="24" [(ngModel)]="emailTemplate" (ngModelChange)="onChangeEmailTempalte($event)"
-              style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: none;"></textarea>
+            <textarea class="template-html-code" id="input" rows="24" [(ngModel)]="emailTemplate" 
+              (ngModelChange)="onChangeEmailTempalte($event)">
+            </textarea>
 
             <!-- btn-primary -->
             <button (click)="saveEmailNotificationTemplate()" class="btn btn-tdblu-no-boxshadow save_email_template"
@@ -82,7 +83,7 @@
             <!-- Search: <input id="search" placeholder='Search' /> -->
           </div>
 
-          <div class="col-xs-12 col-md-6">
+          <div class="col-xs-12 col-md-6 template-iframe-col">
 
 
             <!-- ---------------------------------------------------- -->
@@ -99,7 +100,7 @@
               <div class="rect5"></div>
             </div>
 
-            <iframe width="100%" height="522" style="border: 1px solid #ddd;border-radius: 5px;"
+            <iframe width="100%" height="522" style=""
               id="iframe-email-template-preview" srcdoc=""></iframe>
 
           </div>

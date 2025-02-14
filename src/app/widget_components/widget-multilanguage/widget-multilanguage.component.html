@@ -78,7 +78,7 @@
 
         <div class="row">
           <div class="col-md-12 w-m-card-wpr">
-            <div class="card">
+            <div class="card multilanguage-card">
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
 
 
@@ -201,10 +201,10 @@
                   </span>
                 </section>
 
-                <!-- 
-            // -----------------------------------------------------------------------------
-            // @ Select language combo-box
-            // ----------------------------------------------------------------------------- -->
+                 
+                <!-- ----------------------------------------------------------------------------- -->
+                <!-- @ Select language combo-box -->
+                <!-- ----------------------------------------------------------------------------- -->
                 <section id="selected-lang" *ngIf="selectedTranslationCode === 'add'">
                   <div class="row" style="padding-bottom: 25px;">
                     <div class="col-md-4">
@@ -217,12 +217,12 @@
 
                     </div>
 
-                    <!-- 
-                // -----------------------------------------------------------------------------
-                // @ Add language
-                // ----------------------------------------------------------------------------- -->
+                     
+                    <!-- ----------------------------------------------------------------------------- -->
+                    <!-- @ Add language -->
+                    <!-- ----------------------------------------------------------------------------- -->
                     <div class="col-md-5">
-                      <button class="btn btn-primary" style="padding-top: 10px; padding-bottom: 10px;"
+                      <button id="add-language-btn" class="btn btn-tdblu-no-boxshadow" style="padding-top: 10px; padding-bottom: 10px;"
                         (click)="addNewLanguage()" [disabled]="disableAddBtn">
                         {{ 'Add' | translate }}
                       </button>

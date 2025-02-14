@@ -133,9 +133,10 @@
     margin-bottom: 12px;
     display: inline-block;
     width: 100%;
-    // .input-container {
-    //     margin-bottom: 14px;
-    // }
+
+    .input-container {
+        margin-bottom: 14px;
+    }
 
 
     .custom-input {
@@ -245,13 +246,6 @@
 .input-label-on-bottom {
     font-family: var(--header-font-family);
     font-weight: 400;
-    color: var(--secondary-text-color);
-    font-size: 12px;
-}
-
-.textarea-label {
-    font-family: var(--header-font-family);
-    font-weight: 400;
     font-size: 14px;
     font-weight: normal;
     margin-top: 6px;
@@ -262,22 +256,22 @@
     color: #c62445;
 }
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
 
-}
+// }
 
-.mat-button-disabled {
-    opacity: 0.8;
-    color: #e4e4e4 !important;
-    cursor: not-allowed;
-}
+// .mat-button-disabled {
+//     opacity: 0.8;
+//     color: #e4e4e4 !important;
+//     cursor: not-allowed;
+// }
 
 .custom--expansion-panel {
     //background-color: transparent !important;
@@ -382,7 +376,7 @@ mat-expansion-panel ::ng-deep {
     letter-spacing: 1px;
     background: transparent;
     border: 1px solid #d1d9e0;
-    color: var(--btn-get-feature-color); 
+    color: var(--blue-20); 
     font-weight: 400;
     box-shadow: unset !important;
     text-transform: none !important;
@@ -398,7 +392,7 @@ mat-expansion-panel ::ng-deep {
 
 .get--feature-upgrade-plan-icon {
     vertical-align: middle;
-    color: var(--btn-get-feature-color); 
+    color: var(--blue-20); 
     font-size: 21px;
 }
 

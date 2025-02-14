@@ -34,7 +34,7 @@ export class RoleService {
       userId = storedUserObject._id
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > userId ', userId)
       const currentProject = this.auth.project_bs.value
-      this.logger.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
+      // console.log('[ROLE-SERV] checkRoleForCurrentProject currentProject ', currentProject)
 
       const projectId = currentProject._id
 
@@ -50,7 +50,7 @@ export class RoleService {
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole', projectUserRole)
         }
       } else {
-        this.logger.error('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
+        this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
         const _projectUserRole = await this.getProjectUser(userId, projectId)
         this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  _projectUserRole GET from remote', _projectUserRole)
         if (_projectUserRole === 'agent') {

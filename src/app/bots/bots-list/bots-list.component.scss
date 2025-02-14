@@ -310,6 +310,7 @@ input[type="checkbox"]:disabled {
   display: block;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -369,7 +370,7 @@ input[type="checkbox"]:disabled {
 }
 
 .btn---link {
-  color: #0566ff;
+  color: var(--blue-20);
   cursor: pointer;
 }
 
@@ -386,6 +387,28 @@ input[type="checkbox"]:disabled {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
   color: #fff !important;
+}
+
+::ng-deep .custom-panel-sat-popover {
+  box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    0 4px 4px -2px rgb(91 94 105 / 15%);
+  background: #1c2333;
+  border-radius: 6px;
+  min-height: 48px;
+  max-width: 300px !important;
+}
+
+.custom-panel-sat-popover-content-wpr > .custom-panel-sat-popover-title {
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
+.custom-panel-sat-popover-content-wpr > .custom-panel-sat-popover-description {
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
 }
 
 /* New chatbot table

@@ -122,15 +122,15 @@
     min-height: 26px;
 }
 
-.mat-dialog-close-btn {
-    background-color: #647491;
-    color: #fff;
-}
+// .mat-dialog-close-btn {
+//     background-color: #647491;
+//     color: #fff;
+// }
 
-.mat-dialog-ok-btn {
-    background-color: var(--blue-light);
-    color: #fff;
-}
+// .mat-dialog-ok-btn {
+//     background-color: var(--blue-light);
+//     color: #fff;
+// }
 
 .mat-dialog-reset-btn {
     // color: #fff;
@@ -179,7 +179,7 @@
 }
 
 .reset-overrides {
-    color: var(--blue-light);
+    color: var(--blue-20);
     cursor: pointer;
     font-weight: 500;
 }

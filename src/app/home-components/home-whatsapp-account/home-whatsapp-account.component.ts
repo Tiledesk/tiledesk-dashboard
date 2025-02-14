@@ -444,16 +444,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
       confirmButtonText: this.upgradePlan,
       focusConfirm: false,
       reverseButtons: true,
-      confirmButtonColor: "var(--blue-light)",
-      // buttons: true,
-      // buttons: {
-      //   cancel: this.cancel,
-      //   catch: {
-      //     text: this.upgradePlan,
-      //     value: "catch",
-      //   },
-      // },
-      dangerMode: false,
+      // confirmButtonColor: "var(--blue-light)",
+    
     }).then((result) => {
       if (result.isConfirmed) {
         if (this.USER_ROLE === 'owner') {

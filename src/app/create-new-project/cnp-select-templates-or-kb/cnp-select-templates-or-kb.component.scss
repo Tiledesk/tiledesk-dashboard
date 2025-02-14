@@ -225,10 +225,10 @@ $color-pro-plan: #3ea9f5;
     padding: 0px 10px 0 0px;
     display: flex;
     &:hover {
-        border: 2px solid #3ea9f5;
+        border: 2px solid var(--blue-light); // #3ea9f5;
     }
     &.selected{
-        border: 2px solid #3ea9f5;
+        border: 2px solid var(--blue-light); // #3ea9f5;
     }
     .content-button{
         margin: auto;
@@ -367,6 +367,11 @@ $color-pro-plan: #3ea9f5;
     pointer-events: auto;
   }
 
+  .card-selection:hover { 
+    
+    border: 2px solid var(--blue-20);
+  }
+
   .cards-selection-mobile {
     width: unset !important;
     margin: auto;
@@ -375,9 +380,9 @@ $color-pro-plan: #3ea9f5;
   }
   
   .card-selection.active-selection {
-    border: 2px solid var(--blue-light);
-    background: #f1f3fd;
-    border-radius: 16px;
+    border: 2px solid var(--blue-20);
+    background: var(--outlined-btn-blu-hover-backgound-color);
+    border-radius: var(--card-border-radius) 
   }
   
   

@@ -689,8 +689,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // this.logger.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-        // COMMENTED NK
-        // this.getDeptsByProjectId(this.projectUserArray)
+   
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
@@ -1022,7 +1021,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancelLbl,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
@@ -1069,7 +1068,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       icon: "info",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok') ,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // button: {
       //   text: "OK",
@@ -1163,7 +1162,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      //  this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+      // console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {
@@ -1190,7 +1189,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       });
 
-      this.getDeptsAndCountOfDeptsInRequests(wsrequests);
+      // No more used 
+      // this.getDeptsAndCountOfDeptsInRequests(wsrequests);
     });
   }
   // DEPTS_LAZY: add this 
@@ -1269,14 +1269,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    // console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
 
       .subscribe((wsrequests) => {
-        this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1881,7 +1881,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   getWsConv$() {
     this.wsRequestsService.wsConv$
-      .pipe(throttleTime(5000))
+      .pipe(throttleTime(30000))
       .pipe(
         takeUntil(this.unsubscribe$)
       )

@@ -596,6 +596,8 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     }
 }
 
+
+
 export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
@@ -839,7 +841,7 @@ export function containsXSS(jsonData) {
     const xssPatterns = [
         /<script.*?>.*?<\/script.*?>/gi,  // script tags
         // /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
-        /on[a-z]+=/gi,
+        // /on[a-z]+=/gi,
         /eval\s*\(.*?\)/gi,               // eval calls
         /javascript\s*:\s*.*/gi,          // javascript protocol
         /document\.cookie/gi,             // access to cookies
@@ -860,7 +862,7 @@ export function isMaliciousHTML(input) {
     // List of common XSS attack patterns
     const xssPatterns = [
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, // Script tags
-        /on\w+="[^"]*"/gi,                                    // Event handlers
+        // /on\w+="[^"]*"/gi,                                    // Event handlers
         /javascript:[^'"]*/gi,                               // JavaScript URLs
         /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, // Iframe tags
         /data:text\/html;base64,[A-Za-z0-9+/=]+/gi          // Base64 encoded scripts
@@ -875,6 +877,10 @@ export function isMaliciousHTML(input) {
     }
     return false; // No XSS detected
 }
+
+// Projects created after this date will no longer be able to use the free plan when the trial expires.
+// export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
+export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation

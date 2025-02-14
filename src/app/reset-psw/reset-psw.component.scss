@@ -1,4 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
+
 /****** LOGIN ******/
 .btn-forgotpsw {
   width: 100%;
@@ -7,6 +8,7 @@
   font-size: 16px;
   letter-spacing: 2px;
   margin-top: 30px;
+  border-radius: var(--btn-border-radius);
 }
 
 .btn-forgotpsw_nomatch {
@@ -15,6 +17,7 @@
   height: 56px;
   font-size: 16px;
   letter-spacing: 2px;
+  border-radius: var(--btn-border-radius);
 }
 
 .request-new-psw {
@@ -23,6 +26,7 @@
   height: 56px;
   font-size: 16px;
   letter-spacing: 2px;
+  border-radius: var(--btn-border-radius);
 }
 
 .login-container {
@@ -96,7 +100,7 @@ label {
   padding-bottom: 8px;
   color: #da491c;
   line-height: 1.2em;
-  font-size:13px
+  font-size: 13px
 }
 
 .main-panel .main-content {
@@ -120,4 +124,48 @@ label {
   width: 50px;
   /* background: aliceblue; */
   height: 54px;
+}
+
+.reset-password-back-to-login>i {
+  vertical-align: middle !important;
+  cursor: pointer;
+  color: var(--blue-20)
+}
+
+.reset-password-back-to-login>span {
+  font-size: 1.1em;
+  vertical-align: middle !important;
+  font-weight: 400;
+  cursor: pointer;
+  color: var(--blue-20)
+}
+
+
+.contat-us {
+  margin-top: 26px;
+  float: right
+}
+
+.contat-us>h4 {
+  font-size: 1.1em;
+  margin-top: 0px
+}
+
+.contat-us>h4>a {
+  text-transform: none;
+  color: var(--blue-20);
+  font-weight: 400;
+}
+
+.invalid-psw-reset-key {
+  font-weight: 400;
+  max-width: 400px;
+  margin: 18px auto;
+  text-align: center;
+}
+
+.invalid-psw-reset-key>h4 {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
 }

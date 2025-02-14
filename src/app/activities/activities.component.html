@@ -33,9 +33,9 @@
                       <!-- <mat-label>Enter a date range</mat-label> -->
                       <mat-date-range-input [rangePicker]="picker">
                         <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
-                          placeholder="Start date">
+                          placeholder="{{'StartDate' | translate}}">
                         <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
-                          placeholder="End date">
+                          placeholder="{{'EndDate' | translate}}">
                       </mat-date-range-input>
                       <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

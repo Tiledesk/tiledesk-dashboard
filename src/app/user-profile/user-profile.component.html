@@ -247,7 +247,7 @@
                         <div class="row" style="min-height:83px">
                             <div class="col-md-12 automatic-dshbrd-lang">
                                 <div class="radio" style="margin-bottom: 2px;">
-                                    <label style="color: #7695a5;">
+                                    <label>
                                         <input (change)="onSelectBrowserLangFromRadioBtn($event)" type="radio"
                                             name="dashboardLanguage" value="browserlang"
                                             [checked]="!HAS_SELECTED_PREFERRED_LANG">
@@ -306,7 +306,7 @@
                                     {{'PreferredDashboardLanguage' | translate }}
                                 </label> -->
                                 <div class="radio" style="margin-bottom: 6px;">
-                                    <label style="color: hsl(200, 21%, 55%);">
+                                    <label>
                                         <input type="radio" value="preferredlang"
                                             (change)="onSelectPreferredLangFromRadioBtn($event)"
                                             name="dashboardLanguage" [checked]="HAS_SELECTED_PREFERRED_LANG">

@@ -8,6 +8,7 @@
 
  // https://www.rgbtohex.net/rgb/91-114-167  intessant link for the new color 5b72a7
  // https://color.adobe.com/color-palette-free-download-color-theme-14037012/ intessant linkfor the new color  5b72a7
+ 
  body {
      --sidebar-bckgrnd-bottom-section-drk: #2d323e;
      --sidebar-bckgrnd-item-hover: rgba(248, 248, 248, 0.251);
@@ -15,13 +16,12 @@
      --sidebar-inactive-icon: #647491;
      --sidebar-icon-color:#fff; // #647491;
      --sidebar-hover-icon-color: #a9afbb;
-     --sidebar-active-icon: var(--blue-light);
-    //  --sidebar-active-icon: #fff;
+     --sidebar-active-icon: var(--blue-light); //defined in sidebar.component.ts
      --primary-btn-background: #3ea9f5;
      --primary-btn-color: #fff;
      --primary-btn-hover-background: #399ce2;
      --ng-select-footer-btn-color: #3ea9f5;
-     --dropdown-menu-hover-color: #3ea9f5;
+     --dropdown-menu-hover-color: rgba(0, 0, 0, .04); // #eee;// #3ea9f5;
      --secondary-btn-background: #e4e6eb;
      --secondary-btn-color: #050505;
      --red-btn-background-color: #e81332;
@@ -33,10 +33,11 @@
      --outlined-btn-border-color: rgb(203, 213, 225);
      --outlined-btn-blu-color: #3ea9f5;
      --outlined-btn-blu-hover-backgound-color: rgba(62,169,245,.1 );
-     --only-text-btn-color: #3ea9f5;
+    //  --only-text-btn-color: #3ea9f5;
+     --only-text-btn-color: var(--blue-20);
      --only-text-btn-hover-background: rgba( 55, 143, 233, 0.1);
-     --icon-btn: #3ea9f5;
      --btn-get-feature-color: #3ea9f5;
+     --icon-btn: var(--blue-20);// #3ea9f5;
      --btn-border-radius: 9999px;
      --badge-border-radius: 9999px;
      --search-bar-border-radius: 9999px;
@@ -58,6 +59,12 @@
      --light-periwinkle: #5b72a7;
      --blue-turquoise: #2196f3;
      --blue-light: #3ea9f5;
+     --blu-01:rgba(0, 73, 189,.1);
+     --blue-20: #2196f3;//  --blue-20: #0566ff;
+     --blue-40: #008de9; // #0049bd;
+     --dark-10: #232a36;
+     --dark-20: #1e293b;
+     --dark-40: #161b22;
      --vivid-blue:#0d8aee;
      --opal-violet: #7c8eb9;
      --indigo: #6883d0;
@@ -175,7 +182,7 @@
      --list-item-input-row-hover-border-radius: 4px;
      --list-item-action-btns-height: 30px;
      --list-item-action-btns-width: 30px;
-     --list-item-input-focus-background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d2, #d2d2d2) !important;
+     --list-item-input-focus-background-image: linear-gradient(var(--blue-20), var(--blue-20)), linear-gradient(#d2d2d2, #d2d2d2) !important;
      --list-item-input-focus-cursor: text;
      --conv-details-rating-star-color: #eee;
      --conv-details-rating-active-star-color: rgb(252, 217, 58);
@@ -214,7 +221,7 @@
      --contact-tag-letter-spacing: -0.01em;
      --delete-tag-icon-color: rgb(100, 116, 145);
      --delete-tag-btn-hover: rgb(248, 166, 178);
-     --manage-tag-font-color: #03a5e8;
+     --manage-tag-font-color: var(--blue-20); // #03a5e8;
      --manage-tag-font-size: 12px;
      --manage-tag-font-weight: 400;
      --manage-tag-margin-top: 12px;
@@ -253,9 +260,9 @@
      --conv-details-resolve-conv-btn-hover-border-color: #9ac1ff;
      --conv-details-resolve-conv-btn-hover-color: #074095;
      --conv-details-sidebar-tabs-header-background: linear-gradient(to right, rgb(211, 219, 229) 100%, rgb(211, 219, 229) 100%, rgb(211, 219, 229) 100%);
-     --conv-details-sidebar-active-tab-border-bottom: 3px solid rgb(5, 102, 255);
+     --conv-details-sidebar-active-tab-border-bottom: 2px solid var(--blue-20); //3px solid rgb(5, 102, 255);
      --conv-details-sidebar-tab-arrow-color: rgb(100, 116, 145);
-     --conv-details-sidebar-tab-arrow-active-color: rgb(0, 73, 189);
+     --conv-details-sidebar-tab-arrow-active-color: var(--blue-20); //  rgb(0, 73, 189);
      --app-sidebar-background: #fff;
      --app-sidebar-elevation: 0 2px 6px rgb(0 27 71 / 12%);
      --app-sidebar-header-border-bottom: 1px solid #eeeeee;
@@ -523,7 +530,7 @@
      --conv-details-resolve-conv-btn-hover-border-color: #9ac1ff;
      --conv-details-resolve-conv-btn-hover-color: #074095;
      --conv-details-sidebar-tabs-header-background: linear-gradient(to right, rgb(211, 219, 229) 100%, rgb(211, 219, 229) 100%, rgb(211, 219, 229) 100%);
-     --conv-details-sidebar-active-tab-border-bottom: 3px solid rgb(5, 102, 255);
+     --conv-details-sidebar-active-tab-border-bottom: 2px solid #2196f3; // 3px solid rgb(5, 102, 255);
      --conv-details-sidebar-tab-arrow-color: rgb(100, 116, 145);
      --conv-details-sidebar-tab-arrow-active-color: rgb(0, 73, 189);
      --app-sidebar-background: #fff;

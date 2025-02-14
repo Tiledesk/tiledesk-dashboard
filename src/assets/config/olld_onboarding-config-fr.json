@@ -1,0 +1,84 @@
+{
+  "steps":[
+    {
+      "title": "Créer un profil",
+      "buttons": {
+        "next": "Continuer"
+      },
+      "questions": [
+        {
+          "title": "Ton rôle",
+          "attribute_name": "user_role",
+          "type": "select",
+          "labels": {
+            "placeholder":"Sélectionnez votre rôle principal"
+          },
+          "options": [
+            {"label": "Propriétaire d'entreprise", "value": "business_owner"},
+            {"label": "Développeur", "value": "developer"},
+            {"label": "Conversation Designer", "value": "conversation_designer"},
+            {"label": "No-Code Builder", "value": "no_code_builder"},
+            {"label": "Partie prenante commerciale", "value": "business_stakeholder"},
+            {"label": "Autre", "value": "other"}
+          ]
+        },
+        {
+          "title": "Taille de l'équipe",
+          "type": "select",
+          "attribute_name": "company_size",
+          "labels": {
+            "placeholder":"Combien de collaborateurs aurez-vous?"
+          },
+          "options": [
+            {"label": "Juste moi", "value": "1"},
+            {"label": "Petite équipe (2-5)", "value": "2-5"},
+            {"label": "Grande équipe (5+)", "value": "5+"}
+          ]
+        },
+        {
+          "title": "Comment avez-vous découvert Tiledesk ?",
+          "type": "select",
+          "attribute_name": "acquisition_source",
+          "labels": {
+            "placeholder":"LinkedIn, Amis, Blogs "
+          },
+          "options": [
+            {"label": "Moteurs de recherche", "value": "search_engines"},
+            {"label": "Social Media (LinkedIn, Facebook, Instagram, etc.)", "value": "social_media"},
+            {"label": "Amis ou collègues", "value": "friends_colleagues"},
+            {"label": "Sites Web tiers / blogs / vidéos", "value": "third_party_websites_blogs_videos"},
+            {"label": "Autre", "value": "other"}
+          ]
+        }
+      ]
+    }, 
+
+    {
+      "title": "${userFullname} merci 🙏 Dernières questions avant de commencer...",
+      "buttons": {
+        "back": "Retourner",
+        "next": "Continuer"
+      },
+      "questions": [
+        {
+          "title": "Quel est votre objectif principal avec Tiledesk ?",
+          "type": "button",
+          "attribute_name": "use_case",
+          "buttons": [
+            {"icon":"🛠", "label": "Résoudre les problèmes des clients", "value": "solve_customer_problems"},
+            {"icon": "💰", "label": "Augmenter les ventes en ligne", "value": "increase_online_sales"}
+          ]
+        },
+        {
+          "title": "Quelle chaîne vous intéresse le plus ?",
+          "type": "button",
+          "attribute_name": "solution_channel",
+          "buttons": [
+            {"icon":"🌐", "label": "Web / Mobile", "value": "web_mobile"},
+            {"icon":"📱", "label": "WhatsApp / FB Messenger", "value": "whatsapp_fb_messenger"}
+          ]
+        }
+      ]
+    }
+  ]
+}

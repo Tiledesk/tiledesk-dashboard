@@ -89,7 +89,7 @@ export class IntegrationService {
   }
 
   saveIntegration(integration: any) {
-
+    this.logger.log('integration ', integration) 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -137,6 +137,23 @@ export class IntegrationService {
     }
 
     return this.http.get(url, httpOptions);
+  }
+
+  checkAnthropicKeyValidity(url: string, api_key?: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'x-api-key': api_key,
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01'
+      })  
+    }
+    // console.log('checkAnthropicKeyValidity api_key ', api_key)
+    // const headers = new HttpHeaders({
+    //   'x-api-key': api_key,
+    //   'anthropic-version': '2023-06-01'
+    // });
+
+    return this.http.get(url,  httpOptions );
   }
 
 

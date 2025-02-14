@@ -889,13 +889,11 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           Swal.fire({
             title: this.deleteContact_msg,
             text: this.youCannotDeleteThisContact,
-            icon: "info",
+            icon: "warning",
             showCloseButton: false,
             showCancelButton: false,
             confirmButtonText: this.translate.instant('Ok'),
-            confirmButtonColor: "var(--primary-btn-background)",
-            // button: true,
-            // dangerMode: false,
+            // confirmButtonColor: "var(--primary-btn-background)",
           })
         } else {
 
@@ -913,8 +911,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
             cancelButtonText: this.translate.instant('Cancel'),
             focusConfirm: false,
             reverseButtons: true,
-            // buttons: true,
-            // dangerMode: true,
           })
             .then((result) => {
               if (result.isDenied) {
@@ -933,7 +929,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
                     showCloseButton: false,
                     showCancelButton: false,
                     confirmButtonText: this.translate.instant('Ok'),
-                    confirmButtonColor: "var(--primary-btn-background)",
+                    // confirmButtonColor: "var(--primary-btn-background)",
                   });
 
                 }, () => {
@@ -945,10 +941,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
                     icon: "success",
                     showCloseButton: false,
                     showCancelButton: false,
-                    confirmButtonColor: "var(--primary-btn-background)",
+                    // confirmButtonColor: "var(--primary-btn-background)",
                     confirmButtonText: this.translate.instant('Ok'),
-
-
 
                   }).then((okpressed) => {
                     this.getContacts();
@@ -1020,7 +1014,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
               showCloseButton: false,
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
             });
           }, () => {
             this.logger.log('[CONTACTS-COMP] in swal deleteRequest res* COMPLETE *');
@@ -1031,7 +1025,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
               icon: "success",
               showCloseButton: false,
               showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
               this.getContacts();
@@ -1196,7 +1190,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
       // buttons: {
@@ -1248,7 +1242,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
       // content: el,

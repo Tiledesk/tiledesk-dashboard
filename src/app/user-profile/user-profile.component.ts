@@ -22,6 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 
 
 @Component({
@@ -908,12 +909,15 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
   presentModalSelectAProjectToManageEmailNotification() {
-    swal({
+    Swal.fire({
       title: this.translationsMap.get('Warning'),
       text: this.translationsMap.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails'),
       icon: "warning",
-      button: "Ok",
-      dangerMode: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok') ,
+      focusConfirm: false,
+      // button: "Ok",
+      // dangerMode: false,
     })
   }
 }
