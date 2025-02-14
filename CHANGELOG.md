@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.75-rc2
+- Makes AI integrations available from the Premium plan
+
 ### 2.7.75-rc1
 - Requires "Refresh rate" feature to be enabled in order to use it 
 
