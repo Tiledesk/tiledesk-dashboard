@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.77
+- Handles error for uploading too large files
+
 ### 2.7.76
 - Improves the Knowledge base preview
 - Improves the method of uploading a custom logo for the widget
