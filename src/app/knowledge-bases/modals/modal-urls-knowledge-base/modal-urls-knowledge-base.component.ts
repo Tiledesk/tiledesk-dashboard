@@ -66,7 +66,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
     public brandService: BrandService
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
-    console.log("[MODALS-URLS] data: ", data);
+    this.logger.log("[MODALS-URLS] data: ", data);
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature;
       this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
@@ -74,12 +74,12 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
       this.id_project = data.id_project;
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
-      console.log("[MODALS-URLS] data > t_params: ", this.t_params);
-      console.log("[MODALS-URLS] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
-      console.log("[MODALS-URLS] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
-      console.log("[MODALS-URLS] data > id_project: ", this.id_project);
-      console.log("[MODALS-URLS] data > project_name: ", this.project_name);
-      console.log("[MODALS-URLS] data > payIsVisible: ", this.payIsVisible);
+      this.logger.log("[MODALS-URLS] data > t_params: ", this.t_params);
+      this.logger.log("[MODALS-URLS] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+      this.logger.log("[MODALS-URLS] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
+      this.logger.log("[MODALS-URLS] data > id_project: ", this.id_project);
+      this.logger.log("[MODALS-URLS] data > project_name: ", this.project_name);
+      this.logger.log("[MODALS-URLS] data > payIsVisible: ", this.payIsVisible);
     } 
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -120,7 +120,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
 
 
   onSelectRefreshRate(refreshRateSelected) {
-    console.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
+    this.logger.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
   }
 
   /** */

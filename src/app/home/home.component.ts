@@ -460,7 +460,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((hasOpen) => {
 
-        console.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
 
         if (this.projectId) {
           if (hasOpen !== null) {
@@ -476,7 +476,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] getAllQuotes response: ", resp)
       this.quotes = resp
 
-      console.log("[HOME] project_limits: ", this.project_limits)
+      this.logger.log("[HOME] project_limits: ", this.project_limits)
       this.logger.log("[HOME] resp.quotes: ", resp.quotes)
       if (this.project_limits) {
         this.messages_limit = this.project_limits.messages;
@@ -546,32 +546,32 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.project_limits) {
       if (resp.quotes.requests.quote >= this.project_limits.requests) {
         this.conversationsRunnedOut = true;
-        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
         // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.conversationsRunnedOut = false;
         // this.quotesService.hasReachedQuotasLimitInHome(false)
-        console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
       }
 
       if (resp.quotes.email.quote >= this.project_limits.email) {
         this.emailsRunnedOut = true;
-        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
         // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.emailsRunnedOut = false;
         // this.quotesService.hasReachedQuotasLimitInHome(false)
-        console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
       }
 
       if (resp.quotes.tokens.quote >= this.project_limits.tokens) {
         this.tokensRunnedOut = true;
-        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
         // this.quotesService.hasReachedQuotasLimitInHome(true)
       } else {
         this.tokensRunnedOut = false;
         // this.quotesService.hasReachedQuotasLimitInHome(false)
-        console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
       }
     }
   }

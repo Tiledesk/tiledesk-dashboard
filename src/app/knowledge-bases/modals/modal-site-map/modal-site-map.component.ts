@@ -82,7 +82,7 @@ export class ModalSiteMapComponent implements OnInit {
      public brandService: BrandService
   ) { 
     this.selectedRefreshRate = this.refresh_rate[0].value;
-    console.log("[MODALS-SITEMAP] data: ", data);
+    this.logger.log("[MODALS-SITEMAP] data: ", data);
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
       this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
@@ -90,12 +90,12 @@ export class ModalSiteMapComponent implements OnInit {
       this.id_project = data.id_project;
       this.project_name = data.project_name;
       this.payIsVisible =  data.payIsVisible;
-      console.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
-      console.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
-      console.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
-      console.log("[MODALS-SITEMAP] data > id_project: ", this.id_project);
-      console.log("[MODALS-SITEMAP] data > project_name: ", this.project_name);
-      console.log("[MODALS-SITEMAP] data > payIsVisible: ", this.payIsVisible);
+      this.logger.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
+      this.logger.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+      this.logger.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
+      this.logger.log("[MODALS-SITEMAP] data > id_project: ", this.id_project);
+      this.logger.log("[MODALS-SITEMAP] data > project_name: ", this.project_name);
+      this.logger.log("[MODALS-SITEMAP] data > payIsVisible: ", this.payIsVisible);
     }
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -109,9 +109,9 @@ export class ModalSiteMapComponent implements OnInit {
   listenToOnSenSitemapSiteListEvent() {
     document.addEventListener(
       "on-send-sitemap-site-list", (e: CustomEvent) => {
-        // console.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
+        // this.logger.log("[MODAL-SITE-MAP] on-send-sitemap-site-list :", e.detail);
         this.listSitesOfSitemap=e.detail;
-        // console.log("[MODAL-SITE-MAP] on-send-sitemap-site-list listSitesOfSitemap length:", this.listSitesOfSitemap.length);
+        // this.logger.log("[MODAL-SITE-MAP] on-send-sitemap-site-list listSitesOfSitemap length:", this.listSitesOfSitemap.length);
        
         if(this.listSitesOfSitemap.length > 0){
           this.buttonDisabled = false;
@@ -208,7 +208,7 @@ export class ModalSiteMapComponent implements OnInit {
   }
 
   onSelectRefreshRate(refreshRateSelected) {
-    console.log("[MODALS-SITEMAP] onSelectRefreshRate: ", refreshRateSelected);
+    this.logger.log("[MODALS-SITEMAP] onSelectRefreshRate: ", refreshRateSelected);
   }
 
   onSaveKnowledgeBase(){

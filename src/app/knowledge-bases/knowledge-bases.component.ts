@@ -341,7 +341,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
       const isActiveSubscription = project.isActiveSubscription
       const trialExpired = project.trialExpired
@@ -373,7 +373,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
-    console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - projectProfile: ', projectProfile);
     if (projectProfile && projectProfile['customization']) {
 
       if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] !== undefined) {
@@ -381,22 +381,22 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] === true) {
 
           this.refreshRateIsEnabled = true
-          console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 1: ', this.refreshRateIsEnabled);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 1: ', this.refreshRateIsEnabled);
 
         } else if (projectProfile && projectProfile['customization']['reindex'] && projectProfile['customization']['reindex'] === false) {
 
           this.refreshRateIsEnabled = false;
-          console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 2: ', this.refreshRateIsEnabled);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 2: ', this.refreshRateIsEnabled);
         }
 
       } else {
         this.refreshRateIsEnabled = false
-        console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 3: ', this.refreshRateIsEnabled);
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 3: ', this.refreshRateIsEnabled);
       }
 
     } else {
       this.refreshRateIsEnabled = false
-      console.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 4: ', this.refreshRateIsEnabled);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfRefreshRateIsEnabledInCustomization - refreshRateIsEnabled 4: ', this.refreshRateIsEnabled);
     }
   }
 
