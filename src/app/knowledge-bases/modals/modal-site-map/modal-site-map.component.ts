@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { BrandService } from 'app/services/brand.service';
 
 @Component({
   selector: 'modal-site-map',
@@ -49,6 +50,22 @@ export class ModalSiteMapComponent implements OnInit {
   unwanted_tags = [];
   unwanted_classnames = [];
 
+  refresh_rate: Array<any> = [ 
+    { name: "Never", value: 'never' },
+    { name: "Daily", value: 'daily' },
+    { name: "Weekly", value: 'weekly' },
+    { name: "Monthly", value: 'monthly'}
+  ]
+
+  // selectedRefreshRate = 0;
+  selectedRefreshRate: any;
+  isAvailableRefreshRateFeature: boolean;
+  refreshRateIsEnabled : boolean;
+  id_project: string;
+  project_name : string;
+  payIsVisible:  boolean;
+  t_params: any;
+  salesEmail: string;
   kb: KB = {
     _id: null,
     type: '',
@@ -61,8 +78,28 @@ export class ModalSiteMapComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ModalSiteMapComponent>,
     private formBuilder: FormBuilder,
-    private logger: LoggerService
-  ) { }
+    private logger: LoggerService,
+     public brandService: BrandService
+  ) { 
+    this.selectedRefreshRate = this.refresh_rate[0].value;
+    this.logger.log("[MODALS-SITEMAP] data: ", data);
+    if (data ) {
+      this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature
+      this.refreshRateIsEnabled =  data.refreshRateIsEnabled;
+      this.t_params = data.t_params
+      this.id_project = data.id_project;
+      this.project_name = data.project_name;
+      this.payIsVisible =  data.payIsVisible;
+      console.log("[MODALS-SITEMAP] data > t_params: ", this.t_params);
+      console.log("[MODALS-SITEMAP] data > isAvailableRefreshRateFeature: ", this.isAvailableRefreshRateFeature);
+      console.log("[MODALS-SITEMAP] data > refreshRateIsEnabled: ", this.refreshRateIsEnabled);
+      console.log("[MODALS-SITEMAP] data > id_project: ", this.id_project);
+      console.log("[MODALS-SITEMAP] data > project_name: ", this.project_name);
+      console.log("[MODALS-SITEMAP] data > payIsVisible: ", this.payIsVisible);
+    }
+    const brand = brandService.getBrand();
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+  }
 
   ngOnInit(): void {
     this.kbForm = this.createConditionGroup();
@@ -141,6 +178,12 @@ export class ModalSiteMapComponent implements OnInit {
     this.countSitemap = this.listSitesOfSitemap.length;
   }
 
+
+  goToPricing() {
+    let body: any = { upgrade_plan: true}
+    this.dialogRef.close(body);
+  }
+
   onCloseBaseModal() {
     this.listSitesOfSitemap = [];
     this.listOfUrls = "";
@@ -164,6 +207,10 @@ export class ModalSiteMapComponent implements OnInit {
 
   }
 
+  onSelectRefreshRate(refreshRateSelected) {
+    this.logger.log("[MODALS-SITEMAP] onSelectRefreshRate: ", refreshRateSelected);
+  }
+
   onSaveKnowledgeBase(){
     if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
       this.errorLimit = true;
@@ -175,6 +222,7 @@ export class ModalSiteMapComponent implements OnInit {
       let body = {
         'list': arrayURLS,
         scrape_type: this.selectedScrapeType,
+        refresh_rate: this.selectedRefreshRate
       }
 
       if (this.selectedScrapeType === 4) {
@@ -239,6 +287,10 @@ export class ModalSiteMapComponent implements OnInit {
       this.unwanted_classnames.splice(index, 1)
     }
 
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`);
   }
 
 

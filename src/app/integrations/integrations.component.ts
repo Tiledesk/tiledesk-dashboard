@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration,  } from './utils'; // OllamaIntegration, DeepseekIntegration
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
+import { ProjectUser } from 'app/models/project-user';
 
 
 const swal = require('sweetalert');
@@ -172,21 +173,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
 
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
+        } else {
+          this.ROLE_IS_AGENT = false;
         }
-      });
+      }
+    });
   }
 
   /**
@@ -544,6 +541,31 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.OPENAI) {
       return new OpenaiIntegration();
     }
+
+    if (key === INTEGRATIONS_KEYS.GOOGLE) {
+      return new GoogleIntegration();
+    }
+
+    if (key === INTEGRATIONS_KEYS.ANTHROPIC) {
+      return new AnthropicIntegration();
+    }
+
+    if (key === INTEGRATIONS_KEYS.GROQ) {
+      return new GroqIntegration();
+    }
+
+    if (key === INTEGRATIONS_KEYS.COHERE) {
+      return new CohereIntegration();
+    }
+
+    // if (key === INTEGRATIONS_KEYS.OLLAMA) {
+    //   return new OllamaIntegration();
+    // }
+
+    // if (key === INTEGRATIONS_KEYS.DEEPSEEK) {
+    //   return new DeepseekIntegration();
+    // }
+
     if (key === INTEGRATIONS_KEYS.MAKE) {
       return new MakeIntegration();
     }
