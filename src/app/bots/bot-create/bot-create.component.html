@@ -250,9 +250,11 @@
                   class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json" />
                   <!-- btn-primary btn-lg  -->
                 <label class="btn btn-tdblu-no-boxshadow" for="upload-chatbot-from-json">
-                  <span class="material-icons" style="padding-right: 3px;">
+                  <span *ngIf="!showUploadingSpinner" class="material-icons" style="padding-right: 3px;">
                     cloud_upload
                   </span>
+                  <i *ngIf="showUploadingSpinner" style="padding-right: 3px; vertical-align: middle;" class="fa fa-spinner fa-spin"></i>
+                  
                   Import
                 </label>
               </span>

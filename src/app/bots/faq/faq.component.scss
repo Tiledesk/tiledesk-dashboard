@@ -1057,12 +1057,13 @@ input[type="text"]:disabled::placeholder {
 }
 
 .hook-bot-to-dept-btn {
-  margin-top: 0px !important;;
+  margin-top: 0px !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
-  margin-bottom: 0px !important;;
-  border-top-left-radius: 3px !important;;
-  border-bottom-left-radius: 3px !important;;
+  margin-bottom: 0px !important;
+  border-top-left-radius: 3px !important;
+  border-bottom-left-radius: 3px !important;
+  max-height: 36px;
 }
 
 ::ng-deep .ng-select.ng-select-dept>.ng-select-container {

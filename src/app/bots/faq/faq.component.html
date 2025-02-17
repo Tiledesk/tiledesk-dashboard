@@ -538,7 +538,7 @@
                     {{ 'NoDeptsAreAssociatedWithThisBot' | translate}}
                   </span>
 
-                  <div class="input-group" *ngIf="depts_without_bot_array?.length > 0">
+                  <div class="input-group" *ngIf="depts_without_bot_array?.length > 0" style="max-width: 450px;">
                     <ng-select class="ng-select-dept" [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
                       placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_dept_id"
                       (change)="onSelectBotId()">

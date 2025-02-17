@@ -405,6 +405,18 @@
                               clear
                             </span>
                           </span>
+                          <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && uploadedFiles?.type.startsWith('image')" class="remove-attachment"
+                            (click)="removeNativeAttachment(uploadedFiles?.downloadURL)">
+                            <span class="material-icons">
+                              clear
+                            </span>
+                          </span>
+                          <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && !uploadedFiles?.type.startsWith('image')" class="remove-attachment"
+                            (click)="removeNativeDocumentAttachment(uploadedFiles?.downloadURL)">
+                            <span class="material-icons">
+                              clear
+                            </span>
+                          </span>
                         </div>
                         <div class="col-xs-12 h-100 plr-0" style="  margin-bottom: 8px;height:46px"
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">

@@ -3511,78 +3511,71 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   onFileSelected(event) {
 
     const file = event.target.files[0]
-    this.logger.log(`[WS-REQUESTS-MSGS] - onFileSelected file `, file);
-    this.logger.log('[WS-REQUESTS-MSGS] file.type', file.type)
-    this.logger.log('[WS-REQUESTS-MSGS] file.size', file.size)
+    this.logger.log(`[WIDGET-SET-UP] - onFileSelected file `, file);
+    this.logger.log('[WIDGET-SET-UP] file.type', file.type)
+    this.logger.log('[WIDGET-SET-UP] file.size', file.size)
     if (file.size <= 1024000) {
+                     
       if (file.type === 'image/gif' || file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
 
 
         if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
           this.uploadImageService.uploadAttachment(this.currentUserId, file).then(downloadURL => {
-            this.logger.log(`[WS-REQUESTS-MSGS] - upload firebase downloadURL `, downloadURL);
+            this.logger.log(`[WIDGET-SET-UP] - upload firebase downloadURL `, downloadURL);
 
             if (downloadURL) {
 
               this.logoUrl = downloadURL
-              this.logger.log(`[WS-REQUESTS-MSGS] - upload firebase downloadURL `, this.logoUrl);
+              this.logger.log(`[WIDGET-SET-UP] - upload firebase downloadURL `, this.logoUrl);
 
               // this.uploadedFiles['downloadURL'] = downloadURL
             }
             // this.metadata.src = downloadURL
             // this.metadata.width = this.imgWidth,
             // this.metadata.height = this.imgHeight,
-            // this.logger.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
+            // this.logger.log(`[WIDGET-SET-UP] - upload metadata `, this.metadata);
 
             this.fileUpload.nativeElement.value = '';
 
           }).catch(error => {
 
-            this.logger.error(`[WS-REQUESTS-MSGS] - upload Failed to upload file and get link `, error);
+            this.logger.error(`[WIDGET-SET-UP] - upload Failed to upload file and get link `, error);
           });
         }
         else {
           this.uploadImageNativeService.uploadAttachment_Native(file).then(downloadURL => {
-            this.logger.log(`[WS-REQUESTS-MSGS] - upload native downloadURL `, downloadURL);
+            this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
 
             if (downloadURL) {
 
               this.logoUrl = downloadURL;
-              this.logger.log(`[WS-REQUESTS-MSGS] - upload native downloadURL `, this.logoUrl);
+              this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, this.logoUrl);
             }
 
             this.fileUpload.nativeElement.value = '';
 
           }).catch(error => {
 
-            this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
+            this.logger.error(`[WIDGET-SET-UP] - upload native Failed to upload file and get link `, error);
           });
 
         }
       } else {
-        this.presenModalAttachmentFileTypeNotSupported()
+       this.notify.presenModalAttachmentFileTypeNotSupported()
       }
     } else {
-      this.logger.log('[WS-REQUESTS-MSGS] File is too large to upload. Max file size: 1024KB')
-      this.presentModalAttachmentFileSizeTooLarge()
+      this.logger.log('[WIDGET-SET-UP] File is too large to upload. Max file size: 1024KB')
+      const uploadLimit = '1024KB'
+      this.notify.presentModalAttachmentFileSizeTooLarge(uploadLimit)
     }
   }
 
-  presenModalAttachmentFileTypeNotSupported() {
-    Swal.fire({
-      title: this.translate.instant('Warning'),
-      text: this.translate.instant('SorryFileTypeNotSupported'),
-      icon: "warning",
-      showCloseButton: false,
-      showCancelButton: false,
-      confirmButtonText: this.translate.instant('Ok')
-    })
-  }
+ 
 
-  presentModalAttachmentFileSizeTooLarge() {
+  presentModalAttachmentFileSizeTooLarge(fileSize) {
     Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('FileTooLarge', {file_size: '1024KB'}),
+      text: this.translate.instant('FileTooLarge', {file_size: fileSize}),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: false,
@@ -3625,7 +3618,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           });
 
       } else {
-        this.uploadImageNativeService.deleteUploadAttachment_Native(this.logoUrl)
+        this.uploadImageNativeService.deleteImageUploadAttachment_Native(this.logoUrl)
           .then(res => {
             this.logger.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
             if (res === true) {

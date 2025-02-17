@@ -586,6 +586,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       }, (error) => {
 
         this.logger.error('[USER-PROFILE] IMAGE upload with native service - ERR ', error);
+        this.showSpinnerInUploadImageBtn = false;
       })
 
     }

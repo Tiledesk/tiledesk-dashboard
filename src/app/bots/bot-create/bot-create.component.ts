@@ -22,7 +22,8 @@ import {
   URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
   URL_connect_your_dialogflow_agent,
   goToCDSVersion, dialogflowLanguage,
-  containsXSS
+  containsXSS,
+  formatBytesWithDecimal
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -132,12 +133,13 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   user: any;
   prjct_profile_name: string;
   chatBotCount: number;
-  USER_ROLE : string;
-  learnMoreAboutDefaultRoles : string;
+  USER_ROLE: string;
+  learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
   public hideHelpLink: boolean;
 
   translationMap: Map<string, string> = new Map();
+  showUploadingSpinner: boolean = false;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -163,12 +165,12 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dialogflowLang = dialogflowLanguage
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit() {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
-    
+
     this.getBrowserVersion();
     this.detectBrowserLang();
     this.getCurrentProject();
@@ -242,16 +244,16 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     }
   }
 
- 
+
 
   getTranslations() {
     this.translate.get('ThereHasBeenAnErrorProcessing')
       .subscribe((translation: any) => {
         this.thereHasBeenAnErrorProcessing = translation;
       });
-     
 
-      this.translate
+
+    this.translate
       .get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
         this.learnMoreAboutDefaultRoles = translation
@@ -297,7 +299,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   private readFileAsync(file: File): Promise<{}> {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-  
+
       fileReader.onload = (event: ProgressEvent<FileReader>) => {
         try {
           let fileJsonToUpload = JSON.parse(fileReader.result as string);
@@ -308,11 +310,11 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           reject(error)
         }
       };
-  
+
       fileReader.onerror = (e) => {
         reject(e);
       };
-  
+
       fileReader.readAsText(file);
     });
   }
@@ -327,65 +329,69 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     // let fileJsonToUpload = ''
     // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
-    const fileReader = new FileReader();
-    fileReader.readAsText(selectedFile, "UTF-8");
-    fileReader.onload = () => {
-     let fileJsonToUpload = JSON.parse(fileReader.result as string)
-     this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
-    }
-    // fileReader.onerror = (error) => {
-    //   this.logger.log(error);
-    // }
-    const fileList: FileList = event.target.files;
-    const file: File = fileList[0];
-    this.logger.log('fileChangeUploadChatbotFromJSON',file) 
-
-    // Check for valid JSON
-    let json = await this.readFileAsync(file).catch(e => { return; })
-    if(!json){
-      this.notify.showToast(this.translationMap.get('InvalidJSON'), 4, 'report_problem')
-      return;
-    }
-
-    const jsonString = JSON.stringify(json)
-    // Check for XSS patterns
-    if (containsXSS(jsonString)) {
-      // console.log("Potential XSS attack detected!");
-      this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
-      return;
-    }
-  
-
-
-
-    const formData: FormData = new FormData();
-    formData.set('id_faq_kb', this.id_faq_kb);
-    formData.append('uploadFile', file, file.name);
-    this.logger.log('FORM DATA ', formData)
-
-    if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit || this.chatBotLimit === 0) {
-        if (this.chatBotCount < this.chatBotLimit) {
-          this.logger.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
-          this.importChatbotFromJSON(formData)
-        } else if (this.chatBotCount >= this.chatBotLimit) {
-          this.logger.log('[BOT-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
-          this.presentDialogReachedChatbotLimit()
-        }
-      } else if (this.chatBotLimit === null) {
-        this.logger.log('[BOT-CREATE] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
-        this.importChatbotFromJSON(formData)
+    this.logger.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON selectedFile ', selectedFile);
+    if (selectedFile && selectedFile.type === "application/json") {
+      const fileReader = new FileReader();
+      fileReader.readAsText(selectedFile, "UTF-8");
+      fileReader.onload = () => {
+        let fileJsonToUpload = JSON.parse(fileReader.result as string)
+        this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
       }
-    } if (this.USER_ROLE === 'agent') {
-      this.presentModalAgentCannotManageChatbot()
+      // fileReader.onerror = (error) => {
+      //   this.logger.log(error);
+      // }
+      const fileList: FileList = event.target.files;
+      const file: File = fileList[0];
+      this.logger.log('fileChangeUploadChatbotFromJSON', file)
+
+      // Check for valid JSON
+      let json = await this.readFileAsync(file).catch(e => { return; })
+      if (!json) {
+        this.notify.showToast(this.translationMap.get('InvalidJSON'), 4, 'report_problem')
+        return;
+      }
+
+      const jsonString = JSON.stringify(json)
+      // Check for XSS patterns
+      if (containsXSS(jsonString)) {
+        // this.logger.log("Potential XSS attack detected!");
+        this.notify.showToast(this.translationMap.get('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
+        return;
+      }
+
+      const formData: FormData = new FormData();
+      formData.set('id_faq_kb', this.id_faq_kb);
+      formData.append('uploadFile', file, file.name);
+      this.logger.log('FORM DATA ', formData)
+
+      if (this.USER_ROLE !== 'agent') {
+        if (this.chatBotLimit || this.chatBotLimit === 0) {
+          if (this.chatBotCount < this.chatBotLimit) {
+            this.logger.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+            this.importChatbotFromJSON(formData)
+          } else if (this.chatBotCount >= this.chatBotLimit) {
+            this.logger.log('[BOT-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+            this.presentDialogReachedChatbotLimit()
+          }
+        } else if (this.chatBotLimit === null) {
+          this.logger.log('[BOT-CREATE] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.importChatbotFromJSON(formData)
+        }
+      } if (this.USER_ROLE === 'agent') {
+        this.presentModalAgentCannotManageChatbot()
+      }
+    } else {
+      this.notify.presenModalAttachmentFileTypeNotSupported()
     }
   }
 
   importChatbotFromJSON(formData) {
-    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON formData ',formData)
+    this.showUploadingSpinner = true
+    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON formData ', formData)
     this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
+        this.showUploadingSpinner = false
         this.importedChatbotid = faqkb._id
         this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
@@ -397,8 +403,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       }
 
     }, (error) => {
+      this.showUploadingSpinner = false
       this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
-
+      this.manageUploadError(error)
       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
     }, () => {
       this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
@@ -406,6 +413,18 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       this.getFaqKbByProjectId();
     });
 
+  }
+
+
+  manageUploadError(error) {
+    if (error.status = 413) {
+      this.logger.log(`[BOT-CREATE] - upload json error message 1`, error.error.err)
+      this.logger.log(`[BOT-CREATE] - upload json error message 2`, error.error.limit_file_size)
+      const uploadLimitInBytes = error.error.limit_file_size
+      const uploadFileLimitSize = formatBytesWithDecimal(uploadLimitInBytes, 2)
+      this.logger.log(`[BOT-CREATE] - upload json error limitInMB`, uploadFileLimitSize)
+      this.notify.presentModalAttachmentFileSizeTooLarge(uploadFileLimitSize)
+    }
   }
 
   presentDialogReachedChatbotLimit() {
@@ -684,7 +703,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-CREATE] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
         this.createTilebotBotFromScratch()
-      } 
+      }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()
     }

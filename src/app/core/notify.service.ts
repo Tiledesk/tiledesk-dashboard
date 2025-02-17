@@ -317,10 +317,34 @@ export class NotifyService {
   }
 
 
-
   closeContactOwnerModal() {
     this.displayContactOwnerModal = 'none';
   }
+
+
+  presentModalAttachmentFileSizeTooLarge(fileSize) {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('FileTooLarge', {file_size: fileSize}),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok')
+    })
+  }
+
+  presenModalAttachmentFileTypeNotSupported() {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('SorryFileTypeNotSupported'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok')
+    })
+  }
+
+  
 
 
 

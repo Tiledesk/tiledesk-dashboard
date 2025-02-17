@@ -1,4 +1,4 @@
-import { CHANNELS_NAME, checkAcceptedFile } from './../../utils/util';
+import { CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal } from './../../utils/util';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges, isDevMode } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -297,7 +297,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   visitorIsBanned: boolean = false;
   uploadedFiles: File;
   fileUploadAccept: string;
-
+  uploadNativeAttachmentError: boolean = false;
 
   metadata: any;
   imgWidth: number;
@@ -4010,34 +4010,34 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else if (this.user.firstname && !this.user.lastname) {
       userFullname = this.user.firstname
     }
-     if (!isDevMode()) {
-          try {
-            window['analytics'].track('Reassign to chatbot', {
-              "type": "organic",
-              "username": userFullname,
-              "email": this.user.email,
-              'userId': this.user._id,
-              'chatbotName': botname,
-              'chatbotId': botid,
-              'page': 'Conversation detail, Reassign conversation',
-              'button': 'Reassign',
-            });
-          } catch (err) {
-            this.logger.error(`Track Reassign to chatbot error`, err);
-          }
-    
-          try {
-            window['analytics'].identify(this.user._id, {
-              username: userFullname,
-              email: this.user.email,
-              logins: 5,
-    
-            });
-          } catch (err) {
-            this.logger.error(`Identify Reassign to chatbot error`, err);
-          }
-    
-        }
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track('Reassign to chatbot', {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.user.email,
+          'userId': this.user._id,
+          'chatbotName': botname,
+          'chatbotId': botid,
+          'page': 'Conversation detail, Reassign conversation',
+          'button': 'Reassign',
+        });
+      } catch (err) {
+        this.logger.error(`Track Reassign to chatbot error`, err);
+      }
+
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        this.logger.error(`Identify Reassign to chatbot error`, err);
+      }
+
+    }
 
   }
 
@@ -5428,16 +5428,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // }
 
 
-  formatBytes(bytes, decimals) {
-    if (bytes == 0) return '0 Bytes';
-    var k = 1024,
-      dm = decimals || 2,
-      sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-      i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-  }
 
   onFileSelected($event) {
+    this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
     const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
     upload_btn.blur();
@@ -5459,7 +5452,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       const uploadedFilesSize = this.uploadedFiles.size
 
-      const formattedBytes = this.formatBytes(uploadedFilesSize, 2)
+      const formattedBytes = this.formatBytes(uploadedFilesSize)
       this.uploadedFiles['formattedBytes'] = formattedBytes
       this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
 
@@ -5571,19 +5564,61 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.uploadedFiles['downloadURL'] = downloadURL
           }
           this.metadata.src = downloadURL
-          this.metadata.width = this.imgWidth,
-            this.metadata.height = this.imgHeight,
-            this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
+          this.metadata.width = this.imgWidth;
+          this.metadata.height = this.imgHeight;
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
 
           this.fileUpload.nativeElement.value = '';
 
         }).catch(error => {
-
+          this.uploadNativeAttachmentError = true;
+          this.uploadedFiles = undefined;
+          this.metadata = undefined
+          this.type = undefined
+          this.existAnAttacment = false
           this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload native error status `, error.status)
+          // if (error.status = 413) {
+          //   this.logger.log(`[WS-REQUESTS-MSGS] - upload native error message 1`, error.error.err)
+          //   this.logger.log(`[WS-REQUESTS-MSGS] - upload native error message 2`, error.error.limit_file_size)
+          //   const uploadLimitInBytes = error.error.limit_file_size
+          //   const uploadFileLimitSize = formatBytesWithDecimal(uploadLimitInBytes, 2)
+          //   this.logger.log(`[WS-REQUESTS-MSGS] - upload native error limitInMB`, uploadFileLimitSize)
+          //   this.notify.presentModalAttachmentFileSizeTooLarge(uploadFileLimitSize)
+          // }
         });
 
       }
     }
+  }
+
+
+
+
+  // formatBytesWithDecimal(bytes, decimals) {
+  //   if (bytes == 0) return '0 Bytes';
+  //   let k = 1000, //1024,          
+  //     dm = decimals || 2,
+  //     sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+  //     i = Math.floor(Math.log(bytes) / Math.log(k));
+  //   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  // }
+
+  formatBytes(bytes) {
+    var marker = 1024; // Change to 1000 if required
+    var decimal = 3; // Change as required
+    var kiloBytes = marker; // One Kilobyte is 1024 bytes
+    var megaBytes = marker * marker; // One MB is 1024 KB
+    var gigaBytes = marker * marker * marker; // One GB is 1024 MB
+
+    // return bytes if less than a KB
+    if (bytes < kiloBytes) return bytes + " Bytes";
+    // return KB if less than a MB
+    else if (bytes < megaBytes) return (bytes / kiloBytes).toFixed(decimal) + " KB";
+    // return MB if less than a GB
+    else if (bytes < gigaBytes) return (bytes / megaBytes).toFixed(decimal) + " MB";
+    // return GB if less than a TB
+    else return (bytes / gigaBytes).toFixed(decimal) + " GB";
   }
 
   removeAttachment(downloadURL: string, filename: string) {
@@ -5601,6 +5636,47 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
 
   }
+
+
+  removeNativeAttachment(downloadURL: string) {
+    this.logger.log('[WS-REQUESTS-MSGS] - delete Attachment downloadURL', downloadURL)
+    this.uploadImageNativeService.deleteImageUploadAttachment_Native(downloadURL)
+      .then(res => {
+        this.logger.log(`[WS-REQUESTS-MSGS] - delete native Attachment res `, res);
+        if (res === true) {
+
+          this.logger.log('[WS-REQUESTS-MSGS] - delete Attachment downloadURL', downloadURL)
+          this.uploadedFiles = undefined;
+          this.metadata = undefined
+          this.type = undefined
+          this.existAnAttacment = false
+
+        }
+      })
+  }
+
+  removeNativeDocumentAttachment(downloadURL: string) {
+    this.logger.log('[WS-REQUESTS-MSGS] - delete doc Attachment downloadURL', downloadURL)
+    this.uploadedFiles = undefined;
+    this.metadata = undefined
+    this.type = undefined
+    this.existAnAttacment = false
+    // this.uploadImageNativeService.deleteDocumentUploadAttachment_Native(downloadURL)
+    //   .then(res => {
+    //     this.logger.log(`[WS-REQUESTS-MSGS] - delete doc native Attachment res `, res);
+    //     if (res === true) {
+
+    //       this.logger.log('[WS-REQUESTS-MSGS] - delete Attachment downloadURL', downloadURL)
+    //       this.uploadedFiles = undefined;
+    //       this.metadata = undefined
+    //       this.type = undefined
+    //       this.existAnAttacment = false
+
+    //     }
+    //   })
+  }
+
+
 
   listenToUpladAttachmentRemoved() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
