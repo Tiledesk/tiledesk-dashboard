@@ -7,7 +7,7 @@
         <div id="chat21-home-component">
           <!-- background-color: rgb(0, 0, 0); -->
           <div class="c21-header" style=" color: rgb(255, 255, 255);"
-            [ngStyle]="{'background-image':primaryColorGradiend, 'height':  (LOGO_IS_ON === true ) ? '252px' : '200px' }">
+            [ngStyle]="{'background-image':primaryColorGradiend, 'height':  (LOGO_IS_ON === true ) ? '252px' : '255px' }">
             <div class="c21-header-container">
 
               <div class="c21-header-button" style="display: block;">
@@ -25,21 +25,34 @@
                   </button>
                 </div>
               </div>
-
-              <div class="c21-header-content">
-                <div class="c21-logo" *ngIf="LOGO_IS_ON === true">
+              <!-- logoUrl {{ logoUrl }} -->
+              <div class="c21-header-content" style="margin: 39px 0px;
+              width: auto;
+              height: 97px;
+              display: flex;
+              align-items: stretch">
+            <!-- LOGO_IS_ON === true &&  -->
+                <div class="c21-logo" *ngIf="logoUrl !== 'No Logo'" style="position: relative;
+                padding: 0;
+                margin: 0;
+                height: 70px;
+                width: 80px;
+                line-height: 52px;">
                   <!-- <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
                     src="https://tiledesk.com/tiledesk-logo-white.png/"> -->
-                  <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
+                    <!-- height: 55px; width: auto;margin-bottom: 20px; -->
+                  <!-- <img *ngIf="!hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="logo"
                     [src]="widgetLogoURL ">
-                  <img *ngIf="hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="myLogo"
+                  <img *ngIf="hasOwnLogo" style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="myLogo"
+                    [src]="logoUrl"> -->
+                  <img style="height:auto; width: auto;max-width: 70px;max-height: 55px;" alt="my-logo"
                     [src]="logoUrl">
                 </div>
 
-                <div class="c21-text">
+                <div class="c21-text" style="padding-left: 12px;">
                   <!-- padding-top: 16px; -->
                   <div class="c21-text-wellcome"
-                    style="font-size: 28px;margin-bottom: 10px;font-weight: 500; overflow: hidden;"
+                    style="font-size: 25px;margin-bottom: 17px;font-weight: 300; overflow: hidden;margin-top: -6px;line-height: 33px;"
                     [ngStyle]="{'color': secondaryColor}">
 
                     <span>
@@ -48,7 +61,7 @@
                     </span>
                   </div>
                   <div class="c21-text-intro"
-                    style="font-size: 15px; font-weight: 500; font-family:'Poppins','Roboto', 'Arial', sans-serif;"
+                    style="font-size: 17px; font-weight: 800; font-family:'Roboto', 'Arial', sans-serif;"
                     [ngStyle]="{'color': secondaryColor}">
 
                     <span>
@@ -102,9 +115,14 @@
                               <div class="c21-icon-avatar" style="height: 52px;width: 52px;">
 
 
-                                <!-- // WIDGET HOME NO CONVERSATION  -->
-                                <div class="c21-avatar-image contact-avatar" *ngIf="C21_BODY_HOME"
+                            
+                                <div class="c21-avatar-image contact-avatar" *ngIf="C21_BODY_HOME && hasProfilePhoto"
                                   [style.background-image]="'url(' + userProfileImageurl + ')'">
+                                </div>
+
+                                <div class="pu-avatar-no-image" *ngIf="C21_BODY_HOME && !hasProfilePhoto"
+                                [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
+                                  {{ user?.fullname_initial }}
                                 </div>
 
 
@@ -218,7 +236,7 @@
             <div id="c21-powered-by">
 
               <!-- margin-top: 5px;margin-left: 5px; -->
-              <svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22"
+              <!-- <svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22"
                 id="Livello_1" style="enable-background:new -113 139 24 24; border-radius: 4px;float:left; position: absolute;
                 top: 6px;
                 left: 5px;" version="1.0" viewBox="-113 139 24 24" width="22" x="0px"
@@ -245,7 +263,8 @@
                 <path _ngcontent-c10="" d="M-101,146.1c-2.7,0-4.9,2.2-4.8,4.9c0,2.7,2.2,4.9,4.9,4.8c2.7,0,4.8-2.2,4.8-4.9
                   C-96,148.3-98.2,146.1-101,146.1C-101,146.1-101,146.1-101,146.1z M-101,154.6c-2,0-3.7-1.6-3.7-3.6s1.6-3.6,3.7-3.6
                   s3.7,1.6,3.7,3.6l0,0C-97.3,153-99,154.6-101,154.6z" [ngStyle]="{'fill': primaryColor }"></path>
-              </svg>
+              </svg> -->
+              
               <!-- <a target="_blank" href="{{footerImageHref}}" style="color: #AAAAAA;
                 font-size: 11px;
                 font-weight: 500;

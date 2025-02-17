@@ -46,6 +46,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('fileUpload', { static: false }) fileUpload: any;
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   prjct_profile_name_for_segment: string;
@@ -120,9 +121,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   // calloutTimerSecondSelected = -1;
   calloutTimerSecondSelected: number;
-
-  // preChatForm = 'preChatForm'
-  // { seconds: 'immediately', value: 0 },
 
   calloutTitle: string;
   calloutTitleText: string;
@@ -363,6 +361,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   public preChatForm: boolean;
   public nativeRating: boolean;
+  public showAttachmentButton: boolean;
+  public showEmojiButton: boolean;
+  public showAudioRecorderButton: boolean;
   public enablePrechatformFieldsCheckBox: boolean;
   public prechatFormTexareaJson: any;
   public prechatFormArray: Array<any> = [];
@@ -397,6 +398,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
   fileUploadAccept: string;
+
+  showSpinnerAttachmentUploading: boolean = false
 
   constructor(
     private notify: NotifyService,
@@ -479,6 +482,31 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.getImageStorage();
 
     this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
+    this.listenToUpladAttachmentProgress()
+  }
+
+  listenToUpladAttachmentProgress() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.uploadAttachment$.subscribe((progress) => {
+        this.logger.log('[WIDGET-SET-UP] UPLOADING ATTACMENT %  ', progress, '(usecase Firebase)');
+        if (progress !== null && progress !== 100) {
+          this.showSpinnerAttachmentUploading = true
+        }
+        if (progress === 100) {
+          this.showSpinnerAttachmentUploading = false
+        }
+      });
+    } else {
+      this.uploadImageNativeService.uploadAttachment$.subscribe((progress) => {
+        this.logger.log('[WIDGET-SET-UP] UPLOADING ATTACMENT %  ', progress, '(usecase native)');
+        if (progress !== null && progress !== 100) {
+          this.showSpinnerAttachmentUploading = true
+        }
+        if (progress === 100) {
+          this.showSpinnerAttachmentUploading = false
+        }
+      });
+    }
   }
 
   getImageStorage() {
@@ -1050,12 +1078,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
-      confirmButtonText: this.upgradePlan ,
+      confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
-    
+
       // content: el,
       // buttons: {
       //   cancel: this.cancel,
@@ -1198,7 +1226,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.featureAvailableFromBPlan = translation;
       });
 
-    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E,  plan_name_2: PLAN_NAME.EE})
+    this.translate.get('AvailableFromThePlans', { plan_name_1: PLAN_NAME.E, plan_name_2: PLAN_NAME.EE })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -1508,7 +1536,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
           var arrow_icon_div = firstAccordion.children[1];
           this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
-    
+
           var arrow_icon = arrow_icon_div.children[0]
           // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
           arrow_icon.classList.add("arrow-up");
@@ -1521,7 +1549,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // var arrow_icon = arrow_icon_div.children[0]
       // // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
       // arrow_icon.classList.add("arrow-up");
-      
+
       const self = this
       acc[i].addEventListener("click", function () {
         let firstAccordion = acc[0];
@@ -1942,12 +1970,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] - FOOTER BRAND CHANGE: ', this.footerBrand);
 
     let checkMaliciousHTML = isMaliciousHTML(event)
-    if(checkMaliciousHTML){
-      
+    if (checkMaliciousHTML) {
+
       btnSaveFooterBrandAndLauncherBtn.disabled = true
       // this.footerBrand = this.defaultFooter
 
-      this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+      this.notify.showToast(this.translate.instant('URLTypeNotAllowed'), 4, 'report_problem')
       this.logger.error('[WIDGET-SET-UP] onChangeFooterBrand: can not set current url--> MALICIOUS HTML DETECTED', event, isMaliciousHTML)
       return;
     }
@@ -2215,7 +2243,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }, () => {
 
         if (this.HAS_CHANGED_GREETINGS === true) {
-          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
         }
         this.logger.log('[WIDGET-SET-UP] - saveTranslation * COMPLETE *')
       });
@@ -2258,11 +2286,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
+  checkImageExists(url: string): Promise<boolean> {
+    return fetch(url, { method: 'HEAD' })
+      .then(response => response.ok) // Returns true if status is 200
+      .catch(() => false); // Returns false if there's an error
+  }
+
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
       // this.logger.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
-      //  this.logger.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
+      this.logger.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -2404,7 +2438,43 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
 
-          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.logoChat: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', this.logoUrl, ' this.logoUrl typeof ', typeof this.logoUrl);
+          const firebase_conf = this.appConfigService.getConfig().firebase;
+          const storageBucket = firebase_conf['storageBucket'];
+          const baseUrl = this.appConfigService.getConfig().baseImageUrl;
+
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) storageBucket: ', storageBucket)
+          this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) baseUrl: ', baseUrl)
+
+          const hasStorageBucket = this.logoUrl.includes(storageBucket);
+          const hasBaseUrl = this.logoUrl.startsWith(baseUrl);
+
+          if (hasStorageBucket || hasBaseUrl) {
+
+
+            this.checkImageExists(this.logoUrl).then((exists) => {
+
+              if (exists) {
+                this.logger.log("✅ [WIDGET-SET-UP] Image exists", exists);
+                this.logger.log("✅ [WIDGET-SET-UP] The chat logo has been uploaded.");
+              } else {
+                this.logger.log("❌ [WIDGET-SET-UP]Image exists", exists);
+                this.logger.log("✅ [WIDGET-SET-UP] The chat logo has been uploaded.");
+              }
+            });
+
+          } else {
+            this.logger.log("❌ [WIDGET-SET-UP] The chat logo has NOT been uploaded.");
+          }
+
+          // if (this.logoUrl.includes(storageBucket) || this.logoUrl.includes(baseUrl)) {
+          //   this.widgetLogoHasBeenUploaded = true
+          // } else if (!this.logoUrl.includes("storageBucket") && !this.logoUrl.includes("baseUrl")) {
+          //   this.widgetLogoHasBeenUploaded = true
+          // }
+
 
           // ------------------------------------------------------------------------
           // @ Logochat
@@ -2518,7 +2588,63 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.nativeRating = false;
         }
 
+        // ----------------------------------------------------
+        // Display / hide  Attachment Button (if widget object)
+        // ----------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showAttachmentFooterButton', project.widget.hasOwnProperty('showAttachmentFooterButton'));
+        if (project.widget.hasOwnProperty('showAttachmentFooterButton')) {
+          if (project.widget.showAttachmentFooterButton === true) {
 
+            this.showAttachmentButton = true;
+
+          } else if (project.widget.showAttachmentFooterButton === false) {
+            this.showAttachmentButton = false;
+          }
+        } else {
+          this.showAttachmentButton = true;
+        }
+
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAttachmentButton ', this.showAttachmentButton);
+
+        // ----------------------------------------------------
+        // Display / hide Emoji Button (if widget object)
+        // ----------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showEmojiFooterButton', project.widget.hasOwnProperty('showEmojiFooterButton'));
+
+        if (project.widget.hasOwnProperty('showEmojiFooterButton')) {
+          if (project.widget.showEmojiFooterButton === true) {
+
+            this.showEmojiButton = true;
+
+          } else if (project.widget.showEmojiFooterButton === false) {
+            this.showEmojiButton = false;
+          }
+
+
+        } else {
+          this.showEmojiButton = true;
+        }
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showEmojiButton ', this.showEmojiButton);
+
+        // -------------------------------------------------------
+        // Display / hide Audio recorder button (if widget object)
+        // -------------------------------------------------------
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showAudioRecorderFooterButton', project.widget.hasOwnProperty('showAudioRecorderFooterButton'));
+
+        if (project.widget.hasOwnProperty('showAudioRecorderFooterButton')) {
+          if (project.widget.showAudioRecorderFooterButton === true) {
+
+            this.showAudioRecorderButton = true;
+
+          } else if (project.widget.showAudioRecorderFooterButton === false) {
+            this.showAudioRecorderButton = false;
+          }
+
+
+        } else {
+          this.showAudioRecorderButton = true;
+        }
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAudioRecorderButton ', this.showAudioRecorderButton);
 
         // ------------------------------------------------------------------------
         // @ themeColor
@@ -2706,11 +2832,27 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.nativeRating = false;
 
+        // -----------------------------------------------------------------------
+        // @ Attachment Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showAttachmentButton = true;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showAttachmentButton ', this.showAttachmentButton);
+
+        // -----------------------------------------------------------------------
+        // @ Emoji Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showEmojiButton = true;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showEmojiButton ', this.showEmojiButton);
+
+        // -----------------------------------------------------------------------
+        // @ Audio recorder Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showAudioRecorderButton = true;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showAudioRecorderButton ', this.showAudioRecorderButton);
 
 
         // -----------------------------------------------------------------------
-        // @ Reply time
-        // WIDGET UNDEFINED
+        // @ Reply time - WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.HAS_SELECT_DYMANIC_REPLY_TIME_MSG = true;
         this.HAS_SELECT_STATIC_REPLY_TIME_MSG = false;
@@ -3195,15 +3337,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     } else {
 
-      
+
 
       let checkMaliciousURL = isMaliciousURL(event)
-      if(checkMaliciousURL){
+      if (checkMaliciousURL) {
         let logoUrlInput = (document.getElementById('change-logo') as HTMLInputElement)
-        logoUrlInput.value  = this.widgetLogoURL
+        logoUrlInput.value = this.widgetLogoURL
         this.IMAGE_EXIST = true;
 
-        this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+        this.notify.showToast(this.translate.instant('URLTypeNotAllowed'), 4, 'report_problem')
         this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, isMaliciousURL)
         return;
       }
@@ -3225,6 +3367,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }
     }
   }
+
+
 
 
   onFocuCustomLauncherURLInput() {
@@ -3252,8 +3396,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     } else {
 
       const checkMaliciousURL = isMaliciousURL(event)
-      if(checkMaliciousURL){
-        this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
+      if (checkMaliciousURL) {
+        this.notify.showToast(this.translate.instant('URLTypeNotAllowed'), 4, 'report_problem')
         this.logger.error('[WIDGET-SET-UP] logoChange: can not set current url--> MALICIOUS URL DETECTED', event, checkMaliciousURL)
         this.logoUrl = this.widgetLogoURL
 
@@ -3270,13 +3414,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // if(!canUploadFile){
       //   this.notify.showToast(this.translationMap.get('URLTypeNotAllowed'), 4, 'report_problem')
       //   this.logger.error('[IMAGE-UPLOAD] dropEvent: can not upload current file type--> NOT ALLOWED', event.split('.').pop(), this.fileUploadAccept)
-        
+
       //   this.customLauncherURL = null
       //   this.hasOwnLauncherBtn = false;
       //   this.hasOwnLauncherLogo = false;
       //   return;
       // }
-      
+
 
       this.verifyImageURL(event, (imageExists) => {
         // return imageExists
@@ -3304,7 +3448,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-  // SWITCH BTN ON / OFF
+  // !!!! No more used - SWITCH BTN ON / OFF
   onLogoOnOff($event) {
     this.DISPLAY_WIDGET_HOME = true;
     this.DISPLAY_LAUNCER_BUTTON = false;
@@ -3321,10 +3465,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     if ($event.target.checked === false) {
       this.logoUrl = 'No Logo'
-
       // CASE SWITCH BTN = OFF
       // *** ADD PROPERTY
       this.widgetObj['logoChat'] = 'nologo';
+
 
       // UPDATE WIDGET PROJECT
       // this.widgetService.updateWidgetProject(this.widgetObj);
@@ -3353,12 +3497,151 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.widget_preview_selected = "0000"
   }
 
+  hasClickedUploadLogoDiv() {
+    this.DISPLAY_WIDGET_HOME = true;
+    this.DISPLAY_LAUNCER_BUTTON = false;
+    this.DISPLAY_WIDGET_CHAT = false;
+    this.DISPLAY_CALLOUT = false;
+    this.C21_BODY_HOME = true;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = "0000"
+  }
 
-  /**
-   * *** ---------------------------- ***
-   * ***    SAVE WIDGET APPEARANCE    ***
-   * *** ---------------------------- ***
-   */
+  // Upload logo
+  onFileSelected(event) {
+
+    const file = event.target.files[0]
+    this.logger.log(`[WIDGET-SET-UP] - onFileSelected file `, file);
+    this.logger.log('[WIDGET-SET-UP] file.type', file.type)
+    this.logger.log('[WIDGET-SET-UP] file.size', file.size)
+    if (file.size <= 1024000) {
+                     
+      if (file.type === 'image/gif' || file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
+
+
+        if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+          this.uploadImageService.uploadAttachment(this.currentUserId, file).then(downloadURL => {
+            this.logger.log(`[WIDGET-SET-UP] - upload firebase downloadURL `, downloadURL);
+
+            if (downloadURL) {
+
+              this.logoUrl = downloadURL
+              this.logger.log(`[WIDGET-SET-UP] - upload firebase downloadURL `, this.logoUrl);
+
+              // this.uploadedFiles['downloadURL'] = downloadURL
+            }
+            // this.metadata.src = downloadURL
+            // this.metadata.width = this.imgWidth,
+            // this.metadata.height = this.imgHeight,
+            // this.logger.log(`[WIDGET-SET-UP] - upload metadata `, this.metadata);
+
+            this.fileUpload.nativeElement.value = '';
+
+          }).catch(error => {
+
+            this.logger.error(`[WIDGET-SET-UP] - upload Failed to upload file and get link `, error);
+          });
+        }
+        else {
+          this.uploadImageNativeService.uploadAttachment_Native(file).then(downloadURL => {
+            this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, downloadURL);
+
+            if (downloadURL) {
+
+              this.logoUrl = downloadURL;
+              this.logger.log(`[WIDGET-SET-UP] - upload native downloadURL `, this.logoUrl);
+            }
+
+            this.fileUpload.nativeElement.value = '';
+
+          }).catch(error => {
+
+            this.logger.error(`[WIDGET-SET-UP] - upload native Failed to upload file and get link `, error);
+          });
+
+        }
+      } else {
+       this.notify.presenModalAttachmentFileTypeNotSupported()
+      }
+    } else {
+      this.logger.log('[WIDGET-SET-UP] File is too large to upload. Max file size: 1024KB')
+      const uploadLimit = '1024KB'
+      this.notify.presentModalAttachmentFileSizeTooLarge(uploadLimit)
+    }
+  }
+
+ 
+
+  presentModalAttachmentFileSizeTooLarge(fileSize) {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('FileTooLarge', {file_size: fileSize}),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok')
+    })
+  }
+
+
+  deleteWidegetLogo() {
+    this.logger.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo ', this.logoUrl)
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    const storageBucket = firebase_conf['storageBucket'];
+    const baseUrl = this.appConfigService.getConfig().baseImageUrl;
+    if (this.logoUrl.includes(storageBucket) || this.logoUrl.includes(baseUrl)) {
+      this.logger.log('the Image has  been uploaded');
+      this.logger.log(`[WS-REQUESTS-MSGS] - deleteWidegetLogo  storageBucket`, storageBucket);
+      this.logger.log(`[WS-REQUESTS-MSGS] - deleteWidegetLogo  baseUrl`, baseUrl);
+
+      this.logger.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo  logoUrl contains storageBucket', this.logoUrl.includes("storageBucket"))
+      this.logger.log('[WS-REQUESTS-MSGS] - deleteWidegetLogo  logoUrl contains baseUrl', this.logoUrl.includes("baseUrl"))
+
+
+      let UID = this.logoUrl.split(this.currentUserId)[1].split('%2F')[1]; // get the UID of the image
+      let imageName = this.logoUrl.split(UID + '%2F')[1].split('?')[0];
+      this.logger.log('[WS-REQUESTS-MSGS] - delete firebase attachment img UID ', UID)
+      this.logger.log('[WS-REQUESTS-MSGS] - delete firebase attachment img name ', imageName)
+      this.logger.log(`[WS-REQUESTS-MSGS] - delete native logoUrl `, this.logoUrl);
+
+      if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+        this.uploadImageService.removeUploadedAttachmentPromise(this.currentUserId, UID, imageName)
+          .then(res => {
+            this.logger.log('[WS-REQUESTS-MSGS] - delete firebase res', res)
+            this.logoUrl = this.widgetLogoURL;
+            this.logger.log('[WS-REQUESTS-MSGS] - delete firebase logoUrl', this.logoUrl)
+
+            this.logoUrl = 'No Logo';
+          })
+          .catch(error => {
+            this.logger.error('Error deleting firebase file:', error);
+          });
+
+      } else {
+        this.uploadImageNativeService.deleteImageUploadAttachment_Native(this.logoUrl)
+          .then(res => {
+            this.logger.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
+            if (res === true) {
+              // this.logoUrl = this.widgetLogoURL;
+              this.logger.log('[WS-REQUESTS-MSGS] - delete firebase logoUrl', this.logoUrl)
+
+              this.logoUrl = 'No Logo';
+
+            }
+          })
+      }
+
+    } else {
+      this.logger.log('[WS-REQUESTS-MSGS] - Removed default logo');
+      this.logoUrl = 'No Logo';
+    }
+
+  }
+
+
+  // ---------------------------- 
+  // SAVE WIDGET APPEARANCE    
+  // ---------------------------- 
   saveWidgetAppearance() {
     const appearance_save_btn_mobile = <HTMLElement>document.querySelector('.appearance_save_btn_mobile');
     const appearance_save_btn_desktop = <HTMLElement>document.querySelector('.appearance-save-btn-desktop');
@@ -3384,36 +3667,59 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     //   delete this.widgetObj['baloonImage']
     // }
 
-    /// LOGO
-    if (this.logoUrl && this.LOGO_IS_ON === true) {
-      // if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') { 
-      if (this.logoUrl !== this.widgetLogoURL) {
-        this.hasOwnLogo = true;
-        this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
-      } else {
-        this.hasOwnLogo = false;
-      }
-      // *** ADD PROPERTY
+
+
+    // Your logo
+    this.logger.log('[WIDGET-SET-UP saveWidgetAppearance logoUrl ', this.logoUrl, 'LOGO_IS_ON ', this.LOGO_IS_ON)
+    if (this.logoUrl && this.logoUrl !== 'No Logo') {
+
       this.widgetObj['logoChat'] = this.logoUrl
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - widgetObj use case 1 ', this.widgetObj);
+    } else if (this.logoUrl && this.logoUrl === 'No Logo') {
 
-    } else if (this.logoUrl && this.LOGO_IS_ON === false) {
-      // if is defined logoUrl and LOGO_IS_ON === false set the property logoChat = to No Logo
-      // use case: the logo btn on/off is setted as off and the user enter an logo url
-      this.logoUrl = 'No Logo'
-      this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
-      // *** ADD PROPERTY
       this.widgetObj['logoChat'] = 'nologo';
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - widgetObj use case 2 ', this.widgetObj);
 
-    } else {
-      // if is not defined logoUrl remove the property logoChat
-      // *** REMOVE PROPERTY
-      delete this.widgetObj['logoChat'];
-      this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
-      this.hasOwnLogo = false;
-      this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+    } else if (!this.logoUrl) {
+      this.widgetObj['logoChat'] = 'nologo';
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - widgetObj use case 3 ', this.widgetObj);
     }
 
-    this.widgetService.updateWidgetProject(this.widgetObj)
+
+    /// LOGO
+    // if (this.logoUrl && this.LOGO_IS_ON === true) {
+    //   this.logger.log( '[WIDGET-SET-UP saveWidgetAppearance logoUrl ', this.logoUrl, 'LOGO_IS_ON ', this.LOGO_IS_ON)
+    //   // if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') { 
+    //   if (this.logoUrl !== this.widgetLogoURL) {
+    //     this.hasOwnLogo = true;
+    //     this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+    //   } else {
+    //     this.hasOwnLogo = false;
+    //   }
+    //   // *** ADD PROPERTY
+    //   this.widgetObj['logoChat'] = this.logoUrl
+
+    // } else if (this.logoUrl && this.LOGO_IS_ON === false) {
+    //   // if is defined logoUrl and LOGO_IS_ON === false set the property logoChat = to No Logo
+    //   // use case: the logo btn on/off is setted as off and the user enter an logo url
+    //   this.logoUrl = 'No Logo'
+    //   this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+    //   // *** ADD PROPERTY
+    //   this.widgetObj['logoChat'] = 'nologo';
+
+    // } else {
+    //   // if is not defined logoUrl remove the property logoChat
+    //   // *** REMOVE PROPERTY
+    //   delete this.widgetObj['logoChat'];
+    //   this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
+    //   this.hasOwnLogo = false;
+    //   this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+    // }
+
+    // this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   // --------------------------------------------------------------------------------------
@@ -3921,7 +4227,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
   hasClickedUpdatePrechatformCustomFields() {
-    this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
+    this.notify.showWidgetStyleUpdateNotification(this.translate.instant('UpdateDeptGreetingsSuccessNoticationMsg'), 2, 'done');
   }
 
   savePrechatFormCustomFields() {
@@ -3949,7 +4255,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
         this.widgetService.updateWidgetProject(this.widgetObj)
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('InvalidJSON'), 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('InvalidJSON'), 4, 'report_problem');
       }
     } else {
       this.displayModalNoFieldInCustomPrechatForm();
@@ -4016,6 +4322,134 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       this.logger.log('[WIDGET-SET-UP] - IS ENABLED Auto Rating', event.target.checked)
     }
+  }
+
+  hasOpenedAdvancedSettigs() {
+    this.logger.log('[WIDGET-SET-UP] - hasOpenedAdvancedSettigs ')
+    this.DISPLAY_WIDGET_HOME = false;
+    this.DISPLAY_CALLOUT = false;
+    this.DISPLAY_WIDGET_CHAT = true;
+    this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    this.widget_preview_selected = '0002'
+    this.HAS_FOCUSED_ONLINE_MSG = true;
+    this.HAS_FOCUSED_OFFLINE_MSG = false;
+    this.HAS_FOCUSED_OFFICE_CLOSED_MSG = false;
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Attachment Button
+  // -----------------------------------------------------------------------
+  toggleDiplayAttachmentButton(event) {
+    // this.DISPLAY_WIDGET_HOME = false;
+    // this.DISPLAY_CALLOUT = false;
+    // this.DISPLAY_WIDGET_CHAT = true;
+    // this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    // this.widget_preview_selected = '0002'
+
+    this.logger.log('[WIDGET-SET-UP] - Display Attachment Button ', event.target.checked)
+    if (event.target.checked === true) {
+
+      this.showAttachmentButton = false;
+      // *** ADD PROPERTY
+      // this.widgetObj['showAttachmentFooterButton'] = this.showAttachmentButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      this.showAttachmentButton = true;
+
+      // *** REMOVE PROPERTY
+      // delete this.widgetObj['showAttachmentFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Emoji Button
+  // -----------------------------------------------------------------------
+  toggleDiplayEmojiButton(event) {
+    // this.DISPLAY_WIDGET_HOME = false;
+    // this.DISPLAY_CALLOUT = false;
+    // this.DISPLAY_WIDGET_CHAT = true;
+    // this.DISPLAY_WIDGET_PRECHAT_FORM = false;
+    // this.widget_preview_selected = '0002'
+    this.logger.log('[WIDGET-SET-UP] - Display Emoji Button ', event.target.checked)
+    if (event.target.checked === true) {
+
+      this.showEmojiButton = false;
+      // *** ADD PROPERTY
+      // this.widgetObj['showEmojiFooterButton'] = this.showEmojiButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      this.showEmojiButton = true;
+
+      // *** REMOVE PROPERTY
+      // delete this.widgetObj['showEmojiFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  //  @ Audio Recorder Button
+  // -----------------------------------------------------------------------
+  toggleAudioRecorderButton(event) {
+
+    this.logger.log('[WIDGET-SET-UP] - Display Audio Recorder Button ', event.target.checked)
+    if (event.target.checked === true) {
+
+      this.showAudioRecorderButton = false;
+
+    } else {
+      this.showAudioRecorderButton = true;
+
+    }
+  }
+
+  // this.showAudioRecorderButton
+  // showAudioRecorderFooterButton
+
+  saveWidgetAdvancedSetting() {
+    this.logger.log('[WIDGET-SET-UP] showAttachmentButton ', this.showAttachmentButton)
+    this.logger.log('[WIDGET-SET-UP] showEmojiButton ', this.showEmojiButton)
+
+    if (this.showAttachmentButton === false) {
+      // *** ADD PROPERTY
+      this.widgetObj['showAttachmentFooterButton'] = this.showAttachmentButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+
+      delete this.widgetObj['showAttachmentFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
+    }
+
+
+    if (this.showEmojiButton === false) {
+      this.widgetObj['showEmojiFooterButton'] = this.showEmojiButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      delete this.widgetObj['showEmojiFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+
+    if (this.showAudioRecorderButton === false) {
+      this.widgetObj['showAudioRecorderFooterButton'] = this.showAudioRecorderButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      delete this.widgetObj['showAudioRecorderFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+
+    this.widgetService.updateWidgetProject(this.widgetObj)
+    this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
   }
 
 

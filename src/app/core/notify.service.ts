@@ -130,7 +130,7 @@ export class NotifyService {
         showCloseButton: true,
         showCancelButton: false,
         confirmButtonText: this.translate.instant('ContactUs'),
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: false,
         // reverseButtons: true,
         // cancelButtonColor: "var(--red-color)",
@@ -167,7 +167,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: upgrade,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       // cancelButtonColor: "var(--red-color)",
       focusConfirm: false,
       // reverseButtons: true,
@@ -196,8 +196,7 @@ export class NotifyService {
         showCloseButton: true,
         showCancelButton: false,
         confirmButtonText: this.translate.instant('ContactUs'),
-        confirmButtonColor: "var(--blue-light)",
-        // cancelButtonColor: "var(--red-color)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: false,
         // reverseButtons: true,
       }).then((result) => { 
@@ -259,8 +258,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('ContactUs'),
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     }).then((result) => { 
@@ -306,8 +304,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: "OK",
-      confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
     })
@@ -320,10 +317,34 @@ export class NotifyService {
   }
 
 
-
   closeContactOwnerModal() {
     this.displayContactOwnerModal = 'none';
   }
+
+
+  presentModalAttachmentFileSizeTooLarge(fileSize) {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('FileTooLarge', {file_size: fileSize}),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok')
+    })
+  }
+
+  presenModalAttachmentFileTypeNotSupported() {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('SorryFileTypeNotSupported'),
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok')
+    })
+  }
+
+  
 
 
 
@@ -861,7 +882,6 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // cancelButtonColor: "var(--red-color)",
       // reverseButtons: true,
@@ -884,7 +904,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
     
       // button: {
@@ -909,7 +929,7 @@ export class NotifyService {
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
 
       // buttons: true,
@@ -930,12 +950,11 @@ export class NotifyService {
     Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       html: el,
-      icon: "info",
+      icon: "warning",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok') ,
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: false,
-   
+      // confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
       // button: {
       //   text: "OK",
       // },

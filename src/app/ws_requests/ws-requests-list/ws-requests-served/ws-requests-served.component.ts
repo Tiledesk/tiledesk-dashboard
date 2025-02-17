@@ -201,7 +201,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
+    // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
 
     // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges requestCountResp', this.requestCountResp)
 
@@ -769,7 +769,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       icon: "info",
       showCloseButton: false,
       showCancelButton: false,
-      confirmButtonColor: "var(--primary-btn-background)",
+      // confirmButtonColor: "var(--primary-btn-background)",
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: 'OK',
       // dangerMode: false,
@@ -784,7 +784,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       showCancelButton: true,
       confirmButtonText: this.joinToChatMsg,
       cancelButtonText: this.cancelMsg,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       reverseButtons: true,
       icon: "info",

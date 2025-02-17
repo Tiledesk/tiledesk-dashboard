@@ -1,5 +1,76 @@
 # tiledesk-dashboard
 
+### 2.7.77
+- Handles error for uploading too large files
+
+### 2.7.76
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
+
+### 2.7.75
+- Makes AI integrations available from the Premium plan
+
+### 2.7.74
+- Adds Google Gemini integration
+- Adds Claude integration
+- Adds Croq integration
+- Adds Cohere integration
+
+### 2.7.73
+- Fixes visibility of blocks in Reassign Conversation
+
+### 2.7.72
+- Hides the live announcement Changelog on the login page and project list page
+
+### 2.7.71
+- Improves full text search in history and non-real-time conversation pages
+- Improves user onboarding
+- Fixes the bug: Live Changelog announcements are displayed during user onboarding
+- Fixes the bug: In conversation details > Reassignment: conversation can be assigned to external chatbots
+
+### 2.7.70
+- Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
+- Filters the blocks of the chatbots in the "Reassign conversation" page
+
+### 2.7.68
+- Fixes logo position in widget setup page preview
+
+### 2.7.67
+- Improves the widget preview available in the widget setup page
+
+### 2.7.66
+- Removes the free plan for the new sign ups
+
+### 2.7.64
+- Fixes the bug: departments are no longer visible in the request list
+
+### 2.7.63
+- Adds the ability from the Widget settings > Advanced section to disable sending attachments and emojis
+- Handles the loading of the Changelog script
+
+### 2.7.60
+- Improves the UI
+- Bug fixing
+
+### 2.7.59
+- Improves and fixes the conversations report in Analytics > Metrics > Conversations
+
+### 2.7.58
+- Minor improvements and bug fixing
+
+### 2.7.57
+- Improves the Changelog notifications
+
+### 2.7.56
+- Fixed the bug: if a new Changelog notification is opened from the popup, the badge indicating the number of new Changelog remains visible
+
+### 2.7.55
+- Adds the ability to filter by custom range the tag graph
+- Allows to search for conversations by tags not present in the tag list on the "History" page
+
+### 2.7.53
+- Minor improvements
+
 ### 2.7.49
 - Improves the conversations graph and analytics overview on the home page 
 

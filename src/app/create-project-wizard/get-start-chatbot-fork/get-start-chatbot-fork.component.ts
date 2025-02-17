@@ -370,7 +370,7 @@ export class GetStartChatbotForkComponent implements OnInit {
       icon: "info",
       showCloseButton: false,
       showCancelButton: false,
-      confirmButtonColor: "var(--primary-btn-background)",
+      // confirmButtonColor: "var(--primary-btn-background)",
       confirmButtonText: this.translate.instant('Ok'),
       // buttons: {
       //   catch: {

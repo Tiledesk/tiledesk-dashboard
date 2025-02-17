@@ -571,10 +571,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       showCancelButton: true,
       showConfirmButton: false,
       showDenyButton: true,
-      // confirmButtonText: this.translate.instant('Delete'),
       denyButtonText: this.translate.instant('Delete'),
       cancelButtonText: this.translate.instant('Cancel'),
-      // confirmButtonColor: "var(--red-btn-background-color)",
       focusConfirm: false,
       reverseButtons: true,
       // buttons: ["Cancel", "Delete"],
@@ -593,7 +591,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
               showCloseButton: false,
               showCancelButton: false,
               confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
             });
             this.logger.error('[FAQ-EDIT-ADD] DELETE FAQ ERROR ', error);
           }, () => {
@@ -618,7 +616,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
               icon: "success",
               showCloseButton: false,
               showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
+              // confirmButtonColor: "var(--primary-btn-background)",
               confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
 
@@ -829,7 +827,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           showCloseButton: true,
           showCancelButton: false,
           confirmButtonText: this.upgradePlan,
-          confirmButtonColor: "var(--blue-light)",
+          // confirmButtonColor: "var(--blue-light)",
           focusConfirm: false,
         }).then((result) => {
           if (result.isConfirmed) {
@@ -883,7 +881,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       confirmButtonText: this.upgradePlan,
       focusConfirm: false,
       reverseButtons: true,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       // buttons: {
       //   cancel: this.cancel,
       //   catch: {

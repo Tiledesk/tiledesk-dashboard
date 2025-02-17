@@ -959,7 +959,7 @@ p.member:hover {
   background-color: #2d323e !important;
   font-size: 11px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
+  font-family:  var(--header-font-family) !important;
   padding-top: 6px !important;
   padding-bottom: 6px !important;
 }
@@ -968,12 +968,13 @@ p.member:hover {
   background-color: #fff !important;
   font-size: 11px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
   border: 1px solid #ccc;
   color: #000 !important;
   font-weight: 400 !important;
+  line-height: 1.5em;
 }
 
 
@@ -991,7 +992,18 @@ p.member:hover {
 
 .preflight-checkbox {
   margin-left: 15px;
-  margin-top: 30px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.preflight-checkbox>.help-icon-wpr>i {
+  font-size: 18px;
+  color: #7695a5;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 
@@ -1035,7 +1047,7 @@ p.member:hover {
   top: 2px;
 }
 
-.no-agent > span{
+.no-agent>span {
   width: 30px;
   cursor: pointer;
   height: 30px;
@@ -1047,10 +1059,10 @@ p.member:hover {
 
 /* No more used 
 /* ********************************** */
-.no-agent > span > svg{ 
-  fill:var( --icon-color) // #8796af 
+.no-agent>span>svg {
+  fill: var(--icon-color) // #8796af 
 }
 
-.no-agent > span > svg > g > path{ 
-  fill:var(--svg-icon-gray) // #8796af 
+.no-agent>span>svg>g>path {
+  fill: var(--svg-icon-gray) // #8796af 
 }

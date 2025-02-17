@@ -201,7 +201,7 @@ export class GroupsComponent implements OnInit {
             icon: "warning",
             showCloseButton: true,
             showCancelButton: false,
-            confirmButtonColor: "var(--blue-light)",
+            // confirmButtonColor: "var(--blue-light)",
             focusConfirm: false
           })
         }
@@ -213,7 +213,7 @@ export class GroupsComponent implements OnInit {
             icon: "warning",
             showCloseButton: true,
             showCancelButton: false,
-            confirmButtonColor: "var(--blue-light)",
+            // confirmButtonColor: "var(--blue-light)",
             focusConfirm: false,
           })
         }

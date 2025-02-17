@@ -596,6 +596,8 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     }
 }
 
+
+
 export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
@@ -747,14 +749,14 @@ export const CHANNELS = [
 
 ]
 
-export function checkAcceptedFile(fileType, fileUploadAccept ): boolean{
-  
+export function checkAcceptedFile(fileType, fileUploadAccept): boolean {
+
     if (fileUploadAccept === '*/*') {
-      return true
+        return true
     }
     // Dividi la stringa fileUploadAccept in un array di tipi accettati
     const acceptedTypes = fileUploadAccept.split(',');
-  
+
     // Verifica se il tipo di file è accettato
     return acceptedTypes.some((accept) => {
         accept = accept.trim();
@@ -772,9 +774,18 @@ export function checkAcceptedFile(fileType, fileUploadAccept ): boolean{
         // Controlla per le estensioni di file specifiche come .pdf o .txt
         return fileType === getMimeTypeFromExtension(accept);
     });
-  
+
 }
-  
+
+export function formatBytesWithDecimal(bytes, decimals) {
+    if (bytes == 0) return '0 Bytes';
+    let k = 1000, //1024,          
+        dm = decimals || 2,
+        sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
 function getMimeTypeFromExtension(extension: string): string {
     // Rimuovi il punto dall'estensione e ottieni il MIME type
     const mimeTypes: { [key: string]: string } = {
@@ -792,43 +803,43 @@ function getMimeTypeFromExtension(extension: string): string {
 }
 
 export function filterImageMimeTypesAndExtensions(fileUploadAccept: string): string[] {
-    
+
     if (fileUploadAccept === '*/*') {
         return ['*/*']
     }
-    
+
     // Lista delle estensioni di immagine comuni
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-  
+
     // Dividi la stringa in un array di tipi accettati
     const acceptedTypes = fileUploadAccept.split(',');
-  
+
     // Filtra solo i MIME type che iniziano con "image/" o che sono estensioni di immagine
     const imageTypesAndExtensions = acceptedTypes
-      .map(type => type.trim().toLowerCase()) // Rimuove gli spazi bianchi e converte a minuscolo
-      .filter(type => type.startsWith('image/') || imageExtensions.includes(type));
-    
+        .map(type => type.trim().toLowerCase()) // Rimuove gli spazi bianchi e converte a minuscolo
+        .filter(type => type.startsWith('image/') || imageExtensions.includes(type));
+
     return imageTypesAndExtensions;
 }
 
 export function isMaliciousURL(url: string): boolean {
     // Verifica se l'URL ha pattern sospetti
     const suspiciousPatterns = [
-      /\/\/\d+\.\d+\.\d+\.\d+/, // URL con indirizzi IP
-      /@/,                      // URL con '@' per ingannare la visualizzazione
-      /%00/,                    // Caratteri di null byte
-      /javascript:/i,           // URL con javascript
-      /data:/i,                 // URL con data URI
-      /\.\.\//,                 // Directory traversal
-      /(https?:\/\/)?bit\.ly/i, // URL abbreviati comuni (come bit.ly)
+        /\/\/\d+\.\d+\.\d+\.\d+/, // URL con indirizzi IP
+        /@/,                      // URL con '@' per ingannare la visualizzazione
+        /%00/,                    // Caratteri di null byte
+        /javascript:/i,           // URL con javascript
+        /data:/i,                 // URL con data URI
+        /\.\.\//,                 // Directory traversal
+        /(https?:\/\/)?bit\.ly/i, // URL abbreviati comuni (come bit.ly)
     ];
-  
+
     for (const pattern of suspiciousPatterns) {
-      if (pattern.test(url)) {
-        return true; // URL sospetto
-      }
+        if (pattern.test(url)) {
+            return true; // URL sospetto
+        }
     }
-  
+
     // Se l'URL non corrisponde a pattern noti, restituisce false (non malevolo)
     return false;
 }
@@ -839,7 +850,7 @@ export function containsXSS(jsonData) {
     const xssPatterns = [
         /<script.*?>.*?<\/script.*?>/gi,  // script tags
         // /on\w+\s*=\s*['"]?.*?['"]?/gi,    // event handlers like onload, onclick
-        /on[a-z]+=/gi,
+        // /on[a-z]+=/gi,
         /eval\s*\(.*?\)/gi,               // eval calls
         /javascript\s*:\s*.*/gi,          // javascript protocol
         /document\.cookie/gi,             // access to cookies
@@ -860,7 +871,7 @@ export function isMaliciousHTML(input) {
     // List of common XSS attack patterns
     const xssPatterns = [
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, // Script tags
-        /on\w+="[^"]*"/gi,                                    // Event handlers
+        // /on\w+="[^"]*"/gi,                                    // Event handlers
         /javascript:[^'"]*/gi,                               // JavaScript URLs
         /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, // Iframe tags
         /data:text\/html;base64,[A-Za-z0-9+/=]+/gi          // Base64 encoded scripts
@@ -875,6 +886,10 @@ export function isMaliciousHTML(input) {
     }
     return false; // No XSS detected
 }
+
+// Projects created after this date will no longer be able to use the free plan when the trial expires.
+// export const freePlanLimitDate: Date = new Date('2025-01-16T00:00:00');
+export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation
@@ -920,6 +935,8 @@ export const URL_max_tokens_doc = 'https://gethelp.tiledesk.com/articles/advance
 export const URL_temperature_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#3-temperature';
 export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#4-chunks";
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
+export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
+export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
 export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
 
 

@@ -135,7 +135,7 @@
     <!-- ----------------------------------------------- -->
     <!-- Refresh rate - How often will the URL(s) sync -->
     <!-- ----------------------------------------------- -->
-    <div class="refresh-rate-wpr">
+    <div class="refresh-rate-wpr" style="display: none;">
         <div class="refresh-rate-select">
             <span class="input-label">
                
@@ -154,14 +154,12 @@
             </ng-select>
 
             <span class="input-label input-label-on-bottom">
-                <!-- How often will the data source sync -->
                 {{'KbPage.URLsSyncFrequency' | translate}}
             </span>
         </div>
 
 
         <div class="refresh-rate-upgrade-plan">
-            <!-- OnlyWithPlan -->
             <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;"
                 *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
                 matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
@@ -175,14 +173,11 @@
             </button>
         </div>
 
-        <!-- refreshRateIsEnabled  {{refreshRateIsEnabled }}  -->
         <ng-container *ngIf="payIsVisible">
             <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
                 <div class="contact-sales-to-enable-feature"> 
-                    <!-- This feature is in beta.  -->
                     {{'ThisFeatureIsInBeta' | translate}}.
                     <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> 
-                        <!-- Contact us to enable it  -->
                         {{'ContactUsToEnableIt' | translate}}
                     </div> 
                 </div>

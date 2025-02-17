@@ -1,5 +1,6 @@
 <!-- margin-top:6px;  -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div class="navbar-brand" style="z-index: 1050;position: relative;padding-left:30px"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
         (click)="goBack()">keyboard_arrow_left</i>
     <!-- Profilo -->
@@ -69,32 +70,33 @@
                             </label>
                             <div class="col-sm-10">
                                 <div class="card-avatar">
-                                    
+
                                     <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
                                         class="user-img user-profile-image" [src]="getUserProfileImage()"
                                         onerror="this.src='assets/img/no_image_user.png'" />
 
-                                       <!-- <p>userProfileImageExist > {{ userProfileImageExist }}  </p>  
+                                    <!-- <p>userProfileImageExist > {{ userProfileImageExist }}  </p>  
                                        <p>userImageHasBeenUploaded > {{ userImageHasBeenUploaded}} </p>  
                                        <p> fullname_initial > {{ user?.fullname_initial }} </p>  
                                        <p>user_fillColour > {{user?.fillColour}} </p>   -->
-                                        <div  class="user-img user-profile-image"
+                                    <div class="user-img user-profile-image"
                                         *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                                         [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + user?.fillColour + ')'}">
-                                        <span id="user-profile-altenative-user-avatar" class="user-profile-altenative-user-avatar">
-                                          {{ user?.fullname_initial }}
+                                        <span id="user-profile-altenative-user-avatar"
+                                            class="user-profile-altenative-user-avatar">
+                                            {{ user?.fullname_initial }}
                                         </span>
-                                      </div>
+                                    </div>
 
                                     <!-- <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
                                         class="user-img user-profile-image" src="assets/img/no_image_user.png" /> -->
 
-     
+
 
                                     <input #fileInputUserProfileImage class="inputfile" name="teammate-image-profile"
                                         id="teammate-image-profile" type="file" (change)="upload($event)"
-                                        [accept]="fileUploadAccept"/>
-                                        <!-- btn-white -->
+                                        [accept]="fileUploadAccept" />
+                                    <!-- btn-white -->
                                     <label class="btn btn-tdblu-no-boxshadow " for="teammate-image-profile"
                                         style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         <span *ngIf="!showSpinnerInUploadImageBtn">
@@ -110,10 +112,10 @@
                                         (click)="deleteUserProfileImage()">
 
                                         <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                                              fill="none">
-                                              <path
-                                                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="none">
+                                                <path
+                                                    d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" />
                                             </svg>
                                         </span>
                                         <!-- <span class="material-icons" style="font-size: 24px; color: #f44336">
@@ -149,7 +151,8 @@
                             </label>
                             <div class="col-sm-10">
                                 <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname"
-                                    class="user-firstname" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
+                                    class="user-firstname" type="text"
+                                    placeholder='{{ "UserProfile.Name" | translate }}'>
                             </div>
 
                             <label class="col-sm-2 custom-label">
@@ -220,7 +223,8 @@
                             <label class="col-sm-2"></label>
                             <div class="col-sm-10 ">
                                 <!-- btn-primary -->
-                                <button class="btn btn-tdblu-no-boxshadow" (click)="updateCurrentUserFirstnameLastname()"
+                                <button class="btn btn-tdblu-no-boxshadow"
+                                    (click)="updateCurrentUserFirstnameLastname()"
                                     [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME">
                                     {{ "UserProfile.UpdateProfile" | translate }}
                                 </button>
@@ -247,7 +251,7 @@
                         <div class="row" style="min-height:83px">
                             <div class="col-md-12 automatic-dshbrd-lang">
                                 <div class="radio" style="margin-bottom: 2px;">
-                                    <label style="color: #7695a5;">
+                                    <label>
                                         <input (change)="onSelectBrowserLangFromRadioBtn($event)" type="radio"
                                             name="dashboardLanguage" value="browserlang"
                                             [checked]="!HAS_SELECTED_PREFERRED_LANG">
@@ -268,23 +272,23 @@
                                 <div class="browser-lang-wpr"
                                     [ngClass]="{'browser-lang-disabled-wpr':HAS_SELECTED_PREFERRED_LANG }">
 
-                                   
+
                                     <img [src]="flag_url"
                                         style="width: 15px;height: 15px; position: relative;top: -2px;">
-                                
-                                        <span class="browser-lang"
-                                            [ngClass]="{'not-available-language': !i18n_for_this_brower_language_is_available}">
-                                            {{ browser_lang | translate}}
-                                        </span>
-                                        <span class="not-available-language-string"
-                                            *ngIf="!i18n_for_this_brower_language_is_available && hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
-                                            ({{'LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish'|translate}})
-                                        </span>
-                                        <span class="not-available-language-string"
-                                            *ngIf="!i18n_for_this_brower_language_is_available && !hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
-                                            ({{'LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish'|translate}})
-                                        </span>
-                                   
+
+                                    <span class="browser-lang"
+                                        [ngClass]="{'not-available-language': !i18n_for_this_brower_language_is_available}">
+                                        {{ browser_lang | translate}}
+                                    </span>
+                                    <span class="not-available-language-string"
+                                        *ngIf="!i18n_for_this_brower_language_is_available && hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
+                                        ({{'LanguageIsNotAvailableDashboardWillBeTranslatedIntoEnglish'|translate}})
+                                    </span>
+                                    <span class="not-available-language-string"
+                                        *ngIf="!i18n_for_this_brower_language_is_available && !hasSelectedBrowserLangRadioBtn && !HAS_SELECTED_PREFERRED_LANG">
+                                        ({{'LanguageIsNotAvailableDashboardHasBeenTranslatedIntoEnglish'|translate}})
+                                    </span>
+
                                 </div>
                                 <!-- <p>display_msg_refresh_page_for_selected_lang {{display_msg_refresh_page_for_selected_lang }}</p> 
                                 <p>hasSelectedPreferredLangRadioBtn {{hasSelectedPreferredLangRadioBtn }}</p>  -->
@@ -306,7 +310,7 @@
                                     {{'PreferredDashboardLanguage' | translate }}
                                 </label> -->
                                 <div class="radio" style="margin-bottom: 6px;">
-                                    <label style="color: hsl(200, 21%, 55%);">
+                                    <label>
                                         <input type="radio" value="preferredlang"
                                             (change)="onSelectPreferredLangFromRadioBtn($event)"
                                             name="dashboardLanguage" [checked]="HAS_SELECTED_PREFERRED_LANG">

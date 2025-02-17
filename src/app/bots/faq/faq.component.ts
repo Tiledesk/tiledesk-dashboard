@@ -664,7 +664,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
         this.botProfileImageurl = downoloadurl
         this.timeStamp = (new Date()).getTime();
       }, (error) => {
-
+        this.showSpinnerInUploadImageBtn = false;
         this.logger.error('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
       })
 

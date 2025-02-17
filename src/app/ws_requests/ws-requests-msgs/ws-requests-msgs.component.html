@@ -390,18 +390,30 @@
                         <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
                         <div class="chat-msg-attachement" *ngIf="uploadedFiles">
                           <span *ngIf="showSpinnerAttachmentUplolad === true">
-                            <i class="fa fa-spinner fa-spin"></i>
+                            <i class="fa fa-spinner fa-spin" style="vertical-align: middle;"></i>
                           </span>
                           <span *ngIf="uploadedFiles?.type.startsWith('image')">
-                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                            <i class="fa fa-file-image-o" style="vertical-align: middle;"></i>
                           </span>
                           <span *ngIf="!uploadedFiles?.type.startsWith('image')">
-                            <i class="fa fa-file-o" aria-hidden="true"></i>
+                            <i class="fa fa-file-o" style="vertical-align: middle;"></i>
                           </span>
                           {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
                           <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
                             (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
                             <span class="material-icons">
+                              clear
+                            </span>
+                          </span>
+                          <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && uploadedFiles?.type.startsWith('image')" class="remove-attachment"
+                            (click)="removeNativeAttachment(uploadedFiles?.downloadURL)">
+                            <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false" >
+                              clear
+                            </span>
+                          </span>
+                          <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && !uploadedFiles?.type.startsWith('image')" class="remove-attachment"
+                            (click)="removeNativeDocumentAttachment(uploadedFiles?.downloadURL)">
+                            <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false">
                               clear
                             </span>
                           </span>
@@ -450,7 +462,7 @@
 
                           <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
 
-                            <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn" style=""
+                            <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
                               (click)="sendChatMessage()"
                               [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
                               <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
@@ -865,9 +877,16 @@
                           'contact-location-chat-two-agent': CHAT_PANEL_MODE === true && agents_array?.length === 2,
                           'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length === 3}">
                             <!-- (click)="openMapRightSideBar()" -->
+                            <span *ngIf="locationCity || locationCountry" class="material-icons contact-location-pin-icon"
+                              (click)="viewInGooleMaps()">
+                              location_on
+                            </span>
                             <span (click)="viewInGooleMaps()" *ngIf="locationCity || locationCountry"
-                              class="location-wpr" matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                              class="location-wpr" 
+                              matTooltipClass="custom-mat-tooltip"
+                              matTooltip="{{ 'Location' | translate }}" 
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right'
                               matTooltipHideDelay="100">
                               <span *ngIf="locationCity && locationCountry">{{ locationCity }},</span>
                               <span *ngIf="locationCity && !locationCountry">{{ locationCity }}</span>
@@ -1605,17 +1624,20 @@
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === true && tab1 === false && tab2 === false && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab0()">
-                            {{ 'UserProfile.Profile' | translate }}
+                            <span> {{ 'UserProfile.Profile' | translate }} </span>
+                            
                           </div>
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === true && tab2 === false && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab1()">
-                            Ticket
+                            <span>Ticket </span>
+                            
                           </div>
                           <div *ngIf="mainTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === true && tab3 === false && tab4 === false}"
                             (click)="hasSelectedTab2()">
-                            {{'Notes.Notes' | translate}} ({{ notesArray?.length }})
+                            <span> {{'Notes.Notes' | translate}} ({{ notesArray?.length }}) </span>
+                            
                           </div>
                           <!-- ------------------------------------- -->
                           <!-- Other tabs -->
@@ -1623,12 +1645,14 @@
                           <div *ngIf="otherTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab1 === false && tab2 === false && tab3 === true && tab4 === false}"
                             (click)="hasSelectedTab3()">
-                            {{'Conversations' | translate}}
+                            <span> {{'Conversations' | translate}} </span>
+                            
                           </div>
                           <div *ngIf="otherTabs" class="sidebar-tab"
                             [ngClass]="{'sidebar-select-tab': tab0 === false && tab2 === false && tab1 === false && tab3 === false && tab4 === true}"
                             (click)="hasSelectedTab4()">
-                            {{'Attributes' | translate }}
+                            <span> {{'Attributes' | translate }} </span>
+                            
                           </div>
                           <!-- ------------------------------------- -->
                           <!-- Arrow right -->
@@ -2541,8 +2565,7 @@
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-                              <i class="material-icons"
-                                style="">
+                              <i class="material-icons">
                                 help_outline
                               </i>
                             </span>
@@ -2604,11 +2627,21 @@
                       <div class="ng-select-tags-wpr" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }">
 
                         <ng-select style="margin-right: 13px;" class="convs-tags" id="select-tag" #ngSelect
-                          (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id" [clearable]="false"
-                          [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="{{ typeALabelAndPressEnter}}"
-                          [(ngModel)]="tag" addTagText="Create New" [addTag]="createNewTag"
-                          (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag"
-                          [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
+                          (change)="addTag()" 
+                          [items]="tagsList" 
+                          bindLabel="tag" 
+                          bindValue="_id" 
+                          [clearable]="false"
+                          [clearSearchOnAdd]="true" 
+                          [hideSelected]="true" 
+                          placeholder="{{ typeALabelAndPressEnter}}"
+                          [(ngModel)]="tag" 
+                          addTagText="Create New" 
+                          [addTag]="createNewTag"
+                          (keyup.enter)="ngSelect.close()" 
+                          notFoundText="No tags found. Type to create a tag"
+                          [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true"
+                          [ngClass]="{'conversation-tag-panel-mode': CHAT_PANEL_MODE === true }">
 
                           <ng-template ng-label-tmp let-item="item">
                             <i [style.color]="item.color" class="fa fa-tag"

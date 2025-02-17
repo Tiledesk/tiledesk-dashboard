@@ -22,14 +22,14 @@
 }
 
 .upgrade-modal-title {
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-family: var(--header-font-family) ;
     text-align: center;
-    color: #1e88e5;
+    // color: #1e88e5;
     line-height: 35px;
     font-weight: 400;
-    font-size: 21px;
+    font-size: 16px;
 }
 
 .btn-size-m {

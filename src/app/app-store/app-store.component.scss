@@ -1,3 +1,7 @@
+.card-app-store>.card-content>.card-title {
+    font-family: var(--header-font-family)
+}
+
 .app-icon img {
     width: auto;
     height: 50px;
@@ -9,7 +13,7 @@
 }
 
 .card-app-store {
-    box-shadow: 0 0 #0000,0 0 #0000,0 1px 3px #0000001a,0 1px 2px -1px #0000001a !important ;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
     // border: 1px solid #e5effe;
     margin-top: 15px !important;
     border-radius: 12px !important;
@@ -35,6 +39,20 @@
     padding: 10px 0;
 }
 
+.app-store-right-col-btn>a {
+    color: var(--blue-20);
+    font-weight: 400;
+    font-family: var(--header-font-family);
+}
+
+
+
+.app-store-right-col-btn:hover {
+    a {
+        color: var(--blue-40);
+    }
+}
+
 .app-store-left-col-btn {
     display: block;
     text-align: center;
@@ -42,15 +60,15 @@
     border-right: 0.5px solid #e5effe;
 }
 
-.app-store-right-col-btn:hover {
-    a {
-        color: #23527c;
-    }
+.app-store-left-col-btn>a {
+    color: var(--blue-20);
+    font-weight: 400;
+    font-family: var(--header-font-family);
 }
 
 .app-store-left-col-btn:hover {
     a {
-        color: #23527c;
+        color: var(--blue-40);
     }
 }
 
@@ -197,7 +215,7 @@
     font-family: "Poppins", "Roboto", "Arial", sans-serif
 }
 
-.app-alert>div>.link-to-integrations { 
+.app-alert>div>.link-to-integrations {
     font-weight: 500;
     cursor: pointer;
     text-decoration: underline;
@@ -205,7 +223,7 @@
 
 .available-from-b-plan-badge {
     position: relative;
-   
+
 }
 
 .b--plan-badge-color {

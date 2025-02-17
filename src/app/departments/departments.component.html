@@ -451,9 +451,9 @@
                             </span>
                           </span>
                         </td>
-                        <td colspan="4">
-
-                          <span class="add-department" style="color: #3ea9f5;font-weight: 400;">
+                        <td class="add-department-text-wpr" colspan="4">
+                     
+                          <span class="add-department">
                             {{ "DepartmentsPage.AddDepartment" | translate }}
                           </span>
                         </td>
@@ -781,40 +781,49 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content custom--modal-content">
 
-      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+      <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-          <span aria-hidden="true" style="color: #fff">&times;</span>
+          <span aria-hidden="true">&times;</span>
         </button>
 
-        <h4 class="modal-title" style="color: #fff">
+        <h4 class="modal-title warning">
           <!-- Delete department with id: -->
-          <i class="material-icons" style="vertical-align: middle;">report_problem</i>
+          <!-- <i class="material-icons" style="vertical-align: middle;">report_problem</i> -->
+          <span class="modal-header-icon-wpr"> 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
+              <path
+                d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
+            </svg>
+          </span>
           <span style="vertical-align: middle; padding-left:8px">
             {{ "DepartmentsPage.DeleteDepartment" | translate }}
           </span>
         </h4>
 
-        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
           {{ "DepartmentsPage.DeleteDepartmentWithId" | translate }} <code>{{id_toDelete}}</code>
           {{ "DepartmentsPage.WillBeDeleted" | translate }}
-        </h4>
+        </h4> -->
       </div>
 
       <div class="modal-body">
-        <!-- <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong>?</p> -->
-        <p style="font-weight:500; text-align: left; margin-top: 10px; color: #8894ab">
-          {{ "DepartmentsPage.AreYouSure" | translate }}<strong>{{deptName_toDelete}}</strong>?
+       
+        <p class="modal-body--content">
+          {{ "DepartmentsPage.AreYouSure" | translate }}
+          <span>
+            <strong>{{deptName_toDelete}}</strong>
+          </span>?
         </p>
       </div>
 
-      <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
-          <!-- {{ "DepartmentsPage.Cancel" | translate }} -->
+      <div class="modal-footer">
+        <button class="btn btn-gray-no-boxshadow" (click)="onCloseModal()">
+         
           {{ "Cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+        <button type="button" class="btn btn-red" (click)="onCloseDeleteModalHandled()">
           {{ "DepartmentsPage.Confirm" | translate }}
         </button>
       </div>

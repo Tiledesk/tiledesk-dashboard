@@ -292,14 +292,26 @@ $color-pro-plan: #3ea9f5;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    gap: 12px;
+    padding: 0px 15px;
 }
 
-.btn {
-    font-size: 14px;
-    padding: 18px 36px;
+// .btn {
+//     font-size: 14px;
+//     padding: 18px 36px;
+//     width: 100%;
+//     max-width: 300px;
+//     margin: 10px 0;
+// }
+
+.onboarding-btn.back{ 
+    height: 55px;
+ }
+
+.onboarding-btn.next{  
+    height: 55px;
     width: 100%;
     max-width: 300px;
-    margin: 10px 0;
 }
 
 .btn-back {
@@ -336,7 +348,14 @@ $color-pro-plan: #3ea9f5;
     font-weight: 400;
     font-size: 14px;
     font-family: var(--header-font-family);
-    text-transform: uppercase;
+    // text-transform: uppercase;
+}
+
+.onbording-btn-next-text {
+    margin-right: 6px !important;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: var(--header-font-family);
 }
 
 .hide-prev-btn {

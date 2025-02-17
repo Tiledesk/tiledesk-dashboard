@@ -95,14 +95,14 @@
 
         <div class="mat-dialog-content-item-desc" style="position: relative;width: 100%;padding-bottom: 26px;" *ngIf="hasClickedEditBtn"> 
            <div class="edit-btn-wpr">
-                <div class="edit-btn" (click)="goToCDSBlock()"> 
-                    <!-- Modify the welcome message -->
+                <button  class="btn btn-outlined-blu edit-btn" (click)="goToCDSBlock()"> 
+                   
                     {{ 'ModifyTheWelcomeMessage' | translate }}
 
-                </div>
-                <div class="edit-btn" (click)="goToCDSSettings()"> 
+                </button>
+                <button class="btn btn-outlined-blu edit-btn" (click)="goToCDSSettings()"> 
                     {{'ChangeNameOrIconOfYourChatbot' | translate }}
-                </div>
+                </button>
            </div>
             
 

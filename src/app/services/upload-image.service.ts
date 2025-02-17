@@ -252,8 +252,8 @@ export class UploadImageService {
 
 
   uploadLauncherLogoImage(file, projctid) {
-    // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] file ', file)
-    // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] projctid ', projctid)
+    // this.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] file ', file)
+    // this.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] projctid ', projctid)
     const file_metadata = { contentType: file.type };
     // const file_name = 'launcher_logo.jpg';
     const file_name = 'launcher.jpg';
@@ -264,19 +264,19 @@ export class UploadImageService {
     const uploadTask = storageRef.child('profiles/' + projctid + '/' + file_name).put(file, file_metadata);
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
-        // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] SNAPSHOT ', snapshot)
+        // this.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] SNAPSHOT ', snapshot)
         const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
 
         if (progress === 100) {
           // const self = this
           // this.imageExist.next(true);
 
-          // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO * COMPLETE *', true)
+          // this.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO * COMPLETE *', true)
         }
         this.logger.log('Upload is ' + progress + '% done');
         switch (uploadTask.snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
-          // console.log('Upload is paused');
+          // this.logger.log('Upload is paused');
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
             this.logger.log('Upload is running');
@@ -287,7 +287,7 @@ export class UploadImageService {
         //  this.userImageWasUploaded.next(false);
         // A full list of error codes is available at
         // https://firebase.google.com/docs/storage/web/handle-errors
-        // console.error('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - ERROR ', error)
+        // this.logger.error('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - ERROR ', error)
         switch (error.code) {
           case 'storage/unauthorized':
             // User doesn't have permission to access the object
@@ -304,7 +304,7 @@ export class UploadImageService {
         const self = this
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           // self.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
-          // console.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
+          // this.logger.log('[UPLOAD-LAUNCHER-LOGO-FB.SERV] - UPLOAD LAUNCHER-LOGO - File available at', downloadURL);
          self.hasUploadedLauncherLogo$.next(downloadURL);
         });
       }
@@ -327,11 +327,11 @@ export class UploadImageService {
     // Delete the file launcher Logo
     // ------------------------------------
     deleteCustomLauncherLogo.delete().then((res) => {
-    //  console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
+    //  this.logger.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO RES', res)
 
      this.hasdeletedLauncherLogo$.next(true);
     }).catch((error) => {
-      // console.error('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO - ERROR ', error)
+      // this.logger.error('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO - ERROR ', error)
     });
 
 
@@ -339,10 +339,10 @@ export class UploadImageService {
     // Delete the file launcher Logo Thumb
     // ------------------------------------
     deleteCustomLauncherLogoThumb.delete().then((res) => {
-      // console.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO THUMB ', res)
+      // this.logger.log('[UPLOAD-IMAGE-FB.SERV] - DELETE CUSTOM LAUNCHER LOGO THUMB ', res)
 
     }).catch((error) => {
-      // console.error('[UPLOAD-IMAGE-FB.SERV] -  DELETE CUSTOM LAUNCHER LOGO THUMB - ERROR ', error)
+      this.logger.error('[UPLOAD-IMAGE-FB.SERV] -  DELETE CUSTOM LAUNCHER LOGO THUMB - ERROR ', error)
     });
   }
 
@@ -414,7 +414,7 @@ export class UploadImageService {
     })
   }
   // /public/images/608ad02d3a4dc000344ade17/3ea5c718-3b1c-4be9-b8f9-2daf19aeeb9a/gundam.png
-  removeUpladedAttachment(currentUserID, fileUID, filename) {
+  removeUploadedAttachment(currentUserID, fileUID, filename) {
     const storageRef = firebase.storage().ref();
     var ref = storageRef.child('/public/images/' + currentUserID + '/' + fileUID + '/' + filename);
 
@@ -427,6 +427,21 @@ export class UploadImageService {
       // console.log('[FIREBASEUploadSERVICE]  Uh-oh, an error occurred! ', error);
       this.attachmentDeleted$.next(false)
     });
+  }
+
+  removeUploadedAttachmentPromise(currentUserID: string, fileUID: string, filename: string): Promise<boolean> {
+    const storageRef = firebase.storage().ref();
+    const ref = storageRef.child(`/public/images/${currentUserID}/${fileUID}/${filename}`);
+  
+    return ref.delete()
+      .then(() => {
+        // console.log('[FIREBASEUploadSERVICE] File deleted successfully');
+        return true;  // ✅ Ensure success returns true
+      })
+      .catch((error) => {
+        // console.error('[FIREBASEUploadSERVICE] Error deleting file:', error);
+        return false; // ✅ Ensure failure returns false
+      });
   }
 
 }

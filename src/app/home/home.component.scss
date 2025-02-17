@@ -127,9 +127,9 @@ print {
   border-color: #ffa726;
 }
 
-.material-icons {
-  color: #ffa726;
-}
+// .material-icons {
+//   color: #ffa726;
+// }
 
 .card-stats:hover {
   .card-header {
@@ -1367,8 +1367,8 @@ print {
   & span,
   &:before,
   &:after {
-    // background: #fff;
-    background: #0f62ff;
+    // background: #0f62ff;
+    background: var(--blue-20);
     content: "";
     display: block;
     width: $size;
@@ -2453,14 +2453,14 @@ print {
 }
 
 .home-edit-project-name-icon {
-  color: #ffa726;
+  color: #647491;
   margin-right: 12px;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
-  background: trasparent;
+  background: transparent;
   transition: 0.1s;
   border-radius: 50%;
-  padding: 3px;
+  padding: 6px;
 }
 
 .home-edit-project-name-icon:hover {
@@ -2916,12 +2916,12 @@ img {
 // overwrite the checkbox background
 ::ng-deep .mat-checkbox-checked .mat-checkbox-background,
 .mat-checkbox-indeterminate .mat-checkbox-background {
-  background-color: var(--blue-light) !important;
+  background-color: var(--blue-20) !important;
 }
 
 // overwrite the ripple overlay on hover and click
 ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
-  background-color: var(--blue-light) !important;
+  background-color: var(--blue-20) !important;
 }
 
 .home-settings-checkbox {
@@ -3337,7 +3337,7 @@ img {
 }
 
 .quote-title.link {
-  color: var(--blue-light);
+  color: var(--blue-20);
   cursor: pointer;
 }
 
@@ -3548,7 +3548,8 @@ img {
 }
 
 #home-material-btn {
-  background-color: var(--blue-light);
+  // background-color: var(--blue-light);
+  background-color: var(--blue-20);
   color: #fff;
 }
 

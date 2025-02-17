@@ -19,7 +19,10 @@
                 'li-active' :          HAS_SELECTED_CREATE_BOT === true
               }">
 
-        <a href="javascript:;" role="button"> {{'Create' | translate}} </a>
+        <a href="javascript:;" role="button"> 
+          <!-- {{'Create' | translate}}  -->
+          Create from scratch
+        </a>
       </li>
 
       <li (click)="toggleTabCreateImport(create = !create)" class="btn-with-border-effect" [ngClass]="
@@ -27,7 +30,10 @@
             'border-from-center' : HAS_SELECTED_CREATE_BOT === true, 
             'li-active' : HAS_SELECTED_CREATE_BOT === false
           }">
-        <a href="javascript:;" role="button"> Import </a>
+        <a href="javascript:;" role="button"> 
+          Import from JSON
+          
+        </a>
       </li>
     </ul>
 
@@ -151,48 +157,49 @@
                     (click)="goToCommunityStartChatbot()"> community </span>
                 </div> -->
 
-                <h3 class="card_title__underlined">
+                <!-- <h3 class="card_title__underlined">
                   <span class="card_title__underline"> 
                     <span>  Create from scratch  </span>
                   </span>
-                </h3>
+                </h3> -->
 
-                <!-- <div class="create-tilebot-sub-header">
+                <div class="create-tilebot-sub-header">
                   Start by entering the name of the chatbot
-                </div> -->
+                </div>
               </div>
 
-              <div  class="col-md-12">
+              <!-- <div  class="col-md-12">
                 <div class="section-subtitle" style="width: calc((100% / 3) + 372px);"> </div>
                 <p class="section-subtitle-paragraph">
                   Start by entering the name of the chatbot
                 </p>
-              </div>
+              </div> -->
 
 
             </div>
             <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === false">
               <div class="col-sm-12">
-                <h3 class="card_title__underlined">
+                <!-- <h3 class="card_title__underlined">
                   <span class="card_title__underline"> 
                     <span>  Import from JSON  </span>
                   </span>
-                </h3>
+                </h3> -->
 
-                <!-- <div class="create-tilebot-header">
-                  Import from JSON
-                </div> -->
+                <div class="create-tilebot-sub-header">
+                  Import Chatbot from JSON 
+                </div> 
+                
 
                  
               </div>
 
-              <div  class="col-md-12">
+              <!-- <div  class="col-md-12">
                 <div class="section-subtitle" style="width: calc((100% / 3) + 372px);">  </div>
                 <p class="section-subtitle-paragraph">
                   Import Chatbot from JSON 
                 </p>
 
-              </div>
+              </div> -->
             </div>
 
             <!-- ------------------------------------------------------ -->
@@ -202,6 +209,11 @@
               style="margin-top: 18px;">
 
               <div class="col-sm-12">
+                <!-- <mat-form-field appearance="outline" class="cc-mat-form-field">
+                  <mat-label>Chatbot name</mat-label>
+                  <input matInput [(ngModel)]="faqKbName" (ngModelChange)="botNameChanged($event)" id="tilebot--name">
+                </mat-form-field> -->
+
                 <div class="form-group label-floating">
                   <label class="control-label">
                     Chatbot name
@@ -238,9 +250,11 @@
                   class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json" />
                   <!-- btn-primary btn-lg  -->
                 <label class="btn btn-tdblu-no-boxshadow" for="upload-chatbot-from-json">
-                  <span class="material-icons" style="padding-right: 3px;">
+                  <span *ngIf="!showUploadingSpinner" class="material-icons" style="padding-right: 3px;">
                     cloud_upload
                   </span>
+                  <i *ngIf="showUploadingSpinner" style="padding-right: 3px; vertical-align: middle;" class="fa fa-spinner fa-spin"></i>
+                  
                   Import
                 </label>
               </span>

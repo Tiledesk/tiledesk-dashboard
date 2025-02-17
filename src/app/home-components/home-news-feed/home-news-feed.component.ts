@@ -100,10 +100,11 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   initCarousel() {
     const wrapper = <HTMLElement>document.querySelector(".news-wrapper");
     const carousel = <HTMLElement>document.querySelector(".news-feed-carousel");
-    this.logger.log('[HOME-NEWS-FEED] carousel.offsetWidth ', carousel.offsetWidth)
+    
 
 
     if (carousel) {
+      this.logger.log('[HOME-NEWS-FEED] carousel.offsetWidth ', carousel.offsetWidth)
       const _firstCardWidth = <HTMLElement>carousel.querySelector(".news-card");
       if (_firstCardWidth) {
         const firstCardWidth = _firstCardWidth.offsetWidth;

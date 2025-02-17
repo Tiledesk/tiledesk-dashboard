@@ -94,12 +94,13 @@
   height: 56px;
   font-size: 16px;
   letter-spacing: 2px;
+  border-radius: var(--btn-border-radius);
 }
 
 .login-container {
   // padding: 30px;
   max-width: 400px;
-  // min-width: 400px;
+  min-width: 400px;
   width: 100% !important;
   // margin: 0 auto;
 }
@@ -163,22 +164,35 @@ input:-webkit-autofill {
 .left-panel-signup-link {
   margin-top: 15px;
   line-height: 21px;
-  font-family: Poppins, Roboto, Arial, sans-serif;
+  font-family: var(--header-font-family);
   text-align: left !important;
   color: #222;
   font-weight: 400;
   font-size: 15px;
 }
 
+.left-panel-signup-link > span { 
+  color: var(--blue-20); 
+  cursor: pointer;
+}
+
 .signin-forgot-pswrd {
-  // text-align: center;
-  margin-top: 15px;
-  line-height: 21px;
-  font-family: Poppins, Roboto, Arial, sans-serif;
+  // margin-top: 15px;
+  // line-height: 21px;
+  // font-size: 15px;
+  margin-top: 0px;
+  line-height: 10px;
+  font-size: 12px;
+  font-family: var(--header-font-family);
   text-align: left !important;
   color: #222;
   font-weight: 400;
-  font-size: 15px;
+  margin-bottom: 18px;
+}
+
+.signin-forgot-pswrd  > span { 
+  color: var(--blue-20); 
+  cursor:pointer
 }
 
 label {
@@ -208,17 +222,15 @@ label {
 }
 
 .left {
-  width: 40%;
+  // width: 40%;
+  width: 0px;
   left: 0;
-  // background-color: $brand-secodary;
-  // color: #f0806f;
-  // background-color: rgb(15, 23, 42); // old
   background-color: #d3e3ee; //new
-  // background-image: url(https://tiledesk.com/wp-content/uploads/2023/01/background_chatboat_design.jpg?id=10568welcome-text);
 }
 
 .right {
-  width: 60%;
+  // width: 60%;
+  width: 100%;
   right: 0;
   background-color: #fff;
 }
@@ -299,9 +311,9 @@ label {
     display: none;
   }
 
-  .left-panel-signup-link {
-    display: none;
-  }
+  // .left-panel-signup-link {
+  //   display: none;
+  // }
 
   .left-panel-gotov1-link {
     display: none;

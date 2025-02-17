@@ -155,8 +155,8 @@
 }
 
 .mat-dialog-content-item-first-state:hover {
-    background-color: #f1f3fd;
-    border-color: #3ea9f5;
+    // background-color: #f1f3fd;
+    border-color: var(--blue-20);
  }
 // .mat-dialog-content-item:hover {
 //     background-color: #f1f3fd;
@@ -277,19 +277,17 @@
     cursor: pointer;
     position: relative;
     margin: 0;
-    padding: 20px;
-    font-size: 16px;
-    text-align: left;
-    border: 2px solid var(--blue-light);
+    // padding: 20px !important;
+    // font-size: 16px;
+    // text-align: left;
+    // border: 2px !important;
     line-height: normal;
-    display: block;
-    border-radius: 999px;
     width: 100%;
     text-align: center;
     font-weight: 500;
-    color: var(--blue-light);
 }
 
-.edit-btn-wpr .edit-btn:hover { 
-    background-color: rgba(62, 169, 245, 0.1);
-}
+// .edit-btn-wpr .edit-btn:hover { 
+//     background-color: var(--blu-01);
+//     color: var(--blue-40);
+// }

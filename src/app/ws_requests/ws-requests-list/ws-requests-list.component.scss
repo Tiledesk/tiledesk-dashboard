@@ -68,14 +68,21 @@ button.close {
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr {
   float: right;
   cursor: pointer;
+  background-color: transparent;
+  border-radius: 4px;
+  padding: 0px 3px;
+}
+
+.custom--modal-content>.modal-body>div>label>.view-requester-details-wpr:hover { 
+  background-color: var(--only-text-btn-hover-background);
 }
 
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.view-requester-details {
-  color: var(--blue-light);
+  color: var(--blue-20);
 }
 
 .custom--modal-content>.modal-body>div>label>.view-requester-details-wpr>.material-icons {
-  color:var(--blue-light); // #0f62ff;
+  color: var(--blue-20); // #0f62ff;
   vertical-align: middle;
   font-size: 16px;
 }
@@ -530,53 +537,7 @@ span .switch-agent-admin-requests-btn {
 // }
 
 // - start - BOTTOM NAVBAR  //
-.bottom-nav {
-  background-color: #fff;
-  width: 100%;
-  // z-index: 1028;
-  position: relative;
-  top: -5px;
-  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
-  padding-bottom: 5px;
-  float: left;
-  height: 50px;
-  padding-left: 10px;
-  // display: flex;
-  // flex-grow: 1;
-}
 
-.bottom-nav li {
-  float: left;
-  padding: 15px;
-  list-style: none;
-  position: relative;
-  display: block;
-  height: 52px;
-  cursor: pointer;
-}
-
-.bottom-nav li a {
-  padding: 18px 15px;
-  color: #797979;
-  line-height: 20px;
-}
-
-.bottom-nav li a:hover {
-  text-decoration: none;
-  //  background-color: #eee;
-}
-
-.li-active {
-  border-bottom: 3px solid $brand-primary !important;
-}
-
-.li-active a {
-  color: $brand-primary !important;
-}
-
-.disabled-li {
-  pointer-events: none;
-}
 
 @media (max-width: 723px) {
   .bottom-bottom-nav {
@@ -612,16 +573,37 @@ span .switch-agent-admin-requests-btn {
     margin-right: 0px;
   }
 
+  .show-request-on-map {
+    margin-top: 13px;
+    margin-left: 23px;
+    margin-right: 0px;
+  }
+
   .served-unserved-sum {
     left: 324px !important;
     top: 16px !important;
   }
 }
 
+
+
 @media (max-width: 724px) {
   .right-li {
     display: none !important;
   }
+}
+
+.show-request-on-map>a>span {
+  margin-top: 3px;
+  color: var(--blue-20) !important;
+}
+
+.see-no-realtime-request>a>span {
+  margin-top: 3px;
+  color: var(--blue-20) !important;
+  font-size: 27px;
+  position: relative;
+  top: -3px;
 }
 
 .navbar-btn {
@@ -630,69 +612,6 @@ span .switch-agent-admin-requests-btn {
   font-size: 10px;
 }
 
-/*
-.a-active {
-    border-bottom: 3px solid #039be5;
-    color: #039be5 !important;
-    padding-bottom: 16px;
-}
-*/
-
-$f21blue: #039be5;
-
-.btn-with-border-effect {
-  background: none;
-  border: 0;
-  box-sizing: border-box;
-  // margin: 1em;
-  // padding: 1em 2em;
-  //   padding-bottom: 37px;
-  font-size: 14px;
-  font-weight: 300;
-
-  // Required, since we're setting absolute on pseudo-elements
-  position: relative;
-  vertical-align: middle;
-
-  &::before,
-  &::after {
-    box-sizing: inherit;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.border-from-center {
-  &:hover {
-    color: $brand-primary;
-  }
-
-  // Set up base styles, we're going to scale instead of animating width/height
-  &::before,
-  &::after {
-    //   top: 3px;
-    top: 0px;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
-  }
-
-  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
-  &::before {
-    // border-top: 2px solid $purple;
-    border-bottom: 3px solid $brand-primary;
-    transform: scale3d(0, 1, 1); // Shrink only width
-  }
-
-  &:hover::before,
-  &:hover::after {
-    transform: scale3d(1, 1, 1); // Show full-size
-    transition: transform 0.5s;
-  }
-}
 
 @media (max-width: 991px) {
   .bottom-nav {
@@ -1047,13 +966,13 @@ $f21blue: #039be5;
   color: #f44336 !important;
 }
 
-::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-icon {
-  vertical-align: middle; 
-  color:var(--ng-select-footer-btn-color) // #0f62ff
+::ng-deep ng-select.internal-request-custom-select>ng-dropdown-panel>.ng-dropdown-footer>div>.add-requester-btn-icon {
+  vertical-align: middle;
+  color: var(--ng-select-footer-btn-color) // #0f62ff
 }
 
-::ng-deep ng-select.internal-request-custom-select >ng-dropdown-panel > .ng-dropdown-footer > div > .add-requester-btn-text {
- color: var(--ng-select-footer-btn-color) // #0f62ff
+::ng-deep ng-select.internal-request-custom-select>ng-dropdown-panel>.ng-dropdown-footer>div>.add-requester-btn-text {
+  color: var(--ng-select-footer-btn-color) // #0f62ff
 }
 
 /* moved in /node_modules/@ng-select/ng-select/themes/default.theme.css - in the template this style works only encapsulation: ViewEncapsulation.None 
@@ -1143,7 +1062,7 @@ $f21blue: #039be5;
 }
 
 .stretchspinner>div {
-  background-color: $brand-primary;
+  background-color: var(--blue-20);
   height: 100%;
   width: 6px;
   display: inline-block;
@@ -1482,24 +1401,24 @@ $f21blue: #039be5;
 }
 
 .conv-option-icon {
-  color: rgb(22, 24, 27);
+  color: var(--text-color);
   vertical-align: middle;
-  background: rgb(221, 223, 230);
+  // background: rgb(221, 223, 230);
   padding: 6px;
   border-radius: 50%;
   width: 29px;
 }
 
 .conv-option-icon-active {
-  color: #ffff;
-  background: #0f62ff;
+  color: var(--blue-20);
+  // background: var(--blue-20);
 }
 
 .btn-primary-active {
   height: 38px;
   background: rgb(231, 241, 255);
   box-shadow: unset;
-  color: #444950;
+  color: var(--text-color);
   text-transform: none;
   font-weight: 400;
   font-size: 14px;
@@ -1510,7 +1429,7 @@ $f21blue: #039be5;
 .btn-primary-active:hover {
   box-shadow: unset;
   background: rgb(231, 241, 255);
-  color: var(--icon-hover-color);
+  color: var(--blue-20);
 }
 
 .btn-primary-active .btn--link {
@@ -1559,7 +1478,7 @@ $f21blue: #039be5;
 // }
 
 #filter-conversations-title {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-size: 16px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.54) !important;
@@ -1569,14 +1488,14 @@ $f21blue: #039be5;
 
 .item-label {
   font-size: 14px;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 400;
   color: rgba(0, 0, 0, 0.54);
   line-height: 2;
 }
 
 .filter-convs-title {
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-size: 18px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.54) !important;
@@ -1626,14 +1545,14 @@ $f21blue: #039be5;
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  font-family: var(--header-font-family) !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
 
 .legend-item .item-label {
   font-size: 14px;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  font-family: var(--header-font-family);
   font-weight: 400;
   color: rgba(0, 0, 0, 0.54);
   line-height: 1.3;
@@ -1649,4 +1568,10 @@ $f21blue: #039be5;
   display: flex;
   flex-direction: row;
   gap: 3px;
+}
+
+
+.open-chat-tool-text > .chat-tool-link {
+  color:var(--blue-20); 
+  cursor: pointer;
 }

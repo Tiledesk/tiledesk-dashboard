@@ -375,7 +375,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (this.projectId) {
             this.getProjectQuotes();
-            this.getQuotasCount()
+            // this.getQuotasCount()
           }
           this.prjct_name = this.project.name
 
@@ -536,8 +536,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] get all quotes *COMPLETE*");
       setTimeout(() => {
         this.displayQuotaSkeleton = false
-        this.getRunnedOutQuotes(this.quotes)
-      }, 1000);
+        this.getRunnedOutQuotes( this.quotes)
+      }, 1500);
 
     })
   }
@@ -694,7 +694,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
 
 
-      this.getApps();
+      // this.getApps();
     });
   }
 
@@ -1931,11 +1931,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onClickOnGoToLearnMoreOrManageApp() {
     this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
-    if (this.whatsAppIsInstalled === false) {
-      this.goToWhatsAppDetails()
-    } else {
-      this.openInAppStoreInstall()
-    }
+    this.goToWhatsAppDetails()
+    // if (this.whatsAppIsInstalled === false) {
+    //   this.goToWhatsAppDetails()
+    // } else {
+    //   this.openInAppStoreInstall()
+    // }
   }
 
   checkPlanAndPresentModal(appTitle) {
@@ -1972,6 +1973,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToWhatsAppDetails() {
+    this.appTitle = "WhatsApp Business"
     this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
     this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
@@ -2340,7 +2342,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         showCancelButton: true,
         confirmButtonText: this.upgradePlan,
         cancelButtonText: this.cancel,
-        confirmButtonColor: "var(--blue-light)",
+        // confirmButtonColor: "var(--blue-light)",
         focusConfirm: true,
         reverseButtons: true,
 
@@ -2447,7 +2449,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: true,
       confirmButtonText: this.upgradePlan,
       cancelButtonText: this.cancel,
-      confirmButtonColor: "var(--blue-light)",
+      // confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,
       reverseButtons: true,
 
