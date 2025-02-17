@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.77-rc1
+- Handles error for uploading too large files
+
 ### 2.7.75-rc2
 - Makes AI integrations available from the Premium plan
 
