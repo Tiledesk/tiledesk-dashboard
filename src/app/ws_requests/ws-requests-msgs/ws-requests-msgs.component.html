@@ -390,13 +390,13 @@
                         <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
                         <div class="chat-msg-attachement" *ngIf="uploadedFiles">
                           <span *ngIf="showSpinnerAttachmentUplolad === true">
-                            <i class="fa fa-spinner fa-spin"></i>
+                            <i class="fa fa-spinner fa-spin" style="vertical-align: middle;"></i>
                           </span>
                           <span *ngIf="uploadedFiles?.type.startsWith('image')">
-                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                            <i class="fa fa-file-image-o" style="vertical-align: middle;"></i>
                           </span>
                           <span *ngIf="!uploadedFiles?.type.startsWith('image')">
-                            <i class="fa fa-file-o" aria-hidden="true"></i>
+                            <i class="fa fa-file-o" style="vertical-align: middle;"></i>
                           </span>
                           {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
                           <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
@@ -407,13 +407,13 @@
                           </span>
                           <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && uploadedFiles?.type.startsWith('image')" class="remove-attachment"
                             (click)="removeNativeAttachment(uploadedFiles?.downloadURL)">
-                            <span class="material-icons">
+                            <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false" >
                               clear
                             </span>
                           </span>
                           <span *ngIf="!UPLOAD_ENGINE_IS_FIREBASE && !uploadedFiles?.type.startsWith('image')" class="remove-attachment"
                             (click)="removeNativeDocumentAttachment(uploadedFiles?.downloadURL)">
-                            <span class="material-icons">
+                            <span class="material-icons" *ngIf="showSpinnerAttachmentUplolad === false">
                               clear
                             </span>
                           </span>
