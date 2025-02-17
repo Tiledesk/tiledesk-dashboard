@@ -1,14 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { OpenaiService } from 'app/services/openai.service';
 
 @Component({
-  selector: 'openai-integration',
-  templateUrl: './openai-integration.component.html',
-  styleUrls: ['./openai-integration.component.scss']
+  selector: 'google-integration',
+  templateUrl: './google-integration.component.html',
+  styleUrls: ['./google-integration.component.scss']
 })
-export class OpenaiIntegrationComponent implements OnInit {
+export class GoogleIntegrationComponent implements OnInit {
 
   @Input() integration: any;
   @Output() onUpdateIntegration = new EventEmitter;
@@ -22,15 +21,19 @@ export class OpenaiIntegrationComponent implements OnInit {
   constructor(
     private integrationService: IntegrationService,
     private logger: LoggerService
-  ) { }
+  ) { 
+    
+  }
 
+  
   ngOnInit(): void {
-    this.logger.log("[INT-OpenAI] integration ", this.integration)
-    this.translateparams = { intname: 'OpenAI' };
+    this.logger.log("[INT-GOOGLE-GEMINI] integration ", this.integration)
+    this.translateparams = { intname: 'Google AI' };
     if (this.integration.value.apikey) {
       this.checkKey();
     }
   }
+
 
   showHideKey() {
     let input = <HTMLInputElement>document.getElementById('api-key-input');
@@ -59,15 +62,24 @@ export class OpenaiIntegrationComponent implements OnInit {
 
   checkKey() {
     return new Promise((resolve) => {
-      let url = "https://api.openai.com/v1/models";
-      let key = "Bearer " + this.integration.value.apikey;
-      this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
-        this.isVerified = true;
-        resolve(true);
+                //  https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=YOUR_GEMINI_API_KEY
+      let url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash?key=" + this.integration.value.apikey;
+      this.integrationService.checkIntegrationKeyValidity(url).subscribe((resp: any) => {
+        this.logger.log('[INT-GOOGLE-GEMINI] resp ' ,resp)
+        if (resp) {
+          this.isVerified = true;
+          resolve(true);
+        } 
       }, (error) => {
-        this.logger.error("[INT-OpenAI] Key verification failed: ", error);
-        this.isVerified = false;
-        resolve(false);
+        this.logger.error("[INT-GOOGLE-GEMINI] Key verification failed: ", error);
+        // check for CORS policies errors
+        if (error.status == 0) {
+          this.isVerified = false;
+          resolve(false);  
+        } else {
+          this.isVerified = false;
+          resolve(false);
+        }
       })
     })
   }
