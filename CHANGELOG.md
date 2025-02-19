@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.79-rc1
+
 ### 2.7.78
 - Allows access to the Project Settings > Advanced tabs to the on-premise projects
 
