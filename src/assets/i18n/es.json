@@ -624,6 +624,8 @@
     "WhenEnabledAttachments":"Cuando está habilitado, los usuarios pueden enviar archivos adjuntos. Cuando está deshabilitado, el botón de archivos adjuntos estará oculto.",
     "DisableEmoji": "Desactivar emoji",
     "WhenEnabledEmoji":"Cuando está habilitado, los usuarios pueden enviar emojis. Cuando está deshabilitado, el botón de emojis estará oculto.",
+    "DisableVoiceRecoder":"Desactivar grabadora de voz",
+    "WhenEnabledVoiceRecoder":"Cuando está habilitado, los usuarios pueden grabar mensajes de voz. Cuando está deshabilitado, el botón de grabadora de voz estará oculto y el usuario solo podrá enviar mensajes de texto.",
     "UploadLogo":"Subir logotipo",
     "FileTooLarge": "El archivo es demasiado grande para cargarlo. Tamaño máximo de archivo: {{file_size}}",
     "TYPE_GPT_MODEL": {

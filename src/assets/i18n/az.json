@@ -625,6 +625,8 @@
     "WhenEnabledAttachments":"Aktivləşdirildikdə, istifadəçilər qoşmalar göndərə bilər. Deaktiv edildikdə, qoşma düyməsi gizlənəcək",
     "DisableEmoji": "Emojiləri söndürün",
     "WhenEnabledEmoji": "Aktivləşdirildikdə, istifadəçilər emoji göndərə bilər. Deaktiv edildikdə, emoji düyməsi gizlənəcək",
+    "DisableVoiceRecoder":"Səs yazıcını deaktiv edin",
+    "WhenEnabledVoiceRecoder":"Aktivləşdirildikdə, istifadəçilər səsli mesajları yaza bilərlər. Deaktiv edildikdə, səs yazıcı düyməsi gizlənəcək və istifadəçi yalnız mətn mesajı göndərə bilər",
     "UploadLogo":"Loqo yükləyin",
     "FileTooLarge": "Fayl yükləmək üçün çox böyükdür. Maksimum fayl ölçüsü {{file_size}}",
     "TYPE_GPT_MODEL": {

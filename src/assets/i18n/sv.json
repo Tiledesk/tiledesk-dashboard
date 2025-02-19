@@ -626,6 +626,8 @@
     "WhenEnabledAttachments":"När det är aktiverat kan användare skicka bilagor. När den är inaktiverad döljs bilagaknappen",
     "DisableEmoji": "Inaktivera emoji",
     "WhenEnabledEmoji":"När det är aktiverat kan användare skicka emoji. När den är inaktiverad döljs emoji-knappen",
+    "DisableVoiceRecoder":"Inaktivera röstinspelare",
+    "WhenEnabledVoiceRecoder":"När det är aktiverat kan användare spela in röstmeddelanden. När den är inaktiverad döljs röstinspelningsknappen och användaren kan bara skicka textmeddelanden",
     "UploadLogo":"Ladda upp logotyp",
     "FileTooLarge": "Filen är för stor för att ladda upp. Max filstorlek {{file_size}}",
     "TYPE_GPT_MODEL": {
