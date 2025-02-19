@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.78
+- Allows access to the Project Settings > Advanced tabs to the on-premise projects
+
 ### 2.7.77
 - Handles error for uploading too large files
 
