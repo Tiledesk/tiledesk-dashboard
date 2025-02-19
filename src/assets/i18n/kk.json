@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Токендерді AI толық пайдалануы",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
     "Email": "Электронды пошта",
+    "Voice":"Дауыс",
+    "TotalVoiceUsage": "Дауысты жалпы қолдану",
     "RequestsForAgent": "Агентке арналған әңгімелер",
     "RequestsForDept": "Бөлімге арналған әңгімелер",
     "NumberOfRequestsLast7Days": "Соңғы 7 күндегі сөйлесулер саны",
@@ -626,6 +628,9 @@
     "WhenEnabledEmoji":"Қосылған кезде пайдаланушылар эмодзилерді жібере алады. Өшірілген кезде эмодзи түймесі жасырылады",
     "UploadLogo":"Логотипті жүктеп салу",
     "FileTooLarge": "Файл жүктеп салу үшін тым үлкен. Максималды файл өлшемі {{file_size}}",
+    "AccessDenied":"Кіруге тыйым салынды",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Сіз бұл жобаның серіктесі емес сияқтысыз",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Сізге рұқсат беру үшін жоба әкімшісіне хабарласыңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

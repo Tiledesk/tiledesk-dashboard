@@ -10,7 +10,28 @@
 ### 2.7.75
 - Makes AI integrations available from the Premium plan
 
+### 2.7.77-rc1
+- Handles error for uploading too large files
+
+### 2.7.75-rc2
+- Makes AI integrations available from the Premium plan
+
+### 2.7.75-rc1
+- Requires "Refresh rate" feature to be enabled in order to use it 
+
 ### 2.7.74
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
+
+### 2.7.74-rc3
+- Improves the Knowledge base preview
+- Improves the method of uploading a custom logo for the widget
+
+### 2.7.74-rc2
+- Adds Deepseek integration
+- Adds Ollama integration
+
+### 2.7.74-rc1
 - Adds Google Gemini integration
 - Adds Claude integration
 - Adds Croq integration
@@ -19,10 +40,13 @@
 ### 2.7.73
 - Fixes visibility of blocks in Reassign Conversation
 
+### 2.7.73-rc1
+- Fixes visibility of blocks in Reassign Conversation
+
 ### 2.7.72
 - Hides the live announcement Changelog on the login page and project list page
 
-### 2.7.71
+### 2.7.71-rc1
 - Improves full text search in history and non-real-time conversation pages
 - Improves user onboarding
 - Fixes the bug: Live Changelog announcements are displayed during user onboarding
@@ -32,14 +56,30 @@
 - Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
 - Filters the blocks of the chatbots in the "Reassign conversation" page
 
+### 2.7.70-rc2
+- Improves the icon display method on chatbot cards that indicates the chatbot is available to agents
+
+### 2.7.70-rc1
+- Adds an icon on the chatbot cards of the chatbot list page to indicate that the chatbot is available to agents
+- Filters the blocks of the chatbots in the "Reassign conversation" page
+
+### 2.7.69
+- Improves the widget preview available in the widget setup page
+
 ### 2.7.68
+- Deployed in prod
 - Fixes logo position in widget setup page preview
 
 ### 2.7.67
+- Deployed in prod
 - Improves the widget preview available in the widget setup page
 
 ### 2.7.66
+- Deployed in prod
 - Removes the free plan for the new sign ups
+
+### 2.7.65
+- Minor improvements and bug fixing
 
 ### 2.7.64
 - Fixes the bug: departments are no longer visible in the request list
@@ -48,6 +88,24 @@
 - Adds the ability from the Widget settings > Advanced section to disable sending attachments and emojis
 - Handles the loading of the Changelog script
 
+### 2.7.62
+- Minor improvements and bug fixing
+
+### 2.7.61
+- Handles the loading of the Changelog script
+
+### 2.7.61-rc3
+- Adds the ability from the widget settings > advanced section to disable sending attachments and emojis
+
+### 2.7.61-rc2
+- Improves redirect handling for plans with expired trial
+- Adds a tooltip to the history page to explain the "Include chatbot-only conversations" checkbox
+- Display a message in the right bar of chat conversation details when the plan trial period has expired
+- Improves the "Reassign Conversation to chatbot" modal window displayed in chat
+
+### 2.7.61-rc1
+- Redirect to pricing page if trial has expired
+
 ### 2.7.60
 - Improves the UI
 - Bug fixing
@@ -55,8 +113,18 @@
 ### 2.7.59
 - Improves and fixes the conversations report in Analytics > Metrics > Conversations
 
+### 2.7.59-rc2
+- Improves the UI
+- Bug fixing
+
+### 2.7.59-rc1
+- Minor improvements and bug fixing
+
 ### 2.7.58
 - Minor improvements and bug fixing
+
+### 2.7.58-rc1
+- Improve the conversations report in Analytics > Metrics > Conversations
 
 ### 2.7.57
 - Improves the Changelog notifications
@@ -68,16 +136,40 @@
 - Adds the ability to filter by custom range the tag graph
 - Allows to search for conversations by tags not present in the tag list on the "History" page
 
+### 2.7.54
+- Fixes the bug: Knowledge base table update date is incorrect
+
 ### 2.7.53
 - Minor improvements
+
+### 2.7.52
+- Improves KB table
+
+### 2.7.51
+- Adds the ability to filter by custom range the tag graph
+
+### 2.7.50-rc2
+- Fixes the bug: voice quota limit is not calculated correctly
+
+### 2.7.50-rc1
+- Adds the ability to select the refresh rate for URL(s) type contents
 
 ### 2.7.49
 - Improves the conversations graph and analytics overview on the home page 
 
+### 2.7.49-rc1
+- Adds voice quota usage count
+
 ### 2.7.48
 - Implements a widget to notify customers about Tiledesk updates
 
+### 2.7.48-rc1
+- Implements a widget to notify customers about Tiledesk updates
+
 ### 2.7.47
+- Fixes the bug: Knowledge Base menu item displays with a delay
+
+### 2.7.47-rc1
 - Fixes the bug: Knowledge Base menu item displays with a delay
 
 ### 2.7.46
@@ -87,6 +179,21 @@
 ### 2.7.46-rc6
 - Adds in Analytics > Metrics the conversations tags graph
 - Improves the UI of the sidebar
+
+### 2.7.46-rc5
+- Bug fixing
+
+### 2.7.46-rc4
+- Improves remove conversation tag method
+
+### 2.7.46-rc3
+- Sends a "post" message to the parent when the user resolves a conversation
+
+### 2.7.46-rc2
+- Adds in Analytics > Metrics the conversations tags graph
+
+### 2.7.46-rc1
+- Improves the add FAQs dialog window
 
 ### 2.7.45
 - Improves the app store
@@ -98,11 +205,29 @@
 ### 2.7.43
 - Adds the "Twilio voice" integration 
 
+### 2.7.43-rc1
+- Refactors dashboard UI
+
 ### 2.7.42
 - Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
 
 ### 2.7.41
 - Fixes the bug: onboarding content is not visible on small height screens
+
+### 2.7.41-rc5
+- Refactors dashboard UI (work in progress)
+
+### 2.7.41-rc4
+- Fixes bugs on "Twilio voice" integration 
+
+### 2.7.41-rc3
+- Improves the "Twilio voice" integration 
+
+### 2.7.41-rc2
+- Adds the "Twilio voice" integration 
+
+### 2.7.41-rc1
+- Adds the ability to add the webhook subscriptions "Request Abandoned" and "Request Fully Abandoned"
 
 ### 2.7.40
 - Minor improvements and bug fixing
@@ -118,6 +243,9 @@
 
 ### 2.7.37
 - Adds checks to validate Widget footer branding
+
+### 2.7.38-rc2
+- Fix chatbot import validation from json
 
 ### 2.7.36
 - Adds the ability to filter for abandoned conversations in the "Non-real-time conversations" page
@@ -162,7 +290,24 @@
 ### 2.7.33
 - Adds, on the History page, the ability to filter by conversation duration
 
-### 2.7.32
+### 2.7.34-rc4
+- Refactors table in Monitor page 
+- Improves handling of alert windows display
+
+### 2.7.34-rc3
+- AI settings and KB preview bug fixing
+
+### 2.7.34-rc2
+- Minor improvements
+
+### 2.7.34-rc1
+- Adds the ability to select the indexing type for Knowledge Base URL contents
+- Adds to AI models used by knowledge bases the ability to add an advanced context and to visualize the contents sources
+
+### 2.7.33-rc1
+- Adds, on the History page, the ability to filter by conversation duration 
+
+### 2.7.32-rc1
 - Moves the menu item "Apps" from the sidebar to the setting sidebar
 
 ### 2.7.31
@@ -207,8 +352,14 @@
 - Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
 - Improves the method to get the number of conversations in the monitor page
 
+### 2.7.19-rc1
+- Adds the ability to select the launch block when a conversation is manually assigned to a chatbot
+
 ### 2.7.18
 - Minor improvements and bug fixing
+
+### 2.7.18-rc1
+- Improves the method to get the number of conversations in the monitor page
 
 ### 2.7.17
 - Removes the ability to customize the quotas email template
@@ -258,6 +409,9 @@
 - Deploys in production
 - Adds the knowledge base walkthrough on the knowledge base page
 
+### 2.7.7-rc1
+- Adds the knowledge base walkthrough on the knowledge base page
+
 ### 2.7.6
 - Deploys in production
 - Adds a warning banner to the home page that displays when the user has used up one or more of his monthly resources
@@ -269,9 +423,20 @@
 ### 2.7.4
 - Added Time Slots in Operating Hours page
 
+### 2.7.4-rc1
+- Fix saving operation hours bug
+
 ### 2.7.3
 - Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
 - Improves the knowledge base page
+
+### 2.7.3-rc2
+- Adds the ability, during onboarding, to create a chatbot that automatically answers questions based on the contents of the Knowledge Base
+- Improves the knowledge base page 
+- Improves time slots UI
+
+### 2.7.3-rc1
+- Kb onboarding
 
 ### 2.7.2
 - Deploys in production
@@ -286,21 +451,58 @@
 - Adds the ability to edit the "Quota checkpoint notification" email template
 - Adds Twilio SMS channel integration  
 
+### 2.6.45-rc2
+- Improves time slots UI
+- Added translations for time slots
+
+### 2.6.45-rc1
+- Added time slots in Operating Hours
+
 ### 2.6.44
 - Deploys in production
 - Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
 - Improvements and bug fixing
+
+### 2.6.44-rc4
+- Improvements and bug fixing
+
+### 2.6.44-rc3
+- Adds the option "Teammates can only see their own conversations" in the Project Settings > Advanced tab
+
+### 2.6.44-rc2
+- Fix vxml voice integration visibility
+
+### 2.6.44-rc1
+- Added vxml voice integration
+- Added twilio sms integration
 
 ### 2.6.43
 - Deploys in production
 - Improves the quota usage widget
 - Minor improvements
 
+### 2.6.43-rc2
+- Improves Knowledge Bases page
+
+### 2.6.43-rc1
+- Improves quotes widget
+- Added voice-vxml and sms-twilio channel in analytics
+
 ### 2.6.42
 - Deploys in production
 - Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
 
+### 2.6.42-rc1
+- Displays all the indexed chunks of a content on the "Manage your Knowledge Bases" page
+
 ### 2.6.41
+- Deploys in production
+- Displays information about the Voice channel
+
+### 2.6.41-rc2
+- Adds the Voice Channel integration 
+
+### 2.6.41-rc1
 - Deploys in production
 - Displays information about the Voice channel
 

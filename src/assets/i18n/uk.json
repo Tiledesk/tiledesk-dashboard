@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Загальне використання токенів AI",
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",
     "Email": "Електронна пошта",
+    "Voice":"Голос",
+    "TotalVoiceUsage": "Загальне використання голосу",
     "Temporary":"Тимчасовий",
     "RequestsForDept": "Бесіди для кафедри",
     "NumberOfRequestsLast7Days": "Кількість розмов за останні 7 днів",
@@ -629,6 +631,9 @@
     "WhenEnabledEmoji":"Якщо ввімкнено, користувачі можуть надсилати емодзі. Якщо вимкнено, кнопка emoji буде прихована",
     "UploadLogo":"Завантажте логотип",
     "FileTooLarge": "Файл завеликий для завантаження. Максимальний розмір файлу {{file_size}}",
+    "AccessDenied":"Доступ заборонено",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Схоже, ви не учасник цього проекту",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Зверніться до адміністратора проекту, щоб надати вам доступ",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
