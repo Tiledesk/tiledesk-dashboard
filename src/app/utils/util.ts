@@ -441,6 +441,9 @@ export const PLANS_LIST = {
     Starter: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
     Pro: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
     Business: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+    Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+    Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+    Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
     Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
 }
 
@@ -483,20 +486,24 @@ export const PLANS_LIST = {
 
 // Starter plan (ex Basic plan)
 export const featuresPlanD = [
-    'CRM',
-    'Private Notes',
-    'Unlimited Conversations History',
-    'Working Hours',
-    'User Ratings',
-    'Canned Responses',
-    'Webhooks',
-    'Email Support',
-    'Team Inbox',
-    'Make integration',
-    "1 Knowledge Base",
-    '150 contents across all Knowledge Bases',
-    // '150 Contents for Knowledge Base', 
-    '2,000,000 AI Tokens'
+    "800 Conversations/mo.",
+    "1 user",
+    "Basic Al automation",
+    "Email support"
+
+    // 'CRM',
+    // 'Private Notes',
+    // 'Unlimited Conversations History',
+    // 'Working Hours',
+    // 'User Ratings',
+    // 'Canned Responses',
+    // 'Webhooks',
+    // 'Email Support',
+    // 'Team Inbox',
+    // 'Make integration',
+    // "1 Knowledge Base",
+    // '150 contents across all Knowledge Bases',
+    // '2,000,000 AI Tokens'
 ]
 // Starter plan (ex Basic plan)
 export const highlightedFeaturesPlanD = [
@@ -513,20 +520,24 @@ export const additionalFeaturesPlanD = [
 
 // Pro plan  (ex Premium plan)
 export const featuresPlanE = [
-    'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
-    'Help center',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Qapla\' integration',
-    'Data export',
-    'Livechat Support',
-    'Analytics',
-    "3 Knowledge Base",
-    '300 contents across all Knowledge Bases',
-    '5,000,000 AI Tokens'
-    // '250,000 AI Tokens'
+    "3,000 Conversations/mo.",
+    "Up to 3 users",
+    "Advanced Al workflows",
+    "Priority support"
+    // 'Widget Unbranding',
+    // 'WhatsApp Business',
+    // 'Facebook Messenger',
+    // 'Help center',
+    // 'Unlimited Departments',
+    // 'Unlimited Groups',
+    // 'Qapla\' integration',
+    // 'Data export',
+    // 'Livechat Support',
+    // 'Analytics',
+    // "3 Knowledge Base",
+    // '300 contents across all Knowledge Bases',
+    // '5,000,000 AI Tokens'
+
 ]
 
 // Pro plan  (ex Premium plan)
@@ -544,19 +555,23 @@ export const additionalFeaturesPlanE = [
 
 // Business plan (ex Team plan)
 export const featuresPlanEE = [
-    'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
-    'Help center',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Qapla\' integration',
-    'Data export',
-    'Livechat Support',
-    'Analytics',
-    "10 Knowledge Base",
-    '1,000 contents across all Knowledge Bases',
-    '10,000,000 AI Tokens'
+    // 'Widget Unbranding',
+    // 'WhatsApp Business',
+    // 'Facebook Messenger',
+    // 'Help center',
+    // 'Unlimited Departments',
+    // 'Unlimited Groups',
+    // 'Qapla\' integration',
+    // 'Data export',
+    // 'Livechat Support',
+    // 'Analytics',
+    // "10 Knowledge Base",
+    // '1,000 contents across all Knowledge Bases',
+    // '10,000,000 AI Tokens'
+    "5,000 Conversations/mo.",
+    "Up to 5 users",
+    "Custom AI tools",
+    "Premium support"
 ]
 
 // Business plan (ex Team plan) 
