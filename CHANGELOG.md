@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.7.79-rc2
-- Adds the ability to enable/disable voice recorder
+- Manages audio messages in the chat available in the conversation details
 
 ### 2.7.79-rc1
 - Adds the ability to enable/disable voice recorder
