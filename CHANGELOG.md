@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.79-rc2
+- Adds the ability to enable/disable voice recorder
+
 ### 2.7.79-rc1
 - Adds the ability to enable/disable voice recorder
 
