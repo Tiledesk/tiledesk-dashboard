@@ -126,6 +126,7 @@
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
                 <div *ngFor="let message of messagesList">
+                  <!-- message type {{ message?.type }} - message metadiredata type {{ message.metadata?.type}} -->
 
                   <!-- ////// INFO MSG -->
                   <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
@@ -197,16 +198,17 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <!-- && (!message.metadata && !message.metadata.type.includes('audio'))" -->
-                            <p *ngIf="(message?.type === 'text' || message?.type === 'file')" class="message ow"
+                            <!--  -->
+                            <p *ngIf="(message?.type === 'text' || message?.type === 'file') && (!message?.metadata?.type.includes('audio'))" class="message ow"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
                             </p>
-                            <!-- <ng-container *ngIf="message?.type === 'file' && message.metadata && message.metadata.type.includes('audio')">
+                            <ng-container *ngIf="message?.type === 'file' && message.metadata && message.metadata.type.includes('audio')">
                               <audio aria-label="audio-track" #audio_msg controls controlsList="nodownload"
                                 id="audio_msg">
                                 <source [src]="message.metadata?.src" [type]="message.metadata?.type">
                               </audio>
-                            </ng-container> -->
+                              <p [innerHTML]="message?.text | htmlEntitiesEncode | marked" style="font-size: 12px; margin-bottom: 0px;"></p>
+                            </ng-container>
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <!-- style="height:200px; width:200px;" -->
                               <div class="image-container" style="cursor:pointer"
