@@ -109,6 +109,8 @@
     "TotalAITokensUsage": "Tokens AI-nin ümumi istifadəsi",
     "TotalEmailUsage": "Ümumi e-poçt istifadəsi",
     "Email": "E-poçt",
+    "Voice":"Səs",
+    "TotalVoiceUsage": "Toplam səs istifadəsi",
     "RequestsForDept": "Şöbə üçün söhbətlər",
     "NumberOfRequestsLast7Days": "Son 7 gündə söhbətlərin sayı",
     "NumberOfRequests": "Söhbətlərin sayı",
@@ -629,6 +631,9 @@
     "WhenEnabledVoiceRecoder":"Aktivləşdirildikdə, istifadəçilər səsli mesajları yaza bilərlər. Deaktiv edildikdə, səs yazıcı düyməsi gizlənəcək və istifadəçi yalnız mətn mesajı göndərə bilər",
     "UploadLogo":"Loqo yükləyin",
     "FileTooLarge": "Fayl yükləmək üçün çox böyükdür. Maksimum fayl ölçüsü {{file_size}}",
+    "AccessDenied":"Giriş rədd edildi",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Deyəsən, siz bu layihənin komanda yoldaşı deyilsiniz",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Sizə giriş icazəsi vermək üçün layihə administratoru ilə əlaqə saxlayın",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
