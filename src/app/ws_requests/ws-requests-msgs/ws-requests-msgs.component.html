@@ -388,7 +388,8 @@
                     <!-- texarea send message  -->
                     <!-- ------------------------------------------------ -->
                     <div class="col-xs-12  w-100 plr-0">
-                      <div class="row w-100">
+                      <!-- row -->
+                      <div class=" w-100">
                         <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
                         <div class="chat-msg-attachement" *ngIf="uploadedFiles">
                           <span *ngIf="showSpinnerAttachmentUplolad === true">
@@ -422,7 +423,7 @@
                         </div>
                         <div class="col-xs-12 h-100 plr-0" style="  margin-bottom: 8px;height:46px"
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
+                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
                             placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
                             (paste)="onPasteInSendMsg($event)"
                             (ngModelChange)="onChangeTextInSendMsg($event)">  </textarea>

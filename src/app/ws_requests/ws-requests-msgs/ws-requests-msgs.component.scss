@@ -3073,24 +3073,44 @@ span .conv-svg-icon {
 }
 
 .send-message-texarea {
-  max-height: 500px;
+  max-height: 50px;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 16px;
   letter-spacing: -0.01em;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 4px;
   resize: none;
   outline: none;
   width: 100%;
-  padding: 5px 20px 5px;
+  padding: 5px 10px 5px;
   border-color: transparent;
   background-color: transparent;
-  height: 46px;
+  height: 50px;
   box-sizing: border-box;
   color: #3c4858;
   -webkit-appearance: none;
   appearance: none;
 }
+
+.send-message-texarea::-webkit-scrollbar {
+  width: 6px; /* Set scrollbar width */
+  height: 6px;
+}
+
+.send-message-texarea::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;; /* Set scrollbar color */
+  border-radius: 0px;
+}
+
+.send-message-texarea::-webkit-scrollbar-thumb:hover {
+  background-color: #727272;
+}
+
+.send-message-texarea::-webkit-scrollbar-track {
+  background-color: #f9f9f9; /* Set track color */
+}
+
+
 
 .send-chat-msg-btn {
   margin-top: 0px;
@@ -5776,3 +5796,4 @@ label {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
 }
+
