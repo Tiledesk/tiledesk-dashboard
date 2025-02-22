@@ -202,13 +202,15 @@
                             <p *ngIf="(message?.type === 'text' || message?.type === 'file') && (!message?.metadata?.type?.includes('audio'))" class="message ow"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
                             </p>
-                            <ng-container *ngIf="message?.type === 'file' && message.metadata && message.metadata.type && message?.metadata?.type.includes('audio')">
+
+                            <div *ngIf="message?.type === 'file' && message.metadata && message.metadata.type && message?.metadata?.type.includes('audio')" class="message ow audio">
                               <audio aria-label="audio-track" #audio_msg controls controlsList="nodownload"
                                 id="audio_msg">
                                 <source [src]="message.metadata?.src" [type]="message.metadata?.type">
                               </audio>
                               <p [innerHTML]="message?.text | htmlEntitiesEncode | marked" style="font-size: 12px; margin-bottom: 0px;"></p>
-                            </ng-container>
+                            </div>
+
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <!-- style="height:200px; width:200px;" -->
                               <div class="image-container" style="cursor:pointer"
@@ -297,9 +299,18 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow alt"
+                            <p *ngIf="(message?.type === 'text' || message?.type === 'file') && (!message?.metadata?.type?.includes('audio')) " class="message ow alt"
                               [ngClass]="{'internal-note-text-color': message?.attributes?.subtype === 'private'}"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked">
+                            </p>
+
+                            <div *ngIf="message?.type === 'file' && message.metadata && message.metadata.type && message?.metadata?.type.includes('audio')" class="message ow alt audio">
+                              <audio aria-label="audio-track" #audio_msg controls controlsList="nodownload"
+                                id="audio_msg">
+                                <source [src]="message.metadata?.src" [type]="message.metadata?.type">
+                              </audio>
+                              <p [innerHTML]="message?.text | htmlEntitiesEncode | marked" style="font-size: 12px; margin-bottom: 0px;"></p>
+                            </div>
 
                             <div *ngIf="message?.type === 'image'" class="message ow alt">
                               <!-- style="height:200px; width:200px;" -->
