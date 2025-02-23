@@ -371,9 +371,9 @@
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                        <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
+                        <!-- <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
                             <span>{{ 'KbPage.RefreshRate' | translate }}</span>
-                        </th>
+                        </th> -->
 
                         <th class="column-th-span" style="width:150px;" (click)="onOrderBy('updatedAt')">
                             <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
@@ -474,7 +474,7 @@
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
+                        <!-- <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
                             <span *ngIf="kb.type === 'url'"
                                 matTooltipClass="custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
@@ -501,7 +501,7 @@
                             <span *ngIf="kb.type !== 'url'">
                                 —
                             </span>
-                        </td>
+                        </td> -->
 
                         <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
                             {{ kb.updatedAt | amTimeAgo }}
