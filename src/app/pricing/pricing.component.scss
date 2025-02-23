@@ -1219,8 +1219,8 @@ li:before {
   flex-direction: column;
   -webkit-box-pack: center;
   justify-content: center;
-  order: 6001;
-  padding-bottom: 24px;
+  // padding-bottom: 24px;
+  padding-bottom: 12px;
   padding-top: 8px;
 }
 
@@ -1234,6 +1234,13 @@ li:before {
   width: 100%;
   justify-content: center;
 }
+
+.pricing-row-before-features {
+  font-weight: 500;
+  font-family: var(--header-font-family);
+  padding-bottom: 12px;
+}
+
 
 // css-xcqs6d
 .pricing-card-feature-cointainer {
@@ -1249,7 +1256,7 @@ li:before {
   -webkit-box-pack: center;
   justify-content: center;
   align-items: flex-start;
-  order: 8001;
+
 }
 
 // css-u49bkm
@@ -1471,7 +1478,7 @@ li:before {
   cursor: pointer;
 }
 
-.compare-plans-link > span {
+.compare-plans-link>span {
   font-size: 16px;
 }
 

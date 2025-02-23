@@ -2,7 +2,7 @@
 <!-- background-attachment: scroll; background-position: bottom right; -->
 
 <div class="main-content" style="padding-top:0px; background-color: #ffffff;
-    min-height: calc(100% - 53px);margin-top: 0px; padding: 0px" *ngIf="!CHAT_PANEL_MODE">
+    min-height: calc(100% - 53px);margin-top: 0px; padding: 0px; overflow-x: auto;" *ngIf="!CHAT_PANEL_MODE">
 
   <!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
     background-size: 475px 449px, 188px 100%, 179px 100%;
@@ -323,6 +323,9 @@
                       </button>
                     </div>
                   </div>
+                  <div class="pricing-row-before-features">
+                    Includes:
+                  </div>
                   <div class="pricing-card-feature-cointainer css-xcqs6d efq00il4"
                     *ngFor="let feature of planDFeatures">
                     <div class="pricing-card-feature-wpr  css-u49bkm e15c8v5c0">
@@ -444,7 +447,9 @@
 
                     </div>
                   </div>
-
+                  <div class="pricing-row-before-features">
+                    Includes:
+                  </div>
                   <div class="pricing-card-feature-cointainer css-omi7je efq00il4"
                     *ngFor="let feature of planEFeatures">
                     <div class="pricing-card-feature-wpr css-u49bkm e15c8v5c0">
@@ -457,7 +462,9 @@
                         </svg>
                       </span>
                       <span size="8" class="span-8"></span>
-                      <p class="pricing-card-feature css-1nrqn2o eimqq0f0">{{feature}}</p>
+                      <p class="pricing-card-feature css-1nrqn2o eimqq0f0">
+                        {{feature}}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -540,6 +547,9 @@
 
                     </div>
                   </div>
+                  <div class="pricing-row-before-features">
+                    Includes:
+                  </div>
                   <div class="pricing-card-feature-cointainer css-xcqs6d efq00il4"
                     *ngFor="let feature of planEEFeatures">
                     <div class="pricing-card-feature-wpr  css-u49bkm e15c8v5c0">
@@ -552,7 +562,9 @@
                         </svg>
                       </span>
                       <span size="8" class="span-8"></span>
-                      <p class="pricing-card-feature css-1nrqn2o eimqq0f0">{{feature}}</p>
+                      <p class="pricing-card-feature css-1nrqn2o eimqq0f0">
+                        {{feature}}
+                      </p>
                     </div>
                   </div>
                 </div>
