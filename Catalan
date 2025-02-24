@@ -624,6 +624,8 @@
     "WhenEnabledAttachments": "When enabled, users can send attachments. When disabled, the attachment button will be hidden",
     "DisableEmoji": "Disable emoji",
     "WhenEnabledEmoji": "When enabled, users can send emoji. When disabled, the emoji button will be hidden",
+    "DisableVoiceRecoder": "Disable Voice recorder",
+    "WhenEnabledVoiceRecoder": "When enabled, users can record voice messages. When disabled, the voice recorder button will be hidden and user can only send text message",
     "UploadLogo": "Upload logo",
     "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "TYPE_GPT_MODEL": {
