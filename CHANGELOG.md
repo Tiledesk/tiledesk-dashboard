@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.79-rc3
+- New Pricing page
+
 ### 2.7.79-rc2
 - Manages audio messages in the chat available in the conversation details
 
