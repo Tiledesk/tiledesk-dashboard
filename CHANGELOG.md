@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.80
+- Manages audio messages in the chat available in the conversation details
+
 ### 2.7.77
 - Handles error for uploading too large files
 
