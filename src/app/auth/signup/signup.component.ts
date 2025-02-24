@@ -978,7 +978,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             name: userFullname,
             email: signupResponse.user.email,
             logins: 5,
-            plan: "Premium (trial)"
+            plan: "Pro (trial)"
           });
         } catch (err) {
           this.logger.error('Signup Create project identify error', err);
@@ -989,7 +989,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             "userId": signupResponse.user._id,
             "trial_start_date": trialStarDate,
             "trial_end_date": trialEndDate,
-            "trial_plan_name": "Premium (trial)",
+            "trial_plan_name": "Pro (trial)",
             "context": {
               "groupId": this.new_project._id
             }
@@ -1001,7 +1001,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         try {
           window['analytics'].group(this.new_project._id, {
             name: this.new_project.name,
-            plan: "Premium (trial)",
+            plan: "Pro (trial)",
           });
         } catch (err) {
           this.logger.error('Signup Create project group error', err);

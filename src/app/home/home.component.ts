@@ -876,20 +876,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.project['plan_badge_background_type'] = 'c_plan_badge'
 
         // Basic plan
-      } else if (this.prjct_profile_name === PLAN_NAME.D) {
+      } else if (this.prjct_profile_name === PLAN_NAME.D || this.prjct_profile_name === "Basic") {
         this.prjct_profile_name = PLAN_NAME.D + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name;
         this.auth.projectProfile(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'a_plan_badge'
 
         // Premium plan
-      } else if (this.prjct_profile_name === PLAN_NAME.E) {
+      } else if (this.prjct_profile_name === PLAN_NAME.E || this.prjct_profile_name === "Premium") {
         this.prjct_profile_name = PLAN_NAME.E + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name
         this.auth.projectProfile(this.profile_name_for_segment)
         this.project['plan_badge_background_type'] = 'b_plan_badge'
 
-      } else if (this.prjct_profile_name === PLAN_NAME.EE) {
+      } else if (this.prjct_profile_name === PLAN_NAME.EE || this.prjct_profile_name === "Team") {
         this.prjct_profile_name = PLAN_NAME.EE + ' plan'
         this.profile_name_for_segment = this.prjct_profile_name
         this.auth.projectProfile(this.profile_name_for_segment)

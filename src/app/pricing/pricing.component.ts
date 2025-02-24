@@ -16,7 +16,6 @@ import {  additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPl
 import { NotifyService } from 'app/core/notify.service';
 import moment from "moment";
 import { ProjectUser } from 'app/models/project-user';
-
 declare var Stripe: any;
 
 
@@ -24,20 +23,19 @@ enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
   Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
-  Basic = 'Automate simple website conversations as an individual',
-  Premium = 'Expand automation across channels for individuals and small teams',
-  Team = 'For growing teams scaling business automation',
-  Custom = 'Exploit all the premium features and receive support to design chatbots tailor-made'
+  Starter = "For individuals starting AI automation", //Basic = 'Automate simple website conversations as an individual',
+  Pro = "For teams scaling AI-powered workflows" , //Premium = 'Expand automation across channels for individuals and small teams',
+  Business = "For businesses requiring advanced AI tools" , //Team = 'For growing teams scaling business automation',
+  Custom =  "For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
   Growth = "25",
   Scale = "89",
   Plus = 'Custom',
-  Basic = "15",
-  Premium = "100",
-  Team = "299",
-  // Custom = 'Starting at 500€',
+  Starter = "49", //Basic = "15",
+  Pro = "149", //Premium = "100",
+  Business = "499", // Team = "299",
   Custom = '500',
 }
 
@@ -45,11 +43,17 @@ enum ANNUAL_PRICE {
   Growth = "225",
   Scale = "790",
   Plus = 'Custom',
-  Basic = "150",
-  Premium = "1,000",
-  Team = "2,990",
-  // Custom = 'Starting at 500€'
+  Starter = "490" , // Basic = "150",
+  Pro = "1490", // Premium = "1,000",
+  Business = "4990", // Team = "2,990",
   Custom = '500',
+}
+
+enum ANNUAL_PRICE_PER_MONTH {
+  Starter = "40,84" , 
+  Pro = "124,17", 
+  Business = "415,84", 
+
 }
 
 
@@ -153,7 +157,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = false;
+  public TEST_PAYMENT_LINKS = true;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -204,7 +208,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     private router: Router,
     private notify: NotifyService
   ) {
-
+    
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
     this.contactUsEmail = brand['CONTACT_US_EMAIL'];
@@ -265,8 +269,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planFeatures = featuresPlanD; // featuresPlanA;
     this.highlightedFeatures = highlightedFeaturesPlanD; //highlightedFeaturesPlanA
     this.additionalFeatures = additionalFeaturesPlanD
-    this.monthlyPeriod = true;
-    this.annualPeriod = false;
+    this.monthlyPeriod = false;
+    this.annualPeriod = true;
     this.monthlyPrice =  MONTHLY_PRICE[PLAN_NAME.D] // MONTHLY_PRICE[PLAN_NAME.A]
 
     // For new pricing
@@ -282,15 +286,27 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   
 
-    this.planDAnnualPricePerMonth = +ANNUAL_PRICE[PLAN_NAME.D] / 12;
-    this.logger.log('[PRICING] planDAnnualPricePerMonth ', this.planDAnnualPricePerMonth )
+    // let planDAnnualPricePerMonthNoFormatted = +ANNUAL_PRICE[PLAN_NAME.D] / 12;
+    // console.log('[PRICING] planDAnnualPricePerMonthNoFormatted ', planDAnnualPricePerMonthNoFormatted )
+    // this.planDAnnualPricePerMonth = planDAnnualPricePerMonthNoFormatted.toFixed(2).replace('.', ',')
+    // console.log('[PRICING] planDAnnualPricePerMonth ', this.planDAnnualPricePerMonth )
    
-    this.planEAnnualPricePerMonth = ""
-    // +ANNUAL_PRICE[PLAN_NAME.E] / 12;
-    this.planEEAnnualPricePerMonth =  ""
-    // +ANNUAL_PRICE[PLAN_NAME.EE]/ 12;
+    // const planEAnnualPricePerMonthNoFormatted = +ANNUAL_PRICE[PLAN_NAME.E] / 12;
+    // console.log('[PRICING] planEAnnualPricePerMonthNoFormatted ', planEAnnualPricePerMonthNoFormatted )
+    // this.planEAnnualPricePerMonth = planEAnnualPricePerMonthNoFormatted.toFixed(2).replace('.', ',')
+    // console.log('[PRICING] planEAnnualPricePerMonth ', this.planEAnnualPricePerMonth )
     
-    // +ANNUAL_PRICE[PLAN_NAME.F] / 12;
+    // let planEEAnnualPricePerMonthNoFormatted = +ANNUAL_PRICE[PLAN_NAME.EE] / 12;
+    // console.log('[PRICING] planEEAnnualPricePerMonthNoFormatted ', planEEAnnualPricePerMonthNoFormatted )
+    // let planEEAnnualPricePerMonthNoFormattedRounded = Math.round(planEEAnnualPricePerMonthNoFormatted * 100) / 100;
+    // console.log('[PRICING] planEEAnnualPricePerMonthNoFormattedRounded ', planEEAnnualPricePerMonthNoFormattedRounded )
+    // this.planEEAnnualPricePerMonth =  planEEAnnualPricePerMonthNoFormatted.toFixed(2).replace('.', ',')
+    // console.log('[PRICING] planEEAnnualPricePerMonth ', this.planEEAnnualPricePerMonth )
+
+
+    this.planDAnnualPricePerMonth = ANNUAL_PRICE_PER_MONTH[PLAN_NAME.D]
+    this.planEAnnualPricePerMonth = ANNUAL_PRICE_PER_MONTH[PLAN_NAME.E]
+    this.planEEAnnualPricePerMonth = ANNUAL_PRICE_PER_MONTH[PLAN_NAME.EE]
 
     this.planDAnnualPrice = ANNUAL_PRICE[PLAN_NAME.D];
     this.planEAnnualPrice = ANNUAL_PRICE[PLAN_NAME.E];
@@ -335,6 +351,99 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     this.logger.log('[PRICING] trialHasExpired ', this.trialHasExpired )
 
+  }
+
+  getProjectPlan() {
+    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      this.logger.log('[PRICING] - getProjectPlan - trialHasExpired ', this.trialHasExpired)
+      if (projectProfileData) {
+
+        this.subscription_id = projectProfileData.subscription_id;
+        this.projectCurrenPlan = projectProfileData.profile_name
+        this.profileType = projectProfileData.profile_type
+        this.trialExpired = projectProfileData.trial_expired
+
+        let projectBaseInfo = {
+          _id: projectProfileData._id,
+          profile: projectProfileData,
+          isActiveSubscription: projectProfileData.subscription_is_active,
+          trialExpired: this.trialExpired
+        }
+
+        this.manageWidget("start", projectBaseInfo)
+        this.manageWidget('show')
+
+        this.logger.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
+        this.logger.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
+        this.logger.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
+        this.logger.log('[PRICING]  - getProjectPlan > trialExpired ', this.trialExpired)
+
+
+        if (this.profileType === 'free'  &&  this.trialExpired === true) {
+          
+          this.trialExpirationDate = moment(projectProfileData.createdAt).add(14, 'days').format('LL');;
+          this.logger.log('[PRICING] - trialExpirationDate' , this.trialExpirationDate); // Outputs the new date as an ISO string
+        }
+      }
+    }, error => {
+
+      this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
+    }, () => {
+
+      // this.logger.log('[PRICING] - getProjectPlan * COMPLETE *')
+
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.manageWidget("hide")
+    this.removelaunchJsScript()
+  }
+
+  removelaunchJsScript() {
+    const scriptElement = document.getElementById('tiledesk-jssdk');
+    this.logger.log('[SUPPORT] scriptElement ', scriptElement)
+    if (scriptElement) {
+      scriptElement.remove();
+      delete window['tiledesk'];
+      delete window['Tiledesk'];
+    }
+  }
+
+
+  private manageWidget(status: "hide" | "show" | "open" | "close" | "start", projectInfo?: any) {
+
+    this.logger.log('[SUPPORT] manageWidget  window[tiledesk]', window['tiledesk'])
+    this.logger.log('[SUPPORT] manageWidget status ', status)
+    try {
+      if (window && window['tiledesk']) {
+        if (status === 'hide') {
+          // window['tiledesk'].hide();
+          window['tiledesk'].dispose();
+        } else if (status === 'show') {
+          window['tiledesk'].show();
+        } else if (status === 'open') {
+          window['tiledesk'].open();
+        } else if (status === "close") {
+          window['tiledesk'].close();
+        }
+
+      }
+
+      if (window && !window['tiledesk']) {
+        if (status === "start") {
+          window['startWidget']();
+          // window['tiledesk_widget_login']();
+          // window['tiledesk'].setAttributeParameter({ key: 'payload', value: { project: projectInfo } })
+          window['tiledesk_widget_login']({ key: 'payload', value: {project:  projectInfo}});
+        }
+      }
+
+    } catch (error) {
+      this.logger.error('manageWidget ERROR', error)
+    }
   }
 
 
@@ -446,9 +555,9 @@ export class PricingComponent implements OnInit, OnDestroy {
       // -------------------------------------------------------------------------------------------
       this.clientReferenceIdForPlanD = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.D + '_' + 1
       this.logger.log('[PRICING] clientReferenceIdForPlanD ', this.clientReferenceIdForPlanD)
-      this.clientReferenceIdForPlanE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.E + '_' + 2
+      this.clientReferenceIdForPlanE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.E + '_' + 3
       this.logger.log('[PRICING] clientReferenceIdForPlanE ', this.clientReferenceIdForPlanB)
-      this.clientReferenceIdForPlanEE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.EE + '_' + 4
+      this.clientReferenceIdForPlanEE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.EE + '_' + 5
     } else {
       // this.logger.log('No user is signed in');
     }
@@ -461,14 +570,22 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
       this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
 
-      // New pricing test link
-      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
-      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
-      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_6oEeVQ6TI0CKed2eVj';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_9AQ5lgfqe1GO2uk7sS';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l";
+      // New pricing test link (Basic - Premium - Team)
+      // this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT"; 
+      // this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ"; 
+      // this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_6oEeVQ6TI0CKed2eVj';
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_9AQ5lgfqe1GO2uk7sS';
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l";
 
+      // New pricing test link (Starter - Pro - Business)
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_dR61507XM1GO0mcfZp"; // STARTER Montly
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_00g9Bwfqebho4Cs7sU"; // STARTER Annually
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_4gwfZU2Ds3OW6KA9B3"; // PRO Montly
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_14kdRMdi6etA5GwfZt"; // PRO Annually
+      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_28o9Bw5PE2KS6KAcNg'; // Business Annually
+      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_eVaaFA5PE2KSc4U5kQ'; // Business Montly
+     
 
     } else if (this.TEST_PAYMENT_LINKS === false) {
       // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
@@ -476,6 +593,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       // this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/cN2aEMfkGaJc1XObIO"; //"https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
       // this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
 
+      
 
       this.PAYMENT_LINK_MONTLY_PLAN_D = " https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
       this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
@@ -486,12 +604,12 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
   }
 
- // -------------------------------
-  // PLAN D 
+  // -------------------------------
+  // PLAN D  (Starter ex Basic)
   // -------------------------------
   openPaymentLinkMontlyPlanD() {
     if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRICING] PLAN A Montly')
+      console.log('[PRICING] PLAN D Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}"`
       this.logger.log('[PRICING] PLAN D Montly url ', url)
@@ -506,7 +624,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanD() {
     if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRICING] PLAN D Annually')
+      console.log('[PRICING] PLAN D Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}`
       window.open(url, '_self');
@@ -520,11 +638,11 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   // -------------------------------
-  // PLAN E (Premium)
+  // PLAN E (Pro ex Premium)
   // -------------------------------
   openPaymentLinkMontlyPlanE() {
     if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRICING] PLAN E Montly')
+      console.log('[PRICING] PLAN E Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}"`
       this.logger.log('[PRICING] PLAN A Montly url ', url)
@@ -539,7 +657,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanE() {
     if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRICING] PLAN E Annually')
+      console.log('[PRICING] PLAN E Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}`
       window.open(url, '_self');
@@ -552,14 +670,14 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   // -------------------------------
-  // PLAN EE (Team) 
+  // PLAN EE (Business - ex Team) 
   // -------------------------------
   openPaymentLinkMontlyPlanEE() {
     if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRICING] PLAN E Montly')
+      console.log('[PRICING] PLAN EE Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_EE}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanEE}&locale=${this.browser_lang}"`
-      this.logger.log('[PRICING] PLAN A Montly url ', url)
+      console.log('[PRICING] PLAN EE Montly url ', url)
       window.open(url, '_self');
      
       this.trackGoToCheckout(PLAN_NAME.EE, 'montly')
@@ -569,11 +687,15 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
   }
 
+  // -------------------------------
+  // PLAN EE (Business - ex Team) 
+  // -------------------------------
   openPaymentLinkAnnuallyPlanEE() {
     if (this.USER_ROLE === 'owner') {
-      this.logger.log('[PRICING] PLAN EE Annually')
+      console.log('[PRICING] PLAN EE Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_EE}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanEE}&locale=${this.browser_lang}`
+      console.log('[PRICING] PLAN EE Annually url', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.EE, 'annually') 
@@ -694,10 +816,14 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
+  goToComparePlan() {
+   let url = "https://tiledesk.com/chatbot-features-pricing/#compare";
+   window.open(url, '_blank');
+  }
 
   contactUs(planname) {
     if (this.USER_ROLE === 'owner') {
-      // console.log('[PRICING] contactUs planname ', planname)
+      console.log('[PRICING] contactUs planname ', planname)
       window.open(`mailto:${this.salesEmail}?subject=Upgrade to ${planname}`);
 
       // if (!isDevMode()) {
@@ -723,6 +849,10 @@ export class PricingComponent implements OnInit, OnDestroy {
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
+  }
+
+  openWidget() {
+    this.manageWidget('open')
   }
 
 
@@ -909,42 +1039,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
-      this.logger.log('[PRICING] - getProjectPlan - trialHasExpired ', this.trialHasExpired)
-      if (projectProfileData) {
 
-        this.subscription_id = projectProfileData.subscription_id;
-        this.projectCurrenPlan = projectProfileData.profile_name
-        this.profileType = projectProfileData.profile_type
-        this.trialExpired = projectProfileData.trial_expired
-
-        this.logger.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
-        this.logger.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
-        this.logger.log('[PRICING]  - getProjectPlan > profileType ', this.profileType)
-        this.logger.log('[PRICING]  - getProjectPlan > trialExpired ', this.trialExpired)
-
-
-        if (this.profileType === 'free'  &&  this.trialExpired === true) {
-          
-          this.trialExpirationDate = moment(projectProfileData.createdAt).add(14, 'days').format('LL');;
-          this.logger.log('[PRICING] - trialExpirationDate' , this.trialExpirationDate); // Outputs the new date as an ISO string
-        }
-      }
-    }, error => {
-
-      this.logger.error('[PRICING] - getProjectPlan - ERROR', error);
-    }, () => {
-
-      // this.logger.log('[PRICING] - getProjectPlan * COMPLETE *')
-
-    });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
 
   getNoOfProjectUsersAndPendingInvitations() {
     // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
