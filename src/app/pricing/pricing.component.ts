@@ -15,7 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 import {  additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPlanEE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanEE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanEE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 import moment from "moment";
-import { PricingBaseComponent } from './pricing-base/pricing-base.component';
+import { ProjectUser } from 'app/models/project-user';
+
 declare var Stripe: any;
 
 
@@ -217,6 +218,18 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.CHAT_PANEL_MODE = window.self !== window.top;
     this.logger.log('[PRICING] Is in iframe (CHAT_PANEL_MODE) :', this.CHAT_PANEL_MODE);
 
+
+    this.logger.log('[PRICING] .router.url ' , this.router.url)
+    // this.CHAT_PANEL_MODE = false
+   
+    // if (this.router.url.indexOf('/request-for-panel') !== -1) {
+    //   this.CHAT_PANEL_MODE = true;
+    //   console.log('[PRICING] CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE )
+    // } else {
+
+    //   this.CHAT_PANEL_MODE = false;
+    //   console.log('[PRICING] CHAT_PANEL_MODE ', this.CHAT_PANEL_MODE )
+    // }
   }
 
   /**
@@ -493,19 +506,17 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-
       this.user = user;
     })
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
   getCurrentProject() {
