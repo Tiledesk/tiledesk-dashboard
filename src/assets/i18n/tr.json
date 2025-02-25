@@ -631,6 +631,7 @@
     "WhenEnabledVoiceRecoder":"Etkinleştirildiğinde, kullanıcılar sesli mesajları kaydedebilir. Devre dışı bırakıldığında, ses kaydedici düğmesi gizlenir ve kullanıcı yalnızca kısa mesaj gönderebilir",
     "UploadLogo":"Logoyu yükle",
     "FileTooLarge": "Dosya yüklenemeyecek kadar büyük. Maksimum dosya boyutu {{file_size}}",
+    "ImagePreview":"Resim önizlemesi",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

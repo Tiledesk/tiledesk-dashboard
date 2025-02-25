@@ -629,6 +629,7 @@
     "WhenEnabledVoiceRecoder":"Aktivləşdirildikdə, istifadəçilər səsli mesajları yaza bilərlər. Deaktiv edildikdə, səs yazıcı düyməsi gizlənəcək və istifadəçi yalnız mətn mesajı göndərə bilər",
     "UploadLogo":"Loqo yükləyin",
     "FileTooLarge": "Fayl yükləmək üçün çox böyükdür. Maksimum fayl ölçüsü {{file_size}}",
+    "ImagePreview":"Şəkil önizləmə",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -629,6 +629,7 @@
     "WhenEnabledVoiceRecoder":"Yoqilganda foydalanuvchilar ovozli xabarlarni yozib olishlari mumkin. O'chirilganida, ovoz yozish tugmasi yashirin bo'ladi va foydalanuvchi faqat matnli xabar yuborishi mumkin",
     "UploadLogo":"Logotip yuklang",
     "FileTooLarge": "Fayl yuklash uchun juda katta. Maksimal fayl hajmi {{file_size}}",
+    "ImagePreview":"Rasmni oldindan ko'rish",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

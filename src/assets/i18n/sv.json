@@ -630,6 +630,7 @@
     "WhenEnabledVoiceRecoder":"När det är aktiverat kan användare spela in röstmeddelanden. När den är inaktiverad döljs röstinspelningsknappen och användaren kan bara skicka textmeddelanden",
     "UploadLogo":"Ladda upp logotyp",
     "FileTooLarge": "Filen är för stor för att ladda upp. Max filstorlek {{file_size}}",
+    "ImagePreview":"Förhandsgranskning av bild",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

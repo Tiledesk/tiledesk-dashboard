@@ -628,6 +628,7 @@
     "WhenEnabledVoiceRecoder": "When enabled, users can record voice messages. When disabled, the voice recorder button will be hidden and user can only send text message",
     "UploadLogo":"Upload logo",
     "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
+    "ImagePreview":"Image preview",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
@@ -1939,7 +1940,6 @@
     "Daily":"Daily",
     "Weekly":"Weekly",
     "Monthly":"Monthly",
-    "LastUpdated":"Last updated",
     "LastUpdated":"Last update",
     "SelectOrTypeTheTagToSearch": "Select or type the tag to search",
     "Loading": "Loading...",

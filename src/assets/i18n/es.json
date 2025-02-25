@@ -628,6 +628,7 @@
     "WhenEnabledVoiceRecoder":"Cuando está habilitado, los usuarios pueden grabar mensajes de voz. Cuando está deshabilitado, el botón de grabadora de voz estará oculto y el usuario solo podrá enviar mensajes de texto.",
     "UploadLogo":"Subir logotipo",
     "FileTooLarge": "El archivo es demasiado grande para cargarlo. Tamaño máximo de archivo: {{file_size}}",
+    "ImagePreview":"Vista previa de la imagen",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
