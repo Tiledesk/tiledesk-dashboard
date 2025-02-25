@@ -564,7 +564,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          console.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
+          // console.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
           project['is_selected'] = false
 
           if (project.id_project && project.id_project.profile.type === 'free') {
