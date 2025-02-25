@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.81-rc1
+- Adds the ability to upload images and files by pasting it into the chat text area in the conversation details
+
 ### 2.7.79-rc3
 - New Pricing page
 
