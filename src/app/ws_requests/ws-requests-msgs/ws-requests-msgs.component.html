@@ -398,9 +398,9 @@
                     <!-- ------------------------------------------------ -->
                     <!-- texarea send message  -->
                     <!-- ------------------------------------------------ -->
-                    <div class="col-xs-12  w-100 plr-0">
+                    <!-- <div class="col-xs-12  w-100 plr-0"> -->
                       <!-- row -->
-                      <div class=" w-100">
+                      <!-- <div class=" w-100"> -->
                         <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
                         <div class="chat-msg-attachement" *ngIf="uploadedFiles">
                           <span *ngIf="showSpinnerAttachmentUplolad === true">
@@ -432,12 +432,16 @@
                             </span>
                           </span>
                         </div>
-                        <div class="col-xs-12 h-100 plr-0" style="  margin-bottom: 8px;height:46px"
+                        <!-- height:46px -->
+                        <!-- style="  margin-bottom: 8px;" -->
+                        <!-- (keydown.enter)="onKeydownEnter($event)" -->
+                        <!-- (ngModelChange)="onChangeTextInSendMsg($event)" -->
+                        <!-- (paste)="onPasteInSendMsg($event)" -->
+                        <div class="col-xs-12 h-100 plr-0" 
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
                           <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
-                            placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
-                            (paste)="onPasteInSendMsg($event)"
-                            (ngModelChange)="onChangeTextInSendMsg($event)">  </textarea>
+                            placeholder="Write your message" (input)="resizeTextArea()"
+                            (paste)="onPasteInSendMsg($event)">  </textarea>
 
 
                           <!-- <div class="chat-msg-attachement" *ngIf="uploadedFiles">
@@ -460,10 +464,10 @@
                           </div> -->
 
                         </div>
-                      </div>
-                    </div>
+                      <!-- </div> -->
+                    <!-- </div> -->
 
-                    <div class="col-xs-12  w-100 plr-0">
+                    <div class="col-xs-12  w-100 plr-0 chat-footer-actions">
                       <div class="row w-100">
 
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">

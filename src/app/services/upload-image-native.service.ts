@@ -7,6 +7,7 @@ import { catchError, map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { formatBytesWithDecimal } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class UploadImageNativeService {
@@ -28,6 +29,7 @@ export class UploadImageNativeService {
     public _httpClient: HttpClient,
     private logger: LoggerService,
     public notify: NotifyService,
+    private translate: TranslateService,
   ) {
     this.getToken()
 
@@ -288,13 +290,15 @@ export class UploadImageNativeService {
   }
 
   manageUploadError(error) {
-    if (error.status = 413) {
-      this.logger.log(`[NATIVE UPLOAD] - upload native error message 1`, error.error.err)
+    if (error.status === 413) {
+      // console.log(`[NATIVE UPLOAD] - upload native error message 1`, error.error.err)
       this.logger.log(`[NATIVE UPLOAD] - upload native error message 2`, error.error.limit_file_size)
       const uploadLimitInBytes = error.error.limit_file_size
       const uploadFileLimitSize = formatBytesWithDecimal(uploadLimitInBytes, 2)
       this.logger.log(`[NATIVE UPLOAD] - upload native error limitInMB`, uploadFileLimitSize)
       this.notify.presentModalAttachmentFileSizeTooLarge(uploadFileLimitSize)
+    } else {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('BotsAddEditPage.AnErrorHasOccurred'), 4, 'report_problem');
     }
   }
 

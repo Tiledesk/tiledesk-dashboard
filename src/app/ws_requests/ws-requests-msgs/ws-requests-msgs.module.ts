@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
     // ContactInfoComponent,
     WsSidebarAppsComponent,
     ModalChatbotReassignmentComponent,
+    ImagePreviewModalComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
