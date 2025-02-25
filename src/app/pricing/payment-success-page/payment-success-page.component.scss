@@ -25,11 +25,11 @@ $color-success: #4caf50;
     background-repeat: no-repeat;
   }
 
-  .success-payment-bckgrnd {
-    background-image: url('/assets/img/background-card-vertical_2.svg'),
-      linear-gradient(to bottom, $color-success 0%, $color-success 100%),
-      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
-  }
+  // .success-payment-bckgrnd {
+  //   background-image: url('/assets/img/background-card-vertical_2.svg'),
+  //     linear-gradient(to bottom, $color-success 0%, $color-success 100%),
+  //     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  // }
 }
 
 .custom-hr {
@@ -70,10 +70,12 @@ $color-success: #4caf50;
 .success-page-card-title {
   text-align: center;
   margin-top: 30px;
+  font-family: var(--header-font-family) ;
 }
 
 .success-page-card-subtitle {
   text-align: center;
+  font-family: var(--header-font-family) ;
 }
 
 .success-payment-outline-btn {

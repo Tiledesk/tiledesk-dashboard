@@ -1,0 +1,566 @@
+<!-- background-repeat: no-repeat;  -->
+<!-- background-attachment: scroll; background-position: bottom right; -->
+
+<div class="main-content" style="padding-top:0px; background-color: #ffffff;
+    min-height: calc(100% - 53px);margin-top: 0px; padding: 0px" *ngIf="!CHAT_PANEL_MODE">
+
+  <!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  background-size: 475px 449px, 188px 100%, 179px 100%;
+  background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
+
+  <div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
+    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.D, 'b-plan-bckgrnd' : planName === PLAN_NAME.E, 'bb-plan-bckgrnd' : planName === PLAN_NAME.EE, 'c-plan-bckgrnd' : planName === PLAN_NAME.F}">
+    <!-- <div class="row">
+      <div class="col-md-12"> -->
+    <div class="close-pricing-page" *ngIf=displayClosePricingPageBtn>
+      <i class="material-icons close-btn" (click)="goBack()">
+        clear
+      </i>
+    </div>
+    <!-- </div>
+    </div> -->
+
+
+    <div class="container">
+      <div class="row" style="display: flex;">
+
+        <div class="css-1sjnt42  pricing-page-container">
+          <div class="css-1rnbwj2 pricing-page" >
+            <div class="css-1169yzp pricing-page-header-wpr">
+              <h2 class="eab6zq55 css-10on0p6 eimqq0f0 pricing-page-header-title-wpr">
+                <div class="css-u49bkm e15c8v5c0  pricing-page-header-title ">
+                  <span class="css-1ff36h2 eab6zq53 pricing-page-header-title-text">Upgrade</span>
+                </div>
+              </h2>
+
+
+              <!-- <div *ngIf="planName !== PLAN_NAME.F" class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
+                <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
+                  <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}"
+                    (click)="selectedPeriod('monthly')">
+                    Monthly
+                  </button>
+                  <button class="css-ppa1gj ev1261q1 period-btn" [ngClass]="{'selected-period-btn': annualPeriod}"
+                    (click)="selectedPeriod('annual')">
+                    Annually
+                  </button>
+                </div>
+                <span class="css-ji9n63 ev1261q0 two-months-free-text-container">
+                  <span size="4" class="css-1mug68f"></span>
+                  25% OFF
+                  <span size="4" class="css-1mug68fspan-4"></span>
+                  <svg width="23" height="26" viewBox="0 0 23 26" fill="#647491" xmlns="http://www.w3.org/2000/svg"
+                    class="absolute left-full ml-2.5" style="transform: translate(68px, -30px);">
+                    <path
+                      d="M1.15324 17.5239C0.890232 17.4397 0.608797 17.5847 0.524632 17.8477C0.440467 18.1107 0.585444 18.3921 0.848448 18.4763L1.15324 17.5239ZM15.7704 4.40175C15.5065 4.32035 15.2266 4.46828 15.1452 4.73215L13.8187 9.0322C13.7373 9.29607 13.8852 9.57597 14.1491 9.65737C14.413 9.73877 14.6929 9.59084 14.7743 9.32697L15.9534 5.50471L19.7756 6.68381C20.0395 6.76521 20.3194 6.61729 20.4008 6.35342C20.4822 6.08954 20.3343 5.80965 20.0704 5.72825L15.7704 4.40175ZM0.848448 18.4763C7.16209 20.4968 12.5024 20.0472 15.5257 17.4918C18.6129 14.8825 19.0555 10.3044 16.065 4.64591L15.1809 5.11316C18.0675 10.5751 17.4486 14.5573 14.8802 16.7281C12.248 18.9529 7.33875 19.5033 1.15324 17.5239L0.848448 18.4763Z">
+                    </path>
+                  </svg>
+
+                </span>
+              </div> -->
+
+
+            </div>
+            <div class="css-sjtw19 eg3bate2 plan-switch-wpr">
+
+            <!-- <div class="trial-has-expired-date-wpr" *ngIf="trialHasExpired">  -->
+              <div class="trial-has-expired-date" *ngIf="trialHasExpired"> 
+                {{ 'TrialExpirationDate' | translate: {expiration_date: trialExpirationDate} }}
+              </div>
+              <!-- <div  *ngIf="trialHasExpired">
+                Note: If you need more time in test the features or to buy the best plan, Talk to Sales.
+              </div> -->
+            <!-- </div> -->
+
+              <div class="css-rx6g2d eg3bate1 plan-switch-btns-wpr">
+                <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.D}"
+                  (click)="selected_Plan(PLAN_NAME.D)">
+                  Basic
+
+                </button>
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.E}"
+                  (click)="selected_Plan(PLAN_NAME.E)">
+                  Premium
+                </button>
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.EE}"
+                  (click)="selected_Plan(PLAN_NAME.EE)">
+                  Team
+                </button>
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.F}"
+                  (click)="selected_Plan(PLAN_NAME.F)">
+                  Custom
+                </button>
+              </div>
+
+              <div>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description" style="margin-top: 8px">
+                  <span>
+                    {{planDecription}}
+                  </span>
+                </p>
+
+              </div>
+            </div>
+
+            <span size="16" class="css-5ovca5 span-16"></span>
+            <span size="24" class="css-5ovca5 span-24"></span>
+
+            <div class="css-4lq111 e194a3xf5 plan-card-wpr">
+              <div class="css-82a6rk e194a3xf2 plan-card-left-content">
+                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">
+                  {{ planName }}
+                </h2>
+                <!-- <span size="8" class="css-yn1por span-8"></span>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description">
+                  <span>
+                    {{planDecription}}
+                  </span>
+                </p> -->
+                <span size="8" class="css-1sx5jt9 span-8"> </span>
+
+                <div class="highlighted-features-wpr">
+                  <span *ngFor="let feature of highlightedFeatures" class="highlighted-features"
+                    [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
+                    <div class="highlighted-feature"> {{feature.feature}} </div>
+                  </span>
+
+                </div>
+                <!-- <div *ngIf="planName === PLAN_NAME.D">
+                  Need more seats? 8€ / Seat
+                  Need more Conversations? 10€ / 500 Conversations
+                </div> -->
+
+                <span size="16" class="css-1sx5jt9 span-16"> </span>
+                <div class="plan-features">
+                  <ul class="plan-features-wpr">
+
+
+                    <li class="plan-features" *ngFor="let feature of planFeatures">
+                      <div class="plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="check-icon"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <!-- --------------------------------- -->
+                <!-- Additional Features -->
+                <!-- --------------------------------- -->
+                <div class="additional-plan-features">
+                  <div class="contact-sales-additional-features" *ngIf="planName !== PLAN_NAME.F">
+                   Additional Features
+                  </div>
+                  <ul class="plan-features-wpr">
+                    <li class="plan-features" *ngFor="let feature of additionalFeatures">
+                      <div class="plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="check-icon"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
+                      </div>
+                    </li>
+
+                  </ul>
+                  
+                </div>
+              </div>
+              <div class="css-4xzedf e194a3xf0 plan-card-vertical-line"></div>
+              <div class="css-sm9en9 e194a3xf1 plan-card-right-content ">
+                <div class="css-1xm9zcw exhfskr0 plan-card-price-wpr">
+                  <span class="">
+                    <span class="e1q33r5y1 css-1wzstm6 eeqvxqv0 plan-card-price">
+                      <span *ngIf="monthlyPeriod"> {{monthlyPrice}} </span>
+                      <span *ngIf="annualPeriod"> {{annualPrice}} </span>
+                      <span *ngIf="planName !== PLAN_NAME.F" class="plan-card-currency">EUR</span>
+                    </span>
+                    <span *ngIf="planName !== PLAN_NAME.F">
+                      <span *ngIf="monthlyPeriod" class="css-1y0ino5 e1q33r5y0 plan-card-price-period">/mo.</span>
+                      <span *ngIf="annualPeriod" class="css-1y0ino5 e1q33r5y0 plan-card-price-period">/yr.</span>
+                    </span>
+                  </span>
+                </div>
+                <span size="4" class="css-14ola99 span-4"></span>
+
+                <div *ngIf="planName !== PLAN_NAME.F" class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
+                  <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
+                    <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}"
+                      (click)="selectedPeriod('monthly')">
+                      Monthly
+                    </button>
+                    <button class="css-ppa1gj ev1261q1 period-btn" [ngClass]="{'selected-period-btn': annualPeriod}"
+                      (click)="selectedPeriod('annual')">
+                      Annually
+                    </button>
+                  </div>
+                  <span class="css-ji9n63 ev1261q0 two-months-free-text-container">
+                    <span size="4" class="css-1mug68f"></span>
+                    <!-- 25% OFF -->
+                    2 months for free
+                    <span size="4" class="css-1mug68f span-4"></span>
+                    <svg width="23" height="26" viewBox="0 0 23 26" fill="#647491" xmlns="http://www.w3.org/2000/svg"
+                      class="absolute left-full ml-2.5" style="transform: translate(112px, -30px);">
+                      <path
+                        d="M1.15324 17.5239C0.890232 17.4397 0.608797 17.5847 0.524632 17.8477C0.440467 18.1107 0.585444 18.3921 0.848448 18.4763L1.15324 17.5239ZM15.7704 4.40175C15.5065 4.32035 15.2266 4.46828 15.1452 4.73215L13.8187 9.0322C13.7373 9.29607 13.8852 9.57597 14.1491 9.65737C14.413 9.73877 14.6929 9.59084 14.7743 9.32697L15.9534 5.50471L19.7756 6.68381C20.0395 6.76521 20.3194 6.61729 20.4008 6.35342C20.4822 6.08954 20.3343 5.80965 20.0704 5.72825L15.7704 4.40175ZM0.848448 18.4763C7.16209 20.4968 12.5024 20.0472 15.5257 17.4918C18.6129 14.8825 19.0555 10.3044 16.065 4.64591L15.1809 5.11316C18.0675 10.5751 17.4486 14.5573 14.8802 16.7281C12.248 18.9529 7.33875 19.5033 1.15324 17.5239L0.848448 18.4763Z">
+                      </path>
+                    </svg>
+                  </span>
+
+                </div>
+
+              </div> <!-- right-content -->
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan A Montly -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr" (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Growth M </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan A Annualy -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr"
+              (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Growth M </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan B Montly -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr"
+              (click)="openPaymentLinkMontlyPlanB()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Scale M </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan A Montly -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr"
+              (click)="openPaymentLinkAnnuallyPlanB()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Scale A </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan D Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.D && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanD()">
+              <button id="monthly-plan-a" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+            <!-- --------------------- -->
+            <!-- Plan D Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.D && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanD()">
+              <button id="annually-plan-a" type="button"
+                class=" btn btn-tdblu-no-boxshadow h45">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------------------- -->
+            <!-- Plan D when already exist a Plan  -->
+            <!-- --------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.D && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-a-contact-us" type="button"
+                class=" btn btn-tdblu-no-boxshadow h45">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan E Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.E && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanE()">
+              <button id="monthly-plan-b" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan E Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.E && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanE()">
+              <button id="annually-plan-b" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan E when already exist a  payment type Plan -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.E && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-b-contact-us" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan EE Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.EE && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanEE()">
+              <button id="monthly-plan-b" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan EE Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.EE && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanEE()">
+              <button id="annually-plan-b" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Go to checkout </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan EE when already exist a  payment type Plan -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.EE && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-b-contact-us" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan F openPaymentLinkPlanC() -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.F" (click)="contactUs(planName)">
+              <button id="plan-c" type="button" 
+              class="btn btn-tdblu-no-boxshadow h45">
+                <span> Contact Sales </span>
+              </button>
+            </div>
+
+            <!-- <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="openPaymentLinkPlanC()">
+              <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout </span>
+              </button>
+            </div> -->
+
+
+            <!-- ----------------------------------------------- -->
+            <!-- TEST LIVE PLAN 3.00 Eur/Daily-->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE === true"
+              (click)="openPaymentTestLivePaymentLink()">
+              <button id="test-live-plan" type="button"
+                class="btn btn-tdblu-no-boxshadow h45">
+                <span> TEST LIVE PLAN 3.00 Eur/Daily </span>
+              </button>
+            </div>
+
+  
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="unauthorized-to-upgrade-container" *ngIf="CHAT_PANEL_MODE">
+  <div class="unauthorized-to-upgrade-main">
+      <div class="unauthorized-to-upgrade-spacing"></div>
+      <div class="unauthorized-to-upgrade-content-wpr">
+          <div class="unauthorized-to-upgrade-content">
+              <div class="unauthorized-to-upgrade-inner-content">
+
+                  <div class="unauthorized-to-upgrade-logo-container">
+                      <div class="unauthorized-to-upgrade-logo-svg-wpr">
+
+
+                          <!-- <svg style="display: block;" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              height="45px" viewBox="0 0 60 60" width="45px" x="0px"
+                              xmlns="http://www.w3.org/2000/svg" y="0px" style="position: relative; left: -1px;">
+                              <path _ngcontent-gda-c124=""
+                                  d="M51.8,28.2h-19c-1.7,0-3-1.3-3-3V6.4c0-1.7-1.3-3-3-3H8c-1.7,0-3,1.3-3,3v22v22c0,1.7,1.3,3,3,3H6.7h3.4  c0.8,0,1.3,0.2,1.9,0.8l2.3,2.3l2.1,2.1c0.8,0.8,1.7,0.8,2.4,0l2.1-2.1l2.3-2.3c0.6-0.6,1.1-0.8,1.9-0.8H52c1.7,0,3-1.3,3-3V31.2  C54.8,29.5,53.5,28.2,51.8,28.2"
+                                  fill="#F18876"></path>
+                              <path _ngcontent-gda-c124=""
+                                  d="M52,24.2H36.8c-1.5,0-2.8-1.3-2.8-2.8V6.2c0-1.5,1.3-2.8,2.8-2.8H52c1.5,0,2.8,1.3,2.8,2.8v15.2  C54.8,22.9,53.5,24.2,52,24.2"
+                                  fill="#E5BBAD"></path>
+                          </svg> -->
+
+                          <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px"
+                              fill="#b7394a">
+                              <path
+                                  d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                          </svg>
+                      </div>
+                  </div>
+
+                  <div class="unauthorized-to-upgrade-title-wpr">
+                      <div class="unauthorized-to-upgrade-title" [ngClass]="{'panel-mode': CHAT_PANEL_MODE}">
+
+
+                          {{'Pricing.YourTrialHasEnded' | translate}}
+                      </div>
+                  </div>
+                  <div class="unauthorized-to-upgrade-subtitle-wpr">
+                      <div class="unauthorized-to-upgrade-subtitle" [ngClass]="{'panel-mode': CHAT_PANEL_MODE}">
+                          <!-- {{'AutomateConversationsFromPrototyping' | translate }} -->
+                          {{ 'TrialExpirationDate' | translate: {expiration_date: trialExpirationDate} }}.
+                          <span *ngIf="USER_ROLE !== 'owner'"> 
+                              {{'Pricing.ContactTheProjectOwner' | translate}}.
+                          </span>
+                      </div>
+                  </div>
+                  <div *ngIf="!CHAT_PANEL_MODE" class="unauthorized-to-upgrade-btn-container">
+                      <div class="unauthorized-to-upgrade-btn-wpr">
+
+                          <div class="unauthorized-to-upgrade-go-to-project" (click)="goToYourProjects()">
+                              {{'GoToYourProjects' | translate}}
+                          </div>
+                      </div>
+                  </div>
+
+                  <div *ngIf="CHAT_PANEL_MODE && USER_ROLE === 'owner'" class="unauthorized-to-upgrade-btn-container">
+                      <div class="unauthorized-to-upgrade-btn-wpr">
+
+                          <div *ngIf="isVisiblePAY"  class="unauthorized-to-upgrade-go-to-project" (click)="goToPricingFromChat()">
+                              {{ 'Pricing.UpgradePlan' | translate }}
+                          </div>
+                          <div *ngIf="!isVisiblePAY"  class="unauthorized-to-upgrade-go-to-project" (click)="contactSales()">
+                              {{ 'ContactUs' | translate }}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- ============= INFO 'NO LESS OF THE NUMBER OF THE AGENT THET ARE ALREADY IN YOUR PROJECT' MODAL ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}"
+  style="background-color: rgba(90,90,90,0.9);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+      <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
+
+        <!-- <div style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeInfoModal()">
+            <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
+              clear
+            </i>
+          </div> -->
+
+        <h2 class="modal-title"
+          style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif; margin-top: 25px">
+          <!-- <span style="vertical-align: middle;"> -->
+          <i class="material-icons" style="vertical-align: middle; font-size:49px; color:#facea8 ">
+            error_outline
+          </i>
+          <!-- </span> -->
+        </h2>
+
+      </div>
+      <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
+              <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
+              {{ "Pricing.TheNumberOfOperatorSeatsCannotBeLess" | translate }}
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
+        <div style="text-align: center; margin-bottom: 25px;">
+
+          <button type="button"
+            style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
+            id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="closeInfoModal()">
+            <!-- PerMonth -->
+            {{ "Close" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <script>
+    var stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+  
+    var checkoutButton = document.getElementById('checkout-button-plan_EjFHNnzJXE3jul');
+    checkoutButton.addEventListener('click', function () {
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        items: [{plan: 'plan_EjFHNnzJXE3jul', quantity: 1}],
+  
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        successUrl: 'https://your-website.com/success',
+        cancelUrl: 'https://your-website.com/canceled',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          var displayError = document.getElementById('error-message');
+          displayError.textContent = result.error.message;
+        }
+      });
+    });
+  </script> -->

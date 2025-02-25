@@ -87,14 +87,16 @@
 
        <div style="text-align: center; margin-top: 15px;"> 
         <!-- outline-btn success-payment-outline-btn -->
-         <button type="button" class="btn btn-lg btn-primary" (click)="goToHome()">
-         
+         <!-- <button type="button" class="btn btn-lg btn-primary" (click)="goToHome()">
           <span>  
-            <!-- Continue to homepage   -->
             {{ 'ContinueToHomepage' | translate }}
-          
           </span> 
-        
+         </button> -->
+
+         <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="goToHome()" style="height: 54px;">
+            <span>  
+              {{ 'ContinueToHomepage' | translate }}
+            </span> 
          </button>
        </div>
      </div>
