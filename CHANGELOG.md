@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.81-rc2
+- Preview the image before uploading it to the chat in the conversation details
+
 ### 2.7.81-rc1
 - Adds the ability to upload images and files by pasting it into the chat text area in the conversation details
 
