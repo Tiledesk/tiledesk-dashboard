@@ -20,6 +20,7 @@ declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -177,11 +178,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -246,10 +248,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
     const form = this.userForm;
 
-  //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+  //  this.logger.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
   //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
   //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
-  //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
+  //  this.logger.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
 
     
 
@@ -976,7 +978,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             name: userFullname,
             email: signupResponse.user.email,
             logins: 5,
-            plan: "Premium (trial)"
+            plan: "Pro (trial)"
           });
         } catch (err) {
           this.logger.error('Signup Create project identify error', err);
@@ -987,7 +989,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             "userId": signupResponse.user._id,
             "trial_start_date": trialStarDate,
             "trial_end_date": trialEndDate,
-            "trial_plan_name": "Premium (trial)",
+            "trial_plan_name": "Pro (trial)",
             "context": {
               "groupId": this.new_project._id
             }
@@ -999,7 +1001,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         try {
           window['analytics'].group(this.new_project._id, {
             name: this.new_project.name,
-            plan: "Premium (trial)",
+            plan: "Pro (trial)",
           });
         } catch (err) {
           this.logger.error('Signup Create project group error', err);

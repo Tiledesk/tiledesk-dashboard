@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Total användning av Tokens AI",
     "TotalEmailUsage": "Total e-postanvändning",
     "Email": "E-post",
+    "Voice":"Röst",
+    "TotalVoiceUsage": "Total röstanvändning",
     "RequestsForAgent": "Samtal för agent",
     "RequestsForDept": "Samtal för avdelningen",
     "NumberOfRequestsLast7Days": "Antal konversationer senaste 7 dagarna",
@@ -631,6 +633,9 @@
     "UploadLogo":"Ladda upp logotyp",
     "FileTooLarge": "Filen är för stor för att ladda upp. Max filstorlek {{file_size}}",
     "ImagePreview":"Förhandsgranskning av bild",
+    "AccessDenied":"Åtkomst nekad",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Det verkar som att du inte är en lagkamrat i det här projektet",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Kontakta projektadministratören för att ge dig åtkomst",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

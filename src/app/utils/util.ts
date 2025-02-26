@@ -403,9 +403,9 @@ export enum PLAN_NAME {
     A = 'Growth',
     B = 'Scale',
     C = 'Plus',
-    D = 'Basic',
-    E = 'Premium',
-    EE = 'Team',
+    D = 'Starter', // 'Basic',
+    E = 'Pro', // 'Premium',
+    EE = 'Business', //  'Team',
     F = 'Custom'
 }
 
@@ -413,56 +413,107 @@ export enum PLAN_SEATS {
     free = 1, // Sandbox
     Growth = 4,
     Scale = 15,
-    Basic = 1,
-    Premium = 2,
-    Team = 4,
+    Starter = 1,
+    Pro = 3,
+    Business = 5,
     Custom = 'Custom'
 };
 
-
 export enum CHATBOT_MAX_NUM {
     free = 2,
-    Basic = 5,
-    Premium = 20,
-    Team = 50,
+    Starter = 5,
+    Pro = 20,
+    Business = 50,
     Custom = 50
 };
 
 export enum KB_MAX_NUM {
     free = 50,
-    Basic = 150,
-    Premium = 300,
-    Team = 1000,
+    Starter = 150,
+    Pro = 300,
+    Business = 1000,
     Custom = 1000
 };
 
+// export const PLANS_LIST = {
+//     FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+//     Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
+//     Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+//     Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+//     Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+//     Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+// }
 export const PLANS_LIST = {
     FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
     Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
+    Starter: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+    Pro: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+    Business: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
     Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
     Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
     Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
     Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
 }
 
-// Basic plan
+// export enum PLAN_SEATS {
+//     free = 1, // Sandbox
+//     Growth = 4,
+//     Scale = 15,
+//     Basic = 1,
+//     Premium = 2,
+//     Team = 4,
+//     Custom = 'Custom'
+// };
+
+
+
+// export enum CHATBOT_MAX_NUM {
+//     free = 2,
+//     Basic = 5,
+//     Premium = 20,
+//     Team = 50,
+//     Custom = 50
+// };
+
+// export enum KB_MAX_NUM {
+//     free = 50,
+//     Basic = 150,
+//     Premium = 300,
+//     Team = 1000,
+//     Custom = 1000
+// };
+
+// export const PLANS_LIST = {
+//     FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+//     Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
+//     Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+//     Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+//     Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+//     Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+// }
+
+// Starter plan (ex Basic plan)
 export const featuresPlanD = [
-    'CRM',
-    'Private Notes',
-    'Unlimited Conversations History',
-    'Working Hours',
-    'User Ratings',
-    'Canned Responses',
-    'Webhooks',
-    'Email Support',
-    'Team Inbox',
-    'Make integration',
-    "1 Knowledge Base",
-    '150 contents across all Knowledge Bases',
-    // '150 Contents for Knowledge Base', 
-    '2,000,000 AI Tokens'
+    "800 Conversations/mo.",
+    "1 user",
+    "Basic Al automation",
+    "Email support"
+
+    // 'CRM',
+    // 'Private Notes',
+    // 'Unlimited Conversations History',
+    // 'Working Hours',
+    // 'User Ratings',
+    // 'Canned Responses',
+    // 'Webhooks',
+    // 'Email Support',
+    // 'Team Inbox',
+    // 'Make integration',
+    // "1 Knowledge Base",
+    // '150 contents across all Knowledge Bases',
+    // '2,000,000 AI Tokens'
 ]
-// Basic plan
+// Starter plan (ex Basic plan)
 export const highlightedFeaturesPlanD = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '1 User ' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
@@ -475,25 +526,29 @@ export const additionalFeaturesPlanD = [
 ]
 
 
-// Premium plan 
+// Pro plan  (ex Premium plan)
 export const featuresPlanE = [
-    'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
-    'Help center',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Qapla\' integration',
-    'Data export',
-    'Livechat Support',
-    'Analytics',
-    "3 Knowledge Base",
-    '300 contents across all Knowledge Bases',
-    '5,000,000 AI Tokens'
-    // '250,000 AI Tokens'
+    "3,000 Conversations/mo.",
+    "Up to 3 users",
+    "Advanced Al workflows",
+    "Priority support"
+    // 'Widget Unbranding',
+    // 'WhatsApp Business',
+    // 'Facebook Messenger',
+    // 'Help center',
+    // 'Unlimited Departments',
+    // 'Unlimited Groups',
+    // 'Qapla\' integration',
+    // 'Data export',
+    // 'Livechat Support',
+    // 'Analytics',
+    // "3 Knowledge Base",
+    // '300 contents across all Knowledge Bases',
+    // '5,000,000 AI Tokens'
+
 ]
 
-// Premium plan 
+// Pro plan  (ex Premium plan)
 export const highlightedFeaturesPlanE = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 User' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3,000 Chat/mo.' },
@@ -506,24 +561,28 @@ export const additionalFeaturesPlanE = [
 ]
 
 
-// Team plan 
+// Business plan (ex Team plan)
 export const featuresPlanEE = [
-    'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
-    'Help center',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Qapla\' integration',
-    'Data export',
-    'Livechat Support',
-    'Analytics',
-    "10 Knowledge Base",
-    '1,000 contents across all Knowledge Bases',
-    '10,000,000 AI Tokens'
+    // 'Widget Unbranding',
+    // 'WhatsApp Business',
+    // 'Facebook Messenger',
+    // 'Help center',
+    // 'Unlimited Departments',
+    // 'Unlimited Groups',
+    // 'Qapla\' integration',
+    // 'Data export',
+    // 'Livechat Support',
+    // 'Analytics',
+    // "10 Knowledge Base",
+    // '1,000 contents across all Knowledge Bases',
+    // '10,000,000 AI Tokens'
+    "5,000 Conversations/mo.",
+    "Up to 5 users",
+    "Custom AI tools",
+    "Premium support"
 ]
 
-// Premium plan 
+// Business plan (ex Team plan) 
 export const highlightedFeaturesPlanEE = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 User' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '5,000 Chat/mo.' },
