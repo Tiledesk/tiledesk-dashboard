@@ -5912,6 +5912,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     reader.readAsDataURL(file)
   }
 
+ 
+
 
 
   openImagePreviewModal(imagePreview, file) {
@@ -5955,7 +5957,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
-  onFileSelected($event) {
+  _onFileSelected($event) {
     this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
     const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
@@ -6067,6 +6069,83 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     }
   }
+
+  onFileSelected($event) {
+    this.uploadNativeAttachmentError = false;
+    this.existAnAttacment = false
+    const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
+    upload_btn.blur();
+
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files[0]', $event.target.files[0]);
+    // this.uploadedFiles = $event.target.files[0];
+    // this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+    if ($event.target.files[0].type.startsWith("image/")) {
+
+      this.logger.log("[CONVS-DETAIL][MSG-TEXT-AREA] onPaste file ", $event.target.files[0]);
+
+
+      if ($event.target.files[0]) {
+        const canUploadFile = checkAcceptedFile($event.target.files[0].type, this.fileUploadAccept)
+
+        if (!canUploadFile || $event.target.files[0].type.includes('svg')) {
+          // this.uploadedFiles = null;
+          this.presenModalAttachmentFileTypeNotSupported();
+          return;
+        }
+        this.manageImageUploadOnPaste($event.target.files[0])
+
+      }
+    } else if ($event.target.files[0].type.startsWith("application/")) {
+
+
+      this.uploadedFiles = $event.target.files[0];
+
+      if (this.uploadedFiles) {
+
+        const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
+
+        if (!canUploadFile) {
+          this.uploadedFiles = null;
+          this.presenModalAttachmentFileTypeNotSupported();
+          return;
+        }
+
+        const uploadedFilesSize = this.uploadedFiles.size
+
+        const formattedBytes = this.formatBytes(uploadedFilesSize)
+        this.uploadedFiles['formattedBytes'] = formattedBytes
+
+        this.logger.log('cannnnnnnn is fileeee')
+        this.type = 'file'
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const file = reader.result.toString()
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
+          const uid = file.substring(file.length - 16)
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
+          this.imgWidth = 110;
+          this.imgHeight = 110;
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+        }
+        reader.readAsDataURL($event.target.files[0])
+        this.uploadAttachmentRestRequest(this.uploadedFiles, 'on-file-selected')
+      }
+    }
+
+    // if (this.uploadedFiles) {
+    //   this.uploadAttachmentRestRequest(this.uploadedFiles, 'on-file-selected')
+
+    // }
+
+  }
+
 
   uploadAttachmentRestRequest(uploadedFiles, calledBy) {
     this.logger.log('uploadAttachmentRestRequest -----> calledBy', calledBy)
