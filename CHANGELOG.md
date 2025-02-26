@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.81
+- Adds the ability to upload images and files by pasting it into the chat text area in the conversation details
+- Fixes the bug: the text area of ​​the conversation details chat does not adapt to the entered text
+- Preview the image before uploading it to the chat in the conversation details
+
 ### 2.7.80
 - Manages audio messages in the chat available in the conversation details
 
