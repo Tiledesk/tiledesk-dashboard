@@ -343,7 +343,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
+      this.logger.log('[PRICING] - getProjectPlan - project Profile Data ', projectProfileData)
       this.logger.log('[PRICING] - getProjectPlan - trialHasExpired ', this.trialHasExpired)
       if (projectProfileData) {
 
@@ -606,10 +606,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanD() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN D Montly')
+      this.logger.log('[PRICING] PLAN D Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}"`
-      // console.log('[PRICING] PLAN D Montly url ', url)
+      // this.logger.log('[PRICING] PLAN D Montly url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.D, 'montly')
@@ -621,10 +621,10 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanD() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN D Annually')
+      this.logger.log('[PRICING] PLAN D Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}`
-      // console.log('[PRICING] PLAN D Annually url ', url)
+      // this.logger.log('[PRICING] PLAN D Annually url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.D, 'annually')
@@ -640,10 +640,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanE() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN E Montly')
+      this.logger.log('[PRICING] PLAN E Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}"`
-      // console.log('[PRICING] PLAN E Montly url ', url)
+      // this.logger.log('[PRICING] PLAN E Montly url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.E, 'montly')
@@ -655,10 +655,10 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanE() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN E Annually')
+      this.logger.log('[PRICING] PLAN E Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}`
-      // console.log('[PRICING] PLAN E Annually url ', url)
+      // this.logger.log('[PRICING] PLAN E Annually url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.E, 'annually')
@@ -673,10 +673,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanEE() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN EE Montly')
+      this.logger.log('[PRICING] PLAN EE Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_EE}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanEE}&locale=${this.browser_lang}"`
-      // console.log('[PRICING] PLAN EE Montly url ', url)
+      // this.logger.log('[PRICING] PLAN EE Montly url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.EE, 'montly')
@@ -691,10 +691,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkAnnuallyPlanEE() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN EE Annually')
+      this.logger.log('[PRICING] PLAN EE Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_EE}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanEE}&locale=${this.browser_lang}`
-      // console.log('[PRICING] PLAN EE Annually url', url)
+      // this.logger.log('[PRICING] PLAN EE Annually url', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.EE, 'annually')
@@ -822,7 +822,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   contactUs(planname) {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] contactUs planname ', planname)
+      this.logger.log('[PRICING] contactUs planname ', planname)
       window.open(`mailto:${this.salesEmail}?subject=Upgrade to ${planname}`);
 
       // if (!isDevMode()) {
