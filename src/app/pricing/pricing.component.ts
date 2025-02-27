@@ -12,7 +12,7 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
-import {  additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPlanEE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanEE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanEE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
+import { additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPlanEE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanEE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanEE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 import moment from "moment";
 import { PricingBaseComponent } from './pricing-base/pricing-base.component';
@@ -24,9 +24,9 @@ enum PLAN_DESC {
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
   Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
   Starter = "For individuals starting AI automation", //Basic = 'Automate simple website conversations as an individual',
-  Pro = "For teams scaling AI-powered workflows" , //Premium = 'Expand automation across channels for individuals and small teams',
-  Business = "For businesses requiring advanced AI tools" , //Team = 'For growing teams scaling business automation',
-  Custom =  "For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
+  Pro = "For teams scaling AI-powered workflows", //Premium = 'Expand automation across channels for individuals and small teams',
+  Business = "For businesses requiring advanced AI tools", //Team = 'For growing teams scaling business automation',
+  Custom = "For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
@@ -43,16 +43,16 @@ enum ANNUAL_PRICE {
   Growth = "225",
   Scale = "790",
   Plus = 'Custom',
-  Starter = "490" , // Basic = "150",
+  Starter = "490", // Basic = "150",
   Pro = "1490", // Premium = "1,000",
   Business = "4990", // Team = "2,990",
   Custom = '500',
 }
 
 enum ANNUAL_PRICE_PER_MONTH {
-  Starter = "40,84" , 
-  Pro = "124,17", 
-  Business = "415,84", 
+  Starter = "40,84",
+  Pro = "124,17",
+  Business = "415,84",
 
 }
 
@@ -78,27 +78,27 @@ export class PricingComponent implements OnInit, OnDestroy {
   planEEFeatures: Array<string>; // for new pricing
   planFFeatures: Array<string>; // for new pricing
 
-  planDMonthlyPrice:string // for new pricing
-  planEMonthlyPrice:string // for new pricing
-  planEEMonthlyPrice:string // for new pricing
-  planFMonthlyPrice:string // for new pricing
+  planDMonthlyPrice: string // for new pricing
+  planEMonthlyPrice: string // for new pricing
+  planEEMonthlyPrice: string // for new pricing
+  planFMonthlyPrice: string // for new pricing
 
-  planDAnnualPrice:string // for new pricing
-  planEAnnualPrice:string // for new pricing
-  planEEAnnualPrice:string // for new pricing
-  planFAnnualPrice:string // for new pricing
+  planDAnnualPrice: string // for new pricing
+  planEAnnualPrice: string // for new pricing
+  planEEAnnualPrice: string // for new pricing
+  planFAnnualPrice: string // for new pricing
 
-  planDAnnualPricePerMonth:any // for new pricing
-  planEAnnualPricePerMonth:any // for new pricing
-  planEEAnnualPricePerMonth:any // for new pricing
-  planFAnnualPricePerMonth:any // for new pricing
+  planDAnnualPricePerMonth: any // for new pricing
+  planEAnnualPricePerMonth: any // for new pricing
+  planEEAnnualPricePerMonth: any // for new pricing
+  planFAnnualPricePerMonth: any // for new pricing
 
-  planDDecription : string;
-  planEDecription : string;
-  planEEDecription : string;
-  planFDecription : string;
+  planDDecription: string;
+  planEDecription: string;
+  planEEDecription: string;
+  planFDecription: string;
 
- 
+
   additionalFeatures: Array<any>;
   annualPrice: string;
   monthlyPrice: string;
@@ -115,7 +115,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   clientReferenceIdForPlanEE: string; // Team
 
   browser_lang: string;
-  
+
   company_name: string;
 
   projectId: string;
@@ -157,7 +157,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = true;
+  public TEST_PAYMENT_LINKS = false;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -208,7 +208,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     private router: Router,
     private notify: NotifyService
   ) {
-    
+
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
     this.contactUsEmail = brand['CONTACT_US_EMAIL'];
@@ -252,14 +252,14 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getBrowserLanguage();
     this.getOSCODE();
 
-    this.planName =  PLAN_NAME.D; // PLAN_NAME.A
+    this.planName = PLAN_NAME.D; // PLAN_NAME.A
     this.planDecription = PLAN_DESC[PLAN_NAME.D];  //PLAN_DESC[PLAN_NAME.A] 
     this.planFeatures = featuresPlanD; // featuresPlanA;
     this.highlightedFeatures = highlightedFeaturesPlanD; //highlightedFeaturesPlanA
     this.additionalFeatures = additionalFeaturesPlanD
     this.monthlyPeriod = false;
     this.annualPeriod = true;
-    this.monthlyPrice =  MONTHLY_PRICE[PLAN_NAME.D] // MONTHLY_PRICE[PLAN_NAME.A]
+    this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.D] // MONTHLY_PRICE[PLAN_NAME.A]
 
     // For new pricing
     this.planDFeatures = featuresPlanD;
@@ -272,18 +272,18 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planEEMonthlyPrice = MONTHLY_PRICE[PLAN_NAME.EE];
     this.planFMonthlyPrice = MONTHLY_PRICE[PLAN_NAME.F];
 
-  
+
 
     // let planDAnnualPricePerMonthNoFormatted = +ANNUAL_PRICE[PLAN_NAME.D] / 12;
     // console.log('[PRICING] planDAnnualPricePerMonthNoFormatted ', planDAnnualPricePerMonthNoFormatted )
     // this.planDAnnualPricePerMonth = planDAnnualPricePerMonthNoFormatted.toFixed(2).replace('.', ',')
     // console.log('[PRICING] planDAnnualPricePerMonth ', this.planDAnnualPricePerMonth )
-   
+
     // const planEAnnualPricePerMonthNoFormatted = +ANNUAL_PRICE[PLAN_NAME.E] / 12;
     // console.log('[PRICING] planEAnnualPricePerMonthNoFormatted ', planEAnnualPricePerMonthNoFormatted )
     // this.planEAnnualPricePerMonth = planEAnnualPricePerMonthNoFormatted.toFixed(2).replace('.', ',')
     // console.log('[PRICING] planEAnnualPricePerMonth ', this.planEAnnualPricePerMonth )
-    
+
     // let planEEAnnualPricePerMonthNoFormatted = +ANNUAL_PRICE[PLAN_NAME.EE] / 12;
     // console.log('[PRICING] planEEAnnualPricePerMonthNoFormatted ', planEEAnnualPricePerMonthNoFormatted )
     // let planEEAnnualPricePerMonthNoFormattedRounded = Math.round(planEEAnnualPricePerMonthNoFormatted * 100) / 100;
@@ -300,12 +300,12 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planEAnnualPrice = ANNUAL_PRICE[PLAN_NAME.E];
     this.planEEAnnualPrice = ANNUAL_PRICE[PLAN_NAME.EE];
     this.planFAnnualPrice = ANNUAL_PRICE[PLAN_NAME.F];
-    
+
 
     this.planDDecription = PLAN_DESC[PLAN_NAME.D];
     this.planEDecription = PLAN_DESC[PLAN_NAME.E];
     this.planEEDecription = PLAN_DESC[PLAN_NAME.EE];
-    this.planFDecription= PLAN_DESC[PLAN_NAME.F];
+    this.planFDecription = PLAN_DESC[PLAN_NAME.F];
 
 
 
@@ -317,7 +317,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     var valueAfterLastString = current_url.substring(n + 1);
     this.logger.log('[PRICING] valueAfterLastString ', valueAfterLastString)
     // if (valueAfterLastString === 'pricing') {
-    if (valueAfterLastString === 'chat-pricing') {  
+    if (valueAfterLastString === 'chat-pricing') {
       this.displayClosePricingPageBtn = false;
     } else {
       this.displayClosePricingPageBtn = true;
@@ -337,7 +337,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.trialHasExpired = false;
     }
 
-    this.logger.log('[PRICING] trialHasExpired ', this.trialHasExpired )
+    this.logger.log('[PRICING] trialHasExpired ', this.trialHasExpired)
 
   }
 
@@ -359,8 +359,14 @@ export class PricingComponent implements OnInit, OnDestroy {
           trialExpired: this.trialExpired
         }
 
-        this.manageWidget("start", projectBaseInfo)
-        this.manageWidget('show')
+        // this.manageWidget("start", projectBaseInfo)
+     
+
+        // if (window && window['tiledesk']) {
+        //   window['tiledesk'].setParameter({key: 'departmentID', value:'66f435a5c7dd6800134b36f1'});
+        // }
+
+        // this.manageWidget('show')
 
         this.logger.log('[PRICING]  - getProjectPlan > subscription_id ', this.subscription_id)
         this.logger.log('[PRICING]  - getProjectPlan > projectCurrenPlan ', this.projectCurrenPlan)
@@ -368,10 +374,10 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.logger.log('[PRICING]  - getProjectPlan > trialExpired ', this.trialExpired)
 
 
-        if (this.profileType === 'free'  &&  this.trialExpired === true) {
-          
+        if (this.profileType === 'free' && this.trialExpired === true) {
+
           this.trialExpirationDate = moment(projectProfileData.createdAt).add(14, 'days').format('LL');;
-          this.logger.log('[PRICING] - trialExpirationDate' , this.trialExpirationDate); // Outputs the new date as an ISO string
+          this.logger.log('[PRICING] - trialExpirationDate', this.trialExpirationDate); // Outputs the new date as an ISO string
         }
       }
     }, error => {
@@ -423,9 +429,10 @@ export class PricingComponent implements OnInit, OnDestroy {
       if (window && !window['tiledesk']) {
         if (status === "start") {
           window['startWidget']();
+        
           // window['tiledesk_widget_login']();
           // window['tiledesk'].setAttributeParameter({ key: 'payload', value: { project: projectInfo } })
-          window['tiledesk_widget_login']({ key: 'payload', value: {project:  projectInfo}});
+          //window['tiledesk_widget_login']({ key: 'payload', value: { project: projectInfo } });
         }
       }
 
@@ -462,15 +469,15 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   goToPricingFromChat() {
     if (this.isVisiblePAY) {
-     
-        const href = window.location.href;
-        this.logger.log('[UNAUTHORIZED-TO-UPGRADE] href ', href)
 
-        const hrefArray = href.split('/#/');
-        this.dshbrdBaseUrl = hrefArray[0]
-        const pricingUrl = this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/pricing/te';
-        window.open(pricingUrl, '_blank');
-      
+      const href = window.location.href;
+      this.logger.log('[UNAUTHORIZED-TO-UPGRADE] href ', href)
+
+      const hrefArray = href.split('/#/');
+      this.dshbrdBaseUrl = hrefArray[0]
+      const pricingUrl = this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/pricing/te';
+      window.open(pricingUrl, '_blank');
+
     }
   }
 
@@ -575,7 +582,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_14kdRMdi6etA5GwfZt"; // PRO Annually
       this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/test_28o9Bw5PE2KS6KAcNg'; // Business Annually
       this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/test_eVaaFA5PE2KSc4U5kQ'; // Business Montly
-     
+
 
     } else if (this.TEST_PAYMENT_LINKS === false) {
       // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
@@ -583,14 +590,14 @@ export class PricingComponent implements OnInit, OnDestroy {
       // this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/cN2aEMfkGaJc1XObIO"; //"https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
       // this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
 
-      
 
-      this.PAYMENT_LINK_MONTLY_PLAN_D = " https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
-      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
-      this.PAYMENT_LINK_MONTLY_PLAN_E =  "https://buy.stripe.com/00g6ow0pM5oSdGw8wQ"; // "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
-      this.PAYMENT_LINK_MONTLY_PLAN_EE = 'https://buy.stripe.com/14kfZ6a0mcRk31S3cK';
-      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = 'https://buy.stripe.com/9AQ28gfkG7x0eKA3cL';
+
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/00gaEMb4q7x06e428Z" // STARTER Montly - // "https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D =  "https://buy.stripe.com/aEUeV23BY18C5a0fZQ" // STARTER Annually - // "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/3cs6ow0pMaJcauk7tl"; // Pro Montly - // "https://buy.stripe.com/00g6ow0pM5oSdGw8wQ"; // "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/6oE14cb4qbNgcCs00U"; // Pro Annually - "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
+      this.PAYMENT_LINK_MONTLY_PLAN_EE =  "https://buy.stripe.com/eVaaEMfkG8B4eKAbJD"; // Business Montly - // 'https://buy.stripe.com/14kfZ6a0mcRk31S3cK';
+      this.PAYMENT_LINK_ANNUALLY_PLAN_EE = "https://buy.stripe.com/aEU7sA5K6bNg1XO6pk" // Business Annually 'https://buy.stripe.com/9AQ28gfkG7x0eKA3cL'; 
     }
   }
 
@@ -602,11 +609,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log('[PRICING] PLAN D Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}"`
-      this.logger.log('[PRICING] PLAN D Montly url ', url)
+      // console.log('[PRICING] PLAN D Montly url ', url)
       window.open(url, '_self');
 
-      this.trackGoToCheckout(PLAN_NAME.D, 'montly') 
-    
+      this.trackGoToCheckout(PLAN_NAME.D, 'montly')
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -617,6 +624,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log('[PRICING] PLAN D Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}`
+      // console.log('[PRICING] PLAN D Annually url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.D, 'annually')
@@ -635,11 +643,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log('[PRICING] PLAN E Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}"`
-      this.logger.log('[PRICING] PLAN A Montly url ', url)
+      // console.log('[PRICING] PLAN E Montly url ', url)
       window.open(url, '_self');
-     
+
       this.trackGoToCheckout(PLAN_NAME.E, 'montly')
-   
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -650,10 +658,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log('[PRICING] PLAN E Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}`
+      // console.log('[PRICING] PLAN E Annually url ', url)
       window.open(url, '_self');
 
-      this.trackGoToCheckout(PLAN_NAME.E, 'annually') 
-    
+      this.trackGoToCheckout(PLAN_NAME.E, 'annually')
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -667,11 +676,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log('[PRICING] PLAN EE Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_EE}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanEE}&locale=${this.browser_lang}"`
-      console.log('[PRICING] PLAN EE Montly url ', url)
+      // console.log('[PRICING] PLAN EE Montly url ', url)
       window.open(url, '_self');
-     
+
       this.trackGoToCheckout(PLAN_NAME.EE, 'montly')
-   
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -685,11 +694,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log('[PRICING] PLAN EE Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_EE}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanEE}&locale=${this.browser_lang}`
-      console.log('[PRICING] PLAN EE Annually url', url)
+      // console.log('[PRICING] PLAN EE Annually url', url)
       window.open(url, '_self');
 
-      this.trackGoToCheckout(PLAN_NAME.EE, 'annually') 
-    
+      this.trackGoToCheckout(PLAN_NAME.EE, 'annually')
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -707,8 +716,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
       window.open(url, '_self');
 
-      this.trackGoToCheckout(PLAN_NAME.A, 'montly')  
-    
+      this.trackGoToCheckout(PLAN_NAME.A, 'montly')
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -721,7 +730,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       window.open(url, '_self');
 
-      this.trackGoToCheckout(PLAN_NAME.A, 'annually')   
+      this.trackGoToCheckout(PLAN_NAME.A, 'annually')
 
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
@@ -737,8 +746,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       window.open(url, '_self');
-     
-      this.trackGoToCheckout(PLAN_NAME.B, 'montly')   
+
+      this.trackGoToCheckout(PLAN_NAME.B, 'montly')
 
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
@@ -752,8 +761,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       window.open(url, '_self');
 
-      this.trackGoToCheckout(PLAN_NAME.B, 'annually')   
-    
+      this.trackGoToCheckout(PLAN_NAME.B, 'annually')
+
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -807,8 +816,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   goToComparePlan() {
-   let url = "https://tiledesk.com/chatbot-features-pricing/#compare";
-   window.open(url, '_blank');
+    let url = "https://tiledesk.com/chatbot-features-pricing/#compare";
+    window.open(url, '_blank');
   }
 
   contactUs(planname) {
@@ -842,7 +851,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   openWidget() {
-    this.manageWidget('open')
+    // this.manageWidget('open')
+    const url = "https://meetings-eu1.hubspot.com/jovana-ugrinic?uuid=38bcd2c0-6393-4cf2-bca0-c7b01a0a1d7e"
+    window.open(url, '_blank');
+
   }
 
 
