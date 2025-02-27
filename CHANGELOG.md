@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.82-rc1
+- Adds live payment linksv
+
 ### 2.7.81-rc2
 - Preview the image before uploading it to the chat in the conversation details
 
