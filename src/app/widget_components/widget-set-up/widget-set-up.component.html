@@ -3114,13 +3114,27 @@
 										<!-- ---------------------------------- -->
 										<!-- Enable / Disable Audio recorder -->
 										<!-- ---------------------------------- -->
-										<!-- <div class="form-group"
+										<div class="form-group"
 											style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 											<label class="col-sm-12 control-label widget-settings-control-head-label">
 											
-												 Disable Voice recoder
-												<span class="widget-settings-control-subhead-label">
-													When enabled, users can record voice messages. When disabled, the voice recoder button will be hidden
+												{{'DisableVoiceRecoder' | translate}}
+												<!-- <span class="widget-settings-control-subhead-label">
+													When enabled, users can record voice messages. When disabled, the voice recoder button will be hidden and user can only send text message
+												</span> -->
+												<span class="info-icon---wpr"
+													matTooltipClass="custom-mat-tooltip-in-widget-setup"
+													matTooltip="{{'WhenEnabledVoiceRecoder' | translate}}"
+													#tooltip="matTooltip" matTooltipPosition='above'
+													matTooltipHideDelay="100">
+													<span>
+														<i class="material-icons" style="font-size: 18px;
+															color: #566787;
+															cursor: pointer;
+															vertical-align: middle;">
+															help_outline
+														</i>
+													</span>
 												</span>
 											</label>
 											
@@ -3147,7 +3161,7 @@
 													</div>
 												</div>
 											</div>
-										</div> -->
+										</div>
 
 										<!-- ------------------------------------- -->
 										<!-- Save widget advanced setting -->

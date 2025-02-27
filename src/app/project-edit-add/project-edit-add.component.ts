@@ -28,6 +28,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
 import { CacheService } from 'app/services/cache.service';
+import { ProjectUser } from 'app/models/project-user';
 import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
@@ -129,6 +130,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   SUBSCRIPTION_BUFFER_DAYS: boolean;
 
   isVisiblePaymentTab: boolean;
+  overridePay: boolean;
   isVisibleAdvancedTab: boolean;
   isVisibleSmartAssignmentTab: boolean;
   isVisibleDeveloperTab: boolean;
@@ -428,17 +430,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+        if(projectUser.role) {
+          this.USER_ROLE = projectUser.role
         }
-      });
+      }
+    });
   }
 
   translateStrings() {
@@ -861,7 +860,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_SmartAssignment() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment');
-    if (this.isVisiblePaymentTab) {
+    if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE !== 'agent') {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('goToProjectSettings_Security HERE 1 ')
@@ -902,7 +901,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToProjectSettings_Security() {
-    if (this.isVisiblePaymentTab) {
+    if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE === 'owner') {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('goToProjectSettings_Security HERE 1 ')
@@ -939,7 +938,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   goToProjectSettings_BannedVisitors() {
-    if (this.isVisiblePaymentTab) {
+    if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE === 'owner') {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
@@ -976,7 +975,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToProjectSettings_Advanced() {
-    if (this.isVisiblePaymentTab) {
+    if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
       if (this.USER_ROLE === 'owner') {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
@@ -1293,6 +1292,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       //  this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
@@ -1714,6 +1714,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (key.includes("OVP")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+
       if (key.includes("PSA")) {
         // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let psa = key.split(":");
@@ -1838,6 +1848,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
       this.isVisiblePaymentTab = false;
     }
+
+    if (!this.public_Key.includes("OVP")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.overridePay = false;
+    }
+
+    
 
     if (!this.public_Key.includes("VAU")) {
       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("VAU")', this.public_Key.includes("VAU"));

@@ -1,0 +1,12 @@
+.img-preview-wpr {
+    display: flex;
+    justify-content: center;
+    max-height: 300px;
+}
+
+.img-preview-wpr>img {
+    height: auto;
+    max-width: 400px;
+    object-fit: contain;
+    padding: 10px;
+}
