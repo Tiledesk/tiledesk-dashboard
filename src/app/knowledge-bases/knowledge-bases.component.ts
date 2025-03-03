@@ -525,6 +525,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
+
   getAllNamespaces() {
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {

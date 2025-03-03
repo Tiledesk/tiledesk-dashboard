@@ -372,7 +372,29 @@
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
                         <!-- <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
-                            <span>{{ 'KbPage.RefreshRate' | translate }}</span>
+                            <span>{{ 'KbPage.RefreshRate' | translate }}
+                                <i *ngIf="isAvailableRefreshRateFeature && !refreshRateIsEnabled && payIsVisible"  class="material-icons" style="font-size: 18px; color: #566787; cursor: pointer; vertical-align: middle;"
+                                [satPopoverAnchor]="refresRate"
+                                (mouseenter)="refresRate.open()"
+                                (click)="refresRate.close()"> help_outline </i>
+
+                            </span>
+                            <sat-popover #refresRate horizontalAlign="center" verticalAlign="above"
+                                panelClass="custom-panel-sat-popover" 
+                                closeTransition="1ms ease-in" forceAlignment="true" hasBackdrop="true" (backdropClick)="refresRate.close()">
+  
+                                <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
+    
+                                <div class="custom-panel-sat-popover--title">
+                                    {{'ThisFeatureIsInBeta' | translate}}
+                                </div>
+    
+                                <div class="custom-panel-sat-popover-contact-us" (click)="contacUsViaEmail()">
+                                    {{'ContactUsToEnableIt' | translate}}
+                                </div>
+    
+                                </div>
+                            </sat-popover>
                         </th> -->
 
                         <th class="column-th-span" style="width:150px;" (click)="onOrderBy('updatedAt')">
@@ -501,6 +523,8 @@
                             <span *ngIf="kb.type !== 'url'">
                                 —
                             </span>
+
+                            
                         </td> -->
 
                         <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">

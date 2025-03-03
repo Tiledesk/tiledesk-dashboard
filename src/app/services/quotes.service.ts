@@ -121,6 +121,54 @@ export class QuotesService {
 
   async getQuoteLimits(project) {
     this.logger.log('calling  getQuoteLimits ', project)
+    let limits: any;
+
+    if (project.profile.type === 'payment') {
+
+      if (project.isActiveSubscription === false) {
+        limits = PLANS_LIST.Sandbox;
+        return limits;
+      }
+
+      let plan = project.profile.name;
+
+      switch(plan) {
+        case PLAN_NAME.A:
+          plan = PLAN_NAME.D;
+          break;
+        case PLAN_NAME.B:
+          plan = PLAN_NAME.E
+          break;
+        case PLAN_NAME.C:
+          plan = PLAN_NAME.F
+          break;
+      }
+
+      limits = PLANS_LIST[plan];
+
+    } else {
+
+      if (project.trialExpired === false) {
+        limits = PLANS_LIST.FREE_TRIAL;
+      } else {
+        limits = PLANS_LIST.Sandbox;
+      }
+
+    }
+
+    if (project.profile.quotes) {
+      let profile_quotes = project?.profile?.quotes;
+      const merged_quotes = Object.assign({}, limits, profile_quotes);
+      this.logger.log('merged_quotes ', merged_quotes)
+      return merged_quotes;
+    } else {
+      this.logger.log('merged_quotes ', limits)
+      return limits;
+    }
+  }
+
+  async _getQuoteLimits(project) {
+    this.logger.log('calling  getQuoteLimits ', project)
     let limits;
 
     if (project.profile.type === 'payment') {

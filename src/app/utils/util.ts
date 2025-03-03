@@ -436,7 +436,8 @@ export enum KB_MAX_NUM {
 };
 
 export const PLANS_LIST = {
-    FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+    // FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+    FREE_TRIAL: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
     Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
     Starter: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
     Pro: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },

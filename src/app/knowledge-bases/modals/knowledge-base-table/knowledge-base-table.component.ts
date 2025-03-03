@@ -7,7 +7,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { KB_DEFAULT_PARAMS, URL_kb } from 'app/utils/util';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
-
+import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
   selector: 'knowledge-base-table',
@@ -17,6 +17,10 @@ import { BrandService } from 'app/services/brand.service';
 
 
 export class KnowledgeBaseTableComponent implements OnInit {
+  @ViewChild('refresRate') refresRate!: SatPopover;
+  @Input() salesEmail:string
+  @Input() project_name:string;
+  @Input() id_project: string;
   @Input() refresh: boolean;
   @Input() kbsList: KB[];
   @Input() kbsListCount: number;
@@ -26,6 +30,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() getKbCompleted: boolean;
   @Input() hasAlreadyVisitedKb: string;
   @Input() isAvailableRefreshRateFeature: boolean;
+  @Input() refreshRateIsEnabled: boolean;
+  @Input() payIsVisible: boolean;
   @Input() t_params: string;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
@@ -35,6 +41,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
+  
   // last added
   @Output() openBaseModalPreviewSettings = new EventEmitter();
   @Output() onOpenAddContents = new EventEmitter();
@@ -89,6 +96,22 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
   }
 
+  contacUsViaEmail() {
+    this.logger.log('[KB TABLE] - Satpopover ', this.refresRate)
+    document.body.focus(); // Force the browser to lose focus
+    if (this.refresRate) {
+    this.refresRate.close();
+    }
+
+    setTimeout(() => {
+      const mailLink = document.createElement('a');
+      mailLink.href = `mailto:${this.salesEmail}?subject=Enable refresh rate for project ${this.project_name} (${this.id_project})`;
+      mailLink.click(); // Simulate a user click
+    }, 50);
+  }
+
+  
+  
   // @HostListener('window:scroll', ['$event'])
   // onScroll(event) {
   //   if (this.isScrolledToBottom() && !this.isLoading && this.SHOW_MORE_BTN) {
@@ -127,7 +150,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.logger.log('[KB TABLE] ngOnChanges hasUpdatedKb ', this.hasUpdatedKb);
     this.logger.log('[KB TABLE] ngOnChanges getKbCompleted ', this.getKbCompleted);
     this.logger.log('[KB TABLE] ngOnChanges hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb);
-    
+    this.logger.log('[KB TABLE] ngOnChanges project_name ', this.project_name);
     
     
 
@@ -197,7 +220,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //   }
     // }
 
-    // console.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
+    // this.logger.log('[KB TABLE] ngOnChanges SHOW_TABLE ', this.SHOW_TABLE);
     if (changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length) {
       // non è cambiato nulla ho solo rodinato la tab
     } else {
@@ -250,6 +273,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // this.paginator.pageSize = 20;
   }
 
+ 
+
   onOrderBy(type) {
  
     this.searchParams.sortField = type;
@@ -257,7 +282,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.searchParams.direction = this.directionDesc;
     this.isLoading = true;
     this.loadByFilter.next(this.searchParams);
-    // console.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
+    // this.logger.log('[KB TABLE] onOrderBy loadByFilter searchParams ', this.searchParams)
   }
 
   onLoadByFilter(filterValue: string, column: string) {
@@ -286,7 +311,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.timeoutId = setTimeout(() => {
       this.isLoading = true;
       this.loadByFilter.next(this.searchParams);
-      // console.log('[KB TABLE] onOrderBy onLoadByFilter searchParams ', this.searchParams)
+      // this.logger.log('[KB TABLE] onOrderBy onLoadByFilter searchParams ', this.searchParams)
     }, 1000);
   }
 
