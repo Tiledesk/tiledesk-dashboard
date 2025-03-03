@@ -263,6 +263,7 @@
                       {{planDDecription}}
                     </p>
                   </div>
+                  <span class="span-16"></span>
                   <div class="pricing-card-spacer css-gpgaqn efq00il4"></div>
                   <div class="pricing-card-plan-price-container css-1d3fo9c efq00il4">
                     <p *ngIf="annualPeriod" color="subdued"
@@ -577,7 +578,7 @@
                 <!-- ------------------------ -->
                 <!-- Custom -->
                 <!-- ------------------------ -->
-                <!-- <div class="pricing-card-wpr css-49aokf efq00il0">
+                <div class="pricing-card-wpr css-49aokf efq00il0">
                   <div class="pricing-card-plan-name-container css-orlfym efq00il2">
                     <div class="pricing-card-plan-name-wpr css-1gcxp0x e15c8v5c0">
                       <h2 class="pricing-card-plan-name css-180zyx9 eimqq0f0">
@@ -591,35 +592,42 @@
                       {{planFDecription}}
                     </p>
                   </div>
-                  <div class="pricing-card-starts-at-wpr css-ytrmr2 efq00il4">
-                    <p color="subdued" class="css-18k7bez eimqq0f0">
+                  <!-- <div class="pricing-card-starts-at-wpr css-ytrmr2 efq00il4"> -->
+                    <!-- <p color="subdued" class="css-18k7bez eimqq0f0">
                       Starts at
-                    </p>
-                  </div>
-                  <div class="pricing-card-plan-price-container css-1oqb5vy efq00il4">
+                    </p> -->
+                  <!-- </div> -->
+                  <span  class="span-24"></span>
+                  <div class="pricing-card-plan-price-container css-1oqb5vy">
                     <span class="pricing-card-plan-price-wpr css-0 e1q33r5y0">
-                        <span class="pricing-card-plan-price e1q33r5y2 css-1jnlcun eeqvxqv0">
+                        <span class="pricing-card-plan-price" style="line-height: 1.2em;font-size: 27px;">
                           {{planFMonthlyPrice}}
-                        <span class="currency">EUR</span>
+                        <!-- <span class="currency">EUR</span> -->
                       </span>
-                      <span class="pricing-card-plan-price-period css-1ohf9td e1q33r5y1">/mo.</span>
+                      <!-- <span class="pricing-card-plan-price-period css-1ohf9td e1q33r5y1">/mo.</span> -->
                     </span>
                   </div>
-                  <div class="css-135r36i efq00il4"></div>
-                  <div class="pricing-card-btn-container css-uf4buc efq00il4">
+                  <!-- <div class="css-135r36i efq00il4"></div> -->
+                  <span  class="span-12"></span>
+                  <div class="pricing-card-btn-container css-uf4buc">
                     <div class="pricing-card-brn-wpr css-86twz3 eifrf951">
+                      <!-- contactUs(PLAN_NAME.F)  -->
                       <button id="go-to-checkout" type="button"
-                        class="btn btn-tdblu-no-boxshadow">
-                        <span>Contact us</span>
+                        class="btn btn-tdblu-no-boxshadow upgrade--plan-btn" (click)="openWidget()">
+                        <span>Contact Sales</span>
                       </button>
                     </div>
                   </div>
-                  <div class="pricing-card-feature-cointainer css-akxbzy efq00il4" *ngFor="let feature of planFFeatures">
+                  <div class="pricing-row-before-features">
+                    Includes:
+                  </div>
+                  
+                  <div class="pricing-card-feature-cointainer css-akxbzy" *ngFor="let feature of planFFeatures">
                     <div class="pricing-card-feature-wpr css-u49bkm e15c8v5c0">
-                      <span class="pricing-card-feature-ckeck-icon-wpr css-3jo2zp e1qzrdls3">
+                      <span class="pricing-card-feature-ckeck--icon-wpr css-3jo2zp e1qzrdls3">
                         <svg xmlns="http://www.w3.org/2000/svg"
                           width="14" height="14" viewBox="0 0 16 16" fill="primary" 
-                          class="pricing-card-feature-ckeck-icon css-zbzjbd e11k6mr30"
+                          class="pricing-card-feature-ckeck--icon css-zbzjbd e11k6mr30"
                           style="min-width: 14px; min-height: 14px;">
                           <path fill="none" d="M0 0h16v16H0z"></path>
                           <path d="M6 10.8 3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
@@ -632,22 +640,22 @@
                     </div>
                   </div>
                   
-                </div> -->
+                </div> 
               </div>
               <span size="24" class="span-24"></span>
 
-              <div class="compare-plans-link" (click)="goToComparePlan()">
+              <!-- <div class="compare-plans-link" (click)="goToComparePlan()">
                   Compare plans in more details
                 <span class="material-icons-outlined">open_in_new</span>
-              </div>
+              </div> -->
 
-              <span size="24" class="span-24"></span>
+              <!-- <span size="24" class="span-24"></span> -->
 
               <!-- ------------------------ -->
               <!-- Custom -->
               <!-- ------------------------ -->
-              <div class="bottom-card-wpr"> 
-                <div class="bottom-card-container" style="">
+              <!-- <div class="bottom-card-wpr"> 
+                <div class="bottom-card-container">
                   <div class="pricing-card-plan-name-wpr" style="justify-content: center;">
 
                     <div class="pricing-card-plan-name">
@@ -672,7 +680,7 @@
                   </div>
 
                 </div>
-              </div>
+              </div> -->
 
 
             </div>

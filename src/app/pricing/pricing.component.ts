@@ -26,7 +26,7 @@ enum PLAN_DESC {
   Starter = "For individuals starting AI automation", //Basic = 'Automate simple website conversations as an individual',
   Pro = "For teams scaling AI-powered workflows", //Premium = 'Expand automation across channels for individuals and small teams',
   Business = "For businesses requiring advanced AI tools", //Team = 'For growing teams scaling business automation',
-  Custom = "For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
+  Custom = "For organizations needing higher limits & advanced integrations"//"For businesses requiring higher limits, advanced integrations and premium support" //'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
@@ -36,7 +36,8 @@ enum MONTHLY_PRICE {
   Starter = "49", //Basic = "15",
   Pro = "149", //Premium = "100",
   Business = "499", // Team = "299",
-  Custom = '500',
+  Custom = 'As per your needs' //'500',
+  
 }
 
 enum ANNUAL_PRICE {
@@ -46,7 +47,7 @@ enum ANNUAL_PRICE {
   Starter = "490", // Basic = "150",
   Pro = "1490", // Premium = "1,000",
   Business = "4990", // Team = "2,990",
-  Custom = '500',
+  Custom = 'As per your needs' //'500',
 }
 
 enum ANNUAL_PRICE_PER_MONTH {
