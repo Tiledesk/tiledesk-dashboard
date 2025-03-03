@@ -1,0 +1,22 @@
+<h1 mat-dialog-title style="margin-bottom: 10px;"> 
+    {{'ImagePreview' | translate}}
+</h1>
+
+<div mat-dialog-content>
+    <div class="img-preview-wpr">
+        <img [src]="imagePreview" alt="Image Preview">
+    </div>
+
+</div>
+
+
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+    </button>
+
+    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()" >
+        {{ "UserProfile.Continue" | translate }}
+    </button>
+</div>
