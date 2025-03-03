@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.83-rc1
+- Updates pricing page
+
 ### 2.7.82-rc1
 - Adds live payment links
 
