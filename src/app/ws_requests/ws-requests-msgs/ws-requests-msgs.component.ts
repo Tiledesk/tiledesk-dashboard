@@ -46,6 +46,7 @@ import { ModalChatbotReassignmentComponent } from './modal-chatbot-reassignment/
 import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { CacheService } from 'app/services/cache.service';
+import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -375,7 +376,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   public translationMap: Map<string, string> = new Map();
-
+  imagePreview: string | null = null;
   /**
    * Constructor
    * @param router 
@@ -5429,170 +5430,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
-  onFileSelected($event) {
-    this.uploadNativeAttachmentError = false;
-    this.existAnAttacment = false
-    const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
-    upload_btn.blur();
-
-    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
-    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
-    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
-    this.uploadedFiles = $event.target.files[0];
-    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
-    if (this.uploadedFiles) {
-
-      // const isAccepted = this.checkAcceptedFile(mimeType)
-      const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
-      if (!canUploadFile) {
-        this.uploadedFiles = null;
-        this.presenModalAttachmentFileTypeNotSupported();
-        return;
-      }
-
-      const uploadedFilesSize = this.uploadedFiles.size
-
-      const formattedBytes = this.formatBytes(uploadedFilesSize)
-      this.uploadedFiles['formattedBytes'] = formattedBytes
-      this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
-
-      this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFilesSize', uploadedFilesSize);
-
-      if (this.uploadedFiles.type.startsWith('image') && !this.uploadedFiles.type.includes('svg')) {
-        this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
-        this.type = 'image'
-        const reader = new FileReader()
-
-        reader.onload = () => { // file is loaded
-          var img = new Image;
-          img.onload = () => { // image is loaded; sizes are available
-            this.logger.log('img.width ', img.width, 'img.height ', img.height)
-            this.imgWidth = img.width;
-            this.imgHeight = img.height;
-          };
-          img.src = reader.result.toString(); // is the data URL because called with readAsDataURL
-          const uid = img.src.substring(img.src.length - 16)
-          this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
-
-          this.metadata = {
-            name: this.uploadedFiles.name,
-            type: this.uploadedFiles.type,
-            uid: uid,
-          }
-        };
-
-        reader.readAsDataURL($event.target.files[0])
-      } else if (this.uploadedFiles.type.startsWith('image') && this.uploadedFiles.type.includes('svg')) {
-        this.type = 'image'
-
-        this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file TYPE', this.uploadedFiles.type)
-        this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file ', this.uploadedFiles)
-
-
-        const reader = new FileReader()
-        const that = this
-        reader.addEventListener('load', () => {
-          var img = new Image;
-          img.onload = () => { // image is loaded; sizes are available
-            this.logger.log('img.width ', img.width, 'img.height ', img.height)
-            this.imgWidth = img.width;
-            this.imgHeight = img.height;
-          };
-
-          img.src = reader.result.toString();
-          const uid = img.src.substring(img.src.length - 16)
-          this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
-          this.metadata = {
-            name: this.uploadedFiles.name,
-            type: this.uploadedFiles.type,
-            uid: uid,
-          }
-
-        }, false)
-
-
-        reader.readAsDataURL($event.target.files[0])
-
-      } else {
-        this.logger.log('cannnnnnnn is fileeee')
-        this.type = 'file'
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          const file = reader.result.toString()
-          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
-          const uid = file.substring(file.length - 16)
-          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
-          this.imgWidth = 110;
-          this.imgHeight = 110;
-          this.metadata = {
-            name: this.uploadedFiles.name,
-            type: this.uploadedFiles.type,
-            uid: uid,
-          }
-        }
-        reader.readAsDataURL($event.target.files[0])
-      }
-
-      if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-        this.uploadImageService.uploadAttachment(this.currentUserID, this.uploadedFiles).then(downloadURL => {
-          this.logger.log(`[WS-REQUESTS-MSGS] - upload downloadURL `, downloadURL);
-
-          if (downloadURL) {
-            this.existAnAttacment = true
-
-            this.uploadedFiles['downloadURL'] = downloadURL
-          }
-          this.metadata.src = downloadURL
-          this.metadata.width = this.imgWidth,
-            this.metadata.height = this.imgHeight,
-            // this.logger.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
-
-            this.fileUpload.nativeElement.value = '';
-
-        }).catch(error => {
-
-          this.logger.error(`[WS-REQUESTS-MSGS] - upload Failed to upload file and get link `, error);
-        });
-      }
-      else {
-        this.uploadImageNativeService.uploadAttachment_Native(this.uploadedFiles).then(downloadURL => {
-          this.logger.log(`[WS-REQUESTS-MSGS] - upload native downloadURL `, downloadURL);
-
-          if (downloadURL) {
-            this.existAnAttacment = true
-
-            this.uploadedFiles['downloadURL'] = downloadURL
-          }
-          this.metadata.src = downloadURL
-          this.metadata.width = this.imgWidth;
-          this.metadata.height = this.imgHeight;
-          this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
-
-          this.fileUpload.nativeElement.value = '';
-
-        }).catch(error => {
-          this.uploadNativeAttachmentError = true;
-          this.uploadedFiles = undefined;
-          this.metadata = undefined
-          this.type = undefined
-          this.existAnAttacment = false
-          this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
-          this.logger.log(`[WS-REQUESTS-MSGS] - upload native error status `, error.status)
-          // if (error.status = 413) {
-          //   this.logger.log(`[WS-REQUESTS-MSGS] - upload native error message 1`, error.error.err)
-          //   this.logger.log(`[WS-REQUESTS-MSGS] - upload native error message 2`, error.error.limit_file_size)
-          //   const uploadLimitInBytes = error.error.limit_file_size
-          //   const uploadFileLimitSize = formatBytesWithDecimal(uploadLimitInBytes, 2)
-          //   this.logger.log(`[WS-REQUESTS-MSGS] - upload native error limitInMB`, uploadFileLimitSize)
-          //   this.notify.presentModalAttachmentFileSizeTooLarge(uploadFileLimitSize)
-          // }
-        });
-
-      }
-    }
-  }
-
-
 
 
   // formatBytesWithDecimal(bytes, decimals) {
@@ -5694,6 +5531,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   listenToUpladAttachmentProgress() {
+    this.logger.log('listenToUpladAttachmentProgress ...')
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.uploadAttachment$.subscribe((progress) => {
         this.logger.log('[WS-REQUESTS-MSGS UPLOADING ATTACMENT %  ', progress, '(usecase Firebase)');
@@ -5894,52 +5732,43 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     })
   }
 
-  onKeydownEnter(e: any) {
-    this.logger.log("[WS-REQUESTS-MSGS] - returnChangeTextArea - onKeydown in MSG-TEXT-AREA event", e)
+  // onKeydownEnter(e: any) {
+  //   this.logger.log("[WS-REQUESTS-MSGS] - returnChangeTextArea - onKeydown in MSG-TEXT-AREA event", e)
 
-    // e.preventDefault(); // Prevent press enter from creating new line 
-    if (this.chat_message && this.chat_message.length > 0) {
-      // this.sendChatMessage()
-    }
-  }
-
-
-  onPasteInSendMsg($event) {
-    this.logger.log('[WS-REQUESTS-MSGS] ON PASTE IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
-    setTimeout(() => {
-      this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-    }, 250);
-  }
-
-  onChangeTextInSendMsg($event) {
-    setTimeout(() => {
-      this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
-      this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight);
-      // this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-      this.sendMessageTexarea.nativeElement.style.height = `${47}px`;
-      this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-    }, 250);
-  }
-
-
-
-  // @HostListener('document:keydown', ['$event'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  //   // Note: on mac keyboard "metakey" matches "cmd"
-  //   if (this.CURRENT_USER_ROLE !== 'agent') {
-  //     if (event.key === 'Enter' && event.altKey || event.key === 'Enter' && event.ctrlKey || event.key === 'Enter' && event.metaKey) {
-  //       this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED COMBO KEYS this.chat_message', this.chat_message);
-  //       if (this.chat_message !== undefined && this.chat_message.trim() !== '') {
-  //         //  this.logger.log('[WS-REQUESTS-MSGS] HAS PRESSED Enter + ALT this.chat_message', this.chat_message);
-  //         this.chat_message = this.chat_message + "\r\n"
-  //         this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
-  //       }
-  //     }
-
-  //     this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement', this.sendMessageTexarea.nativeElement)
-  //   this.logger.log('[WS-REQUESTS-MSGS] sendMessageTexarea.nativeElement.scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight)
+  //   // e.preventDefault(); // Prevent press enter from creating new line 
+  //   if (this.chat_message && this.chat_message.length > 0) {
+  //     // this.sendChatMessage()
   //   }
   // }
+
+
+  // onPasteInSendMsg($event) {
+  //  this.logger.log('[WS-REQUESTS-MSGS] ON PASTE IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
+  //   setTimeout(() => {
+  //     this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+  //   }, 250);
+  // }
+
+  // onChangeTextInSendMsg($event) {
+  //   let newHeight = this.sendMessageTexarea.nativeElement.scrollHeight;
+  //   this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea scrollHeight (newHeight)', newHeight);
+  //   this.sendMessageTexarea.nativeElement.style.height = `${newHeight}px`;
+  //   // setTimeout(() => {
+  //   //  this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea scrollHeight', this.sendMessageTexarea.nativeElement.scrollHeight);
+  //   // // this.logger.log('[WS-REQUESTS-MSGS] ON Change IN SEND MSG sendMessageTexarea offsetHeight', this.sendMessageTexarea.nativeElement.offsetHeight);
+  //   //   this.sendMessageTexarea.nativeElement.style.height = `${47}px`;
+  //   //   this.sendMessageTexarea.nativeElement.style.height = `${this.sendMessageTexarea.nativeElement.scrollHeight + 3}px`;
+  //   // }, 250);
+  // }
+
+  resizeTextArea() {
+    this.logger.log('resizeTextArea sendMessageTexarea', this.sendMessageTexarea)
+    this.sendMessageTexarea.nativeElement.style.height = 'auto'; // Reset height to recalculate
+    const maxHeight = 196; // Maximum height limit
+    this.sendMessageTexarea.nativeElement.style.height = Math.min(this.sendMessageTexarea.nativeElement.scrollHeight, maxHeight) + 'px';
+  }
+
+
 
   onChangeReplyType(selectedResponseTypeID) {
     // this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
@@ -5962,6 +5791,406 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
     const selectResponseTypeElem = <HTMLElement>document.querySelector('.select-response-type');
     selectResponseTypeElem.blur();
+  }
+
+  // -------------------------------------------
+  // Attachments
+  // -------------------------------------------
+  onPasteInSendMsg(event: ClipboardEvent) {
+
+    const items = event.clipboardData?.items;
+    // const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    Array.from(items).forEach((item) => {
+      this.logger.log("[CONVS-DETAIL][MSG-TEXT-AREA] onPaste item ", item);
+      this.logger.log("[CONVS-DETAIL][MSG-TEXT-AREA] onPaste item.type ", item.type);
+      // if (!item.type.startsWith("text/")) {
+
+
+      if (item.type.startsWith("image/")) {
+        event.preventDefault();  // Prevent the default paste behavior
+        const file = item.getAsFile();
+        this.logger.log("[CONVS-DETAIL][MSG-TEXT-AREA] onPaste file ", file);
+
+
+        if (file) {
+          const canUploadFile = checkAcceptedFile(file.type, this.fileUploadAccept)
+
+          if (!canUploadFile || file.type.includes('svg')) {
+            this.uploadedFiles = null;
+            this.presenModalAttachmentFileTypeNotSupported();
+            return;
+          }
+          this.manageImageUploadOnPaste(file)
+
+
+        }
+      }
+      else if (item.type.startsWith("application/")) {
+        event.preventDefault();  // Prevent the default paste behavior
+        this.logger.log('cannnnnnnn is fileeee')
+        const file = item.getAsFile();
+        this.uploadedFiles = file
+        if (this.uploadedFiles) {
+          const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
+
+          if (!canUploadFile) {
+            this.uploadedFiles = null;
+            this.presenModalAttachmentFileTypeNotSupported();
+            return;
+          }
+
+          const uploadedFilesSize = this.uploadedFiles.size
+
+          const formattedBytes = this.formatBytes(uploadedFilesSize)
+          this.uploadedFiles['formattedBytes'] = formattedBytes
+          this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
+          this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFilesSize', uploadedFilesSize);
+          this.type = 'file'
+          const reader = new FileReader()
+          reader.onloadend = () => {
+            const file = reader.result.toString()
+            this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
+            const uid = file.substring(file.length - 16)
+            this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
+            this.imgWidth = 110;
+            this.imgHeight = 110;
+            this.metadata = {
+              name: this.uploadedFiles.name,
+              type: this.uploadedFiles.type,
+              uid: uid,
+            }
+          }
+          reader.readAsDataURL(this.uploadedFiles)
+        }
+      }
+
+      this.logger.log(`[WS-REQUESTS-MSGS] - ++ before to call service uploadedFiles `, this.uploadedFiles);
+      if (this.uploadedFiles) {
+        this.logger.log(`[WS-REQUESTS-MSGS] - ++ before to call service uploadedFiles TYPE`, this.uploadedFiles.type);
+      }
+      if (this.uploadedFiles) {
+        this.uploadAttachmentRestRequest(this.uploadedFiles, 'on-paste')
+
+      }
+    })
+  }
+
+  manageImageUploadOnPaste(file) {
+    // this.uploadedFiles = file
+
+    // const uploadedFilesSize = this.uploadedFiles.size
+
+    // const formattedBytes = this.formatBytes(uploadedFilesSize)
+    // this.uploadedFiles['formattedBytes'] = formattedBytes
+    // this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
+    // this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFilesSize', uploadedFilesSize);
+    this.type = 'image'
+    const reader = new FileReader()
+
+    reader.onload = () => { // file is loaded
+      var img = new Image;
+      img.onload = () => { // image is loaded; sizes are available
+        this.logger.log('img.width ', img.width, 'img.height ', img.height)
+        this.imgWidth = img.width;
+        this.imgHeight = img.height;
+      };
+      img.src = reader.result.toString(); // is the data URL because called with readAsDataURL
+      this.imagePreview = reader.result.toString();
+
+      this.openImagePreviewModal(this.imagePreview, file);
+
+      // const uid = img.src.substring(img.src.length - 16)
+      // this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+
+      // this.metadata = {
+      //   name: this.uploadedFiles.name,
+      //   type: this.uploadedFiles.type,
+      //   uid: uid,
+      // }
+    };
+
+    reader.readAsDataURL(file)
+  }
+
+
+
+  openImagePreviewModal(imagePreview, file) {
+    const dialogRef = this.dialog.open(ImagePreviewModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '400px',
+      data: {
+        imagePreview: imagePreview,
+        file: file
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE result: `, result);
+      const file = result.file
+      const image = result.imagePreview
+
+      this.uploadedFiles = file
+
+      const uploadedFilesSize = this.uploadedFiles.size
+
+      const formattedBytes = this.formatBytes(uploadedFilesSize)
+      this.uploadedFiles['formattedBytes'] = formattedBytes
+      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE formattedBytes', formattedBytes);
+      this.logger.log('[WS-REQUESTS-MSGS] AFTER CLOSED MODAL PREVIEW IMAGE  uploadedFilesSize', uploadedFilesSize);
+      this.type = 'image'
+
+      const uid = image.substring(image.length - 16)
+      this.logger.log(`[WS-REQUESTS-MSGS] - AFTER CLOSED MODAL PREVIEW IMAGE  uid `, uid);
+
+      this.metadata = {
+        name: this.uploadedFiles.name,
+        type: this.uploadedFiles.type,
+        uid: uid
+      }
+
+      if (this.uploadedFiles) {
+        this.uploadAttachmentRestRequest(this.uploadedFiles, 'after-closed-modal')
+      }
+    });
+  }
+
+  _onFileSelected($event) {
+    this.uploadNativeAttachmentError = false;
+    this.existAnAttacment = false
+    const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
+    upload_btn.blur();
+
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    this.uploadedFiles = $event.target.files[0];
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+    if (this.uploadedFiles) {
+
+      // const isAccepted = this.checkAcceptedFile(mimeType)
+      const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
+      if (!canUploadFile || this.uploadedFiles.type.includes('svg')) {
+        this.uploadedFiles = null;
+        this.presenModalAttachmentFileTypeNotSupported();
+        return;
+      }
+
+      const uploadedFilesSize = this.uploadedFiles.size
+
+      const formattedBytes = this.formatBytes(uploadedFilesSize)
+      this.uploadedFiles['formattedBytes'] = formattedBytes
+      this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED formattedBytes', formattedBytes);
+
+      this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFilesSize', uploadedFilesSize);
+
+      if (this.uploadedFiles.type.startsWith('image') && !this.uploadedFiles.type.includes('svg')) {
+        this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+        this.type = 'image'
+        const reader = new FileReader()
+
+        reader.onload = () => { // file is loaded
+          var img = new Image;
+          img.onload = () => { // image is loaded; sizes are available
+            this.logger.log('img.width ', img.width, 'img.height ', img.height)
+            this.imgWidth = img.width;
+            this.imgHeight = img.height;
+          };
+          img.src = reader.result.toString(); // is the data URL because called with readAsDataURL
+          const uid = img.src.substring(img.src.length - 16)
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload img.src `, img.src);
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+        };
+
+        reader.readAsDataURL($event.target.files[0])
+      } else if (this.uploadedFiles.type.startsWith('image') && this.uploadedFiles.type.includes('svg')) {
+        this.type = 'image'
+
+        this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file TYPE', this.uploadedFiles.type)
+        this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL file ', this.uploadedFiles)
+
+
+        const reader = new FileReader()
+        const that = this
+        reader.addEventListener('load', () => {
+          var img = new Image;
+          img.onload = () => { // image is loaded; sizes are available
+            this.logger.log('img.width ', img.width, 'img.height ', img.height)
+            this.imgWidth = img.width;
+            this.imgHeight = img.height;
+          };
+
+          img.src = reader.result.toString();
+          const uid = img.src.substring(img.src.length - 16)
+          this.logger.log(`[WS-REQUESTS-MSGS] - upload uid `, uid);
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+
+        }, false)
+
+
+        reader.readAsDataURL($event.target.files[0])
+
+      } else {
+        this.logger.log('cannnnnnnn is fileeee')
+        this.type = 'file'
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const file = reader.result.toString()
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
+          const uid = file.substring(file.length - 16)
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
+          this.imgWidth = 110;
+          this.imgHeight = 110;
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+        }
+        reader.readAsDataURL($event.target.files[0])
+      }
+
+      if (this.uploadedFiles) {
+        this.uploadAttachmentRestRequest(this.uploadedFiles, 'on-file-selected')
+
+      }
+
+    }
+  }
+  
+  onFileSelected($event) {
+    this.uploadNativeAttachmentError = false;
+    this.existAnAttacment = false
+    const upload_btn = <HTMLElement>document.querySelector('.upload-btn');
+    upload_btn.blur();
+
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED - event ', $event);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTEDl change e.target ', $event.target);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files', $event.target.files);
+    this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED e.target.files[0]', $event.target.files[0]);
+    // this.uploadedFiles = $event.target.files[0];
+    // this.logger.log('[WS-REQUESTS-MSGS] ON FILE SELECTED uploadedFiles', this.uploadedFiles);
+    if ($event.target.files[0].type.startsWith("image/")) {
+
+      this.logger.log("[CONVS-DETAIL][MSG-TEXT-AREA] onPaste file ", $event.target.files[0]);
+
+
+      if ($event.target.files[0]) {
+        const canUploadFile = checkAcceptedFile($event.target.files[0].type, this.fileUploadAccept)
+
+        if (!canUploadFile || $event.target.files[0].type.includes('svg')) {
+          // this.uploadedFiles = null;
+          this.presenModalAttachmentFileTypeNotSupported();
+          return;
+        }
+        this.manageImageUploadOnPaste($event.target.files[0])
+
+      }
+    } else if ($event.target.files[0].type.startsWith("application/")) {
+
+
+      this.uploadedFiles = $event.target.files[0];
+
+      if (this.uploadedFiles) {
+
+        const canUploadFile = checkAcceptedFile(this.uploadedFiles.type, this.fileUploadAccept)
+
+        if (!canUploadFile) {
+          this.uploadedFiles = null;
+          this.presenModalAttachmentFileTypeNotSupported();
+          return;
+        }
+
+        const uploadedFilesSize = this.uploadedFiles.size
+
+        const formattedBytes = this.formatBytes(uploadedFilesSize)
+        this.uploadedFiles['formattedBytes'] = formattedBytes
+
+        this.logger.log('cannnnnnnn is fileeee')
+        this.type = 'file'
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const file = reader.result.toString()
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success file', file)
+          const uid = file.substring(file.length - 16)
+          this.logger.log('[LOADER-PREVIEW-PAGE] - readAsDataURL - FileReader success uid', uid)
+          this.imgWidth = 110;
+          this.imgHeight = 110;
+          this.metadata = {
+            name: this.uploadedFiles.name,
+            type: this.uploadedFiles.type,
+            uid: uid,
+          }
+        }
+        reader.readAsDataURL($event.target.files[0])
+        this.uploadAttachmentRestRequest(this.uploadedFiles, 'on-file-selected')
+      }
+    }
+
+  }
+
+  uploadAttachmentRestRequest(uploadedFiles, calledBy) {
+    this.logger.log('uploadAttachmentRestRequest -----> calledBy', calledBy)
+    this.logger.log('uploadAttachmentRestRequest uploadedFiles', uploadedFiles)
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.uploadImageService.uploadAttachment(this.currentUserID, uploadedFiles).then(downloadURL => {
+        this.logger.log(`[WS-REQUESTS-MSGS] - upload downloadURL `, downloadURL);
+
+        if (downloadURL) {
+          this.existAnAttacment = true
+
+          this.uploadedFiles['downloadURL'] = downloadURL
+        }
+        this.metadata.src = downloadURL
+        this.metadata.width = this.imgWidth;
+        this.metadata.height = this.imgHeight;
+        // this.logger.log(`[WS-REQUESTS-MSGS] - upload metadata `, this.metadata);
+
+        this.fileUpload.nativeElement.value = '';
+
+      }).catch(error => {
+
+        this.logger.error(`[WS-REQUESTS-MSGS] - upload Failed to upload file and get link `, error);
+      });
+    }
+    else {
+      this.uploadImageNativeService.uploadAttachment_Native(uploadedFiles).then(downloadURL => {
+        this.logger.log(`[WS-REQUESTS-MSGS] - upload native downloadURL `, downloadURL);
+
+        if (downloadURL) {
+          this.existAnAttacment = true
+
+          this.uploadedFiles['downloadURL'] = downloadURL
+        }
+        this.metadata.src = downloadURL
+        this.metadata.width = this.imgWidth;
+        this.metadata.height = this.imgHeight;
+        this.logger.log(`[WS-REQUESTS-MSGS] - upload native metadata `, this.metadata);
+
+        this.fileUpload.nativeElement.value = '';
+
+      }).catch(error => {
+        this.uploadNativeAttachmentError = true;
+        this.uploadedFiles = undefined;
+        this.metadata = undefined
+        this.type = undefined
+        this.existAnAttacment = false
+        this.logger.error(`[WS-REQUESTS-MSGS] - upload native Failed to upload file and get link `, error);
+        this.logger.log(`[WS-REQUESTS-MSGS] - upload native error status `, error.status)
+
+      });
+
+    }
   }
 
   smartAssignmentOff() {

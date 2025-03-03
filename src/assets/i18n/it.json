@@ -624,8 +624,11 @@
     "WhenEnabledAttachments":"Se abilitato, gli utenti possono inviare allegati. Se disabilitato, il pulsante per inviare allegati sarà nascosto",
     "DisableEmoji": "Disattiva emoji",
     "WhenEnabledEmoji":"Se abilitato, gli utenti possono inviare emoji. Se disabilitato, il pulsante emoji sarà nascosto",
+    "DisableVoiceRecoder":"Disattiva il registratore vocale",
+    "WhenEnabledVoiceRecoder":"Se abilitato, gli utenti possono registrare messaggi vocali. Se disabilitato, il pulsante del registratore vocale sarà nascosto e l'utente potrà solo inviare messaggi di testo",
     "UploadLogo":"Carica il logo",
     "FileTooLarge": "Il file è troppo grande per essere caricato. Dimensione massima del file {{file_size}}",
+    "ImagePreview":"Anteprima dell'immagine",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

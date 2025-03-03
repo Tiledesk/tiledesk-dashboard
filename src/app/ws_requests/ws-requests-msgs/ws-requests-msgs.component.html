@@ -126,6 +126,7 @@
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
                 <div *ngFor="let message of messagesList">
+                  <!-- message type {{ message?.type }} - message metadata type {{ message.metadata?.type}} -->
 
                   <!-- ////// INFO MSG -->
                   <!-- requester_id: {{requester_id}} message_sender {{message.sender}} type
@@ -197,16 +198,19 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <!-- && (!message.metadata && !message.metadata.type.includes('audio'))" -->
-                            <p *ngIf="(message?.type === 'text' || message?.type === 'file')" class="message ow"
+                            <!--  -->
+                            <p *ngIf="(message?.type === 'text' || message?.type === 'file') && (!message?.metadata?.type?.includes('audio'))" class="message ow"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
                             </p>
-                            <!-- <ng-container *ngIf="message?.type === 'file' && message.metadata && message.metadata.type.includes('audio')">
+
+                            <div *ngIf="message?.type === 'file' && message.metadata && message.metadata.type && message?.metadata?.type.includes('audio')" class="message ow audio">
                               <audio aria-label="audio-track" #audio_msg controls controlsList="nodownload"
                                 id="audio_msg">
                                 <source [src]="message.metadata?.src" [type]="message.metadata?.type">
                               </audio>
-                            </ng-container> -->
+                              <p [innerHTML]="message?.text | htmlEntitiesEncode | marked" style="font-size: 12px; margin-bottom: 0px;"></p>
+                            </div>
+
                             <div *ngIf="message?.type === 'image'" class="message ow">
                               <!-- style="height:200px; width:200px;" -->
                               <div class="image-container" style="cursor:pointer"
@@ -295,9 +299,18 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow alt"
+                            <p *ngIf="(message?.type === 'text' || message?.type === 'file') && (!message?.metadata?.type?.includes('audio')) " class="message ow alt"
                               [ngClass]="{'internal-note-text-color': message?.attributes?.subtype === 'private'}"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked">
+                            </p>
+
+                            <div *ngIf="message?.type === 'file' && message.metadata && message.metadata.type && message?.metadata?.type.includes('audio')" class="message ow alt audio">
+                              <audio aria-label="audio-track" #audio_msg controls controlsList="nodownload"
+                                id="audio_msg">
+                                <source [src]="message.metadata?.src" [type]="message.metadata?.type">
+                              </audio>
+                              <p [innerHTML]="message?.text | htmlEntitiesEncode | marked" style="font-size: 12px; margin-bottom: 0px;"></p>
+                            </div>
 
                             <div *ngIf="message?.type === 'image'" class="message ow alt">
                               <!-- style="height:200px; width:200px;" -->
@@ -385,8 +398,9 @@
                     <!-- ------------------------------------------------ -->
                     <!-- texarea send message  -->
                     <!-- ------------------------------------------------ -->
-                    <div class="col-xs-12  w-100 plr-0">
-                      <div class="row w-100">
+                    <!-- <div class="col-xs-12  w-100 plr-0"> -->
+                      <!-- row -->
+                      <!-- <div class=" w-100"> -->
                         <!-- margin-top: -4px; border-top: 2px solid #3ea9f5; -->
                         <div class="chat-msg-attachement" *ngIf="uploadedFiles">
                           <span *ngIf="showSpinnerAttachmentUplolad === true">
@@ -418,12 +432,16 @@
                             </span>
                           </span>
                         </div>
-                        <div class="col-xs-12 h-100 plr-0" style="  margin-bottom: 8px;height:46px"
+                        <!-- height:46px -->
+                        <!-- style="  margin-bottom: 8px;" -->
+                        <!-- (keydown.enter)="onKeydownEnter($event)" -->
+                        <!-- (ngModelChange)="onChangeTextInSendMsg($event)" -->
+                        <!-- (paste)="onPasteInSendMsg($event)" -->
+                        <div class="col-xs-12 h-100 plr-0" 
                           [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message" rows="1"
-                            placeholder="Write your message" (keydown.enter)="onKeydownEnter($event)"
-                            (paste)="onPasteInSendMsg($event)"
-                            (ngModelChange)="onChangeTextInSendMsg($event)">  </textarea>
+                          <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
+                            placeholder="Write your message" (input)="resizeTextArea()"
+                            (paste)="onPasteInSendMsg($event)">  </textarea>
 
 
                           <!-- <div class="chat-msg-attachement" *ngIf="uploadedFiles">
@@ -446,10 +464,10 @@
                           </div> -->
 
                         </div>
-                      </div>
-                    </div>
+                      <!-- </div> -->
+                    <!-- </div> -->
 
-                    <div class="col-xs-12  w-100 plr-0">
+                    <div class="col-xs-12  w-100 plr-0 chat-footer-actions">
                       <div class="row w-100">
 
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">

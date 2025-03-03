@@ -1531,6 +1531,31 @@ div.card-content>div>div>div>div>div>div>div.txt>div.message.ow.alt>div>p>p {
   margin-top: 5px !important;
 }
 
+// USE CASE Audio sent by user
+.message.ow.alt.audio>p>p{
+  margin-bottom: 0px !important;
+}
+
+.message.ow.alt.audio>p>p:hover {
+  text-decoration: underline;
+  color:#fff
+}
+
+.message.ow.alt.audio>p>p>a { 
+  color: #fff;
+}
+
+// USE CASE Audio receive by agent
+.message.ow.audio>p>p{
+  margin-bottom: 0px !important;
+}
+
+.message.ow.audio>p>p:hover{ 
+  text-decoration: underline;
+  color: #3ea9f5;
+}
+
+
 div.card-content>div>div>div>div>div>div>div.txt>div.message.ow>div>p>p {
   font-weight: 400;
   margin-bottom: 0px !important;

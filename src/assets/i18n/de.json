@@ -624,8 +624,11 @@
 	"WhenEnabledAttachments":"Wenn aktiviert, können Benutzer Anhänge senden. Wenn deaktiviert, wird die Schaltfläche für Anhänge ausgeblendet",
 	"DisableEmoji": "Emoji deaktivieren",
 	"WhenEnabledEmoji":"Wenn aktiviert, können Benutzer Emojis senden. Wenn deaktiviert, wird die Emoji-Schaltfläche ausgeblendet",
+	"DisableVoiceRecoder":"Sprachrekorder deaktivieren",
+	"WhenEnabledVoiceRecoder":"Wenn diese Option aktiviert ist, können Benutzer Sprachnachrichten aufzeichnen. Wenn sie deaktiviert ist, wird die Schaltfläche für die Sprachaufzeichnung ausgeblendet und der Benutzer kann nur Textnachrichten senden",
 	"UploadLogo":"Logo hochladen",
 	"FileTooLarge": "Die Datei ist zu groß zum Hochladen. Maximale Dateigröße {{file_size}}",
+	"ImagePreview":"Bildvorschau",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
