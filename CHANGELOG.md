@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.82
+- Renames Plans
+
 ### 2.7.81
 - Adds the ability to upload images and files by pasting it into the chat text area in the conversation details
 - Fixes the bug: the text area of ​​the conversation details chat does not adapt to the entered text
