@@ -489,7 +489,6 @@ export const PLANS_LIST = {
 export const featuresPlanD = [
     "1 user",
     "800 Conversations/mo.",
-    "Basic Al automation",
     "5 AI Agents",
     "Basic AI automation",
     "Email support"
