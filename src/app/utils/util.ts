@@ -487,9 +487,11 @@ export const PLANS_LIST = {
 
 // Starter plan (ex Basic plan)
 export const featuresPlanD = [
-    "800 Conversations/mo.",
     "1 user",
+    "800 Conversations/mo.",
     "Basic Al automation",
+    "5 AI Agents",
+    "Basic AI automation",
     "Email support"
 
     // 'CRM',
@@ -521,9 +523,11 @@ export const additionalFeaturesPlanD = [
 
 // Pro plan  (ex Premium plan)
 export const featuresPlanE = [
+    // "Up to 3 users",
+    "3 users",
     "3,000 Conversations/mo.",
-    "Up to 3 users",
-    "Advanced Al workflows",
+    "20 AI Agents",
+    "Advanced AI workflows",
     "Priority support"
     // 'Widget Unbranding',
     // 'WhatsApp Business',
@@ -569,10 +573,11 @@ export const featuresPlanEE = [
     // "10 Knowledge Base",
     // '1,000 contents across all Knowledge Bases',
     // '10,000,000 AI Tokens'
+    "5 users", //"Up to 5 users",
     "5,000 Conversations/mo.",
-    "Up to 5 users",
-    "Custom AI tools",
-    "Premium support"
+    "50 AI Agents",
+    "Built-in AI automation", //"Custom AI tools",
+    "Dedicated support", //"Premium support"
 ]
 
 // Business plan (ex Team plan) 
