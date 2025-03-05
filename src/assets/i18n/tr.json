@@ -599,6 +599,7 @@
     "ChooseNameForYourAIAgent":"AI Agent'ınız için bir isim seçin",
     "MyAIAgentName": "AI ajanımın adı",
     "ChatbotName":"Sohbet robotu adı",
+    "ChatbotType":"Chatbot türü",
     "Oops":"Hata",
     "YourAuthTokenHasBeenInvalidated":"Kimlik doğrulama jetonunuz geçersiz kılındı",
     "PleaseTrySigningInAgain": "Lütfen oturum açmayı tekrar deneyin",

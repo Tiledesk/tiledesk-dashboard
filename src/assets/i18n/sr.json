@@ -598,6 +598,7 @@
     "ChooseNameForYourAIAgent":"Изаберите име за свог АИ агента",
     "MyAIAgentName": "Име мог АИ агента",
     "ChatbotName":"Име цхат бота",
+    "ChatbotType":"Тип Цхатбот-а",
     "Oops":"Упс",
     "YourAuthTokenHasBeenInvalidated":"Ваш токен за аутентификацију је поништен",
     "PleaseTrySigningInAgain": "Молимо покушајте да се пријавите поново",

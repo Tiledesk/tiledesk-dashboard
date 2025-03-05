@@ -596,6 +596,7 @@
     "ChooseNameForYourAIAgent":"AI агенті үшін атау таңдаңыз",
     "MyAIAgentName": "Менің AI агент атым",
     "ChatbotName": "Чатбот атауы",
+    "ChatbotType":"ChatBOT түрі",
     "Oops": "Ой",
     "YourAuthTokenHasBeenInvalidated": "Аутентификация таңбалауышы жарамсыз",
     "PleaseTrySigningInAgain": "Есептік жазбаға қайта кіріп көріңіз",

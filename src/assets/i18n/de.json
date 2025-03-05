@@ -596,6 +596,7 @@
 	"ChooseNameForYourAIAgent":"Wählen Sie einen Namen für Ihren KI-Agenten",
 	"MyAIAgentName": "Mein KI-Agentenname",
 	"ChatbotName": "Chatbot-Name",
+	"ChatbotType":"Chatbot-Typ",
 	"Oops": "Hoppla",
 	"YourAuthTokenHasBeenInvalidated": "Ihr Authentifizierungstoken wurde ungültig",
 	"PleaseTrySigningInAgain": "Bitte versuchen Sie erneut, sich anzumelden",

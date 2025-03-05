@@ -596,6 +596,7 @@
     "ChooseNameForYourAIAgent":"Escolha um nome para o seu agente de IA",
     "MyAIAgentName": "Nome do meu agente de IA",
     "ChatbotName": "Nome do chatbot",
+    "ChatbotType":"Tipo de chatbot",
     "Oops": "Ops",
     "YourAuthTokenHasBeenInvalidated": "Seu token de autenticação foi invalidado",
     "PleaseTrySigningInAgain": "Por favor, tente entrar novamente",

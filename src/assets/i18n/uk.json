@@ -599,6 +599,7 @@
     "ChooseNameForYourAIAgent":"Виберіть ім’я для агента ШІ",
     "MyAIAgentName": "Ім'я мого агента ШІ",
     "ChatbotName":"Назва чат-бота",
+    "ChatbotType":"Тип чату",
     "Oops":"Ой",
     "YourAuthTokenHasBeenInvalidated":"Ваш маркер автентифікації визнано недійсним",
     "PleaseTrySigningInAgain": "Спробуйте ввійти знову",

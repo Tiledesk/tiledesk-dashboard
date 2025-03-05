@@ -596,6 +596,7 @@
     "ChooseNameForYourAIAgent":"اختر اسمًا لوكيل AI الخاص بك",
     "MyAIAgentName": "اسم وكيل AI الخاص بي",
     "ChatbotName": "اسم الشات بوت",
+    "ChatbotType":"نوع chatbot",
     "Oops": "أُووبس",
     "YourAuthTokenHasBeenInvalidated": "تم إبطال رمز المصادقة المميز الخاص بك",
     "PleaseTrySigningInAgain": "من فضلك حاول تسجيل الدخول مرة أخرى",

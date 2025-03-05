@@ -597,6 +597,7 @@
     "ChooseNameForYourAIAgent":"AI agentingiz uchun nom tanlang",
     "MyAIAgentName": "Mening AI agentim nomi",
     "ChatbotName":"Chatbot nomi",
+    "ChatbotType":"ChatBot turi",
     "Oops":"Op",
     "YourAuthTokenHasBeenInvalidated":"Autentifikatsiya tokeningiz yaroqsiz deb topildi",
     "PleaseTrySigningInAgain": "Iltimos, qaytadan kiring",

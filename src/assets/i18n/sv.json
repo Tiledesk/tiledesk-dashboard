@@ -598,6 +598,7 @@
     "ChooseNameForYourAIAgent":"Välj ett namn för din AI-agent",
     "MyAIAgentName": "Mitt AI-agentnamn",
     "ChatbotName":"Chatbot namn",
+    "ChatbotType":"Chatbotstyp",
     "Oops":"Hoppsan",
     "YourAuthTokenHasBeenInvalidated":"Din autentiseringstoken har ogiltigförklarats",
     "PleaseTrySigningInAgain": "Försök att logga in igen",

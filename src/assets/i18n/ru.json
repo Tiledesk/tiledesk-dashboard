@@ -597,6 +597,7 @@
     "ChooseNameForYourAIAgent":"Выберите имя для вашего ИИ-агента",
     "MyAIAgentName": "Имя моего агента ИИ",
     "ChatbotName":"Имя чат-бота",
+    "ChatbotType":"Тип чат-бот",
     "Oops":"yпс",
     "YourAuthTokenHasBeenInvalidated":"Ваш токен аутентификации признан недействительным",
     "PleaseTrySigningInAgain": "Пожалуйста, попробуйте войти снова",

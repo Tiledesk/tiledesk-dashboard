@@ -521,6 +521,7 @@
     "YourProjectIsMissingTheTemplateNeededToCreateTheChatbot": "Votre projet ne dispose pas du modèle nécessaire à la création du Chatbot",
     "EditChatbot": "Modifier le chatbot {{ chat_bot_name }}",
     "ChatbotAndChatbotName": "Chatbot {{ chat_bot_name }}",
+    "ChatbotType":"Type chatbot",
     "Back": "Retour",
     "WhatDoYouWantToDo": "Qu'est-ce que vous voulez faire?",
     "ModifyYourChatbotWithThePowerfulCDS": "Modifiez votre chatbot avec le puissant Chatbot Design Studio si vous souhaitez ajouter des fonctionnalités telles que des boutons, un transfert humain, une IA avancée, etc.",
