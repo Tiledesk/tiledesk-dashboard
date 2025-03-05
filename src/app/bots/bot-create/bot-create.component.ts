@@ -141,6 +141,14 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   translationMap: Map<string, string> = new Map();
   showUploadingSpinner: boolean = false;
 
+  botSubtype: any;
+  botSubtypeAreEnabled: boolean;
+
+  botSubtypeItems: Array<any> = [
+    { name: "AI Agent", value: 'chatbot' },
+    { name: "Webhook", value: 'webhook' },
+  ];
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -170,7 +178,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   ngOnInit() {
     this.logger.log('[BOT-CREATE] »»»» Bot Create Component on Init !!!')
-
+    console.log('[BOT-CREATE] »»»» botSubtypeItems on Init ', this.botSubtypeItems)
+    this.botSubtype = "chatbot"
     this.getBrowserVersion();
     this.detectBrowserLang();
     this.getCurrentProject();
@@ -553,7 +562,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      this.logger.log('[BOT-CREATE] --->  DEPTS RES ', departments);
+      console.log('[BOT-CREATE] --->  DEPTS RES ', departments);
 
       if (departments) {
         this.depts_length = departments.length
@@ -648,18 +657,46 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
       this.prjct_profile_name = project.profile.name
       // this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
-
+      const projectProfile = project.profile
+      this.getIfBotSubtypeAreEnabled(projectProfile)
 
     }, error => {
       this.logger.error('[BOT-CREATE] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
-
-
     });
+  }
+
+
+  getIfBotSubtypeAreEnabled(projectProfile) {
+    console.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - projectProfile: ', projectProfile);
+    if (projectProfile && projectProfile['customization']) {
+
+      if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] !== undefined) {
+
+        if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === true) {
+
+          this.botSubtypeAreEnabled = true
+          console.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 1: ', this.botSubtypeAreEnabled);
+
+        } else if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === false) {
+
+          this.botSubtypeAreEnabled = false;
+          console.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 2: ', this.botSubtypeAreEnabled);
+        }
+
+      } else {
+        this.botSubtypeAreEnabled = false
+        console.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 3: ', this.botSubtypeAreEnabled);
+      }
+
+    } else {
+      this.botSubtypeAreEnabled = false
+      console.log('[KNOWLEDGE-BASES-COMP] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 4: ', this.botSubtypeAreEnabled);
+    }
   }
 
 
@@ -689,6 +726,14 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
 
+  onSelectBotSubType(botSubtype) {
+    console.log('[BOTS-CREATE] onSelectBotSubType ', botSubtype) 
+    this.botSubtype = botSubtype
+    console.log('[BOTS-CREATE] onSelectBotSubType this.botSubtype', this.botSubtype) 
+  }
+
+
+
   createBlankTilebot() {
     this.logger.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
     if (this.USER_ROLE !== 'agent') {
@@ -711,8 +756,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   createTilebotBotFromScratch() {
     this.language = this.botDefaultSelectedLangCode;
-    this.faqKbService.createChatbotFromScratch(this.faqKbName, 'tilebot', this.language).subscribe((faqKb) => {
-      this.logger.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
+    this.faqKbService.createChatbotFromScratch(this.faqKbName, 'tilebot', this.botSubtype, this.language).subscribe((faqKb) => {
+      console.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
 
       if (faqKb) {
         this.newBot = faqKb
@@ -726,6 +771,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           _id: this.newBot_Id
         }
         this.trackChatbotCreated(faqKb)
+
         goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 

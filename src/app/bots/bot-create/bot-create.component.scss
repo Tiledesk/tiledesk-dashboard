@@ -40,7 +40,7 @@ textarea[type="text"] {
   -moz-box-sizing: border-box;
   border-radius: 5px;
   background-color: #fff !important;
-  border: solid 1px #ddd;
+  // border: solid 1px #ddd;
 }
 
 select {
@@ -49,6 +49,22 @@ select {
   border-radius: 0px;
   border-color: #d9d9d9;
 }
+
+.label-left-align {
+  color: #7695a5;
+  padding-top: 7px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.span-24 {
+  display: block;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+}
+
 .card form [class*="col-"] {
   padding: 0px;
 }

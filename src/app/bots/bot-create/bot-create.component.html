@@ -19,7 +19,7 @@
                 'li-active' :          HAS_SELECTED_CREATE_BOT === true
               }">
 
-        <a href="javascript:;" role="button"> 
+        <a href="javascript:;" role="button">
           <!-- {{'Create' | translate}}  -->
           Create from scratch
         </a>
@@ -30,9 +30,9 @@
             'border-from-center' : HAS_SELECTED_CREATE_BOT === true, 
             'li-active' : HAS_SELECTED_CREATE_BOT === false
           }">
-        <a href="javascript:;" role="button"> 
+        <a href="javascript:;" role="button">
           Import from JSON
-          
+
         </a>
       </li>
     </ul>
@@ -150,7 +150,7 @@
             <!-- ------------------------------------- -->
             <!-- New header for tilebot -->
             <!-- ------------------------------------- -->
-            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === true">
+            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === true" style="display: none;">
               <div class="col-sm-12">
                 <!-- <div class="create-tilebot-header">
                   Create a chatbot or select one from the <span class="btn--as--link"
@@ -174,54 +174,55 @@
                   Start by entering the name of the chatbot
                 </p>
               </div> -->
-
-
             </div>
-            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === false">
-              <div class="col-sm-12">
-                <!-- <h3 class="card_title__underlined">
-                  <span class="card_title__underline"> 
-                    <span>  Import from JSON  </span>
-                  </span>
-                </h3> -->
 
+            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === false" style="display: none;">
+              <div class="col-sm-12">
                 <div class="create-tilebot-sub-header">
-                  Import Chatbot from JSON 
-                </div> 
-                
-
-                 
+                  Import Chatbot from JSON
+                </div>
               </div>
-
-              <!-- <div  class="col-md-12">
-                <div class="section-subtitle" style="width: calc((100% / 3) + 372px);">  </div>
-                <p class="section-subtitle-paragraph">
-                  Import Chatbot from JSON 
-                </p>
-
-              </div> -->
             </div>
 
             <!-- ------------------------------------------------------ -->
-            <!-- Bot name - only  tilebot -->
+            <!-- Bot name - only  tilebot style="margin-top: 18px;" -->
             <!-- ------------------------------------------------------ -->
-            <div class="row" *ngIf=" botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === true"
-              style="margin-top: 18px;">
+            <div class="row" *ngIf=" botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === true" >
 
-              <div class="col-sm-12">
-                <!-- <mat-form-field appearance="outline" class="cc-mat-form-field">
+
+              <!-- <mat-form-field appearance="outline" class="cc-mat-form-field">
                   <mat-label>Chatbot name</mat-label>
                   <input matInput [(ngModel)]="faqKbName" (ngModelChange)="botNameChanged($event)" id="tilebot--name">
                 </mat-form-field> -->
 
-                <div class="form-group label-floating">
-                  <label class="control-label">
-                    Chatbot name
-                  </label>
-                  <input [(ngModel)]="faqKbName" (ngModelChange)="botNameChanged($event)" id="tilebot--name"
-                    class="form-control" style="max-width: 450px;">
-                </div>
+              <!-- <div class="form-group label-floating"> -->
+              <label class="col-sm-12 label-left-align">
+                {{'ChatbotName' | translate}}
+              </label>
+              <div class="col-sm-12">
+                <input [(ngModel)]="faqKbName" (ngModelChange)="botNameChanged($event)" id="tilebot--name"
+                  style="max-width: 350px;" type="text">
+                <!-- </div> -->
               </div>
+
+              <ng-container *ngIf="botSubtypeAreEnabled">
+                <label class="col-sm-12 label-left-align">
+                  {{'ChatbotType' | translate}}
+                </label>
+                <div class="col-sm-12">
+                  <ng-select id="bot-subtype" 
+                    [clearable]="false" 
+                    [searchable] = false
+                    [(ngModel)]="botSubtype" 
+                    [items]="botSubtypeItems"
+                    bindLabel="name" 
+                    bindValue="value" 
+                    placeholder="Choose chatbot type"
+                    (change)="onSelectBotSubType(botSubtype)" style="max-width: 350px;">
+                  </ng-select>
+                </div>
+              </ng-container>
+
             </div>
 
             <!-- ------------------------------------------------------------------- -->
@@ -229,9 +230,8 @@
             <!-- ------------------------------------------------------------------- -->
             <div class="row" *ngIf="botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === true">
 
-
               <div class="col-sm-12">
-                <!-- btn-lg btn-primary -->
+                <span class="span-24"></span>
                 <button [disabled]="faqKbName?.length < 2" class="btn  btn-tdblu-no-boxshadow "
                   (click)="createBlankTilebot()">
                   Create chatbot
@@ -243,18 +243,19 @@
             <!-- @ Import chatbot from json  -->
             <!-- ------------------------------------------------------------------- -->
             <div class="row" *ngIf="(botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === false)">
-           
-              <span class="span-32"></span>
+
+              <!-- <span class="span-32"></span> -->
               <span class="import-chatbot-from-json-btn-wpr" style="margin-left: 16px;">
                 <input style="display:inline" name="upload-chatbot-from-json" id="upload-chatbot-from-json"
                   class="inputfile" type="file" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json" />
-                  <!-- btn-primary btn-lg  -->
+                
                 <label class="btn btn-tdblu-no-boxshadow" for="upload-chatbot-from-json">
                   <span *ngIf="!showUploadingSpinner" class="material-icons" style="padding-right: 3px;">
                     cloud_upload
                   </span>
-                  <i *ngIf="showUploadingSpinner" style="padding-right: 3px; vertical-align: middle;" class="fa fa-spinner fa-spin"></i>
-                  
+                  <i *ngIf="showUploadingSpinner" style="padding-right: 3px; vertical-align: middle;"
+                    class="fa fa-spinner fa-spin"></i>
+
                   Import
                 </label>
               </span>
@@ -488,7 +489,7 @@
               </div>
             </div>
 
-           
+
 
 
           </div>
@@ -598,7 +599,7 @@
                 </div>
               </div>
 
-              <p  style="color:#7695a5">
+              <p style="color:#7695a5">
                 {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
                 <span *ngIf="hideHelpLink" class="link-in-right-sidebar" (click)="openExternalBotIntegrationTutorial()">
                   <!-- {{ "HereTheTutorial" | translate: tparams }} -->
@@ -840,12 +841,12 @@
       </div> <!-- ./ modal-body -->
 
       <div class="modal-footer modal-footer-no-bkgrnd">
-        <button *ngIf="CREATE_DIALOGFLOW_BOT_ERROR === false || CREATE_BOT_ERROR === false" class="btn btn-primary"
+        <button *ngIf="CREATE_DIALOGFLOW_BOT_ERROR === false || CREATE_BOT_ERROR === false" class="btn btn-tdblu-no-boxshadow"
           (click)="goTo_EditBot()" style="margin-right: 8px;">
           <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
         </button>
 
-        <button *ngIf="CREATE_DIALOGFLOW_BOT_ERROR === true || CREATE_BOT_ERROR === true" class="btn btn-primary"
+        <button *ngIf="CREATE_DIALOGFLOW_BOT_ERROR === true || CREATE_BOT_ERROR === true" class="btn btn-tdblu-no-boxshadow"
           (click)="onCloseModal()" style="margin-right: 8px;">
           <span> {{ "Close" | translate }} </span>
         </button>
@@ -862,7 +863,7 @@
 
 
 
-<!-- MODAL - ATTACH_BOT_TO_DEPT -->
+<!-- MODAL - ATTACH EXT BOT TO DEPT -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalAttacchBotToDept }"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
@@ -882,7 +883,8 @@
 
         <h2 class="modal-title custom__modal__title">
           <span style="vertical-align: middle;">
-            {{ "HookTheBot" | translate }}
+            <!-- {{ "HookTheBot" | translate }} -->
+            {{'Activate' | translate }}
           </span>
         </h2>
       </div>
@@ -901,7 +903,7 @@
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
           <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
-            [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: translateparamBotName "> </h4>
+            [innerHTML]="'DoYouWantToActivateExtBotForOneOfTheFollowingDepts' | translate: translateparamBotName "> </h4>
         </span>
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT" style="text-align: left;">
@@ -947,7 +949,7 @@
               <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
                 stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
             </svg>
-            <h5 style="color:#73AF55;"> {{'BotSuccessfullyActivated' | translate }}</h5>
+            <h5 style="color:#73AF55;"> {{'BotExtSuccessfullyActivated' | translate }}</h5>
 
           </span>
           <span *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR">
@@ -962,7 +964,7 @@
             </svg>
 
 
-            <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheBot' | translate }}</h5>
+            <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheExtBot' | translate }}</h5>
           </span>
         </div>
       </div> <!-- /.modal-body -->
@@ -979,7 +981,10 @@
             class="btn btn-tdblu-no-boxshadow" (click)="hookBotToDept()" style="margin-right:8px">
             <i *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
               class="fa fa-spinner fa-spin"></i>
-            <span> {{ 'ActivateFor' | translate}} {{selected_bot_name}} </span>
+            <span> 
+              <!-- {{ 'ActivateFor' | translate}} {{selected_bot_name}}  -->
+              {{'Activate' | translate}}
+            </span>
           </button>
 
           <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
