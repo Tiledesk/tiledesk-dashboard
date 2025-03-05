@@ -41,7 +41,10 @@
 
   </div>
 
-  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Chatbots </span>
+  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">
+    <!-- Chatbots  -->
+  {{'AIAgents' | translate}}
+  </span>
 
 </span>
 
@@ -51,7 +54,8 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    My Chatbots
+    <!-- My Chatbots -->
+    {{'MyChatbots' | translate}}
   </div>
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
@@ -147,7 +151,7 @@
                       {{ 'BotsPage.NoBot' | translate }} -->
 
                     <span style="display: block;">
-                      You don't have Chatbots.
+                      You don't have AI Agents.
                     </span>
                     <span style="display: block;">
                       Get you started with a <span class="btn---link" (click)="goToBotAllTemplates()"> chatbot

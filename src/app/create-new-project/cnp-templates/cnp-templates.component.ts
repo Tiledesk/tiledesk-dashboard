@@ -380,7 +380,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   createTilebotBotFromScratch(chatbotName) {
     this.language = this.botDefaultSelectedLangCode;
-    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', this.language)
+    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', 'chatbot', this.language)
       .subscribe((faqKb) => {
         this.logger.log('[CNP-TEMPLATES] createTilebotBotFromScratch - RES ', faqKb);
 

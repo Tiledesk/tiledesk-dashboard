@@ -27,9 +27,9 @@
           <!-- <i class="material-icons settings-sidebar-icons" style="margin-left: 0px !important;">
             smart_toy
           </i> -->
-          <p class="custom_paragraph" style="position: relative; top: 1px;">
+          <p class="custom_paragraph" style="position: relative; top: 1px; text-transform: uppercase;padding-left: 0;font-weight: 500;">
             <!-- All -->
-            My Chatbots
+            {{'MyChatbots' | translate}}
           </p>
     
           <span class="sidebar-item-s">{{ myChatbotOtherCount }}</span>
@@ -91,9 +91,9 @@
     <!-- ------------------------------------------------------- -->
     <ng-container *ngIf="USER_ROLE !== 'agent'">
       <li class="sidebar-item-wpr-no-link" style="margin-top: 16px;">
-        <a class="sidebar-item-no-link">
-          TEMPLATES
-
+        <a class="sidebar-item-no-link" style="text-transform: uppercase;">
+          <!-- TEMPLATES -->
+          {{'Templates' | translate}}
         </a>
       </li>
 
@@ -113,7 +113,7 @@
           </i>
          
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-            All
+            {{'AllTemplates' | translate}}
           </p>
           
           <span class="sidebar-item-s">{{ allTemplatesCount }}</span>
@@ -147,7 +147,7 @@
             diversity_3
           </i>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-            Community
+            {{'CommunityTemplates' | translate}}
           </p>
           
           <span class="sidebar-item-s">{{ allCommunityTemplatesCount }}</span>
@@ -167,7 +167,8 @@
             trending_up
           </i>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-            Increase Sales
+            <!-- Increase Sales -->
+            {{'IncreaseSales' | translate}}
           </p>
           <span class="sidebar-item-s">{{ increaseSalesTemplatesCount }}</span>
         </a>
@@ -193,7 +194,8 @@
             emoji_emotions
           </i>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-            Customer Satisfaction
+            <!-- Customer Satisfaction -->
+            {{'CustomerSatisfaction' | translate}}
           </p>
           <span class="sidebar-item-s">{{ customerSatisfactionTemplatesCount }}</span>
         </a>

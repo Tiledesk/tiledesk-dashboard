@@ -154,7 +154,7 @@
     <!-- Bot  (click)="goToBots()"   KB_ROUTE_IS_ACTIVE ||-->
     <!-- ---------------------------------- -->
     <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
-      <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip" matTooltip="Bots" #tooltip="matTooltip"
+      <div id="bot-anchor-wpr" *ngIf="project" matTooltipClass="sb-mat-tooltip" matTooltip="{{'AIAgents' | translate}}" #tooltip="matTooltip"
         matTooltipPosition='right' matTooltipHideDelay="100" routerLinkActive="item-active" [class.item-active]="MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
             MY_BOTS_IS_ROUTE_IS_ACTIVE || 
             BOTS_DEMO_ROUTE_IS_ACTIVE || 

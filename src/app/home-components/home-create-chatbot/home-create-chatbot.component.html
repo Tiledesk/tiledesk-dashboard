@@ -98,7 +98,7 @@
     <!-- <div id="left-container"> -->
     <div id="left">
       <div class="left-title">
-        Your chatbots
+        Your AI Agents
       </div>
       <div class="hc-chatbot-count-btn-wpr">
         <!-- btn-p-outline btn-p-ripple -->
@@ -106,7 +106,8 @@
           (click)="goToMyChatbots()">
           <div class="btn-content">
             <div class="btn--text">
-              Your chatbots
+              <!-- Your chatbots -->
+              Your AI Agents
             </div>
             <div class="btn--bot-count">
               {{countOfChatbots}}
@@ -151,7 +152,7 @@
 
         </div>
         <div class="right-title-text">
-          New chatbot idea?
+          New AI Agent idea?
         </div>
       </div>
       <div id="right-container-sk" *ngIf="showSpinner" style="height: 179px"></div>
@@ -292,7 +293,7 @@
       matTooltipPosition='below' 
       matTooltipHideDelay="100" (click)="goToMyChatbots()"
       [ngStyle]="{'color': countOfChatbots > chatBotLimit ? '#f44336' : 'var(--blue-20)'}">
-      {{ countOfChatbots }} chatbots
+      {{ countOfChatbots }} AI Agents
     </span>
     <span>
       {{ 'NumberOfChatbotCreated' | translate: tParamsPlanAndChatBot }}

@@ -488,7 +488,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('AIAgentSuccessfullyCreated'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,
@@ -519,7 +519,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('AI Agent Successfully Created'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,

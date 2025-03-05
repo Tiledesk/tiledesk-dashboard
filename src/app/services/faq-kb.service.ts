@@ -49,7 +49,7 @@ export class FaqKbService {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     // this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
     // this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().communityTemplatesUrl
-  
+
     this.TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/templates"
     this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/community"
 
@@ -443,7 +443,7 @@ export class FaqKbService {
   }
 
 
-  createChatbotFromScratch(botname, bottype, language) {
+  createChatbotFromScratch(botname, bottype, botsubtype, language) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -454,9 +454,9 @@ export class FaqKbService {
     const url = this.FAQKB_URL;
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
-    const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, language: language, template: 'blank' };
+    const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, 'subtype':botsubtype, language: language, template: 'blank' };
 
-    this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+    console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
     return this._httpClient
       .post(url, JSON.stringify(body), httpOptions)
@@ -587,13 +587,13 @@ export class FaqKbService {
     this.logger.log('update BOT - URL ', url);
 
     let body = {}
-    body = { 
-      'name': name, 
-      'url': urlfaqkb, 
-      'type': bottype, 
+    body = {
+      'name': name,
+      'url': urlfaqkb,
+      'type': bottype,
       'description': faqKb_description
     };
-    
+
     if (bottype === 'internal' || bottype === 'tilebot') {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
@@ -605,7 +605,7 @@ export class FaqKbService {
   }
   // PROJECT_ID/faq_kb/FAQ_KB_ID/language/LANGUAGE
 
-  updateFaqKbLanguage (id: string, chatbotlanguage: string) {
+  updateFaqKbLanguage(id: string, chatbotlanguage: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -617,9 +617,9 @@ export class FaqKbService {
     let url = this.FAQKB_URL + id + '/language/' + chatbotlanguage;
     this.logger.log('update BOT LANG - URL ', url);
 
-  
-   const body = {  'language': chatbotlanguage };
-    
+
+    const body = { 'language': chatbotlanguage };
+
     this.logger.log('[FAQ-KB.SERV] update BOT LANG - BODY ', body);
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
@@ -700,8 +700,8 @@ export class FaqKbService {
   }
 
 
-  
-  addNodeToChatbotAttributes(idBot: string, key:string,  json:any) {
+
+  addNodeToChatbotAttributes(idBot: string, key: string, json: any) {
     this.logger.log('[FAQ-KB.SERV] - addNodeToAttributesChatbot idBot ', idBot)
     const httpOptions = {
       headers: new HttpHeaders({

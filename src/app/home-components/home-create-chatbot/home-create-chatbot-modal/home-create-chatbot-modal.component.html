@@ -10,7 +10,7 @@
 <div mat-dialog-content>
 
     <mat-form-field appearance="fill" class="cc-mat-form-field">
-        <mat-label>Chatbot name</mat-label>
+        <mat-label>AI agent name</mat-label>
         <input matInput [(ngModel)]="chatbotName">
     </mat-form-field>
 </div>
@@ -23,6 +23,7 @@
     <!-- [mat-dialog-close]="newKb.url" -->
     <button [disabled]="chatbotName?.length < 2" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed(chatbotName)"
         cdkFocusInitial>
-        {{'CreateChatbot' | translate}}
+        <!-- {{'CreateChatbot' | translate}} -->
+         Create AI agent
     </button>
 </div>
