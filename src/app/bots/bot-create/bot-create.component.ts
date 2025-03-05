@@ -145,7 +145,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   botSubtypeAreEnabled: boolean;
 
   botSubtypeItems: Array<any> = [
-    { name: "AI Agent", value: 'chatbot' },
+    { name: "Chatbot", value: 'chatbot' },
     { name: "Webhook", value: 'webhook' },
   ];
 
@@ -772,7 +772,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         }
         this.trackChatbotCreated(faqKb)
 
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        // goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {

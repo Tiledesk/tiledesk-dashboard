@@ -532,44 +532,44 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         this.chatbotName = result.chatbotName;
 
         if (this.chatbotName) {
-          this.createTilebotBotFromScratch(this.chatbotName)
+          // this.createTilebotBotFromScratch(this.chatbotName)
         }
       }
     });
   }
 
-  createTilebotBotFromScratch(chatbotName) {
-    this.language = this.botDefaultSelectedLangCode;
+  // createTilebotBotFromScratch(chatbotName) {
+  //   this.language = this.botDefaultSelectedLangCode;
 
 
-    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', this.language)
-      .subscribe((faqKb) => {
-        this.logger.log('[HOME-CREATE-CHATBOT] createTilebotBotFromScratch - RES ', faqKb);
+  //   this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', this.language)
+  //     .subscribe((faqKb) => {
+  //       this.logger.log('[HOME-CREATE-CHATBOT] createTilebotBotFromScratch - RES ', faqKb);
 
-        if (faqKb) {
+  //       if (faqKb) {
 
-          this.newBot_Id = faqKb['_id'];
-          // this.translateparamBotName = { bot_name: this.newBot_name }
-          // SAVE THE BOT IN LOCAL STORAGE
-          this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
+  //         this.newBot_Id = faqKb['_id'];
+  //         // this.translateparamBotName = { bot_name: this.newBot_name }
+  //         // SAVE THE BOT IN LOCAL STORAGE
+  //         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
 
-          this.trackUserAction.emit({ action: 'Create chatbot', actionRes: faqKb })
+  //         this.trackUserAction.emit({ action: 'Create chatbot', actionRes: faqKb })
 
-          // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
-          goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
-        }
+  //         // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
+  //         goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+  //       }
 
-      }, (error) => {
+  //     }, (error) => {
 
-        this.logger.error('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST ERROR ', error);
-
-
-      }, () => {
-        this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
+  //       this.logger.error('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST ERROR ', error);
 
 
-      })
-  }
+  //     }, () => {
+  //       this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
+
+
+  //     })
+  // }
 
 
   presentDialogReachedChatbotLimit() {
