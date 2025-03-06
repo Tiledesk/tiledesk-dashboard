@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+
+### 2.7.83-rc2
+- Adds the ability to select the chatbot subtype when creating a chatbot from scratch
+
 ### 2.7.83-rc1
 - Updates pricing page
 
