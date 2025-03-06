@@ -567,7 +567,7 @@ export class AuthService {
    * @param first_name
    * @param last_name
    */
-  public signup(email: string, password: string, first_name: string, last_name: string): Observable<any> {
+  public signup(email: string, password: string, first_name: string, last_name: string, mobile_number ): Observable<any> {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -581,8 +581,9 @@ export class AuthService {
       password: password,
       firstname: first_name,
       lastname: last_name,
+      phone: mobile_number
     }
-    this.logger.log('[AUTH-SERV] - SIGNUP POST REQUEST BODY ', body)
+    console.log('[AUTH-SERV] - SIGNUP POST REQUEST BODY ', body)
 
     const url = this.SIGNUP_BASE_URL
     this.logger.log('[AUTH-SERV] - SIGNUP URL ', url)

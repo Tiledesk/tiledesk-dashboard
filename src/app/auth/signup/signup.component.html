@@ -318,6 +318,29 @@
               Email must be a valid email
             </div>
 
+
+            <!-- ----------------------------- -->
+            <!-- Mobile phone number -->
+            <!-- ----------------------------- -->
+            <label for="phone">Mobile Number <span style="color:#ff5252">*</span></label>
+            <input
+              type="phone"
+              id="phone"
+              name="phone"
+              formControlName="phone"
+              (input)="formatAsYouType()"/>
+
+              <div *ngIf="formErrors.phone" class="is-danger" translate>
+                {{ formErrors.phone }}
+              </div>
+          
+              <div *ngIf="!isValidPhone()" class="is-danger">
+                Invalid mobile number.
+              </div>
+
+            <!-- ----------------------------- -->
+            <!-- Password -->
+            <!-- ----------------------------- -->
             <label for="password">Password <span style="color:#ff5252">*</span></label>
             <div class="pswrd-wpr">
 
@@ -402,7 +425,7 @@
 
             <!-- userForm.valid {{userForm.valid}} -->
             <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" 
-              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
+              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn || !isValidPhone()">
               <span *ngIf="!showSpinnerInLoginBtn">
                 {{ "GetStarted" | translate}}
               </span>

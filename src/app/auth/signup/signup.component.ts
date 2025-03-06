@@ -20,8 +20,9 @@ declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
+import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber } from 'libphonenumber-js';
 
-type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
+type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phone' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 
 @Component({
@@ -97,6 +98,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     'password': '',
     'firstName': '',
     'lastName': '',
+    'phone': '',
     'terms': '',
   };
   validationMessages = {
@@ -110,7 +112,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       'pattern': 'Password must be include at one letter and one number.',
       'minlength': 'Password must be at least 8 characters long.',
       'maxlength': 'Password is too long.',
-
+    },
+    'phone': {
+      'required': 'Mobile number is required.',
     },
     'firstName': {
       'required': 'First Name is required.',
@@ -156,7 +160,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
     this.display_dpa = brand['display_dpa_link'];
-    this.dpa_url =  brand['dpa_url'];
+    this.dpa_url = brand['dpa_url'];
     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
@@ -216,6 +220,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // Validators.email,
         Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
+      'phone': ['', [Validators.required]],
+
       'password': ['', [
         // Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/),
         // Validators.pattern(/[$-/:-?{-~!"^@#`\[\]]/g),
@@ -246,14 +252,17 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
     const form = this.userForm;
 
-  //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
-  //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
-  //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
-  //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
 
-    
 
-    // this.logger.log('[SIGN-UP] onValueChanged  data', data)
+    //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+    //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
+    //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
+    //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
+
+
+
+    console.log('[SIGN-UP] onValueChanged  data', data)
+    this.formatPhoneNumber()
     // if (data) {
     //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
     //   this.logger.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
@@ -273,7 +282,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms')) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms' || field === 'phone')) {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
@@ -289,6 +298,31 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         }
       }
     }
+  }
+
+  formatPhoneNumber() {
+    console.log('formatPhoneNumber' )
+    const phone = this.userForm.get('phone')?.value;
+    if (phone) {
+      const phoneNumber = parsePhoneNumberFromString(phone, 'IT');
+      return phoneNumber ? phoneNumber.formatInternational() : phone;
+    }
+    return '';
+  }
+
+
+  formatAsYouType() {
+    let inputValue = this.userForm.get('phone')?.value || '';
+    const formatter = new AsYouType('IT');
+    this.userForm.patchValue({ phone: formatter.input(inputValue) });
+  }
+
+  isValidPhone(): boolean {
+    const phone = this.userForm.get('phone')?.value;
+    if (!phone) {
+      return true; // No validation error if input is empty
+    }
+    return isValidPhoneNumber(phone, 'IT');
   }
 
 
@@ -582,7 +616,13 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       }
     }
 
-    this.logger.log('[SIGN-UP] signup  this.userForm ', this.userForm)
+    console.log('[SIGN-UP] signup  this.userForm ', this.userForm)
+
+    console.log('[SIGN-UP] Email ', this.userForm.value['email']);
+       console.log('[SIGN-UP] Password ', this.userForm.value['password']);
+       console.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
+       console.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
+       console.log('[SIGN-UP] Mobile Number ', this.userForm.value['phone']);
 
     this.auth.showExpiredSessionPopup(true);
 
@@ -591,8 +631,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     // const _first_name = stringOnlyFirstCharacter + stringWithoutFirstCharacter
 
-    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'])
-
+    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'], this.userForm.value['phone'])
       .subscribe((signupResponse) => {
         this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
         this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
@@ -620,9 +659,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           if (signupResponse['code'] === 11000) {
 
-            
+
             this.notify.showToast(this.translate.instant('SomethingWentWrongCreatingYourAccount'), 4, 'report_problem')
-           
+
 
             // if (this.currentLang === 'it') {
             //   this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
@@ -671,7 +710,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
       // this.logger.log('autoSignin: ', error);
       if (!error) {
-       
+
 
         // this.logger.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
         // this.logger.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
