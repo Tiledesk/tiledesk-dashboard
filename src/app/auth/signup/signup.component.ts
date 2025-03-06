@@ -301,7 +301,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   formatPhoneNumber() {
-    console.log('formatPhoneNumber' )
+    console.log('formatPhoneNumber')
     const phone = this.userForm.get('phone')?.value;
     if (phone) {
       const phoneNumber = parsePhoneNumberFromString(phone, 'IT');
@@ -619,19 +619,21 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     console.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
     console.log('[SIGN-UP] Email ', this.userForm.value['email']);
-       console.log('[SIGN-UP] Password ', this.userForm.value['password']);
-       console.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
-       console.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
-       console.log('[SIGN-UP] Mobile Number ', this.userForm.value['phone']);
+    console.log('[SIGN-UP] Password ', this.userForm.value['password']);
+    console.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
+    console.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
+    console.log('[SIGN-UP] Mobile Number ', this.userForm.value['phone']);
 
-    this.auth.showExpiredSessionPopup(true);
+    const mobile_phone = this.userForm.value['phone'].replace(/\s/g, "");
+    console.log('[SIGN-UP] mobile_phone_value ', mobile_phone);
+
 
     // const stringOnlyFirstCharacter = this.userForm.value['firstName'].charAt(0)
     // const stringWithoutFirstCharacter = this.userForm.value['firstName'].slice(1);
 
     // const _first_name = stringOnlyFirstCharacter + stringWithoutFirstCharacter
 
-    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'], this.userForm.value['phone'])
+    this.auth.signup(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['firstName'], this.userForm.value['lastName'], mobile_phone)
       .subscribe((signupResponse) => {
         this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
         this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
