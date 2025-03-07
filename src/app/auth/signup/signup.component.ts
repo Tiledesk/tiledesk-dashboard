@@ -82,6 +82,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   isValidAppSumoActivationEmail: boolean;
 
   browser_lang: string;
+  browserLang: any;
   temp_SelectedLangName: string;
   temp_SelectedLangCode: string;
   selectedTranslationLabel: string;
@@ -90,6 +91,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   hideGoogleAuthBtn: string;
   USER_ROLE: string;
 
+  defaultCountry: string = 'IT'; // Change as needed
+  phoneRegex = /^\+?[1-9]\d{6,14}$/  // /^\+?[1-9]\d{6,14}$/ // /^\+?[1-9]\d{1,14}$/; // Mobile number validation regex
+  // const mobilePhoneRegex = /^\+?[1-9]\d{6,14}$/;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -172,12 +176,26 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
     this.getReCaptchaSiteKey()
     this.getUserRole()
-
+    this.getDefaultCountry();
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
+  }
+
+  getDefaultCountry() {
+    // this.http.get<any>('https://ip-api.com/json').subscribe((data) => {
+    //   this.defaultCountry = data.countryCode || 'US';
+    // });
+
+    const locale = this.translate.getBrowserLang();
+    console.log( 'getDefaultCountry locale' ,this.browserLang) 
+    this.browserLang = locale.toUpperCase()
+    // const locale = navigator.language || 'en-US'; // Example: "en-US"
+    console.log( 'getDefaultCountry browserLang' , this.browserLang) 
+    // console.log( 'getDefaultCountry locale.split' , locale.split('-')[1]) 
+    // return locale.split('-')[1] || 'US'; // Extract country code (e.g., "US" from "en-US")
   }
 
   getUserRole() {
@@ -313,16 +331,40 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
   formatAsYouType() {
     let inputValue = this.userForm.get('phone')?.value || '';
-    const formatter = new AsYouType('IT');
+    const formatter = new AsYouType(this.browserLang);
     this.userForm.patchValue({ phone: formatter.input(inputValue) });
   }
 
-  isValidPhone(): boolean {
+  _isValidPhone(): boolean {
     const phone = this.userForm.get('phone')?.value;
     if (!phone) {
       return true; // No validation error if input is empty
     }
-    return isValidPhoneNumber(phone, 'IT');
+    // console.log( 'is mobile ',  phone.getType() !== 'MOBILE') 
+    // return isValidPhoneNumber(phone, 'IT');
+    // Remove non-numeric characters before validation
+      const cleanedNumber = phone.replace(/\D/g, '');
+      console.log( 'cleanedNumber ',  cleanedNumber)
+      return cleanedNumber.length >= 7 && cleanedNumber.length <= 15 && this.phoneRegex.test(cleanedNumber);;
+      
+  }
+
+  isValidPhone(): boolean {
+    const mobile = this.userForm.get('phone')?.value;
+  
+    if (!mobile) {
+      return true; // No error if the field is empty
+    }
+  
+    // Parse the phone number
+    const phoneNumber = parsePhoneNumberFromString(mobile);
+  
+    if (!phoneNumber || !isValidPhoneNumber(mobile)) {
+      return false; // Invalid phone number
+    }
+  
+    // Check if the number is a MOBILE type
+    return phoneNumber.getType() === 'MOBILE';
   }
 
 
