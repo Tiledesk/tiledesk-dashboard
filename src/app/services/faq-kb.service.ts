@@ -456,7 +456,7 @@ export class FaqKbService {
 
     const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, subtype:botSubtype, language: language, template: 'blank' };
 
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
+    // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
     return this._httpClient
       .post(url, JSON.stringify(body), httpOptions)
