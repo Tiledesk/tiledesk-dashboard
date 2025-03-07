@@ -180,12 +180,13 @@ export class WsSharedComponent implements OnInit {
         if (memberIsBot === true) {
 
           const bot_id = member_id.slice(4);
-          this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
+          // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
 
           const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+          // console.log( 'stored bot ' , bot)
           if (bot) {
 
-            this.agents_array.push({ '_id': 'bot_' + bot['_id'], 'firstname': bot['name'], 'isBot': true })
+            this.agents_array.push({ '_id': 'bot_' + bot['_id'], 'firstname': bot['name'], 'isBot': true , type: bot['type'], subtype: bot['subtype']})
 
           } else {
             this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': true })
