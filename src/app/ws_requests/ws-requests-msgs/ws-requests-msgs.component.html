@@ -3705,9 +3705,10 @@
                                 </span> -->
 
                               <span *ngIf="bot.type === 'tilebot'">
-                                <img class="ws-request-msgs-bot-type-logo"
-                                  [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                                  [src]="botLogo" />
+                                <img *ngIf="!bot?.subtype" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" [src]="botLogo" />
+                                <img *ngIf="bot?.subtype && bot?.subtype === 'chatbot'" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" [src]="botLogo" />
+                                <img *ngIf="bot?.subtype && bot?.subtype === 'copilot'" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" src="assets/img/logos/copilot-logo.svg" />
+                                <img *ngIf="bot?.subtype && bot?.subtype === 'webhook'" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" src="assets/img/logos/webhook-logo.svg" />
                               </span>
 
 
@@ -4440,9 +4441,10 @@
                       </span> -->
 
                           <span *ngIf="bot.type === 'tilebot'">
-                            <img class="ws-request-msgs-bot-type-logo"
-                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                              [src]="botLogo" />
+                            <img *ngIf="!bot?.subtype" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" [src]="botLogo" />
+                            <img *ngIf="bot?.subtype && bot?.subtype === 'chatbot'" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" [src]="botLogo" />
+                            <img *ngIf="bot?.subtype && bot?.subtype === 'copilot'" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" src="assets/img/logos/copilot-logo.svg" />
+                            <img *ngIf="bot?.subtype && bot?.subtype === 'webhook'" class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}" src="assets/img/logos/webhook-logo.svg" />
                           </span>
 
 

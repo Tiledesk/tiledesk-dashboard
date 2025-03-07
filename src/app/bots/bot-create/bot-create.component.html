@@ -150,7 +150,7 @@
             <!-- ------------------------------------- -->
             <!-- New header for tilebot -->
             <!-- ------------------------------------- -->
-            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === true" style="display: none;">
+            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === true">
               <div class="col-sm-12">
                 <!-- <div class="create-tilebot-header">
                   Create a chatbot or select one from the <span class="btn--as--link"
@@ -176,7 +176,7 @@
               </div> -->
             </div>
 
-            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === false" style="display: none;">
+            <div class="row" *ngIf="botType === 'tilebot' &&  HAS_SELECTED_CREATE_BOT === false">
               <div class="col-sm-12">
                 <div class="create-tilebot-sub-header">
                   Import Chatbot from JSON
@@ -205,7 +205,7 @@
                 <!-- </div> -->
               </div>
 
-              <!-- <ng-container *ngIf="botSubtypeAreEnabled"> -->
+              <ng-container *ngIf="botSubtypeAreEnabled">
                 <label class="col-sm-12 label-left-align">
                   {{'ChatbotType' | translate}}
                 </label>
@@ -221,7 +221,7 @@
                     (change)="onSelectBotSubType(botSubtype)" style="max-width: 350px;">
                   </ng-select>
                 </div>
-              <!-- </ng-container> -->
+              </ng-container>
 
             </div>
 

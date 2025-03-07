@@ -200,7 +200,10 @@
 
                         <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
                           <div class="bot-list-type-logo-img-wpr ">
-                            <img class="bot-type-logo" [src]="botLogo" />
+                            <img *ngIf="!faqkb?.subtype" class="bot-type-logo" [src]="botLogo" />
+                            <img *ngIf="faqkb?.subtype && faqkb?.subtype === 'chatbot'" class="bot-type-logo" [src]="botLogo" />
+                            <img *ngIf="faqkb?.subtype && faqkb?.subtype === 'copilot'" class="bot-type-logo" src="assets/img/logos/copilot-logo.svg"/>
+                            <img *ngIf="faqkb?.subtype && faqkb?.subtype === 'webhook'" class="bot-type-logo" src="assets/img/logos/webhook-logo.svg"/>
                           </div>
                         </div>
 

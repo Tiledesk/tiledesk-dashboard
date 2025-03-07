@@ -936,7 +936,10 @@
                     </div> -->
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
                       <div class="bot-type-logo-img-wpr">
-                        <img class="served-by-bot--type-logo" [src]="botLogo" />
+                        <img *ngIf="!agent?.subtype" class="served-by-bot--type-logo" [src]="botLogo" />
+                        <img *ngIf="agent?.subtype && agent?.subtype === 'chatbot'" class="served-by-bot--type-logo" [src]="botLogo" />
+                        <img *ngIf="agent?.subtype && agent?.subtype === 'copilot'" class="served-by-bot--type-logo" src="assets/img/logos/copilot-logo.svg"/>
+                        <img *ngIf="agent?.subtype && agent?.subtype === 'webhook'" class="served-by-bot--type-logo" src="assets/img/logos/webhook-logo.svg"/>
                       </div>
                     </div>
                     <!-- <div *ngIf="agent.type === 'tiledesk-ai'">
@@ -1117,7 +1120,10 @@
 
                     <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
                       <div class="bot-type-logo-img-wpr">
-                        <img class="served-by-bot--type-logo" [src]="botLogo" />
+                        <img *ngIf="!agent?.subtype"  class="served-by-bot--type-logo" [src]="botLogo" />
+                        <img *ngIf="agent?.subtype && agent?.subtype === 'chatbot'"  class="served-by-bot--type-logo" [src]="botLogo"/>
+                        <img *ngIf="agent?.subtype && agent?.subtype === 'copilot'"  class="served-by-bot--type-logo" src="assets/img/logos/copilot-logo.svg"/>
+                        <img *ngIf="agent?.subtype && agent?.subtype === 'webhook'"  class="served-by-bot--type-logo" src="assets/img/logos/webhook-logo.svg"/>
                       </div>
                     </div>
 

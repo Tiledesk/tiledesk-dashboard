@@ -23,6 +23,7 @@ import { FaqKb } from 'app/models/faq_kb-model';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RoleService } from 'app/services/role.service';
+import { BrandService } from 'app/services/brand.service';
 declare const $: any;
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -90,6 +91,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   dept_ID: string;
 
   bot_type: string;
+  bot_subtype: string;
   storageBucket: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean
 
@@ -147,7 +149,8 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   learnMoreAboutDefaultRoles: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-
+  botLogo: string;
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -162,9 +165,13 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public prjctPlanService: ProjectPlanService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public brandService: BrandService,
   ) {
     super(prjctPlanService, notify);
+
+    const brand = brandService.getBrand();
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
 
 
@@ -1230,6 +1237,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.selectedId = faqkb._id;
         this.selectedBotId = faqkb._id
         this.bot_type = faqkb.type;
+        this.bot_subtype = faqkb.subtype
         // USED ONLY FOR DEBUG
         // this.selectedValue = bot.fullname;
 
