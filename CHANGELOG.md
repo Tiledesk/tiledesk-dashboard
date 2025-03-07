@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.83-rc4
+- Minor improvements and bug fixing
+
 ### 2.7.83-rc3
 - Adds the chatbot subtype icons
 
