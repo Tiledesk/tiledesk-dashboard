@@ -166,6 +166,7 @@
                 </div>
 
           
+             
 
                 <div class="card-list" *ngFor="let faqkb of faqkbList; let i = index">
 
@@ -250,6 +251,7 @@
                       <!-- Icon human in the loop -->
                       <!-- (mouseenter)="openPopover()"  -->
                       <!-- scheduleClosePopover() -->
+                      <!-- (mouseleave)="scheduleClosePopover()" -->
                       <!-- ---------------------------------------------- -->
                       <div class="cl-card-second-column">
                         <div *ngIf="faqkb.agents_available === true || faqkb.agents_available === undefined" class="cl-availble-for-agent"
@@ -373,30 +375,29 @@
 
                     </div>
 
-                    
-                         <!-- ---------------------------------------------- -->
-                          <!-- Popover for the icon human in the loop -->
-                          <!-- (mouseenter)="cancelClosePopover()"  -->
-                          <!-- (mouseleave)="scheduleClosePopover()"  -->
-                          <!-- ---------------------------------------------- -->
-                          <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
-                          panelClass="custom-panel-sat-popover" 
-                          closeTransition="1ms ease-in"
-                          
-                          forceAlignment="true">
+                    <!-- ---------------------------------------------- -->
+                    <!-- Popover for the icon human in the loop 
+                      (mouseenter)="cancelClosePopover()" 
+                      (mouseleave)="scheduleClosePopover()" -->
+                    <!-- ---------------------------------------------- -->
+                    <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
+                      panelClass="custom-panel-sat-popover" 
+                      closeTransition="1ms ease-in"
+                      forceAlignment="true">
 
-                          <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
+                      <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
 
-                            <div class="custom-panel-sat-popover-title">
-                              Available to agents
-                            </div>
+                        <div class="custom-panel-sat-popover-title">
+                          Available to agents
+                        </div>
 
-                            <div class="custom-panel-sat-popover-description">
-                              Chatbot visible to agents for the purpose to be put back in the conversation
-                            </div>
+                        <div class="custom-panel-sat-popover-description">
+                          Chatbot visible to agents for the purpose to be put back in the conversation
+                        </div>
 
-                          </div>
-                        </sat-popover>
+                      </div>
+                    </sat-popover>
+
                   </div>
                 </div>
               </div>
