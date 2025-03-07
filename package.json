@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.7.82",
+  "version": "2.7.83",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
