@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.83-rc3
+- Adds the chatbot subtype icons
 
 ### 2.7.83-rc2
 - Adds the ability to select the chatbot subtype when creating a chatbot from scratch
