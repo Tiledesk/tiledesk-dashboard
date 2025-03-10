@@ -4167,11 +4167,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
         }, () => {
 
-          if (this.CHAT_PANEL_MODE === true) {
-            const msg = { action: 'openJoinConversationModal', parameter: requestid }
-            window.parent.postMessage(msg, '*')
-          }
-
           this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
           //  NOTIFY SUCCESS
           this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
