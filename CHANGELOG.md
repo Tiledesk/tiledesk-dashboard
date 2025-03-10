@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.85
+- Adds deepseek in the integrations
+
 ### 2.7.84
 - Minor improvements and bug fixing
 
