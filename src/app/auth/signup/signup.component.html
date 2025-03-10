@@ -329,15 +329,32 @@
             <label for="phone">Mobile Number <span style="color:#ff5252">*</span></label>
 
             <div class="phone-container">
-              <!-- Country Selection Dropdown (Small Dropdown Inside Input) -->
-              <ng-select class="country-select" [items]="countries" bindLabel="name" bindValue="code"
-                placeholder="Country" (change)="onCountryChange($event)">
+              <!-- Country Selection Dropdown (Small Dropdown Inside Input) [(ngModel)]="phoneCountry" -->
+              <ng-select class="country-select" 
+                formControlName="phoneCountry" 
+                #countrySelect
+                [items]="countries" 
+                bindLabel="name" 
+                bindValue="code"
+                placeholder="Country" 
+                (change)="onCountryChange($event)">
                 <ng-template ng-option-tmp let-item="item">
                   <span>{{ item.name }} ({{ item.dialCode }})</span>
                 </ng-template>
               </ng-select>
-       
-              <input type="phone" id="phone" name="phone" formControlName="phone" (input)="formatAsYouType()"/>
+
+              <!-- <div class="phone-input-wrapper" (click)="openCountrySelect()">
+                 [disabled]="userForm.get('phone')?.disabled" -->
+                <input 
+                #phoneInput
+                  type="phone" 
+                  id="phone" 
+                  name="phone" 
+                  formControlName="phone" 
+                  (input)="formatAsYouType()"  
+                 
+                 />
+              <!-- </div> -->
             </div>
             <!-- Error Message -->
             <div *ngIf="formErrors.phone" class="is-danger" translate>

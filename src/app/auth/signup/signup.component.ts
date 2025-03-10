@@ -21,8 +21,9 @@ import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/wi
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
 import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber, getCountries, getCountryCallingCode, CountryCode } from 'libphonenumber-js/max' // from 'libphonenumber-js';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
-type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phone' | 'terms';
+type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phoneCountry' | 'phone' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 
 @Component({
@@ -34,6 +35,8 @@ type FormErrors = { [u in UserFields]: string };
 
 export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit {
   @ViewChild('recaptcha', { static: false }) el: ElementRef;
+  @ViewChild('countrySelect') countrySelect!: NgSelectComponent;
+  @ViewChild('phoneInput') phoneInput!: ElementRef<HTMLInputElement>;
 
   tparams: any;
   companyLogo: string;
@@ -95,7 +98,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   phoneRegex = /^\+?[1-9]\d{6,14}$/  // /^\+?[1-9]\d{6,14}$/ // /^\+?[1-9]\d{1,14}$/; // Mobile number validation regex
   isValidPhoneNumber: boolean;
   phoneNumber: any = undefined;
-  
+  dialCode: string = '';
   // const mobilePhoneRegex = /^\+?[1-9]\d{6,14}$/;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -105,6 +108,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     'password': '',
     'firstName': '',
     'lastName': '',
+    'phoneCountry': '',
     'phone': '',
     'terms': '',
   };
@@ -120,6 +124,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       'minlength': 'Password must be at least 8 characters long.',
       'maxlength': 'Password is too long.',
     },
+    'phoneCountry': {},
     'phone': {
       'required': 'Mobile number is required.',
     },
@@ -135,7 +140,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   };
 
   countries: { code: string; name: string; dialCode: string }[] = [];
-  selectedCountry: string = '';
+  selectedCountry: string ;
 
   constructor(
     private fb: FormBuilder,
@@ -219,11 +224,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   // 'email': [{ value: '', disabled: true }, [
   buildForm() {
     this.userForm = this.fb.group({
-      'email': ['', [
-        Validators.required,
+      'email': ['', [ Validators.required,
         // Validators.email,
         Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
+      'phoneCountry': [''],
       'phone': ['', [Validators.required]],
 
       'password': ['', [
@@ -290,7 +295,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms' || field === 'phone')) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms' || field === 'phone' || field === "phoneCountry")) {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
@@ -326,23 +331,52 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
     }));
+     // Automatically select the first country
+     if (this.countries.length > 0) {
+ 
+    //   this.countries = initSelect
+    //  this.countries[0].code;
+    //   this.countries[0].name;
+      this.userForm.patchValue({ phoneCountry: this.countries[0].code });
+      this.dialCode = this.countries[0].dialCode;
+      console.log('this.countries[0].code ', this.countries[0].code)
+      this.onCountryChange(this.countries[0]);
+    }
 
     console.log('[SIGN-UP] - PHONE VILDATION SUPPORTED countries', this.countries)
   }
 
 
   onCountryChange(country: any) {
-    console.log('[SIGN-UP] onCountryChange country', country)
-    const selectedCountry = this.countries.find(c => c.code === country.code);
-    console.log('[SIGN-UP] onCountryChange selectedCountry 1 ', selectedCountry)
+    if (country) {
+      console.log('[SIGN-UP] onCountryChange country', country)
+      const selectedCountry = this.countries.find(c => c.code === country.code);
+      console.log('[SIGN-UP] onCountryChange selectedCountry 1 ', selectedCountry)
 
-    if (selectedCountry) {
-      console.log('[SIGN-UP] onCountryChange selectedCountry 2', selectedCountry)
+      if (selectedCountry) {
+        console.log('[SIGN-UP] onCountryChange selectedCountry 2', selectedCountry)
+        this.dialCode = selectedCountry.dialCode;
+        this.mobilePhoneCountryCode = selectedCountry.code;
+        console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
+        // this.userForm.get('phone')?.enable();
+        this.userForm.patchValue({ phone: selectedCountry.dialCode + ' ' });
+        setTimeout(() => {
+          const inputElement = this.phoneInput.nativeElement;
+          inputElement.focus();
+          inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+        }, 100); // Delay to ensure the input is ready
+      }
+      // else {
+      //   this.userForm.get('phone')?.disable();
+      // }
+    }
+  }
 
-      this.mobilePhoneCountryCode = selectedCountry.code;
-      console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
 
-      this.userForm.patchValue({ phone: selectedCountry.dialCode + ' ' });
+  openCountrySelect() {
+    console.log('[SIGN-UP] openCountrySelect ')
+    if (this.userForm.get('phone')?.disabled && this.countrySelect) {
+      this.countrySelect.open();
     }
   }
 
@@ -352,7 +386,19 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     let inputValue = this.userForm.get('phone')?.value || '';
 
+    console.log('formatAsYouType inputValue ', inputValue)
+   
+
+
     if (!inputValue.trim()) return; // Skip if input is empty
+
+    console.log('formatAsYouType inputValue.startsWith dialCode', inputValue.startsWith(this.dialCode))
+    if (!inputValue.startsWith(this.dialCode)) {
+      console.log('formatAsYouType inputValue.startsWith dialCode 2', inputValue.startsWith(this.dialCode))
+      // this.setPhoneInput(this.dialCode + inputValue.replace(/[^0-9]/g, ''));
+      // this.userForm.patchValue({ phone: this.dialCode + ' '});
+      this.userForm.get('phone')?.setValue(this.dialCode); // Use setValue for phone input
+    }
 
     // this.mobilePhoneCountryCode
     const formatter = new AsYouType();
@@ -363,6 +409,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     // this.userForm.patchValue({ phone: formatter.input(inputValue) });
     this.userForm.patchValue({ phone: formattedNumber }, { emitEvent: false });
     this.isValidPhone()
+  }
+
+  setPhoneInput(value: string) {
+    console.log('formatAsYouTypesetPhoneInput')
+    this.userForm.patchValue({ phone: value });
   }
 
 
