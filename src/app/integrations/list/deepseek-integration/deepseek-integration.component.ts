@@ -58,7 +58,7 @@ export class DeepseekIntegrationComponent implements OnInit {
  
    checkKey() {
      return new Promise((resolve) => {
-       let url = ""; //"https://api.cohere.com/v1/models";
+       let url = 'https://api.deepseek.com/models';
        let key = "Bearer " + this.integration.value.apikey;
        this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
         this.logger.log("[INT-deepseek] Key verification resp: ", resp);
