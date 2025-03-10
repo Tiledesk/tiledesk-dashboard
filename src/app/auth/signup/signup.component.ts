@@ -20,7 +20,7 @@ declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
-import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber } from 'libphonenumber-js';
+import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber, getCountries, getCountryCallingCode, CountryCode } from 'libphonenumber-js/max' // from 'libphonenumber-js';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phone' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -91,8 +91,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   hideGoogleAuthBtn: string;
   USER_ROLE: string;
 
-  defaultCountry: string = 'IT'; // Change as needed
+  mobilePhoneCountryCode: any;
   phoneRegex = /^\+?[1-9]\d{6,14}$/  // /^\+?[1-9]\d{6,14}$/ // /^\+?[1-9]\d{1,14}$/; // Mobile number validation regex
+  isValidPhoneNumber: boolean;
+  phoneNumber: any = undefined;
+  
   // const mobilePhoneRegex = /^\+?[1-9]\d{6,14}$/;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -130,6 +133,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       'required': 'Please accept Terms and Conditions and Privacy Policy',
     },
   };
+
+  countries: { code: string; name: string; dialCode: string }[] = [];
+  selectedCountry: string = '';
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -176,34 +183,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
     this.getReCaptchaSiteKey()
     this.getUserRole()
-    this.getDefaultCountry();
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
-  }
-
-  getDefaultCountry() {
-    // this.http.get<any>('https://ip-api.com/json').subscribe((data) => {
-    //   this.defaultCountry = data.countryCode || 'US';
-    // });
-
-    const locale = this.translate.getBrowserLang();
-    console.log( 'getDefaultCountry locale' ,this.browserLang) 
-    this.browserLang = locale.toUpperCase()
-    // const locale = navigator.language || 'en-US'; // Example: "en-US"
-    console.log( 'getDefaultCountry browserLang' , this.browserLang) 
-    // console.log( 'getDefaultCountry locale.split' , locale.split('-')[1]) 
-    // return locale.split('-')[1] || 'US'; // Extract country code (e.g., "US" from "en-US")
-  }
-
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.getSupportedCountry()
   }
 
   ngAfterViewInit() {
@@ -227,6 +212,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       elemPswInput.setAttribute('type', 'password');
     }
   }
+
 
 
   // 
@@ -280,7 +266,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
     console.log('[SIGN-UP] onValueChanged  data', data)
-    this.formatPhoneNumber()
+    // console.log('[SIGN-UP] onValueChanged  data phone', data.phone)
+    // if (data ) {
+    //   this.phoneData = data.phone
+    // }
+    // this.formatPhoneNumber()
     // if (data) {
     //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
     //   this.logger.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
@@ -319,7 +309,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   formatPhoneNumber() {
-    console.log('formatPhoneNumber')
+    console.log('[SIGN-UP] formatPhoneNumber')
     const phone = this.userForm.get('phone')?.value;
     if (phone) {
       const phoneNumber = parsePhoneNumberFromString(phone, 'IT');
@@ -328,12 +318,96 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     return '';
   }
 
+  getSupportedCountry() {
+    this.countries = getCountries().map((code) => ({
+      code: code,
+      name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code,
+      dialCode: `+${getCountryCallingCode(code)}`,
+
+
+    }));
+
+    console.log('[SIGN-UP] - PHONE VILDATION SUPPORTED countries', this.countries)
+  }
+
+
+  onCountryChange(country: any) {
+    console.log('[SIGN-UP] onCountryChange country', country)
+    const selectedCountry = this.countries.find(c => c.code === country.code);
+    console.log('[SIGN-UP] onCountryChange selectedCountry 1 ', selectedCountry)
+
+    if (selectedCountry) {
+      console.log('[SIGN-UP] onCountryChange selectedCountry 2', selectedCountry)
+
+      this.mobilePhoneCountryCode = selectedCountry.code;
+      console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
+
+      this.userForm.patchValue({ phone: selectedCountry.dialCode + ' ' });
+    }
+  }
+
 
   formatAsYouType() {
+    // console.log('formatAsYouType ', this.mobilePhoneCountryCode)
+
     let inputValue = this.userForm.get('phone')?.value || '';
-    const formatter = new AsYouType(this.browserLang);
-    this.userForm.patchValue({ phone: formatter.input(inputValue) });
+
+    if (!inputValue.trim()) return; // Skip if input is empty
+
+    // this.mobilePhoneCountryCode
+    const formatter = new AsYouType();
+
+    // Apply formatting
+    const formattedNumber = formatter.input(inputValue);
+
+    // this.userForm.patchValue({ phone: formatter.input(inputValue) });
+    this.userForm.patchValue({ phone: formattedNumber }, { emitEvent: false });
+    this.isValidPhone()
   }
+
+
+  isValidPhone() {
+
+    const mobile = this.userForm.get('phone')?.value;
+    console.log('isValidPhone mobile value', mobile)
+    // console.log('isValidPhone mobile phoneData', this.phoneData)
+
+    // if (!mobile) {
+    //   // return true; // No error if the field is empty
+    //   this.isValidPhoneNumber = true
+
+    // }
+
+    // Parse the phone number
+    // this.mobilePhoneCountryCode
+    this.phoneNumber = parsePhoneNumberFromString(mobile);
+    console.log('isValidPhone parsePhoneNumberFromString phoneNumber', this.phoneNumber)
+    // this.mobilePhoneCountryCode
+
+    // if (phoneNumber === undefined) {
+    //   this.isValidPhoneNumber = true
+    // }
+
+    console.log('isValidPhoneNumber ', isValidPhoneNumber(mobile))
+    // if (!phoneNumber || phoneNumber && isValidPhoneNumber(mobile) === false) {
+    if (this.phoneNumber && isValidPhoneNumber(mobile) === false) {
+      // return false; // Invalid phone number
+      this.isValidPhoneNumber = false
+    } else if (this.phoneNumber && isValidPhoneNumber(mobile) === true) {
+      // return true; // Valid phone number
+      this.isValidPhoneNumber = true
+    }
+
+    if (this.phoneNumber) {
+
+      console.log('getType ', this.phoneNumber.getType())
+    }
+    // Check if the number is a MOBILE type
+    // return phoneNumber.getType() === 'MOBILE' || phoneNumber.getType() === 'FIXED_LINE_OR_MOBILE';
+
+  }
+
+
 
   _isValidPhone(): boolean {
     const phone = this.userForm.get('phone')?.value;
@@ -343,31 +417,20 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     // console.log( 'is mobile ',  phone.getType() !== 'MOBILE') 
     // return isValidPhoneNumber(phone, 'IT');
     // Remove non-numeric characters before validation
-      const cleanedNumber = phone.replace(/\D/g, '');
-      console.log( 'cleanedNumber ',  cleanedNumber)
-      return cleanedNumber.length >= 7 && cleanedNumber.length <= 15 && this.phoneRegex.test(cleanedNumber);;
-      
-  }
+    const cleanedNumber = phone.replace(/\D/g, '');
+    console.log('cleanedNumber ', cleanedNumber)
+    return cleanedNumber.length >= 7 && cleanedNumber.length <= 15 && this.phoneRegex.test(cleanedNumber);;
 
-  isValidPhone(): boolean {
-    const mobile = this.userForm.get('phone')?.value;
-  
-    if (!mobile) {
-      return true; // No error if the field is empty
-    }
-  
-    // Parse the phone number
-    const phoneNumber = parsePhoneNumberFromString(mobile);
-  
-    if (!phoneNumber || !isValidPhoneNumber(mobile)) {
-      return false; // Invalid phone number
-    }
-  
-    // Check if the number is a MOBILE type
-    return phoneNumber.getType() === 'MOBILE';
   }
 
 
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((userRole) => {
+        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
 
   getQueryParamsAndSegmentRecordPageAndIdentify() {
     this.route.queryParamMap
@@ -599,8 +662,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
   getBrowserLang() {
+
     const browserLang = this.translate.getBrowserLang();
     if (browserLang) {
+      this.browserLang = browserLang
+      console.log('[SIGN-UP] GET BROWSER LANG - browserLang ', browserLang)
       if (browserLang === 'it') {
         this.currentLang = 'it'
       } else {
@@ -686,7 +752,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           // this.localDbService.setInStorage('signedup', 'true')
           // this.router.navigate(['/welcome']);
-          this.logger.log('[SIGN-UP] RES ', signupResponse);
+          console.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 

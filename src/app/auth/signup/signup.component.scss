@@ -711,3 +711,24 @@ input.secure {
 // .gray-bckgnd {
 //   background: #eeeeee !important;
 // }
+
+.phone-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+}
+
+.country-select {
+  width: 120px;
+  margin-right: 5px;
+}
+
+input[formControlName="phone"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
