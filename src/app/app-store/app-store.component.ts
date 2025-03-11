@@ -533,7 +533,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           'page': 'App store'
         });
       } catch (err) {
-        this.logger.error(`Track ${event} error`, err);
+        // this.logger.error(`Track ${event} error`, err);
       }
 
       try {
@@ -544,7 +544,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
         });
       } catch (err) {
-        this.logger.error(`Identify ${event} error`, err);
+        // this.logger.error(`Identify ${event} error`, err);
       }
 
       try {
@@ -554,7 +554,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
         });
       } catch (err) {
-        this.logger.error(`Group ${event} error`, err);
+        // this.logger.error(`Group ${event} error`, err);
       }
     }
 

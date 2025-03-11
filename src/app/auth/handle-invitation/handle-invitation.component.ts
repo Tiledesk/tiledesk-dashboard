@@ -56,7 +56,7 @@ export class HandleInvitationComponent implements OnInit {
 
           });
         } catch (err) {
-          this.logger.error('Auth Page, Handle invitation - error', err);
+          // this.logger.error('Auth Page, Handle invitation - error', err);
         }
   
       }
@@ -122,7 +122,7 @@ export class HandleInvitationComponent implements OnInit {
         "role": this.pendingInvitationRole
       });
     } catch (err) {
-      this.logger.error('track signup event error', err);
+      // this.logger.error('track signup event error', err);
     }
 
   }

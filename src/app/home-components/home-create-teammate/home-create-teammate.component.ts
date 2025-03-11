@@ -538,7 +538,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
             });
           } catch (err) {
-            this.logger.error('Home identify Invite Sent Profile error', err);
+            // this.logger.error('Home identify Invite Sent Profile error', err);
           }
 
           try {
@@ -552,7 +552,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
               }
             });
           } catch (err) {
-            this.logger.error('track Home invite Sent event error', err);
+            // this.logger.error('track Home invite Sent event error', err);
           }
 
           try {
@@ -561,7 +561,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('group Home invite Sent error', err);
+            // this.logger.error('group Home invite Sent error', err);
           }
         }
       }

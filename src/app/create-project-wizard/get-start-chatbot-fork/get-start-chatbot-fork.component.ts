@@ -453,7 +453,7 @@ export class GetStartChatbotForkComponent implements OnInit {
             template: templateNameOnSite
           });
         } catch (err) {
-          this.logger.error('Wizard Get start chatbot fork page error', err);
+          // this.logger.error('Wizard Get start chatbot fork page error', err);
         }
         if (!this.user) {
           // this.logger.log('[GET START CHATBOT FORK] this.user',  this.user)
@@ -476,7 +476,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
           });
         } catch (err) {
-          this.logger.error('Wizard Get start chatbot fork identify error', err);
+          // this.logger.error('Wizard Get start chatbot fork identify error', err);
         }
 
         try {
@@ -485,7 +485,7 @@ export class GetStartChatbotForkComponent implements OnInit {
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('Group Install template group error', err);
+          // this.logger.error('Group Install template group error', err);
         }
 
       }
@@ -501,7 +501,7 @@ export class GetStartChatbotForkComponent implements OnInit {
           plan: this.prjct_profile_name,
         });
       } catch (err) {
-        this.logger.error('Group Install template group error', err);
+        // this.logger.error('Group Install template group error', err);
       }
     }
   }
@@ -528,7 +528,7 @@ export class GetStartChatbotForkComponent implements OnInit {
             'button': 'Import Template',
           });
         } catch (err) {
-          this.logger.error('track Use template (install template) event error', err);
+          // this.logger.error('track Use template (install template) event error', err);
         }
 
         try {
@@ -539,7 +539,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
           });
         } catch (err) {
-          this.logger.error('Identify Use template (install template) event error', err);
+          // this.logger.error('Identify Use template (install template) event error', err);
         }
 
         try {
@@ -548,7 +548,7 @@ export class GetStartChatbotForkComponent implements OnInit {
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('Group tUse template (install template) error', err);
+          // this.logger.error('Group tUse template (install template) error', err);
         }
 
       }

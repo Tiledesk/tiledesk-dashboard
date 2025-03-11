@@ -353,7 +353,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
               'button': 'Import Template'
             });
           } catch (err) {
-            this.logger.error('track Import template error', err);
+            // this.logger.error('track Import template error', err);
           }
 
           try {
@@ -364,7 +364,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
 
             });
           } catch (err) {
-            this.logger.error('Identify Import template error', err);
+            // this.logger.error('Identify Import template error', err);
           }
 
           try {
@@ -374,7 +374,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
 
             });
           } catch (err) {
-            this.logger.error('Group Import template error', err);
+            // this.logger.error('Group Import template error', err);
           }
 
         }

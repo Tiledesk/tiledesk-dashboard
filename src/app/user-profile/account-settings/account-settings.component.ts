@@ -321,7 +321,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
 
           });
         } catch (err) {
-          this.logger.error('Account Deleted page error', err);
+          // this.logger.error('Account Deleted page error', err);
         }
 
         let userFullname = ''
@@ -340,7 +340,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
 
           });
         } catch (err) {
-          this.logger.error('identify in Account Deleted  error', err);
+          // this.logger.error('identify in Account Deleted  error', err);
         }
 
         try {
@@ -352,7 +352,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
             }
           });
         } catch (err) {
-          this.logger.error('track Account Deleted event error', err);
+          // this.logger.error('track Account Deleted event error', err);
         }
 
         try {
@@ -361,7 +361,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('group Signed Out error', err);
+          // this.logger.error('group Signed Out error', err);
         }
       }
     }

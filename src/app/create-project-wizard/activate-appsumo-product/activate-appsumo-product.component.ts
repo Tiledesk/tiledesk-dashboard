@@ -288,7 +288,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
               });
             } catch (err) {
-              this.logger.error('Activate AppSumo product page error', err);
+              // this.logger.error('Activate AppSumo product page error', err);
             }
 
             try {
@@ -299,7 +299,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
                 plan: this.appSumoLicenseName
               });
             } catch (err) {
-              this.logger.error('Activate AppSumo product identify error', err);
+              // this.logger.error('Activate AppSumo product identify error', err);
             }
 
             try {
@@ -308,7 +308,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
                 plan: this.appSumoLicenseName
               });
             } catch (err) {
-              this.logger.error('Activate AppSumo product group error', err);
+              // this.logger.error('Activate AppSumo product group error', err);
             }
           }
         }

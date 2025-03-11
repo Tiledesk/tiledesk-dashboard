@@ -348,14 +348,14 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
             });
           } catch (err) {
-            this.logger.error('Signup page error', err);
+            // this.logger.error('Signup page error', err);
           }
           try {
             window['analytics'].identify({
               createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
             });
           } catch (err) {
-            this.logger.error('Signup identify error', err);
+            // this.logger.error('Signup identify error', err);
           }
         }
       }, 3000);
@@ -825,7 +825,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             logins: 5,
           });
         } catch (err) {
-          this.logger.error('identify signup event error', err);
+          // this.logger.error('identify signup event error', err);
         }
         let utm_source_value = undefined;
         let su: any = 'Signed up';
@@ -862,7 +862,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             'method': "Email and Password"
           });
         } catch (err) {
-          this.logger.error('track signup event error', err);
+          // this.logger.error('track signup event error', err);
         }
       }
     }
@@ -961,7 +961,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           });
         } catch (err) {
-          this.logger.error('Signup Create project page error', err);
+          // this.logger.error('Signup Create project page error', err);
         }
 
         let userFullname = ''
@@ -979,7 +979,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             plan: "Pro (trial)"
           });
         } catch (err) {
-          this.logger.error('Signup Create project identify error', err);
+          // this.logger.error('Signup Create project identify error', err);
         }
 
         try {
@@ -993,7 +993,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             }
           });
         } catch (err) {
-          this.logger.error('Signup Create track Trial Started event error', err);
+          // this.logger.error('Signup Create track Trial Started event error', err);
         }
 
         try {
@@ -1002,7 +1002,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             plan: "Pro (trial)",
           });
         } catch (err) {
-          this.logger.error('Signup Create project group error', err);
+          // this.logger.error('Signup Create project group error', err);
         }
       }
     }

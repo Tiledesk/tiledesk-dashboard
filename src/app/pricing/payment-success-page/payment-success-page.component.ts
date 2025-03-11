@@ -172,7 +172,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
         try {
           window['analytics'].page(`Ugrade plane Success page`, {});
         } catch (err) {
-          this.logger.error('page Home error', err);
+          // this.logger.error('page Home error', err);
         }
       }
       // }
@@ -210,7 +210,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
               plan: this.plan_name,
             });
           } catch (err) {
-            this.logger.error('[PRICING - PAYMENT-SUCCESS analytics group error', err);
+            // this.logger.error('[PRICING - PAYMENT-SUCCESS analytics group error', err);
           }
         }
       }
@@ -265,7 +265,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
                 logins: 5,
               });
             } catch (err) {
-              this.logger.error('[PRICING - PAYMENT-SUCCESS]  identify user event error', err);
+              // this.logger.error('[PRICING - PAYMENT-SUCCESS]  identify user event error', err);
             }
           }
         }

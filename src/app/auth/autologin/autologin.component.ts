@@ -247,14 +247,6 @@ export class AutologinComponent implements OnInit {
   trackUserHasSignedInWithGoogle(user) {
     if (!isDevMode()) {
       if (window['analytics']) {
-        // try {
-        //   window['analytics'].page("Auth Page, Sign in with Google", {
-
-        //   });
-        // } catch (err) {
-        //   this.logger.error('Sign in with Google page error', err);
-        // }
-
         let userFullname = ''
         if (user.firstname && user.lastname) {
           userFullname = user.firstname + ' ' + user.lastname
@@ -270,7 +262,7 @@ export class AutologinComponent implements OnInit {
 
           });
         } catch (err) {
-          this.logger.error('identify Sign in with Google event error', err);
+          // this.logger.error('identify Sign in with Google event error', err);
         }
         // Segments
         try {
@@ -281,7 +273,7 @@ export class AutologinComponent implements OnInit {
             'method': "Google Auth"
           });
         } catch (err) {
-          this.logger.error('track Sign in with Google event error', err);
+          // this.logger.error('track Sign in with Google event error', err);
         }
       }
     }

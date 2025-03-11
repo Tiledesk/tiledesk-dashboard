@@ -308,7 +308,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
             'button': 'Import Template',
           });
         } catch (err) {
-          this.logger.error('track Import template (install template) event error', err);
+          // this.logger.error('track Import template (install template) event error', err);
         }
 
         try {
@@ -319,7 +319,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
 
           });
         } catch (err) {
-          this.logger.error('Identify Import template (install template) event error', err);
+          // this.logger.error('Identify Import template (install template) event error', err);
         }
 
         try {
@@ -328,7 +328,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('Group Import template (install template) error', err);
+          // this.logger.error('Group Import template (install template) error', err);
         }
 
       }

@@ -4024,7 +4024,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           'button': 'Reassign',
         });
       } catch (err) {
-        this.logger.error(`Track Reassign to chatbot error`, err);
+        // this.logger.error(`Track Reassign to chatbot error`, err);
       }
 
       try {
@@ -4035,7 +4035,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         });
       } catch (err) {
-        this.logger.error(`Identify Reassign to chatbot error`, err);
+        // this.logger.error(`Identify Reassign to chatbot error`, err);
       }
 
     }

@@ -218,7 +218,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('User Profile page error', err);
+          // this.logger.error('User Profile page error', err);
         }
       }
     }
@@ -807,7 +807,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('User Profile page error', err);
+          // this.logger.error('User Profile page error', err);
         }
 
         let userFullname = ''
@@ -826,7 +826,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('identify in User Profile error', err);
+          // this.logger.error('identify in User Profile error', err);
         }
 
         try {
@@ -835,7 +835,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('group in User Profile error', err);
+          // this.logger.error('group in User Profile error', err);
         }
       }
     }

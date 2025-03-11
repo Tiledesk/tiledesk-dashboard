@@ -786,7 +786,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
         });
       } catch (err) {
-        this.logger.error('Pricing page error', err);
+        // this.logger.error('Pricing page error', err);
       }
 
       try {
@@ -798,7 +798,7 @@ export class PricingComponent implements OnInit, OnDestroy {
           }
         });
       } catch (err) {
-        this.logger.error('track go to checkout error', err);
+        // this.logger.error('track go to checkout error', err);
       }
     }
   }
@@ -831,7 +831,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
         });
       } catch (err) {
-        this.logger.error('Pricing page error', err);
+        // this.logger.error('Pricing page error', err);
       }
 
       try {
@@ -843,7 +843,7 @@ export class PricingComponent implements OnInit, OnDestroy {
           }
         });
       } catch (err) {
-        this.logger.error('track contact us to upgrade plan error', err);
+        // this.logger.error('track contact us to upgrade plan error', err);
       }
     } else {
       this.presentModalAgentCannotManageAvancedSettings()

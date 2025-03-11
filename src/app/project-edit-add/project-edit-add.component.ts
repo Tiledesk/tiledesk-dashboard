@@ -841,7 +841,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           try {
             window['analytics'].page("Project Settings, Subscription", {});
           } catch (err) {
-            this.logger.error('page Home error', err);
+            // this.logger.error('page Home error', err);
           }
         }
       }

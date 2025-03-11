@@ -247,7 +247,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           try {
             window['analytics'].page("Add bot, Create", {});
           } catch (err) {
-            this.logger.error('page Add bot error', err);
+            // this.logger.error('page Add bot error', err);
           }
         }
       }
@@ -299,7 +299,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           try {
             window['analytics'].page("Add bot, Import", {});
           } catch (err) {
-            this.logger.error('page Add bot error', err);
+            // this.logger.error('page Add bot error', err);
           }
         }
       }
@@ -481,7 +481,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           'button': 'Import Chatbot from JSON',
         });
       } catch (err) {
-        this.logger.error(`Track  Import Chatbot from JSON error`, err);
+        // this.logger.error(`Track  Import Chatbot from JSON error`, err);
       }
 
       try {
@@ -492,7 +492,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Identify Create chatbot error`, err);
+        // this.logger.error(`Identify Create chatbot error`, err);
       }
 
       try {
@@ -502,7 +502,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Group Create chatbot error`, err);
+        // this.logger.error(`Group Create chatbot error`, err);
       }
     }
   }
@@ -809,7 +809,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           'button': 'Create chatbot',
         });
       } catch (err) {
-        this.logger.error(`Track Create chatbot error`, err);
+        // this.logger.error(`Track Create chatbot error`, err);
       }
 
       try {
@@ -820,7 +820,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Identify Create chatbot error`, err);
+        // this.logger.error(`Identify Create chatbot error`, err);
       }
 
       try {
@@ -830,7 +830,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Group Create chatbot error`, err);
+        // this.logger.error(`Group Create chatbot error`, err);
       }
     }
   }

@@ -204,7 +204,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('Invite Temmates Page error', err);
+          // this.logger.error('Invite Temmates Page error', err);
         }
       }
     }
@@ -946,7 +946,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
             });
           } catch (err) {
-            this.logger.error('identify Invite Sent Profile error', err);
+            // this.logger.error('identify Invite Sent Profile error', err);
           }
 
           try {
@@ -960,7 +960,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
               }
             });
           } catch (err) {
-            this.logger.error('track Invite Sent event error', err);
+            // this.logger.error('track Invite Sent event error', err);
           }
 
           try {
@@ -969,7 +969,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('group Invite Sent error', err);
+            // this.logger.error('group Invite Sent error', err);
           }
         }
       }

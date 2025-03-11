@@ -223,6 +223,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // QUOTES
   isVisibleQuoteBtn: boolean;
+  isVisibleQuoteSection: boolean;
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
   requests_count = 0;
@@ -346,7 +347,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         try {
           window['analytics'].page("Home Page, Home", {});
         } catch (err) {
-          this.logger.error('page Home error', err);
+          // this.logger.error('page Home error', err);
         }
       }
     }
@@ -863,7 +864,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             // this.updatedProjectTrialEndedEmitted(true)
             // localStorage.setItem('dshbrd----' + this.current_prjct.id_project._id, 'hasEmittedTrialEnded')
           } catch (err) {
-            this.logger.error('track Trial Started event error', err);
+            // this.logger.error('track Trial Started event error', err);
           }
 
 
@@ -886,7 +887,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('group Home error', err);
+            // this.logger.error('group Home error', err);
           }
         }
       }, 100);
@@ -1073,7 +1074,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       try {
         window['analytics'].track(userAction, trackObjct);
       } catch (err) {
-        this.logger.error(`Track ${userAction} error`, err);
+        // this.logger.error(`Track ${userAction} error`, err);
       }
 
       try {
@@ -1084,7 +1085,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         });
       } catch (err) {
-        this.logger.error(`Identify ${userAction} error`, err);
+        // this.logger.error(`Identify ${userAction} error`, err);
       }
 
       try {
@@ -1094,7 +1095,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         });
       } catch (err) {
-        this.logger.error(`Group ${userAction} error`, err);
+        // this.logger.error(`Group ${userAction} error`, err);
       }
     }
   }
@@ -2505,7 +2506,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 });
               } catch (err) {
-                this.logger.error('identify Home error', err);
+                // this.logger.error('identify Home error', err);
               }
             }
           }
@@ -3084,6 +3085,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+      if (key.includes("QIN")) {
+        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
+        let qt = key.split(":");
+        // this.logger.log('PUBLIC-KEY (HOME) - mt key&value', mt);
+        if (qt[1] === "F") {
+          this.isVisibleQuoteSection = false;
+          // this.logger.log('PUBLIC-KEY (HOME) - isVisibleQuoteSection ', this.isVisibleQuoteSection);
+        } else {
+          this.isVisibleQuoteSection = true;
+          // this.logger.log('PUBLIC-KEY (HOME) - isVisibleQuoteSection ', this.isVisibleQuoteSection);
+        }
+      }
+
 
     });
 
@@ -3119,6 +3133,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (!this.public_Key.includes('KNB')) {
       this.isVisibleKNB = false
+    }
+
+    if (!this.public_Key.includes("QIN")) {
+      this.isVisibleQuoteSection = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteSection', this.isVisibleQuoteSection);
     }
   }
 

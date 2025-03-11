@@ -279,7 +279,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
             plan: this.profile_name_for_segment,
           });
         } catch (err) {
-          this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
+          // this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
         }
 
         try {
@@ -291,7 +291,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
             }
           });
         } catch (err) {
-          this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
+          // this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
         }
 
         try {
@@ -300,7 +300,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
             plan: this.profile_name_for_segment,
           });
         } catch (err) {
-          this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+          // this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
         }
       }
     }

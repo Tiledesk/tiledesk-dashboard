@@ -293,7 +293,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
                 "chatbotName": this.botname
               });
             } catch (err) {
-              this.logger.error('Wizard Install template page error', err);
+              // this.logger.error('Wizard Install template page error', err);
             }
 
             let userFullname = ''
@@ -312,7 +312,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
               });
             } catch (err) {
-              this.logger.error('Identify Install template event error', err);
+              // this.logger.error('Identify Install template event error', err);
             }
 
             try {
@@ -321,7 +321,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
                 plan: this.prjct_profile_name,
               });
             } catch (err) {
-              this.logger.error('Group Install template group error', err);
+              // this.logger.error('Group Install template group error', err);
             }
           }
         }
@@ -595,7 +595,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
             'button': 'Import Template',
           });
         } catch (err) {
-          this.logger.error('track Import template (install template) event error', err);
+          // this.logger.error('track Import template (install template) event error', err);
         }
 
         try {
@@ -606,7 +606,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
           });
         } catch (err) {
-          this.logger.error('Identify Import template (install template) event error', err);
+          // this.logger.error('Identify Import template (install template) event error', err);
         }
 
         try {
@@ -615,7 +615,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('Group Import template (install template) error', err);
+          // this.logger.error('Group Import template (install template) error', err);
         }
 
       }

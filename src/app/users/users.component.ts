@@ -976,7 +976,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
               });
             } catch (err) {
-              this.logger.error('Account Deleted page error', err);
+              // this.logger.error('Account Deleted page error', err);
             }
 
             let userFullname = ''
@@ -994,7 +994,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
               });
             } catch (err) {
-              this.logger.error('identify in Account Removed  error', err);
+              // this.logger.error('identify in Account Removed  error', err);
             }
 
             try {
@@ -1007,7 +1007,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
                   }
                 });
             } catch (err) {
-              this.logger.error('track signin event error', err);
+              // this.logger.error('track signin event error', err);
             }
 
             try {
@@ -1016,7 +1016,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
                 plan: this.prjct_profile_name,
               });
             } catch (err) {
-              this.logger.error('group Signed Out error', err);
+              // this.logger.error('group Signed Out error', err);
             }
           }
         }

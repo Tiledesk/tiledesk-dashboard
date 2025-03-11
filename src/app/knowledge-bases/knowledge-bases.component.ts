@@ -1988,7 +1988,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           window['analytics'].page("Knowledge Bases Page", {
           });
         } catch (err) {
-          this.logger.error('Knowledge page error', err);
+          // this.logger.error('Knowledge page error', err);
         }
       }
     }
@@ -2837,7 +2837,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           });
         } catch (err) {
-          this.logger.error('identify Invite Sent Profile error', err);
+          // this.logger.error('identify Invite Sent Profile error', err);
         }
         try {
           window['analytics'].track(event, {
@@ -2853,7 +2853,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             }
           });
         } catch (err) {
-          this.logger.error('track Invite Sent event error', err);
+          // this.logger.error('track Invite Sent event error', err);
         }
         try {
           window['analytics'].group(this.id_project, {
@@ -2861,7 +2861,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             plan: this.profile_name + ' plan',
           });
         } catch (err) {
-          this.logger.error('group Invite Sent error', err);
+          // this.logger.error('group Invite Sent error', err);
         }
       }
     }
