@@ -140,7 +140,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   };
 
   countries: { code: string; name: string; dialCode: string }[] = [];
-  selectedCountry: string ;
+  selectedCountry: string;
 
   constructor(
     private fb: FormBuilder,
@@ -224,9 +224,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   // 'email': [{ value: '', disabled: true }, [
   buildForm() {
     this.userForm = this.fb.group({
-      'email': ['', [ Validators.required,
-        // Validators.email,
-        Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
+      'email': ['', [Validators.required,
+      // Validators.email,
+      Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
       'phoneCountry': [''],
       'phone': ['', [Validators.required]],
@@ -331,12 +331,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
     }));
-     // Automatically select the first country
-     if (this.countries.length > 0) {
- 
-    //   this.countries = initSelect
-    //  this.countries[0].code;
-    //   this.countries[0].name;
+    // Automatically select the first country
+    if (this.countries.length > 0) {
+
+      //   this.countries = initSelect
+      //  this.countries[0].code;
+      //   this.countries[0].name;
       this.userForm.patchValue({ phoneCountry: this.countries[0].code });
       this.dialCode = this.countries[0].dialCode;
       console.log('this.countries[0].code ', this.countries[0].code)
@@ -387,7 +387,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     let inputValue = this.userForm.get('phone')?.value || '';
 
     console.log('formatAsYouType inputValue ', inputValue)
-   
+
 
 
     if (!inputValue.trim()) return; // Skip if input is empty
@@ -397,23 +397,20 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       console.log('formatAsYouType inputValue.startsWith dialCode 2', inputValue.startsWith(this.dialCode))
       // this.setPhoneInput(this.dialCode + inputValue.replace(/[^0-9]/g, ''));
       // this.userForm.patchValue({ phone: this.dialCode + ' '});
-      this.userForm.get('phone')?.setValue(this.dialCode); // Use setValue for phone input
+      this.userForm.get('phone')?.setValue(this.dialCode + ' ' ); // Use setValue for phone input
     }
 
     // this.mobilePhoneCountryCode
-    const formatter = new AsYouType();
+    if (inputValue.startsWith(this.dialCode)) {
+      const formatter = new AsYouType();
 
-    // Apply formatting
-    const formattedNumber = formatter.input(inputValue);
+      // Apply formatting
+      const formattedNumber = formatter.input(inputValue);
 
-    // this.userForm.patchValue({ phone: formatter.input(inputValue) });
-    this.userForm.patchValue({ phone: formattedNumber }, { emitEvent: false });
-    this.isValidPhone()
-  }
-
-  setPhoneInput(value: string) {
-    console.log('formatAsYouTypesetPhoneInput')
-    this.userForm.patchValue({ phone: value });
+      // this.userForm.patchValue({ phone: formatter.input(inputValue) });
+      this.userForm.patchValue({ phone: formattedNumber }, { emitEvent: false });
+      this.isValidPhone()
+    }
   }
 
 
@@ -441,10 +438,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     console.log('isValidPhoneNumber ', isValidPhoneNumber(mobile))
     // if (!phoneNumber || phoneNumber && isValidPhoneNumber(mobile) === false) {
-    if (this.phoneNumber && isValidPhoneNumber(mobile) === false) {
+    if (isValidPhoneNumber(mobile) === false) {
       // return false; // Invalid phone number
       this.isValidPhoneNumber = false
-    } else if (this.phoneNumber && isValidPhoneNumber(mobile) === true) {
+    } else if (isValidPhoneNumber(mobile) === true) {
       // return true; // Valid phone number
       this.isValidPhoneNumber = true
     }

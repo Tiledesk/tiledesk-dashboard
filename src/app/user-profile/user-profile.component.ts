@@ -21,7 +21,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
-const swal = require('sweetalert');
+import { parsePhoneNumberFromString, isValidPhoneNumber, AsYouType } from 'libphonenumber-js/max';
 const Swal = require('sweetalert2')
 
 
@@ -39,6 +39,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   userFirstname: string;
   userLastname: string;
   userEmail: string;
+  userPhone: string;
+  isValidPhoneNumber: boolean
   userId: string;
   displayModalUpdatingUser = 'none';
   SHOW_CIRCULAR_SPINNER = false;
@@ -187,6 +189,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   ngOnInit() {
 
     this.getLoggedUser();
+    
     this.getProfileImageStorage();
     this.getCurrentProject();
 
@@ -328,18 +331,60 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   }
 
+  getCurrentProjectUser(userId) {
+    this.usersService.getProjectUserById(userId).subscribe((pu) => {
+      console.log('[USER-PROFILE] - P-USER from rest call ', pu)
+
+      const user = pu[0]['id_user']
+      console.log('[USER-PROFILE] - USER  from rest call ', user)
+
+      const user_phone = user['phone'];
+      console.log('[USER-PROFILE] - user_phone ', user_phone)
+     
+      this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
+      console.log('[USER-PROFILE] isValidPhoneNumber ', isValidPhoneNumber)
+
+      const phoneNumber = parsePhoneNumberFromString(user_phone);
+      console.log('[USER-PROFILE] - USER  parsed phone Number ', phoneNumber)
+
+      if (phoneNumber) {
+        console.log('USER-PROFILE] getType ', phoneNumber.getType())
+      }
+
+      const formatter = new AsYouType();
+      this.userPhone = formatter.input(user_phone);
+    })
+  }
+
+
+  formatAsYouType(event) {
+    console.log('USER-PROFILE] formatAsYouType ',event)
+    const formatter = new AsYouType();
+    // this.userPhone = formatter.input(this.userPhone);
+
+    // this.isValidPhone()
+  }
+
+
+
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
+      console.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
 
       if (user) {
+
+        
         this.user = user;
         this.userFirstname = user.firstname;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
         this.userLastname = user.lastname;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
         this.userId = user._id;
+
+
+        this.getCurrentProjectUser(this.userId)
+
         this.userEmail = user.email;
         this.firstnameCurrentValue = user.firstname;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)

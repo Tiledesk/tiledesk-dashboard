@@ -1,6 +1,6 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-input[type="text"] {
+input[type="text"],input[type="phone"] {
   /* min-width: 307px !important; */
   height: 36px;
   font-size: 14px;
@@ -40,7 +40,7 @@ select {
 
 /* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS > OF 768  */
 @media (min-width: 767px) {
-  input[type="text"] {
+  input[type="text"],input[type="phone"] {
     width: 400px !important;
   }
 }

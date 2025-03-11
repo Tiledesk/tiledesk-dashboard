@@ -337,7 +337,8 @@
                 bindLabel="name" 
                 bindValue="code"
                 placeholder="Country" 
-                (change)="onCountryChange($event)">
+                (change)="onCountryChange($event)"
+                [clearable]="false">
                 <ng-template ng-option-tmp let-item="item">
                   <span>{{ item.name }} ({{ item.dialCode }})</span>
                 </ng-template>
@@ -346,13 +347,15 @@
               <!-- <div class="phone-input-wrapper" (click)="openCountrySelect()">
                  [disabled]="userForm.get('phone')?.disabled" -->
                 <input 
-                #phoneInput
+                  #phoneInput
                   type="phone" 
                   id="phone" 
                   name="phone" 
                   formControlName="phone" 
                   (input)="formatAsYouType()"  
-                 
+                    style=" border-top-left-radius: 0px !important;
+                    border-bottom-left-radius: 0px !important;
+                    border-left: unset !important;"
                  />
               <!-- </div> -->
             </div>
@@ -454,7 +457,7 @@
 
             <!-- userForm.valid {{userForm.valid}}    || !isValidPhone() -->
             <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit"
-              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn ">
+              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn || !isValidPhoneNumber">
               <span *ngIf="!showSpinnerInLoginBtn">
                 {{ "GetStarted" | translate}}
               </span>

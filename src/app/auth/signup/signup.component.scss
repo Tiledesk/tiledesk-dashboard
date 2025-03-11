@@ -715,15 +715,32 @@ input.secure {
 .phone-container {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
+  // border: 1px solid #ccc;
+  // border-radius: 5px;
+  // padding: 5px;
   width: 100%;
+  
 }
 
 .country-select {
   width: 120px;
-  margin-right: 5px;
+  margin-bottom: 10px
+  // margin-right: 5px;
+}
+
+.ng-select.country-select ::ng-deep .ng-select-container {
+  height: 56px !important;
+  border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: unset;
+}
+
+.ng-select.country-select ::ng-deep .ng-select-container .ng-value-container .ng-input>input {
+  padding-top: 10px;
+}
+
+.ng-select.country-select ::ng-deep ng-dropdown-panel {
+  width: max-content !important;
 }
 
 input[formControlName="phone"] {
