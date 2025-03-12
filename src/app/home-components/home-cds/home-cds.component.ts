@@ -87,7 +87,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   ngOnChanges(changes: SimpleChanges): void {
     this.logger.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
     this.logger.log('[HOME-CDS] - displayKbHeroSection ngOnChanges', this.displayKbHeroSection);
-    console.log('[HOME-CDS] - isVisibleKNB ngOnChanges', this.isVisibleKNB);
+    this.logger.log('[HOME-CDS] - isVisibleKNB ngOnChanges', this.isVisibleKNB);
     this.sortChatbots();
   }
 
@@ -118,8 +118,8 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
-        console.log('[HOME-CDS] - $UBSCIBE TO PUBLISHED PROJECT isVisibleKNB ', this.isVisibleKNB);
+        this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+        this.logger.log('[HOME-CDS] - $UBSCIBE TO PUBLISHED PROJECT isVisibleKNB ', this.isVisibleKNB);
         if (project) {
           this.projectId = project._id
           if (this.isVisibleKNB) {
@@ -148,7 +148,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.kbService.getAllNamespaces().subscribe((namespaces: any) => {
       if (namespaces) {
 
-        console.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
+        this.logger.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
         this.namespaces = namespaces
         namespaces.sort(function compare(a, b) {
           if (a['updatedAt'] > b['updatedAt']) {
@@ -182,7 +182,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((kbAssistants: any) => {
 
-      console.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
+      this.logger.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
       this.chatbotsUsingNamespace = kbAssistants
 
       if (this.chatbotsUsingNamespace.length > 0) {
@@ -371,7 +371,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   goToKBPage() {
-    console.log('[HOME-CDS] goToKBPage')
+    this.logger.log('[HOME-CDS] goToKBPage')
     this.router.navigate(['project/' + this.projectId + '/knowledge-bases/' + this.kbNameSpaceid]);
   }
 

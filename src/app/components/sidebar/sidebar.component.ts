@@ -1774,7 +1774,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
       if (project) {
         this.project = project
-        console.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project , ' isVisibleKNB ', this.isVisibleKNB)
+        // this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project , ' isVisibleKNB ', this.isVisibleKNB)
 
         // FOR KB
         const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
