@@ -3628,6 +3628,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.logoUrl = 'No Logo';
           })
           .catch(error => {
+            this.logoUrl = null
             this.logger.error('Error deleting firebase file:', error);
           });
 
@@ -3637,12 +3638,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.logger.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
             if (res === true) {
               // this.logoUrl = this.widgetLogoURL;
-              this.logger.log('[WS-REQUESTS-MSGS] - delete firebase logoUrl', this.logoUrl)
+              this.logger.log('[WS-REQUESTS-MSGS] - delete native logoUrl', this.logoUrl)
 
               this.logoUrl = 'No Logo';
 
             }
           })
+          .catch(error => {
+            this.logoUrl = null
+            this.logger.error('Error deleting native file:', error);
+          });
       }
 
     } else {
