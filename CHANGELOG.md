@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.88-rc1
+- Fixes bugs for docker compose
+
+### 2.7.87
+- Improves the widget logo deletion method
+
+### 2.7.86
+- Sets the default language as the default preview language in widget setup
+
 ### 2.7.85
 - Adds deepseek in the integrations
 
