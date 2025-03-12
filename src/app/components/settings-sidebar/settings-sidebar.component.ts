@@ -9,6 +9,7 @@ import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
+import { KbSettings } from 'app/models/kbsettings-model'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -353,20 +354,48 @@ export class SettingsSidebarComponent implements OnInit {
       this.isVisibleINT = false;
     }
     if (this.isVisibleKNB) {
-      this.listenToKbVersion()
+      // this.listenToKbVersion()
+      this.getKnowledgeBaseSettings() 
     }
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
+
+   getKnowledgeBaseSettings() {
+      this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
+        this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
+        if (kbSettings && kbSettings.kbs) {
+          if (kbSettings.kbs.length === 0) {
+            // this.kbService.areNewwKb(true)
+            this.ARE_NEW_KB = true
+          } else if (kbSettings.kbs.length > 0) {
+            // this.kbService.areNewwKb(false)
+            this.ARE_NEW_KB = false
+          }
+  
+        } else {
+          // this.kbService.areNewwKb(true)
+          this.ARE_NEW_KB = true
+        }
+  
+      }, (error) => {
+        this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
+      }, () => {
+        this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
+  
       })
-  }
+    }
+
+  // No more used
+  // listenToKbVersion() {
+  //   this.kbService.newKb
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((newKb) => {
+  //       this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
+  //       this.ARE_NEW_KB = newKb;
+  //     })
+  // }
 
   getRoutingTranslation() {
     this.translate.get('Routing')

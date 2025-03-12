@@ -294,8 +294,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   // }
 
   sortChatbots() {
-    // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-    //   this.chatbots = faqKb
+    
     if (this.chatbots && this.chatbots.length > 0) {
 
       this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
@@ -372,7 +371,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   goToKBPage() {
-    this.logger.log('[HOME-CDS] goToKBPage')
+    console.log('[HOME-CDS] goToKBPage')
     this.router.navigate(['project/' + this.projectId + '/knowledge-bases/' + this.kbNameSpaceid]);
   }
 

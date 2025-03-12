@@ -388,7 +388,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (dshbrdBaseUrl.includes('tiledesk.com')) {
       this.areVisibleChatbot = true;
       this.isVisibleKNB = true;
-      this.listenToKbVersion()
+      // this.listenToKbVersion() // no more used
     }
 
     if (!dshbrdBaseUrl.includes('tiledesk.com')) {
@@ -409,7 +409,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         if (kbnValue === 'T') {
           this.getProjectPlan()
-          this.listenToKbVersion()
+          // this.listenToKbVersion() // no more used
 
         } else if (kbnValue === 'F') {
           this.isVisibleKNB = false;
@@ -422,16 +422,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+  // no more used
+  // listenToKbVersion() {
+  //   this.kbService.newKb
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((newKb) => {
+  //       this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
+  //       this.ARE_NEW_KB = newKb;
+  //     })
+  // }
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$
@@ -1767,12 +1768,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
   getCurrentProjectProjectUsersProjectBots() {
-    // this.logger.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project)
+ 
     this.auth.project_bs.subscribe((project) => {
-
+    
 
       if (project) {
         this.project = project
+        console.log('[SIDEBAR] - CALLING GET CURRENT PROJECT  ', this.project , ' isVisibleKNB ', this.isVisibleKNB)
 
         // FOR KB
         const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.project._id}`)
@@ -1798,35 +1800,40 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.getProjectUser();
         // this.getFaqKbByProjectId()
-        this.getKnowledgeBaseSettings()
+        // if(this.isVisibleKNB) {
+          // const areEnabledKbn = this.getKnbValue()
+          // console.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
+          // if (areEnabledKbn) {
+          //   this.getKnowledgeBaseSettings()
+          // }
       }
     });
   }
 
 
 
+  // No more used  
+  // getKnowledgeBaseSettings() {
+  //   this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
+  //     this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
+  //     if (kbSettings && kbSettings.kbs) {
+  //       if (kbSettings.kbs.length === 0) {
+  //         this.kbService.areNewwKb(true)
+  //       } else if (kbSettings.kbs.length > 0) {
+  //         this.kbService.areNewwKb(false)
+  //       }
 
-  getKnowledgeBaseSettings() {
-    this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
-      this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
-      if (kbSettings && kbSettings.kbs) {
-        if (kbSettings.kbs.length === 0) {
-          this.kbService.areNewwKb(true)
-        } else if (kbSettings.kbs.length > 0) {
-          this.kbService.areNewwKb(false)
-        }
+  //     } else {
+  //       this.kbService.areNewwKb(true)
+  //     }
 
-      } else {
-        this.kbService.areNewwKb(true)
-      }
+  //   }, (error) => {
+  //     this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
+  //   }, () => {
+  //     this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
 
-    }, (error) => {
-      this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
-    }, () => {
-      this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
-
-    })
-  }
+  //   })
+  // }
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {

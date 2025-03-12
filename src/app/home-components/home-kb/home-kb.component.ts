@@ -89,11 +89,11 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getKnowledgeBaseSettings();
+   
     this.getCurrentProject();
     this.getProjectPlan();
     this.translateString();
-    this.getKnowledgeBaseSettings();
+    // this.getKnowledgeBaseSettings();
     this.getUserRole()
     this.getFaqKbByProjectId()
   }
@@ -602,7 +602,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     }
 
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
-    if (this.areNewKb) {
+    // if (this.areNewKb) {
       if (this.kbNameSpaceid !== '') {
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
       } else {
@@ -611,9 +611,9 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
 
       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
 
-    } else if (!this.areNewKb) {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
-    }
+    // } else if (!this.areNewKb) {
+    //   this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
+    // }
   }
 
 

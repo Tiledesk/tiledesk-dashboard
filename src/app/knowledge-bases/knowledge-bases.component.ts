@@ -236,7 +236,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getLoggedUser();
     this.getCurrentProject();
     this.getRouteParams();
-    this.listenToKbVersion();
+    // this.listenToKbVersion(); // no more used
     this.getTemplates();
     this.getCommunityTemplates()
     this.getFaqKbByProjectId();
@@ -1766,16 +1766,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     clearInterval(this.interval_id);
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+  // No more used
+  // listenToKbVersion() {
+  //   this.kbService.newKb
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((newKb) => {
+  //       this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
+  //       this.ARE_NEW_KB = newKb;
+  //     })
+  // }
 
   getTemplates() {
     this.faqKbService.getTemplates().subscribe((res: any) => {
