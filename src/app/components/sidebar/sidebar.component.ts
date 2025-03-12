@@ -344,7 +344,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.getWsCurrentUserAvailability$();
     // this.getProjectPlan()
     this.getBaseUrlAndThenProjectPlan();
-    this.listenToKbVersion()
+    // this.listenToKbVersion()
 
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
   }
@@ -388,6 +388,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (dshbrdBaseUrl.includes('tiledesk.com')) {
       this.areVisibleChatbot = true;
       this.isVisibleKNB = true;
+      this.listenToKbVersion()
     }
 
     if (!dshbrdBaseUrl.includes('tiledesk.com')) {
@@ -408,6 +409,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         if (kbnValue === 'T') {
           this.getProjectPlan()
+          this.listenToKbVersion()
 
         } else if (kbnValue === 'F') {
           this.isVisibleKNB = false;
@@ -418,6 +420,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logger.log('[BOTS-SIDEBAR] this.public_Key.includes("KNB")', this.public_Key.includes("KNB"))
       }
     }
+  }
+
+  listenToKbVersion() {
+    this.kbService.newKb
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((newKb) => {
+        this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
+        this.ARE_NEW_KB = newKb;
+      })
   }
 
   getProjectPlan() {
@@ -550,16 +563,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[BOTS-SIDEBAR] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+
 
 
 
@@ -876,8 +880,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.isVisibleINT = true;
         }
       }
-
-
 
     });
 

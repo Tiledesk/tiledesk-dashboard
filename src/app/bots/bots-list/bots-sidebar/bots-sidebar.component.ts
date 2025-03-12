@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
-import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+// import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
@@ -22,7 +22,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   @Input() customerSatisfactionBotsCount: number;
   @Input() increaseSalesBotsCount: number;
   @Input() allCommunityTemplatesCount: number;
-  @Input() kbCount : number;
+  // @Input() kbCount : number;
 
   USER_ROLE: any;
   project: any;
@@ -50,7 +50,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     private auth: AuthService,
     private logger: LoggerService,
     public router: Router,
-    private kbService: KnowledgeBaseService,
+    // private kbService: KnowledgeBaseService,
     public brandService: BrandService,
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,

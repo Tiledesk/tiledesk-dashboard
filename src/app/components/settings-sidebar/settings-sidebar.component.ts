@@ -98,21 +98,12 @@ export class SettingsSidebarComponent implements OnInit {
     this.getCurrentRoute();
     // this.getMainContentHeight();
     this.listenSidebarIsOpened();
-    this.listenToKbVersion()
+    
    
     this.translateString()
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+ 
 
   ngAfterContentInit() {
     setTimeout(() => {
@@ -361,6 +352,20 @@ export class SettingsSidebarComponent implements OnInit {
     if (!this.public_Key.includes("INT")) {
       this.isVisibleINT = false;
     }
+    if (this.isVisibleKNB) {
+      this.listenToKbVersion()
+    }
+  }
+
+  listenToKbVersion() {
+    this.kbService.newKb
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((newKb) => {
+        this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
+        this.ARE_NEW_KB = newKb;
+      })
   }
 
   getRoutingTranslation() {

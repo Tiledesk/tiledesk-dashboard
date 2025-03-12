@@ -87,6 +87,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   ngOnChanges(changes: SimpleChanges): void {
     this.logger.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
     this.logger.log('[HOME-CDS] - displayKbHeroSection ngOnChanges', this.displayKbHeroSection);
+    console.log('[HOME-CDS] - isVisibleKNB ngOnChanges', this.isVisibleKNB);
     this.sortChatbots();
   }
 
@@ -117,21 +118,22 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
-
+        console.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+        console.log('[HOME-CDS] - $UBSCIBE TO PUBLISHED PROJECT isVisibleKNB ', this.isVisibleKNB);
         if (project) {
           this.projectId = project._id
-
-          const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
-          this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
-          if (storedNamespace) {
-            let storedNamespaceObjct = JSON.parse(storedNamespace)
-            this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
-            this.kbNameSpaceid = storedNamespaceObjct.id;
-            this.kbNameSpaceName = storedNamespaceObjct.name
-            this.getChatbotUsingNamespace(this.kbNameSpaceid)
-          } else {
-            this.getAllNamespaces()
+          if (this.isVisibleKNB) {
+            const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
+            this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
+            if (storedNamespace) {
+              let storedNamespaceObjct = JSON.parse(storedNamespace)
+              this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
+              this.kbNameSpaceid = storedNamespaceObjct.id;
+              this.kbNameSpaceName = storedNamespaceObjct.name
+              this.getChatbotUsingNamespace(this.kbNameSpaceid)
+            } else {
+              this.getAllNamespaces()
+            }
           }
         }
       }, (error) => {
@@ -146,7 +148,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.kbService.getAllNamespaces().subscribe((namespaces: any) => {
       if (namespaces) {
 
-        this.logger.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
+        console.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
         this.namespaces = namespaces
         namespaces.sort(function compare(a, b) {
           if (a['updatedAt'] > b['updatedAt']) {
@@ -180,7 +182,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((kbAssistants: any) => {
 
-      this.logger.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
+      console.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
       this.chatbotsUsingNamespace = kbAssistants
 
       if (this.chatbotsUsingNamespace.length > 0) {

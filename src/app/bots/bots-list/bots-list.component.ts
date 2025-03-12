@@ -26,7 +26,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
-import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+// import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { SatPopover } from '@ncstate/sat-popover';
 
 const swal = require('sweetalert');
@@ -166,7 +166,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     public usersService: UsersService,
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
-    private kbService: KnowledgeBaseService,
+    // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -205,7 +205,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getTranslations();
     this.getTemplates()
     this.getCommunityTemplates()
-    this.getAllNamespaces()
+    // this.getAllNamespaces()
     this.getNavigationBaseUrl()
     this.getProjectPlan();
     this.getUserRole();
@@ -258,21 +258,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       //   this.logger.log("[BOTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
-  getAllNamespaces() {
-    this.kbService.getAllNamespaces().subscribe((res: any) => {
-      if (res) {
-        this.kbCount = res.length
-        this.logger.log('[BOTS-LIST] - GET ALL NAMESPACES', res);
+  // getAllNamespaces() {
+  //   this.kbService.getAllNamespaces().subscribe((res: any) => {
+  //     if (res) {
+  //       this.kbCount = res.length
+  //       this.logger.log('[BOTS-LIST] - GET ALL NAMESPACES', res);
         
-      }
-    }, (error) => {
-      this.logger.error('[BOTS-LIST]  GET GET ALL NAMESPACES ERROR ', error);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[BOTS-LIST]  GET GET ALL NAMESPACES ERROR ', error);
 
-    }, () => {
-      this.logger.log('[BOTS-LIST]  GET ALL NAMESPACES * COMPLETE *');
+  //   }, () => {
+  //     this.logger.log('[BOTS-LIST]  GET ALL NAMESPACES * COMPLETE *');
       
-    });
-  }
+  //   });
+  // }
 
   getCommunityTemplates() {
 

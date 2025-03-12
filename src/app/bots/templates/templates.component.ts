@@ -14,7 +14,7 @@ import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
-import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+// import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
 
@@ -37,7 +37,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   certfifiedTemplates: Array<any>;
   allTemplatesCount: number;
   allCommunityTemplatesCount: number;
-  kbCount: number;
+  // kbCount: number;
 
   customerSatisfactionTemplates: Array<any>
   customerSatisfactionTemplatesCount: number;
@@ -80,7 +80,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     public notify: NotifyService,
     public usersService: UsersService,
     private translate: TranslateService,
-    private kbService: KnowledgeBaseService,
+    // private kbService: KnowledgeBaseService,
   ) { 
     super(prjctPlanService, notify);
   }
@@ -92,7 +92,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getTemplates()
     this.getCommunityTemplates()
     this.getCurrentProject()
-    this.getAllNamespaces()
+    // this.getAllNamespaces()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
     this.getRoutes();
@@ -282,21 +282,22 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     })
   }
 
-  getAllNamespaces() {
-    this.kbService.getAllNamespaces().subscribe((res: any) => {
-      if (res) {
-        this.kbCount = res.length
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL NAMESPACES', res);
+  // No more used
+  // getAllNamespaces() {
+  //   this.kbService.getAllNamespaces().subscribe((res: any) => {
+  //     if (res) {
+  //       this.kbCount = res.length
+  //       this.logger.log('[BOTS-TEMPLATES] - GET ALL NAMESPACES', res);
         
-      }
-    }, (error) => {
-      this.logger.error('[BOTS-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[BOTS-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
 
-    }, () => {
-      this.logger.log('[BOTS-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
+  //   }, () => {
+  //     this.logger.log('[BOTS-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
       
-    });
-  }
+  //   });
+  // }
 
 
   getCommunityTemplates() {
