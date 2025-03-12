@@ -483,6 +483,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
     this.listenToUpladAttachmentProgress()
+   
   }
 
   listenToUpladAttachmentProgress() {
@@ -1623,6 +1624,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** defaultLangCode (onInit) ', this.defaultLangCode);
+            
+
             } else {
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** No default Lang *****  ', translation);
               // this.translateAndDisplayModalNoDefaultLangIsSet()
@@ -1649,11 +1652,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
           this.wd_availableTranslations = availableTranslations.sort(this.compare);
           this.logger.log('[WIDGET-SET-UP] - GET LABELS -  ordered wd_availableTranslations', this.wd_availableTranslations);
+          this.logger.log('[WIDGET-SET-UP] - GET LABELS -  defaultLangCode', this.defaultLangCode);
+          this.wd_availableTranslations[0]
+          if (this.wd_availableTranslations &&  this.defaultLangCode ) { 
+            const defaultLanguage = this.wd_availableTranslations.find(lang => lang.code === this.defaultLangCode);
 
-          if (this.wd_availableTranslations && this.wd_availableTranslations[0]) {
-            this.selectedLang = this.wd_availableTranslations[0].name;
-            this.selectedLangCode = this.wd_availableTranslations[0].code;
-            this.selectedLangName = this.wd_availableTranslations[0].name;
+            this.logger.log('[WIDGET-SET-UP]  defaultLanguage', defaultLanguage);
+            this.selectedLang = defaultLanguage.name;
+            this.selectedLangCode = defaultLanguage.code;
+            this.selectedLangName = defaultLanguage.name;
+          
+          } else if (this.wd_availableTranslations &&  !this.defaultLangCode) {
+              this.selectedLang = this.wd_availableTranslations[0].name;
+              this.selectedLangCode = this.wd_availableTranslations[0].code;
+              this.selectedLangName = this.wd_availableTranslations[0].name;
+
           }
 
           this.logger.log('[WIDGET-SET-UP] - GET LABELS - selectedLangCode ', this.selectedLangCode);
@@ -2158,12 +2171,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-
   // ------------------------------------------------------------------------------------
   // Select language
   // ------------------------------------------------------------------------------------
   onSelectlang(selectedLang) {
     this.logger.log('[WIDGET-SET-UP] onSelectlang selectedLang ', selectedLang);
+    this.logger.log('[WIDGET-SET-UP] onSelectlang   this.defaultLangCode ',   this.defaultLangCode);
+  
     this.selectedLangCode = selectedLang.code;
     this.logger.log('[WIDGET-SET-UP] - GET LABELS - onSelectlang (onSelectlang) ', this.selectedLangCode);
     this.selectedLangName = selectedLang.name;
