@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.88-rc2
+- Minor improvements
+
 ### 2.7.88-rc1
 - Fixes bugs for docker compose
 
