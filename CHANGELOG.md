@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.88
+- Fixes bugs for docker compose
+
 ### 2.7.87
 - Improves the widget logo deletion method
 
