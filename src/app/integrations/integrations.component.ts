@@ -345,7 +345,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
         // -------
 
-
+        this.availableApps = this.availableApps.filter(item => item !== undefined);
         resolve(true);
 
       }, (error) => {
@@ -385,7 +385,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
-    }).catch(() => {
+    }).catch((err) => {
+      this.logger.error("[INTEGRATIONS] err ", err)
       this.showInIframe = false;
       this.integrationLocked = true;
       this.plan_require = integration.plan;
@@ -400,7 +401,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // this.integrationSelectedName = 'none';
       // this.integrationLocked = true;
       // this.plan_require = integration.plan;
-      this.logger.log("Integration unavailable for your project")
+      this.logger.log("available for plan ", integration.plan)
       this.logger.log("available for plan ", integration.plan)
     })
   }
@@ -751,7 +752,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   checkPlan(integration_plan) {
-    // this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+    this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
 
