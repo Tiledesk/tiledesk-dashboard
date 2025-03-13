@@ -430,6 +430,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     // this.mobilePhoneCountryCode
     this.phoneNumber = parsePhoneNumberFromString(mobile);
     console.log('isValidPhone parsePhoneNumberFromString phoneNumber', this.phoneNumber)
+
+    if (this.phoneNumber) {
+
+      console.log('getType ', this.phoneNumber.getType())
+    }
     // this.mobilePhoneCountryCode
 
     // if (phoneNumber === undefined) {
@@ -446,10 +451,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       this.isValidPhoneNumber = true
     }
 
-    if (this.phoneNumber) {
-
-      console.log('getType ', this.phoneNumber.getType())
-    }
+    
     // Check if the number is a MOBILE type
     // return phoneNumber.getType() === 'MOBILE' || phoneNumber.getType() === 'FIXED_LINE_OR_MOBILE';
 

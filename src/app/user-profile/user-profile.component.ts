@@ -339,16 +339,16 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       console.log('[USER-PROFILE] - USER  from rest call ', user)
 
       const user_phone = user['phone'];
-      console.log('[USER-PROFILE] - user_phone ', user_phone)
+      console.log('[USER-PROFILE] - getCurrentProjectUser user_phone ', user_phone)
      
       this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
-      console.log('[USER-PROFILE] isValidPhoneNumber ', isValidPhoneNumber)
+      console.log('[USER-PROFILE] getCurrentProjectUser isValidPhoneNumber ',  this.isValidPhoneNumber)
 
       const phoneNumber = parsePhoneNumberFromString(user_phone);
-      console.log('[USER-PROFILE] - USER  parsed phone Number ', phoneNumber)
+      console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number ', phoneNumber)
 
       if (phoneNumber) {
-        console.log('USER-PROFILE] getType ', phoneNumber.getType())
+        console.log('USER-PROFILE] - getCurrentProjectUser getType ', phoneNumber.getType())
       }
 
       const formatter = new AsYouType();
@@ -360,12 +360,26 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   formatAsYouType(event) {
     console.log('USER-PROFILE] formatAsYouType ',event)
     const formatter = new AsYouType();
-    // this.userPhone = formatter.input(this.userPhone);
+    this.userPhone = formatter.input(this.userPhone);
 
-    // this.isValidPhone()
+    this.isValidPhone()
   }
 
+  isValidPhone() {
+    console.log('USER-PROFILE] isValidPhone ',this.userPhone)
+    const phoneNumber = parsePhoneNumberFromString(this.userPhone);
+    console.log('USER-PROFILE] isValidPhone parsePhoneNumberFromString phoneNumber', phoneNumber)
 
+    console.log('USER-PROFILE] isValidPhoneNumber ', isValidPhoneNumber(this.userPhone))
+   
+    if (isValidPhoneNumber(this.userPhone) === false) {
+
+      this.isValidPhoneNumber = false
+    } else if (isValidPhoneNumber(this.userPhone) === true) {
+
+      this.isValidPhoneNumber = true
+    }
+  }
 
 
   getLoggedUser() {
@@ -812,12 +826,14 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
 
   updateCurrentUserFirstnameLastname() {
+    const mobile_phone = this.userPhone.replace(/\s/g, "");
+    console.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER MOBILE PHONE ', mobile_phone)
     this.displayModalUpdatingUser = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
 
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
-    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
+    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, mobile_phone,  (response) => {
 
       this.logger.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
 
