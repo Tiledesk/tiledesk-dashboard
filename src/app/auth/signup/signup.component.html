@@ -339,7 +339,14 @@
                 placeholder="Country" 
                 (change)="onCountryChange($event)"
                 [clearable]="false">
+                <ng-template ng-label-tmp let-item="item">
+                  
+                  <img  style="width: 20px; height: 14px;"
+                  [src]="'assets/img/flags/' + item.code + '.png'" />
+                </ng-template>
                 <ng-template ng-option-tmp let-item="item">
+                  <img  style="width: 20px; height: 14px; margin-right:3px "
+                  [src]="'assets/img/flags/' + item.code + '.png'" />
                   <span>{{ item.name }} ({{ item.dialCode }})</span>
                 </ng-template>
               </ng-select>
