@@ -318,7 +318,7 @@ export class UsersService {
    */
   public getProjectUserById(user_id): Observable<User[]> {
 
-    const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/users/' + user_id;;
+    const url = this.SERVER_BASE_PATH + this.project?._id + '/project_users/users/' + user_id;;
 
     this.logger.log('[USER-SERV] - GET PROJECT-USERS BY USER ID - URL', url);
 

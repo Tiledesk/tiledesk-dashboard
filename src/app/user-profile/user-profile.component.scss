@@ -319,6 +319,22 @@ button.close {
   margin-top: -6px;
 }
 
+
+.phone-container {
+  display: flex;
+  align-items: center;
+  // border: 1px solid #ccc;
+  // border-radius: 5px;
+  // padding: 5px;
+  width: 100%;
+}
+
+.country--select {
+  width: 120px;
+  margin-bottom: 10px
+  // margin-right: 5px;
+}
+
 // .automatic-dshbrd-lang > div > label {
 //   color:  #7695a5 // var(--secondary-text-color)
 // }

@@ -180,8 +180,19 @@
                                 Mobile
                             </label>
                             <div class="col-sm-10">
-                                <input [(ngModel)]="userPhone" class="" type="phone" placeholder="Mobile number"
-                                    (input)="formatAsYouType($event)">
+                                <div class="phone-container">
+                                    <ng-select class="country--select" [(ngModel)]="selectedCountry" #countrySelect
+                                        [items]="countries" bindLabel="name" bindValue="code" placeholder="Country"
+                                        (change)="onCountryChange($event)" [clearable]="false">
+                                        <ng-template ng-option-tmp let-item="item">
+                                            <span>{{ item.name }} ({{ item.dialCode }})</span>
+                                        </ng-template>
+                                    </ng-select>
+
+                                    <input #phoneInput [(ngModel)]="userPhone" class="" type="phone"
+                                        placeholder="Mobile number" (input)="formatAsYouType($event)" 
+                                        style="width: 280px !important">
+                                </div>
                                 <span *ngIf="isValidPhoneNumber === false" class="mobile-phone-number-danger">
                                     Invalid mobile number.
                                 </span>
@@ -236,10 +247,10 @@
                         <div class="row">
                             <label class="col-sm-2"></label>
                             <div class="col-sm-10 ">
-                                <!-- btn-primary -->
+                                <!-- [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME" -->
                                 <button class="btn btn-tdblu-no-boxshadow"
                                     (click)="updateCurrentUserFirstnameLastname()"
-                                    [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME">
+                                    [disabled]="userFirstname.length < 1 || !isValidPhoneNumber">
                                     {{ "UserProfile.UpdateProfile" | translate }}
                                 </button>
                             </div>

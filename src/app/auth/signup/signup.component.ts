@@ -22,7 +22,7 @@ import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
 import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber, getCountries, getCountryCallingCode, CountryCode } from 'libphonenumber-js/max' // from 'libphonenumber-js';
 import { NgSelectComponent } from '@ng-select/ng-select';
-
+;
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phoneCountry' | 'phone' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 
@@ -141,6 +141,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
   countries: { code: string; name: string; dialCode: string }[] = [];
   selectedCountry: string;
+  detectedCountry: string;
 
   constructor(
     private fb: FormBuilder,
@@ -193,8 +194,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
+
     this.getSupportedCountry()
   }
+
+
 
   ngAfterViewInit() {
     const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
@@ -332,22 +336,54 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
     }));
     // Automatically select the first country
-    if (this.countries.length > 0) {
 
-      //   this.countries = initSelect
-      //  this.countries[0].code;
-      //   this.countries[0].name;
-      this.userForm.patchValue({ phoneCountry: this.countries[0].code });
-      this.dialCode = this.countries[0].dialCode;
-      console.log('this.countries[0].code ', this.countries[0].code)
-      this.onCountryChange(this.countries[0]);
+
+
+    // const userTimezone = moment.tz.guess(); // Detect user's timezone
+    // console.log("Detected Timezone:", userTimezone);
+
+    // const userCountry = timezoneToCountryMap[userTimezone] || "Unknown";
+    // console.log("Detected Country:", userCountry);
+
+    // const browserLangISOCode = this.browserLang.toUpperCase()
+    // const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // console.log('Detected Time Zone:', timeZone);
+
+
+
+    if (this.countries.length > 0) {
+      // ?token=your_token_here
+      fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
+        .then(response => response.json())
+        .then(data => {
+          const userCountry = data.country //.toUpperCase(); // e.g., "IT" for Italy
+          console.log('Detected country from IP:', userCountry);
+
+          // Find the matching country in your countries list
+          const countryIndex = this.countries.findIndex(c => c.code === userCountry);
+          console.log('Detected countryIndex:', countryIndex);
+          if (countryIndex !== -1) {
+            console.log('Auto-selecting country:', this.countries[countryIndex]);
+            this.userForm.patchValue({ phoneCountry: this.countries[countryIndex].code });
+            this.dialCode = this.countries[countryIndex].dialCode;
+            this.onCountryChange(this.countries[countryIndex], 'on-init')
+            console.log('Detected dialCode:', this.dialCode);
+          } else {
+            console.warn('Country not found in list, using default.');
+
+            this.userForm.patchValue({ phoneCountry: this.countries[0].code });
+            this.dialCode = this.countries[0].dialCode;
+            console.log('this.countries[0].code ', this.countries[0].code)
+            this.onCountryChange(this.countries[0], 'on-init');
+          }
+        })
     }
 
     console.log('[SIGN-UP] - PHONE VILDATION SUPPORTED countries', this.countries)
   }
 
 
-  onCountryChange(country: any) {
+  onCountryChange(country: any, calledBy?:string) {
     if (country) {
       console.log('[SIGN-UP] onCountryChange country', country)
       const selectedCountry = this.countries.find(c => c.code === country.code);
@@ -358,17 +394,16 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         this.dialCode = selectedCountry.dialCode;
         this.mobilePhoneCountryCode = selectedCountry.code;
         console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
-        // this.userForm.get('phone')?.enable();
+    
         this.userForm.patchValue({ phone: selectedCountry.dialCode + ' ' });
-        setTimeout(() => {
-          const inputElement = this.phoneInput.nativeElement;
-          inputElement.focus();
-          inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
-        }, 100); // Delay to ensure the input is ready
+        if (calledBy !== 'on-init') {
+          setTimeout(() => {
+            const inputElement = this.phoneInput.nativeElement;
+            inputElement.focus();
+            inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+          }, 100); // Delay to ensure the input is ready
+        }
       }
-      // else {
-      //   this.userForm.get('phone')?.disable();
-      // }
     }
   }
 
@@ -397,7 +432,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       console.log('formatAsYouType inputValue.startsWith dialCode 2', inputValue.startsWith(this.dialCode))
       // this.setPhoneInput(this.dialCode + inputValue.replace(/[^0-9]/g, ''));
       // this.userForm.patchValue({ phone: this.dialCode + ' '});
-      this.userForm.get('phone')?.setValue(this.dialCode + ' ' ); // Use setValue for phone input
+      this.userForm.get('phone')?.setValue(this.dialCode + ' '); // Use setValue for phone input
     }
 
     // this.mobilePhoneCountryCode
@@ -451,7 +486,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       this.isValidPhoneNumber = true
     }
 
-    
+
     // Check if the number is a MOBILE type
     // return phoneNumber.getType() === 'MOBILE' || phoneNumber.getType() === 'FIXED_LINE_OR_MOBILE';
 
