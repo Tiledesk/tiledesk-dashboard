@@ -26,7 +26,7 @@ export class AnthropicIntegrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.log("[INT-Anthropic] integration ", this.integration)
-    this.translateparams = { intname: 'Anthropic Claude' };
+    this.translateparams = { intname: 'Anthropic' };
     // if (this.integration.value.apikey) {
     //   this.checkKey();
     // }
