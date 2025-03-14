@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.89
+- Renames the integration Claude in Anthropic
+
 ### 2.7.88
 - Fixes bugs for docker compose
 
