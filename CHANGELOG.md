@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.91
+- Minor improvements
+
 ### 2.7.90
 - Renames the integration Claude in Anthropic (improvements)
 
