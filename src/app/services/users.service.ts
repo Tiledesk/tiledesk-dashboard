@@ -1082,7 +1082,7 @@ export class UsersService {
       .toPromise()
       .then(res => {
 
-        this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res)
+        console.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res)
 
         const jsonRes = res
 

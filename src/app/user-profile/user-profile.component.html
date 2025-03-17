@@ -148,6 +148,7 @@
                         <div class="row">
                             <label class="col-sm-2 custom-label">
                                 {{ "UserProfile.Name" | translate }}
+                                <span style="color:#ff5252">*</span>
                             </label>
                             <div class="col-sm-10">
                                 <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname"
@@ -167,6 +168,7 @@
                         <div class="row">
                             <label class="col-sm-2 custom-label">
                                 Email
+                                <!-- <span style="color:#ff5252">*</span> -->
                             </label>
                             <div class="col-sm-10">
                                 <input style="color:#808080" [(ngModel)]="user.email" class="" type="text"
@@ -177,21 +179,46 @@
 
                         <div class="row">
                             <label class="col-sm-2 custom-label">
-                                Mobile
+                                Mobile Number
+                                <span *ngIf="mobile_number_not_available" style="color:#ff5252">*</span>
                             </label>
                             <div class="col-sm-10">
                                 <div class="phone-container">
                                     <ng-select class="country--select" [(ngModel)]="selectedCountry" #countrySelect
                                         [items]="countries" bindLabel="name" bindValue="code" placeholder="Country"
                                         (change)="onCountryChange($event)" [clearable]="false">
+                                        
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <img  style="width: 25px; height: auto;border: .5px solid #ddd;"
+                                            [src]="'assets/img/flags/' + item.code + '.png'" />
+                                        </ng-template>
+
                                         <ng-template ng-option-tmp let-item="item">
-                                            <span>{{ item.name }} ({{ item.dialCode }})</span>
+                                            <!-- <span>{{ item.name }} ({{ item.dialCode }})</span> -->
+                                            <div style="display: flex; align-items: center;">
+                                                <!-- Flag container with fixed width -->
+                                                <div style="width: 25px; display: flex; justify-content: center;">
+                                                  <img 
+                                                    [src]="'assets/img/flags/' + item.code + '.png'" 
+                                                    style="max-width: 100%; height: auto;border: .5px solid #ddd;" 
+                                                    alt="{{ item.name }}"
+                                                  />
+                                                </div>
+                                                
+                                                <!-- Country name and dial code with flexible width -->
+                                                <div style="margin-left: 8px; flex-grow: 1;">
+                                                  <span>{{ item.name }} ({{ item.dialCode }})</span>
+                                                </div>
+                                              </div>
+
                                         </ng-template>
                                     </ng-select>
-
-                                    <input #phoneInput [(ngModel)]="userPhone" class="" type="phone"
+                                    <!-- class="user-prolile-mobile-number" -->
+                                    <input #phoneInput [(ngModel)]="userPhone"  type="phone"
                                         placeholder="Mobile number" (input)="formatAsYouType($event)" 
-                                        style="width: 280px !important">
+                                        style="width: 320px !important;     border-bottom-left-radius: 0px;
+                                        border-top-left-radius: 0px;
+                                        border-left: 0px;" >
                                 </div>
                                 <span *ngIf="isValidPhoneNumber === false" class="mobile-phone-number-danger">
                                     Invalid mobile number.

@@ -99,6 +99,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   isValidPhoneNumber: boolean;
   phoneNumber: any = undefined;
   dialCode: string = '';
+  phone_country: string;
   // const mobilePhoneRegex = /^\+?[1-9]\d{6,14}$/;
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -279,7 +280,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     // if (data ) {
     //   this.phoneData = data.phone
     // }
-    // this.formatPhoneNumber()
+   
     // if (data) {
     //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
     //   this.logger.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
@@ -317,15 +318,15 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
   }
 
-  formatPhoneNumber() {
-    console.log('[SIGN-UP] formatPhoneNumber')
-    const phone = this.userForm.get('phone')?.value;
-    if (phone) {
-      const phoneNumber = parsePhoneNumberFromString(phone, 'IT');
-      return phoneNumber ? phoneNumber.formatInternational() : phone;
-    }
-    return '';
-  }
+  // formatPhoneNumber() {
+  //   console.log('[SIGN-UP] formatPhoneNumber')
+  //   const phone = this.userForm.get('phone')?.value;
+  //   if (phone) {
+  //     const phoneNumber = parsePhoneNumberFromString(phone, 'IT');
+  //     return phoneNumber ? phoneNumber.formatInternational() : phone;
+  //   }
+  //   return '';
+  // }
 
   getSupportedCountry() {
     this.countries = getCountries().map((code) => ({
@@ -465,9 +466,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     // this.mobilePhoneCountryCode
     this.phoneNumber = parsePhoneNumberFromString(mobile);
     console.log('isValidPhone parsePhoneNumberFromString phoneNumber', this.phoneNumber)
-
+   
+    
     if (this.phoneNumber) {
-
+      this.phone_country = this.phoneNumber.country;
+      console.log('isValidPhone parsePhoneNumberFromString phone_country', this.phone_country)
       console.log('getType ', this.phoneNumber.getType())
     }
     // this.mobilePhoneCountryCode
@@ -1043,6 +1046,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   trackSignup(signupResponse) {
+    console.log('trackSignup signupResponse ', signupResponse) 
+    console.log('trackSignup this.phone_country ', this.phone_country) 
     if (!isDevMode()) {
       if (window['analytics']) {
         let userFullname = ''
@@ -1056,6 +1061,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
           window['analytics'].identify(signupResponse.user._id, {
             name: userFullname,
             email: signupResponse.user.email,
+            mobile_phone: signupResponse.user.phone,
             logins: 5,
           });
         } catch (err) {
@@ -1091,6 +1097,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             "first_name": signupResponse.user.firstname,
             "last_name": signupResponse.user.lastname,
             "email": signupResponse.user.email,
+            "mobile_phone": signupResponse.user.phone,
+            'phone_country': this.phone_country,
             "username": userFullname,
             'userId': signupResponse.user._id,
             'method': "Email and Password"

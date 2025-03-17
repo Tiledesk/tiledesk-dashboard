@@ -82,6 +82,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   prjct_profile_name: string;
   prjct_id: string;
   prjct_name: string;
+  mobile_number_not_available: boolean
 
   @ViewChild('fileInputUserProfileImage', { static: false }) fileInputUserProfileImage: any;
 
@@ -256,44 +257,44 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   }
 
-  getCurrentProjectUser(userId) {
-    this.usersService.getProjectUserById(userId).subscribe((pu) => {
-      console.log('[USER-PROFILE] - P-USER from rest call ', pu)
+  // getCurrentProjectUser(userId) {
+  //   this.usersService.getProjectUserById(userId).subscribe((pu) => {
+  //     console.log('[USER-PROFILE] - P-USER from rest call ', pu)
 
-      const user = pu[0]['id_user']
-      console.log('[USER-PROFILE] - USER  from rest call ', user)
+  //     const user = pu[0]['id_user']
+  //     console.log('[USER-PROFILE] - USER  from rest call ', user)
 
-      const user_phone = user['phone'];
-      console.log('[USER-PROFILE] - getCurrentProjectUser user_phone ', user_phone)
-      if (user_phone) {
-        this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
-        console.log('[USER-PROFILE] getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
+  //     const user_phone = user['phone'];
+  //     console.log('[USER-PROFILE] - getCurrentProjectUser user_phone ', user_phone)
+  //     if (user_phone) {
+  //       this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
+  //       console.log('[USER-PROFILE] getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
 
-        const phoneNumber = parsePhoneNumberFromString(user_phone);
-        console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number ', phoneNumber)
+  //       const phoneNumber = parsePhoneNumberFromString(user_phone);
+  //       console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number ', phoneNumber)
 
-        console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number country', phoneNumber.country)
+  //       console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number country', phoneNumber.country)
 
-        if (phoneNumber) {
-          console.log('USER-PROFILE] - getCurrentProjectUser getType ', phoneNumber.getType())
-        }
+  //       if (phoneNumber) {
+  //         console.log('USER-PROFILE] - getCurrentProjectUser getType ', phoneNumber.getType())
+  //       }
 
-        const formatter = new AsYouType();
-        this.userPhone = formatter.input(user_phone);
-        this.getSupportedCountry(phoneNumber.country)
+  //       const formatter = new AsYouType();
+  //       this.userPhone = formatter.input(user_phone);
+  //       this.getSupportedCountry(phoneNumber.country)
 
-        if (isValidPhoneNumber(this.userPhone) === false) {
+  //       if (isValidPhoneNumber(this.userPhone) === false) {
 
-          this.isValidPhoneNumber = false
-        } else if (isValidPhoneNumber(this.userPhone) === true) {
-    
-          this.isValidPhoneNumber = true
-        }
+  //         this.isValidPhoneNumber = false
+  //       } else if (isValidPhoneNumber(this.userPhone) === true) {
 
-        console.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
-      }
-    })
-  }
+  //         this.isValidPhoneNumber = true
+  //       }
+
+  //       console.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
+  //     }
+  //   })
+  // }
 
   getSupportedCountry(countryCode) {
     this.countries = getCountries().map((code) => ({
@@ -319,6 +320,10 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         console.log('[USER-PROFILE] onCountryChange selectedCountry 2', selectedCountry)
         this.dialCode = selectedCountry.dialCode;
         this.userPhone = this.dialCode + ' '
+
+        this.isValidPhone()
+
+
         // this.mobilePhoneCountryCode = selectedCountry.code;
         // console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
 
@@ -357,6 +362,10 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
     console.log('[USER-PROFILE] isValidPhoneNumber ', isValidPhoneNumber(this.userPhone))
 
+    if (phoneNumber) {
+      console.log('USER-PROFILE] - USER GET USER phone Number getType ', phoneNumber.getType())
+    }
+
     if (isValidPhoneNumber(this.userPhone) === false) {
 
       this.isValidPhoneNumber = false
@@ -382,7 +391,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.userId = user._id;
 
 
-        this.getCurrentProjectUser(this.userId)
+        // this.getCurrentProjectUser(this.userId)
 
         this.userEmail = user.email;
         this.firstnameCurrentValue = user.firstname;
@@ -393,15 +402,52 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
 
+        const user_phone = user['phone'];
+        console.log('[USER-PROFILE] - USER GET user_phone ', user_phone)
+
+        if (user_phone) {
+          this.mobile_number_not_available = true
+          this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
+          console.log('[USER-PROFILE] USER GET isValidPhoneNumber ', this.isValidPhoneNumber)
+
+          const phoneNumber = parsePhoneNumberFromString(user_phone);
+          console.log('[USER-PROFILE] - USER GET USER  parsed phone Number ', phoneNumber)
+
+          console.log('[USER-PROFILE] - USER GET USER  parsed phone Number country', phoneNumber.country)
+
+          if (phoneNumber) {
+            console.log('USER-PROFILE] - USER GET USER phone Number getType ', phoneNumber.getType())
+          }
+
+          const formatter = new AsYouType();
+          this.userPhone = formatter.input(user_phone);
+          this.getSupportedCountry(phoneNumber.country)
+
+          if (isValidPhoneNumber(this.userPhone) === false) {
+
+            this.isValidPhoneNumber = false
+          } else if (isValidPhoneNumber(this.userPhone) === true) {
+
+            this.isValidPhoneNumber = true
+          }
+
+          console.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
+        } else {
+          this.mobile_number_not_available = false;
+          this.isValidPhoneNumber = true;
+        }
+
+
         const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
+
         if (storedUser) {
 
 
           if (this.userFirstname && this.userLastname) {
-            this.logger.log('Stored user Firstname ', storedUser['firstname'])
-            this.logger.log('Stored user Lastname ', storedUser['lastname'])
+            console.log('Stored user Firstname ', storedUser['firstname'])
+            console.log('Stored user Lastname ', storedUser['lastname'])
             if (this.userFirstname !== storedUser['firstname']) {
               storedUser['firstname'] = this.userFirstname
               this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
@@ -820,14 +866,14 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, mobile_phone, (response) => {
 
-      this.logger.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
+     console.log('[USER-PROFILE] - update Current User  RES ', response)
 
 
 
       if (response === 'success') {
 
-        this.trackUpdateProfileName()
-        this.getLoggedUser()
+        this.trackUpdateProfileName(response.updatedUser)
+        // this.getLoggedUser()
 
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = false;
@@ -844,8 +890,9 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     });
   }
 
-  trackUpdateProfileName() {
-    this.logger.log('[USER-PROFILE] - trackUpdateProfileName  ', this.prjct_profile_name);
+  trackUpdateProfileName(updateUserResponse) {
+    console.log('[USER-PROFILE] - trackUpdateProfileName  ', this.prjct_profile_name);
+    console.log('[USER-PROFILE] - updateUserResponse  ', updateUserResponse);
     if (!isDevMode()) {
       if (window['analytics']) {
         try {

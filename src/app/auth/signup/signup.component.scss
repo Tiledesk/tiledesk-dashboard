@@ -60,7 +60,7 @@ input[type="phone"] {
   appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
-  border-top: 1px solid #c0c0c0;
+  // border-top: 1px solid #c0c0c0;
   // border-radius: 2px;
   padding: 0 8px;
   box-sizing: border-box;
@@ -69,16 +69,16 @@ input[type="phone"] {
   // border: solid 1px #ddd;
 }
 
-.login-container input[type="text"]:hover,
-input[type="password"]:hover,
-input[type="email"]:hover,
-input[type="phone"]:hover {
-  border: 1px solid #b9b9b9;
-  border-top: 1px solid #a0a0a0;
-  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
+// .login-container input[type="text"]:hover,
+// input[type="password"]:hover,
+// input[type="email"]:hover,
+// input[type="phone"]:hover {
+//   border: 1px solid #b9b9b9;
+//   border-top: 1px solid #a0a0a0;
+//   -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+//   -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+//   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+// }
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
@@ -722,7 +722,8 @@ input.secure {
 }
 
 .country-select {
-  width: 120px;
+  // width: 120px;
+  width: 80px;
   margin-bottom: 10px
   // margin-right: 5px;
 }
@@ -732,6 +733,7 @@ input.secure {
   border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-right: unset;
+    border-color: #d9d9d9;
 }
 
 .ng-select.country-select ::ng-deep .ng-select-container .ng-value-container .ng-input>input {
@@ -746,6 +748,6 @@ input[formControlName="phone"] {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 16px;
+  // font-size: 16px;
 }
 

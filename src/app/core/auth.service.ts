@@ -615,7 +615,7 @@ export class AuthService {
     };
 
     const body = { email: email, password: password }
-    this.logger.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body)
+    console.log('[AUTH-SERV] - SIGNIN POST REQUEST BODY ', body)
 
     // const url = this.SIGNIN_BASE_URL
     const url = baseUrl + 'auth/signin';
@@ -625,7 +625,7 @@ export class AuthService {
       .post(url, JSON.stringify(body), httpOptions)
       .toPromise()
       .then((res) => {
-        this.logger.log('[AUTH-SERV] SIGNIN RES: ', res)
+       console.log('[AUTH-SERV] SIGNIN RES: ', res)
         const jsonRes = res
         const user: User = jsonRes['user']
 
@@ -868,7 +868,7 @@ export class AuthService {
   // * WHEN THE USER VERIFY HIS EMAIL THE VERIFY-EMAIL.COMP SENT UPDATED USER OBJECT
   // TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
   public publishUpdatedUser(updated_user) {
-    this.logger.log('[AUTH-SERV] - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ', updated_user)
+    console.log('[AUTH-SERV] - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ', updated_user)
 
     // REPUBLISH THE (UPDATED) USER OBJECT
     this.user_bs.next(updated_user)
