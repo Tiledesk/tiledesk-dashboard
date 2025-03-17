@@ -427,7 +427,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
 
   manageUploadError(error) {
-    if (error.status = 413) {
+    if (error.status === 413) {
       this.logger.log(`[BOT-CREATE] - upload json error message 1`, error.error.err)
       this.logger.log(`[BOT-CREATE] - upload json error message 2`, error.error.limit_file_size)
       const uploadLimitInBytes = error.error.limit_file_size
