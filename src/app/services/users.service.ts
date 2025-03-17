@@ -1088,7 +1088,7 @@ export class UsersService {
 
         if (jsonRes['success'] === true) {
 
-          callback('success');
+          callback(res);
 
           const user: User = jsonRes['updatedUser'];
 

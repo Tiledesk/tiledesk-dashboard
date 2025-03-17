@@ -220,27 +220,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
 
-  trackPage() {
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        try {
-          window['analytics'].page("User Profile Page, Profile", {
-
-          });
-        } catch (err) {
-          this.logger.error('User Profile page error', err);
-        }
-      }
-    }
-  }
-
-
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
-  }
+ 
 
   ngAfterViewInit(): void {
     try {
@@ -257,46 +237,133 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   }
 
-  // getCurrentProjectUser(userId) {
-  //   this.usersService.getProjectUserById(userId).subscribe((pu) => {
-  //     console.log('[USER-PROFILE] - P-USER from rest call ', pu)
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
 
-  //     const user = pu[0]['id_user']
-  //     console.log('[USER-PROFILE] - USER  from rest call ', user)
+      if (user) {
 
-  //     const user_phone = user['phone'];
-  //     console.log('[USER-PROFILE] - getCurrentProjectUser user_phone ', user_phone)
-  //     if (user_phone) {
-  //       this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
-  //       console.log('[USER-PROFILE] getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
 
-  //       const phoneNumber = parsePhoneNumberFromString(user_phone);
-  //       console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number ', phoneNumber)
+        this.user = user;
+        this.userFirstname = user.firstname;
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
+        this.userLastname = user.lastname;
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
+        this.userId = user._id;
 
-  //       console.log('[USER-PROFILE] - getCurrentProjectUser USER  parsed phone Number country', phoneNumber.country)
 
-  //       if (phoneNumber) {
-  //         console.log('USER-PROFILE] - getCurrentProjectUser getType ', phoneNumber.getType())
-  //       }
+        // this.getCurrentProjectUser(this.userId)
 
-  //       const formatter = new AsYouType();
-  //       this.userPhone = formatter.input(user_phone);
-  //       this.getSupportedCountry(phoneNumber.country)
+        this.userEmail = user.email;
+        this.firstnameCurrentValue = user.firstname;
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
+        this.lastnameCurrentValue = user.lastname;
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.lastnameCurrentValue)
+        this.emailverified = user.emailverified;
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
 
-  //       if (isValidPhoneNumber(this.userPhone) === false) {
+        const user_phone = user['phone'];
+        console.log('[USER-PROFILE] - USER GET user_phone ', user_phone)
 
-  //         this.isValidPhoneNumber = false
-  //       } else if (isValidPhoneNumber(this.userPhone) === true) {
+        if (user_phone) {
+          this.mobile_number_not_available = true
+          // this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
+          // console.log('[USER-PROFILE] USER GET isValidPhoneNumber ', this.isValidPhoneNumber)
 
-  //         this.isValidPhoneNumber = true
-  //       }
+          const phoneNumber = parsePhoneNumberFromString(user_phone);
+          console.log('[USER-PROFILE] - USER GET USER  parsed phone Number ', phoneNumber)
 
-  //       console.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
-  //     }
-  //   })
-  // }
+          console.log('[USER-PROFILE] - USER GET USER  parsed phone Number country', phoneNumber.country)
 
-  getSupportedCountry(countryCode) {
+          if (phoneNumber) {
+            console.log('USER-PROFILE] - USER GET USER phone Number getType ', phoneNumber.getType())
+          }
+
+          const formatter = new AsYouType();
+          this.userPhone = formatter.input(user_phone);
+          this.getSupportedCountry(phoneNumber.country, 'hasMobile')
+
+          if (isValidPhoneNumber(this.userPhone) === false) {
+
+            this.isValidPhoneNumber = false
+          } else if (isValidPhoneNumber(this.userPhone) === true) {
+
+            this.isValidPhoneNumber = true
+          }
+
+          console.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
+        } else {
+          this.mobile_number_not_available = false;
+          this.isValidPhoneNumber = true;
+
+          fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
+          .then(response => response.json())
+          .then(data => {
+            const userCountry = data.country //.toUpperCase(); // e.g., "IT" for Italy
+            console.log('[USER-PROFILE] - Detected country from IP:', userCountry);
+            this.getSupportedCountry(userCountry, 'NotHasMobile')
+          })
+        }
+
+
+        const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
+
+        if (storedUser) {
+
+
+          if (this.userFirstname && this.userLastname) {
+            console.log('Stored user Firstname ', storedUser['firstname'])
+            console.log('Stored user Lastname ', storedUser['lastname'])
+            if (this.userFirstname !== storedUser['firstname']) {
+              storedUser['firstname'] = this.userFirstname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+            if (this.userLastname !== storedUser['lastname']) {
+              storedUser['lastname'] = this.userLastname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+          } else if (this.userFirstname && !this.userFirstname) {
+            if (this.userFirstname !== storedUser['firstname']) {
+              storedUser['firstname'] = this.userFirstname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+          }
+        }
+
+
+        this.showSpinner = false;
+
+        this.createUserAvatar(user);
+
+        const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
+
+        if (stored_preferred_lang) {
+          this.HAS_SELECTED_PREFERRED_LANG = true;
+          this.selected_dashboard_language = stored_preferred_lang;
+          this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+          this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+        } else {
+          this.HAS_SELECTED_PREFERRED_LANG = false;
+          this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
+          this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
+        }
+
+      }
+
+    }, (error) => {
+      this.logger.error('[USER-PROFILE] - USER GET IN USER PROFILE - ERROR', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
+    });
+  }
+
+ 
+
+  getSupportedCountry(countryCode, calledBy) {
     this.countries = getCountries().map((code) => ({
       code: code,
       name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code,
@@ -308,6 +375,11 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     const selected_country = this.countries.find(c => c.code === countryCode);
     console.log('[USER-PROFILE] - getSupportedCountry PHONE VALIDATION SUPPORTED selected_country', selected_country)
     this.dialCode = selected_country.dialCode
+
+    if (calledBy === 'NotHasMobile') {
+      this.userPhone = this.dialCode + ' '
+    }
+
   }
 
   onCountryChange(country: any) {
@@ -376,121 +448,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
 
-  getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      console.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
-
-      if (user) {
-
-
-        this.user = user;
-        this.userFirstname = user.firstname;
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
-        this.userLastname = user.lastname;
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
-        this.userId = user._id;
-
-
-        // this.getCurrentProjectUser(this.userId)
-
-        this.userEmail = user.email;
-        this.firstnameCurrentValue = user.firstname;
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
-        this.lastnameCurrentValue = user.lastname;
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.lastnameCurrentValue)
-        this.emailverified = user.emailverified;
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
-
-        const user_phone = user['phone'];
-        console.log('[USER-PROFILE] - USER GET user_phone ', user_phone)
-
-        if (user_phone) {
-          this.mobile_number_not_available = true
-          this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
-          console.log('[USER-PROFILE] USER GET isValidPhoneNumber ', this.isValidPhoneNumber)
-
-          const phoneNumber = parsePhoneNumberFromString(user_phone);
-          console.log('[USER-PROFILE] - USER GET USER  parsed phone Number ', phoneNumber)
-
-          console.log('[USER-PROFILE] - USER GET USER  parsed phone Number country', phoneNumber.country)
-
-          if (phoneNumber) {
-            console.log('USER-PROFILE] - USER GET USER phone Number getType ', phoneNumber.getType())
-          }
-
-          const formatter = new AsYouType();
-          this.userPhone = formatter.input(user_phone);
-          this.getSupportedCountry(phoneNumber.country)
-
-          if (isValidPhoneNumber(this.userPhone) === false) {
-
-            this.isValidPhoneNumber = false
-          } else if (isValidPhoneNumber(this.userPhone) === true) {
-
-            this.isValidPhoneNumber = true
-          }
-
-          console.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
-        } else {
-          this.mobile_number_not_available = false;
-          this.isValidPhoneNumber = true;
-        }
-
-
-        const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
-        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
-
-        if (storedUser) {
-
-
-          if (this.userFirstname && this.userLastname) {
-            console.log('Stored user Firstname ', storedUser['firstname'])
-            console.log('Stored user Lastname ', storedUser['lastname'])
-            if (this.userFirstname !== storedUser['firstname']) {
-              storedUser['firstname'] = this.userFirstname
-              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
-            }
-            if (this.userLastname !== storedUser['lastname']) {
-              storedUser['lastname'] = this.userLastname
-              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
-            }
-          } else if (this.userFirstname && !this.userFirstname) {
-            if (this.userFirstname !== storedUser['firstname']) {
-              storedUser['firstname'] = this.userFirstname
-              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
-            }
-          }
-        }
-
-
-        this.showSpinner = false;
-
-        this.createUserAvatar(user);
-
-        const stored_preferred_lang = localStorage.getItem(this.userId + '_lang')
-
-        if (stored_preferred_lang) {
-          this.HAS_SELECTED_PREFERRED_LANG = true;
-          this.selected_dashboard_language = stored_preferred_lang;
-          this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
-          this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
-        } else {
-          this.HAS_SELECTED_PREFERRED_LANG = false;
-          this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
-          this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
-        }
-
-      }
-
-    }, (error) => {
-      this.logger.error('[USER-PROFILE] - USER GET IN USER PROFILE - ERROR', error);
-      this.showSpinner = false;
-    }, () => {
-      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
-    });
-  }
+ 
 
   createUserAvatar(user) {
     this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
@@ -867,10 +825,9 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, mobile_phone, (response) => {
 
      console.log('[USER-PROFILE] - update Current User  RES ', response)
+     console.log('[USER-PROFILE] - update Current User  RES updatedUser ', response.updatedUser)
 
-
-
-      if (response === 'success') {
+      if (response.success === 'success') {
 
         this.trackUpdateProfileName(response.updatedUser)
         // this.getLoggedUser()
@@ -880,8 +837,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification(this.translationsMap.get('YourProfileHasBeenUploaded'), 2, 'done');
-
-      } else if (response === 'error') {
+        // if (response === 'error')
+      } else  {
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = true;
         // =========== NOTIFY ERROR ===========
@@ -1012,6 +969,30 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       focusConfirm: false,
       // button: "Ok",
       // dangerMode: false,
+    })
+  }
+
+
+
+  trackPage() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
+
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
+        }
+      }
+    }
+  }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 }

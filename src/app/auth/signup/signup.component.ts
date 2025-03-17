@@ -353,7 +353,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
     if (this.countries.length > 0) {
-      // ?token=your_token_here
+     
       fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
         .then(response => response.json())
         .then(data => {
