@@ -28,6 +28,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { SatPopover } from '@ncstate/sat-popover';
+import { WebhookService } from 'app/services/webhook.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -102,12 +103,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
   customerSatisfactionBotsCount: number;
-  myChatbotOtherCount: number;
+  flowWebhooksCount: number;
+
   increaseSalesBotsCount: number;
   kbCount: number;
 
   customerSatisfactionBots: any;
   increaseSalesBots: any;
+
+  myChatbot:any
+  myChatbotOtherCount: number;
+
+  automations:any
+  automationsCount: number;
 
   route: string
   dev_mode: boolean;
@@ -166,6 +174,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     public usersService: UsersService,
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
+    private webhookService: WebhookService,
     // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
@@ -182,7 +191,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // }
 
   // scheduleClosePopover() {
-  //   console.log('scheduleClosePopover botAvailableForAgents ', this.botAvailableForAgents )
+  //   this.logger.log('scheduleClosePopover botAvailableForAgents ', this.botAvailableForAgents )
   //   this.closeTimeout = setTimeout(() => {
   //     this.botAvailableForAgents.close();
   //   }, 100); // Delay before closing (adjust as needed)
@@ -194,24 +203,21 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   ngOnInit() {
+    // this.getCommunityTemplates()
+    // this.getTemplates()
     this.getBrowserVersion();
-  
     this.getProfileImageStorage();
-
     this.getCurrentProject();
     this.getOSCODE();
     // this.getFaqKb();
     this.getFaqKbByProjectId();
     this.getTranslations();
-    this.getTemplates()
-    this.getCommunityTemplates()
+    this.getFlowWebhooks()
     // this.getAllNamespaces()
     this.getNavigationBaseUrl()
     this.getProjectPlan();
     this.getUserRole();
     this.getDefaultDeptId();
-    // this.checkChatbotLimit()
-    //  this.logger.log('[BOTS-LIST] - chatBotLimit »»» ',   this.chatBotLimit)
   }
 
   ngOnDestroy() {
@@ -273,6 +279,23 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       
   //   });
   // }
+
+  getFlowWebhooks() {
+    this.showSpinner = true;
+    this.webhookService.getFlowWebhooks().subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] GET WH RES  ', res);
+      if (res) {
+        this.flowWebhooksCount = res.length
+      }
+
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] GET WH ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[BOTS-LIST] GET WH COMPLETE');
+      this.showSpinner = false;
+    });
+  }
 
   getCommunityTemplates() {
 
@@ -612,12 +635,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      // console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      // this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
         this.chatBotCount = this.faqkbList.length;
-        this.myChatbotOtherCount = faqKb.length
+        // this.myChatbotOtherCount = faqKb.length
 
         if (this.orderBylastUpdated) {
           this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
@@ -701,6 +724,35 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         });
 
 
+        // myChatbot:any
+        // myChatbotOtherCount: number;
+      
+        // automations:any
+        // automationsCount: number;
+
+        // ---------------------------------------------------------------------
+        // Chatbot
+        // ---------------------------------------------------------------------
+        this.myChatbot = this.faqkbList.filter((obj) => {
+          return !obj.subtype || obj.subtype === "chatbot";
+        });
+        this.logger.log('[BOTS-LIST] - myChatbot', this.myChatbot);
+        if (this.myChatbot) {
+          this.myChatbotOtherCount = this.myChatbot.length;
+          this.logger.log('[BOTS-LIST] - myChatbot COUNT', this.myChatbotOtherCount);
+        }
+
+        // ---------------------------------------------------------------------
+        // Automations (e.g. are the chatbot woth subtipe copilot or webhook)
+        // ---------------------------------------------------------------------
+        this.automations = this.faqkbList.filter((obj) => {
+          return obj.subtype && ["webhook", "copilot"].includes(obj.subtype);
+        });
+        this.logger.log('[BOTS-LIST] - automations', this.automations);
+        if (this.automations) {
+          this.automationsCount = this.automations.length;
+          this.logger.log('[BOTS-LIST] - automations COUNT', this.automationsCount);
+        }
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Satisfaction templates
@@ -727,11 +779,17 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.logger.log('[BOTS-LIST] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
         }
 
+
+
         this.route = this.router.url
         if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
-          this.faqkbList = this.faqkbList
-          this.pageName = "ALL MY CHATBOTS"
+          this.faqkbList = this.myChatbot // this.faqkbList
+          this.pageName = "Chatbots"
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
+        } else if (this.route.indexOf('/flows/flow-automations') !== -1) {
+          this.faqkbList = this.automations
+          this.pageName = "Automations"
+          this.logger.log('/flows/automations ', this.faqkbList);
         } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
           this.faqkbList = this.customerSatisfactionBots
           this.pageName = "CUSTOMER SATISFACTION CHATBOTS"
@@ -811,7 +869,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
-        // console.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+        // this.logger.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
         bot.botImage = imageUrl + '&' + new Date().getTime();
         // this.botProfileImageurl = this.sanitizer.bypassSecurityTrustUrl(_botProfileImageurl)
         // self.setImageProfileUrl_Native(baseUrl)
@@ -819,7 +877,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       } else {
         self.botProfileImageExist = imageExists
 
-      //  console.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
+       // this.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
 
       }
     })

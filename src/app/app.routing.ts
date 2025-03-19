@@ -1054,6 +1054,20 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
 
+  {
+    path: 'project/:projectid/flows/flow-automations',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
+  {
+    path: 'project/:projectid/flows/flow-webhooks',
+    loadChildren: () => import('app/bots/flow-webhooks/flow-webhooks.module').then(m => m.FlowWebhooksModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
   // Used in app-store to create an External chatbot
   {
     path: 'project/:projectid/bots/create/:type', component: BotCreateComponent,

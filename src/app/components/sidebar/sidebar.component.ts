@@ -213,6 +213,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   // Chatbot sidebar
   MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
+  FLOW_AUTOMATION_ROUTE_IS_ACTIVE: boolean;
+  FLOW_WEBHOOKS_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
   TMPLT_ALL_ROUTE_IS_ACTIVE: boolean;
   TMPLT_CMNT_ROUTE_IS_ACTIVE: boolean;
@@ -1115,6 +1117,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/flows/flow-automations') !== -1) {
+          this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
+        } else {
+          this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/flows/flow-webhooks') !== -1) {
+          this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
+        } else {
+          this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
+        }
+
+   
         if (event.url.indexOf('/bots-demo') !== -1) {
           this.BOTS_DEMO_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
@@ -1350,7 +1369,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - EMAIL_TICKETING_ROUTE_IS_ACTIVE ', this.EMAIL_TICKETING_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/automations') !== -1) {
+        // if (event.url.indexOf('/automations') !== -1) {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'automations') {
           this.AUTOMATIONS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         } else {

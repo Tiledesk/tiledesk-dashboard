@@ -3270,6 +3270,14 @@ appdashboard-bots-sidebar {
   color: var(--settings-sidebar-hover-color);
 }
 
+.settings-sidebar>li:hover >a > svg.svg-stroke {
+  stroke: var(--settings-sidebar-hover-color);
+}
+
+.settings-sidebar>li:hover >a > svg.svg-fill {
+  fill: var(--settings-sidebar-hover-color);
+}
+
 .sidebar-item-no-link {
   color: var(--settings-sidebar-color);
   padding-left: 12px;
@@ -3399,6 +3407,10 @@ li.active-item a span>.settings-sidebar-icons {
 }
 
 li.active-item a p.custom_paragraph {
+  color: var(--settings-sidebar-active-color);
+}
+
+li.active-item a svg {
   color: var(--settings-sidebar-active-color);
 }
 
