@@ -89,10 +89,10 @@ export class NotifyService {
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     this.logger.log('[NOTIFY-SERVICE] salesEmail ', this.salesEmail)
     this.hideHelpLink = brand['DOCS'];
- 
+
   }
 
- 
+
 
   // Not Used
   presentContactUsModalToUpgradePlan(displayModal: boolean) {
@@ -125,7 +125,7 @@ export class NotifyService {
       this._prjctPlanName = prjctPlanName;
       Swal.fire({
         title: this.translate.instant("Pricing.SubscriptionPaymentProblem"),
-        text: this.translate.instant('Pricing.WeWereUnableToAutomaticallyRenewYourSubscription') + '. ' + this.translate.instant("Pricing.PleaseContactUs")  + ' ' + this.translate.instant("Pricing.ToUpdateYourPaymentInformation")+ '.', 
+        text: this.translate.instant('Pricing.WeWereUnableToAutomaticallyRenewYourSubscription') + '. ' + this.translate.instant("Pricing.PleaseContactUs") + ' ' + this.translate.instant("Pricing.ToUpdateYourPaymentInformation") + '.',
         icon: "warning",
         showCloseButton: true,
         showCancelButton: false,
@@ -134,14 +134,14 @@ export class NotifyService {
         focusConfirm: false,
         // reverseButtons: true,
         // cancelButtonColor: "var(--red-color)",
-        
-        
-      }).then((result) => { 
+
+
+      }).then((result) => {
         if (result.isConfirmed) {
-          this.logger.log('[NOTIFY-SERVICE] displaySubscripionHasExpiredModal result.isConfirmed',  result.isConfirmed) 
+          this.logger.log('[NOTIFY-SERVICE] displaySubscripionHasExpiredModal result.isConfirmed', result.isConfirmed)
           window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
         }
-  
+
       });
 
 
@@ -151,15 +151,15 @@ export class NotifyService {
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal subHasExpired ', subHasExpired);
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal prjctPlanName ', prjctPlanName);
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal prjctPlanSubsEndDate ', prjctPlanSubsEndDate);
-    
-  
+
+
   }
-  
-  
+
+
   // "{{'YourTrialHasEnded' | translate }}"
   // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
-  displayTrialHasExpiredModal(projectId,  yourTrialHasEnded, upgradeNowToKeepOurAmazingFeatures , upgrade) {
-    this.logger.log('displayTrialHasExpiredModal yourTrialHasEnded' , yourTrialHasEnded, 'upgradeNowToKeepOurAmazingFeatures ', upgradeNowToKeepOurAmazingFeatures )
+  displayTrialHasExpiredModal(projectId, yourTrialHasEnded, upgradeNowToKeepOurAmazingFeatures, upgrade) {
+    this.logger.log('displayTrialHasExpiredModal yourTrialHasEnded', yourTrialHasEnded, 'upgradeNowToKeepOurAmazingFeatures ', upgradeNowToKeepOurAmazingFeatures)
     Swal.fire({
       title: yourTrialHasEnded, // "Your 14-days free trial has expired",
       text: upgradeNowToKeepOurAmazingFeatures, //"Upgrade now to keep our amazing features",
@@ -171,7 +171,7 @@ export class NotifyService {
       // cancelButtonColor: "var(--red-color)",
       focusConfirm: false,
       // reverseButtons: true,
-    }).then((result) => { 
+    }).then((result) => {
       if (result.isConfirmed) {
         this.router.navigate(['project/' + projectId + '/pricing']);
       }
@@ -191,7 +191,7 @@ export class NotifyService {
       this.prjct_profile_name = prjctPlanName // + ' plan'
       Swal.fire({
         title: this.prjct_profile_name + ' ' + this.translate.instant('Pricing.HasExpired'),
-        text: this.translate.instant('Pricing.PleaseContactUs') + ' ' + this.translate.instant("Pricing.ToUpdateYourPaymentInformation"), 
+        text: this.translate.instant('Pricing.PleaseContactUs') + ' ' + this.translate.instant("Pricing.ToUpdateYourPaymentInformation"),
         icon: "warning",
         showCloseButton: true,
         showCancelButton: false,
@@ -199,12 +199,12 @@ export class NotifyService {
         // confirmButtonColor: "var(--blue-light)",
         focusConfirm: false,
         // reverseButtons: true,
-      }).then((result) => { 
+      }).then((result) => {
         if (result.isConfirmed) {
-          this.logger.log('[NOTIFY-SERVICE] displayModalEnterpiseSubsExpired result.isConfirmed',  result.isConfirmed) 
+          this.logger.log('[NOTIFY-SERVICE] displayModalEnterpiseSubsExpired result.isConfirmed', result.isConfirmed)
           window.open(`mailto:${this.salesEmail}?subject=Upgrade plan (${this.prjct_profile_name} expired)`);
         }
-  
+
       });
 
     }
@@ -242,17 +242,17 @@ export class NotifyService {
     let contentText = ""
     if (reason === 'upgrade_plan') {
       contentText = this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
-    } 
-    else if (reason === 'seats_limit_exceed' ) {
-      contentText = this.translate.instant("Pricing.TheSeatsNumberExceedsTheAllowed" ) + '. ' +  this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan') 
     }
-    else if (reason === 'seats_limit_reached' ) {
-      contentText = this.translate.instant("Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats" ) + '. ' +  this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan') 
+    else if (reason === 'seats_limit_exceed') {
+      contentText = this.translate.instant("Pricing.TheSeatsNumberExceedsTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'seats_limit_reached') {
+      contentText = this.translate.instant("Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
     }
 
     Swal.fire({
-      title: this.translate.instant('Pricing.PlanChange'),   
-      text: contentText, 
+      title: this.translate.instant('Pricing.PlanChange'),
+      text: contentText,
       // html: `contentText`,
       icon: "warning",
       showCloseButton: true,
@@ -261,7 +261,7 @@ export class NotifyService {
       // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
-    }).then((result) => { 
+    }).then((result) => {
       if (result.isConfirmed) {
         window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
       }
@@ -282,16 +282,16 @@ export class NotifyService {
     if (reason === 'seats_limit_reached') {
       // this.showSubtitleAllOperatorsSeatsUsed = true;
       // this.showSubtitleSeatsNumberExceed = false;
-      el.innerHTML =  this.translate.instant("Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats") + '. ' + this.translate.instant("Pricing.OnlyOwnerCanManageSeatsNumber") + '. ' +  '<br>' + this.translate.instant("Pricing.ContactTheProjectOwner") + '.'
+      el.innerHTML = this.translate.instant("Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats") + '. ' + this.translate.instant("Pricing.OnlyOwnerCanManageSeatsNumber") + '. ' + '<br>' + this.translate.instant("Pricing.ContactTheProjectOwner") + '.'
     } else if (reason === 'seats_limit_exceed') {
       // this.showSubtitleSeatsNumberExceed = true;
       // this.showSubtitleAllOperatorsSeatsUsed = false;
-      el.innerHTML =  this.translate.instant("Pricing.TheSeatsNumberExceedsTheAllowed") + '. ' + this.translate.instant("Pricing.OnlyOwnerCanManageSeatsNumber") + '. ' + '<br>' + this.translate.instant("Pricing.ContactTheProjectOwner") + '.'
+      el.innerHTML = this.translate.instant("Pricing.TheSeatsNumberExceedsTheAllowed") + '. ' + this.translate.instant("Pricing.OnlyOwnerCanManageSeatsNumber") + '. ' + '<br>' + this.translate.instant("Pricing.ContactTheProjectOwner") + '.'
     } else if (reason === 'upgrade_plan') {
       // this.showSubtitleAllOperatorsSeatsUsed = false;
       // this.showSubtitleSeatsNumberExceed = false;
 
-      el.innerHTML =  this.translate.instant("Pricing.OnlyOwnerCanManageSeatsNumber") + '. ' + '<br>' + this.translate.instant("Pricing.ContactTheProjectOwner") + '.'
+      el.innerHTML = this.translate.instant("Pricing.OnlyOwnerCanManageSeatsNumber") + '. ' + '<br>' + this.translate.instant("Pricing.ContactTheProjectOwner") + '.'
     }
 
     Swal.fire({
@@ -654,7 +654,7 @@ export class NotifyService {
       icon_bckgrnd_color = '#d2291c'
     } else if (notificationColor === 2) {
       icon_bckgrnd_color = '#449d48'
-    } else if(notificationColor === 3){
+    } else if (notificationColor === 3) {
       icon_bckgrnd_color = '#ffecb5'
     }
     this.notify = $.notify({
@@ -912,7 +912,24 @@ export class NotifyService {
       // },
       // dangerMode: false,
     })
+  }
 
+
+  presentModalYouDontBelongToTheProject() {
+    Swal.fire({
+      title: this.translate.instant('AccessDenied') + '!',
+      text: this.translate.instant('ItLooksLikeYouAreNotTeammateOfThisProject') + '. ' + this.translate.instant('ContactTheProjectAdministratorToGrantYouTheAccess') + '.',
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   presentModalOnlyOwnerCanManageTSMTPsettings(onlyOwnerCanManageSMTPSettings: string, learnMoreAboutDefaultRoles: string) {

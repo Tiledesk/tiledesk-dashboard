@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebhookService } from 'app/services/webhook.service';
 import { BrandService } from 'app/services/brand.service';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { ProjectUser } from 'app/models/project-user';
 
 
 
@@ -170,14 +171,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getProfileImageStorage() {
