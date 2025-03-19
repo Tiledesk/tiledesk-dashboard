@@ -630,6 +630,7 @@
     "UploadLogo":"Логотипті жүктеп салу",
     "FileTooLarge": "Файл жүктеп салу үшін тым үлкен. Максималды файл өлшемі {{file_size}}",
     "ImagePreview":"Кескінді алдын ала қарау",
+    "Flows": "Ағындар",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

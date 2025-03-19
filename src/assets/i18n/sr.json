@@ -632,6 +632,7 @@
     "UploadLogo":"Отпремите лого",
     "FileTooLarge": "Датотека је превелика за отпремање. Максимална величина датотеке {{file_size}}",
     "ImagePreview":"Преглед слике",
+    "Flows": "Токови",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
