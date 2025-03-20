@@ -102,6 +102,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     const brand = brandService.getBrand();
     this.displayChatbotsCommunity = brand['display_chatbots_community']
     this.displayTemplatesCategory = brand['display_templates_category']
+    // console.log('displayTemplatesCategory ',  this.displayTemplatesCategory)
   }
 
 
