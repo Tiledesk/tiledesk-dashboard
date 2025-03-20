@@ -136,11 +136,11 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </cohere-integration>
 
-                                <ollama-integration *ngIf="integrationSelectedName === INT_KEYS.OLLAMA"
+                                <!-- <ollama-integration *ngIf="integrationSelectedName === INT_KEYS.OLLAMA"
                                     [integration]="selectedIntegration"
                                     (onUpdateIntegration)=integrationUpdateEvent($event)
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                </ollama-integration>
+                                </ollama-integration> -->
 
                                <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
                                     [integration]="selectedIntegration"
