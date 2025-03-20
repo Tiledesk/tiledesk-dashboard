@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.92-rc2
+- Fixes badges in integrations indicating which plan the integration is available from
+- Enables Ollama integration
+
 ### 2.7.92-rc1
 - Renames the sidebar menu item "Bot" in "Flows"
 - Adds in the Flows sidebar the menu items Automations and Webhooks
