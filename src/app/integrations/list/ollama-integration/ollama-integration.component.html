@@ -1,4 +1,4 @@
-<div class="header">
+<!-- <div class="header">
 
     <div class="signup">
         <a href="https://ollama.com/signup" target="_blank">{{ 'Integration.Signup' | translate }}</a><p [innerHTML]="'Integration.FreeAccount' | translate: translateparams"></p>
@@ -25,46 +25,68 @@
         </svg>
         <p class="error">{{ 'Integration.Failed' | translate }}</p>
     </div>
-</div>
+</div> -->
 
 <div class="content">
 
+
+
     <div class="input-field">
-        <label>Api Key</label>
+        <label>URL</label>
+        <input id="ollama-url" class="custom-input" type="url" name="ollama-url"
+            placeholder="URL of the external Ollama server" (input)="handleInput($event)"
+            [(ngModel)]="integration.value.url" autocomplete="off">
+    </div>
 
-        <!-- <div class="password-input">
-            <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
-                [(ngModel)]="integration.value.apikey">
-            <div class="show-hide-button">
-                <span *ngIf="keyVisibile === false" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility</span>
-                <span *ngIf="keyVisibile === true" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility_off</span>
-            </div>
-        </div> -->
 
-        <div class="password-input">
-            <input id="api-key-input" type="text" name="api-key-input" placeholder="{{ 'Integration.YourApikey' | translate }}"
-            id="maskedInput"
-            [value]="getDisplayValue()"
-            (input)="handleInput($event)"
-            (keydown.backspace)="handleBackspace()"
-            autocomplete="off" >
-            <div class="show-hide-button">
-                <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)" #maskedInput>
-                    <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
-                    <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
-                </button>
-            </div>
-        </div>
+
+    <div class="input-field">
+        <label>Authorization token (optional)</label>
+        <input class="custom-input" type="text" [(ngModel)]="integration.value.token"
+            placeholder="You authorization Token">
 
     </div>
 
-    <!-- <div class="input-field">
-        <label>{{ 'Integration.OrganizationOptional' | translate }}</label>
-        <input class="custom-input" type="text" [(ngModel)]="integration.value.organization"
-            placeholder="{{ 'Integration.YourOrganization' | translate }}">
+
+
+    <div class="input-field">
+        <label>Models</label>
+        <input id="ollama-models" class="custom-input" name="ollama-models" placeholder="Enter LLM model name"
+            type="text" [(ngModel)]="newModelName" autocomplete="off" (keyup.enter)="addModel(newModelName)">
+        <!-- <button (click)="addModel(newModelName)">Add Model</button> -->
+    </div>
+
+    <!-- <ul>
+        <li *ngFor="let model of integration.value.models">
+            {{ model }}
+            <button (click)="removeModel(model)">Remove</button>
+        </li>
+    </ul> -->
+
+    <!-- <div class="tags-container">
+        <div class="tag" *ngFor="let model of integration.value.models">
+            <span>{{ model }}</span>
+            <button class="remove-btn" (click)="removeModel(model)">×</button>
+        </div>
     </div> -->
+
+    <!-- <div class="lead-tags--container-wpr"> -->
+        <div class="models--container">
+            <div  aria-label="models" *ngFor="let model of integration.value.models" class="model-name-and-btn-wpr">
+                <p weight="400" class="model-name">{{model}}</p>
+                <button  type="button" class="delete-model" (click)="removeModel(model)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                        viewBox="0 0 24 24" class="remove-tag-icon"
+                        style="min-width: 12px; min-height: 12px; margin-right: 0px;">
+                        <path 
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                        </path>
+                        <path  d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    <!-- </div> -->
 
     <div class="integration-footer">
         <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">

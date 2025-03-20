@@ -13,10 +13,8 @@ export class OllamaIntegrationComponent implements OnInit {
   @Output() onUpdateIntegration = new EventEmitter;
   @Output() onDeleteIntegration = new EventEmitter;
 
-  keyVisibile: boolean = false;
-  isVerified: boolean;
   translateparams: any;
-  isMasked: boolean = true; // State for masking
+  newModelName: string = '';
 
   constructor(
     private integrationService: IntegrationService,
@@ -26,56 +24,43 @@ export class OllamaIntegrationComponent implements OnInit {
   ngOnInit(): void {
     this.logger.log("[INT-Ollama] integration ", this.integration)
     this.translateparams = { intname: 'Ollama' };
-    if (this.integration.value.apikey) {
-      this.checkKey();
-    }
   }
 
-  showHideKey() {
-    let input = <HTMLInputElement>document.getElementById('api-key-input');
-    if (this.keyVisibile === false) {
-      input.type = 'text';
-    } else {
-      input.type = 'password';
+  
+  addModel(modelName: string): void {
+    this.logger.log('[INT-Ollama] - addModel ', modelName)
+    if (modelName && !this.integration.value.models.includes(modelName)) {
+      this.logger.log('[INT-Ollama] - addModel here yes modelName', modelName)
+      this.logger.log('[INT-Ollama] - addModel this.integration.value.models', this.integration.value.models)
+      this.integration.value.models.push(modelName);
+      
     }
-    this.keyVisibile = !this.keyVisibile;
+    this.newModelName = null
+  }
+
+  removeModel(modelName: string): void {
+    this.integration.value.models =  this.integration.value.models.filter(model => model !== modelName);
   }
 
   saveIntegration() {
-    this.checkKey().then((status) => {
-      let data = {
-        integration: this.integration,
-        isVerified: status
-      }
-      this.onUpdateIntegration.emit(data);
-    })
+    let data = {
+      integration: this.integration,
+    }
+    this.logger.log("[INT-Ollama] saveIntegration ", this.integration)
+    this.onUpdateIntegration.emit(data);
+   
   }
 
   deleteIntegration() {
-    this.isVerified = null;
     this.onDeleteIntegration.emit(this.integration);
   }
 
-  checkKey() {
-    return new Promise((resolve) => {
-      let url = "https://api.cohere.com/v1/models";
-      let key = "Bearer " + this.integration.value.apikey;
-      this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
-        this.logger.log("[INT-Cohere] Key verification resp: ", resp);
-        this.isVerified = true;
-        resolve(true);
-      }, (error) => {
-        this.logger.error("[INT-Cohere] Key verification failed: ", error);
-        this.isVerified = false;
-        resolve(false);
-      })
-    })
-  }
+  
 
   resetValues() {
     this.integration.value = {
-      apikey: null,
-      organization: null
+      url: null,
+      token: null
     }
   }
 
@@ -86,37 +71,9 @@ export class OllamaIntegrationComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     const displayedValue = inputElement.value;
 
-    // Update realValue based on input length and masking state
-    if (this.isMasked && this.integration.value.apikey) {
-      // Add only new characters to realValue
-      const newChar = displayedValue.slice(this.integration.value.apikey.length);
-      this.integration.value.apikey += newChar;
-    } else {
-      // Directly update realValue when unmasked
-      this.integration.value.apikey = displayedValue;
-    }
-
-    // Always set the displayed value to match the current state
-    inputElement.value = this.getDisplayValue();
   }
 
-  handleBackspace(): void {
-    this.integration.value.apikey = this.integration.value.apikey.slice(0, -1);
-  }
-
-  toggleMask(inputElement: HTMLInputElement): void {
-    this.isMasked = !this.isMasked;
-
-    // Update the displayed value immediately when toggling the mask
-    inputElement.value = this.getDisplayValue();
-  }
-
-  getDisplayValue(): string {
-    if (!this.integration.value.apikey) {
-      return ''; // Return an empty string if realValue is null, undefined, or empty
-    }
-    return this.isMasked ? '●'.repeat(this.integration.value.apikey.length) : this.integration.value.apikey;
-  }
+ 
 
 
 
