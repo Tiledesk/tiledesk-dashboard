@@ -50,7 +50,7 @@
                                         <div class="integration-name-and-badge">
                                             <p>{{ integration.name }}</p>
                                            <!-- >> {{ integration.displayBadge}} -->
-                                            <div *ngIf="integration.displayBadge === true" class="pro-badge">Pro</div>
+                                            <div *ngIf="integration.displayBadge === true" class="pro-badge">{{integration.plan}}</div>
                                         </div>
                                     </div>
                                 </div>

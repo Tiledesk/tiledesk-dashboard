@@ -386,7 +386,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
     }).catch((err) => {
-      this.logger.error("[INTEGRATIONS] err ", err)
+      if (err !== false) {
+        this.logger.error("[INTEGRATIONS] err ", err)
+      }
       this.showInIframe = false;
       this.integrationLocked = true;
       this.plan_require = integration.plan;
