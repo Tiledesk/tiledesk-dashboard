@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.92-rc1
+- Renames the sidebar menu item "Bot" in "Flows"
+- Adds in the Flows sidebar the menu items Automations and Webhooks
+- Moves the menu items Templates from the Flows sidebar in the Templates page
+
 ### 2.7.91
 - Minor improvements
 
