@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.92
+- Fixes badges in integrations indicating which plan the integration is available from 
+
 ### 2.7.91
 - Minor improvements
 
