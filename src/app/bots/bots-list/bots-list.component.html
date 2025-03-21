@@ -76,7 +76,8 @@
               style="margin-right: 20px">
               Create from scratch
             </button>
-            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
+            <!-- *ngIf="pageName !== 'Automations'" -->
+            <button  class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               Add from template
             </button>
           </div>
@@ -134,7 +135,7 @@
                     </div>
                   </div>
                 </div>
-                isChatbotRoute {{isChatbotRoute}}
+                
                 <div *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
                   <p class="no-bot-msg" *ngIf="isChatbotRoute">
                     <span style="display: block;">
@@ -161,7 +162,7 @@
                     </span>
                     <span style="display: block;">
                       <button class="btn btn-tdblu-no-boxshadow center" (click)="createBlankTilebot()"
-                        style="margin-right: 20px; box-shadow: unset;">
+                        style="box-shadow: unset;">
                         Create from scratch
                       </button>
                     </span>
@@ -169,6 +170,7 @@
                 </div>
 
           
+             
 
                 <div class="card-list" *ngFor="let faqkb of faqkbList; let i = index">
 
@@ -265,6 +267,7 @@
                       <!-- Icon human in the loop -->
                       <!-- (mouseenter)="openPopover()"  -->
                       <!-- scheduleClosePopover() -->
+                      <!-- (mouseleave)="scheduleClosePopover()" -->
                       <!-- ---------------------------------------------- -->
                       <div class="cl-card-second-column">
                         <ng-container *ngIf="!faqkb?.subtype || faqkb?.subtype === 'chatbot'">
@@ -396,30 +399,29 @@
 
                     </div>
 
-                    
-                         <!-- ---------------------------------------------- -->
-                          <!-- Popover for the icon human in the loop -->
-                          <!-- (mouseenter)="cancelClosePopover()"  -->
-                          <!-- (mouseleave)="scheduleClosePopover()"  -->
-                          <!-- ---------------------------------------------- -->
-                          <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
-                          panelClass="custom-panel-sat-popover" 
-                          closeTransition="1ms ease-in"
-                          
-                          forceAlignment="true">
+                    <!-- ---------------------------------------------- -->
+                    <!-- Popover for the icon human in the loop 
+                      (mouseenter)="cancelClosePopover()" 
+                      (mouseleave)="scheduleClosePopover()" -->
+                    <!-- ---------------------------------------------- -->
+                    <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
+                      panelClass="custom-panel-sat-popover" 
+                      closeTransition="1ms ease-in"
+                      forceAlignment="true">
 
-                          <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
+                      <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
 
-                            <div class="custom-panel-sat-popover-title">
-                              Available to agents
-                            </div>
+                        <div class="custom-panel-sat-popover-title">
+                          Available to agents
+                        </div>
 
-                            <div class="custom-panel-sat-popover-description">
-                              Chatbot visible to agents for the purpose to be put back in the conversation
-                            </div>
+                        <div class="custom-panel-sat-popover-description">
+                          Chatbot visible to agents for the purpose to be put back in the conversation
+                        </div>
 
-                          </div>
-                        </sat-popover>
+                      </div>
+                    </sat-popover>
+
                   </div>
                 </div>
               </div>

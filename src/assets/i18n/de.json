@@ -108,6 +108,8 @@
 	"TotalAITokensUsage": "Gesamtnutzung von Tokens AI",
 	"TotalEmailUsage": "Gesamte E-Mail-Nutzung",
 	"Email": "E-Mail",
+	"Voice":"Stimme",
+	"TotalVoiceUsage": "Vollständige Nutzung der Stimme",
 	"RequestsForAgent": "Anfrage für Agenten",
 	"RequestsForDept": "Anfrage für Abteilung",
 	"NumberOfRequestsLast7Days": "Anfragen in den letzten 7 Tagen",
@@ -631,6 +633,9 @@
 	"FileTooLarge": "Die Datei ist zu groß zum Hochladen. Maximale Dateigröße {{file_size}}",
 	"ImagePreview":"Bildvorschau",
 	"Flows": "Fließt",
+	"AccessDenied":"Zugriff verweigert",
+	"ItLooksLikeYouAreNotTeammateOfThisProject": "Es sieht so aus, als ob Sie kein Teammitglied dieses Projekts sind",
+	"ContactTheProjectAdministratorToGrantYouTheAccess":"Kontaktieren Sie den Projektadministrator, um den Zugriff zu gestatten",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -108,6 +108,8 @@
     "TotalAITokensUsage": "Укупна употреба AI Tokens",
     "TotalEmailUsage": "Укупна употреба е-поште",
     "Email": "Емаил",
+    "Voice":"Воице",
+    "TotalVoiceUsage": "Укупна употреба гласа",
     "RequestsForAgent": "Разговори за агента",
     "RequestsForDept": "Разговори за одељење",
     "NumberOfRequestsLast7Days": "Број разговора у последњих 7 дана",
@@ -633,6 +635,9 @@
     "FileTooLarge": "Датотека је превелика за отпремање. Максимална величина датотеке {{file_size}}",
     "ImagePreview":"Преглед слике",
     "Flows": "Токови",
+    "AccessDenied":"Приступ одбијен",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Изгледа да нисте саиграч овог пројекта",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Обратите се администратору пројекта да вам одобри приступ",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
