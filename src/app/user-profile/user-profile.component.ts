@@ -220,7 +220,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
 
- 
+
 
   ngAfterViewInit(): void {
     try {
@@ -298,12 +298,12 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           this.isValidPhoneNumber = true;
 
           fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
-          .then(response => response.json())
-          .then(data => {
-            const userCountry = data.country //.toUpperCase(); // e.g., "IT" for Italy
-            console.log('[USER-PROFILE] - Detected country from IP:', userCountry);
-            this.getSupportedCountry(userCountry, 'NotHasMobile')
-          })
+            .then(response => response.json())
+            .then(data => {
+              const userCountry = data.country
+              console.log('[USER-PROFILE] - Detected country from IP:', userCountry);
+              this.getSupportedCountry(userCountry, 'NotHasMobile')
+            })
         }
 
 
@@ -361,7 +361,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     });
   }
 
- 
+
 
   getSupportedCountry(countryCode, calledBy) {
     this.countries = getCountries().map((code) => ({
@@ -373,12 +373,19 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     console.log('[USER-PROFILE] - getSupportedCountry PHONE VALIDATION SUPPORTED countries', this.countries)
     this.selectedCountry = countryCode // set the conntry
     const selected_country = this.countries.find(c => c.code === countryCode);
+
     console.log('[USER-PROFILE] - getSupportedCountry PHONE VALIDATION SUPPORTED selected_country', selected_country)
-    this.dialCode = selected_country.dialCode
+    if (selected_country) {
+      this.dialCode = selected_country.dialCode
+    } else {
+      this.dialCode = this.countries[0].dialCode;
+      this.selectedCountry = this.countries[0].code
+    }
 
     if (calledBy === 'NotHasMobile') {
       this.userPhone = this.dialCode + ' '
     }
+
 
   }
 
@@ -448,7 +455,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   }
 
 
- 
+
 
   createUserAvatar(user) {
     this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
@@ -824,8 +831,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, mobile_phone, (response) => {
 
-     console.log('[USER-PROFILE] - update Current User  RES ', response)
-     console.log('[USER-PROFILE] - update Current User  RES updatedUser ', response.updatedUser)
+      console.log('[USER-PROFILE] - update Current User  RES ', response)
+      console.log('[USER-PROFILE] - update Current User  RES updatedUser ', response.updatedUser)
 
       if (response.success === 'success') {
 
@@ -838,7 +845,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification(this.translationsMap.get('YourProfileHasBeenUploaded'), 2, 'done');
         // if (response === 'error')
-      } else  {
+      } else {
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = true;
         // =========== NOTIFY ERROR ===========
