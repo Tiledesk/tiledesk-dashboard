@@ -192,12 +192,37 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     this.getProjectPlan();
     this.getUserRole();
     this.logger.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
+    this.getQueryParamsAndManageChatbotSubtype()
   }
+
+  getQueryParamsAndManageChatbotSubtype() {
+    this.route.queryParams.subscribe(params => {
+    
+      this.logger.log('queryParams ', params);
+      this.logger.log('queryParams type', params.type);
+
+      if (params.type === 'chatbot') {
+        this.logger.log('botSubtypeItems 1' ,this.botSubtypeItems)
+        this.botSubtypeItems.splice(1,2)
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+        this.logger.log('botSubtypeItems 2' ,this.botSubtypeItems)
+      } else if (params.type === 'automation') {
+        this.botSubtypeItems.shift()
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+        this.logger.log('botSubtypeItems 3' ,this.botSubtypeItems)
+        this.botSubtype ="webhook"
+      }
+    });
+  }
+
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+
 
   getUserRole() {
     this.usersService.project_user_role_bs
