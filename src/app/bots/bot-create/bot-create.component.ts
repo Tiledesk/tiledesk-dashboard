@@ -211,6 +211,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.botSubtypeItems = this.botSubtypeItems.slice(0)
         this.logger.log('botSubtypeItems 3' ,this.botSubtypeItems)
         this.botSubtype ="webhook"
+      } else if (params.type === undefined) {
+        this.botSubtypeItems.splice(1,2)
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
       }
     });
   }
