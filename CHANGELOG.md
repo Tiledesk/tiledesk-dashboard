@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.93-rc1 
+- Fixes the message in the automations page displayed when there are no automations
+- Allows selection of chatbot subtypes only from the automations page
+
 ### 2.7.92-rc2
 - Fixes badges in integrations indicating which plan the integration is available from
 - Enables Ollama integration
