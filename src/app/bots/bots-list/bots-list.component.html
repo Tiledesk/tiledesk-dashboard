@@ -99,9 +99,9 @@
               <!-- New chatbot list -->
               <div *ngIf="!showSpinner" class="main--wrapper">
                 <div class="page-title--wrapper">
-                  <!-- <div class="title--header">
-                    {{ pageName }}
-                  </div> -->
+                  <div class="title--header">
+                    <!-- {{ pageName }} -->
+                  </div>
 
                   <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
                     <span class="order-by-label">Order by </span>
@@ -134,15 +134,9 @@
                     </div>
                   </div>
                 </div>
-
+                isChatbotRoute {{isChatbotRoute}}
                 <div *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
-
-                  <p class="no-bot-msg">
-                    <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
-                        info
-                      </i>
-                      {{ 'BotsPage.NoBot' | translate }} -->
-
+                  <p class="no-bot-msg" *ngIf="isChatbotRoute">
                     <span style="display: block;">
                       You don't have Chatbots.
                     </span>
@@ -151,9 +145,21 @@
                         template </span> or create a new one from scratch
                     </span>
                     <span style="display: block;">
-                      <!-- <span class="btn---link" (click)="createBlankTilebot()"> create a new one from scratch
-                        </span> -->
-                      <!-- btn-new btn-size-m btn--primary -->
+                      <button class="btn btn-tdblu-no-boxshadow center" (click)="createBlankTilebot()"
+                        style="margin-right: 20px; box-shadow: unset;">
+                        Create from scratch
+                      </button>
+                    </span>
+                  </p>
+
+                  <p class="no-bot-msg" *ngIf="!isChatbotRoute">
+                    <span style="display: block;">
+                      You don't have Automation yet.
+                    </span>
+                    <span style="display: block;">
+                      Create a new one from scratch
+                    </span>
+                    <span style="display: block;">
                       <button class="btn btn-tdblu-no-boxshadow center" (click)="createBlankTilebot()"
                         style="margin-right: 20px; box-shadow: unset;">
                         Create from scratch
