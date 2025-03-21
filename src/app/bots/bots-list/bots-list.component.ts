@@ -154,6 +154,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   isVisiblePAY: boolean;
   chatbotNumExceedChatbotLimit: boolean = false
 
+  isChatbotRoute:boolean
+  currentRoute
+
   // editBotName: boolean = false;
   constructor(
     private faqKbService: FaqKbService,
@@ -184,6 +187,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+
+
+    this.currentRoute = this.router.url;
+    this.logger.log('[BOTS-LIST] - currentRoute ', this.currentRoute)
+
+    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1) {
+        this.isChatbotRoute = true
+
+        this.logger.log('[BOTS-LIST] - currentRoute isChatbotRoute ', this.isChatbotRoute)
+    } else {
+      this.isChatbotRoute = false
+    }
   }
 
   // openPopover() {
@@ -1251,14 +1266,25 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
-          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+          this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
+        if (this.isChatbotRoute) {
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'chatbot' }})
+        } else {
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'automation' }})
+        }
         } else if (this.chatBotCount >= this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN NAVIGATE')
-        this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'])
+        this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
+        if (this.isChatbotRoute) {
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'chatbot' }})
+        } else {
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'automation' }})
+        }
       }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()
