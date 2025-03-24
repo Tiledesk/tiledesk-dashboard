@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.93-rc2
+- Adds the "Mobile Number" mandatory field to the sign up page
+- Adds the ability to change the "Mobile Number" on the user profile page (mandatory for users who signed up with mobile number)
+
 ### 2.7.93-rc1 
 - Fixes the message in the automations page displayed when there are no automations
 - Allows selection of chatbot subtypes only from the automations page
