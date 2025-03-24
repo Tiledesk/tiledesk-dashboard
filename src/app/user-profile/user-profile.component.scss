@@ -42,9 +42,13 @@ select {
 /* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS > OF 768  */
 @media (min-width: 767px) {
 
-  input[type="text"],
-  input[type="phone"] {
+  input[type="text"] {
     width: 400px !important;
+  }
+
+
+  input[type="phone"] {
+    width: 320px !important;
   }
 }
 
@@ -350,11 +354,12 @@ button.close {
   width: max-content !important;
 }
 
-// .user-prolile-mobile-number {
-//   flex: 1;
-//   border: none;
-//   outline: none;
-// }
+.user-prolile-mobile-number {
+  // width: 320px !important;     
+  border-bottom-left-radius: 0px !important; 
+  border-top-left-radius: 0px !important;
+  border-left: 0px !important;
+}
 
 // .automatic-dshbrd-lang > div > label {
 //   color:  #7695a5 // var(--secondary-text-color)

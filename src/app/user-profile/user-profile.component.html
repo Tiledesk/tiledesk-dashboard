@@ -179,8 +179,8 @@
 
                         <div class="row">
                             <label class="col-sm-2 custom-label">
-                                Mobile Number
-                                <span *ngIf="mobile_number_not_available" style="color:#ff5252">*</span>
+                                {{'MobileNumber' | translate}}
+                                <span *ngIf="dislayUserPhoneMandatoryMsg" style="color:#ff5252">*</span>
                             </label>
                             <div class="col-sm-10">
                                 <div class="phone-container">
@@ -213,15 +213,13 @@
 
                                         </ng-template>
                                     </ng-select>
-                                    <!-- class="user-prolile-mobile-number" -->
+                                    <!--  -->
                                     <input #phoneInput [(ngModel)]="userPhone"  type="phone"
                                         placeholder="Mobile number" (input)="formatAsYouType($event)" 
-                                        style="width: 320px !important;     border-bottom-left-radius: 0px;
-                                        border-top-left-radius: 0px;
-                                        border-left: 0px;" >
+                                        class="user-prolile-mobile-number">
                                 </div>
                                 <span *ngIf="isValidPhoneNumber === false" class="mobile-phone-number-danger">
-                                    Invalid mobile number.
+                                    {{'InvalidMobileNumber' | translate}}
                                 </span>
                             </div>
 
@@ -275,9 +273,16 @@
                             <label class="col-sm-2"></label>
                             <div class="col-sm-10 ">
                                 <!-- [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME" -->
-                                <button class="btn btn-tdblu-no-boxshadow"
+                                <button *ngIf="mobile_number_available" class="btn btn-tdblu-no-boxshadow"
                                     (click)="updateCurrentUserFirstnameLastname()"
                                     [disabled]="userFirstname.length < 1 || !isValidPhoneNumber">
+                                    {{ "UserProfile.UpdateProfile" | translate }}
+                                </button>
+
+                                <!-- dialCode length: {{dialCode?.length}} - userPhone length {{userPhone?.length - 1 }} -->
+                                <button *ngIf="!mobile_number_available" class="btn btn-tdblu-no-boxshadow"
+                                    (click)="updateCurrentUserFirstnameLastname()"
+                                    [disabled]="userFirstname.length < 1 || (userPhone?.length - 1 > dialCode?.length && !isValidPhoneNumber)">
                                     {{ "UserProfile.UpdateProfile" | translate }}
                                 </button>
                             </div>
@@ -417,7 +422,7 @@
 <!-- <appdashboard-change-password></appdashboard-change-password> -->
 
 <!-- ============ INFO MODAL: UPDATING PROFILE IN PROGRESS ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalUpdatingUser}"
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalUpdatingUser}"
     style="background-color: rgba(90,90,90,0.5);">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -428,10 +433,8 @@
 
                 <h4 class="modal-title">
                     {{ "UserProfile.UpdateProfile" | translate }}
-                    <!-- <code>{{id_toDelete}}</code> -->
                 </h4>
             </div>
-
             <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
 
                 <span *ngIf="SHOW_CIRCULAR_SPINNER">
@@ -446,8 +449,6 @@
                         {{ "UserProfile.Processing" | translate }}
                     </p>
                 </span>
-
-                <!-- IF THERE IS NO ERROR -->
                 <span *ngIf="!SHOW_CIRCULAR_SPINNER && !UPDATE_USER_ERROR ">
 
                     <div style="text-align: center">
@@ -461,23 +462,18 @@
                         {{ "UserProfile.UserSuccessfullyUpdated" | translate }}
                     </p>
                 </span>
-
-                <!-- IF THERE IS AN ERROR -->
                 <span *ngIf="!SHOW_CIRCULAR_SPINNER && UPDATE_USER_ERROR">
                     <div style="text-align: center ">
                         <i class="material-icons" style="color:#ff5252">report_problem</i>
                         <p style="color:#ff5252; font-weight: 500">
-                            <!-- {{ "UserProfile.Error" | translate }} -->
                             {{ "Error" | translate }}
                         </p>
-
                     </div>
                     <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
                         {{ "UserProfile.AnErrorHasOccurred" | translate }}
                     </p>
                 </span>
             </div>
-
             <div class="modal-footer" style="text-align: center;">
                 <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER"
                     (click)="closeModalUpdatingUserHandler()" style="padding:12px 16px;">
@@ -486,7 +482,5 @@
             </div>
 
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+</div> -->

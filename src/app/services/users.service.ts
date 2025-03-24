@@ -1058,8 +1058,8 @@ export class UsersService {
    * @param callback 
    * @returns 
    */
-  public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string, user_phone: string, callback) {
-
+  public updateCurrentUser(user_firstname: string, user_lastname: string, user_phone: string, callback) {
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname, 'MOBILE-PHONE ',user_phone);
     const url = this.UPDATE_USER_URL;
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME (PUT) URL ', url);
 
@@ -1071,18 +1071,22 @@ export class UsersService {
       })
     };
 
-    console.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname);
+    // 'phone': user_phone
+    const body = { 'firstname': user_firstname, 'lastname': user_lastname };
 
-    const body = { 'firstname': user_firstname, 'lastname': user_lastname, 'phone': user_phone };
+    if (user_phone) {
+      body['phone'] = user_phone
+    }
 
-    console.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - BODY ', body);
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - BODY ', body);
 
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
       .toPromise()
       .then(res => {
 
-        console.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res)
+        this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - RESPONSE: ', res)
 
         const jsonRes = res
 
