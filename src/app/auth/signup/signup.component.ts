@@ -272,32 +272,6 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
     //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
     //  console.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
-
-
-
-    console.log('[SIGN-UP] onValueChanged  data', data)
-    // console.log('[SIGN-UP] onValueChanged  data phone', data.phone)
-    // if (data ) {
-    //   this.phoneData = data.phone
-    // }
-   
-    // if (data) {
-    //   let elemPswInput = <HTMLInputElement>document.getElementById('signup-password')
-    //   this.logger.log('[SIGN-UP] onValueChanged  data password length (1)', data.password.length)
-    //   if (data.password.length >= 0) {
-    //     this.logger.log('[SIGN-UP] onValueChanged  data password length (2)', data.password.length)
-    //     // document.getElementById("password")
-
-    //     elemPswInput.setAttribute("type", "text");
-    //     elemPswInput.classList.add("secure");
-    //   }
-    //   // else if ( data.password.length == 0) {
-    //   //   this.logger.log('[SIGN-UP] onValueChanged  data password length (3)', data.password.length)
-    //   //   elemPswInput.setAttribute("type", "password");
-    //   //   elemPswInput.classList.remove("secure");
-    //   // }
-    // }
-
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
       if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms' || field === 'phone' || field === "phoneCountry")) {
@@ -333,68 +307,51 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       code: code,
       name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code,
       dialCode: `+${getCountryCallingCode(code)}`,
-
-
     }));
-    // Automatically select the first country
-
-
-
-    // const userTimezone = moment.tz.guess(); // Detect user's timezone
-    // console.log("Detected Timezone:", userTimezone);
-
-    // const userCountry = timezoneToCountryMap[userTimezone] || "Unknown";
-    // console.log("Detected Country:", userCountry);
-
-    // const browserLangISOCode = this.browserLang.toUpperCase()
-    // const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // console.log('Detected Time Zone:', timeZone);
-
-
 
     if (this.countries.length > 0) {
      
       fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
         .then(response => response.json())
         .then(data => {
-          const userCountry = data.country //.toUpperCase(); // e.g., "IT" for Italy
-          console.log('Detected country from IP:', userCountry);
+          const userCountry = data.country;
+          this.logger.log('[SIGN-UP] - Detected country from IP:', userCountry);
 
           // Find the matching country in your countries list
           const countryIndex = this.countries.findIndex(c => c.code === userCountry);
-          console.log('Detected countryIndex:', countryIndex);
+          this.logger.log('[SIGN-UP] - Detected countryIndex:', countryIndex);
           if (countryIndex !== -1) {
-            console.log('Auto-selecting country:', this.countries[countryIndex]);
+            this.logger.log('[SIGN-UP] - Auto-selecting country:', this.countries[countryIndex]);
             this.userForm.patchValue({ phoneCountry: this.countries[countryIndex].code });
             this.dialCode = this.countries[countryIndex].dialCode;
             this.onCountryChange(this.countries[countryIndex], 'on-init')
-            console.log('Detected dialCode:', this.dialCode);
+            this.logger.log('[SIGN-UP] - Detected dialCode:', this.dialCode);
           } else {
-            console.warn('Country not found in list, using default.');
+            this.logger.log('[SIGN-UP] - Country not found in list, using default.');
 
             this.userForm.patchValue({ phoneCountry: this.countries[0].code });
             this.dialCode = this.countries[0].dialCode;
-            console.log('this.countries[0].code ', this.countries[0].code)
+            this.logger.log('this.countries[0].code ', this.countries[0].code)
             this.onCountryChange(this.countries[0], 'on-init');
           }
         })
     }
 
-    console.log('[SIGN-UP] - PHONE VILDATION SUPPORTED countries', this.countries)
+    this.logger.log('[SIGN-UP] - PHONE VILDATION SUPPORTED countries', this.countries)
   }
 
 
   onCountryChange(country: any, calledBy?:string) {
     if (country) {
-      console.log('[SIGN-UP] onCountryChange country', country)
+      this.logger.log('[SIGN-UP] onCountryChange country', country)
       const selectedCountry = this.countries.find(c => c.code === country.code);
-      console.log('[SIGN-UP] onCountryChange selectedCountry 1 ', selectedCountry)
+      this.logger.log('[SIGN-UP] onCountryChange selectedCountry 1 ', selectedCountry)
 
       if (selectedCountry) {
-        console.log('[SIGN-UP] onCountryChange selectedCountry 2', selectedCountry)
+        this.logger.log('[SIGN-UP] onCountryChange selectedCountry 2', selectedCountry)
         this.dialCode = selectedCountry.dialCode;
-        this.mobilePhoneCountryCode = selectedCountry.code;
-        console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
+        // this.mobilePhoneCountryCode = selectedCountry.code;
+        // console.log('[SIGN-UP] onCountryChange mobilePhoneCountryCode', this.mobilePhoneCountryCode)
     
         this.userForm.patchValue({ phone: selectedCountry.dialCode + ' ' });
         if (calledBy !== 'on-init') {
@@ -408,29 +365,16 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
   }
 
-
-  openCountrySelect() {
-    console.log('[SIGN-UP] openCountrySelect ')
-    if (this.userForm.get('phone')?.disabled && this.countrySelect) {
-      this.countrySelect.open();
-    }
-  }
-
-
   formatAsYouType() {
-    // console.log('formatAsYouType ', this.mobilePhoneCountryCode)
-
     let inputValue = this.userForm.get('phone')?.value || '';
 
-    console.log('formatAsYouType inputValue ', inputValue)
-
-
+    this.logger.log('formatAsYouType inputValue ', inputValue)
 
     if (!inputValue.trim()) return; // Skip if input is empty
 
-    console.log('formatAsYouType inputValue.startsWith dialCode', inputValue.startsWith(this.dialCode))
+    this.logger.log('[SIGN-UP] - formatAsYouType inputValue.startsWith dialCode', inputValue.startsWith(this.dialCode))
     if (!inputValue.startsWith(this.dialCode)) {
-      console.log('formatAsYouType inputValue.startsWith dialCode 2', inputValue.startsWith(this.dialCode))
+      this.logger.log('[SIGN-UP] - formatAsYouType inputValue.startsWith dialCode 2', inputValue.startsWith(this.dialCode))
       // this.setPhoneInput(this.dialCode + inputValue.replace(/[^0-9]/g, ''));
       // this.userForm.patchValue({ phone: this.dialCode + ' '});
       this.userForm.get('phone')?.setValue(this.dialCode + ' '); // Use setValue for phone input
@@ -451,35 +395,22 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
 
   isValidPhone() {
-
     const mobile = this.userForm.get('phone')?.value;
-    console.log('isValidPhone mobile value', mobile)
-    // console.log('isValidPhone mobile phoneData', this.phoneData)
-
-    // if (!mobile) {
-    //   // return true; // No error if the field is empty
-    //   this.isValidPhoneNumber = true
-
-    // }
-
+    this.logger.log('[SIGN-UP] - isValidPhone mobile value', mobile)
+   
     // Parse the phone number
-    // this.mobilePhoneCountryCode
     this.phoneNumber = parsePhoneNumberFromString(mobile);
-    console.log('isValidPhone parsePhoneNumberFromString phoneNumber', this.phoneNumber)
+    this.logger.log('[SIGN-UP] - isValidPhone parsePhoneNumberFromString phoneNumber', this.phoneNumber)
    
     
     if (this.phoneNumber) {
       this.phone_country = this.phoneNumber.country;
-      console.log('isValidPhone parsePhoneNumberFromString phone_country', this.phone_country)
-      console.log('getType ', this.phoneNumber.getType())
+      this.logger.log('[SIGN-UP] - isValidPhone parsePhoneNumberFromString phone_country', this.phone_country)
+      this.logger.log('[SIGN-UP] - isValidPhone getType ', this.phoneNumber.getType())
     }
-    // this.mobilePhoneCountryCode
+   
 
-    // if (phoneNumber === undefined) {
-    //   this.isValidPhoneNumber = true
-    // }
-
-    console.log('isValidPhoneNumber ', isValidPhoneNumber(mobile))
+    this.logger.log('[SIGN-UP] - isValidPhone isValidPhoneNumber ', isValidPhoneNumber(mobile))
     // if (!phoneNumber || phoneNumber && isValidPhoneNumber(mobile) === false) {
     if (isValidPhoneNumber(mobile) === false) {
       // return false; // Invalid phone number
@@ -488,26 +419,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       // return true; // Valid phone number
       this.isValidPhoneNumber = true
     }
-
-
     // Check if the number is a MOBILE type
     // return phoneNumber.getType() === 'MOBILE' || phoneNumber.getType() === 'FIXED_LINE_OR_MOBILE';
-
-  }
-
-
-
-  _isValidPhone(): boolean {
-    const phone = this.userForm.get('phone')?.value;
-    if (!phone) {
-      return true; // No validation error if input is empty
-    }
-    // console.log( 'is mobile ',  phone.getType() !== 'MOBILE') 
-    // return isValidPhoneNumber(phone, 'IT');
-    // Remove non-numeric characters before validation
-    const cleanedNumber = phone.replace(/\D/g, '');
-    console.log('cleanedNumber ', cleanedNumber)
-    return cleanedNumber.length >= 7 && cleanedNumber.length <= 15 && this.phoneRegex.test(cleanedNumber);;
 
   }
 
@@ -649,13 +562,6 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.checkCurrentUrlAndSkipWizard();
   }
 
-
-
-  signupWithGoogle() {
-    this.auth.siginUpWithGoogle()
-  }
-
-
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -754,7 +660,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     const browserLang = this.translate.getBrowserLang();
     if (browserLang) {
       this.browserLang = browserLang
-      console.log('[SIGN-UP] GET BROWSER LANG - browserLang ', browserLang)
+      this.logger.log('[SIGN-UP] GET BROWSER LANG - browserLang ', browserLang)
       if (browserLang === 'it') {
         this.currentLang = 'it'
       } else {
@@ -812,16 +718,16 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       }
     }
 
-    console.log('[SIGN-UP] signup  this.userForm ', this.userForm)
+    this.logger.log('[SIGN-UP] signup  this.userForm ', this.userForm)
 
-    console.log('[SIGN-UP] Email ', this.userForm.value['email']);
-    console.log('[SIGN-UP] Password ', this.userForm.value['password']);
-    console.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
-    console.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
-    console.log('[SIGN-UP] Mobile Number ', this.userForm.value['phone']);
+    this.logger.log('[SIGN-UP] Email ', this.userForm.value['email']);
+    this.logger.log('[SIGN-UP] Password ', this.userForm.value['password']);
+    this.logger.log('[SIGN-UP] Firstname ', this.userForm.value['firstName']);
+    this.logger.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
+    this.logger.log('[SIGN-UP] Mobile Number ', this.userForm.value['phone']);
 
     const mobile_phone = this.userForm.value['phone'].replace(/\s/g, "");
-    console.log('[SIGN-UP] mobile_phone_value ', mobile_phone);
+    this.logger.log('[SIGN-UP] mobile_phone_value ', mobile_phone);
 
 
     // const stringOnlyFirstCharacter = this.userForm.value['firstName'].charAt(0)
@@ -840,7 +746,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           // this.localDbService.setInStorage('signedup', 'true')
           // this.router.navigate(['/welcome']);
-          console.log('[SIGN-UP] RES ', signupResponse);
+          this.logger.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email
           this.logger.log('[SIGN-UP] RES USER EMAIL ', userEmail);
 
@@ -959,6 +865,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
 
+  signupWithGoogle() {
+    this.auth.siginUpWithGoogle()
+  }
+
+
 
   createNewProject(signupResponse) {
     let projectName = ''
@@ -1046,8 +957,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
   trackSignup(signupResponse) {
-    console.log('trackSignup signupResponse ', signupResponse) 
-    console.log('trackSignup this.phone_country ', this.phone_country) 
+    this.logger.log('trackSignup signupResponse ', signupResponse) 
+    this.logger.log('trackSignup this.phone_country ', this.phone_country) 
     if (!isDevMode()) {
       if (window['analytics']) {
         let userFullname = ''
@@ -1062,6 +973,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             name: userFullname,
             email: signupResponse.user.email,
             mobile_phone: signupResponse.user.phone,
+            phone_country: this.phone_country,
             logins: 5,
           });
         } catch (err) {
