@@ -370,15 +370,12 @@
 
                 <input 
                   #phoneInput
-                  type="phone" 
+                  type="tel" 
                   id="phone" 
                   name="phone" 
                   formControlName="phone" 
                   (input)="formatAsYouType()"  
-                    style=" border-top-left-radius: 0px !important;
-                    border-bottom-left-radius: 0px !important;
-                    border-left: unset !important;" />
-              <!-- </div> -->
+                  class="signup-mobile-phone" style="border-left: unset !important;" />
             </div>
             <!-- Error Message -->
             <div *ngIf="formErrors.phone" class="is-danger" translate>

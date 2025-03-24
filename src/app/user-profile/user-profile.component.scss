@@ -1,7 +1,7 @@
 @import "./src/assets/sass/md/_variables.scss";
 
 input[type="text"],
-input[type="phone"] {
+input[type="tel"] {
   /* min-width: 307px !important; */
   height: 36px;
   font-size: 14px;
@@ -47,7 +47,7 @@ select {
   }
 
 
-  input[type="phone"] {
+  input[type="tel"] {
     width: 320px !important;
   }
 }

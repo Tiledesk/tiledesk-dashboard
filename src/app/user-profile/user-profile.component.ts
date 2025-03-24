@@ -41,6 +41,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   userLastname: string;
   userEmail: string;
   userPhone: string;
+  userPhoneValue:string;
   selectedCountry: any;
   countries: { code: string; name: string; dialCode: string }[] = [];
   dialCode: string;
@@ -340,6 +341,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           this.mobile_number_available = false;
           this.dislayUserPhoneMandatoryMsg = false;
           // this.isValidPhoneNumber = true;
+          try {
 
           fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
             .then(response => response.json())
@@ -348,6 +350,9 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
               this.logger.log('[USER-PROFILE] - Detected country from IP:', userCountry);
               this.getSupportedCountry(userCountry, 'NotHasMobile')
             })
+          } catch (error) {
+            this.logger.error('FCM error', error);
+          }
         }
 
 
@@ -454,7 +459,11 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
 
   formatAsYouType(event) {
-    this.logger.log('[USER-PROFILE] formatAsYouType ', event)
+    this.logger.log('[USER-PROFILE] formatAsYouType ---->  event ', event)
+    this.userPhoneValue = event.target.value;
+    this.logger.log('[USER-PROFILE] formatAsYouType event value', this.userPhoneValue)
+ 
+
     const formatter = new AsYouType();
     this.userPhone = formatter.input(this.userPhone);
 
@@ -492,11 +501,11 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
 
     // if (!this.mobile_number_available && this.userPhone !== this.dialCode || this.userPhone === this.dialCode) {
-    //   console.log('[USER-PROFILE] --> isValidPhoneNumber - HAS SIGNED UP WITHOUT PHONE NUMBER AND HAS ENTERED A PHONE NUMBER ', this.userPhone)
+    //   this.logger.log('[USER-PROFILE] --> isValidPhoneNumber - HAS SIGNED UP WITHOUT PHONE NUMBER AND HAS ENTERED A PHONE NUMBER ', this.userPhone)
     //   this.mobile_number_available  = false
     // }
     // if (this.mobile_number_available && this.userPhone === this.dialCode || this.userPhone !== this.dialCode ) {
-    //   console.log('[USER-PROFILE] --> isValidPhoneNumber - HAS SIGNED UP WITHOUT PHONE NUMBER AND HAS NOT ENTERED A PHONE NUMBER ', this.userPhone)
+    //   this.logger.log('[USER-PROFILE] --> isValidPhoneNumber - HAS SIGNED UP WITHOUT PHONE NUMBER AND HAS NOT ENTERED A PHONE NUMBER ', this.userPhone)
     //   this.mobile_number_available  = true
     // }
   }

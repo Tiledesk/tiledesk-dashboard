@@ -50,7 +50,7 @@
 .login-container input[type="text"],
 input[type="password"],
 input[type="email"],
-input[type="phone"] {
+input[type="tel"] {
   //   width: 400px !important;
   height: 56px;
   font-size: 16px;
@@ -746,8 +746,13 @@ input.secure {
 
 input[formControlName="phone"] {
   flex: 1;
-  border: none;
+  // border: none;
   outline: none;
   // font-size: 16px;
+}
+
+.signup-mobile-phone {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 

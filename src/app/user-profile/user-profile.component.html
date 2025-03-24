@@ -213,8 +213,8 @@
 
                                         </ng-template>
                                     </ng-select>
-                                    <!--  -->
-                                    <input #phoneInput [(ngModel)]="userPhone"  type="phone"
+                                 
+                                    <input #phoneInput [(ngModel)]="userPhone"  type="tel"
                                         placeholder="Mobile number" (input)="formatAsYouType($event)" 
                                         class="user-prolile-mobile-number">
                                 </div>
@@ -279,10 +279,24 @@
                                     {{ "UserProfile.UpdateProfile" | translate }}
                                 </button>
 
-                                <!-- dialCode length: {{dialCode?.length}} - userPhone length {{userPhone?.length - 1 }} -->
-                                <button *ngIf="!mobile_number_available" class="btn btn-tdblu-no-boxshadow"
+                               <!-- <p>
+                                dialCode length: {{dialCode?.length}}
+                               </p> 
+                               <p>
+                                userPhone length: {{userPhone?.length - 1 }}
+                               </p>
+
+                               <p>
+                                isValidPhoneNumber: {{isValidPhoneNumber}}
+                               </p>
+
+                               <p>
+                                userPhoneValue length: {{userPhoneValue?.length - 1}}
+                               </p> -->
+
+                               <button *ngIf="!mobile_number_available" class="btn btn-tdblu-no-boxshadow"
                                     (click)="updateCurrentUserFirstnameLastname()"
-                                    [disabled]="userFirstname.length < 1 || (userPhone?.length - 1 > dialCode?.length && !isValidPhoneNumber)">
+                                    [disabled]="userFirstname.length < 1 || (userPhoneValue?.length - 1 >= dialCode?.length && !isValidPhoneNumber)">
                                     {{ "UserProfile.UpdateProfile" | translate }}
                                 </button>
                             </div>
