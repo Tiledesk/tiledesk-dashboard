@@ -114,9 +114,7 @@ export class SigninComponent implements OnInit {
     }
   }
 
-  signinWithGoogle() {
-    this.auth.siginWithGoogle()
-  }
+
 
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user')
@@ -287,7 +285,7 @@ export class SigninComponent implements OnInit {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
         // this.localDbService.removeFromStorage('signedup')
-        console.log('[SIGN-IN] SSO (Signin) - user', user);
+        this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
         // this.localDbService.removeFromStorage('hpea');
 
         this.trackSignin(user)
@@ -384,19 +382,23 @@ export class SigninComponent implements OnInit {
 
   }
 
+  signinWithGoogle() {
+    this.auth.siginWithGoogle()
+  }
+
   trackSignin(user) {
-    console.log('[SIGN-IN] trackSignin ', user)
+    this.logger.log('[SIGN-IN] trackSignin ', user)
     let mobileNumberParsed = null
     let phoneCountry = ''
 
     if (user.phone) {
       mobileNumberParsed = parsePhoneNumberFromString(user.phone);
-      console.log('isValidPhone parsePhoneNumberFromString mobileNumberParsed', mobileNumberParsed)
+      this.logger.log('isValidPhone parsePhoneNumberFromString mobileNumberParsed', mobileNumberParsed)
       phoneCountry = mobileNumberParsed.country
     }
 
 
-    console.log('isValidPhone parsePhoneNumberFromString phoneCountry', phoneCountry)
+    this.logger.log('isValidPhone parsePhoneNumberFromString phoneCountry', phoneCountry)
     if (!isDevMode()) {
       if (window['analytics']) {
         try {
