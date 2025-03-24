@@ -26,7 +26,9 @@ export enum INTEGRATIONS_KEYS {
     GOOGLE = 'google',
     ANTHROPIC = 'anthropic',
     GROQ = 'groq',
-    COHERE = 'cohere'
+    COHERE = 'cohere',
+    DEEPSEEK = 'deepseek',
+    OLLAMA = 'ollama',
 }
 
 //  OLLAMA = 'ollama',
@@ -106,11 +108,12 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "HubSpot",               category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",                src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Pro' },
     { name: "OpenAI",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",                 src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Google Gemini",         category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GOOGLE,          src_icon: "assets/img/int/google-gemini-icon.svg",          src_logo: "assets/img/int/google_gemini_logo.svg",      pro: true,  plan: 'Pro' },
-    { name: "Claude",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/claude-icon.svg",                 src_logo: "assets/img/int/claude_logo.svg",             pro: true,  plan: 'Pro' },
+    // { name: "Claude",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/claude-icon.svg",                 src_logo: "assets/img/int/claude_logo.svg",             pro: true,  plan: 'Pro' },
+    { name: "Anthropic",             category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/anthropic-icon.svg",              src_logo: "assets/img/int/anthropic-logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Groq",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GROQ,            src_icon: "assets/img/int/groq-icon.svg",                   src_logo: "assets/img/int/groq_logo.svg",               pro: true,  plan: 'Pro' },
     { name: "Cohere",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.COHERE,          src_icon: "assets/img/int/cohere_icon.svg",                 src_logo: "assets/img/int/cohere_logo.svg",             pro: true,  plan: 'Pro' },
-    // { name: "Ollama",             category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,          src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",             pro: true,  plan: 'Custom' },
-    // { name: "Deepseek",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,        src_icon: "assets/img/int/deepseek-icon.svg",               src_logo: "assets/img/int/deepseek-logo.svg",           pro: true,  plan: 'Custom' },
+    { name: "Ollama",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,          src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",             pro: true,  plan: 'Pro' },
+    { name: "Deepseek",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,        src_icon: "assets/img/int/deepseek-icon.svg",               src_logo: "assets/img/int/deepseek-logo.svg",           pro: true,  plan: 'Pro' },
     { name: "Qapla'",                category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Pro' },
     //{ name: "Active Campaign",     category: INTEGRATIONS_CATEGORIES.COMMUNICATION,    key: INTEGRATIONS_KEYS.ACTIVE_CAMPAIGN, src_icon: "assets/img/int/active-campaign-icon.jpeg",       src_logo: "assets/img/int/active-campaign-logo.png",    pro: true,  plan: 'Premium' },
     //{ name: "Jira",                category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.JIRA,            src_icon: "assets/img/int/jira-icon.png",                   src_logo: "assets/img/int/jira-logo.png",               pro: true,  plan: 'Premium'},
@@ -121,7 +124,7 @@ export const INTEGRATION_LIST_ARRAY = [
     //{ name: "Pipedrive",           category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.PIPEDRIVE,       src_icon: "assets/img/int/pipedrive-icon.png",              src_logo: "assets/img/int/pipedrive-logo.png",          pro: true,  plan: 'Premium' },
     //{ name: "Salesforce",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.SALESFORCE,      src_icon: "assets/img/int/salesforce-icon.png",             src_logo: "assets/img/int/salesforce-logo.png",         pro: true,  plan: 'Premium' },
     { name: "Telegram",              category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TELEGRAM,        src_icon: "assets/img/int/telegram-icon.png",               src_logo: "assets/img/int/telegram-logo.png",           pro: false, plan: 'Sandbox' },
-    { name: "Twilio SMS",            category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_SMS,      src_icon: "assets/img/int/twilio-sms.png",                  src_logo: "assets/img/int/twilio-sms.png",              pro: false, plan: 'Pro' },
+    { name: "Twilio SMS",            category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_SMS,      src_icon: "assets/img/int/twilio-sms.png",                  src_logo: "assets/img/int/twilio-sms.png",              pro: true, plan: 'Pro' },
     { name: "VXML Voice",            category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.VXML_VOICE,      src_icon: "assets/img/int/vxml-icon.png",                   src_logo: "assets/img/int/vxml-icon.png",               pro: true,  plan: 'Pro' },
     { name: "Twilio Voice",          category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TWILIO_VOICE,    src_icon: "assets/img/int/voice-twilio-icon.png",           src_logo: "assets/img/int/voice-twilio-icon.png",       pro: true,  plan: 'Pro' },
     { name: "WhatsApp",              category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,        src_icon: "assets/img/int/whatsapp-icon.png",               src_logo: "assets/img/int/whatsapp-logo.png",           pro: true,  plan: 'Pro' },
@@ -200,25 +203,29 @@ export class CohereIntegration extends Integration {
     }
 }
 
-// export class OllamaIntegration extends Integration {
-//     constructor() {
-//         super();
-//         this.name = INTEGRATIONS_KEYS.OLLAMA;
-//         this.value = {
-//             apikey: null,
-//         }
-//     }
-// }
+export class OllamaIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.OLLAMA;
+        this.value = {
+            url: null,
+            token: null,
+            models: []
+        }
+    }
 
-// export class DeepseekIntegration extends Integration {
-//     constructor() {
-//         super();
-//         this.name = INTEGRATIONS_KEYS.DEEPSEEK;
-//         this.value = {
-//             apikey: null,
-//         }
-//     }
-// }
+    
+}
+
+export class DeepseekIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.DEEPSEEK;
+        this.value = {
+            apikey: null,
+        }
+    }
+}
 
 export class QaplaIntegration extends Integration {
     constructor() {

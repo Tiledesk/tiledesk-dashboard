@@ -127,7 +127,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
 
           });
         } catch (err) {
-          this.logger.error('Signin page error', err);
+          // this.logger.error('Signin page error', err);
         }
       }
     }
@@ -318,7 +318,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
 
           });
         } catch (err) {
-          this.logger.error('identify Invite Sent Profile error', err);
+          // this.logger.error('identify Invite Sent Profile error', err);
         }
 
         try {
@@ -336,7 +336,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
             }
           });
         } catch (err) {
-          this.logger.error('track Invite Sent event error', err);
+          // this.logger.error('track Invite Sent event error', err);
         }
 
         try {
@@ -345,7 +345,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
             plan: this.profile_name + ' plan',
           });
         } catch (err) {
-          this.logger.error('group Invite Sent error', err);
+          // this.logger.error('group Invite Sent error', err);
         }
       }
     }

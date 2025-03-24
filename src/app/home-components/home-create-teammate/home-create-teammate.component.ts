@@ -16,6 +16,7 @@ import { HomeInviteTeammateErrorModalComponent } from './home-invite-teammate-er
 import { TranslateService } from '@ngx-translate/core';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-home-create-teammate',
@@ -172,15 +173,12 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[HOME-CREATE-TEAMMATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-CREATE-TEAMMATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getLoggedUser() {
@@ -538,7 +536,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
             });
           } catch (err) {
-            this.logger.error('Home identify Invite Sent Profile error', err);
+            // this.logger.error('Home identify Invite Sent Profile error', err);
           }
 
           try {
@@ -552,7 +550,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
               }
             });
           } catch (err) {
-            this.logger.error('track Home invite Sent event error', err);
+            // this.logger.error('track Home invite Sent event error', err);
           }
 
           try {
@@ -561,7 +559,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('group Home invite Sent error', err);
+            // this.logger.error('group Home invite Sent error', err);
           }
         }
       }
@@ -586,12 +584,12 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser > projectUser id', projectUser[0]._id);
+          this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID - ERROR ', error);

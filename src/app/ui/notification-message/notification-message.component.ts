@@ -14,6 +14,7 @@ import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 @Component({
   selector: 'notification-message',
@@ -85,26 +86,17 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
     // this.getProjectById();
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
-    this.getUserRole();
+    this.getProjectUser();
     this.getCurrentUser()
     this.getProjectPlan();
     this.getWidgetUrl();
     this.getChatUrl();
     this.translateModalOnlyOwnerCanManageProjectAccount();
-    this.getUserAvailability()
   }
 
   ngOnDestroy() {
     // this.subscription.unsubscribe();
   }
-
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
-  }
-
 
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
@@ -119,17 +111,17 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
   }
 
 
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+  getProjectUser() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NOTIFICATION-MSG] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+      // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.USER_ROLE = projectUser.role;
 
-        this.logger.log('[NOTIFICATION-MSG] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
+        this.IS_AVAILABLE = projectUser.user_available;
+        this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
+      }
+    })
   }
 
   getChatUrl() {
@@ -279,7 +271,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
             plan: this.profile_name_for_segment,
           });
         } catch (err) {
-          this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
+          // this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
         }
 
         try {
@@ -291,7 +283,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
             }
           });
         } catch (err) {
-          this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
+          // this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
         }
 
         try {
@@ -300,7 +292,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
             plan: this.profile_name_for_segment,
           });
         } catch (err) {
-          this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+          // this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
         }
       }
     }

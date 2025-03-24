@@ -22,6 +22,7 @@ import { WidgetService } from 'app/services/widget.service';
 import { UsersService } from 'app/services/users.service';
 import { AsYouType, parsePhoneNumberFromString, isValidPhoneNumber, getCountries, getCountryCallingCode, CountryCode } from 'libphonenumber-js/max' // from 'libphonenumber-js';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { ProjectUser } from 'app/models/project-user';
 ;
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'phoneCountry' | 'phone' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -199,7 +200,14 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.getSupportedCountry()
   }
 
-
+  getUserRole() {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
+  }
 
   ngAfterViewInit() {
     const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
@@ -266,6 +274,10 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
     const form = this.userForm;
 
+  //  this.logger.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
+  //  const regex = /[$-/:-?{-~!"^@#`\[\]]/g;
+  //  const hasPassedSymbolTest =  regex.test(this.userForm.value.password);
+  //  this.logger.log('[SIGN-UP] pswrd change hasPassedSymbolTest',  hasPassedSymbolTest)
 
 
     //  console.log('[SIGN-UP] pswrd change ',  this.userForm.value.password)
@@ -425,13 +437,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   }
 
 
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[SIGN-UP] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
-  }
+
 
   getQueryParamsAndSegmentRecordPageAndIdentify() {
     this.route.queryParamMap
@@ -488,14 +494,14 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
             });
           } catch (err) {
-            this.logger.error('Signup page error', err);
+            // this.logger.error('Signup page error', err);
           }
           try {
             window['analytics'].identify({
               createdAt: moment().format("YYYY-MM-DD hh:mm:ss")
             });
           } catch (err) {
-            this.logger.error('Signup identify error', err);
+            // this.logger.error('Signup identify error', err);
           }
         }
       }, 3000);
@@ -977,7 +983,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             logins: 5,
           });
         } catch (err) {
-          this.logger.error('identify signup event error', err);
+          // this.logger.error('identify signup event error', err);
         }
         let utm_source_value = undefined;
         let su: any = 'Signed up';
@@ -1016,7 +1022,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             'method': "Email and Password"
           });
         } catch (err) {
-          this.logger.error('track signup event error', err);
+          // this.logger.error('track signup event error', err);
         }
       }
     }
@@ -1115,7 +1121,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
           });
         } catch (err) {
-          this.logger.error('Signup Create project page error', err);
+          // this.logger.error('Signup Create project page error', err);
         }
 
         let userFullname = ''
@@ -1133,7 +1139,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             plan: "Pro (trial)"
           });
         } catch (err) {
-          this.logger.error('Signup Create project identify error', err);
+          // this.logger.error('Signup Create project identify error', err);
         }
 
         try {
@@ -1147,7 +1153,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             }
           });
         } catch (err) {
-          this.logger.error('Signup Create track Trial Started event error', err);
+          // this.logger.error('Signup Create track Trial Started event error', err);
         }
 
         try {
@@ -1156,7 +1162,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             plan: "Pro (trial)",
           });
         } catch (err) {
-          this.logger.error('Signup Create project group error', err);
+          // this.logger.error('Signup Create project group error', err);
         }
       }
     }

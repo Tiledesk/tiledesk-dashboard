@@ -296,8 +296,8 @@
                         <!-- ---------------------------------------- -->
                         <!-- AI Settings -->
                         <!-- ---------------------------------------- -->
-                        <!-- custom--button preview-settings btn-outlined-round-blu-->
-                        <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
+                        <!-- custom--button preview-settings -->
+                        <button id="ai-settings" class="btn btn-dark"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
@@ -315,7 +315,7 @@
                         <!-- ---------------------------------------- -->
                         <!-- KB preview custom--button preview btn-outlined-blu-->
                         <!-- ---------------------------------------- -->
-                        <button id="kb-preview" class="btn custom--button preview" aria-label="Preview"
+                        <button id="kb-preview" class="btn btn-dark" aria-label="Preview"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -371,7 +371,7 @@
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                        <!-- <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
+                         <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
                             <span>{{ 'KbPage.RefreshRate' | translate }}
                                 <i *ngIf="isAvailableRefreshRateFeature && !refreshRateIsEnabled && payIsVisible"  class="material-icons" style="font-size: 18px; color: #566787; cursor: pointer; vertical-align: middle;"
                                 [satPopoverAnchor]="refresRate"
@@ -395,9 +395,9 @@
     
                                 </div>
                             </sat-popover>
-                        </th> -->
+                        </th> 
 
-                        <th class="column-th-span" style="width:150px;" (click)="onOrderBy('updatedAt')">
+                        <th class="column-th-span" style="width:150px;white-space: nowrap;" (click)="onOrderBy('updatedAt')">
                             <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
                             <span style="margin: 0px;">{{'LastUpdated' | translate }}</span>
                             <span *ngIf="directionDesc === 1" id="expand_more"
@@ -405,6 +405,7 @@
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
+
                         <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
                             <div>
                                 <span style="margin: 0px;">{{'Name' | translate }}</span>
@@ -496,7 +497,7 @@
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                        <!-- <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
+                        <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
                             <span *ngIf="kb.type === 'url'"
                                 matTooltipClass="custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
@@ -505,6 +506,7 @@
                                 matTooltipHideDelay="100" 
                                 [matTooltipDisabled]="isAvailableRefreshRateFeature">
                                 
+                            
                                 <span *ngIf="kb.refresh_rate === 'never' ">
                                     {{'Never' | translate}}
                                 </span>
@@ -519,13 +521,15 @@
                                 <span *ngIf="kb.refresh_rate === 'monthly' ">
                                     {{'Monthly' | translate}}
                                 </span>
+
+                                
                             </span>
                             <span *ngIf="kb.type !== 'url'">
                                 —
                             </span>
 
                             
-                        </td> -->
+                        </td> 
 
                         <td style="min-width:150px; width:150px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">
                             {{ kb.updatedAt | amTimeAgo }}

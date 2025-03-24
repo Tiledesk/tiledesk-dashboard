@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -204,7 +205,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('Invite Temmates Page error', err);
+          // this.logger.error('Invite Temmates Page error', err);
         }
       }
     }
@@ -311,11 +312,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getUserRole() {
-    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
-
-      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+    this.subscription = this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', projectUser)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.CURRENT_USER_ROLE = userRole;
+      this.CURRENT_USER_ROLE = projectUser.role;
     })
   }
 
@@ -946,7 +946,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
             });
           } catch (err) {
-            this.logger.error('identify Invite Sent Profile error', err);
+            // this.logger.error('identify Invite Sent Profile error', err);
           }
 
           try {
@@ -960,7 +960,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
               }
             });
           } catch (err) {
-            this.logger.error('track Invite Sent event error', err);
+            // this.logger.error('track Invite Sent event error', err);
           }
 
           try {
@@ -969,7 +969,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('group Invite Sent error', err);
+            // this.logger.error('group Invite Sent error', err);
           }
         }
       }

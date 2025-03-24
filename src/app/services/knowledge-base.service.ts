@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class KnowledgeBaseService {
-  public newKb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  // public newKb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null) // no more used
   public editedAiSettings$: BehaviorSubject<[]> = new BehaviorSubject<[]>([])
   public previewKbClosed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
 
@@ -67,11 +67,11 @@ export class KnowledgeBaseService {
   // ********** INITIALIZING SERVICE **********
   // ***************** END ********************
 
-
-  areNewwKb(areNewKb: boolean) {
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - areNew ", areNewKb);
-    this.newKb.next(areNewKb)
-  }
+  // No more used
+  // areNewwKb(areNewKb: boolean) {
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - areNew ", areNewKb);
+  //   this.newKb.next(areNewKb)
+  // }
 
   getAllNamespaces() {
     const httpOptions = {

@@ -1133,7 +1133,7 @@ export class AuthService {
                 plan: this.prjct_profile_name_for_segment
               });
             } catch (err) {
-              this.logger.error('identify Signed Out error', err);
+              // this.logger.error('identify Signed Out error', err);
             }
 
             try {
@@ -1146,7 +1146,7 @@ export class AuthService {
                 }
               });
             } catch (err) {
-              this.logger.error('track Signed Out event error', err);
+              // this.logger.error('track Signed Out event error', err);
             }
 
             try {
@@ -1155,7 +1155,7 @@ export class AuthService {
                 plan: this.prjct_profile_name_for_segment,
               });
             } catch (err) {
-              this.logger.error('group Signed Out error', err);
+              // this.logger.error('group Signed Out error', err);
             }
           }
         }
@@ -1180,7 +1180,7 @@ export class AuthService {
                 plan: 'not project selected'
               });
             } catch (err) {
-              this.logger.error('identify Signed Out error', err);
+              // this.logger.error('identify Signed Out error', err);
             }
 
             try {
@@ -1189,7 +1189,7 @@ export class AuthService {
                 "userId": storedUserParsed._id
               });
             } catch (err) {
-              this.logger.error('track Signed Out event error', err);
+              // this.logger.error('track Signed Out event error', err);
             }
           }
         }
@@ -1200,7 +1200,7 @@ export class AuthService {
           try {
             window['analytics'].reset()
           } catch (err) {
-            this.logger.error('analytics reset', err);
+            // this.logger.error('analytics reset', err);
           }
         }
       }

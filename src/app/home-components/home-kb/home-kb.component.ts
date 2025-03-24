@@ -22,6 +22,7 @@ import { FaqService } from 'app/services/faq.service';
 import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
 import { DepartmentService } from 'app/services/department.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
+import { ProjectUser } from 'app/models/project-user';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-home-kb',
@@ -89,25 +90,23 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getKnowledgeBaseSettings();
+   
     this.getCurrentProject();
     this.getProjectPlan();
     this.translateString();
-    this.getKnowledgeBaseSettings();
+    // this.getKnowledgeBaseSettings();
     this.getUserRole()
     this.getFaqKbByProjectId()
   }
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[HOME-KB] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-KB] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getCurrentProject() {
@@ -602,7 +601,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     }
 
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
-    if (this.areNewKb) {
+    // if (this.areNewKb) {
       if (this.kbNameSpaceid !== '') {
         this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
       } else {
@@ -611,9 +610,9 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
 
       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
 
-    } else if (!this.areNewKb) {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
-    }
+    // } else if (!this.areNewKb) {
+    //   this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
+    // }
   }
 
 

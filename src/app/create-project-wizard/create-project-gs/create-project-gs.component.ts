@@ -58,7 +58,7 @@ export class CreateProjectGsComponent implements OnInit {
     
               });
             } catch (err) {
-              this.logger.error('Google sign up, onboarding - error', err);
+              // this.logger.error('Google sign up, onboarding - error', err);
             }
             let userFullname = ''
             if (user.firstname && user.lastname)  {
@@ -74,7 +74,7 @@ export class CreateProjectGsComponent implements OnInit {
                 plan: "Pro (trial)"
               });
             } catch (err) {
-              this.logger.error('Google sign up identify error', err);
+              // this.logger.error('Google sign up identify error', err);
             }
 
             try {
@@ -89,7 +89,7 @@ export class CreateProjectGsComponent implements OnInit {
                 'method': "Google Auth"
               });
             } catch (err) {
-              this.logger.error('track signup event error', err);
+              // this.logger.error('track signup event error', err);
             }
       
           }

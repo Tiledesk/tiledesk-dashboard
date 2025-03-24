@@ -48,6 +48,7 @@ export class OpenaiIntegrationComponent implements OnInit {
         integration: this.integration,
         isVerified: status
       }
+      this.logger.log('[INT-OpenAI] saveIntegration data ', data) 
       this.onUpdateIntegration.emit(data);
     })
   }

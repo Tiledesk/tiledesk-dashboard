@@ -8,6 +8,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { ProjectUser } from 'app/models/project-user';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
@@ -87,6 +88,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   ngOnChanges(changes: SimpleChanges): void {
     this.logger.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
     this.logger.log('[HOME-CDS] - displayKbHeroSection ngOnChanges', this.displayKbHeroSection);
+    this.logger.log('[HOME-CDS] - isVisibleKNB ngOnChanges', this.isVisibleKNB);
     this.sortChatbots();
   }
 
@@ -118,20 +120,21 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
       )
       .subscribe((project) => {
         this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
-
+        this.logger.log('[HOME-CDS] - $UBSCIBE TO PUBLISHED PROJECT isVisibleKNB ', this.isVisibleKNB);
         if (project) {
           this.projectId = project._id
-
-          const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
-          this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
-          if (storedNamespace) {
-            let storedNamespaceObjct = JSON.parse(storedNamespace)
-            this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
-            this.kbNameSpaceid = storedNamespaceObjct.id;
-            this.kbNameSpaceName = storedNamespaceObjct.name
-            this.getChatbotUsingNamespace(this.kbNameSpaceid)
-          } else {
-            this.getAllNamespaces()
+          if (this.isVisibleKNB) {
+            const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
+            this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
+            if (storedNamespace) {
+              let storedNamespaceObjct = JSON.parse(storedNamespace)
+              this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
+              this.kbNameSpaceid = storedNamespaceObjct.id;
+              this.kbNameSpaceName = storedNamespaceObjct.name
+              this.getChatbotUsingNamespace(this.kbNameSpaceid)
+            } else {
+              this.getAllNamespaces()
+            }
           }
         }
       }, (error) => {
@@ -225,14 +228,12 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[HOME-CDS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-CDS] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -292,8 +293,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   // }
 
   sortChatbots() {
-    // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-    //   this.chatbots = faqKb
+    
     if (this.chatbots && this.chatbots.length > 0) {
 
       this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {

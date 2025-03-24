@@ -753,6 +753,14 @@
                             <img class="dept_bot-type-logo" src="assets/img/rasa_bot_logo.png" />
                           </span>
 
+                          <div *ngIf="bot_type === 'tilebot'">
+                              <img *ngIf="!bot_subtype" class="bot-type-logo" [src]="botLogo" />
+                              <img *ngIf="bot_subtype && bot_subtype === 'chatbot'" class="dept_bot-type-logo" [src]="botLogo" />
+                              <img *ngIf="bot_subtype && bot_subtype === 'copilot'" class="dept_bot-type-logo" src="assets/img/logos/copilot-logo.svg"/>
+                              <img *ngIf="bot_subtype && bot_subtype === 'webhook'" class="dept_bot-type-logo" src="assets/img/logos/webhook-logo.svg"/>
+                           
+                          </div>
+
 
                         </div>
                         <span class="dept___bot" style="position: relative;top: 5px;">

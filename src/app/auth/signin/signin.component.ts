@@ -45,6 +45,7 @@ export class SigninComponent implements OnInit {
   secondaryBrandColor: string;
   primaryBrandColor: string;
   hideGoogleAuthBtn: string;
+  areActivePay: boolean
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -164,6 +165,29 @@ export class SigninComponent implements OnInit {
       //   this.isVisibleV1L = false;
       // }
     });
+
+    if (this.public_Key.includes("PAY") === true) {
+
+      keys.forEach(key => {
+        // this.logger.log('NavbarComponent public_Key key', key)
+        if (key.includes("PAY")) {
+          // this.logger.log('PUBLIC-KEY (SIGNUP) - key', key);
+          let pay = key.split(":");
+          // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay key&value', pay);
+          if (pay[1] === "F") {
+            this.areActivePay = false;
+            // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay is', this.areActivePay);
+          } else {
+            this.areActivePay = true;
+            // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay is', this.areActivePay);
+          }
+        }
+      });
+
+    } else {
+      this.areActivePay = false;
+      // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay is', this.areActivePay);
+    }
 
     if (!this.public_Key.includes("V1L")) {
       // this.logger.log('PUBLIC-KEY (SIGN-IN) - key.includes("V1L")', this.public_Key.includes("V1L"));
@@ -406,7 +430,7 @@ export class SigninComponent implements OnInit {
 
           });
         } catch (err) {
-          this.logger.error('Signin page error', err);
+          // this.logger.error('Signin page error', err);
         }
 
         let userFullname = ''
@@ -425,7 +449,7 @@ export class SigninComponent implements OnInit {
             logins: 5,
           });
         } catch (err) {
-          this.logger.error('identify signin event error', err);
+          // this.logger.error('identify signin event error', err);
         }
         // Segments
         try {
@@ -436,7 +460,7 @@ export class SigninComponent implements OnInit {
             'method': "Email and Password"
           });
         } catch (err) {
-          this.logger.error('track signin event error', err);
+          // this.logger.error('track signin event error', err);
         }
       }
     }
