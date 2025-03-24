@@ -630,6 +630,8 @@
     "UploadLogo":"Upload logo",
     "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "ImagePreview":"Image preview",
+    "MobileNumber":"Mobile Number",
+    "InvalidMobileNumber": "Invalid mobile number",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

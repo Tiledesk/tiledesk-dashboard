@@ -631,6 +631,8 @@
     "UploadLogo":"Logotip yuklang",
     "FileTooLarge": "Fayl yuklash uchun juda katta. Maksimal fayl hajmi {{file_size}}",
     "ImagePreview":"Rasmni oldindan ko'rish",
+    "MobileNumber":"Mobil raqam",
+    "InvalidMobileNumber": "Mobil raqam noto‘g‘ri",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
