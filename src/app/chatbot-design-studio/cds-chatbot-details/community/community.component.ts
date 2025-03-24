@@ -201,7 +201,7 @@ export class CDSDetailCommunityComponent implements OnInit {
               'bot_name': this.selectedChatbot.name,
             });
           } catch (err) {
-            this.logger.error('track signup event error', err);
+            // this.logger.error('track signup event error', err);
           }
         }
       }
@@ -243,7 +243,7 @@ export class CDSDetailCommunityComponent implements OnInit {
                   'bot_name': this.selectedChatbot.name,
                 });
               } catch (err) {
-                this.logger.error('track signup event error', err);
+                // this.logger.error('track signup event error', err);
               }
             }
 

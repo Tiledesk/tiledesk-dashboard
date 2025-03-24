@@ -378,14 +378,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.USER_ROLE = user_role
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role
         this.logger.log('[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
-      })
+      }
+    })
   }
 
   getBrowserVersion() {
@@ -976,7 +974,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
               });
             } catch (err) {
-              this.logger.error('Account Deleted page error', err);
+              // this.logger.error('Account Deleted page error', err);
             }
 
             let userFullname = ''
@@ -994,7 +992,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
               });
             } catch (err) {
-              this.logger.error('identify in Account Removed  error', err);
+              // this.logger.error('identify in Account Removed  error', err);
             }
 
             try {
@@ -1007,7 +1005,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
                   }
                 });
             } catch (err) {
-              this.logger.error('track signin event error', err);
+              // this.logger.error('track signin event error', err);
             }
 
             try {
@@ -1016,7 +1014,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
                 plan: this.prjct_profile_name,
               });
             } catch (err) {
-              this.logger.error('group Signed Out error', err);
+              // this.logger.error('group Signed Out error', err);
             }
           }
         }

@@ -22,6 +22,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
 import { parsePhoneNumberFromString, isValidPhoneNumber, AsYouType, getCountries, getCountryCallingCode } from 'libphonenumber-js/max';
+import { ProjectUser } from 'app/models/project-user';
+const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 
@@ -263,17 +265,15 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     });
   }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[USER-PROFILE] - USER ROLE ', user_role);
-        if (user_role) {
-          // this.userRole = user_role
 
-          this.translate.get(user_role)
+  getProjectUserRole() {
+    this.usersService.projectUser_bs
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[USER-PROFILE] - USER ROLE ', projectUser);
+        if (projectUser) {
+          // this.userRole = user_role
+          this.translate.get(projectUser.role)
             .subscribe((text: string) => {
               this.userRole = text;
             });
@@ -855,7 +855,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('User Profile page error', err);
+          // this.logger.error('User Profile page error', err);
         }
 
         let userFullname = ''
@@ -874,7 +874,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
           });
         } catch (err) {
-          this.logger.error('identify in User Profile error', err);
+          // this.logger.error('identify in User Profile error', err);
         }
 
         try {
@@ -883,7 +883,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
             plan: this.prjct_profile_name,
           });
         } catch (err) {
-          this.logger.error('group in User Profile error', err);
+          // this.logger.error('group in User Profile error', err);
         }
       }
     }

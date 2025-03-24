@@ -649,7 +649,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           window['analytics'].page("Wizard, Create project", {
           });
         } catch (err) {
-          this.logger.error('Wizard Create project page error', err);
+          // this.logger.error('Wizard Create project page error', err);
         }
 
         let userFullname = ''
@@ -667,7 +667,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
             plan: "Pro (trial)"
           });
         } catch (err) {
-          this.logger.error('Wizard Create project identify error', err);
+          // this.logger.error('Wizard Create project identify error', err);
         }
         try {
           window['analytics'].track('Trial Started', {
@@ -680,7 +680,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
             }
           });
         } catch (err) {
-          this.logger.error('Wizard Create track Trial Started event error', err);
+          // this.logger.error('Wizard Create track Trial Started event error', err);
         }
         try {
           window['analytics'].group(this.newProject._id, {
@@ -688,7 +688,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
             plan: "Pro (trial)",
           });
         } catch (err) {
-          this.logger.error('Wizard Create project group error', err);
+          // this.logger.error('Wizard Create project group error', err);
         }
       }
     }
@@ -854,7 +854,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         window['analytics'].page(pageName, {
         });
       } catch (err) {
-        this.logger.error(pageName + ' error', err);
+        // this.logger.error(pageName + ' error', err);
       }
       try {
         window['analytics'].identify(this.user._id,
@@ -868,12 +868,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
         );
       } catch (err) {
-        this.logger.error(pageName + ' identify error', err);
+        // this.logger.error(pageName + ' identify error', err);
       }
       try {
         window['analytics'].track(trackName, trackAttr);
       } catch (err) {
-        this.logger.error(pageName + ' track error', err);
+        // this.logger.error(pageName + ' track error', err);
       }
     }
   }

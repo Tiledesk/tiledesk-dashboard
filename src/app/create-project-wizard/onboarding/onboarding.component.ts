@@ -158,7 +158,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
         window['analytics'].page("Wizard, Onboarding", {
         });
       } catch (err) {
-        this.logger.error('Wizard Onboarding page error', err);
+        // this.logger.error('Wizard Onboarding page error', err);
       }
 
       let userFullname = ''
@@ -174,12 +174,12 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
           logins: 5
         });
       } catch (err) {
-        this.logger.error('Wizard Onboarding identify error', err);
+        // this.logger.error('Wizard Onboarding identify error', err);
       }
       try {
         window['analytics'].track(trackName, trackAttr);
       } catch (err) {
-        this.logger.error('Wizard Create track Trial Started event error', err);
+        // this.logger.error('Wizard Create track Trial Started event error', err);
       }
     }
   }

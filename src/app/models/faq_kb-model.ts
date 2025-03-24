@@ -18,7 +18,7 @@ export interface FaqKb {
     message_count?: number;
     mainCategory?: any
     language?: string;
-   
+    subtype?: string;
   
 }
 

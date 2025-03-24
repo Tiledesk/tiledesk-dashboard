@@ -53,7 +53,7 @@ export class EmailTicketingComponent implements OnInit {
 
   // getTicketingEmailEndpoint() {
   //   this.emailEndpoint = this.appConfigService.getConfig().ticketingEmail
-  //   console.log('  this.emailEndpoint ',   this.emailEndpoint)
+  //   this.logger.log('  this.emailEndpoint ',   this.emailEndpoint)
   // }
 
   getOSCODE() {

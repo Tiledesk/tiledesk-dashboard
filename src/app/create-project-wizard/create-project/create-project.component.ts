@@ -196,7 +196,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
               });
             } catch (err) {
-              this.logger.error('Wizard Create project page error', err);
+              // this.logger.error('Wizard Create project page error', err);
             }
 
             let userFullname = ''
@@ -215,7 +215,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
                 plan: "Pro (trial)"
               });
             } catch (err) {
-              this.logger.error('Wizard Create project identify error', err);
+              // this.logger.error('Wizard Create project identify error', err);
             }
 
             try {
@@ -229,7 +229,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
                 }
               });
             } catch (err) {
-              this.logger.error('Wizard Create track Trial Started event error', err);
+              // this.logger.error('Wizard Create track Trial Started event error', err);
             }
 
             try {
@@ -238,7 +238,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
                 plan: "Pro (trial)",
               });
             } catch (err) {
-              this.logger.error('Wizard Create project group error', err);
+              // this.logger.error('Wizard Create project group error', err);
             }
           }
         }
@@ -378,7 +378,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
                 "chatbotName": this.botname
               });
             } catch (err) {
-              this.logger.error('Wizard Install template page error', err);
+              // this.logger.error('Wizard Install template page error', err);
             }
 
             let userFullname = ''
@@ -397,17 +397,8 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
               });
             } catch (err) {
-              this.logger.error('Identify Install template event error', err);
+              // this.logger.error('Identify Install template event error', err);
             }
-
-            // try {
-            //   window['analytics'].group(this.projectId, {
-            //     name: this.projectName,
-            //     plan: this.prjct_profile_name,
-            //   });
-            // } catch (err) {
-            //   this.logger.error('Group Install template group error', err);
-            // }
           }
         }
       }
@@ -458,7 +449,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
               'button': 'Import Template',
             });
           } catch (err) {
-            this.logger.error('track Use template (install template) event error', err);
+            // this.logger.error('track Use template (install template) event error', err);
           }
 
           try {
@@ -469,7 +460,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
             });
           } catch (err) {
-            this.logger.error('Identify Use template (install template) event error', err);
+            // this.logger.error('Identify Use template (install template) event error', err);
           }
 
           try {
@@ -478,7 +469,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
               plan: this.new_project.profile_name,
             });
           } catch (err) {
-            this.logger.error('Group tUse template (install template) error', err);
+            // this.logger.error('Group tUse template (install template) error', err);
           }
 
         }

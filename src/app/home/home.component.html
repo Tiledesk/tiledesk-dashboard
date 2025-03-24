@@ -247,152 +247,156 @@
         <!-- QUOTA Banner -->
         <!--  *ngIf="!displayQuotaSkeleton"-->
         <!-- <div class="test">  -->
-        <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
-          [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
+        <ng-cointainer *ngIf="isVisibleQuoteSection">
+          <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
+            [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
 
-          <!-- <div class="home-quota-banner-title-wpr">
+            <!-- <div class="home-quota-banner-title-wpr">
 
-            <div class="home-quota-banner-title-no-alert" [ngClass]="{'home-quota-banner-title-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
-              Current usage
-            </div>
-          </div> -->
-
-          <div class="home-quota-wpr">
-            <!-- -------------------------- -->
-            <!-- Conversations  -->
-            <!-- -------------------------- -->
-            <div class="home-quote-container"
-              [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
-
-              <div class="home-quote-title-count-wpr">
-                <p class="quote-title link" (click)="goToHistoryAllConvs()" matTooltipClass="custom-mat-tooltip"
-                  matTooltip="Current usage" #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                  Conversations
-                </p>
-                <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
-                <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
-                  You run out of converations
-                </div>
+              <div class="home-quota-banner-title-no-alert" [ngClass]="{'home-quota-banner-title-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
+                Current usage
               </div>
-
-              <div class="quote">
-                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                  [mode]="'determinate'" [value]="requests_perc"
-                  [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
-                </mat-progress-spinner>
-
-                <div class="percentage" [ngClass]="{'percentage-conversations-runned-out': conversationsRunnedOut}">
-                  {{ requests_perc }}
-                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                </div>
-              </div>
-            </div>
-            <!-- -------------------------- -->
-            <!-- AI Tokens -->
-            <!-- -------------------------- -->
-            <div class="home-quote-container" [ngClass]="{'home-quote-container-tokens-runned-out': tokensRunnedOut}">
-              <div class="home-quote-title-count-wpr">
-                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
-                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                  AI Tokens
-                </p>
-                <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
-                <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
-                  You run out of AI Tokens
-                </div>
-              </div>
-
-              <div class="quote">
-                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                  [mode]="'determinate'" [value]="tokens_perc"
-                  [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
-                </mat-progress-spinner>
-
-                <div class="percentage" [ngClass]="{'percentage-token-runned-out': tokensRunnedOut}">
-                  {{ tokens_perc }}
-                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- -------------------------- -->
-            <!-- Email -->
-            <!-- -------------------------- -->
-            <div class="home-quote-container" [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
-
-              <div class="home-quote-title-count-wpr">
-                <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
-                  #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                  Email
-                </p>
-                <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
-                <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
-                  You run out of Email
-                </div>
-              </div>
-
-              <div class="quote">
-                <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
-                  [mode]="'determinate'" [value]="email_perc"
-                  [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
-                </mat-progress-spinner>
-
-                <div class="percentage" [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
-                  {{ email_perc }}
-                  <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
-            <div class="home-quota-banner-icon">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                <path
-                  d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
-              </svg>
-            </div>
-            <!-- prjct_profile_type > {{prjct_profile_type}} subscription_is_active {{subscription_is_active}} -->
-            <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
-
-              <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
-                {{ 'Pricing.SubscriptionPaymentProblem' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
-              </span>
-              <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
-                {{ 'Pricing.ThePlanHasExpired' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
-              </span>
-            </span>
-            <span
-              *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true || prjct_profile_type === 'free'">
-              ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
-              quotas,
-              <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
-            </span>
-          </div>
-        </div>
-        <!--  *ngIf="displayQuotaSkeleton" -->
-        <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 68px;">
-
-          <!-- <div class="quota-skeleton-title">
-              <div class="quota--fake--box"></div>
             </div> -->
-          <div class="quota-skeleton-container">
 
-            <div class="quota-skeleton-wpr">
-              <div class="quota--fake--box"></div>
-              <div class="quota--fake--circle"></div>
+            <div class="home-quota-wpr">
+              <!-- -------------------------- -->
+              <!-- Conversations  -->
+              <!-- -------------------------- -->
+              <div class="home-quote-container"
+                [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
+
+                <div class="home-quote-title-count-wpr">
+                  <p class="quote-title link" (click)="goToHistoryAllConvs()" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="Current usage" #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                    Conversations
+                  </p>
+                  <div class="quote-count">{{requests_count | number:'1.0-0'}} / {{requests_limit | number:'1.0-0'}}</div>
+                  <div class="quota-runned-out-msg" *ngIf="conversationsRunnedOut">
+                    You run out of converations
+                  </div>
+                </div>
+
+                <div class="quote">
+                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                    [mode]="'determinate'" [value]="requests_perc"
+                    [ngClass]="{'mat-progress-spinner-conversations-runned-out': conversationsRunnedOut}">
+                  </mat-progress-spinner>
+
+                  <div class="percentage" [ngClass]="{'percentage-conversations-runned-out': conversationsRunnedOut}">
+                    {{ requests_perc }}
+                    <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                  </div>
+                </div>
+              </div>
+              <!-- -------------------------- -->
+              <!-- AI Tokens -->
+              <!-- -------------------------- -->
+              <div class="home-quote-container" [ngClass]="{'home-quote-container-tokens-runned-out': tokensRunnedOut}">
+                <div class="home-quote-title-count-wpr">
+                  <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                    #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                    AI Tokens
+                  </p>
+                  <div class="quote-count">{{tokens_count | number:'1.0-0'}} / {{tokens_limit | number:'1.0-0'}}</div>
+                  <div class="quota-runned-out-msg" *ngIf="tokensRunnedOut">
+                    You run out of AI Tokens
+                  </div>
+                </div>
+
+                <div class="quote">
+                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                    [mode]="'determinate'" [value]="tokens_perc"
+                    [ngClass]="{'mat-progress-spinner-token-runned-out': tokensRunnedOut}">
+                  </mat-progress-spinner>
+
+                  <div class="percentage" [ngClass]="{'percentage-token-runned-out': tokensRunnedOut}">
+                    {{ tokens_perc }}
+                    <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- -------------------------- -->
+              <!-- Email -->
+              <!-- -------------------------- -->
+              <div class="home-quote-container" [ngClass]="{'home-quote-container-email-runned-out': emailsRunnedOut}">
+
+                <div class="home-quote-title-count-wpr">
+                  <p class="quote-title" matTooltipClass="custom-mat-tooltip" matTooltip="Current usage"
+                    #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                    Email
+                  </p>
+                  <div class="quote-count">{{email_count | number:'1.0-0'}} / {{email_limit | number:'1.0-0'}}</div>
+                  <div class="quota-runned-out-msg" *ngIf="emailsRunnedOut">
+                    You run out of Email
+                  </div>
+                </div>
+
+                <div class="quote">
+                  <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                    [mode]="'determinate'" [value]="email_perc"
+                    [ngClass]="{'mat-progress-spinner-email-runned-out': emailsRunnedOut}">
+                  </mat-progress-spinner>
+
+                  <div class="percentage" [ngClass]="{'percentage-email-runned-out': emailsRunnedOut}">
+                    {{ email_perc }}
+                    <span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="quota-skeleton-wpr">
-              <div class="quota--fake--box"></div>
-              <div class="quota--fake--circle"></div>
-            </div>
-            <div class="quota-skeleton-wpr">
-              <div class="quota--fake--box"></div>
-              <div class="quota--fake--circle"></div>
+            <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut">
+              <div class="home-quota-banner-icon">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                  <path
+                    d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                </svg>
+              </div>
+              <!-- prjct_profile_type > {{prjct_profile_type}} subscription_is_active {{subscription_is_active}} -->
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+
+                <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                  {{ 'Pricing.SubscriptionPaymentProblem' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
+                </span>
+                <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
+                  {{ 'Pricing.ThePlanHasExpired' | translate }}. <span class="sales-mail-to" (click)="contacUsViaEmailToUpdadePaymentInformation()">{{'Pricing.PleaseContactUs' | translate }}</span> {{'Pricing.ToUpdateYourPaymentInformation' | translate}}
+                </span>
+              </span>
+              <span
+                *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true || prjct_profile_type === 'free'">
+                ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
+                quotas,
+                <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+              </span>
             </div>
           </div>
-        </div>
+          <!--  *ngIf="displayQuotaSkeleton" -->
+          <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 68px;">
+
+            <!-- <div class="quota-skeleton-title">
+                <div class="quota--fake--box"></div>
+              </div> -->
+            <div class="quota-skeleton-container">
+
+              <div class="quota-skeleton-wpr">
+                <div class="quota--fake--box"></div>
+                <div class="quota--fake--circle"></div>
+              </div>
+              <div class="quota-skeleton-wpr">
+                <div class="quota--fake--box"></div>
+                <div class="quota--fake--circle"></div>
+              </div>
+              <div class="quota-skeleton-wpr">
+                <div class="quota--fake--box"></div>
+                <div class="quota--fake--circle"></div>
+              </div>
+            </div>
+          </div>
+        </ng-cointainer>
+
+
         <!-- </div> // test div -->
         <!-- .\ QUOTA Banner  -->
 
@@ -609,11 +613,7 @@
 
           <ng-container *ngIf="!showskeleton ">
 
-
-
             <span *ngIf="USER_ROLE !== 'agent'">
-
-
 
               <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
               <!-- for chatbot hero section -->

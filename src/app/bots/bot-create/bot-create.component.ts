@@ -36,6 +36,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'bot-create',
@@ -147,6 +148,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   botSubtypeItems: Array<any> = [
     { name: "Chatbot", value: 'chatbot' },
     { name: "Webhook", value: 'webhook' },
+    { name: "Copilot", value: 'copilot' },
   ];
 
   constructor(
@@ -191,23 +193,48 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     this.getProjectPlan();
     this.getUserRole();
     this.logger.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
+    this.getQueryParamsAndManageChatbotSubtype()
   }
+
+  getQueryParamsAndManageChatbotSubtype() {
+    this.route.queryParams.subscribe(params => {
+    
+      this.logger.log('queryParams ', params);
+      this.logger.log('queryParams type', params.type);
+
+      if (params.type === 'chatbot') {
+        this.logger.log('botSubtypeItems 1' ,this.botSubtypeItems)
+        this.botSubtypeItems.splice(1,2)
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+        this.logger.log('botSubtypeItems 2' ,this.botSubtypeItems)
+      } else if (params.type === 'automation') {
+        this.botSubtypeItems.shift()
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+        this.logger.log('botSubtypeItems 3' ,this.botSubtypeItems)
+        this.botSubtype ="webhook"
+      } else if (params.type === undefined) {
+        this.botSubtypeItems.splice(1,2)
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+      }
+    });
+  }
+
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
 
-        this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+
+  getUserRole() {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -246,7 +273,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           try {
             window['analytics'].page("Add bot, Create", {});
           } catch (err) {
-            this.logger.error('page Add bot error', err);
+            // this.logger.error('page Add bot error', err);
           }
         }
       }
@@ -298,7 +325,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           try {
             window['analytics'].page("Add bot, Import", {});
           } catch (err) {
-            this.logger.error('page Add bot error', err);
+            // this.logger.error('page Add bot error', err);
           }
         }
       }
@@ -426,7 +453,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
 
   manageUploadError(error) {
-    if (error.status = 413) {
+    if (error.status === 413) {
       this.logger.log(`[BOT-CREATE] - upload json error message 1`, error.error.err)
       this.logger.log(`[BOT-CREATE] - upload json error message 2`, error.error.limit_file_size)
       const uploadLimitInBytes = error.error.limit_file_size
@@ -480,7 +507,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           'button': 'Import Chatbot from JSON',
         });
       } catch (err) {
-        this.logger.error(`Track  Import Chatbot from JSON error`, err);
+        // this.logger.error(`Track  Import Chatbot from JSON error`, err);
       }
 
       try {
@@ -491,7 +518,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Identify Create chatbot error`, err);
+        // this.logger.error(`Identify Create chatbot error`, err);
       }
 
       try {
@@ -501,7 +528,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Group Create chatbot error`, err);
+        // this.logger.error(`Group Create chatbot error`, err);
       }
     }
   }
@@ -657,7 +684,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      // this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
       this.prjct_profile_name = project.profile.name
       // this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
       const projectProfile = project.profile
@@ -672,7 +699,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
 
   getIfBotSubtypeAreEnabled(projectProfile) {
-    this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - projectProfile: ', projectProfile);
+    // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - projectProfile: ', projectProfile);
     if (projectProfile && projectProfile['customization']) {
 
       if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] !== undefined) {
@@ -680,22 +707,22 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === true) {
 
           this.botSubtypeAreEnabled = true
-          this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 1: ', this.botSubtypeAreEnabled);
+          // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 1: ', this.botSubtypeAreEnabled);
 
         } else if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === false) {
 
           this.botSubtypeAreEnabled = false;
-          this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 2: ', this.botSubtypeAreEnabled);
+          // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 2: ', this.botSubtypeAreEnabled);
         }
 
       } else {
         this.botSubtypeAreEnabled = false
-        this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 3: ', this.botSubtypeAreEnabled);
+        // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 3: ', this.botSubtypeAreEnabled);
       }
 
     } else {
       this.botSubtypeAreEnabled = false
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 4: ', this.botSubtypeAreEnabled);
+      // this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 4: ', this.botSubtypeAreEnabled);
     }
   }
 
@@ -726,7 +753,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   onSelectBotSubType(botSubtype) {
-    this.logger.log('[BOTS-CREATE] onSelectBotSubType ', botSubtype) 
+    // this.logger.log('[BOTS-CREATE] onSelectBotSubType ', botSubtype) 
     this.botSubtype = botSubtype
     this.logger.log('[BOTS-CREATE] onSelectBotSubType this.botSubtype', this.botSubtype) 
   }
@@ -769,7 +796,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         }
         this.trackChatbotCreated(faqKb)
 
-        // goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -805,7 +832,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           'button': 'Create chatbot',
         });
       } catch (err) {
-        this.logger.error(`Track Create chatbot error`, err);
+        // this.logger.error(`Track Create chatbot error`, err);
       }
 
       try {
@@ -816,7 +843,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Identify Create chatbot error`, err);
+        // this.logger.error(`Identify Create chatbot error`, err);
       }
 
       try {
@@ -826,7 +853,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
         });
       } catch (err) {
-        this.logger.error(`Group Create chatbot error`, err);
+        // this.logger.error(`Group Create chatbot error`, err);
       }
     }
   }

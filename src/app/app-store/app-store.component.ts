@@ -17,7 +17,8 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-// const swal = require('sweetalert');
+import { ProjectUser } from 'app/models/project-user';
+const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-app-store',
@@ -269,16 +270,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[APP-STORE] - GET PROJECT-USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role;
+      }
+    });
   }
 
 
@@ -533,7 +530,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           'page': 'App store'
         });
       } catch (err) {
-        this.logger.error(`Track ${event} error`, err);
+        // this.logger.error(`Track ${event} error`, err);
       }
 
       try {
@@ -544,7 +541,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
         });
       } catch (err) {
-        this.logger.error(`Identify ${event} error`, err);
+        // this.logger.error(`Identify ${event} error`, err);
       }
 
       try {
@@ -554,7 +551,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
         });
       } catch (err) {
-        this.logger.error(`Group ${event} error`, err);
+        // this.logger.error(`Group ${event} error`, err);
       }
     }
 

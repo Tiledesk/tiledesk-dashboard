@@ -11,6 +11,7 @@ import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/wi
 import { WidgetService } from 'app/services/widget.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -92,11 +93,10 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((user_role) => {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
         // this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role
         }
       });
   }
@@ -288,7 +288,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
               });
             } catch (err) {
-              this.logger.error('Activate AppSumo product page error', err);
+              // this.logger.error('Activate AppSumo product page error', err);
             }
 
             try {
@@ -299,7 +299,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
                 plan: this.appSumoLicenseName
               });
             } catch (err) {
-              this.logger.error('Activate AppSumo product identify error', err);
+              // this.logger.error('Activate AppSumo product identify error', err);
             }
 
             try {
@@ -308,7 +308,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
                 plan: this.appSumoLicenseName
               });
             } catch (err) {
-              this.logger.error('Activate AppSumo product group error', err);
+              // this.logger.error('Activate AppSumo product group error', err);
             }
           }
         }

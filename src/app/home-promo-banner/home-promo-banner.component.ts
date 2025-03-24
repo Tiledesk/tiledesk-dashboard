@@ -88,7 +88,7 @@ export class HomePromoBannerComponent implements OnInit {
             });
            
           } catch (err) {
-            this.logger.error('[HOME-PROMO-BANNER] - track Home Banner button clicked - err', err);
+            // this.logger.error('[HOME-PROMO-BANNER] - track Home Banner button clicked - err', err);
           }
         }
     }

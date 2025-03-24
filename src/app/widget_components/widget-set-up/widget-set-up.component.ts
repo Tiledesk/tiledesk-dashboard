@@ -37,6 +37,7 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -483,6 +484,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
     this.listenToUpladAttachmentProgress()
+   
   }
 
   listenToUpladAttachmentProgress() {
@@ -1393,17 +1395,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectUserRole() {
     // const user___role =  this.usersService.project_user_role_bs.value;
     // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
   getLoggedUser() {
@@ -1623,6 +1620,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** defaultLangCode (onInit) ', this.defaultLangCode);
+            
+
             } else {
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** No default Lang *****  ', translation);
               // this.translateAndDisplayModalNoDefaultLangIsSet()
@@ -1649,11 +1648,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // IN THE SELECT LANGUAGE COMBO DISPLAY AS SELECTED THE FIRST LANGUAGE IN ALPHABETICAL ORDER
           this.wd_availableTranslations = availableTranslations.sort(this.compare);
           this.logger.log('[WIDGET-SET-UP] - GET LABELS -  ordered wd_availableTranslations', this.wd_availableTranslations);
+          this.logger.log('[WIDGET-SET-UP] - GET LABELS -  defaultLangCode', this.defaultLangCode);
+          this.wd_availableTranslations[0]
+          if (this.wd_availableTranslations &&  this.defaultLangCode ) { 
+            const defaultLanguage = this.wd_availableTranslations.find(lang => lang.code === this.defaultLangCode);
 
-          if (this.wd_availableTranslations && this.wd_availableTranslations[0]) {
-            this.selectedLang = this.wd_availableTranslations[0].name;
-            this.selectedLangCode = this.wd_availableTranslations[0].code;
-            this.selectedLangName = this.wd_availableTranslations[0].name;
+            this.logger.log('[WIDGET-SET-UP]  defaultLanguage', defaultLanguage);
+            this.selectedLang = defaultLanguage.name;
+            this.selectedLangCode = defaultLanguage.code;
+            this.selectedLangName = defaultLanguage.name;
+          
+          } else if (this.wd_availableTranslations &&  !this.defaultLangCode) {
+              this.selectedLang = this.wd_availableTranslations[0].name;
+              this.selectedLangCode = this.wd_availableTranslations[0].code;
+              this.selectedLangName = this.wd_availableTranslations[0].name;
+
           }
 
           this.logger.log('[WIDGET-SET-UP] - GET LABELS - selectedLangCode ', this.selectedLangCode);
@@ -2158,12 +2167,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
 
-
   // ------------------------------------------------------------------------------------
   // Select language
   // ------------------------------------------------------------------------------------
   onSelectlang(selectedLang) {
     this.logger.log('[WIDGET-SET-UP] onSelectlang selectedLang ', selectedLang);
+    this.logger.log('[WIDGET-SET-UP] onSelectlang   this.defaultLangCode ',   this.defaultLangCode);
+  
     this.selectedLangCode = selectedLang.code;
     this.logger.log('[WIDGET-SET-UP] - GET LABELS - onSelectlang (onSelectlang) ', this.selectedLangCode);
     this.selectedLangName = selectedLang.name;
@@ -3614,6 +3624,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.logoUrl = 'No Logo';
           })
           .catch(error => {
+            this.logoUrl = null
             this.logger.error('Error deleting firebase file:', error);
           });
 
@@ -3623,12 +3634,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.logger.log(`[WS-REQUESTS-MSGS] - delete native res `, res);
             if (res === true) {
               // this.logoUrl = this.widgetLogoURL;
-              this.logger.log('[WS-REQUESTS-MSGS] - delete firebase logoUrl', this.logoUrl)
+              this.logger.log('[WS-REQUESTS-MSGS] - delete native logoUrl', this.logoUrl)
 
               this.logoUrl = 'No Logo';
 
             }
           })
+          .catch(error => {
+            this.logoUrl = null
+            this.logger.error('Error deleting native file:', error);
+          });
       }
 
     } else {

@@ -14,7 +14,10 @@ import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
-import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { WebhookService } from 'app/services/webhook.service';
+import { BrandService } from 'app/services/brand.service';
+// import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { ProjectUser } from 'app/models/project-user';
 
 
 
@@ -37,7 +40,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   certfifiedTemplates: Array<any>;
   allTemplatesCount: number;
   allCommunityTemplatesCount: number;
-  kbCount: number;
+  // kbCount: number;
 
   customerSatisfactionTemplates: Array<any>
   customerSatisfactionTemplatesCount: number;
@@ -50,6 +53,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   route: string
   showSpinner: boolean
   myChatbotOtherCount: number;
+  automationsCount: number;
+  flowWebhooksCount: number;
   customerSatisfactionBotsCount: number;
   increaseSalesBotsCount: number;
   COMMUNITY_TEMPLATE: boolean = false;
@@ -68,7 +73,15 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   public_Key: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
   pageTitle: string;
- 
+
+  public displayChatbotsCommunity: boolean;
+  public displayTemplatesCategory: boolean;
+
+  public BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
+  public BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE: boolean;
+
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -80,9 +93,16 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     public notify: NotifyService,
     public usersService: UsersService,
     private translate: TranslateService,
-    private kbService: KnowledgeBaseService,
+    private webhookService: WebhookService,
+    public brandService: BrandService,
+    // private kbService: KnowledgeBaseService,
   ) { 
     super(prjctPlanService, notify);
+
+    const brand = brandService.getBrand();
+    this.displayChatbotsCommunity = brand['display_chatbots_community']
+    this.displayTemplatesCategory = brand['display_templates_category']
+    // console.log('displayTemplatesCategory ',  this.displayTemplatesCategory)
   }
 
 
@@ -91,8 +111,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getBrowserVersion();
     this.getTemplates()
     this.getCommunityTemplates()
+    this.getFlowWebhooks()
     this.getCurrentProject()
-    this.getAllNamespaces()
+    // this.getAllNamespaces()
     // this.getAllFaqKbByProjectId();
     this.getFaqKbByProjectId()
     this.getRoutes();
@@ -125,9 +146,6 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     }
   }
 
-
-
-
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     // this.logger.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
@@ -154,14 +172,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getProfileImageStorage() {
@@ -191,6 +207,56 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
       this.logger.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
     }
+
+    if (this.route.indexOf('/bots/templates/all') !== -1) {
+      this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE = true
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
+    } else {
+      this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE = false
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE)
+    }
+
+    if (this.route.indexOf('/bots/templates/increase-sales') !== -1) {
+      this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE = true
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
+    } else {
+      this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE = false
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
+    }
+
+    if (this.route.indexOf('/bots/templates/customer-satisfaction') !== -1) {
+      this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE = true
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
+    } else {
+      this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE = false
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE)
+    }
+
+    if (this.route.indexOf('/bots/templates/community') !== -1) {
+      this.BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE = true
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_INCREASE_SALES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
+    } else {
+      this.BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE = false
+      // this.logger.log('[BOTS-TEMPLATES] - BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE  ', this.BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE)
+    }
+
+  }
+
+
+  goToBotAllTemplates() {
+    this.router.navigate(['project/' + this.project._id + '/bots/templates/all']);
+  }
+
+  goToBotCommunityTemplates() {
+    this.router.navigate(['project/' + this.project._id + '/bots/templates/community']);
+  }
+
+  goToBotIncreaseSalesTemplates() {
+    this.router.navigate(['project/' + this.project._id + '/bots/templates/increase-sales']);
+  }
+
+  goToBotCustomerSatisfactionTemplates() {
+    this.router.navigate(['project/' + this.project._id + '/bots/templates/customer-satisfaction']);
   }
 
 
@@ -240,9 +306,28 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
         this.chatBotCount = faqKb.length
-        this.myChatbotOtherCount = faqKb.length
+        // this.myChatbotOtherCount = faqKb.length
         this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
         this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - faqKb',  faqKb);
+      }
+
+      const myChatbot = faqKb.filter((obj) => {
+        return !obj.subtype || obj.subtype === "chatbot";
+      });
+      this.logger.log('[BOTS-TEMPLATES]  - myChatbot', myChatbot);
+      if (myChatbot) {
+        this.myChatbotOtherCount = myChatbot.length;
+        this.logger.log('[BOTS-TEMPLATES]  - myChatbot COUNT', this.customerSatisfactionTemplatesCount);
+      }
+
+
+      const automations = faqKb.filter((obj) => {
+        return obj.subtype && ["webhook", "copilot"].includes(obj.subtype);
+      });
+      this.logger.log('[BOTS-TEMPLATES]  - automations', automations);
+      if (automations) {
+        this.automationsCount = automations.length;
+        this.logger.log('[BOTS-TEMPLATES]  - automations COUNT', this.customerSatisfactionTemplatesCount);
       }
 
       const customerSatisfactionBots = faqKb.filter((obj) => {
@@ -282,19 +367,36 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     })
   }
 
-  getAllNamespaces() {
-    this.kbService.getAllNamespaces().subscribe((res: any) => {
-      if (res) {
-        this.kbCount = res.length
-        this.logger.log('[BOTS-TEMPLATES] - GET ALL NAMESPACES', res);
+  // No more used
+  // getAllNamespaces() {
+  //   this.kbService.getAllNamespaces().subscribe((res: any) => {
+  //     if (res) {
+  //       this.kbCount = res.length
+  //       this.logger.log('[BOTS-TEMPLATES] - GET ALL NAMESPACES', res);
         
-      }
-    }, (error) => {
-      this.logger.error('[BOTS-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[BOTS-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
 
-    }, () => {
-      this.logger.log('[BOTS-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
+  //   }, () => {
+  //     this.logger.log('[BOTS-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
       
+  //   });
+  // }
+  getFlowWebhooks() {
+    this.showSpinner = true;
+    this.webhookService.getFlowWebhooks().subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] GET WH RES  ', res);
+      if (res) {
+        this.flowWebhooksCount = res.length
+      }
+
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] GET WH ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[BOTS-LIST] GET WH COMPLETE');
+      this.showSpinner = false;
     });
   }
 

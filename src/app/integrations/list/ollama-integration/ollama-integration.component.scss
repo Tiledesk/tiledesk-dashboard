@@ -214,3 +214,96 @@ p {
       stroke-dashoffset: 900;
     }
   }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .tag {
+    display: flex;
+    align-items: center;
+    background-color: #f1f3f5;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #495057;
+    border: 1px solid #ced4da;
+  }
+  
+  .remove-btn {
+    background: none;
+    border: none;
+    color: #495057;
+    font-size: 16px;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+  
+  .remove-btn:hover {
+    color: #e03131; /* Red color on hover */
+  }
+
+
+
+.models--container {
+       /* width: 100%; */
+    /* position: relative; */
+    /* top: -3px; */
+    /* left: 8px; */
+    display: flex
+;
+    /* flex-flow: row wrap; */
+    align-items: flex-start;
+    gap: 6px;
+    /* margin-bottom: 6px; */
+    /* padding-right: 20px; */
+    flex-direction: column;
+}
+
+.model-name-and-btn-wpr {
+  display: flex;
+  border-radius: 4px;
+  background-color: var(--contact-tag-background);
+  color: var(--contact-tag-color);
+}
+
+.model-name {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: var(--contact-tag-font-weight);
+  font-size: var(--contact-tag-font-size);
+  line-height: var(--contact-tag-line-height);
+  letter-spacing: var(--contact-tag-letter-spacing);
+  padding: 3px 5px 4px;
+  word-break: break-word;
+  cursor: default;
+  font-family: var(--content-font-family);
+}
+
+.delete-model {
+  border: none;
+  outline: none;
+  background: transparent;
+  border-radius: 0px 4px 4px 0px;
+  padding: 2px 4px 0px 3px;
+  cursor: pointer;
+}
+
+.delete-model:hover {
+  background: var(--delete-tag-btn-hover);
+}
+
+
+
+.tags-btn-wpr button {
+  margin-left: -2px;
+}
+
+.tags-btn-wpr button svg {
+  position: relative;
+  top: 1px;
+  fill: var(--delete-tag-icon-color);
+}
+

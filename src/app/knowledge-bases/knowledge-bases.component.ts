@@ -44,6 +44,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { ProjectUser } from 'app/models/project-user';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -236,7 +237,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getLoggedUser();
     this.getCurrentProject();
     this.getRouteParams();
-    this.listenToKbVersion();
+    // this.listenToKbVersion(); // no more used
     this.getTemplates();
     this.getCommunityTemplates()
     this.getFaqKbByProjectId();
@@ -1748,17 +1749,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
 
@@ -1766,16 +1762,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     clearInterval(this.interval_id);
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+  // No more used
+  // listenToKbVersion() {
+  //   this.kbService.newKb
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((newKb) => {
+  //       this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
+  //       this.ARE_NEW_KB = newKb;
+  //     })
+  // }
 
   getTemplates() {
     this.faqKbService.getTemplates().subscribe((res: any) => {
@@ -1988,7 +1985,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           window['analytics'].page("Knowledge Bases Page", {
           });
         } catch (err) {
-          this.logger.error('Knowledge page error', err);
+          // this.logger.error('Knowledge page error', err);
         }
       }
     }
@@ -2837,7 +2834,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           });
         } catch (err) {
-          this.logger.error('identify Invite Sent Profile error', err);
+          // this.logger.error('identify Invite Sent Profile error', err);
         }
         try {
           window['analytics'].track(event, {
@@ -2853,7 +2850,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             }
           });
         } catch (err) {
-          this.logger.error('track Invite Sent event error', err);
+          // this.logger.error('track Invite Sent event error', err);
         }
         try {
           window['analytics'].group(this.id_project, {
@@ -2861,7 +2858,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             plan: this.profile_name + ' plan',
           });
         } catch (err) {
-          this.logger.error('group Invite Sent error', err);
+          // this.logger.error('group Invite Sent error', err);
         }
       }
     }

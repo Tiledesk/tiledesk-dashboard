@@ -9,6 +9,8 @@ import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
+import { KbSettings } from 'app/models/kbsettings-model'
+import { ProjectUser } from 'app/models/project-user'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -98,21 +100,12 @@ export class SettingsSidebarComponent implements OnInit {
     this.getCurrentRoute();
     // this.getMainContentHeight();
     this.listenSidebarIsOpened();
-    this.listenToKbVersion()
+    
    
     this.translateString()
   }
 
-  listenToKbVersion() {
-    this.kbService.newKb
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((newKb) => {
-        this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
-        this.ARE_NEW_KB = newKb;
-      })
-  }
+ 
 
   ngAfterContentInit() {
     setTimeout(() => {
@@ -121,14 +114,12 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         //  this.logger.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   listenSidebarIsOpened() {
@@ -361,7 +352,49 @@ export class SettingsSidebarComponent implements OnInit {
     if (!this.public_Key.includes("INT")) {
       this.isVisibleINT = false;
     }
+    if (this.isVisibleKNB) {
+      // this.listenToKbVersion()
+      this.getKnowledgeBaseSettings() 
+    }
   }
+
+
+   getKnowledgeBaseSettings() {
+      this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
+        this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
+        if (kbSettings && kbSettings.kbs) {
+          if (kbSettings.kbs.length === 0) {
+            // this.kbService.areNewwKb(true)
+            this.ARE_NEW_KB = true
+          } else if (kbSettings.kbs.length > 0) {
+            // this.kbService.areNewwKb(false)
+            this.ARE_NEW_KB = false
+          }
+  
+        } else {
+          // this.kbService.areNewwKb(true)
+          this.ARE_NEW_KB = true
+        }
+  
+      }, (error) => {
+        this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
+      }, () => {
+        this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
+  
+      })
+    }
+
+  // No more used
+  // listenToKbVersion() {
+  //   this.kbService.newKb
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((newKb) => {
+  //       this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
+  //       this.ARE_NEW_KB = newKb;
+  //     })
+  // }
 
   getRoutingTranslation() {
     this.translate.get('Routing')
