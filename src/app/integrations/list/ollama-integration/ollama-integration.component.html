@@ -40,23 +40,23 @@
 
 
 
-    <div class="input-field">
+    <!-- <div class="input-field">
         <label>Authorization Token (optional)</label>
         <input class="custom-input" type="text" [(ngModel)]="integration.value.token"
             placeholder="You authorization Token">
 
-    </div>
+    </div> -->
 
 
 
     <div class="input-field">
-        <label>Models (optional)</label>
+        <label>{{'Models' | translate}} ({{'Optional' | translate}})</label>
         <div class="fake--input">
             <div class="fake--input-inner">
                 <input id="ollama-models" class="custom-input" name="ollama-models"
                     placeholder="Type an LLM model and press Enter to add it to your favorites" type="text"
                     [(ngModel)]="newModelName"  (ngModelChange)="onEnterModel($event)" autocomplete="off" (keyup.enter)="addModel(newModelName)">
-                <div id="enter-button" class="enter-button" (click)="addModel(newModelName)">Enter</div>
+                <div id="enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
             </div>
         </div>
     </div>
