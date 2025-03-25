@@ -31,11 +31,12 @@ const Swal = require('sweetalert2')
 
 export class HomeCdsComponent extends PricingBaseComponent implements OnInit, OnChanges {
   @Output() goToCreateChatbot = new EventEmitter();
-  @Output() dismissKbSkeleton = new EventEmitter();
+  // @Output() dismissKbSkeleton = new EventEmitter();
   // @Output() hasFinishedGetProjectBots = new EventEmitter();
   @Input() chatbots: Array<Chatbot> = [];
   @Input() displayKbHeroSection: boolean
   @Input() isVisibleKNB: boolean
+  @Input() project: any;
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
   projectId: string;
@@ -80,37 +81,60 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
   ngOnInit(): void {
     this.getUserRole()
-    this.getCurrentProject()
-    this.getFaqKbByProjectId()
+    // this.getCurrentProject()
+    // this.getFaqKbByProjectId()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.logger.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
+    console.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
+    this.chatbotCount = this.chatbots?.length
+    console.log('[HOME-CDS] - chatbotCount ngOnChanges', this.chatbotCount);
+    console.log('[HOME-CDS] - project ngOnChanges', this.project);
     this.logger.log('[HOME-CDS] - displayKbHeroSection ngOnChanges', this.displayKbHeroSection);
     this.logger.log('[HOME-CDS] - isVisibleKNB ngOnChanges', this.isVisibleKNB);
+
+    if (this.isVisibleKNB) {
+      this.getKB()
+    }
     this.sortChatbots();
   }
+
+
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-
-  getFaqKbByProjectId() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[HOME-CDS] - GET BOTS BY PROJECT ID', faqKb);
-      if (faqKb) {
-        this.chatbotCount = faqKb.length;
-        this.logger.log('[HOME-CDS] - GET BOTS BY PROJECT ID chatbotCount', this.chatbotCount);
-      }
-    }, (error) => {
-      this.logger.error('[HOME-CDS] GET BOTS ERROR ', error);
-
-    }, () => {
-      this.logger.log('[HOME-CDS] GET BOTS COMPLETE');
-    });
+  getKB() {
+    const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
+    this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
+    if (storedNamespace) {
+      let storedNamespaceObjct = JSON.parse(storedNamespace)
+      this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
+      this.kbNameSpaceid = storedNamespaceObjct.id;
+      this.kbNameSpaceName = storedNamespaceObjct.name
+      this.getChatbotUsingNamespace(this.kbNameSpaceid)
+    } else {
+      this.getAllNamespaces()
+    }
   }
+
+
+  // getFaqKbByProjectId() {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+  //     this.logger.log('[HOME-CDS] - GET BOTS BY PROJECT ID', faqKb);
+  //     if (faqKb) {
+  //       this.chatbotCount = faqKb.length;
+  //      console.log('[HOME-CDS] - GET BOTS BY PROJECT ID chatbotCount', this.chatbotCount);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[HOME-CDS] GET BOTS ERROR ', error);
+
+  //   }, () => {
+  //     this.logger.log('[HOME-CDS] GET BOTS COMPLETE');
+  //   });
+  // }
 
   getCurrentProject() {
     this.auth.project_bs
@@ -182,7 +206,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((kbAssistants: any) => {
 
-      this.logger.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
+      console.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
       this.chatbotsUsingNamespace = kbAssistants
 
       if (this.chatbotsUsingNamespace.length > 0) {
@@ -206,7 +230,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
     }, () => {
       this.logger.log('[HOME-CDS] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
-      this.dismissKbSkeleton.emit(true)
+      // this.dismissKbSkeleton.emit(true)
 
     });
   }
@@ -294,7 +318,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   // }
 
   sortChatbots() {
-    
+
     if (this.chatbots && this.chatbots.length > 0) {
 
       this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {

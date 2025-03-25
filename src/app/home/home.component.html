@@ -621,9 +621,13 @@
 
               <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
               <!-- for chatbot hero section -->
+              <!-- (dismissKbSkeleton)="dismissKbSkeleton($event)" -->
               <ng-container *ngIf="areVisibleChatbot">
-                <home-cds (goToCreateChatbot)="goToCreateChatbot()" (dismissKbSkeleton)="dismissKbSkeleton($event)"
-                  [chatbots]="chatbots" [displayKbHeroSection]="displayKbHeroSection" [isVisibleKNB]="isVisibleKNB">
+                <home-cds (goToCreateChatbot)="goToCreateChatbot()" 
+                  [chatbots]="chatbots" 
+                  [project]="project"
+                  [displayKbHeroSection]="displayKbHeroSection" 
+                  [isVisibleKNB]="isVisibleKNB">
                 </home-cds>
               </ng-container>
 
@@ -660,15 +664,21 @@
                 <!-- ----------------------- -->
                 <!-- Child 3 Whatsapp Wizard -->
                 <!-- ----------------------- -->
+                <!-- (hasCreatedChatbot)="hasCreatedChatbot($event)" -->
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
                     style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                    (goToCreateChatbot)="goToCreateChatbot()" 
+                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" 
+                    [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
+                    [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" 
+                    [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" >
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -680,8 +690,10 @@
                     #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected"
-                    [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
+                    [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" 
+                    [solution_for_child]="solution_for_child"
                     [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>

@@ -4,7 +4,7 @@ import { LoggerService } from './logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
 import { PLANS_LIST, PLAN_NAME } from 'app/utils/util';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,38 +14,39 @@ export class QuotesService {
   public hasReachedQuotasLimitInHome$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
 
 
-  private projectLimitsSubject = new BehaviorSubject<any>(null);
-  projectLimits$ = this.projectLimitsSubject.asObservable();
+  // private projectLimitsSubject = new BehaviorSubject<any>(null);
+  // projectLimits$ = this.projectLimitsSubject.asObservable();
 
-  private allQuotasSubject = new BehaviorSubject<any>(null);
-  allQuotes$ = this.allQuotasSubject.asObservable();
-
-
+  // private allQuotasSubject = new BehaviorSubject<any>(null);
+  // allQuotes$ = this.allQuotasSubject.asObservable();
 
 
-  setProjectLimits(limits: any) {
-    this.projectLimitsSubject.next(limits);
-  }
 
-  getProjectLimits() {
-    return this.projectLimitsSubject.value;
-  }
 
-  setAllQuotas(quotes: any) {
-    this.allQuotasSubject.next(quotes);
-  }
+  // setProjectLimits(limits: any) {
+  //   this.projectLimitsSubject.next(limits);
+  // }
 
-  getAllQuotas() {
-    return this.allQuotasSubject.value;
-  }
+  // getProjectLimits() {
+  //   return this.projectLimitsSubject.value;
+  // }
+
+  // setAllQuotas(quotes: any) {
+  //   this.allQuotasSubject.next(quotes);
+  // }
+
+  // getAllQuotas() {
+  //   return this.allQuotasSubject.value;
+  // }
 
   // Refactoring quotas
-  private quotesDataSubject = new BehaviorSubject<{ projectLimits: any; allQuotes: any } | null>(null);
-  quotesData$ = this.quotesDataSubject.asObservable(); // Expose as Observable
+  private quotasDataSubject = new BehaviorSubject<{ projectLimits: any; allQuotes: any } | null>(null);
+  quotesData$ = this.quotasDataSubject.asObservable(); // Expose as Observable
   // Function to update projectLimits and allQuotes
-  updateQuotesData(data: { projectLimits: any; allQuotes: any }) {
-    this.quotesDataSubject.next(data);
-  }
+  
+
+  private requestQuotesSubject = new Subject<void>();
+  requestQuotes$ = this.requestQuotesSubject.asObservable();
   
   user: any;
   project_id: string;
@@ -67,6 +68,18 @@ export class QuotesService {
     });
     this.getCurrentProject();
     this.getAppConfig();
+  }
+
+
+  setQuotasData(data: { projectLimits: any; allQuotes: any }) {
+    this.quotasDataSubject.next(data);
+  }
+
+  /** Called by HomeComponent to request Navbar to fetch quotas */
+  requestQuotesUpdate() {
+   
+    this.logger.log('[QUOTE-SERVICE] -  Home has called requestQuotesUpdate');
+    this.requestQuotesSubject.next();
   }
 
   checkIfUserExistAndGetToken() {

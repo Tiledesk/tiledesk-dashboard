@@ -312,7 +312,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
+    this.listenToHomerequestQuotes()
   } // OnInit
+
+  listenToHomerequestQuotes() {
+    this.quotesService.requestQuotes$.subscribe(() => {
+      console.log('[NAVBAR] home call getProjectQuotes')
+      this.getProjectQuotes();
+    });
+  }
 
 
   ngOnDestroy() {
@@ -353,7 +361,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectId = project._id;
           this.projectName = project.name;
           // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          this.getProjectQuotes();
+          // this.getProjectQuotes();
           // this.getQuotasCount()
           // this.getQuotes();
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
@@ -389,13 +397,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-     console.log("[NAVBAR] getProjectQuotes response: ", response);
+      console.log("[NAVBAR] getProjectQuotes response: ", response);
       this.project_limits = response;
       if (this.project_limits) {
         this.getQuotes(this.project_limits)
       }
 
-       // ✅ Store project limits in the service
+      // ✅ Store project limits in the service
       //  this.quotesService.setProjectLimits(response);
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -405,7 +413,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotes(project_limits) {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-     console.log("[NAVBAR] getAllQuotes response: ", resp)
+      console.log("[NAVBAR] getAllQuotes response: ", resp)
 
 
       console.log("[NAVBAR] project_limits: ", project_limits)
@@ -414,11 +422,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         // ✅ Store quotes in the service
         // this.quotesService.setAllQuotas(resp.quotes);
 
-        this.quotesService.updateQuotesData({
+        this.quotesService.setQuotasData({
           projectLimits: project_limits, // Pass fetched project limits
           allQuotes: resp.quotes // Pass fetched quotes
         });
-      
+
       }
 
       if (project_limits) {
@@ -942,8 +950,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
           /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
           if (event.url.indexOf('/home') !== -1) {
-            // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+            // console.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
             this.HOME_ROUTE_IS_ACTIVE = true;
+
+            // Get quotas limit and quotas to update the home
+            //  this.getProjectQuotes();
+
           } else {
             // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
             this.HOME_ROUTE_IS_ACTIVE = false;
@@ -1014,7 +1026,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/pricing/te') !== -1) ||
           (this.route.indexOf('/pricing') !== -1) ||
           (this.route.indexOf('/projects') !== -1)
-          
+
 
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
@@ -1065,15 +1077,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   }
 
- 
+
   detectRouteAndInitSleekPlan() {
-    
+
     this.router.events.subscribe((val) => {
 
       if (this.location.path() !== '') {
         this.route = this.location.path();
         this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
-         if (this.route !== '/signup' && this.route !== '/onboarding'&& this.route !== "/create-new-project") {
+        if (this.route !== '/signup' && this.route !== '/onboarding' && this.route !== "/create-new-project") {
           this.logger.log('[NAVBAR] window[$sleek]', window['$sleek'])
           this.browserRefresh = browserRefresh
           this.logger.log('[NAVBAR] browserRefresh', this.browserRefresh)
@@ -1081,10 +1093,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             // Sleekplan is already loaded
             return;
           }
-        if (this.user && this.isVisiblePay && !this.browserRefresh)
+          if (this.user && this.isVisiblePay && !this.browserRefresh)
             this.sleekplanSso(this.user)
-         }
-         this.logger.log('[NAVBAR] this.user' , this.user) 
+        }
+        this.logger.log('[NAVBAR] this.user', this.user)
         if (
           this.route === '/user-profile' ||
           this.route === '/create-new-project' ||
@@ -1121,42 +1133,42 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   sleekplanSso(user) {
     this.logger.log('[NAVBAR] calling sleekplanSso ')
     this.sleekplanSsoService.getSsoToken(user).subscribe(
-        (response) => {
-            this.logger.log('[NAVBAR] sleekplanSso response ', response)
-            this.logger.log('[NAVBAR] sleekplanSso response token', response['token'])
+      (response) => {
+        this.logger.log('[NAVBAR] sleekplanSso response ', response)
+        this.logger.log('[NAVBAR] sleekplanSso response token', response['token'])
 
-            // Configure Sleekplan with SSO
-            // window['Sleekplan'] = {
-            //   id: 'YOUR_SLEEKPLAN_ID',
-            //   sso: response.token,
-            // };
+        // Configure Sleekplan with SSO
+        // window['Sleekplan'] = {
+        //   id: 'YOUR_SLEEKPLAN_ID',
+        //   sso: response.token,
+        // };
 
-            // window['$sleek'].setUser({
-            //   token: response['token'],
-            // });
+        // window['$sleek'].setUser({
+        //   token: response['token'],
+        // });
 
-            // window.document.addEventListener('sleek:init', () => {
-            //   window['$sleek'].setUser({ token: response['token'] });
-            // }, false);
+        // window.document.addEventListener('sleek:init', () => {
+        //   window['$sleek'].setUser({ token: response['token'] });
+        // }, false);
 
-            // window['$sleek'].sso = { token: response['token'] }
+        // window['$sleek'].sso = { token: response['token'] }
 
-            window['SLEEK_USER'] = { token: response['token'] }
+        window['SLEEK_USER'] = { token: response['token'] }
 
-            // Load the Sleekplan widget
-            this.sleekplanService.loadSleekplan().then(() => {
-                this.logger.log('[NAVBAR] - Sleekplan successfully initialized');
-            })
-                .catch(err => {
-                    this.logger.error('[NAVBAR] - Sleekplan initialization failed', err);
-                });
-        },
-        (error) => {
-            this.logger.error('[NAVBAR] - Failed to fetch Sleekplan SSO token', error);
+        // Load the Sleekplan widget
+        this.sleekplanService.loadSleekplan().then(() => {
+          this.logger.log('[NAVBAR] - Sleekplan successfully initialized');
+        })
+          .catch(err => {
+            this.logger.error('[NAVBAR] - Sleekplan initialization failed', err);
+          });
+      },
+      (error) => {
+        this.logger.error('[NAVBAR] - Failed to fetch Sleekplan SSO token', error);
 
-        }
+      }
     );
-}
+  }
 
 
   getTrialLeft() {
@@ -1255,7 +1267,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     if (this.isVisiblePay) {
       if (this.USER_ROLE === 'owner') {
-       
+
         if (this.prjct_profile_type === 'payment') {
           // this.notify._displayContactUsModal(true, 'upgrade_plan');
           this.notify._displayContactUsModal(true, 'upgrade_plan');

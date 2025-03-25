@@ -257,7 +257,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // emailsRunnedOut: boolean = true;
   // tokensRunnedOut: boolean = true;
 
-  displayQuotaSkeleton: boolean = false
+  displayQuotaSkeleton: boolean
 
   salesEmail: string
 
@@ -308,7 +308,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getLoggedUser()
     this.getCurrentProjectProjectByIdAndBots();
     // this.getStorageBucket(); // moved in getCurrentProject()
-    this.logger.log('[HOME] !!! Hello HomeComponent! ');
+    console.log('[HOME] !!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
     this.translateString();
@@ -345,7 +345,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
 
-    this.listeHasOpenedNavbarQuotasMenu()
+    // this.listeHasOpenedNavbarQuotasMenu()
 
     // this.quotesService.projectLimits$.subscribe((limits) => {
     //   if (limits) {
@@ -353,7 +353,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     //     console.log("[HOME] Received project limits:", this.project_limits);
     //   }
     // });
-  
+
     // ✅ Subscribe to all quotes
     // this.quotesService.allQuotes$.subscribe((quotes) => {
     //   if (quotes) {
@@ -362,15 +362,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     //   }
     // });
 
-    this.quotesService.quotesData$.subscribe((data) => {
-      if (data) {
-        this.quotasLimits = data.projectLimits;
-        this.allQuotas = data.allQuotes;
-        console.log("[HOME] Received quotasLimits:", this.quotasLimits);
-        console.log("[HOME] Received allQuotas:", this.allQuotas);
-      }
-    });
-    // this.listenToQuotas()
+
+    this.listenToQuotas()
   }
 
   ngAfterViewInit() {
@@ -407,6 +400,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectName = this.project.name
 
           if (this.projectId) {
+
+            this.quotesService.requestQuotesUpdate();
             // this.getProjectQuotes();
             // this.getQuotasCount()
           }
@@ -496,11 +491,89 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.projectId) {
           if (hasOpen !== null) {
-            this.getQuotes()
+            // this.getQuotes()
           }
         }
       })
 
+  }
+
+  listenToQuotas() {
+    this.displayQuotaSkeleton = true
+    this.quotesService.quotesData$.subscribe((data) => {
+      if (data) {
+        this.displayQuotaSkeleton = false
+        this.quotasLimits = data.projectLimits;
+        this.allQuotas = data.allQuotes;
+        console.log("[HOME] Received quotasLimits:", this.quotasLimits);
+        console.log("[HOME] Received allQuotas:", this.allQuotas);
+
+        if (this.quotasLimits) {
+          this.messages_limit = this.quotasLimits.messages;
+          this.requests_limit = this.quotasLimits.requests;
+          this.email_limit = this.quotasLimits.email;
+          this.tokens_limit = this.quotasLimits.tokens;
+          console.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
+          console.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
+          console.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
+          console.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+        }
+
+        console.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
+        console.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
+        console.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
+        console.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
+        if (this.allQuotas.requests.quote === null) {
+          this.allQuotas.requests.quote = 0;
+        }
+        if (this.allQuotas.messages.quote === null) {
+          this.allQuotas.messages.quote = 0;
+        }
+        if (this.allQuotas.email.quote === null) {
+          this.allQuotas.email.quote = 0;
+        }
+        if (this.allQuotas.tokens.quote === null) {
+          this.allQuotas.tokens.quote = 0;
+        }
+
+
+        if (this.allQuotas.requests.quote >= this.requests_limit) {
+          this.conversationsRunnedOut = true;
+          console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        } else {
+          this.conversationsRunnedOut = false;
+          console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        }
+
+        if (this.allQuotas.email.quote >= this.email_limit) {
+          this.emailsRunnedOut = true;
+          console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        } else {
+          this.emailsRunnedOut = false;
+          console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        }
+
+        if (this.allQuotas.tokens.quote >= this.tokens_limit) {
+          this.tokensRunnedOut = true;
+          console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        } else {
+          this.tokensRunnedOut = false;
+          console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        }
+
+
+        this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
+        this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
+        this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
+        this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
+
+        this.requests_count = this.allQuotas.requests.quote;
+        this.messages_count =this.allQuotas.messages.quote;
+        this.email_count = this.allQuotas.email.quote;
+        this.tokens_count = this.allQuotas.tokens.quote;
+
+      }
+    });
   }
 
   getQuotes() {
@@ -567,7 +640,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log("[HOME] get all quotes *COMPLETE*");
       setTimeout(() => {
         this.displayQuotaSkeleton = false
-        this.getRunnedOutQuotes( this.quotes)
+        this.getRunnedOutQuotes(this.quotes)
       }, 1500);
 
     })
@@ -927,18 +1000,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  dismissKbSkeleton(event) {
-    this.logger.log('[HOME] - dismissKbSkeleton event', event);
-    // if (event === true ) {
-    // if(this.displayKbHeroSection) { 
-    //   this.showskeleton = false
-    // }
-  }
+  // dismissKbSkeleton(event) {
+  //   this.logger.log('[HOME] - dismissKbSkeleton event', event);
+  //   // if (event === true ) {
+  //   // if(this.displayKbHeroSection) { 
+  //   //   this.showskeleton = false
+  //   // }
+  // }
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.chatbots = faqKb
-      this.logger.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
+      console.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
@@ -955,7 +1028,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     }, () => {
-      this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
+      console.log('[HOME] - GET FAQKB * COMPLETE *');
       // if(!this.displayKbHeroSection) {
       this.showskeleton = false;
       // } else {
@@ -1895,29 +1968,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // -------------------------------------------
   // STEP 1
   // -------------------------------------------
-  hasCreatedChatbot(event) {
-    this.logger.log('[HOME] hasCreatedChatbot  ', event)
-    if (event === true) {
-      // if (this.chatbotCreated === false) {
-      // this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
-      // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasCreatedChatbot')
-      this.upadatedWatsAppWizardStep1(true, 'hasCreatedChatbot')
-      // }
-    }
-  }
+  // hasCreatedChatbot(event) {
+  //   console.log('[HOME] hasCreatedChatbot  ', event)
+  //   if (event === true) {
+  //     // if (this.chatbotCreated === false) {
+  //     // this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
+  //     // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasCreatedChatbot')
+  //     this.upadatedWatsAppWizardStep1(true, 'hasCreatedChatbot')
+  //     // }
+  //   }
+  // }
 
-  upadatedWatsAppWizardStep1(step1, calledBy) {
-    this.logger.log('upadatedWatsAppWizardStep1 step  1  ', step1)
-    this.logger.log('upadatedWatsAppWizardStep1 calledBy', calledBy)
-    this.projectService.updateProjectWithWAWizardStep1(step1)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - RES ', res);
-      }, error => {
-        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 * COMPLETE *')
-      });
-  }
+  // upadatedWatsAppWizardStep1(step1, calledBy) {
+  //   this.logger.log('upadatedWatsAppWizardStep1 step  1  ', step1)
+  //   this.logger.log('upadatedWatsAppWizardStep1 calledBy', calledBy)
+  //   this.projectService.updateProjectWithWAWizardStep1(step1)
+  //     .subscribe((res: any) => {
+  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - RES ', res);
+  //     }, error => {
+  //       this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - ERROR ', error)
+  //     }, () => {
+  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 * COMPLETE *')
+  //     });
+  // }
 
 
   goToCreateChatbot() {

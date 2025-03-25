@@ -44,7 +44,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getCurrentProject()
-    this.getBots()
+    // this.getBots()
   }
 
 
@@ -74,7 +74,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
  
   getBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) RES', bots);
+      console.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) RES', bots);
 
       if (bots) {
         if (bots.length > 0) {
