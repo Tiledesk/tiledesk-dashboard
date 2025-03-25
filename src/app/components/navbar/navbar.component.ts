@@ -370,7 +370,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
     // this.getQuotasCount()
-    this.getQuotes();
+    // this.getQuotes();
     const currentURL = this.router.url;
     this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);
     if (currentURL.indexOf('/home') !== -1) {
@@ -389,73 +389,44 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-      this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
+     console.log("[NAVBAR] getProjectQuotes response: ", response);
       this.project_limits = response;
+      if (this.project_limits) {
+        this.getQuotes(this.project_limits)
+      }
+
+       // ✅ Store project limits in the service
+      //  this.quotesService.setProjectLimits(response);
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
     })
   }
 
 
-  getQuotasCount() {
-    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
-
-      this.openedConversations = resp.open;
-      this.closedConversations = resp.closed;
-      this.startSlot = resp.slot.startDate;
-      this.endSlot = resp.slot.endDate;
-
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
-    }, (error) => {
-      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
-    }, () => {
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
-    })
-  }
-
-
-
-
-  // listenToWSRequestsDataCallBack() {
-  //   // .pipe(throttleTime(0))
-  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
-  //   this.wsRequestsService.wsConvData$
-
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((wsConv) => {
-  //       // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
-  //       this.getQuotes()
-  //     })
-  // }
-
-  // listenToQuotasReachedInHome() {
-  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
-
-  //   if (this.projectId)  {
-  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
-  //     this.getQuotes()
-  //   }
-  // }
-
-  getQuotes() {
+  getQuotes(project_limits) {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
+     console.log("[NAVBAR] getAllQuotes response: ", resp)
 
-      this.logger.log("project_limits: ", this.project_limits)
+
+      console.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("resp.quotes: ", resp.quotes)
-      if (this.project_limits) {
+      if (resp?.quotes) {
+        // ✅ Store quotes in the service
+        // this.quotesService.setAllQuotas(resp.quotes);
 
-        this.messages_limit = this.project_limits.messages;
-        this.requests_limit = this.project_limits.requests;
-        this.email_limit = this.project_limits.email;
-        this.tokens_limit = this.project_limits.tokens;
+        this.quotesService.updateQuotesData({
+          projectLimits: project_limits, // Pass fetched project limits
+          allQuotes: resp.quotes // Pass fetched quotes
+        });
+      
+      }
+
+      if (project_limits) {
+
+        this.messages_limit = project_limits.messages;
+        this.requests_limit = project_limits.requests;
+        this.email_limit = project_limits.email;
+        this.tokens_limit = project_limits.tokens;
       }
 
       if (resp.quotes.requests.quote === null) {
@@ -476,7 +447,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log('[NAVBAR] used email', resp.quotes.email.quote)
       this.logger.log('[NAVBAR] email_limit', this.email_limit)
-
 
       this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
@@ -535,11 +505,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.requestsPieRedStroke = true; // 76% a 100%
       }
 
-
-
-
-
-
       this.requests_count = resp.quotes.requests.quote;
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
@@ -551,6 +516,49 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log("get all quotes *COMPLETE*");
     })
   }
+
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
+
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+    }, (error) => {
+      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+  // listenToWSRequestsDataCallBack() {
+  //   // .pipe(throttleTime(0))
+  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
+  //   this.wsRequestsService.wsConvData$
+
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((wsConv) => {
+  //       // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
+  //       this.getQuotes()
+  //     })
+  // }
+
+  // listenToQuotasReachedInHome() {
+  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
+
+  //   if (this.projectId)  {
+  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
+  //     this.getQuotes()
+  //   }
+  // }
 
 
   goToHistoryOpenedConvs() {

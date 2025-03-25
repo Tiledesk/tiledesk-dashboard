@@ -244,6 +244,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   project_limits: any;
   quotes: any;
+  all_quotes: any;
+
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
@@ -255,7 +257,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // emailsRunnedOut: boolean = true;
   // tokensRunnedOut: boolean = true;
 
-  displayQuotaSkeleton: boolean = true
+  displayQuotaSkeleton: boolean = false
 
   salesEmail: string
 
@@ -263,6 +265,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   closedConversations: number = 0;
   startSlot: string;
   endSlot: string;
+
+
+  // refactoring quotas
+  quotasLimits
+  allQuotas
 
   constructor(
     public auth: AuthService,
@@ -339,6 +346,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.listeHasOpenedNavbarQuotasMenu()
+
+    // this.quotesService.projectLimits$.subscribe((limits) => {
+    //   if (limits) {
+    //     this.project_limits = limits;
+    //     console.log("[HOME] Received project limits:", this.project_limits);
+    //   }
+    // });
+  
+    // ✅ Subscribe to all quotes
+    // this.quotesService.allQuotes$.subscribe((quotes) => {
+    //   if (quotes) {
+    //     this.quotes = quotes;
+    //     console.log("[HOME] Received all quotes:", this.quotes);
+    //   }
+    // });
+
+    this.quotesService.quotesData$.subscribe((data) => {
+      if (data) {
+        this.quotasLimits = data.projectLimits;
+        this.allQuotas = data.allQuotes;
+        console.log("[HOME] Received quotasLimits:", this.quotasLimits);
+        console.log("[HOME] Received allQuotas:", this.allQuotas);
+      }
+    });
+    // this.listenToQuotas()
   }
 
   ngAfterViewInit() {
@@ -375,7 +407,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectName = this.project.name
 
           if (this.projectId) {
-            this.getProjectQuotes();
+            // this.getProjectQuotes();
             // this.getQuotasCount()
           }
           this.prjct_name = this.project.name
@@ -422,26 +454,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToHistoryOpenedConvs() {
-    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.logger.log("[HOME] goToHistoryOpenedConvs ");
     this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
   }
 
 
   goToHistoryClosedConvs() {
-    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.logger.log("[HOME] goToHistoryClosedConvs ");
     this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
   }
 
   goToHistoryAllConvs() {
-    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
+    this.logger.log("[HOME] goToHistoryAllConvs ");
     this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
   }
 
 
   getProjectQuotes() {
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-      this.logger.log("[HOME] getProjectQuotes response: ", response);
-      this.logger.log("[HOME] getProjectQuotes: ", response);
+      console.log("[HOME] getProjectQuotes response: ", response);
       this.project_limits = response;
       if (this.project_limits) {
         this.getQuotes()
@@ -474,7 +505,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[HOME] getAllQuotes response: ", resp)
+      console.log("[HOME] getAllQuotes response: ", resp)
       this.quotes = resp
 
       this.logger.log("[HOME] project_limits: ", this.project_limits)
@@ -510,7 +541,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.logger.log('[HOME] used email', resp.quotes.email.quote)
       this.logger.log('[HOME] email_limit', this.email_limit)
-
 
       this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[HOME] tokens_limit', this.tokens_limit)

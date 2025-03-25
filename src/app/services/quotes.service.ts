@@ -12,6 +12,40 @@ import { BehaviorSubject } from 'rxjs';
 export class QuotesService {
   public hasOpenNavbarQuotasMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
   public hasReachedQuotasLimitInHome$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
+
+
+  private projectLimitsSubject = new BehaviorSubject<any>(null);
+  projectLimits$ = this.projectLimitsSubject.asObservable();
+
+  private allQuotasSubject = new BehaviorSubject<any>(null);
+  allQuotes$ = this.allQuotasSubject.asObservable();
+
+
+
+
+  setProjectLimits(limits: any) {
+    this.projectLimitsSubject.next(limits);
+  }
+
+  getProjectLimits() {
+    return this.projectLimitsSubject.value;
+  }
+
+  setAllQuotas(quotes: any) {
+    this.allQuotasSubject.next(quotes);
+  }
+
+  getAllQuotas() {
+    return this.allQuotasSubject.value;
+  }
+
+  // Refactoring quotas
+  private quotesDataSubject = new BehaviorSubject<{ projectLimits: any; allQuotes: any } | null>(null);
+  quotesData$ = this.quotesDataSubject.asObservable(); // Expose as Observable
+  // Function to update projectLimits and allQuotes
+  updateQuotesData(data: { projectLimits: any; allQuotes: any }) {
+    this.quotesDataSubject.next(data);
+  }
   
   user: any;
   project_id: string;
@@ -103,22 +137,6 @@ export class QuotesService {
     })
   }
 
-  // --------------------------------------------------
-  // @ Get request count
-  // --------------------------------------------------
-  public getQuotasCount(project_id) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-
-    const url = this.SERVER_BASE_PATH + project_id + '/requests/count?conversation_quota=true'
-    this.logger.log('[QUOTAS-SERV] - getQuotasCount - URL ', url)
-    return this.http.get(url, httpOptions)
-  }
-
   async getQuoteLimits(project) {
     this.logger.log('calling  getQuoteLimits ', project)
     let limits: any;
@@ -167,56 +185,25 @@ export class QuotesService {
     }
   }
 
-  async _getQuoteLimits(project) {
-    this.logger.log('calling  getQuoteLimits ', project)
-    let limits;
 
-    if (project.profile.type === 'payment') {
-      this.logger.log('calling 1 ')
-      if (project.isActiveSubscription === false) {
-        limits = PLANS_LIST.Sandbox;
-        return limits;
-      }
 
-      let plan = project.profile.name;
 
-      switch(plan) {
-        case PLAN_NAME.A:
-          plan = PLAN_NAME.D;
-          break;
-        case PLAN_NAME.B:
-          plan = PLAN_NAME.E
-          break;
-        case PLAN_NAME.C:
-          plan = PLAN_NAME.F
-          break;
-      }
+  // --------------------------------------------------
+  // @ Get request count
+  // --------------------------------------------------
+  public getQuotasCount(project_id) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
 
-      limits = PLANS_LIST[plan];
-
-    } else {
-      if (project.trialExpired === true) {
-        limits = PLANS_LIST.Sandbox;
-        this.logger.log('calling 2 limits ', limits)
-        
-      } else {
-        limits = PLANS_LIST.FREE_TRIAL;
-        this.logger.log('calling 3 ')
-        // return limits;
-      }
-    }
-    this.logger.log('project 2', project)
-    if (project.profile.quotes) {
-      this.logger.log('calling 3 ')
-      let profile_quotes = project?.profile?.quotes;
-      const merged_quotes = Object.assign({}, limits, profile_quotes);
-      this.logger.log('merged_quotes ', merged_quotes)
-      return merged_quotes;
-    } else {
-      this.logger.log('merged_quotes ', limits)
-        return limits;
-    }
+    const url = this.SERVER_BASE_PATH + project_id + '/requests/count?conversation_quota=true'
+    this.logger.log('[QUOTAS-SERV] - getQuotasCount - URL ', url)
+    return this.http.get(url, httpOptions)
   }
+
 
   hasOpenedNavbarQuotasMenu() {
     this.hasOpenNavbarQuotasMenu$.next(true)
