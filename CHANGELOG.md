@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.93
+-  Enables Ollama integration
+
 ### 2.7.92
 - Fixes badges in integrations indicating which plan the integration is available from 
 
