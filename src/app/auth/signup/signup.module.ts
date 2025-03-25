@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
 // import { SatPopoverModule } from '@ncstate/sat-popover';
 import { PasswordStrengthModule } from './password-strength/password-strength.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: "", component: SignupComponent},
@@ -25,7 +26,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    PasswordStrengthModule
+    PasswordStrengthModule,
+    NgSelectModule
     // SatPopoverModule
   ],
   exports: [
