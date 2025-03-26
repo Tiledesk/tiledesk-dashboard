@@ -798,7 +798,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
 
 
-      // this.getApps();
+      
     });
   }
 
@@ -1717,128 +1717,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // init() {
-  //   // this.logger.log("[HOME] > CALLING INIT")
-  //   // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-  //   // this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
-  //   // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
-  //   // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
-  //   // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
-  //   // this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
-  //   // this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
-  //   // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
-  //   // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-  //   // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-  //   // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
-  //   // this.getRequestByLast7Day()
-
-  //   // this.getLast30daysConvsCount();
-
-
-  // }
-
-
-
-
-  getApps() {
-    this.appStoreService.getApps().subscribe((_apps: any) => {
-      this.apps = _apps.apps;
-      this.logger.log('[HOME] - getApps APPS ', this.apps);
-      this.apps.forEach(app => {
-        if (app.title === "WhatsApp Business") {
-
-          this.whatsAppAppId = app._id;
-          this.logger.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
-          this.installActionType = app.installActionType
-          this.logger.log('[HOME] - installActionType ', this.installActionType)
-
-          this.appTitle = app.title;
-          this.logger.log('[HOME] - appTitle ', this.appTitle)
-          this.appVersion = app.version;
-          this.logger.log('[HOME] - appVersion ', this.appVersion)
-
-
-        }
-
-        // this.logger.log('[HOME] - getApps APPS app ', app)
-        if (app && app.version === "v2") {
-          if (app.installActionURL === "") {
-            // this.logger.log('HOME - getApps APPS app installActionURL', app.installActionURL)
-            delete app.installActionURL
-          }
-        }
-      });
-
-
-    }, (error) => {
-      this.logger.error('[HOME] - getApps ERROR  ', error);
-      // this.showSpinner = false;
-    }, () => {
-      this.logger.log('[HOME] getApps * COMPLETE *');
-      this.getInstallations().then((res: any) => {
-
-        if (res) {
-          this.logger.log("[HOME] getInstallations res: ", res)
-          this.logger.log("[HOME] getInstallations - whatsAppIsInstalled ", this.whatsAppIsInstalled)
-          this.logger.log("[HOME] getInstallations - solution_channel ", this.solution_channel_for_child)
-          this.logger.log('[HOME] getInstallations - whatsAppAppId ', this.whatsAppAppId)
-          this.logger.log("[HOME] getInstallations - userHasUnistalledWa ", this.userHasUnistalledWa)
-          this.logger.log("[HOME] getInstallations - solution_channel_for_child ", this.solution_channel_for_child)
-          if (res.length > 0) {
-            this.logger.log("[HOME] USE CASE RES > 0 ", this.solution_channel_for_child)
-            const WAInstallationIndex = res.findIndex((e) => e.app_id === this.whatsAppAppId);
-            this.logger.log('[HOME] getInstallations WA app index', WAInstallationIndex)
-            if (WAInstallationIndex === -1) {
-              this.whatsAppIsInstalled = false;
-              this.logger.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
-              if (this.userHasUnistalledWa === false) {
-                this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
-                if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-
-                  this.installApp();
-
-                }
-              }
-            } else {
-              this.logger.log('HERE YES 2 whatsAppIsInstalled ', this.whatsAppIsInstalled)
-              this.whatsAppIsInstalled = true
-
-
-            }
-          } else if (res.length === 0) {
-            this.whatsAppIsInstalled = false;
-            if (this.userHasUnistalledWa === false) {
-              if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-                this.installApp();
-              }
-            }
-          }
-        } else {
-          this.whatsAppIsInstalled = false;
-        }
-
-        // this.showSpinner = false;
-      }).catch((err) => {
-        this.logger.error("[HOME] getInstallations ERROR: ", err)
-        // this.showSpinner = false;
-      })
-
-      // this.showSpinner = false;
-    });
-  }
-
-  getInstallations() {
-    let promise = new Promise((resolve, reject) => {
-      this.appStoreService.getInstallation(this.projectId).then((res) => {
-        //  this.logger.log("[HOME] Get Installation Response: ", res);
-        resolve(res);
-      }).catch((err) => {
-        // this.logger.error("[HOME] Error getting installation: ", err);
-        reject(err);
-      })
-    })
-    return promise;
-  }
 
   checkPlan(appTitle) {
     if (
@@ -1905,9 +1783,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  onClickOnUnistallApp() {
-    this.presentModalConfirmUnistallWatsApp()
-  }
+  // onClickOnUnistallApp() {
+  //   this.presentModalConfirmUnistallWatsApp()
+  // }
   // this.areYouSureMsg
   presentModalConfirmUnistallWatsApp() {
     Swal.fire({
@@ -2006,24 +1884,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // -------------------------------------------
   // STEP 2
   // -------------------------------------------
-  hasTestedBotOnWa() {
-    // this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
-    // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasTestedBotOnWa')
-    this.upadatedWatsAppWizardStep2(true, 'hasTestedBotOnWa')
-  }
+  // hasTestedBotOnWa() {
+  //   this.upadatedWatsAppWizardStep2(true, 'hasTestedBotOnWa')
+  // }
 
-  upadatedWatsAppWizardStep2(step2, calledBy) {
-    this.logger.log('upadatedWatsAppWizardStep2 step  2  ', step2)
-    this.logger.log('upadatedWatsApupadatedWatsAppWizardStep2 Wizard calledBy', calledBy)
-    this.projectService.updateProjectWithWAWizardStep2(step2)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - RES ', res);
-      }, error => {
-        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS 2 * COMPLETE *')
-      });
-  }
+  // upadatedWatsAppWizardStep2(step2, calledBy) {
+  //   this.logger.log('upadatedWatsAppWizardStep2 step  2  ', step2)
+  //   this.logger.log('upadatedWatsApupadatedWatsAppWizardStep2 Wizard calledBy', calledBy)
+  //   this.projectService.updateProjectWithWAWizardStep2(step2)
+  //     .subscribe((res: any) => {
+  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - RES ', res);
+  //     }, error => {
+  //       this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - ERROR ', error)
+  //     }, () => {
+  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS 2 * COMPLETE *')
+  //     });
+  // }
 
   // -------------------------------------------
   // STEP 3
@@ -2078,7 +1954,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToWhatsAppDetails() {
     this.appTitle = "WhatsApp Business"
-    this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
     this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
@@ -2319,26 +2195,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  onClickOnDisplayWhatsAppWizard() {
-
-    this.displayWhatsappAccountWizard = true;
-    this.userHasClickedDisplayWAWizard = true;
-    // this.scrollToChild(this.childWhatsAppWizard)
-    // this.scroll.scrollToPosition([0,0]);
-    // this.homeBlocks.scrollIntoView();
-    const homeBlocksEl = <HTMLElement>document.querySelector('#homeBlocks');
-    homeBlocksEl.scrollIntoView({
-      behavior: 'smooth'
-    });
-    this.projectService.updateProjectWithDisplayWAWizard(this.displayWhatsappAccountWizard)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
-      }, error => {
-        this.logger.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
-      });
-  }
+  // onClickOnDisplayWhatsAppWizard() {
+  //   console.log('[HOME] - onClickOnDisplayWhatsAppWizard ');
+  //   this.displayWhatsappAccountWizard = true;
+  //   this.userHasClickedDisplayWAWizard = true;
+  //   // this.scrollToChild(this.childWhatsAppWizard)
+  //   // this.scroll.scrollToPosition([0,0]);
+  //   // this.homeBlocks.scrollIntoView();
+  //   const homeBlocksEl = <HTMLElement>document.querySelector('#homeBlocks');
+  //   homeBlocksEl.scrollIntoView({
+  //     behavior: 'smooth'
+  //   });
+  //   this.projectService.updateProjectWithDisplayWAWizard(this.displayWhatsappAccountWizard)
+  //     .subscribe((res: any) => {
+  //       this.logger.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
+  //     }, error => {
+  //       this.logger.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
+  //     }, () => {
+  //       this.logger.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
+  //     });
+  // }
 
 
   // -------------------------------

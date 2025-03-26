@@ -53,20 +53,6 @@
                 <div class="home-block-title">
                     WhatsApp Business Account
                 </div>
-
-                <!-- <div class="wa-status-connection-status-wpr">
-                    <div class="wa-status-indicator"
-                    [ngClass]="{'background-wa-disconnected': whatsAppIsConnected === false, 'background-wa-connected': whatsAppIsConnected === true}"></div>
-                    <div class="wa-connection-status">
-
-                        <span *ngIf="whatsAppIsConnected">
-                            Connected
-                        </span>
-                        <span *ngIf="!whatsAppIsConnected">
-                            Disconnected
-                        </span>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
@@ -77,11 +63,6 @@
         <div class="home-block-description" style="padding-right:55px">
             Connect your WhatsApp Business to organize your campaign and to easily receive and reply to WhatsApp
             messages from the Tiledesk chat
-            <!-- <span class="home-block-display-wa-wizard" 
-            *ngIf="(solution_channel_for_child === 'whatsapp_fb_messenger' && whatsAppIsInstalled && userHasClickedDisplayWAWizard !== true)"
-            (click)="displayWhatsAppWizard()">
-                Display the wizard to connect WhatsApp
-            </span> -->
         </div>
 
 
@@ -113,130 +94,7 @@
             </button>
 
 
-            <!-- <button id="unistall-icon-btn" *ngIf="whatsAppIsInstalled" mat-mini-fab aria-label="unistall icon btn" (click)="unistallApp()"
-                [disabled]="!whatsAppIsInstalled"
-                [ngClass]="{'unistall-app-btn-disabled': !whatsAppIsInstalled}" matTooltipClass="custom-mat-tooltip"
-                matTooltip="Uninstall" #tooltip="matTooltip" matTooltipPosition='below'
-                matTooltipHideDelay="100">
-
-                <mat-icon style="color: #fff;">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
-                        style="enable-background:new 0 0 24 24;" xml:space="preserve">
-                        <style type="text/css">
-                            .unintall-st0 {
-                                fill: none;
-                            }
-                        </style>
-                        <g>
-                            <rect y="0" class="unintall-st0" width="24" height="24" />
-                        </g>
-                        <g>
-                            <g>
-                                <path
-                                    d="M20,17H4V5h8V3H4C2.9,3,2,3.9,2,5v12c0,1.1,0.9,2,2,2h4v2h8v-2h4c1.1,0,2-0.9,2-2v-3h-2V17z" />
-                                <polygon points="17,3 12,8 13.4,9.4 16,6.8 16,14 18,14 18,6.8 20.6,9.4 22,8 		" />
-                            </g>
-                        </g>
-                    </svg>
-
-                </mat-icon>
-            </button> -->
-
-            <!-- [ngStyle]="{'background-color':whatsAppIsInstalled === true ? 'var(--green-400-color)' : 'var(--primary-btn-background)' }" -->
-            <!-- <button mat-flat-button class="mat-focus-indicator mat-flat-button mat-button-base "
-                (click)="gotToLearMoreOrManageApp()">
-                <span class="mat-button-wrapper"> -->
-            <!-- ---------------------------------------------------- -->
-            <!-- WhatsApp is not installed  -->
-            <!-- ---------------------------------------------------- -->
-            <!-- <mat-icon *ngIf="!whatsAppIsInstalled" role="img"
-                        class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
-                        ng-reflect-svg-icon="heroicons_solid:install_desktop" data-mat-icon-type="svg"
-                        data-mat-icon-name="install_desktop" data-mat-icon-namespace="heroicons_solid"
-                        style="margin-right: 8px;width: 20px! important; height: 20px !important;">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="20px"
-                            viewBox="0 0 24 24" width="20px"
-                            style="fill: #fff;position: relative; right: -2px;top: -4px;">
-                            <g>
-                                <rect fill="none" height="24" width="24" />
-                            </g>
-                            <g>
-                                <g>
-                                    <path
-                                        d="M20,17H4V5h8V3H4C2.89,3,2,3.89,2,5v12c0,1.1,0.89,2,2,2h4v2h8v-2h4c1.1,0,2-0.9,2-2v-3h-2V17z" />
-                                    <polygon
-                                        points="17,14 22,9 20.59,7.59 18,10.17 18,3 16,3 16,10.17 13.41,7.59 12,9" />
-                                </g>
-                            </g>
-                        </svg>
-                    </mat-icon>
-                    <span *ngIf="!whatsAppIsInstalled" class="ml-2"
-                        style="font-size: 15px;position: relative;left: -2px;">
-                        Install
-                    </span> -->
-
-            <!-- ---------------------------------------------------- -->
-            <!-- WhatsApp is installed but is not connected *ngIf="whatsAppIsInstalled && !whatsAppIsConnected"  -->
-            <!-- ---------------------------------------------------- -->
-            <!-- <mat-icon 
-                        role="img"
-                        class="mat-icon notranslate icon-size-5 mat-icon-no-color" 
-                        aria-hidden="true"
-                        ng-reflect-svg-icon="heroicons_solid:manage" 
-                        data-mat-icon-type="svg"
-                        data-mat-icon-name="manage" 
-                        data-mat-icon-namespace="heroicons_solid"
-                        style="margin-right: 8px;width: 20px! important; height: 20px !important;">
-
-
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
-                            style="fill: #fff;position: relative; right: 0px;top: -4px;">
-                            <path d="M0 0h24v24H0V0z" fill="none" />
-                            <path
-                                d="M16 9v4.66l-3.5 3.51V19h-1v-1.83L8 13.65V9h8m0-6h-2v4h-4V3H8v4h-.01C6.9 6.99 6 7.89 6 8.98v5.52L9.5 18v3h5v-3l3.5-3.51V9c0-1.1-.9-2-2-2V3z" />
-                        </svg>
-                    </mat-icon>
-                    <span *ngIf="whatsAppIsInstalled && !whatsAppIsConnected" class="ml-2"
-                        style="font-size: 15px;position: relative;left: -2px;">
-                        Connect
-                    </span> -->
-
-            <!-- ---------------------------------------------------- -->
-            <!-- WhatsApp is installed and is connected  *ngIf="whatsAppIsInstalled && whatsAppIsConnected"-->
-            <!-- ---------------------------------------------------- -->
-            <!-- <mat-icon  role="img"
-                        class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
-                        ng-reflect-svg-icon="heroicons_solid:manage" data-mat-icon-type="svg"
-                        data-mat-icon-name="manage" data-mat-icon-namespace="heroicons_solid"
-                        style="margin-right: 8px;width: 20px! important; height: 20px !important;">
-
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
-                            style="enable-background:new 0 0 24 24;" xml:space="preserve" style="fill: #fff;position: relative; right: 0px;top: -4px;">
-                            <style type="text/css">
-                                .u-st0 {
-                                    fill: none;
-                                }
-                            </style>
-                            <path class="u-st0" d="M0,0h24v24H0V0z" />
-                            <path d="M9,2c0-0.5-0.4-1-1-1S7,1.5,7,2v4H5v10c0,1.3,0.8,2.4,2,2.8V23h2v-4.2c1.2-0.4,2-1.5,2-2.8V6H9V2z M8,17c-0.6,0-1-0.5-1-1
-	                                v-2h2v2C9,16.5,8.6,17,8,17z M7,12V8h2v4H7z M17,2c0-0.5-0.5-1-1-1c-0.6,0-1,0.5-1,1v4h-2v10c0,1.3,0.8,2.4,2,2.8V23h2v-4.2
-	                                c1.2-0.4,2-1.5,2-2.8V6h-2V2z M16,17c-0.6,0-1-0.5-1-1v-2h2v2C17,16.5,16.5,17,16,17z M15,12V8h2v4H15z" />
-                        </svg>
-                    </mat-icon> -->
-            <!-- *ngIf="whatsAppIsInstalled && whatsAppIsConnected" -->
-            <!-- <span  class="ml-2"
-                        style="font-size: 15px;position: relative;left: -2px;">
-                        Manage
-                    </span> -->
-            <!-- </span>
-                <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
-                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
-                </span>
-                <span class="mat-button-focus-overlay"> </span>
-            </button> -->
+ 
         </div>
     </div>
 

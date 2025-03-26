@@ -43,7 +43,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.getCurrentProject()
+    // this.getCurrentProject()
     // this.getBots()
   }
 
@@ -72,33 +72,31 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
      });
    }
  
-  getBots() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      console.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) RES', bots);
+  // getBots() {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
+  //     console.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) RES', bots);
 
-      if (bots) {
-        if (bots.length > 0) {
-          this.thereIsALeastOneBot = true;
-          this.hasCreatedChatbot.emit(true)
-          this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) THERE IS AT LEAST ONE BOT', this.thereIsALeastOneBot);
-        } else {
-          this.thereIsALeastOneBot = false;
-          this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) THERE IS AT LEAST ONE BOT', this.thereIsALeastOneBot);
-          this.hasCreatedChatbot.emit(false)
-        }
-      }
+  //     if (bots) {
+  //       if (bots.length > 0) {
+  //         this.thereIsALeastOneBot = true;
+  //         this.hasCreatedChatbot.emit(true)
+  //         this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) THERE IS AT LEAST ONE BOT', this.thereIsALeastOneBot);
+  //       } else {
+  //         this.thereIsALeastOneBot = false;
+  //         this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) THERE IS AT LEAST ONE BOT', this.thereIsALeastOneBot);
+  //         this.hasCreatedChatbot.emit(false)
+  //       }
+  //     }
 
-    }, (error) => {
-      this.logger.error('[HOME-WA-WIZARD] - GET BOTS (OnInit) - ERROR ', error);
+  //   }, (error) => {
+  //     this.logger.error('[HOME-WA-WIZARD] - GET BOTS (OnInit) - ERROR ', error);
 
-    }, () => {
-      this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) * COMPLETE *');
-    });
-  }
+  //   }, () => {
+  //     this.logger.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) * COMPLETE *');
+  //   });
+  // }
 
  
-
-  // background-color: rgba(0,0,0,.4);
   connectWatsapp() {
     const elemHomeMainContent = <HTMLElement>document.querySelector('.home-main-content');
     this.logger.log('[HOME-WA-WIZARD] elemHomeMainContent ', elemHomeMainContent)

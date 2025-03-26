@@ -32,7 +32,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   @Input() userHasClickedDisplayWAWizard:boolean;
   @Output() onClickOnGoToLearnMoreOrManageApp = new EventEmitter();
   @Output() onClickOnUnistallApp  = new EventEmitter();
-  @Output() onClickOnDisplayWhatsAppWizard  = new EventEmitter();
+  // @Output() onClickOnDisplayWhatsAppWizard  = new EventEmitter();
   apps: any;
   projectId: string;
   subscription: Subscription;
@@ -105,7 +105,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     this.logger.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
     this.logger.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
     this.logger.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
-    // this.getApps();
+
    }
 
 
@@ -218,102 +218,21 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     });
   }
 
-  getApps() {
-    this.appStoreService.getApps().subscribe((_apps: any) => {
-      this.apps = _apps.apps;
-      this.logger.log('[HOME-WA] - getApps APPS ', this.apps);
-      this.apps.forEach(app => {
-        if (app.title === "WhatsApp Business") {
-
-          this.whatsAppAppId = app._id;
-          this.logger.log('[HOME-WA] - whatsAppAppId ', this.whatsAppAppId)
-          this.installActionType = app.installActionType
-          this.logger.log('[HOME-WA] - installActionType ', this.installActionType)
-          this.runURL = app.runURL
-          this.logger.log('[HOME-WA] - runURL ', this.runURL)
-          this.appTitle = app.title;
-          this.logger.log('[HOME-WA] - appTitle ', this.appTitle)
-          this.appVersion = app.version;
-          this.logger.log('[HOME-WA] - appVersion ', this.appVersion)
-
-          this.whatsAppLearnMoreURL = app.learnMore;
-          this.logger.log('[HOME-WA] - whatsAppLearnMoreURL ', this.whatsAppLearnMoreURL)
-        }
-
-        // this.logger.log('[HOME-WA] - getApps APPS app ', app)
-        if (app && app.version === "v2") {
-          if (app.installActionURL === "") {
-            // this.logger.log('HOME-WA - getApps APPS app installActionURL', app.installActionURL)
-            delete app.installActionURL
-          }
-        }
-      });
+  
 
 
-    }, (error) => {
-      this.logger.error('[HOME-WA] - getApps ERROR  ', error);
-      // this.showSpinner = false;
-    }, () => {
-      this.logger.log('[HOME-WA] getApps * COMPLETE *');
-      this.getInstallations().then((res: any) => {
-        this.logger.log("[HOME-WA] getInstallations res: ", res)
-        if (res) {
-          if (res.length > 0) {
-            res.forEach(r => {
-              this.logger.log("[HOME-WA] getInstallations r: ", r)
-              if (r.app_id === this.whatsAppAppId) {
-                this.whatsAppIsInstalled = true;
-              } else {
-                this.whatsAppIsInstalled = false;
-              }
-            });
-          } else {
-            this.whatsAppIsInstalled = false;
-          }
-        } else {
-          this.whatsAppIsInstalled = false;
-        }
-
-        // this.showSpinner = false;
-      }).catch((err) => {
-        this.logger.error("[HOME-WA] getInstallations ERROR: ", err)
-        // this.showSpinner = false;
-      })
-
-      // this.showSpinner = false;
-    });
-  }
-
-  getInstallations() {
-    let promise = new Promise((resolve, reject) => {
-      this.appStoreService.getInstallation(this.projectId).then((res) => {
-        //  this.logger.log("[HOME-WA] Get Installation Response: ", res);
-        resolve(res);
-      }).catch((err) => {
-        // this.logger.error("[HOME-WA] Error getting installation: ", err);
-        reject(err);
-      })
-    })
-    return promise;
-  }
 
   gotToLearMoreOrManageApp() {
     this.onClickOnGoToLearnMoreOrManageApp.emit()
-    // this.logger.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
-    // if (this.whatsAppIsInstalled === false) {
-    //   this.goToWhatsAppDetails()
-    // } else {
-    //   this.openInAppStoreInstall()
-    // }
   }
 
   // goToWhatsAppDetails() {
   //   this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
   // }
 
-  displayWhatsAppWizard() {
-    this.onClickOnDisplayWhatsAppWizard.emit()
-  }
+  // displayWhatsAppWizard() {
+  //   this.onClickOnDisplayWhatsAppWizard.emit()
+  // }
 
 
   // installApp() {

@@ -687,9 +687,10 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child4'">
                   <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
-                    #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
+                    #childWhatsappAccount 
+                  
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
-                    (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
+                    
                     [whatsAppIsInstalled]="whatsAppIsInstalled" 
                     [whatsAppIsConnected]="whatsAppIsConnected"
                     [solution_channel_for_child]="solution_channel_for_child" 
