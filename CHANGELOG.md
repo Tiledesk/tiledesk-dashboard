@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.95
+- Minor improvements and bug fixing
+
 ### 2.7.94
 - Makes Automations Log available from the Pro plan
 
