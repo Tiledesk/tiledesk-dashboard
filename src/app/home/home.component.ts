@@ -26,7 +26,7 @@ import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF 
 import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { take, takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
 import {
   URL_getting_started_for_admins,
@@ -94,6 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   showSpinner = true;
 
   subscription: Subscription;
+  quotasSubscription: Subscription;
 
   installWidgetText: string;
 
@@ -154,7 +155,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   displayCustomizeWidget: boolean
   displayNewsFeed: boolean = true
   displayWhatsappAccountWizard = false;
-  whatsAppIsInstalled: boolean = false;
+
   apps: any;
 
   whatsAppAppId: string;
@@ -172,14 +173,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   solution_channel_for_child: string = "";
   solution_for_child: string = "";
   elemHomeMainContentHeight: any;
-  whatsAppIsConnected: boolean = false;
-  chatbotConnectedWithWA: boolean = false;
-  waWizardSteps = [{ step1: false, step2: false, step3: false }]
-  oneStepWizard: any
-  wadepartmentid: string;
-  wadepartmentName: string = '';
-  waBotId: string = '';
-  testBotOnWA: boolean = false;
+  // whatsAppIsConnected: boolean = false;
+  // userHasUnistalledWa: boolean = false
+
+
+
+  // wadepartmentid: string;
+
+
+  // testBotOnWA: boolean = false;
   botIdForTestWA: string = '';
   // dashletsPreferences = [{ convsGraph: true, analyticsIndicators: true, connectWhatsApp: true, createChatbot: true, inviteTeammate: true }]
   dashletsPreferences: any;
@@ -189,8 +191,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   appHasBeenDeletedMsg: string;
   errorWhileDeletingApp: string;
   done_msg: string;
-  userHasUnistalledWa: boolean = false
-  chatbotCreated: boolean
+
+
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
@@ -257,7 +259,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // emailsRunnedOut: boolean = true;
   // tokensRunnedOut: boolean = true;
 
-  displayQuotaSkeleton: boolean
+  displayQuotaSkeleton: boolean = true;
 
   salesEmail: string
 
@@ -270,6 +272,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // refactoring quotas
   quotasLimits
   allQuotas
+
+
 
   constructor(
     public auth: AuthService,
@@ -332,11 +336,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getChatUrl();
     this.getHasOpenBlogKey()
     this.diplayPopup();
-    // this.startChabgelogAnimation()
+  
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
-    this.waWizardSteps = [{ step1: false, step2: false, step3: false }]
-    this.oneStepWizard = { watsAppConnected: false }
+
+
 
     // get if user has used Signin with Google
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
@@ -379,9 +383,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    // this.logger.log('HOME COMP - CALLING ON DESTROY')
+    console.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+
+
+    if (this.quotasSubscription) {
+      this.quotasSubscription.unsubscribe();
+    }
   }
 
   getCurrentProjectProjectByIdAndBots() {
@@ -394,17 +404,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (project) {
 
-
           this.project = project
           this.projectId = this.project._id;
           this.projectName = this.project.name
 
           if (this.projectId) {
 
-            this.quotesService.requestQuotesUpdate();
+
+           
+            console.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 1:", this.displayQuotaSkeleton);
+            // ----------------------------------------
+            // Notify Navbar to fetch quotas
+            // ----------------------------------------
+            this.quotesService.requestQuotasUpdate();
+
             // this.getProjectQuotes();
-            // this.getQuotasCount()
+
           }
+
           this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
@@ -426,25 +443,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  getQuotasCount() {
-    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[HOME] - GET QUOTAS COUNT - response: ", resp)
-
-      this.openedConversations = resp.open;
-      this.closedConversations = resp.closed;
-      this.startSlot = resp.slot.startDate;
-      this.endSlot = resp.slot.endDate;
-
-
-      this.logger.log("[HOME] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
-      this.logger.log("[HOME] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      this.logger.log("[HOME] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      this.logger.log("[HOME] GET QUOTAS COUNT - END SLOT ", this.endSlot);
-    }, (error) => {
-      this.logger.error("[HOME] GET QUOTAS COUNT error: ", error)
-    }, () => {
-      this.logger.log("[HOME] GET QUOTAS COUNT * COMPLETE *");
-    })
+  goToCreateChatbot() {
+    this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
+    this.scrollToChild(this.childCreateChatbot)
   }
 
 
@@ -481,7 +482,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   listeHasOpenedNavbarQuotasMenu() {
     //  this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
     this.quotesService.hasOpenNavbarQuotasMenu$
-
       .pipe(
         takeUntil(this.unsubscribe$)
       )
@@ -495,86 +495,102 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       })
-
   }
-
+  // .pipe(take(1))
   listenToQuotas() {
-    this.displayQuotaSkeleton = true
-    this.quotesService.quotesData$.subscribe((data) => {
-      if (data) {
-        this.displayQuotaSkeleton = false
-        this.quotasLimits = data.projectLimits;
-        this.allQuotas = data.allQuotes;
-        console.log("[HOME] Received quotasLimits:", this.quotasLimits);
-        console.log("[HOME] Received allQuotas:", this.allQuotas);
+    // if (this.quotasSubscription) {
+    //   this.quotasSubscription.unsubscribe();
+    // }
+    console.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1");
+    this.quotasSubscription = this.quotesService.quotesData$
+      .subscribe((data) => {
+        if (data) {
+          console.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2");
+          this.quotasLimits = data.projectLimits;
+          this.allQuotas = data.allQuotes;
+          console.log("[HOME] Received quotasLimits:", this.quotasLimits);
+          console.log("[HOME] Received allQuotas:", this.allQuotas);
 
-        if (this.quotasLimits) {
-          this.messages_limit = this.quotasLimits.messages;
-          this.requests_limit = this.quotasLimits.requests;
-          this.email_limit = this.quotasLimits.email;
-          this.tokens_limit = this.quotasLimits.tokens;
-          console.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
-          console.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
-          console.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
-          console.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+          if (this.quotasLimits) {
+            this.messages_limit = this.quotasLimits.messages;
+            this.requests_limit = this.quotasLimits.requests;
+            this.email_limit = this.quotasLimits.email;
+            this.tokens_limit = this.quotasLimits.tokens;
+            console.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
+            console.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
+            console.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
+            console.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+          }
+
+          console.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
+          console.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
+          console.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
+          console.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
+          if (this.allQuotas.requests.quote === null) {
+            this.allQuotas.requests.quote = 0;
+          }
+          if (this.allQuotas.messages.quote === null) {
+            this.allQuotas.messages.quote = 0;
+          }
+          if (this.allQuotas.email.quote === null) {
+            this.allQuotas.email.quote = 0;
+          }
+          if (this.allQuotas.tokens.quote === null) {
+            this.allQuotas.tokens.quote = 0;
+          }
+
+
+          if (this.allQuotas.requests.quote >= this.requests_limit) {
+            this.conversationsRunnedOut = true;
+            console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+          } else {
+            this.conversationsRunnedOut = false;
+            console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+          }
+
+          if (this.allQuotas.email.quote >= this.email_limit) {
+            this.emailsRunnedOut = true;
+            console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+          } else {
+            this.emailsRunnedOut = false;
+            console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+          }
+
+          if (this.allQuotas.tokens.quote >= this.tokens_limit) {
+            this.tokensRunnedOut = true;
+            console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+          } else {
+            this.tokensRunnedOut = false;
+            console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+          }
+
+
+          this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
+          this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
+          this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
+          this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
+
+          this.requests_count = this.allQuotas.requests.quote;
+          this.messages_count = this.allQuotas.messages.quote;
+          this.email_count = this.allQuotas.email.quote;
+          this.tokens_count = this.allQuotas.tokens.quote;
+
+
+          this.displayQuotaSkeleton = false
+          console.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
+
+         
         }
-
-        console.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
-        console.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
-        console.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
-        console.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
-        if (this.allQuotas.requests.quote === null) {
-          this.allQuotas.requests.quote = 0;
-        }
-        if (this.allQuotas.messages.quote === null) {
-          this.allQuotas.messages.quote = 0;
-        }
-        if (this.allQuotas.email.quote === null) {
-          this.allQuotas.email.quote = 0;
-        }
-        if (this.allQuotas.tokens.quote === null) {
-          this.allQuotas.tokens.quote = 0;
-        }
-
-
-        if (this.allQuotas.requests.quote >= this.requests_limit) {
-          this.conversationsRunnedOut = true;
-          console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-        } else {
-          this.conversationsRunnedOut = false;
-          console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-        }
-
-        if (this.allQuotas.email.quote >= this.email_limit) {
-          this.emailsRunnedOut = true;
-          console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-        } else {
-          this.emailsRunnedOut = false;
-          console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-        }
-
-        if (this.allQuotas.tokens.quote >= this.tokens_limit) {
-          this.tokensRunnedOut = true;
-          console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-        } else {
-          this.tokensRunnedOut = false;
-          console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-        }
-
-
-        this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
-        this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
-        this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
-        this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
-
-        this.requests_count = this.allQuotas.requests.quote;
-        this.messages_count =this.allQuotas.messages.quote;
-        this.email_count = this.allQuotas.email.quote;
-        this.tokens_count = this.allQuotas.tokens.quote;
-
+      },
+      (error) => {
+        // Handle error
+      },
+      () => {
+        // This complete callback will be called if/when the observable completes
+        console.log('[QUOTA-DEBUG][HOME] Subscription completed');
       }
-    });
-  }
+    )}
+  
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
@@ -708,13 +724,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
 
-        if (project.attributes && project.attributes.wasettings) {
-          this.logger.log('[HOME] - (getProjectById) - wasettings', project.attributes.wasettings)
-          this.wadepartmentid = project.attributes.wasettings.department_id
-          this.getDeptById(this.wadepartmentid)
-        } else {
-          this.logger.log('[HOME] - (getProjectById) - not exist wasettings',)
-        }
 
         const projectProfileData = project.profile
 
@@ -798,7 +807,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
 
 
-      
+
     });
   }
 
@@ -1067,7 +1076,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getDashlet(project_attributes) {
     // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
-      this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
+      console.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
 
       this.displayAnalyticsConvsGraph = dashlets.convsGraph
@@ -1206,7 +1215,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
@@ -1220,38 +1229,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  displayKbHeroSection', this.displayKbHeroSection);
     }
 
-    if (project_attributes && project_attributes.userHasReMovedWA) {
-      if (project_attributes.userHasReMovedWA === true) {
-        this.userHasUnistalledWa = true;
-        this.displayWhatsappAccountWizard = false;
-      }
-      else {
-        this.userHasUnistalledWa = false;
-        // if (project_attributes) {
 
-        //   const waWizardstep1 = project_attributes.wastep1;
-        //   const waWizardstep2 = project_attributes.wastep2;
-        //   const waWizardstep3 = project_attributes.wastep3;
-        //   if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
-        //     (this.solution_for_child === 'want_to_talk_to_customers') ||
-        //     (this.solution_for_child === 'want_to_automate_conversations')) {
-        //     if (waWizardstep1 === undefined && waWizardstep2 === undefined && waWizardstep3 === undefined) {
-        //       this.displayWhatsappAccountWizard = true;
-        //     }
-        //   }
-        // }
-      }
-    }
 
-    if (project_attributes && project_attributes.oneStepWizard && project_attributes.oneStepWizard.watsAppConnected) {
-      if (project_attributes.oneStepWizard.watsAppConnected === true) {
-        this.whatsAppIsConnected = true;
-        this.displayWhatsappAccountWizard = false;
-      }
-      else {
-        this.whatsAppIsConnected = false;
-      }
-    }
 
 
 
@@ -1378,6 +1357,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
+
       this.displayConnectWhatsApp = false;
       await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
@@ -1413,7 +1393,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 7, type: 'child6' },
         { pos: 8, type: 'child8' }
       ]
-      this.logger.log('[HOME] USECASE 3 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
 
       // this.displayAnalyticsConvsGraph = false;
       // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
@@ -1421,10 +1400,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.displayAnalyticsIndicators = false;
       // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
-      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
-        this.displayWhatsappAccountWizard = true;
-        this.logger.log('[HOME] USECASE 3 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
-      }
+      this.displayWhatsappAccountWizard = true;
+
 
       this.displayConnectWhatsApp = true;
       await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
@@ -1441,7 +1418,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget = false;
       await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
-      this.manageWAWizardSteps(project_attributes, 'USECASE 3')
     }
 
     // ----------------------------------------------
@@ -1463,7 +1439,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      this.logger.log('[HOME] USECASE 4 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
 
       // this.displayAnalyticsConvsGraph = false;
       // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
@@ -1471,10 +1446,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.displayAnalyticsIndicators = false;
       // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
-      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
-        this.displayWhatsappAccountWizard = true;
-        this.logger.log('[HOME] USECASE 4 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
-      }
+      this.displayWhatsappAccountWizard = true;
+
       this.displayConnectWhatsApp = true;
       await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
@@ -1490,8 +1463,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget = false;
       await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
-
-      this.manageWAWizardSteps(project_attributes, 'USECASE 4')
 
     }
 
@@ -1605,10 +1576,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // this.displayAnalyticsIndicators = false;
       // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
-      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
-        this.displayWhatsappAccountWizard = true;
-      }
+      this.displayWhatsappAccountWizard = true;
 
       this.displayConnectWhatsApp = true;
       await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
@@ -1625,8 +1593,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget = false;
       await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
-
-      this.manageWAWizardSteps(project_attributes, 'USECASE 7')
     }
 
 
@@ -1649,10 +1615,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
+      this.displayWhatsappAccountWizard = true;
 
-      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
-        this.displayWhatsappAccountWizard = true;
-      }
       this.displayConnectWhatsApp = true;
       await this.switchConnectWhatsApp(true);
 
@@ -1668,54 +1632,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget = false;
       await this.switchCustomizeWidget(false)
 
-      this.manageWAWizardSteps(project_attributes, 'USECASE 8')
+
 
     }
   }
 
-  manageWAWizardSteps(project_attributes: any, calledby: string) {
 
-    const waWizardstep1 = project_attributes.wastep1;
-    const waWizardstep2 = project_attributes.wastep2;
-    const waWizardstep3 = project_attributes.wastep3;
-
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep1', waWizardstep1)
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep2', waWizardstep2)
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep3', waWizardstep3)
-    if (waWizardstep1 === false || waWizardstep1 === undefined) {
-      this.chatbotCreated = false
-    } else if (waWizardstep1 === true) {
-      this.chatbotCreated = true
-    }
-
-    if (waWizardstep2 === false || waWizardstep2 === undefined) {
-      this.testBotOnWA = false
-
-    } else if (waWizardstep2 === true) {
-      this.testBotOnWA = true
-    }
-
-    if (waWizardstep3 === false || waWizardstep3 === undefined) {
-      this.whatsAppIsConnected = false
-    } else if (waWizardstep3 === true) {
-      this.whatsAppIsConnected = true
-    }
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD chatbotCreated ', this.chatbotCreated);
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD testBotOnWA ', this.testBotOnWA);
-    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD whatsAppIsConnected ', this.whatsAppIsConnected);
-
-
-    if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === true) {
-      this.displayWhatsappAccountWizard = false;
-      this.whatsAppIsConnected = true;
-    } else if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === false) {
-      this.whatsAppIsConnected = false;
-      if (project_attributes.wizardCompleted === true) {
-        this.displayWhatsappAccountWizard = false;
-      }
-    }
-  }
 
 
   checkPlan(appTitle) {
@@ -1750,90 +1672,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  installApp() {
-    this.logger.log('[HOME] installApp appTitle ', this.appTitle)
-    const isAvailable = this.checkPlan(this.appTitle)
-    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
-    if (isAvailable === false) {
-      return
-    }
 
-    this.logger.log('[HOME] appId installApp', this.whatsAppAppId)
-    this.logger.log('[HOME] app app version installApp', this.appVersion)
-    this.logger.log('[HOME] installationType installApp', this.installActionType);
-
-    this.installV2App(this.projectId, this.whatsAppAppId)
-
-  }
-
-
-  installV2App(projectId, appId) {
-    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      this.logger.log('[HOME] INSTALL V2 APP ', projectId, appId)
-
-    }, (error) => {
-      this.logger.error('[HOME] INSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while installing the app", 4, 'report_problem');
-    }, () => {
-      this.logger.log('[HOME] INSTALL V2 APP - COMPLETE');
-      this.trackUserAction({ action: 'Install app', actionRes: null })
-      this.whatsAppIsInstalled = true;
-      this.logger.log('[HOME] INSTALL V2 APP - COMPLETE > whatsAppIsInstalled ', this.whatsAppIsInstalled);
-    });
-  }
-
-
-  // onClickOnUnistallApp() {
-  //   this.presentModalConfirmUnistallWatsApp()
-  // }
-  // this.areYouSureMsg
-  presentModalConfirmUnistallWatsApp() {
-    Swal.fire({
-      title: this.translate.instant('AreYouSure'), // "Are you sure", 
-      text: this.translate.instant('TheAppWillBeDeleted'), // "The app will be deleted", // this.appWillBeDeletedMsg, 
-      icon: "warning",
-      showCloseButton: false,
-      showCancelButton: true,
-      showConfirmButton: false,
-      showDenyButton: true,
-      // confirmButtonText: this.translate.instant('Delete'),
-      denyButtonText: this.translate.instant('Delete'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      // confirmButtonColor: "var(--red-btn-background-color)",
-      focusConfirm: false,
-      reverseButtons: true,
-
-      // buttons: ["Cancel", "Delete"],
-      // dangerMode: true,
-    })
-      .then((result) => {
-        if (result.isDenied) {
-          this.logger.log('[HOME] UNINSTALL WA APP - app_id', this.whatsAppAppId);
-          this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-            this.logger.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
-            if (res.success === true) {
-              this.whatsAppIsInstalled = false
-              this.displayWhatsappAccountWizard = false
-              this.updatedProjectWithUserHasUnistalledWA(true)
-            }
-
-          }, (error) => {
-            this.logger.error('[HOME] UNINSTALL WA APP - ERROR  ', error);
-            this.notify.showWidgetStyleUpdateNotification(this.errorWhileDeletingApp, 4, 'report_problem');
-          }, () => {
-            this.trackUserAction({ action: 'Uninstall app', actionRes: null })
-            // this.logger.log('[HOME] UNINSTALL WA APP * COMPLETE *');
-            // swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
-            //   icon: "success",
-            // }).then((okpressed) => {
-
-            // });
-          });
-        } else {
-          this.logger.log('[HOME] UNINSTALL WA APP swal WillDelete (else)')
-        }
-      });
-  }
 
   scrollToChild(el: ElementRef) {
     el.nativeElement.scrollIntoView({ behavior: 'smooth' });
@@ -1843,80 +1682,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1500);
   }
 
-  // -------------------------------------------
-  // STEP 1
-  // -------------------------------------------
-  // hasCreatedChatbot(event) {
-  //   console.log('[HOME] hasCreatedChatbot  ', event)
-  //   if (event === true) {
-  //     // if (this.chatbotCreated === false) {
-  //     // this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
-  //     // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasCreatedChatbot')
-  //     this.upadatedWatsAppWizardStep1(true, 'hasCreatedChatbot')
-  //     // }
-  //   }
-  // }
-
-  // upadatedWatsAppWizardStep1(step1, calledBy) {
-  //   this.logger.log('upadatedWatsAppWizardStep1 step  1  ', step1)
-  //   this.logger.log('upadatedWatsAppWizardStep1 calledBy', calledBy)
-  //   this.projectService.updateProjectWithWAWizardStep1(step1)
-  //     .subscribe((res: any) => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - RES ', res);
-  //     }, error => {
-  //       this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - ERROR ', error)
-  //     }, () => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 * COMPLETE *')
-  //     });
-  // }
 
 
-  goToCreateChatbot() {
-    this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
-    this.scrollToChild(this.childCreateChatbot)
-  }
 
-  botHookedToDefaultDept(event) {
-    this.logger.log('[HOME] BOT ID HOOKED TO DEFAULT DEPT', event);
-    this.botIdForTestWA = event;
-  }
-
-  // -------------------------------------------
-  // STEP 2
-  // -------------------------------------------
-  // hasTestedBotOnWa() {
-  //   this.upadatedWatsAppWizardStep2(true, 'hasTestedBotOnWa')
-  // }
-
-  // upadatedWatsAppWizardStep2(step2, calledBy) {
-  //   this.logger.log('upadatedWatsAppWizardStep2 step  2  ', step2)
-  //   this.logger.log('upadatedWatsApupadatedWatsAppWizardStep2 Wizard calledBy', calledBy)
-  //   this.projectService.updateProjectWithWAWizardStep2(step2)
-  //     .subscribe((res: any) => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - RES ', res);
-  //     }, error => {
-  //       this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - ERROR ', error)
-  //     }, () => {
-  //       this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS 2 * COMPLETE *')
-  //     });
-  // }
-
-  // -------------------------------------------
-  // STEP 3
-  // -------------------------------------------
   goToConnectWA() {
-    this.logger.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
+    console.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
     this.scrollToChild(this.childWhatsappAccount)
   }
 
   onClickOnGoToLearnMoreOrManageApp() {
-    this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+    console.log('HAS CLICKED GO TO WhatsApp Details')
     this.goToWhatsAppDetails()
-    // if (this.whatsAppIsInstalled === false) {
-    //   this.goToWhatsAppDetails()
-    // } else {
-    //   this.openInAppStoreInstall()
-    // }
+
+  }
+
+  goToWhatsAppDetails() {
+    this.appTitle = "WhatsApp Business"
+    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
+    this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
+
+    // || this.appTitle === "Facebook Messenger"
+    if (this.appTitle === "WhatsApp Business") {
+      this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
+      // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+
+    }
   }
 
   checkPlanAndPresentModal(appTitle) {
@@ -1949,363 +1743,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
     }
-  }
-
-
-  goToWhatsAppDetails() {
-    this.appTitle = "WhatsApp Business"
-    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
-    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
-    if (isAvailable === false) {
-      return
-    }
-
-    // || this.appTitle === "Facebook Messenger"
-    if (this.appTitle === "WhatsApp Business") {
-      this.router.navigate(['project/' + this.projectId + '/integrations'], { queryParams: { 'name': 'whatsapp' } })
-      // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
-
-    }
-  }
-
-  openInAppStoreInstall() {
-    this.logger.log('[HOME] openInAppStoreInstall appTitle ', this.appTitle)
-    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
-    if (isAvailable === false) {
-      return
-    }
-
-
-    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
-      // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/connect/h'])
-      this.openAppStoreInPopupWindow()
-    }
-  }
-
-
-
-  openAppStoreInPopupWindow() {
-    const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
-
-    this.logger.log('[HOME] openAppStoreInPopupWindow whatsappUrl', whatsappUrl)
-    this.logger.log('[HOME] openAppStoreInPopupWindow projectId', this.projectId)
-    this.logger.log('[HOME] openAppStoreInPopupWindow user', this.user)
-    this.logger.log('[HOME] openAppStoreInPopupWindow whatsAppAppId', this.whatsAppAppId)
-
-    // + '&view=popup' // open connection window without link to documentation
-    const url = whatsappUrl + '/configure?project_id=' + this.projectId + '&app_id=' + this.whatsAppAppId + '&token=' + this.user.token
-
-
-    // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-    // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-
-    // const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
-    let left = (screen.width - 815) / 2;
-    let top = (screen.height - 727) / 4;
-    let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
-    let popup = window.open(url, '_blank', params);
-
-    let popupTick = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(popupTick);
-        this.logger.log('window closed!');
-        this.getIfWathsAppIsConnectedAndUpdateProject()
-      }
-    }, 500);
-  }
-
-  // ---------------------------------------------------------------------
-  // Get WA settings when the winndow "Connect to WA" is closed
-  // ---------------------------------------------------------------------
-  getIfWathsAppIsConnectedAndUpdateProject() {
-    this.projectService.checkWAConnection()
-      .subscribe((res: any) => {
-
-        this.logger.log('[HOME] - CHECK-WA-CONNECTION - RES ', res);
-        this.logger.log('[HOME] - CHECK-WA-CONNECTION - RES > success', res.success);
-
-        if (res.success === true) {
-          this.whatsAppIsConnected = true;
-          this.trackUserAction({ action: 'Connect app', actionRes: null })
-          // this.presentModalWaSuccessfullyConnected()
-
-          const calledBy = 'connected'
-          this.updateProjectWithStep3AndWASettings(res.settings, true, calledBy)
-          // this.updateProjectWithHasCompletedWAWizard()
-
-          // this.upadatedWatsAppWizardStep3(true, 'connected')
-
-
-        } else if (res.success === false) {
-          this.whatsAppIsConnected = false;
-          // this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
-          // this.upadatedWatsAppWizard(this.waWizardSteps, 'checkWAConnection unsuccess')
-          // this.oneStepWizard = { watsAppConnected: false }
-          // this.upadatedProjectWithOneStepWizard(this.oneStepWizard)
-
-          // this.updateProjectByDeletingWASettings()
-
-          // this.upadatedWatsAppWizardStep3(false, 'disconnected')
-          const calledBy = 'disconnected'
-          this.updateProjectWithStep3AndRemoveWASettings(false, calledBy)
-        }
-
-      }, error => {
-        this.logger.error('[HOME] - CHECK-WA-CONNECTION - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - CHECK-WA-CONNECTION * COMPLETE *')
-      });
-  }
-
-
-  updateProjectWithStep3AndWASettings(wasettings, isConnected, calledBy) {
-    this.logger.log('[HOME] updateProjectWithWASettings', wasettings)
-
-    this.projectService.updateProjectWithWASettings(wasettings)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
-
-        if (res) {
-          this.upadatedWatsAppWizardStep3(isConnected, calledBy)
-        }
-
-        if (res && res.attributes && res.attributes.wasettings && res.attributes.wasettings.department_id) {
-          this.wadepartmentid = res.attributes.wasettings.department_id
-          this.getDeptById(this.wadepartmentid)
-        }
-
-      }, error => {
-        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
-      });
-  }
-
-
-  updateProjectWithStep3AndRemoveWASettings(isConnected, calledBy) {
-    this.logger.log('[HOME] - WA W updateProjectByDeletingWASettings');
-    this.projectService.updateProjectRemoveWASettings()
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
-
-        this.wadepartmentid = undefined
-        this.whatsAppIsConnected = false;
-        this.waBotId = undefined
-        // this.getDeptById(this.wadepartmentid)
-        // this.logger.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
-
-      }, error => {
-        this.logger.error('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
-        this.upadatedWatsAppWizardStep3(isConnected, calledBy)
-      });
-  }
-
-
-  upadatedWatsAppWizardStep3(step3, calledBy) {
-    this.logger.log('upadatedWatsAppWizardStep3 step  3  ', step3)
-    this.logger.log('upadatedWatsAppWizardStep3 calledBy', calledBy)
-    this.projectService.updateProjectWithWAWizardStep3(step3)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - RES ', res);
-        if (res && res.attributes && res.attributes) {
-          if (res.attributes.wastep3 === false) {
-            this.whatsAppIsConnected = false
-            // if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
-            //   (this.solution_for_child === 'want_to_talk_to_customers') ||
-            //   (this.solution_for_child === 'want_to_automate_conversations')) {
-            //   this.displayWhatsappAccountWizard = true;
-            // }
-          }
-        }
-        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - whatsAppIsConnected ', this.whatsAppIsConnected);
-
-      }, error => {
-        this.logger.error('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEPS 3 * COMPLETE *')
-
-        if (calledBy === 'connected') {
-          this.oneStepWizard = { watsAppConnected: true }
-          this.upadatedProjectWithWAWizardOnlyOneStep(this.oneStepWizard)
-        } else if (calledBy === 'disconnected') {
-          this.oneStepWizard = { watsAppConnected: false }
-          this.upadatedProjectWithWAWizardOnlyOneStep(this.oneStepWizard)
-        }
-      });
-  }
-
-  upadatedProjectWithWAWizardOnlyOneStep(oneStepWizard) {
-    this.logger.log('[HOME] - WA W - upadatedProjectWithOneStepWizard', oneStepWizard)
-
-    this.projectService.updateProjectWithWAOneStepWizard(oneStepWizard)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
-        if (res && res.attributes && res.attributes.oneStepWizard) {
-          if (res.attributes.oneStepWizard.watsAppConnected === true) {
-            this.displayWhatsappAccountWizard = false;
-            this.updateProjectWithHasCompletedWAWizard()
-          }
-          // else if (res.attributes.oneStepWizard.watsAppConnected === false) {
-          //   if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
-          //     (this.solution_for_child === 'want_to_talk_to_customers') ||
-          //     (this.solution_for_child === 'want_to_automate_conversations')) {
-          //     this.displayWhatsappAccountWizard = true;
-          //   }
-          // }
-        }
-
-      }, error => {
-        this.logger.error('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME]  - WA W - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
-      });
-  }
-  // /. --- step 3
-
-
-  // presentModalWaSuccessfullyConnected() {
-  //   swal("Good job!", "WhatsApp connected successfully!", "success");
-  // }
-
-
-  updateProjectWithHasCompletedWAWizard() {
-    this.projectService.updateProjectWithWAWizardCompleted()
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD COMPLETED - RES ', res);
-      }, error => {
-        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD  - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD * COMPLETE *')
-      });
-
-  }
-
-  updatedProjectWithUserHasUnistalledWA(hasuninstalled) {
-    this.projectService.updateProjectUserHasRemovedWA(hasuninstalled)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
-      }, error => {
-        this.logger.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
-      });
-  }
-
-  // onClickOnDisplayWhatsAppWizard() {
-  //   console.log('[HOME] - onClickOnDisplayWhatsAppWizard ');
-  //   this.displayWhatsappAccountWizard = true;
-  //   this.userHasClickedDisplayWAWizard = true;
-  //   // this.scrollToChild(this.childWhatsAppWizard)
-  //   // this.scroll.scrollToPosition([0,0]);
-  //   // this.homeBlocks.scrollIntoView();
-  //   const homeBlocksEl = <HTMLElement>document.querySelector('#homeBlocks');
-  //   homeBlocksEl.scrollIntoView({
-  //     behavior: 'smooth'
-  //   });
-  //   this.projectService.updateProjectWithDisplayWAWizard(this.displayWhatsappAccountWizard)
-  //     .subscribe((res: any) => {
-  //       this.logger.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
-  //     }, error => {
-  //       this.logger.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
-  //     }, () => {
-  //       this.logger.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
-  //     });
-  // }
-
-
-  // -------------------------------
-  // NO MORE USED
-  // -------------------------------
-  upadatedWatsAppWizard(wasteps, calledBy) {
-    this.logger.log('upadatedWatsAppWizard calledBy ', calledBy)
-    this.logger.log('upadatedWatsAppWizard calledBy', wasteps)
-    this.projectService.updateProjectWithWAWizardSteps(wasteps)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
-        if (res && res.attributes && res.attributes.wastep) {
-          if (res.attributes.wastep[0].step3 === false) {
-            this.whatsAppIsConnected = false
-          } else {
-            this.whatsAppIsConnected = true
-          }
-        }
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
-
-
-      }, error => {
-        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
-      });
-  }
-
-
-
-  getDeptById(departmentid: string) {
-
-    this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
-      this.logger.log('[HOME]- GET WA DEPT BY ID - RES ', dept);
-      this.wadepartmentName = dept.name;
-      this.waBotId = dept.id_bot;
-      this.logger.log('[HOME]- GET WA DEPT BY ID - RES > dept name ', this.wadepartmentName);
-    }, (error) => {
-      this.logger.error('[HOME] - GET WA DEPT BY ID - ERROR ', error);
-
-    }, () => {
-
-      this.logger.log('[HOME] - GET WA DEPT BY ID - COMPLETE ');
-      this.getBots()
-    })
-  }
-
-  getBots() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
-      if (bots && bots !== null) {
-
-        bots.forEach(bot => {
-          this.logger.log('[HOME] - GET BOT BY PROJECT ID  - BOT', bot);
-          this.logger.log('[HOME] - GET BOT BY PROJECT ID  - BOT-ID', bot._id);
-          if (bot._id === this.waBotId) {
-            this.logger.log('[HOME] - BOT CONNECTED WITH WA  - BOT-ID', bot._id);
-            this.chatbotConnectedWithWA = true
-          }
-
-        });
-
-      }
-    }, (error) => {
-      this.logger.error('[HOME] - GET BOT BY PROJECT ID  - ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] - GET BOT BY PROJECT ID  * COMPLETE');
-
-    });
-  }
-
-
-  getDeptsByProjectId() {
-    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-
-      this.logger.log('[BOT-CREATE] ---> ALL DEPTS RES ', departments);
-
-      if (departments) {
-
-        departments.forEach(dept => {
-          this.logger.log('[BOT-CREATE] ---> ALL DEPTS RES  > ', dept)
-        });
-
-      }
-    }, error => {
-
-      this.logger.error('[BOT-CREATE --->  DEPTS RES - ERROR', error);
-    }, () => {
-      this.logger.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
-
-    });
   }
 
 
@@ -2536,110 +1973,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.logger.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
 
-  // pauseResumeLastUpdateSlider() {
-  //   // var slide = document.querySelectorAll('.slide');
-  //   // this.logger.log('HOME slide ', slide)
-  //   // this.logger.log('HOME slide Array', Array.from(slide)) ;
-
-  //   var slide =   Array.from(document.getElementsByClassName('slide') as HTMLCollectionOf<HTMLElement>)
-  //   const slideArray = Array.from(slide)
-
-  //   for (var i = 0; i < slide.length; i++) {
-  //     slide[i].onclick = this.toggleAnimation(slide);
-  //     slide[i].style.animationPlayState = 'running';
-  //   }
-  // }
-
-  toggleAnimation(slide) {
-    var style;
-    for (var i = 0; i < slide.length; i++) {
-      style = slide[i].style;
-      if (style.animationPlayState === 'running') {
-        style.animationPlayState = 'paused';
-        document.body.className = 'paused';
-      } else {
-        style.animationPlayState = 'running';
-        document.body.className = '';
-      }
-    }
-  }
 
 
-  startChabgelogAnimation() {
-    // function(t, e, n) {
-    // var u = n(62),
-    //     c = n(292),
-    //     s = document.querySelector("#futureproof figure"),
-    //     l = u.a.queryArray(".entries li", s),
-    //     f = new c.a({
-    //         container: s.querySelector("ul"),
-    //         toggleable: [l],
-    //         onActivate: function(t) {
-    //             var e = this,
-    //                 n = this.__toggleable[0][t].offsetHeight;
-    //             this.__toggleable[0].forEach(function(r, i) {
-    //                 var o = u.a.mod(i - t + 1, e.__itemCount);
-    //                 r.className = "card".concat(o);
-    //                 var a = n,
-    //                     c = 1;
-    //                 0 === o ? (a -= 30, c *= 1.07) : 2 === o ? (a += 30, c /= 1.07) : 3 === o ? (a += 60, c /= 1.1449) : 1 !== o && (a += 120, c /= 1.225043), r.style.transform = "translateY(".concat(a, "px) scale(").concat(c, ")")
-    //             })
-    //         }
-    //     })
-    //   }
 
-    var a = document.querySelector("#futureproof figure");
-    this.logger.log('[HOME] startChabgelogAnimation entriesElme a', a)
-    // var b = a.childNodes[1]
-    // this.logger.log('HOME entriesElme b ', b)
-
-    var ulEl = a.querySelector("ul")
-    this.logger.log('[HOME] startChabgelogAnimation entriesElme ulEl ', ulEl)
-
-    //  var x = ulEl.childNodes
-    var liArray = Array.from(ulEl.getElementsByTagName("li"))
-    this.logger.log('[HOME] startChabgelogAnimation entriesElme liArray ', liArray)
-
-    this.logger.log('[HOME] startChabgelogAnimation entriesElme typeof liArray  ', typeof liArray)
-
-    // var liElme = entriesElme.getElementsByTagName("li")
-    // this.logger.log('HOME liElme ', liElme)
-
-    this.setAttribute(liArray)
-
-
-  }
-
-  setAttribute(liArray) {
-    // liArray.unshift(liArray.pop());
-    liArray.forEach((element, index) => {
-      this.logger.log('[HOME] startChabgelogAnimation > setAttribute  entriesElme element ', element, ' index ', index)
-
-      element.className = "card" + index;
-
-      if (index === 0) {
-        element.setAttribute("style", "transform: translateY(122px) scale(1.07);");
-      }
-
-      if (index === 1) {
-        element.setAttribute("style", "transform: translateY(152px) scale(1);");
-      }
-      if (index === 2) {
-        element.setAttribute("style", "transform: translateY(182px) scale(0.934579);");
-      }
-
-      if (index === 3) {
-        element.setAttribute("style", "transform: translateY(237px) scale(0.873439);");
-      }
-
-      if (index === 4) {
-        element.setAttribute("style", "transform: translateY(297px) scale(0.816298);");
-
-        // this.setAttribute(liArray)
-      }
-
-    });
-  }
 
 
   public scrollRight(): void {
@@ -2679,285 +2015,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  getImageStorageThenUserAndBots() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-
-      this.UPLOAD_ENGINE_IS_FIREBASE = true;
-      const firebase_conf = this.appConfigService.getConfig().firebase;
-      this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[HOME] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
-
-      this.getAllUsersOfCurrentProject(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-      this.getAllFaqKbByProjectId(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
-
-    } else {
-
-      this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
-      this.logger.log('[HOME] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
-      this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-      this.getAllFaqKbByProjectId(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME
-    }
-
-  }
-
-  // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME 
-  getActiveContactsCount() {
-    this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
-      this.logger.log('[HOME] - GET ACTIVE LEADS RESPONSE ', activeleads)
-      if (activeleads) {
-
-        this.countOfActiveContacts = activeleads['count'];
-        this.logger.log('[HOME] - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
-      }
-    }, (error) => {
-      this.logger.error('[HOME] - GET ACTIVE LEADS - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[HOME] - GET ACTIVE LEADS * COMPLETE *');
-    });
-  }
-
-  getLastMounthMessagesCount() {
-    this.analyticsService.getLastMountMessagesCount()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((msgscount: any) => {
-        this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
-        if (msgscount && msgscount.length > 0) {
-          this.countOfLastMonthMsgs = msgscount[0]['totalCount']
-          this.displayAnalyticsIndicators = true
-
-          this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
-        } else {
-          this.countOfLastMonthMsgs = 0;
-          this.displayAnalyticsIndicators = false
-        }
-      }, (error) => {
-        this.logger.error('[HOME] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
-      });
-  }
-
-  getLastMounthRequestsCount() {
-    this.analyticsService.getLastMountConversationsCount()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((convcount: any) => {
-        this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
-
-        if (convcount && convcount.length > 0) {
-          this.countOfLastMonthRequests = convcount[0]['totalCount'];
-          this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
-        } else {
-          this.countOfLastMonthRequests = 0;
-        }
-      }, (error) => {
-        this.logger.error('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] - GET LAST 30 DAYS CONVERSATION COUNT * COMPLETE *');
-      });
-  }
-
-  getVisitorsCount() {
-    this.analyticsService.getVisitors()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((visitorcounts: any) => {
-        this.logger.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
-
-        if (visitorcounts && visitorcounts.length > 0) {
-          this.countOfVisitors = visitorcounts[0]['totalCount']
-          this.logger.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
-        } else {
-          this.countOfVisitors = 0
-        }
-      }, (error) => {
-        this.logger.error('[HOME] - GET VISITORS COUNT - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] - GET VISITORS COUNT * COMPLETE *');
-      });
-  }
-
-  getCountAndPercentageOfRequestsHandledByBotsLastMonth() {
-    this.analyticsService.getRequestsHasBotCount()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((res: any) => {
-        this.logger.log("[HOME] - getRequestsHasBotCount GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS RES : ", res)
-
-        if (res && res.length > 0) {
-          this.countOfLastMonthRequestsHandledByBots = res[0]['totalCount']
-
-        } else {
-          this.countOfLastMonthRequestsHandledByBots = 0
-        }
-
-        this.logger.log("[HOME] - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
-        this.logger.log("[HOME] - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
-        // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
-
-        if (this.countOfLastMonthRequestsHandledByBots > 0 && this.countOfLastMonthRequests) {
-          const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
-          this.logger.log("[HOME] - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
-          this.logger.log("[HOME] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
-          this.logger.log("[HOME] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
-          this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1);
-        } else {
-          this.percentageOfLastMonthRequestsHandledByBots = 0
-        }
-
-      }, (error) => {
-        this.logger.error('[HOME] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS * COMPLETE *');
-      });
 
 
-  }
 
-  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME
-  getAllUsersOfCurrentProject(storage, uploadEngineIsFirebase) {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      this.logger.log('[HOME] - GET PROJECT-USERS BY PROJECT ID ', projectUsers);
+ 
 
-      if (projectUsers) {
-        this.projectUsers = projectUsers
-
-        // ------------------------
-        // CHECK IF USER HAS IMAGE
-        // ------------------------
-        this.projectUsers.forEach(user => {
-          let imgUrl = ''
-          if (uploadEngineIsFirebase === true) {
-            // this.logger.log('[HOME] - CHECK IF csnUSER HAS IMAGE - UPLOAD ENGINE IS FIREBASE ? ', uploadEngineIsFirebase);
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Firebase 
-            // ------------------------------------------------------------------------------
-            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + user['id_user']['_id'] + "%2Fphoto.jpg?alt=media"
-
-          } else {
-            // this.logger.log('[HOME] - CHECK IF USER HAS IMAGE - UPLOAD ENGINE IS FIREBASE ? ', uploadEngineIsFirebase);
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Native 
-            // ------------------------------------------------------------------------------
-            imgUrl = storage + "images?path=uploads%2Fusers%2F" + user['id_user']['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
-          }
-
-          this.checkImageExists(imgUrl, (existsImage) => {
-            if (existsImage == true) {
-              this.logger.log('[HOME] - IMAGE EXIST X USERS', user);
-              user.hasImage = true;
-            }
-            else {
-              this.logger.log('[HOME] - IMAGE NOT EXIST X USERS', user);
-              user.hasImage = false;
-            }
-          });
-          let fullname = '';
-          if (user && user['id_user'] && user['id_user'].firstname && user['id_user'].lastname) {
-            fullname = user['id_user']['firstname'] + ' ' + user['id_user']['lastname']
-            user['fullname_initial'] = avatarPlaceholder(fullname);
-            user['fillColour'] = getColorBck(fullname)
-          } else if (user && user['id_user'] && user['id_user'].firstname) {
-
-            fullname = user['id_user'].firstname
-            user['fullname_initial'] = avatarPlaceholder(fullname);
-            user['fillColour'] = getColorBck(fullname)
-          } else {
-            user['fullname_initial'] = 'N/A';
-            user['fillColour'] = 'rgb(98, 100, 167)';
-          }
-        });
-      }
-
-    }, error => {
-      this.logger.error('[HOME] - GET PROJECT-USERS  - ERROR', error);
-    }, () => {
-      this.logger.log('[HOME] - GET PROJECT-USERS  - COMPLETE')
-    });
-  }
-
-  // USED FOR COUNT OF BOTS FOR THE NEW HOME !!!
-  getAllFaqKbByProjectId(storage, uploadEngineIsFirebase) {
-    this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[HOME] - GET FAQKB RES', faqKb);
-      if (faqKb) {
-
-        // -----------------------------------------------------------
-        // CHECK IF USER HAS IMAGE (AFTER REMOVING THE "IDENTITY BOT")
-        // -----------------------------------------------------------
-        faqKb.forEach(bot => {
-          this.logger.log('[HOME] - GET FAQKB forEach bot: ', bot)
-
-          if (bot && bot['type'] === "identity") {
-
-            const index = faqKb.indexOf(bot);
-            this.logger.log('[HOME] - GET FAQKB INDEX OF IDENTITY BOT', index);
-            if (index > -1) {
-              faqKb.splice(index, 1);
-            }
-          }
-          let imgUrl = ''
-          if (uploadEngineIsFirebase === true) {
-
-            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Firebase 
-            // ------------------------------------------------------------------------------
-            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
-
-          } else {
-            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE NATIVE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Native 
-            // ------------------------------------------------------------------------------
-            imgUrl = storage + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
-          }
-          this.checkImageExists(imgUrl, (existsImage) => {
-            if (existsImage == true) {
-              this.logger.log('[HOME] - IMAGE EXIST X bot', bot);
-              bot.hasImage = true;
-            }
-            else {
-              this.logger.log('[HOME] - IMAGE NOT EXIST X bot', bot);
-              bot.hasImage = false;
-            }
-          });
-        });
-        this.chatbots = faqKb;
-        this.logger.log('[HOME] - GET FAQKB RES this.chatbots', this.chatbots);
-
-        // this.countOfBots = faqKb.length;
-        // this.logger.log('HOME - GET FAQKB RES', this.countOfBots);
-      }
-    }, (error) => {
-      this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
-    });
-  }
-
-  checkImageExists(imageUrl, callBack) {
-    var imageData = new Image();
-    imageData.onload = function () {
-      callBack(true);
-    };
-    imageData.onerror = function () {
-      callBack(false);
-    };
-    imageData.src = imageUrl;
-  }
+  
 
 
   getChatUrl() {
@@ -3223,101 +2286,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  // getLast30daysConvsCount() {
-  //   this.analyticsService.requestsByDay(30)
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((convslast30: any) => {
-  //       this.logger.log('[HOME] - GET LAST 30 DAYS CONVS ', convslast30);
-  //       let count = 0;
-  //       convslast30.forEach(conv => {
-  //         this.logger.log('[HOME] - GET LAST 30 DAYS CONV COUNT ', conv.count);
-  //         count = count + conv.count
-  //       });
-
-  //       this.logger.log('[HOME] - GET LAST 30 DAYS CONV TOTAL ', count);
-  //       if (count === 0) {
-  //         // this.displayAnalyticsConvsGraph = false
-  //       } else if (count > 0) {
-  //         // this.displayAnalyticsConvsGraph = true
-  //       }
+  
 
 
-  //     }, (error) => {
-  //       this.logger.error('[HOME] GET LAST 30 DAYS CONVS - ERROR ', error);
-  //     }, () => {
-  //       this.logger.log('[HOME] GET LAST 30 DAYS CONVS * COMPLETE *');
-  //     });
-  // }
-
-  // OLD - NOW NOT WORKS
-  // getVisitorCounter() {
-  //   this.departmentService.getVisitorCounter()
-  //     .subscribe((visitorCounter: any) => {
-  //       this.logger.log('[HOME] getVisitorCounter : ', visitorCounter);
-
-  //       // x test
-  //       // const visitorCounter = [{ "_id": "5cd2ff0492424372bfa33574", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://www.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T16:08:36.085Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-12T16:24:50.764Z", "totalViews": 12564 }, { "_id": "5cd313cc92424372bfa6fad2", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:37:16.872Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-08T03:14:10.802Z", "totalViews": 108 }, { "_id": "5cd317e492424372bfa7baad", "id_project": "5ad5bd52c975820014ba900a", "origin": null, "__v": 0, "createdAt": "2019-05-08T17:54:44.273Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T23:04:26.285Z", "totalViews": 567 }, { "_id": "5cd3187492424372bfa7d4b4", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://testwidget.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:57:08.426Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:43:27.804Z", "totalViews": 47 }, { "_id": "5cd3188292424372bfa7d694", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://support.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:57:22.763Z", "path": "/5ad5bd52c975820014ba900a/departments/allstatus", "updatedAt": "2019-10-18T10:24:28.260Z", "totalViews": 608 }, { "_id": "5cd37ce592424372bfb4f18c", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://tiledesk.com", "__v": 0, "createdAt": "2019-05-09T01:05:41.918Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-31T15:29:55.687Z", "totalViews": 8 }, { "_id": "5cd5a42392424372bffcf279", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://codingpark.com", "__v": 0, "createdAt": "2019-05-10T16:17:39.561Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-12T04:30:49.985Z", "totalViews": 7 }, { "_id": "5cda868492424372bfa41f87", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://edit.tiledesk.com", "__v": 0, "createdAt": "2019-05-14T09:12:36.334Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:34:01.768Z", "totalViews": 627 }, { "_id": "5cdbdc5092424372bfd446ed", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:4200", "__v": 0, "createdAt": "2019-05-15T09:30:56.291Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-08T15:18:49.783Z", "totalViews": 669 }, { "_id": "5ce3d37e92424372bff07234", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://s3.eu-west-1.amazonaws.com", "__v": 0, "createdAt": "2019-05-21T10:31:26.193Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-21T11:41:47.565Z", "totalViews": 4 }, { "_id": "5ce3ee6692424372bff47a01", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://support-pre.tiledesk.com", "__v": 0, "createdAt": "2019-05-21T12:26:14.830Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-09-03T09:52:03.442Z", "totalViews": 29 }, { "_id": "5ce5532492424372bf26422f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:8000", "__v": 0, "createdAt": "2019-05-22T13:48:20.153Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-22T15:10:52.097Z", "totalViews": 4 }, { "_id": "5cea371792424372bfcdf00f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://evil.com/", "__v": 0, "createdAt": "2019-05-26T06:49:59.238Z", "path": "/5ad5bd52c975820014ba900a/departments/allstatus", "updatedAt": "2019-07-20T06:11:47.539Z", "totalViews": 4 }, { "_id": "5cee342c92424372bf5f5ea3", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://testwidget.tiledesk.it", "__v": 0, "createdAt": "2019-05-29T07:26:36.984Z", "path": "/5ad5bd52c975820014ba900a/departments/5b8eb4955ca4d300141fb2cc/operators", "updatedAt": "2019-05-29T07:27:10.327Z", "totalViews": 3 }, { "_id": "5cf072d392424372bfb993d7", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://importchinaproducts.com", "__v": 0, "createdAt": "2019-05-31T00:18:27.503Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-03T22:52:21.678Z", "totalViews": 27 }, { "_id": "5cf0892292424372bfbbfcc7", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://importchinaproducts.com", "__v": 0, "createdAt": "2019-05-31T01:53:38.809Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-09T14:02:29.505Z", "totalViews": 18 }, { "_id": "5cf64fdf92424372bf9137d0", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://54.37.234.246:1111", "__v": 0, "createdAt": "2019-06-04T11:02:55.936Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-14T18:49:33.847Z", "totalViews": 49 }, { "_id": "5cf8d08b1caa8022ad5248e2", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.importchinaproducts.com", "__v": 0, "createdAt": "2019-06-06T08:36:27.328Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-28T08:37:36.711Z", "totalViews": 7 }, { "_id": "5cfa4eff1caa8022ad8fbc5f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://54.37.225.206:4300", "__v": 0, "createdAt": "2019-06-07T11:48:15.191Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T05:58:55.933Z", "totalViews": 26 }, { "_id": "5cfa9c7d1caa8022ad9e40e1", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://vps695843.ovh.net:4300", "__v": 0, "createdAt": "2019-06-07T17:18:53.536Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-07T17:18:53.536Z", "totalViews": 1 }, { "_id": "5cfe93281caa8022ad2bbebf", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://widget.kobs.pl", "__v": 0, "createdAt": "2019-06-10T17:28:08.213Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T17:46:51.521Z", "totalViews": 6 }, { "_id": "5cfe96c91caa8022ad2c850a", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://panel.kobs.pl", "__v": 0, "createdAt": "2019-06-10T17:43:37.206Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-17T05:51:44.478Z", "totalViews": 189 }, { "_id": "5cfed7fc1caa8022ad37ff73", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:8080", "__v": 0, "createdAt": "2019-06-10T22:21:48.300Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T22:21:50.845Z", "totalViews": 2 }, { "_id": "5d14ead832da4a99f4209603", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://translate.googleusercontent.com", "__v": 0, "createdAt": "2019-06-27T16:12:08.146Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-27T16:12:52.926Z", "totalViews": 3 }, { "_id": "5d1ed5de32da4a99f4bdc056", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost", "__v": 0, "createdAt": "2019-07-05T04:45:18.031Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-11T08:25:47.008Z", "totalViews": 168 }, { "_id": "5d1f030932da4a99f4c3bc4b", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://192.168.1.137", "__v": 0, "createdAt": "2019-07-05T07:58:01.426Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-05T07:58:01.426Z", "totalViews": 1 }, { "_id": "5db2e17b6b2dfaad7c1f1962", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:3000", "__v": 0, "createdAt": "2019-10-25T11:50:19.452Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-30T12:17:18.155Z", "totalViews": 15 }, { "_id": "5db30c036b2dfaad7c269761", "id_project": "5ad5bd52c975820014ba900a", "origin": "null", "__v": 0, "createdAt": "2019-10-25T14:51:47.062Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-25T14:52:03.462Z", "totalViews": 2 }, { "_id": "5db314186b2dfaad7c281712", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.frontiere21.it", "__v": 0, "createdAt": "2019-10-25T15:26:16.834Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-25T15:51:49.450Z", "totalViews": 11 }, { "_id": "5dc92fb73b1c8559fb6c3cc6", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://egov2-dev.comune.bari.it:3000", "__v": 0, "createdAt": "2019-11-11T09:53:59.339Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T09:53:59.339Z", "totalViews": 1 }, { "_id": "5dc9714e3b1c8559fb79445a", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://baribot.herokuapp.com", "__v": 0, "createdAt": "2019-11-11T14:33:50.123Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:34:18.612Z", "totalViews": 2 }]
-  //       this.logger.log('[HOME] getVisitorCounter length : ', visitorCounter.length);
-  //       if (visitorCounter && visitorCounter.length > 0) {
-  //         let count = 0;
-  //         visitorCounter.forEach(visitor => {
-  //           this.logger.log('[HOME] getVisitorCounter visitor origin ', visitor.origin);
-  //           if (
-  //             visitor.origin !== "https://s3.eu-west-1.amazonaws.com" &&
-  //             visitor.origin !== "http://testwidget.tiledesk.it" &&
-  //             visitor.origin !== "http://testwidget.tiledesk.com" &&
-  //             visitor.origin !== "https://support.tiledesk.com" &&
-  //             visitor.origin !== null &&
-  //             visitor.origin !== 'null' &&
-  //             visitor.origin !== "http://evil.com/"
-  //           ) {
-
-  //             count = count + 1;
-  //             this.logger.log('[HOME] getVisitorCounter the origin ', visitor.origin, ' is != of test-site and is != of support-tiledesk and is != of null ', count);
-  //             // this.logger.log('getVisitorCounter ORIGIN != TEST-SITE AND != SUPPORT-TILEDESK »» HAS INSTALLED');
-  //           } else {
-  //             this.logger.log('[HOME] getVisitorCounter the origin ', visitor.origin, ' is = of test-site or is = support-tiledesk or is = null');
-  //           }
-  //         });
-
-  //         if (count === 0) {
-  //           // this.notify.presentModalInstallTiledeskModal()
-  //           this.logger.log('[HOME] getVisitorCounter count', count, '!!!');
-
-  //         }
-
-  //       } else {
-  //         this.logger.log('[HOME] getVisitorCounter length : ', visitorCounter.length);
-  //         this.logger.log('[HOME] getVisitorCounter VISITOR COUNTER IS O »» HAS NOT INSTALLED');
-  //         // this.notify.presentModalInstallTiledeskModal() 
-  //         //  this.notify.showNotificationInstallWidget(`${this.installWidgetText} <span style="color:#ffffff; display: inline-block; max-width: 100%;"> Nicola </span>`, 0, 'info');
-
-  //       }
-  //     }, (error) => {
-  //       this.logger.error('[HOME] getVisitorCounter ERROR ', error);
-  //     }, () => {
-  //       this.logger.log('[HOME] getVisitorCounter * COMPLETE *');
-  //     });
-  // }
 
 
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
     this.logger.log('[HOME] BRS-LANG (USED FOR SWITCH MONTH NAME)', this.browserLang)
-
-
-    this.switchMonthName(); /// VISITOR GRAPH FOR THE NEW NOME
-  }
-  switchMonthName() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
-      } else {
-        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
-      }
-    }
   }
 
 
@@ -3330,7 +2306,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      console.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
         this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
@@ -3415,13 +2391,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-  goToProjectSettingsGeneral() {
-    if (this.USER_ROLE === 'owner') {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    }
-  }
+
 
 
 
@@ -3459,18 +2429,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  // <!-- RESOUCES (link renamed in WIDGET) -->
-  goToResources() {
-    // this.router.navigate(['project/' + this.projectId + '/resources']);
-    this.router.navigate(['project/' + this.projectId + '/widget']);
-  }
-  goToRequests() {
-    this.router.navigate(['project/' + this.projectId + '/wsrequests']);
-  }
+  
+  
 
-  goToAnalytics() {
-    this.router.navigate(['project/' + this.projectId + '/analytics']);
-  }
+ 
 
   // test link
   goToAnalyticsStaticPage() {
@@ -3491,120 +2453,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   goToPricing() {
     this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
-
-
-  goToOperatingHours() {
-    this.router.navigate(['project/' + this.projectId + '/hours']);
-  }
-
-  goToMessagesAnalytics() {
-    // this.router.navigate(['project/' + this.projectId + '/messages-analytics']);
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
-    }
-  }
-
-  goToVisitorsAnalytics() {
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
-    }
-  }
-
-  // Analytics > Metrics > Conversation
-  goToRequestsAnalytics() {
-    // this.router.navigate(['project/' + this.projectId + '/conversation-analytics']);
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
-    }
-  }
-
-  goToContacts() {
-    this.router.navigate(['project/' + this.projectId + '/contacts']);
-  }
-
-  goToBotsList() {
-    this.router.navigate(['project/' + this.projectId + '/bots']);
-  }
-
-  goToUsersList() {
-    this.router.navigate(['project/' + this.projectId + '/users']);
-  }
-
-  goToWidgetSetup() {
-    this.router.navigate(['project/' + this.projectId + '/widget-set-up']);
-  }
-  goToWidgetConversations() {
-    this.router.navigate(['project/' + this.projectId + '/wsrequests']);
-  }
-
-  goToWidgetHistory() {
-    this.router.navigate(['project/' + this.projectId + '/history']);
-  }
-
-  goToAppStore() {
-    this.router.navigate(['project/' + this.projectId + '/app-store']);
-  }
-
-
-
-  goToBotProfile(bot: FaqKb) {
-    let botType = ''
-    if (bot.type === 'internal') {
-      botType = 'native'
-      if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.project._id + '/bots/intents/', bot._id, botType]);
-      }
-    } else if (bot.type === 'tilebot') {
-      botType = 'tilebot'
-      if (this.USER_ROLE !== 'agent') {
-        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
-        goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-      }
-    } else if (bot.type === 'tiledesk-ai') {
-      botType = 'tiledesk-ai'
-      if (this.USER_ROLE !== 'agent') {
-        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
-        goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
-      }
-    } else {
-      botType = bot.type
-
-      if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
-      }
-    }
-
-  }
-
-  goToAgentProfile(member_id) {
-    this.logger.log('[HOME] - goToAgentProfile (AFTER GETTING PROJECT USER ID) ', member_id)
-    // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
-
-    this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
-  }
-
-
-
-  // SERVED_BY: add this if not exist -->
-  getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
-    this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
-        this.logger.log('[HOME] - GET projectUser by USER-ID ', projectUser)
-        if (projectUser) {
-          this.logger.log('[HOME] - GET projectUser > projectUser id', projectUser[0]._id);
-
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
-        }
-      }, (error) => {
-        this.logger.error('[HOME] - GET projectUser by USER-ID - ERROR ', error);
-      }, () => {
-        this.logger.log('[HOME] - GET projectUser by USER-ID * COMPLETE *');
-      });
-  }
-
-
 
   // openChat() {
   //   // const url = this.CHAT_BASE_URL;
@@ -3678,23 +2526,139 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //   return chatwin;
   // }
 
-  goToTiledeskMobileAppPage() {
-    let url = ''
-    if (this.browserLang === 'it') {
-      url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
+  getHasOpenBlogKey() {
+    const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
+    this.logger.log('[HOME]  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+    if (hasOpenedBlog === true) {
+      this.hidechangelogrocket = true;
     } else {
-      url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
+      this.hidechangelogrocket = false;
     }
-    window.open(url, '_blank');
   }
 
 
+  // new dashbord
+  async switchAnalyticsConvsGraph(event) {
+    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.displayAnalyticsConvsGraph = event
+    await this.updatesDashletsPreferences('switchAnalyticsConvsGraph')
+  }
+
+  async switchAnalyticsIndicators(event) {
+    console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.displayAnalyticsIndicators = event
+    await this.updatesDashletsPreferences('switchAnalyticsIndicators')
+  }
+
+  async switchConnectWhatsApp(event) {
+    this.logger.log('[HOME] SWITCH CNNECT WA event ', event)
+    this.displayConnectWhatsApp = event;
+    await this.updatesDashletsPreferences('switchConnectWhatsApp')
+  }
+
+  async switchCreateChatbot(event) {
+    this.logger.log('[HOME] SWITCH CREATE CHATBOT event ', event)
+    this.displayCreateChatbot = event;
+    await this.updatesDashletsPreferences('switchCreateChatbot')
+  }
+
+  async switchInviteTeammate(event) {
+    this.logger.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
+    this.displayInviteTeammate = event;
+    await this.updatesDashletsPreferences('switchInviteTeammate')
+  }
+
+  async switchyKnowledgeBase(event) {
+    this.logger.log('[HOME] SWITCH KNOWLEDGE BASE event ', event)
+    this.displayKnowledgeBase = event;
+    await this.updatesDashletsPreferences('switchyKnowledgeBase')
+  }
+
+  async switchCustomizeWidget(event) {
+    this.logger.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
+    this.displayCustomizeWidget = event;
+    await this.updatesDashletsPreferences('switchCustomizeWidget')
+  }
+
+  async switchNewsFeed(event) {
+    this.logger.log('[HOME] SWITCH NEWS FEED event ', event)
+    this.displayNewsFeed = event;
+    // await this.updatesDashletsPreferences('switchNewsFeed')
+  }
+
+
+
+  async updatesDashletsPreferences(calledBy) {
+    // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
+    console.log('[HOME] - calling updatesDashletsPreferences by ', calledBy);
+    return await this.projectService.updateDashletsPreferences(
+      this.displayAnalyticsConvsGraph,
+      this.displayAnalyticsIndicators,
+      this.displayConnectWhatsApp,
+      this.displayCreateChatbot,
+      this.displayKnowledgeBase,
+      this.displayInviteTeammate,
+      this.displayCustomizeWidget,
+      this.displayNewsFeed)
+      .toPromise().then((res) => {
+       console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
+        return;
+      }).catch((err) => {
+        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
+      })
+  }
+
+  goToProjectSettingsGeneral() {
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
+
+
+  goToOperatingHours() {
+    this.router.navigate(['project/' + this.projectId + '/hours']);
+  }
+
+
+
+ 
+  
+
+ 
+
+  
+
+
+
+ 
+
+ 
+
+
+
+  
+
+
+
+
+
+  // goToTiledeskMobileAppPage() {
+  //   let url = ''
+  //   if (this.browserLang === 'it') {
+  //     url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
+  //   } else {
+  //     url = 'https://tiledesk.com/mobile-live-chat-android-e-iphone-apps/';
+  //   }
+  //   window.open(url, '_blank');
+  // }
 
   goToAdminDocs() {
     const url = URL_getting_started_for_admins
     window.open(url, '_blank');
   }
-
 
   goToAgentDocs() {
     const url = URL_getting_started_for_agents
@@ -3706,7 +2670,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const url = 'https://developer.tiledesk.com';
     window.open(url, '_blank');
   }
-
 
   goToInstallWithTagManagerDocs() {
     const url = URL_google_tag_manager_add_tiledesk_to_your_sites;
@@ -3721,16 +2684,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.hidechangelogrocket = true;
   }
 
-  getHasOpenBlogKey() {
-    const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
-    this.logger.log('[HOME]  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
-    if (hasOpenedBlog === true) {
-      this.hidechangelogrocket = true;
-    } else {
-      this.hidechangelogrocket = false;
-    }
-  }
-
+ 
 
   goToTemplates() {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
@@ -3741,398 +2695,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  goToUserActivitiesLog() {
+    this.router.navigate(['project/' + this.projectId + '/activities']);
+  }
+
+
   // NO MORE USED
   goToHistory() {
     this.router.navigate(['project/' + this.projectId + '/history']);
   }
 
-  // no more used
-  getProjectId() {
-    // this.projectid = this.route.snapshot.params['projectid'];
-    // this.logger.log('SIDEBAR - - - - - CURRENT projectid ', this.projectid);
-    this.route.params.subscribe(params => {
-      // const param = params['projectid'];
-      this.logger.log('[HOME] - CURRENT projectid ', params);
-    });
+  goToProjects() {
+    this.logger.log('[HOME] HAS CLICCKED GO TO PROJECT ')
+    this.router.navigate(['/projects']);
+    // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
+    this.auth.hasClickedGoToProjects();
+
+    this.project = null
+
+    // this.subscription.unsubscribe();
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+
+    this.logger.log('[HOME] project AFTER GOTO PROJECTS ', this.project)
   }
 
-
-  // NOT YET USED
-  // superUserAuth() {
-  //   if (!this.auth.superUserAuth(this.currentUserEmailgetFromStorage)) {
-  //     this.logger.log('[HOME] +++ CURRENT U IS NOT SUPER USER ', this.currentUserEmailgetFromStorage);
-  //     this.IS_SUPER_USER = false;
-  //   } else {
-  //     this.logger.log('[HOME] +++ !! CURRENT U IS SUPER USER ', this.currentUserEmailgetFromStorage);
-  //     this.IS_SUPER_USER = true;
-
-  //   }
-  // }
-
-  // displayCheckListModal() {
-  //   this.notify.showCheckListModal(true);
-  // }
-
-  goToUserActivitiesLog() {
-    this.router.navigate(['project/' + this.projectId + '/activities']);
+  goToCreateProject() {
+    this.router.navigate(['/create-new-project']);
   }
 
-  // ------------------------------------------------------------------
-  // LAST 7 DAYS CONVERSATIONS GRAPH
-  // ------------------------------------------------------------------
-  getRequestByLast7Day() {
-    this.analyticsService.requestsByDay(7)
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((requestsByDay: any) => {
-        this.logger.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
-
-        // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-        const last7days_initarray = []
-        for (let i = 0; i <= 6; i++) {
-          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
-          last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-        }
-
-        last7days_initarray.reverse()
-
-        this.logger.log('[HOME] - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
-
-        const requestsByDay_series_array = [];
-        const requestsByDay_labels_array = []
-
-        // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-        const requestsByDay_array = []
-        for (let j = 0; j < requestsByDay.length; j++) {
-          if (requestsByDay[j]) {
-            requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
-
-          }
-
-        }
-        this.logger.log('[HOME] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-
-        /**
-         * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-        // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-        // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-        // If not, then the same element in last7days i.e. obj is returned.
-        const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-        this.logger.log('[HOME] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
-
-        const _requestsByDay_series_array = [];
-        const _requestsByDay_labels_array = [];
-
-        requestByDays_final_array.forEach(requestByDay => {
-          //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-          _requestsByDay_series_array.push(requestByDay.count)
-
-          const splitted_date = requestByDay.day.split('-');
-          //this.logger.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-          _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-        });
-
-
-        this.logger.log('[HOME] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-        this.logger.log('[HOME] - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-        this.logger.log('[HOME] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-        this.logger.log('[HOME] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
-
-        const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-        this.logger.log('[HOME] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
-
-        let lang = this.browserLang;
-        const canvas = <HTMLCanvasElement>document.getElementById('last7dayChart'); // nk added to resolve Failed to create chart: can't acquire context from the given item
-        const ctx = canvas.getContext('2d'); // nk added to resolve Failed to create chart: can't acquire context from the given item
-        // var lineChart = new Chart('last7dayChart', {
-        var lineChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: _requestsByDay_labels_array,
-            datasets: [{
-              label: 'Number of conversations in last 7 days ',//active label setting to true the legend value
-              data: _requestsByDay_series_array,
-              fill: true, //riempie zona sottostante dati
-              lineTension: 0.4,
-              backgroundColor: 'rgba(30, 136, 229, 0.6)',
-              borderColor: 'rgba(30, 136, 229, 1)',
-              borderWidth: 3,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-              pointBorderColor: '#1e88e5'
-
-            }]
-          },
-          options: {
-            maintainAspectRatio: false, //allow to resize chart
-            title: {
-              text: 'Last 7 days converdations',
-              display: false
-            },
-            legend: {
-              display: false //do not show label title
-            },
-            scales: {
-              xAxes: [{
-                ticks: {
-                  beginAtZero: true,
-                  display: true,
-                  //minRotation: 30,
-                  fontColor: 'black',
-
-                },
-                gridLines: {
-                  display: true,
-                  borderDash: [8, 4],
-                  //color:'rgba(255, 255, 255, 0.5)',
-
-                }
-
-              }],
-              yAxes: [{
-                gridLines: {
-                  display: true,
-                  borderDash: [8, 4],
-
-
-                },
-                ticks: {
-                  beginAtZero: true,
-                  userCallback: function (label, index, labels) {
-                    //userCallback is used to return integer value to ylabel
-                    if (Math.floor(label) === label) {
-                      return label;
-                    }
-                  },
-                  display: true,
-                  fontColor: 'black',
-                  suggestedMax: higherCount + 2,
-
-                }
-              }]
-            },
-            tooltips: {
-              callbacks: {
-                label: function (tooltipItem, data) {
-
-                  const currentItemValue = tooltipItem.yLabel
-
-                  if (lang === 'it') {
-                    return 'Conversazioni: ' + currentItemValue;
-                  } else {
-                    return 'Conversations:' + currentItemValue;
-                  }
-
-                }
-              }
-            }
-          },
-          plugins: [{
-            beforeDraw: function (chartInstance, easing) {
-              var ctx = chartInstance.chart.ctx;
-              //this.logger.log("chartistance",chartInstance)
-              //ctx.fillStyle = 'red'; // your color here
-              ctx.height = 128
-              //chartInstance.chart.canvas.parentNode.style.height = '128px';
-              ctx.font = 'Roboto'
-              var chartArea = chartInstance.chartArea;
-              //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-            }
-          }]
-        });
-
-      }, (error) => {
-        this.logger.error('[HOME] - REQUESTS BY DAY - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] - REQUESTS BY DAY * COMPLETE *');
-
-      });
-  }
-
-
-  // ----------------------------------------------------------------------------------------------
-  // VISITOR GRAPH FOR THE NEW NOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
-  // ----------------------------------------------------------------------------------------------
-  getVisitorsByLastNDays(lastdays) {
-    this.analyticsService.getVisitorsByDay(lastdays).subscribe((visitorsByDay) => {
-      this.logger.log("[HOME] »» VISITORS BY DAY RESULT: ", visitorsByDay)
-
-      const last7days_initarray = [];
-      for (let i = 0; i < lastdays; i++) {
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
-      }
-
-      last7days_initarray.reverse();
-      this.logger.log("[HOME] »» LAST 7 DAYS VISITORS - INIT ARRAY: ", last7days_initarray)
-
-      const visitorsByDay_series_array = [];
-      const visitorsByDay_labels_array = [];
-
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const visitorsByDay_array = [];
-      for (let j = 0; j < visitorsByDay.length; j++) {
-        if (visitorsByDay[j]) {
-          visitorsByDay_array.push({ 'count': visitorsByDay[j]['count'], day: visitorsByDay[j]['_id']['day'] + '/' + visitorsByDay[j]['_id']['month'] + '/' + visitorsByDay[j]['_id']['year'] })
-        }
-      }
-
-      // MERGE last7days_initarray & visitorsByDay_array
-      const visitorsByDays_final_array = last7days_initarray.map(obj => visitorsByDay_array.find(o => o.day === obj.day) || obj);
-
-      this.initDay = visitorsByDays_final_array[0].day;
-      this.endDay = visitorsByDays_final_array[lastdays - 1].day;
-      this.logger.log("[HOME] INIT", this.initDay, "END", this.endDay);
-
-      visitorsByDays_final_array.forEach((visitByDay) => {
-        visitorsByDay_series_array.push(visitByDay.count)
-        const splitted_date = visitByDay.day.split('/');
-        visitorsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-      })
-
-      this.logger.log('[HOME] »» VISITORS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', visitorsByDay_series_array);
-      this.logger.log('[HOME] »» VISITORS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', visitorsByDay_labels_array);
-
-      const higherCount = this.getMaxOfArray(visitorsByDay_series_array);
-
-      let lang = this.browserLang;
-
-      var lineChart = new Chart('last7dayVisitors', {
-        type: 'line',
-        data: {
-          labels: visitorsByDay_labels_array,
-          datasets: [{
-            label: 'Number of visitors in last 7 days ',
-            data: visitorsByDay_series_array,
-            fill: true,
-            lineTension: 0.4,
-            backgroundColor: 'rgba(30, 136, 229, 0.6)',
-            borderColor: 'rgba(30, 136, 229, 1)',
-            borderWidth: 3,
-            borderDash: [],
-            borderDashOffset: 0.0,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: '#1e88e5'
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          title: {
-            text: 'TITLE',
-            display: false
-          },
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                beginAtZero: true,
-                display: true,
-                fontColor: 'black'
-              },
-              gridLines: {
-                display: true,
-                borderDash: [8, 4]
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                display: true,
-                borderDash: [8, 4]
-              },
-              ticks: {
-                beginAtZero: true,
-                userCallback: function (label, index, labels) {
-                  if (Math.floor(label) === label) {
-                    return label;
-                  }
-                },
-                display: true,
-                fontColor: 'black',
-                suggestedMax: higherCount + 2
-              }
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
-                const currentItemValue = tooltipItem.yLabel
-
-                if (lang == 'it') {
-                  return 'Visitatori: ' + currentItemValue;
-                } else {
-                  return 'Visitors: ' + currentItemValue;
-                }
-              }
-            }
-          }
-        },
-        plugins: [{
-          beforeDraw: function (chartInstance, easing) {
-            var ctx = chartInstance.chart.ctx;
-            ctx.height = 128
-            ctx.font = 'Roboto'
-            var chartArea = chartInstance.chartArea;
-          }
-        }]
-      })
-
-    }, (error) => {
-      this.logger.error('[HOME] »» VISITORS BY DAY - ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] »» VISITORS BY DAY - * COMPLETE * ');
-    })
-  }
-
-  getMaxOfArray(requestsByDay_series_array) {
-    return Math.max.apply(null, requestsByDay_series_array);
-  }
-
-
-  activateAppSumoLicenceTest() {
-    this.projectService.activateAppSumoTier().subscribe((res) => {
-      this.logger.log("[HOME] »» ACTIVATE APPSUMO TIER RES: ", res)
-    }, (error) => {
-      this.logger.error('[HOME] »» ACTIVATE APPSUMO TIER - ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] »» ACTIVATE APPSUMO TIER - * COMPLETE * ');
-    })
-  }
-
-  updateAppSumoLicenceTest() {
-    this.projectService.updateAppSumoTier().subscribe((res) => {
-      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
-    }, (error) => {
-      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
-    })
-  }
-
-  downgradeAppSumoLicenceTest() {
-    this.projectService.downgradeAppSumoTier().subscribe((res) => {
-      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
-    }, (error) => {
-      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
-    })
-
-  }
-
-  refundAppSumoLicenceTest() {
-    this.projectService.refundAppSumoTier().subscribe((res) => {
-      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
-    }, (error) => {
-      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
-    }, () => {
-      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
-    })
-
-  }
 
   // TRANSLATION
   translateString() {
@@ -4240,96 +2831,118 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  // new dashbord
-  async switchAnalyticsConvsGraph(event) {
-    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
-    this.displayAnalyticsConvsGraph = event
-    await this.updatesDashletsPreferences('switchAnalyticsConvsGraph')
+
+  activateAppSumoLicenceTest() {
+    this.projectService.activateAppSumoTier().subscribe((res) => {
+      this.logger.log("[HOME] »» ACTIVATE APPSUMO TIER RES: ", res)
+    }, (error) => {
+      this.logger.error('[HOME] »» ACTIVATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      this.logger.log('[HOME] »» ACTIVATE APPSUMO TIER - * COMPLETE * ');
+    })
   }
 
-  async switchAnalyticsIndicators(event) {
-    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
-    this.displayAnalyticsIndicators = event
-    await this.updatesDashletsPreferences('switchAnalyticsIndicators')
+  updateAppSumoLicenceTest() {
+    this.projectService.updateAppSumoTier().subscribe((res) => {
+      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
+    }, (error) => {
+      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+    })
   }
 
-  async switchConnectWhatsApp(event) {
-    this.logger.log('[HOME] SWITCH CNNECT WA event ', event)
-    this.displayConnectWhatsApp = event;
-    await this.updatesDashletsPreferences('switchConnectWhatsApp')
+  downgradeAppSumoLicenceTest() {
+    this.projectService.downgradeAppSumoTier().subscribe((res) => {
+      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
+    }, (error) => {
+      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+    })
+
   }
 
-  async switchCreateChatbot(event) {
-    this.logger.log('[HOME] SWITCH CREATE CHATBOT event ', event)
-    this.displayCreateChatbot = event;
-    await this.updatesDashletsPreferences('switchCreateChatbot')
-  }
+  refundAppSumoLicenceTest() {
+    this.projectService.refundAppSumoTier().subscribe((res) => {
+      this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
+    }, (error) => {
+      this.logger.error('[HOME] »» UPDATE APPSUMO TIER - ERROR ', error);
+    }, () => {
+      this.logger.log('[HOME] »» UPDATE APPSUMO TIER - * COMPLETE * ');
+    })
 
-  async switchInviteTeammate(event) {
-    this.logger.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
-    this.displayInviteTeammate = event;
-    await this.updatesDashletsPreferences('switchInviteTeammate')
-  }
-
-  async switchyKnowledgeBase(event) {
-    this.logger.log('[HOME] SWITCH KNOWLEDGE BASE event ', event)
-    this.displayKnowledgeBase = event;
-    await this.updatesDashletsPreferences('switchyKnowledgeBase')
-  }
-
-  async switchCustomizeWidget(event) {
-    this.logger.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
-    this.displayCustomizeWidget = event;
-    await this.updatesDashletsPreferences('switchCustomizeWidget')
-  }
-
-  async switchNewsFeed(event) {
-    this.logger.log('[HOME] SWITCH NEWS FEED event ', event)
-    this.displayNewsFeed = event;
-    await this.updatesDashletsPreferences('switchNewsFeed')
   }
 
 
 
-  async updatesDashletsPreferences(calledBy) {
-    // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-    this.logger.log('[HOME] - calling updatesDashletsPreferences by ', calledBy);
-    return await this.projectService.updateDashletsPreferences(
-      this.displayAnalyticsConvsGraph,
-      this.displayAnalyticsIndicators,
-      this.displayConnectWhatsApp,
-      this.displayCreateChatbot,
-      this.displayKnowledgeBase,
-      this.displayInviteTeammate,
-      this.displayCustomizeWidget,
-      this.displayNewsFeed)
-      .toPromise().then((res) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
-        return;
-      }).catch((err) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
-      })
-  }
+  // NOT YET USED
+  // superUserAuth() {
+  //   if (!this.auth.superUserAuth(this.currentUserEmailgetFromStorage)) {
+  //     this.logger.log('[HOME] +++ CURRENT U IS NOT SUPER USER ', this.currentUserEmailgetFromStorage);
+  //     this.IS_SUPER_USER = false;
+  //   } else {
+  //     this.logger.log('[HOME] +++ !! CURRENT U IS SUPER USER ', this.currentUserEmailgetFromStorage);
+  //     this.IS_SUPER_USER = true;
 
-  goToProjects() {
-    this.logger.log('[HOME] HAS CLICCKED GO TO PROJECT ')
-    this.router.navigate(['/projects']);
-    // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
-    this.auth.hasClickedGoToProjects();
+  //   }
+  // }
 
-    this.project = null
+  // displayCheckListModal() {
+  //   this.notify.showCheckListModal(true);
+  // }
 
-    // this.subscription.unsubscribe();
-    // this.unsubscribe$.next();
-    // this.unsubscribe$.complete();
 
-    this.logger.log('[HOME] project AFTER GOTO PROJECTS ', this.project)
-  }
+    // OLD - NOW NOT WORKS
+  // getVisitorCounter() {
+  //   this.departmentService.getVisitorCounter()
+  //     .subscribe((visitorCounter: any) => {
+  //       this.logger.log('[HOME] getVisitorCounter : ', visitorCounter);
 
-  goToCreateProject() {
-    this.router.navigate(['/create-new-project']);
-  }
+  //       // x test
+  //       // const visitorCounter = [{ "_id": "5cd2ff0492424372bfa33574", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://www.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T16:08:36.085Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-12T16:24:50.764Z", "totalViews": 12564 }, { "_id": "5cd313cc92424372bfa6fad2", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:37:16.872Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-08T03:14:10.802Z", "totalViews": 108 }, { "_id": "5cd317e492424372bfa7baad", "id_project": "5ad5bd52c975820014ba900a", "origin": null, "__v": 0, "createdAt": "2019-05-08T17:54:44.273Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T23:04:26.285Z", "totalViews": 567 }, { "_id": "5cd3187492424372bfa7d4b4", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://testwidget.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:57:08.426Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:43:27.804Z", "totalViews": 47 }, { "_id": "5cd3188292424372bfa7d694", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://support.tiledesk.com", "__v": 0, "createdAt": "2019-05-08T17:57:22.763Z", "path": "/5ad5bd52c975820014ba900a/departments/allstatus", "updatedAt": "2019-10-18T10:24:28.260Z", "totalViews": 608 }, { "_id": "5cd37ce592424372bfb4f18c", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://tiledesk.com", "__v": 0, "createdAt": "2019-05-09T01:05:41.918Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-31T15:29:55.687Z", "totalViews": 8 }, { "_id": "5cd5a42392424372bffcf279", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://codingpark.com", "__v": 0, "createdAt": "2019-05-10T16:17:39.561Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-12T04:30:49.985Z", "totalViews": 7 }, { "_id": "5cda868492424372bfa41f87", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://edit.tiledesk.com", "__v": 0, "createdAt": "2019-05-14T09:12:36.334Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:34:01.768Z", "totalViews": 627 }, { "_id": "5cdbdc5092424372bfd446ed", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:4200", "__v": 0, "createdAt": "2019-05-15T09:30:56.291Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-08T15:18:49.783Z", "totalViews": 669 }, { "_id": "5ce3d37e92424372bff07234", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://s3.eu-west-1.amazonaws.com", "__v": 0, "createdAt": "2019-05-21T10:31:26.193Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-21T11:41:47.565Z", "totalViews": 4 }, { "_id": "5ce3ee6692424372bff47a01", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://support-pre.tiledesk.com", "__v": 0, "createdAt": "2019-05-21T12:26:14.830Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-09-03T09:52:03.442Z", "totalViews": 29 }, { "_id": "5ce5532492424372bf26422f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:8000", "__v": 0, "createdAt": "2019-05-22T13:48:20.153Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-05-22T15:10:52.097Z", "totalViews": 4 }, { "_id": "5cea371792424372bfcdf00f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://evil.com/", "__v": 0, "createdAt": "2019-05-26T06:49:59.238Z", "path": "/5ad5bd52c975820014ba900a/departments/allstatus", "updatedAt": "2019-07-20T06:11:47.539Z", "totalViews": 4 }, { "_id": "5cee342c92424372bf5f5ea3", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://testwidget.tiledesk.it", "__v": 0, "createdAt": "2019-05-29T07:26:36.984Z", "path": "/5ad5bd52c975820014ba900a/departments/5b8eb4955ca4d300141fb2cc/operators", "updatedAt": "2019-05-29T07:27:10.327Z", "totalViews": 3 }, { "_id": "5cf072d392424372bfb993d7", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://importchinaproducts.com", "__v": 0, "createdAt": "2019-05-31T00:18:27.503Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-03T22:52:21.678Z", "totalViews": 27 }, { "_id": "5cf0892292424372bfbbfcc7", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://importchinaproducts.com", "__v": 0, "createdAt": "2019-05-31T01:53:38.809Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-09T14:02:29.505Z", "totalViews": 18 }, { "_id": "5cf64fdf92424372bf9137d0", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://54.37.234.246:1111", "__v": 0, "createdAt": "2019-06-04T11:02:55.936Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-14T18:49:33.847Z", "totalViews": 49 }, { "_id": "5cf8d08b1caa8022ad5248e2", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.importchinaproducts.com", "__v": 0, "createdAt": "2019-06-06T08:36:27.328Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-28T08:37:36.711Z", "totalViews": 7 }, { "_id": "5cfa4eff1caa8022ad8fbc5f", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://54.37.225.206:4300", "__v": 0, "createdAt": "2019-06-07T11:48:15.191Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T05:58:55.933Z", "totalViews": 26 }, { "_id": "5cfa9c7d1caa8022ad9e40e1", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://vps695843.ovh.net:4300", "__v": 0, "createdAt": "2019-06-07T17:18:53.536Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-07T17:18:53.536Z", "totalViews": 1 }, { "_id": "5cfe93281caa8022ad2bbebf", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://widget.kobs.pl", "__v": 0, "createdAt": "2019-06-10T17:28:08.213Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T17:46:51.521Z", "totalViews": 6 }, { "_id": "5cfe96c91caa8022ad2c850a", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://panel.kobs.pl", "__v": 0, "createdAt": "2019-06-10T17:43:37.206Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-17T05:51:44.478Z", "totalViews": 189 }, { "_id": "5cfed7fc1caa8022ad37ff73", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:8080", "__v": 0, "createdAt": "2019-06-10T22:21:48.300Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-10T22:21:50.845Z", "totalViews": 2 }, { "_id": "5d14ead832da4a99f4209603", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://translate.googleusercontent.com", "__v": 0, "createdAt": "2019-06-27T16:12:08.146Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-06-27T16:12:52.926Z", "totalViews": 3 }, { "_id": "5d1ed5de32da4a99f4bdc056", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost", "__v": 0, "createdAt": "2019-07-05T04:45:18.031Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-11T08:25:47.008Z", "totalViews": 168 }, { "_id": "5d1f030932da4a99f4c3bc4b", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://192.168.1.137", "__v": 0, "createdAt": "2019-07-05T07:58:01.426Z", "path": "/5ad5bd52c975820014ba900a/departments", "updatedAt": "2019-07-05T07:58:01.426Z", "totalViews": 1 }, { "_id": "5db2e17b6b2dfaad7c1f1962", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://localhost:3000", "__v": 0, "createdAt": "2019-10-25T11:50:19.452Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-30T12:17:18.155Z", "totalViews": 15 }, { "_id": "5db30c036b2dfaad7c269761", "id_project": "5ad5bd52c975820014ba900a", "origin": "null", "__v": 0, "createdAt": "2019-10-25T14:51:47.062Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-25T14:52:03.462Z", "totalViews": 2 }, { "_id": "5db314186b2dfaad7c281712", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://www.frontiere21.it", "__v": 0, "createdAt": "2019-10-25T15:26:16.834Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-10-25T15:51:49.450Z", "totalViews": 11 }, { "_id": "5dc92fb73b1c8559fb6c3cc6", "id_project": "5ad5bd52c975820014ba900a", "origin": "http://egov2-dev.comune.bari.it:3000", "__v": 0, "createdAt": "2019-11-11T09:53:59.339Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T09:53:59.339Z", "totalViews": 1 }, { "_id": "5dc9714e3b1c8559fb79445a", "id_project": "5ad5bd52c975820014ba900a", "origin": "https://baribot.herokuapp.com", "__v": 0, "createdAt": "2019-11-11T14:33:50.123Z", "path": "/5ad5bd52c975820014ba900a/widgets", "updatedAt": "2019-11-11T14:34:18.612Z", "totalViews": 2 }]
+  //       this.logger.log('[HOME] getVisitorCounter length : ', visitorCounter.length);
+  //       if (visitorCounter && visitorCounter.length > 0) {
+  //         let count = 0;
+  //         visitorCounter.forEach(visitor => {
+  //           this.logger.log('[HOME] getVisitorCounter visitor origin ', visitor.origin);
+  //           if (
+  //             visitor.origin !== "https://s3.eu-west-1.amazonaws.com" &&
+  //             visitor.origin !== "http://testwidget.tiledesk.it" &&
+  //             visitor.origin !== "http://testwidget.tiledesk.com" &&
+  //             visitor.origin !== "https://support.tiledesk.com" &&
+  //             visitor.origin !== null &&
+  //             visitor.origin !== 'null' &&
+  //             visitor.origin !== "http://evil.com/"
+  //           ) {
 
+  //             count = count + 1;
+  //             this.logger.log('[HOME] getVisitorCounter the origin ', visitor.origin, ' is != of test-site and is != of support-tiledesk and is != of null ', count);
+  //             // this.logger.log('getVisitorCounter ORIGIN != TEST-SITE AND != SUPPORT-TILEDESK »» HAS INSTALLED');
+  //           } else {
+  //             this.logger.log('[HOME] getVisitorCounter the origin ', visitor.origin, ' is = of test-site or is = support-tiledesk or is = null');
+  //           }
+  //         });
+
+  //         if (count === 0) {
+  //           // this.notify.presentModalInstallTiledeskModal()
+  //           this.logger.log('[HOME] getVisitorCounter count', count, '!!!');
+
+  //         }
+
+  //       } else {
+  //         this.logger.log('[HOME] getVisitorCounter length : ', visitorCounter.length);
+  //         this.logger.log('[HOME] getVisitorCounter VISITOR COUNTER IS O »» HAS NOT INSTALLED');
+  //         // this.notify.presentModalInstallTiledeskModal() 
+  //         //  this.notify.showNotificationInstallWidget(`${this.installWidgetText} <span style="color:#ffffff; display: inline-block; max-width: 100%;"> Nicola </span>`, 0, 'info');
+
+  //       }
+  //     }, (error) => {
+  //       this.logger.error('[HOME] getVisitorCounter ERROR ', error);
+  //     }, () => {
+  //       this.logger.log('[HOME] getVisitorCounter * COMPLETE *');
+  //     });
+  // }
 
 
 }

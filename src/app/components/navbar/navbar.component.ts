@@ -234,6 +234,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService,
+   
   ) {
 
     super(prjctPlanService, notifyService);
@@ -312,12 +313,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
-    this.listenToHomerequestQuotes()
-  } // OnInit
 
-  listenToHomerequestQuotes() {
+
+
+    this.listenToHomeRequestQuotes()
+  }
+
+  listenToHomeRequestQuotes() {
     this.quotesService.requestQuotes$.subscribe(() => {
-      console.log('[NAVBAR] home call getProjectQuotes')
+      console.log('[QUOTA-DEBUG][NAVBAR] Home call getProjectQuotes')
       this.getProjectQuotes();
     });
   }
@@ -365,6 +369,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           // this.getQuotasCount()
           // this.getQuotes();
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+
+          // Fetch quotes only if they haven't been fetched yet
+          // if (!this.quotesService['hasFetchedData']) {
+          //   console.log('[NAVBAR] Fetching quotes in Navbar because Home has not requested it.');
+          //   this.getProjectQuotes();
+          // }
         }
 
         this.getProjects()
@@ -385,8 +395,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log('[NAVBAR] - currentURL 2 ', currentURL);
       this.quotesService.hasOpenedNavbarQuotasMenu()
     }
-
-
   }
 
 
@@ -402,9 +410,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (this.project_limits) {
         this.getQuotes(this.project_limits)
       }
-
-      // ✅ Store project limits in the service
-      //  this.quotesService.setProjectLimits(response);
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
     })
@@ -419,10 +424,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       console.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("resp.quotes: ", resp.quotes)
       if (resp?.quotes) {
-        // ✅ Store quotes in the service
-        // this.quotesService.setAllQuotas(resp.quotes);
+     
+        console.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE")
 
-        this.quotesService.setQuotasData({
+        this.quotesService.updateQuotasData({
           projectLimits: project_limits, // Pass fetched project limits
           allQuotes: resp.quotes // Pass fetched quotes
         });
@@ -527,7 +532,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotasCount() {
     this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+      console.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
 
       this.openedConversations = resp.open;
       this.closedConversations = resp.closed;
@@ -536,8 +541,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
       this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+     console.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+     console.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
     }, (error) => {
       this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
     }, () => {
@@ -1440,7 +1445,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.auth.projectSelected(project, 'navbar')
       this.router.navigate([`/project/${id_project}/home`]);
-      // this.logger.log('[NAVBAR] goToHome prjct ', project )  
+      // this.logger.log('[NAVBAR] goToHome prjct ', project )
+      this.quotesService.resetFetchStatus()
     }
   }
 

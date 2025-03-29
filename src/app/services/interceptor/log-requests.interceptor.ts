@@ -11,6 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BrandService } from '../brand.service';
 import { TranslateService } from '@ngx-translate/core';
+import { NotifyService } from 'app/core/notify.service';
 const Swal = require('sweetalert2')
 
 
@@ -20,7 +21,8 @@ export class LogRequestsInterceptor implements HttpInterceptor {
   private supportEmail: string
   constructor(
     public brandService: BrandService,
-    private translate: TranslateService
+    private translate: TranslateService,
+     public notify: NotifyService,
   ) {
     const brand = brandService.getBrand();
     this.supportEmail = brand['CONTACT_US_EMAIL'];
@@ -28,9 +30,10 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
-    // if (request.method === 'GET') {
-    //   console.log('HTTP GET Request URL:', request.url);
-    // }
+    console.log('[HTTP-INTERCEPTOR] Request URL:', request.url , ' method: ', request.method);
+    if (request.method === 'GET') {
+    //  console.log('[HTTP-INTERCEPTOR] Request URL:', request.url , ' method: ', request.method);
+    }
     
     
    
@@ -43,15 +46,26 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (request.method === 'GET') {
+        console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
+        // if (request.method === 'GET') {
           // Handle GET request error
-          // console.error('[HTTP-INTERCEPTOR] GET request error:', error);
-          // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
-          if ( error.status === 429) {
+          console.log('[HTTP-INTERCEPTOR] GET request error:', error);
+          console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
+          console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
+          if (error.status === 429) {
             this.presentAlert()
           }
-          // You can also use a notification service to display the error message to the user
-        }
+          if (error.status === 529) { 
+            this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
+          }
+
+          if ((error.status !== 529) && error.status >= 500 && error.status < 600) { 
+            this.notify.showWidgetStyleUpdateNotification(error.status + ' ' + error.error.msg, 4, 'report_problem')
+          }
+        // }
+        
+      
+      
         return throwError(error);
       })
     );
@@ -61,7 +75,7 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
   presentAlert() {
     Swal.fire({
-      title: this.translate.instant('QuotaExceededm'),
+      title: '429 ' + this.translate.instant('TooManyRequests'),
       text: this.translate.instant('PleaseContactSupport'), 
       icon: "warning",
       showCloseButton: false,

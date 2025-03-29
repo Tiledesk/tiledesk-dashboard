@@ -32,17 +32,14 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   PLAN_NAME = PLAN_NAME
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
-  @Input() waBotId: string;
-  @Input() wadepartmentName: string;
-  @Input() chatbotConnectedWithWA: string;
-  @Output() botHookedToDefaultDept = new EventEmitter()
+  @Input() chatbots: any;
+  @Input() projectId: any;
   @Output() trackUserAction = new EventEmitter()
   private unsubscribe$: Subject<any> = new Subject<any>();
-  projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
   baseUrl: string;
-  chatbots: any;
+ 
   countOfChatbots: number;
   numOfChabotNotDiplayed: number;
   USER_ROLE: string;
@@ -98,6 +95,39 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.translateString();
     this.getOSCODE()
   }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges fires!  changes ', changes)
+    console.log('[HOME-CREATE-CHATBOT] - chatbots ', this.chatbots)
+    this.countOfChatbots = this.chatbots?.length
+    console.log('[HOME-CREATE-CHATBOT] - countOfChatbots ', this.countOfChatbots)
+    console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
+    this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
+
+    if (this.use_case_for_child === 'solve_customer_problems') {
+      this.tparams = { template_category: 'Customer Satisfaction' }
+      this.displayDefaultDescription = false;
+
+    } else if (this.use_case_for_child === 'increase_online_sales') {
+      this.tparams = { template_category: 'Increase Sales' }
+      this.displayDefaultDescription = false;
+    } else if (this.use_case_for_child === undefined || !this.use_case_for_child) {
+      this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» is undefined', this.use_case_for_child)
+      this.displayDefaultDescription = true
+    }
+
+    // this.getCurrentProjectAndPrjctBots();
+
+    this.getTemplates(this.use_case_for_child)
+
+  }
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     // this.logger.log('[HOME-CREATE-CHATBOT] AppConfigService getAppConfig public_Key', this.public_Key);
@@ -126,40 +156,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges waBotId  ', this.waBotId)
-    this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges wadepartmentName  ', this.wadepartmentName)
-    this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges chatbotConnectedWithWA  ', this.chatbotConnectedWithWA)
-
-
-    this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges fires!  changes ', changes)
-    this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
-    this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
-    if (this.use_case_for_child === 'solve_customer_problems') {
-      this.tparams = { template_category: 'Customer Satisfaction' }
-      this.displayDefaultDescription = false;
-
-    } else if (this.use_case_for_child === 'increase_online_sales') {
-      this.tparams = { template_category: 'Increase Sales' }
-      this.displayDefaultDescription = false;
-    } else if (this.use_case_for_child === undefined || !this.use_case_for_child) {
-      this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» is undefined', this.use_case_for_child)
-      this.displayDefaultDescription = true
-    }
-
-    this.getCurrentProjectAndPrjctBots();
-    this.getTemplates(this.use_case_for_child)
-
-  }
-
   translateString() {
     this.translateModalOnlyOwnerCanManageProjectAccount()
   }
+
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
@@ -269,195 +269,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       })
   }
 
-  getCurrentProjectAndPrjctBots() {
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        this.logger.log('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
-        if (project) {
-
-          this.projectId = project._id
-
-          this.getImageStorageThenBots();
-        }
-      }, (error) => {
-        this.logger.error('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
-      });
-  }
-
-  getImageStorageThenBots() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-
-      this.UPLOAD_ENGINE_IS_FIREBASE = true;
-      const firebase_conf = this.appConfigService.getConfig().firebase;
-      this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
-
-      // this.getAllUsersOfCurrentProject(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
-      this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
-
-    } else {
-
-      this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
-      this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
-      // this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
-      this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
-    }
-
-  }
-
-
-  getProjectBots(storage, uploadEngineIsFirebase) {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
-      this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
-
-        this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);
-        if (depts) {
-          for (let i = 0; i < depts.length; i++) {
-            this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES depts[i]', depts[i]);
-            if (faqKb) {
-              for (let j = 0; j < faqKb.length; j++) {
-                this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES faqKb[j]', faqKb[j]);
-
-                if (depts[i].hasBot === true) {
-                  this.logger.log('[HOME-CREATE-CHATBOT] - HERE YES (depts[i].hasBot)');
-                  if (depts[i].id_bot === faqKb[j]._id) {
-                    this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, ' has bot with id ', faqKb[j]._id);
-                    faqKb[j]['deptName'] = depts[i].name
-                    if (depts[i].default === true) {
-                      this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, 'is default', depts[i].default, 'has bot with id ', faqKb[j]._id);
-                      this.botHookedToDefaultDept.emit(faqKb[j]._id)
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      })
-
-
-      if (faqKb) {
-        // -----------------------------------------------------------
-        // CHECK IF USER HAS IMAGE (AFTER REMOVING THE "IDENTITY BOT")
-        // -----------------------------------------------------------
-        faqKb.forEach(bot => {
-          this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB forEach bot: ', bot)
-          this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB forEach waBotId: ', this.waBotId)
-          if (bot._id === this.waBotId) {
-            bot.isConnectToWA = true
-          } else {
-            bot.isConnectToWA = false
-          }
-
-          // if (bot && bot['type'] === "identity") {
-
-          //   const index = faqKb.indexOf(bot);
-          //   this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB INDEX OF IDENTITY BOT', index);
-          //   if (index > -1) {
-          //     faqKb.splice(index, 1);
-          //   }
-          // }
-          let imgUrl = ''
-          if (uploadEngineIsFirebase === true) {
-
-            // this.logger.log('[HOME-CREATE-CHATBOT-CREATE-CHATBOT] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Firebase 
-            // ------------------------------------------------------------------------------
-            imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
-
-          } else {
-            // this.logger.log('[HOME-CREATE-CHATBOT-CREATE-CHATBOT] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE NATIVE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Native 
-            // ------------------------------------------------------------------------------
-            imgUrl = storage + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
-          }
-          this.checkImageExists(imgUrl, (existsImage) => {
-            if (existsImage == true) {
-              this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE EXIST X bot', bot);
-              bot.hasImage = true;
-            }
-            else {
-              this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE NOT EXIST X bot', bot);
-              bot.hasImage = false;
-            }
-          });
-        });
-        this.chatbots = faqKb;
-        this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES this.chatbots', this.chatbots);
-
-        this.countOfChatbots = faqKb.length;
-        this.logger.log('[HOME-CREATE-CHATBOT] - COUNT OF CHATBOTS', this.countOfChatbots);
-        if (this.countOfChatbots > 10) {
-          this.numOfChabotNotDiplayed = this.countOfChatbots - 10;
-          this.logger.log('[HOME-CREATE-CHATBOT] - NUM OF CHATBOTS NOT DISLAYED', this.numOfChabotNotDiplayed);
-        }
-
-      }
-    }, (error) => {
-      this.logger.error('[HOME-CREATE-CHATBOT] - GET FAQKB - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB * COMPLETE *');
-    });
-  }
-
-  checkImageExists(imageUrl, callBack) {
-    var imageData = new Image();
-    imageData.onload = function () {
-      callBack(true);
-    };
-    imageData.onerror = function () {
-      callBack(false);
-    };
-    imageData.src = imageUrl;
-  }
-
-  goToBotProfile(bot: FaqKb) {
-    if (this.USER_ROLE !== 'agent') {
-      let botType = ''
-      if (bot.type === 'internal') {
-        botType = 'native'
-
-        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
-
-      } else if (bot.type === 'tilebot') {
-        botType = 'tilebot'
-
-        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
-        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
-
-      } else if (bot.type === 'tiledesk-ai') {
-        botType = 'tiledesk-ai'
-
-        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
-        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
-
-      } else {
-        botType = bot.type
-
-        if (this.USER_ROLE !== 'agent') {
-          this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
-        }
-      }
-    } else {
-      this.presentModalAgentCannotManageChatbot()
-    }
-  }
-
-  
   goToTemplates() {
     if (this.use_case_for_child === 'solve_customer_problems') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
@@ -484,14 +296,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.router.navigate(['project/' + this.projectId + '/bots/templates/community']);
   }
 
-  // Not more used
-  goToAddBotFromScratch() {
-    this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
-    localStorage.setItem('wawizard', 'hookbot')
-  }
 
-  createBlankTilebot() {
-    this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
+
+  goTocreateBlankTilebot() {
+   console.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit || this.chatBotLimit === 0) {
@@ -513,63 +321,6 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       this.presentModalAgentCannotManageChatbot()
     }
   }
-
-  presentModalAddBotFromScratch() {
-    this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
-    const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
-    // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
-    createBotFromScratchBtnEl.blur()
-    const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
-      width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[HOME-CREATE-CHATBOT] Dialog result:`, result);
-
-      if (result) {
-        this.chatbotName = result.chatbotName;
-
-        if (this.chatbotName) {
-          // this.createTilebotBotFromScratch(this.chatbotName)
-        }
-      }
-    });
-  }
-
-  // createTilebotBotFromScratch(chatbotName) {
-  //   this.language = this.botDefaultSelectedLangCode;
-
-
-  //   this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', this.language)
-  //     .subscribe((faqKb) => {
-  //       this.logger.log('[HOME-CREATE-CHATBOT] createTilebotBotFromScratch - RES ', faqKb);
-
-  //       if (faqKb) {
-
-  //         this.newBot_Id = faqKb['_id'];
-  //         // this.translateparamBotName = { bot_name: this.newBot_name }
-  //         // SAVE THE BOT IN LOCAL STORAGE
-  //         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
-
-  //         this.trackUserAction.emit({ action: 'Create chatbot', actionRes: faqKb })
-
-  //         // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
-  //         goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
-  //       }
-
-  //     }, (error) => {
-
-  //       this.logger.error('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST ERROR ', error);
-
-
-  //     }, () => {
-  //       this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
-
-
-  //     })
-  // }
 
 
   presentDialogReachedChatbotLimit() {
@@ -627,4 +378,241 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
+
+  // goToBotProfile(bot: FaqKb) {
+  //   if (this.USER_ROLE !== 'agent') {
+  //     let botType = ''
+  //     if (bot.type === 'internal') {
+  //       botType = 'native'
+
+  //       this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
+
+  //     } else if (bot.type === 'tilebot') {
+  //       botType = 'tilebot'
+
+  //       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+  //       // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
+  //       goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
+  //     } else if (bot.type === 'tiledesk-ai') {
+  //       botType = 'tiledesk-ai'
+
+  //       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+  //       // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
+  //       goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
+  //     } else {
+  //       botType = bot.type
+
+  //       if (this.USER_ROLE !== 'agent') {
+  //         this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
+  //       }
+  //     }
+  //   } else {
+  //     this.presentModalAgentCannotManageChatbot()
+  //   }
+  // }
+
+
+  // presentModalAddBotFromScratch() {
+  //   this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
+  //   const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
+  //   // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
+  //   createBotFromScratchBtnEl.blur()
+  //   const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
+  //     width: '600px',
+  //     // data: {
+  //     //   calledBy: 'step1'
+  //     // },
+  //   })
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.logger.log(`[HOME-CREATE-CHATBOT] Dialog result:`, result);
+
+  //     if (result) {
+  //       this.chatbotName = result.chatbotName;
+
+  //       if (this.chatbotName) {
+  //         // this.createTilebotBotFromScratch(this.chatbotName)
+  //       }
+  //     }
+  //   });
+  // }
+
+ // createTilebotBotFromScratch(chatbotName) {
+  //   this.language = this.botDefaultSelectedLangCode;
+
+
+  //   this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', this.language)
+  //     .subscribe((faqKb) => {
+  //       this.logger.log('[HOME-CREATE-CHATBOT] createTilebotBotFromScratch - RES ', faqKb);
+
+  //       if (faqKb) {
+
+  //         this.newBot_Id = faqKb['_id'];
+  //         // this.translateparamBotName = { bot_name: this.newBot_name }
+  //         // SAVE THE BOT IN LOCAL STORAGE
+  //         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
+
+  //         this.trackUserAction.emit({ action: 'Create chatbot', actionRes: faqKb })
+
+  //         // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
+  //         goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+  //       }
+
+  //     }, (error) => {
+
+  //       this.logger.error('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST ERROR ', error);
+
+
+  //     }, () => {
+  //       this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
+
+
+  //     })
+  // }
+
+  // getCurrentProjectAndPrjctBots() {
+  //   this.auth.project_bs
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((project) => {
+  //       this.logger.log('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+
+  //       if (project) {
+
+  //         this.projectId = project._id
+
+  //         this.getImageStorageThenBots();
+  //       }
+  //     }, (error) => {
+  //       this.logger.error('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
+
+  //     }, () => {
+  //       this.logger.log('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+  //     });
+  // }
+
+  // getImageStorageThenBots() {
+  //   if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+
+  //     this.UPLOAD_ENGINE_IS_FIREBASE = true;
+  //     const firebase_conf = this.appConfigService.getConfig().firebase;
+  //     this.storageBucket = firebase_conf['storageBucket'];
+  //     this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+
+  //     // this.getAllUsersOfCurrentProject(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
+  //     this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
+
+  //   } else {
+
+  //     this.UPLOAD_ENGINE_IS_FIREBASE = false;
+  //     this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+  //     this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
+  //     // this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
+  //     this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
+  //   }
+
+  // }
+
+
+  // getProjectBots(storage, uploadEngineIsFirebase) {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+  //     this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
+  //     this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
+
+  //       this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);
+  //       if (depts) {
+  //         for (let i = 0; i < depts.length; i++) {
+  //           this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES depts[i]', depts[i]);
+  //           if (faqKb) {
+  //             for (let j = 0; j < faqKb.length; j++) {
+  //               this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES faqKb[j]', faqKb[j]);
+
+  //               if (depts[i].hasBot === true) {
+  //                 this.logger.log('[HOME-CREATE-CHATBOT] - HERE YES (depts[i].hasBot)');
+  //                 if (depts[i].id_bot === faqKb[j]._id) {
+  //                   this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, ' has bot with id ', faqKb[j]._id);
+  //                   faqKb[j]['deptName'] = depts[i].name
+  //                   if (depts[i].default === true) {
+  //                     this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, 'is default', depts[i].default, 'has bot with id ', faqKb[j]._id);
+  //                     // this.botHookedToDefaultDept.emit(faqKb[j]._id)
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     })
+
+
+  //     if (faqKb) {
+  //       // -----------------------------------------------------------
+  //       // CHECK IF USER HAS IMAGE (AFTER REMOVING THE "IDENTITY BOT")
+  //       // -----------------------------------------------------------
+  //       faqKb.forEach(bot => {
+  //         this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB forEach bot: ', bot)
+  //         // this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB forEach waBotId: ', this.waBotId)
+  //         // if (bot._id === this.waBotId) {
+  //         //   bot.isConnectToWA = true
+  //         // } else {
+  //         //   bot.isConnectToWA = false
+  //         // }
+  //         let imgUrl = ''
+  //         if (uploadEngineIsFirebase === true) {
+
+  //           // this.logger.log('[HOME-CREATE-CHATBOT-CREATE-CHATBOT] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
+  //           // ------------------------------------------------------------------------------
+  //           // Usecase uploadEngine Firebase 
+  //           // ------------------------------------------------------------------------------
+  //           imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + storage + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
+
+  //         } else {
+  //           // this.logger.log('[HOME-CREATE-CHATBOT-CREATE-CHATBOT] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE NATIVE ');
+  //           // ------------------------------------------------------------------------------
+  //           // Usecase uploadEngine Native 
+  //           // ------------------------------------------------------------------------------
+  //           imgUrl = storage + "images?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+  //         }
+  //         this.checkImageExists(imgUrl, (existsImage) => {
+  //           if (existsImage == true) {
+  //             this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE EXIST X bot', bot);
+  //             bot.hasImage = true;
+  //           }
+  //           else {
+  //             this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE NOT EXIST X bot', bot);
+  //             bot.hasImage = false;
+  //           }
+  //         });
+  //       });
+  //       this.chatbots = faqKb;
+  //       this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES this.chatbots', this.chatbots);
+
+  //       this.countOfChatbots = faqKb.length;
+  //       this.logger.log('[HOME-CREATE-CHATBOT] - COUNT OF CHATBOTS', this.countOfChatbots);
+  //       if (this.countOfChatbots > 10) {
+  //         this.numOfChabotNotDiplayed = this.countOfChatbots - 10;
+  //         this.logger.log('[HOME-CREATE-CHATBOT] - NUM OF CHATBOTS NOT DISLAYED', this.numOfChabotNotDiplayed);
+  //       }
+
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[HOME-CREATE-CHATBOT] - GET FAQKB - ERROR ', error);
+
+  //   }, () => {
+  //     this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB * COMPLETE *');
+  //   });
+  // }
+
+  // checkImageExists(imageUrl, callBack) {
+  //   var imageData = new Image();
+  //   imageData.onload = function () {
+  //     callBack(true);
+  //   };
+  //   imageData.onerror = function () {
+  //     callBack(false);
+  //   };
+  //   imageData.src = imageUrl;
+  // }
 }

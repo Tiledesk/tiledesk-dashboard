@@ -5,13 +5,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
 import { PLANS_LIST, PLAN_NAME } from 'app/utils/util';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuotesService {
-  public hasOpenNavbarQuotasMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
-  public hasReachedQuotasLimitInHome$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null); 
+  public hasOpenNavbarQuotasMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public hasReachedQuotasLimitInHome$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
 
   // private projectLimitsSubject = new BehaviorSubject<any>(null);
@@ -39,15 +40,15 @@ export class QuotesService {
   //   return this.allQuotasSubject.value;
   // }
 
-  // Refactoring quotas
+
   private quotasDataSubject = new BehaviorSubject<{ projectLimits: any; allQuotes: any } | null>(null);
-  quotesData$ = this.quotasDataSubject.asObservable(); // Expose as Observable
-  // Function to update projectLimits and allQuotes
-  
+  quotesData$ = this.quotasDataSubject.asObservable().pipe(shareReplay(1)); // Expose as Observable
 
   private requestQuotesSubject = new Subject<void>();
   requestQuotes$ = this.requestQuotesSubject.asObservable();
-  
+
+  private hasFetchedData = false; // Flag to track if data has been fetched
+
   user: any;
   project_id: string;
   TOKEN: string;
@@ -58,7 +59,7 @@ export class QuotesService {
     private logger: LoggerService,
     private http: HttpClient,
     public appConfigService: AppConfigService
-  ) { 
+  ) {
     this.user = auth.user_bs.value
     this.checkIfUserExistAndGetToken()
 
@@ -70,16 +71,24 @@ export class QuotesService {
     this.getAppConfig();
   }
 
-
-  setQuotasData(data: { projectLimits: any; allQuotes: any }) {
+  /** Called by NavbarComponent to update the stored quotes */
+  updateQuotasData(data: { projectLimits: any; allQuotes: any }) {
+    console.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
+    this.hasFetchedData = true; // Mark data as fetched
   }
 
   /** Called by HomeComponent to request Navbar to fetch quotas */
-  requestQuotesUpdate() {
-   
-    this.logger.log('[QUOTE-SERVICE] -  Home has called requestQuotesUpdate');
-    this.requestQuotesSubject.next();
+  requestQuotasUpdate() {
+    // if (!this.hasFetchedData) {
+      console.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
+      this.requestQuotesSubject.next(); // Notify Navbar to fetch data
+    // }
+  }
+
+  /** Resets the fetch flag (calling from navbar on  project change) */
+  resetFetchStatus() {
+    this.hasFetchedData = false;
   }
 
   checkIfUserExistAndGetToken() {
@@ -134,19 +143,19 @@ export class QuotesService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'Authorization': this.TOKEN
-        })  
+        })
       }
 
       const url = this.SERVER_BASE_PATH + "projects/" + project_id;
       // console.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
 
       this.http.get(url, httpOptions)
-          .toPromise().then( async (project: any) => {
-            let limits = await this.getQuoteLimits(project);
-            resolve(limits)
-          }).catch((err) => {
-            reject(false);
-          })
+        .toPromise().then(async (project: any) => {
+          let limits = await this.getQuoteLimits(project);
+          resolve(limits)
+        }).catch((err) => {
+          reject(false);
+        })
     })
   }
 
@@ -163,7 +172,7 @@ export class QuotesService {
 
       let plan = project.profile.name;
 
-      switch(plan) {
+      switch (plan) {
         case PLAN_NAME.A:
           plan = PLAN_NAME.D;
           break;
@@ -224,6 +233,6 @@ export class QuotesService {
   // hasReachedQuotasLimitInHome(value) {
   //  console.log('[QUOTE-SERVICE] - hasReachedQuotasLimitInHome value ', value);
   //   this.hasReachedQuotasLimitInHome$.next(value)
-    
+
   // }
 }

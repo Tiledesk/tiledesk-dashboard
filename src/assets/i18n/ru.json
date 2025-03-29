@@ -603,6 +603,7 @@
     "PleaseTrySigningInAgain": "Пожалуйста, попробуйте войти снова",
     "ReturnToLoginPage": "Вернуться на страницу входа", 
     "QuotaExceeded": "Квота превышена",
+    "TooManyRequests": "Слишком много запросов",
     "PleaseContactSupport": "Пожалуйста, свяжитесь со службой поддержки", 
     "Rename":"Переименовать",
     "WelcomeToYourHelpCenter":"Добро пожаловать в ваш Справочный центр!",

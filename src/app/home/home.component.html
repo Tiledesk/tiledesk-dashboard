@@ -613,21 +613,15 @@
 
           <ng-container *ngIf="!showskeleton ">
 
-
-
             <span *ngIf="USER_ROLE !== 'agent'">
 
-
-
-              <!-- areVisibleChatbot > {{ areVisibleChatbot }} - isVisibleKNB > {{isVisibleKNB}} -->
-              <!-- for chatbot hero section -->
-              <!-- (dismissKbSkeleton)="dismissKbSkeleton($event)" -->
               <ng-container *ngIf="areVisibleChatbot">
                 <home-cds (goToCreateChatbot)="goToCreateChatbot()" 
                   [chatbots]="chatbots" 
                   [project]="project"
                   [displayKbHeroSection]="displayKbHeroSection" 
-                  [isVisibleKNB]="isVisibleKNB">
+                  [isVisibleKNB]="isVisibleKNB"
+                  [USER_ROLE]="USER_ROLE">
                 </home-cds>
               </ng-container>
 
@@ -647,8 +641,10 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child1'">
                   <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" 
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
                 </ng-container>
 
@@ -656,8 +652,10 @@
                 <!-- Child 2 Analytics Indicator-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
-                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" 
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 
@@ -667,18 +665,11 @@
                 <!-- (hasCreatedChatbot)="hasCreatedChatbot($event)" -->
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
-                    style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()" 
-                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" 
-                    [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
-                    [waBotId]="waBotId"
+                    style="margin-bottom: 18px;" 
+                    (goToConnectWA)="goToConnectWA()"
                     [use_case_for_child]="use_case_for_child" 
                     [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" 
-                    [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" >
+                    [solution_for_child]="solution_for_child" >
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -688,14 +679,9 @@
                 <ng-container *ngIf="item.type === 'child4'">
                   <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
                     #childWhatsappAccount 
-                  
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
-                    
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
-                    [whatsAppIsConnected]="whatsAppIsConnected"
                     [solution_channel_for_child]="solution_channel_for_child" 
-                    [solution_for_child]="solution_for_child"
-                    [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
+                    [solution_for_child]="solution_for_child">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>
 
@@ -704,10 +690,10 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]="chatbotConnectedWithWA"
-                    (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [chatbots]="chatbots"
+                    [projectId]="projectId"
                     (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-create-chatbot>
                 </ng-container>
