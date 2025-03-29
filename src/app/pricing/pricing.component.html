@@ -42,7 +42,9 @@
               <!-- <div class="trial-has-expired-date-wpr" *ngIf="trialHasExpired">  -->
               <!-- trialHasExpired > {{ trialHasExpired }} -->
               <div class="trial-has-expired-date" *ngIf="trialHasExpired">
-                {{ 'TrialExpirationDate' | translate: {expiration_date: trialExpirationDate} }}. Please choose a plan to continue
+                <!-- {{ 'TrialExpirationDate' | translate: {expiration_date: trialExpirationDate} }}. Please choose a plan to continue -->
+                Your account trial period ended on {{trialExpirationDate}}. Please choose a plan to continue
+
               </div>
               <!-- <div  *ngIf="trialHasExpired">
                 Note: If you need more time in test the features or to buy the best plan, Talk to Sales.
