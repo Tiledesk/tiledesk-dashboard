@@ -41,6 +41,7 @@ import { AnalyticsService } from 'app/services/analytics.service';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -330,15 +331,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
-    this.getProjectUser();
+    // this.getProjectUser();
 
     // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-    this.usersService.getBotsByProjectIdAndSaveInStorage();
+    this.faqKbService.getBotsByProjectIdAndSaveInStorage();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     // this.getAvailableProjectUsersByProjectId();
 
-    this.getUserRole();
+    // this.getUserRole();
     // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
@@ -398,6 +399,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       })
   }
 
+ 
+
   getCurrentProjectProjectByIdAndBots() {
     this.auth.project_bs
       .pipe(
@@ -434,6 +437,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
           this.getProjectBots();
+          // this.getUserRole()
           // this.init()
         }
       }, (error) => {
@@ -449,23 +453,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   goToCreateChatbot() {
     this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
     this.scrollToChild(this.childCreateChatbot)
-  }
-
-
-  goToHistoryOpenedConvs() {
-    this.logger.log("[HOME] goToHistoryOpenedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
-  }
-
-
-  goToHistoryClosedConvs() {
-    this.logger.log("[HOME] goToHistoryClosedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
-  }
-
-  goToHistoryAllConvs() {
-    this.logger.log("[HOME] goToHistoryAllConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
   }
 
 
@@ -610,13 +597,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return `${minutes}m ${remainingSeconds}s`;
   }
 
-  contacUsViaEmail() {
-    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
-  }
-
-  contacUsViaEmailToUpdadePaymentInformation() {
-    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
-  }
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
@@ -646,73 +626,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 
-        this.prjct_name = project.name
-        this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
 
-        this.prjct_profile_name = projectProfileData.name;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
-
-        this.profile_name = projectProfileData.name;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
-
-        this.prjct_trial_expired = project.trialExpired;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
-
-        this.prjct_profile_type = projectProfileData.type;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
-
-        this.subscription_is_active = project.isActiveSubscription;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
-
-        this.subscription_end_date = projectProfileData.subEnd;
-        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
-
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
-
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-          this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
-          this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-        } else if (!projectProfileData.extra3) {
-          this.tPlanParams = { 'plan_name': PLAN_NAME.B }
-        }
-
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-          this.DISPLAY_OPH_AS_DISABLED = true;
-        } else {
-          this.DISPLAY_OPH_AS_DISABLED = false;
-        }
-
-
-        this.buildProjectProfileName()
-
-
-        const projectCreatedAt = project.createdAt
-        this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
-        const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
-        this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
-
-        const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-        this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
-
-        const currentTime = moment();
-
-        const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
-        this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
-
-        const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
-        this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
-        this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
-
-        if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
-          this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
-
-          localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
-
-          this.trackTrialEnded(project, trialStarDate, trialEndDate)
-
-        }
 
         this.trackGroup(projectProfileData)
       }
@@ -725,6 +639,173 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     });
   }
+
+
+
+
+
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[HOME] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
+
+
+      this.logger.log("[HOME] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[HOME] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[HOME] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[HOME] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+    }, (error) => {
+      this.logger.error("[HOME] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      this.logger.log("[HOME] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+  manageVoiceQuotaVisibility(projectProfileData) {
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
+      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+      if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined))) {
+
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+        // if (projectProfileData['customization']['voice-twilio'] === true) {
+        //   this.diplayTwilioVoiceQuota = true
+        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+        //   this.diplayTwilioVoiceQuota = false
+        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+        //   this.diplayTwilioVoiceQuota = false
+        // }
+
+        if (projectProfileData['customization']['voice'] === true) {
+          this.diplayVXMLVoiceQuota = true
+        } else if (projectProfileData['customization']['voice'] === false) {
+          this.diplayVXMLVoiceQuota = false
+        } else if (projectProfileData['customization']['voice'] === undefined) {
+          this.diplayVXMLVoiceQuota = false
+        }
+      } else {
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+        this.diplayVXMLVoiceQuota = false
+      }
+
+    } else {
+
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+      // this.diplayTwilioVoiceQuota = false
+      this.diplayVXMLVoiceQuota = false
+    }
+
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+    this.logger.log('[HOME] (manageChatbotVisibility) ')
+
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
+
+    }
+  }
+
+
+  destructureProjectProfile(project, projectProfileData) {
+    this.prjct_name = project.name
+    this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
+
+    this.prjct_profile_name = projectProfileData.name;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
+
+    this.profile_name = projectProfileData.name;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
+
+    this.prjct_trial_expired = project.trialExpired;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
+
+    this.prjct_profile_type = projectProfileData.type;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
+
+    this.subscription_is_active = project.isActiveSubscription;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
+
+    this.subscription_end_date = projectProfileData.subEnd;
+    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
+
+    if (projectProfileData && projectProfileData.extra3) {
+      this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
+
+      this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
+      this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+      this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
+      this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+    } else if (!projectProfileData.extra3) {
+      this.tPlanParams = { 'plan_name': PLAN_NAME.B }
+    }
+
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+      this.DISPLAY_OPH_AS_DISABLED = true;
+    } else {
+      this.DISPLAY_OPH_AS_DISABLED = false;
+    }
+
+
+    this.buildProjectProfileName()
+
+
+    const projectCreatedAt = project.createdAt
+    this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
+    const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
+    this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
+
+    const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
+    this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
+
+    const currentTime = moment();
+
+    const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
+    this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
+
+    const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
+    this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
+    this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
+
+    if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
+      this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+
+      localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
+
+      this.trackTrialEnded(project, trialStarDate, trialEndDate)
+
+    }
+
+  }
+
 
   buildProjectProfileName() {
     if (this.prjct_profile_type === 'free') {
@@ -839,74 +920,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  manageChatbotVisibility(projectProfileData) {
-    this.logger.log('[HOME] (manageChatbotVisibility) ')
 
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
-    }
-
-    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
-
-      if (projectProfileData['customization']['chatbot'] === true) {
-        this.areVisibleChatbot = true;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      } else if (projectProfileData['customization']['chatbot'] === false) {
-
-        this.areVisibleChatbot = false;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      }
-
-    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
-
-    } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
-
-    }
-  }
-
-  manageVoiceQuotaVisibility(projectProfileData) {
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
-      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
-      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
-
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-        // if (projectProfileData['customization']['voice-twilio'] === true) {
-        //   this.diplayTwilioVoiceQuota = true
-        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
-        //   this.diplayTwilioVoiceQuota = false
-        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-        //   this.diplayTwilioVoiceQuota = false
-        // }
-
-        if (projectProfileData['customization']['voice'] === true) {
-          this.diplayVXMLVoiceQuota = true
-        } else if (projectProfileData['customization']['voice'] === false) {
-          this.diplayVXMLVoiceQuota = false
-        } else if (projectProfileData['customization']['voice'] === undefined) {
-          this.diplayVXMLVoiceQuota = false
-        }
-      } else {
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
-        this.diplayVXMLVoiceQuota = false
-      }
-
-    } else {
-
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-      // this.diplayTwilioVoiceQuota = false
-      this.diplayVXMLVoiceQuota = false
-    }
-
-  }
 
 
   trackTrialEnded(project, trialStarDate, trialEndDate) {
@@ -938,6 +952,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 100);
     }
 
+  }
+
+  goToHistoryOpenedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
+  }
+
+  goToHistoryClosedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
+  }
+
+  goToHistoryAllConvs() {
+    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
+  }
+
+  contacUsViaEmailToUpdadePaymentInformation() {
+    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
   }
 
   trackGroup(projectProfileData) {
@@ -2222,30 +2259,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
-        this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
-        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
-        this.logger.log('[HOME] USER IS BUSY ', projectUser[0].isBusy)
+        this.logger.log('[HOME] PROJECT-USER ID ', projectUser._id)
+        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser.user_available)
+        this.logger.log('[HOME] USER IS BUSY ', projectUser.isBusy)
         // this.user_is_available_bs = projectUser.user_available;
 
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
+        if (projectUser.user_available !== undefined) {
+          this.usersService.setProjectUser(projectUser);
         }
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+        if (projectUser.role !== undefined) {
+          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
+          this.USER_ROLE = projectUser.role; 
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
-          // this.auth.user_role(projectUser[0].role);
-          // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-
-          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-          this.USER_ROLE = projectUser[0].role;
+          // this.auth.user_role(projectUser.role);
+          // this.usersLocalDbService.saveUserRoleInStorage(projectUser.role);
         }
 
       }
@@ -2321,18 +2355,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // CON getUserRole() AGGIORNO this.USER_ROLE QUANDO LA SIDEBAR, NEL MOMENTO
   // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
   // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+  // getUserRole() {
+  //   this.usersService.project_user_role_bs
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((userRole) => {
 
-        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
-  }
+  //       this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+  //       // used to display / hide 'WIDGET' and 'ANALYTCS' in home.component.html
+  //       this.USER_ROLE = userRole;
+  //     })
+  // }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
   getAvailableProjectUsersByProjectId() {

@@ -231,7 +231,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -1057,7 +1057,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     this.logger.log('[NATIVE-BOT] ID OF FAQKB ', this.id_faq_kb);
-    // console.log('3 goToEditAddPage_CREATE:   ', this.faqkb_language);
+    // this.logger.log('3 goToEditAddPage_CREATE:   ', this.faqkb_language);
     this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType, this.faqkb_language]);
   }
 

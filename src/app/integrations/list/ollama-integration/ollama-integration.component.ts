@@ -28,6 +28,8 @@ export class OllamaIntegrationComponent implements OnInit {
 
   
   addModel(modelName: string): void {
+    let enterBtnElement = document.getElementById('enter-button')
+    enterBtnElement.style.display = 'none';
     this.logger.log('[INT-Ollama] - addModel ', modelName)
     if (modelName && !this.integration.value.models.includes(modelName)) {
       this.logger.log('[INT-Ollama] - addModel here yes modelName', modelName)
@@ -36,6 +38,17 @@ export class OllamaIntegrationComponent implements OnInit {
       
     }
     this.newModelName = null
+  }
+
+  onEnterModel(event) {
+    // console.log('[INT-Ollama] - onEnterModel event', event)
+    let enterBtnElement = document.getElementById('enter-button')
+    // console.log('[INT-Ollama] - onEnterModel enterBtnElement', enterBtnElement)
+    if (event.length > 0) {
+      enterBtnElement.style.display = 'inline-block';
+    } else {
+      enterBtnElement.style.display = 'none';
+    }
   }
 
   removeModel(modelName: string): void {
@@ -52,16 +65,21 @@ export class OllamaIntegrationComponent implements OnInit {
   }
 
   deleteIntegration() {
+    // this.newModelName = null
     this.onDeleteIntegration.emit(this.integration);
   }
 
   
 
   resetValues() {
+  //  console.log("[INT-Ollama] resetValues ",  this.integration.value)
     this.integration.value = {
       url: null,
-      token: null
+      token: null,
+      models: []
     }
+
+    this.newModelName = null
   }
 
   // ---------------------------------------------------
