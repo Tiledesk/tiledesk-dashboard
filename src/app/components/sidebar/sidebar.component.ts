@@ -362,10 +362,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   // ngAfterContentInit(): void { 
   //   if (this.company_brand_color) { 
   //     console.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
-  //     // const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
-  //     // console.log('[SIDEBAR] pathElement ', pathElement)
+  //      const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
+  //      console.log('[SIDEBAR] pathElement ', pathElement)
 
-  //     // this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
+  //      this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
   //     this.renderer.setStyle(document.body, '--sidebar-active-icon', this.company_brand_color);
   //   }
   // }
@@ -1651,7 +1651,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] getProjects projects ', projects)
           if (projects) {
             this.currentProjectUser = projects.find(prj => prj.id_project.id === this.projectId);
-            console.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
+            this.logger.log('[SIDEBAR] currentProjectUser ', this.currentProjectUser)
 
           }
         });
@@ -1673,7 +1673,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
       //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
       this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-        console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
         this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
         this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
         // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);

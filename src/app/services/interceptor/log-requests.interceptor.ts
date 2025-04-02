@@ -30,13 +30,11 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
-    console.log('[HTTP-INTERCEPTOR] Request URL:', request.url , ' method: ', request.method);
-    if (request.method === 'GET') {
-    //  console.log('[HTTP-INTERCEPTOR] Request URL:', request.url , ' method: ', request.method);
-    }
+    // console.log('[HTTP-INTERCEPTOR] Request URL:', request.url , ' method: ', request.method);
+    // if (request.method === 'GET') {
+    //   console.log('[HTTP-INTERCEPTOR] Request URL:', request.url , ' method: ', request.method);
+    // }
     
-    
-   
     // return next.handle(request).pipe(
     //   tap(event => {
     //     console.log('HTTP GET Request event:', event);
@@ -46,12 +44,12 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
+        // console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
         // if (request.method === 'GET') {
-          // Handle GET request error
-          console.log('[HTTP-INTERCEPTOR] GET request error:', error);
-          console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
-          console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
+          // Handle request error
+          // console.log('[HTTP-INTERCEPTOR] GET request error:', error);
+          // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
+          // console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
           if (error.status === 429) {
             this.presentAlert()
           }
@@ -61,10 +59,7 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
           if ((error.status !== 529) && error.status >= 500 && error.status < 600) { 
             this.notify.showWidgetStyleUpdateNotification(error.status + ' ' + error.error.msg, 4, 'report_problem')
-          }
-        // }
-        
-      
+          } 
       
         return throwError(error);
       })

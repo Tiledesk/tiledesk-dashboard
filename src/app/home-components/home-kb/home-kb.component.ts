@@ -374,7 +374,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   getDeptsByProjectId(faqkb?: string) {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-     console.log('[HOME-KB] --->  DEPTS RES ', departments);
+      this.logger.log('[HOME-KB] --->  DEPTS RES ', departments);
 
       if (departments) {
         const depts_length = departments.length

@@ -883,7 +883,7 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES - URL', url);
     // var key = 'ccp_'+propertyName;
     // const body = { [key]: propertyValue };
     const body = { userPreferences: segmentIdentifyAttributes }
@@ -1088,7 +1088,7 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - URL', url);
     const body =
     {
       dashlets:

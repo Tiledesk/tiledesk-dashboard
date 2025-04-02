@@ -157,7 +157,7 @@ export class VerifyEmailComponent implements OnInit {
   resendVerificationEmail() {
     this.usersService.resendVerifyEmail().subscribe((res) => {
 
-      this.logger.log('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - RESPONSE ', res);
+      // console.log('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - RESPONSE ', res);
       const res_success = res['success'];
       this.logger.log('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - RESPONSE SUCCESS ', res_success);
       // if (res_success === true) {
@@ -165,11 +165,11 @@ export class VerifyEmailComponent implements OnInit {
       // }
     }, (error) => {
       this.logger.error('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - ERROR ', error);
-      const error_body = JSON.parse(error._body);
-      this.logger.error('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
-      if (error_body['success'] === false) {
+      // const error_body = JSON.parse(error._body);
+      // this.logger.error('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
+      // if (error_body['success'] === false) {
         this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
-      }
+      // }
     }, () => {
       this.logger.log('[VERIFY-EMAIL] - RESEND VERIFY EMAIL * COMPLETE *');
     });

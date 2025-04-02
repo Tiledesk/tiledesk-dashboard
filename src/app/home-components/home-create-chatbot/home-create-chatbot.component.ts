@@ -104,10 +104,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges fires!  changes ', changes)
-    console.log('[HOME-CREATE-CHATBOT] - chatbots ', this.chatbots)
+    this.logger.log('[HOME-CREATE-CHATBOT] - chatbots ', this.chatbots)
     this.countOfChatbots = this.chatbots?.length
-    console.log('[HOME-CREATE-CHATBOT] - countOfChatbots ', this.countOfChatbots)
-    console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
+    this.logger.log('[HOME-CREATE-CHATBOT] - countOfChatbots ', this.countOfChatbots)
+    this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
     this.logger.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
 
     if (this.use_case_for_child === 'solve_customer_problems') {
@@ -299,7 +299,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
 
   goTocreateBlankTilebot() {
-   console.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
+    this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit || this.chatBotLimit === 0) {

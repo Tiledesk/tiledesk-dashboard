@@ -47,6 +47,9 @@ export class QuotesService {
   private requestQuotesSubject = new Subject<void>();
   requestQuotes$ = this.requestQuotesSubject.asObservable();
 
+
+
+
   private hasFetchedData = false; // Flag to track if data has been fetched
 
   user: any;
@@ -73,7 +76,7 @@ export class QuotesService {
 
   /** Called by NavbarComponent to update the stored quotes */
   updateQuotasData(data: { projectLimits: any; allQuotes: any }) {
-    console.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
+    this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
     this.hasFetchedData = true; // Mark data as fetched
   }
@@ -81,10 +84,13 @@ export class QuotesService {
   /** Called by HomeComponent to request Navbar to fetch quotas */
   requestQuotasUpdate() {
     // if (!this.hasFetchedData) {
-      console.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
-      this.requestQuotesSubject.next(); // Notify Navbar to fetch data
+    this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
+    this.requestQuotesSubject.next(); // Notify Navbar to fetch data
     // }
   }
+
+
+
 
   /** Resets the fetch flag (calling from navbar on  project change) */
   resetFetchStatus() {
@@ -147,7 +153,7 @@ export class QuotesService {
       }
 
       const url = this.SERVER_BASE_PATH + "projects/" + project_id;
-      // console.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
+      this.logger.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
 
       this.http.get(url, httpOptions)
         .toPromise().then(async (project: any) => {

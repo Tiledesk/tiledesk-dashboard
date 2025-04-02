@@ -24,7 +24,7 @@
       <!-- <a class="navbar-brand" href="#">Testina</a> -->
     </div>
     <div class="collapse navbar-collapse">
-     
+
 
       <ul class="nav navbar-nav navbar-right">
         <!-- <li>
@@ -55,7 +55,7 @@
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
         <!-- *ngIf="isVisiblePay" -->
-        <ng-container >
+        <ng-container>
           <li
             [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
             id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
@@ -150,10 +150,10 @@
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisiblePay">
           <li id="upgrade-plan-btn-wpr" *ngIf="project && prjct_profile_type === 'free'">
-            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()"> 
-              <button class="btn btn-success-no-boxshadow upgrade-plan-btn" >
-              {{ "Pricing.UpgradePlan" | translate }} 
-            </button>
+            <a class="upgrade-btn-trial-expired" (click)="goToPricingPlanFree()">
+              <button class="btn btn-success-no-boxshadow upgrade-plan-btn">
+                {{ "Pricing.UpgradePlan" | translate }}
+              </button>
             </a>
           </li>
         </ng-container>
@@ -277,7 +277,7 @@
                 <!-- ------- -->
                 <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
                   <div class="quotas-usage-container">
-                    
+
                     <div aria-label="Usage limit for Conversations" class="quota-section-main">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
@@ -383,7 +383,7 @@
                       </div>
                     </div>
 
-                    <div aria-label="Usage limit for Email" class="quota-section-main last">
+                    <div aria-label="Usage limit for Email" class="quota-section-main" [ngClass]="{'last': !diplayVXMLVoiceQuota}">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
@@ -423,6 +423,44 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- --------------------------------------------- -->
+                    <!-- Voice -->
+                    <!-- --------------------------------------------- -->
+                    <div *ngIf="diplayVXMLVoiceQuota" aria-label="Usage limit for Voice" class="quota-section-main last"
+                      [ngClass]="{'last': diplayVXMLVoiceQuota}">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">{{'Voice' | translate}}</h2>
+                              <!-- <span class="quota-plan-badge">Free</span> -->
+                            </div>
+                            <!-- <p  class="quota-resets">Quota resets on 19 Sep 2024</p> -->
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <p class="quota-right-title">
+                                <!-- Total email usage -->
+                                {{'TotalVoiceUsage' | translate}}
+                              </p>
+                              <div class="quota-limit-wpr">
+                                <p class="quota-limit">{{voice_count_min_sec}} /&nbsp;</p>
+                                <p class="quota-limit">{{voice_limit | number:'1.0-0'}}m</p>
+                              </div>
+                            </div>
+                            <div class="quota-pie" style="width: 50px; height: 50px;">
+
+                              <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50"
+                                [color]="'primary'" [mode]="'determinate'" [value]="voice_perc"
+                                [ngClass]="{'mat-progress-spinner-voice-runned-out': voiceRunnedOut}">
+                              </mat-progress-spinner>
+                              <div class="quota-pie-label">{{ voice_perc }}% </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -442,7 +480,7 @@
           </li>
         </ng-container>
 
-    
+
 
 
 
@@ -480,17 +518,14 @@
         <!-- test site btn -->
         <!-- ------------------------------------------------------ -->
         <ng-container class="test-site">
-          <li *ngIf="project"
-          matTooltipClass="custom-mat-tooltip-navbar"
-          matTooltip="{{ 'VisitorsPage.SimulateVisitor' | translate }}"
-          #tooltip="matTooltip" 
-          matTooltipPosition='above' 
-          matTooltipHideDelay="100" >
-            <a role="button" >
+          <li *ngIf="project" matTooltipClass="custom-mat-tooltip-navbar"
+            matTooltip="{{ 'VisitorsPage.SimulateVisitor' | translate }}" #tooltip="matTooltip"
+            matTooltipPosition='above' matTooltipHideDelay="100">
+            <a role="button">
               <button class="simulate-visitor-btn" (click)="testWidgetPage()">
                 <i class="material-icons">play_arrow</i>
               </button>
-             
+
             </a>
             <!-- <button class="btn btn-success-no-boxshadow simulate-visitor-btn" style="font-size: 12px;margin-top: 14px;padding: 0px 11px 0px 4px !important; max-height:24px; border-radius: 30px;
             font-family: 'Poppins';" (click)="testWidgetPage()">
@@ -533,7 +568,7 @@
         <!--  ------------------------------------------------ -->
         <li *ngIf="project">
           <a href="#" class="dropdown-toggle project-dropdown" data-toggle="dropdown">
-            
+
             <span style="text-transform: none"> {{ project.name }} </span>
             <i id="navbar-dropdown" class="material-icons" style="font-size: 24px;">arrow_drop_down</i>
             <!-- <b class="caret"></b> -->
@@ -619,17 +654,17 @@
             </ng-container>
 
 
-           
+
           </ul>
         </li>
 
 
-      
+
 
         <!-- -------------------------------------------- -->
         <!-- Sleekplan -->
         <!-- -------------------------------------------- -->
-       
+
         <ng-container *ngIf="isVisiblePay" style="position: relative;">
           <li *ngIf="project">
             <a>

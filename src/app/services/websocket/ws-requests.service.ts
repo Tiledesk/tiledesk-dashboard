@@ -219,6 +219,7 @@ export class WsRequestsService implements OnDestroy {
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
+              // console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA ", data);
               if (data.snapshot && data.snapshot.agents) {
 
                 data.agents = data['snapshot']["agents"]
@@ -281,7 +282,12 @@ export class WsRequestsService implements OnDestroy {
                 // ----------------------------------------------------------------------------
                 // @ Department - else (if exist department in data) pass department from data
                 // ----------------------------------------------------------------------------
-                data.department = data.department
+                data.department = data.department;
+
+              } else if (data['attributes'] && data['attributes'] !== undefined) {
+                if (data['attributes']['departmentName'] && data['attributes']['departmentId']) {
+                  data.department = { 'name': data['attributes']['departmentName'], '_id': data['attributes']['departmentId']}
+                }
               }
             }
 
@@ -298,7 +304,7 @@ export class WsRequestsService implements OnDestroy {
             // Update
           }, function (data, notification) {
 
-            // this.logger.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
+            // console.log("[WS-REQUESTS-SERV] DSHB - UPDATE - DATA ", data);
 
             self.wsConv$.next(data)
 

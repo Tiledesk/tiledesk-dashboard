@@ -188,6 +188,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_perc = 0;
   tokens_limit = 0;
 
+  voice_count = 0;
+  voice_perc = 0;
+  voice_limit = 0;
+  voice_limit_in_sec = 0;
+  voice_count_min_sec: any;
+
+  voiceRunnedOut: boolean = false;
+  diplayVXMLVoiceQuota: boolean;
+
   requestsPieStroke: string;
   requestsPieGreenStroke: boolean;
   requestsPieYellowStroke: boolean;
@@ -234,7 +243,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService,
-   
+
   ) {
 
     super(prjctPlanService, notifyService);
@@ -306,7 +315,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
-
+    this.manageVoiceQuotaVisibility()
 
     this.listenSoundPreference()
     this.listenToLiveAnnouncementOpened()
@@ -319,19 +328,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.listenToHomeRequestQuotes()
   }
 
-  listenToHomeRequestQuotes() {
-    this.quotesService.requestQuotes$.subscribe(() => {
-      console.log('[QUOTA-DEBUG][NAVBAR] Home call getProjectQuotes')
-      this.getProjectQuotes();
-    });
-  }
-
 
   ngOnDestroy() {
     this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  listenToHomeRequestQuotes() {
+    this.quotesService.requestQuotes$.subscribe(() => {
+      this.logger.log('[QUOTA-DEBUG][NAVBAR] Home call getProjectQuotes')
+      this.getProjectQuotes();
+    });
   }
 
 
@@ -372,13 +381,61 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
           // Fetch quotes only if they haven't been fetched yet
           // if (!this.quotesService['hasFetchedData']) {
-          //   console.log('[NAVBAR] Fetching quotes in Navbar because Home has not requested it.');
+          //   this.logger.log('[NAVBAR] Fetching quotes in Navbar because Home has not requested it.');
           //   this.getProjectQuotes();
           // }
         }
 
         this.getProjects()
       }
+    });
+  }
+
+
+  manageVoiceQuotaVisibility() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      this.logger.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        if (projectProfileData['customization']) {
+
+          // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+          if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
+
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+            // this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+            // if (projectProfileData['customization']['voice-twilio'] === true) {
+            //   this.diplayTwilioVoiceQuota = true
+            // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+            //   this.diplayTwilioVoiceQuota = false
+            // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+            //   this.diplayTwilioVoiceQuota = false
+            // } 
+
+            if (projectProfileData['customization']['voice'] === true) {
+              this.diplayVXMLVoiceQuota = true
+            } else if (projectProfileData['customization']['voice'] === false) {
+              this.diplayVXMLVoiceQuota = false
+            } else if (projectProfileData['customization']['voice'] === undefined) {
+              this.diplayVXMLVoiceQuota = false
+            }
+          } else {
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+            this.diplayVXMLVoiceQuota = false
+          }
+
+        } else {
+
+          this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+          // this.diplayTwilioVoiceQuota = false
+          this.diplayVXMLVoiceQuota = false
+        }
+
+      }
+
+    }, error => {
+      this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
+    }, () => {
+      this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
     });
   }
 
@@ -393,7 +450,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);
     if (currentURL.indexOf('/home') !== -1) {
       this.logger.log('[NAVBAR] - currentURL 2 ', currentURL);
-      this.quotesService.hasOpenedNavbarQuotasMenu()
+      // this.quotesService.hasOpenedNavbarQuotasMenu()
     }
   }
 
@@ -404,8 +461,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   getProjectQuotes() {
+    this.logger.log("[NAVBAR][QUOTA-DEBUG] getProjectQuotes this.projectId: ", this.projectId);
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-      console.log("[NAVBAR] getProjectQuotes response: ", response);
+      this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
       this.project_limits = response;
       if (this.project_limits) {
         this.getQuotes(this.project_limits)
@@ -418,14 +476,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotes(project_limits) {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("[NAVBAR] getAllQuotes response: ", resp)
-
-
-      console.log("[NAVBAR] project_limits: ", project_limits)
+      this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
+      this.logger.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("resp.quotes: ", resp.quotes)
       if (resp?.quotes) {
-     
-        console.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE")
+
+        this.logger.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE")
 
         this.quotesService.updateQuotasData({
           projectLimits: project_limits, // Pass fetched project limits
@@ -440,6 +496,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.requests_limit = project_limits.requests;
         this.email_limit = project_limits.email;
         this.tokens_limit = project_limits.tokens;
+        this.voice_limit_in_sec = this.project_limits.voice_duration
+        this.voice_limit = Math.floor(this.project_limits.voice_duration / 60);
       }
 
       if (resp.quotes.requests.quote === null) {
@@ -454,6 +512,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (resp.quotes.tokens.quote === null) {
         resp.quotes.tokens.quote = 0;
       }
+      if (resp.quotes.voice_duration && resp.quotes.voice_duration.quote === null) {
+        resp.quotes.voice_duration.quote = 0;
+      }
 
       this.logger.log('[NAVBAR] used requests', resp.quotes.requests.quote)
       this.logger.log('[NAVBAR] requests_limit', this.requests_limit)
@@ -463,6 +524,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
+
+      this.logger.log('[NAVBAR] used voice', resp.quotes.voice_duration.quote)
+      this.logger.log('[NAVBAR] voice_limit', this.voice_limit)
 
       if (resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
@@ -488,11 +552,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
       }
 
+      this.logger.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
+
+      // if (120000 >= this.voice_limit) {
+      if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
+        this.voiceRunnedOut = true;
+        this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+      } else {
+        this.voiceRunnedOut = false;
+        this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+      }
+
 
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit_in_sec) * 100));
 
       this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
       if (this.requests_perc <= 25) {
@@ -522,17 +598,28 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
+      this.voice_count = resp.quotes.voice_duration.quote
+      this.logger.log("[NAVBAR] getAllQuotes voice_count: ", this.voice_count)
+      this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
+      this.logger.log("[HOME] getAllQuotes  voice_count_min_sec: ", this.voice_count_min_sec)
 
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
     }, () => {
-      this.logger.log("get all quotes *COMPLETE*");
+      this.logger.log("[QUOTA-DEBUG][NAVBAR][DISPLAY-SKELETON] get all quotes *COMPLETE*");
+
     })
+  }
+
+  secondsToMinutes_seconds(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
   }
 
   getQuotasCount() {
     this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      console.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
 
       this.openedConversations = resp.open;
       this.closedConversations = resp.closed;
@@ -541,8 +628,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
       this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-     console.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-     console.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
     }, (error) => {
       this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
     }, () => {

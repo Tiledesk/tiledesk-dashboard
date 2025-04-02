@@ -102,7 +102,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   monthNames: any; /// VISITOR GRAPH FOR THE NEW HOME
   initDay: string; /// VISITOR GRAPH FOR THE NEW HOME
   endDay: string; /// VISITOR GRAPH FOR THE NEW HOME
-  selectedDaysId: number /// VISITOR GRAPH FOR THE NEW HOME
   countOfActiveContacts: number; /// COUNT OF ACTIVE CONTACT FOR THE NEW HOME
   countOfVisitors: number; /// COUNT OF ACTIVE CONTACT FOR THE NEW HOME
   countOfBots: number; /// USED FOR COUNT OF BOTS FOR THE NEW HOME !!! *** Not used - replaced with LAST 30 DAYS MESSAGES COUNT
@@ -201,6 +200,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   custom_company_home_logo: string;
   companyLogoNoText: string;
   displayNewsAndDocumentation: string;
+  projectChangedFromList: boolean;
   // list_case1 = [
   //   { pos: 1, type: 'child1'},
   //   { pos: 2, type: 'child2'},
@@ -244,6 +244,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   tokens_perc = 0;
   tokens_limit = 0;
 
+  voice_count = 0;
+  voice_perc = 0;
+  voice_limit = 0;
+  voice_limit_in_sec = 0;
+  voice_count_min_sec: any;
+
   project_limits: any;
   quotes: any;
   all_quotes: any;
@@ -251,6 +257,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+  voiceRunnedOut: boolean = false;
+  diplayVXMLVoiceQuota: boolean;
+
 
   // ---------------------------------------
   // For test 
@@ -259,7 +268,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // emailsRunnedOut: boolean = true;
   // tokensRunnedOut: boolean = true;
 
-  displayQuotaSkeleton: boolean = true;
+  displayQuotaSkeleton: boolean;
 
   salesEmail: string
 
@@ -303,7 +312,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.displayNewsAndDocumentation = brand['display-news-and-documentation'];
     // this.logger.log('[HOME] custom_company_home_logo ', this.custom_company_home_logo)
     this.tparams = brand;
-    this.selectedDaysId = 7;
+
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
@@ -311,8 +320,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.getLoggedUser()
     this.getCurrentProjectProjectByIdAndBots();
+    this.listenHasChangedProjectFroList()
     // this.getStorageBucket(); // moved in getCurrentProject()
-    console.log('[HOME] !!! Hello HomeComponent! ');
+    this.logger.log('[HOME] !!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
     this.translateString();
@@ -336,7 +346,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getChatUrl();
     this.getHasOpenBlogKey()
     this.diplayPopup();
-  
+
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
 
@@ -351,23 +361,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // this.listeHasOpenedNavbarQuotasMenu()
 
-    // this.quotesService.projectLimits$.subscribe((limits) => {
-    //   if (limits) {
-    //     this.project_limits = limits;
-    //     console.log("[HOME] Received project limits:", this.project_limits);
-    //   }
-    // });
-
-    // ✅ Subscribe to all quotes
-    // this.quotesService.allQuotes$.subscribe((quotes) => {
-    //   if (quotes) {
-    //     this.quotes = quotes;
-    //     console.log("[HOME] Received all quotes:", this.quotes);
-    //   }
-    // });
-
-
     this.listenToQuotas()
+
   }
 
   ngAfterViewInit() {
@@ -383,15 +378,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    console.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
+    this.logger.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-
-
 
     if (this.quotasSubscription) {
       this.quotasSubscription.unsubscribe();
     }
+  }
+
+  listenHasChangedProjectFroList() {
+    this.auth.hasChangedProjectFroList$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectChangedFromList) => {
+        this.logger.log('[HOME][HAS CHANGED PROJECT FROM LIST]: ', projectChangedFromList)
+        this.projectChangedFromList = projectChangedFromList
+      })
   }
 
   getCurrentProjectProjectByIdAndBots() {
@@ -409,17 +413,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.projectName = this.project.name
 
           if (this.projectId) {
+            this.displayQuotaSkeleton = true
 
-
-           
-            console.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 1:", this.displayQuotaSkeleton);
+            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 1:", this.displayQuotaSkeleton);
             // ----------------------------------------
             // Notify Navbar to fetch quotas
             // ----------------------------------------
             this.quotesService.requestQuotasUpdate();
-
             // this.getProjectQuotes();
-
           }
 
           this.prjct_name = this.project.name
@@ -442,6 +443,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
   }
+
+
 
   goToCreateChatbot() {
     this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
@@ -466,66 +469,51 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  getProjectQuotes() {
-    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
-      console.log("[HOME] getProjectQuotes response: ", response);
-      this.project_limits = response;
-      if (this.project_limits) {
-        this.getQuotes()
-      }
-    }).catch((err) => {
-      this.logger.error("[HOME] getProjectQuotes error: ", err);
-      this.displayQuotaSkeleton = false
-    })
-  }
-
-  listeHasOpenedNavbarQuotasMenu() {
-    //  this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
-    this.quotesService.hasOpenNavbarQuotasMenu$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((hasOpen) => {
-
-        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
-
-        if (this.projectId) {
-          if (hasOpen !== null) {
-            // this.getQuotes()
-          }
-        }
-      })
-  }
-  // .pipe(take(1))
   listenToQuotas() {
-    // if (this.quotasSubscription) {
-    //   this.quotasSubscription.unsubscribe();
-    // }
-    console.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1");
+    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ", this.projectId);
     this.quotasSubscription = this.quotesService.quotesData$
       .subscribe((data) => {
         if (data) {
-          console.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2");
+          this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2");
           this.quotasLimits = data.projectLimits;
           this.allQuotas = data.allQuotes;
-          console.log("[HOME] Received quotasLimits:", this.quotasLimits);
-          console.log("[HOME] Received allQuotas:", this.allQuotas);
+          this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
+          this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
 
           if (this.quotasLimits) {
             this.messages_limit = this.quotasLimits.messages;
             this.requests_limit = this.quotasLimits.requests;
             this.email_limit = this.quotasLimits.email;
             this.tokens_limit = this.quotasLimits.tokens;
-            console.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
-            console.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
-            console.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
-            console.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+
+            // if (this.quotasLimits.voice_duration)  {
+            this.voice_limit_in_sec = this.quotasLimits.voice_duration;
+            this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
+            // } else {
+            //   this.voice_limit = 0
+            // }
+
+
+            this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
+            this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
+            this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
+            this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+            this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
+            this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
+            this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
           }
 
-          console.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
-          console.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
-          console.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
-          console.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
+          // -----------------------------
+          // For test
+          // -----------------------------
+          // this.requests_limit = 1;
+          // this.email_limit = 1;
+          // this.tokens_limit = 1;
+
+          this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
+          this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
+          this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
+          this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
           if (this.allQuotas.requests.quote === null) {
             this.allQuotas.requests.quote = 0;
           }
@@ -538,30 +526,45 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.allQuotas.tokens.quote === null) {
             this.allQuotas.tokens.quote = 0;
           }
+          if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
+            this.allQuotas.voice_duration.quote = 0;
+            this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
+          }
 
 
           if (this.allQuotas.requests.quote >= this.requests_limit) {
             this.conversationsRunnedOut = true;
-            console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+            this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
           } else {
             this.conversationsRunnedOut = false;
-            console.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+            this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
           }
 
           if (this.allQuotas.email.quote >= this.email_limit) {
             this.emailsRunnedOut = true;
-            console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+            this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
           } else {
             this.emailsRunnedOut = false;
-            console.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+            this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
           }
 
           if (this.allQuotas.tokens.quote >= this.tokens_limit) {
             this.tokensRunnedOut = true;
-            console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+            this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
           } else {
             this.tokensRunnedOut = false;
-            console.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+            this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+          }
+
+          if (this.diplayVXMLVoiceQuota) {
+            if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
+              // if (3342 >= this.voice_limit_in_sec) {   
+              this.voiceRunnedOut = true;
+              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+            } else {
+              this.voiceRunnedOut = false;
+              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+            }
           }
 
 
@@ -569,131 +572,42 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
           this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
           this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
+          this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
 
           this.requests_count = this.allQuotas.requests.quote;
           this.messages_count = this.allQuotas.messages.quote;
           this.email_count = this.allQuotas.email.quote;
           this.tokens_count = this.allQuotas.tokens.quote;
+          this.voice_count = this.allQuotas.voice_duration?.quote
+          this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
 
+          this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
+          if (this.projectChangedFromList) {
+            setTimeout(() => {
+              this.displayQuotaSkeleton = false
+            }, 1000);
 
-          this.displayQuotaSkeleton = false
-          console.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
-
-         
+            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
+          } else {
+            this.displayQuotaSkeleton = false
+            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
+          }
         }
       },
-      (error) => {
-        // Handle error
-      },
-      () => {
-        // This complete callback will be called if/when the observable completes
-        console.log('[QUOTA-DEBUG][HOME] Subscription completed');
-      }
-    )}
-  
-
-  getQuotes() {
-    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("[HOME] getAllQuotes response: ", resp)
-      this.quotes = resp
-
-      this.logger.log("[HOME] project_limits: ", this.project_limits)
-      this.logger.log("[HOME] resp.quotes: ", resp.quotes)
-      if (this.project_limits) {
-        this.messages_limit = this.project_limits.messages;
-        this.requests_limit = this.project_limits.requests;
-        this.email_limit = this.project_limits.email;
-        this.tokens_limit = this.project_limits.tokens;
-      }
-      // -----------------------------
-      // For test
-      // -----------------------------
-      // this.requests_limit = 1;
-      // this.email_limit = 1;
-      // this.tokens_limit = 1;
-
-      if (resp.quotes.requests.quote === null) {
-        resp.quotes.requests.quote = 0;
-      }
-      if (resp.quotes.messages.quote === null) {
-        resp.quotes.messages.quote = 0;
-      }
-      if (resp.quotes.email.quote === null) {
-        resp.quotes.email.quote = 0;
-      }
-      if (resp.quotes.tokens.quote === null) {
-        resp.quotes.tokens.quote = 0;
-      }
-
-      this.logger.log('[HOME] used requests', resp.quotes.requests.quote)
-      this.logger.log('[HOME] requests_limit', this.requests_limit)
-
-      this.logger.log('[HOME] used email', resp.quotes.email.quote)
-      this.logger.log('[HOME] email_limit', this.email_limit)
-
-      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
-      this.logger.log('[HOME] tokens_limit', this.tokens_limit)
-
-
-
-      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
-      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
-      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
-      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
-
-      this.requests_count = resp.quotes.requests.quote;
-      this.logger.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
-      this.messages_count = resp.quotes.messages.quote;
-      this.email_count = resp.quotes.email.quote;
-      this.tokens_count = resp.quotes.tokens.quote;
-
-    }, (error) => {
-      this.logger.error("[HOME] get all quotes error: ", error)
-      this.displayQuotaSkeleton = false
-
-
-    }, () => {
-      this.logger.log("[HOME] get all quotes *COMPLETE*");
-      setTimeout(() => {
-        this.displayQuotaSkeleton = false
-        this.getRunnedOutQuotes(this.quotes)
-      }, 1500);
-
-    })
+        (error) => {
+          // Handle error
+        },
+        () => {
+          // This complete callback will be called if/when the observable completes
+          this.logger.log('[QUOTA-DEBUG][HOME] Subscription completed');
+        }
+      )
   }
 
-  getRunnedOutQuotes(resp) {
-    if (this.project_limits) {
-      if (resp.quotes.requests.quote >= this.project_limits.requests) {
-        this.conversationsRunnedOut = true;
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
-      } else {
-        this.conversationsRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-      }
-
-      if (resp.quotes.email.quote >= this.project_limits.email) {
-        this.emailsRunnedOut = true;
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
-      } else {
-        this.emailsRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-      }
-
-      if (resp.quotes.tokens.quote >= this.project_limits.tokens) {
-        this.tokensRunnedOut = true;
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-        // this.quotesService.hasReachedQuotasLimitInHome(true)
-      } else {
-        this.tokensRunnedOut = false;
-        // this.quotesService.hasReachedQuotasLimitInHome(false)
-        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-      }
-    }
+  secondsToMinutes_seconds(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
   }
 
   contacUsViaEmail() {
@@ -728,6 +642,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         const projectProfileData = project.profile
 
         this.manageChatbotVisibility(projectProfileData)
+        this.manageVoiceQuotaVisibility(projectProfileData)
 
         this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 
@@ -956,6 +871,43 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  manageVoiceQuotaVisibility(projectProfileData) {
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
+      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
+
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+        // if (projectProfileData['customization']['voice-twilio'] === true) {
+        //   this.diplayTwilioVoiceQuota = true
+        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+        //   this.diplayTwilioVoiceQuota = false
+        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+        //   this.diplayTwilioVoiceQuota = false
+        // }
+
+        if (projectProfileData['customization']['voice'] === true) {
+          this.diplayVXMLVoiceQuota = true
+        } else if (projectProfileData['customization']['voice'] === false) {
+          this.diplayVXMLVoiceQuota = false
+        } else if (projectProfileData['customization']['voice'] === undefined) {
+          this.diplayVXMLVoiceQuota = false
+        }
+      } else {
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+        this.diplayVXMLVoiceQuota = false
+      }
+
+    } else {
+
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+      // this.diplayTwilioVoiceQuota = false
+      this.diplayVXMLVoiceQuota = false
+    }
+
+  }
+
 
   trackTrialEnded(project, trialStarDate, trialEndDate) {
     if (!isDevMode()) {
@@ -1020,7 +972,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.chatbots = faqKb
-      console.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
+      this.logger.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
@@ -1037,7 +989,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     }, () => {
-      console.log('[HOME] - GET FAQKB * COMPLETE *');
+      this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       // if(!this.displayKbHeroSection) {
       this.showskeleton = false;
       // } else {
@@ -1076,7 +1028,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getDashlet(project_attributes) {
     // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
-      console.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
+      this.logger.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
 
       this.displayAnalyticsConvsGraph = dashlets.convsGraph
@@ -1215,24 +1167,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PROJECT ATTRIBUTES ', project_attributes);
+    this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PROJECT ATTRIBUTES > USER PREFERENCE', project_attributes.userPreferences);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
     //   this.current_prjct.id_project.attributes.userPreferences) {
+
     if (project_attributes && project_attributes.userPreferences.onboarding_type) {
       if (project_attributes.userPreferences.onboarding_type === "kb") {
         this.displayKbHeroSection = true
       } else {
         this.displayKbHeroSection = false
       }
-      this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  displayKbHeroSection', this.displayKbHeroSection);
+      this.logger.log('[HOME][x][HOME-CDS] - getOnbordingPreferences PREFERENCES ---> displayKbHeroSection', this.displayKbHeroSection);
+    } else {
+      this.displayKbHeroSection = false
     }
-
-
-
-
-
 
     this.solution = project_attributes.userPreferences.solution
     this.solution_channel = project_attributes.userPreferences.solution_channel
@@ -1260,27 +1211,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
 
-      // this.displayAnalyticsConvsGraph = false;
-      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot)
+      // await this.switchCreateChatbot(this.displayCreateChatbot)
 
       this.displayInviteTeammate = true;
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayCustomizeWidget = false;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget);
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget);
 
       this.displayKnowledgeBase = true;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.logger.log('[HOME] - YES ATTRIBUTES - NO USER PREFERENCES');
     }
@@ -1306,29 +1252,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
 
-      // this.displayAnalyticsConvsGraph = false;
-      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
+
       this.displayConnectWhatsApp = false;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot)
+      // await this.switchCreateChatbot(this.displayCreateChatbot)
 
       this.displayInviteTeammate = true
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = true;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = true;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
-
-
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
     }
 
     // ----------------------------------------------
@@ -1350,31 +1290,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
 
-      // this.displayAnalyticsConvsGraph = false;
-      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
 
       this.displayConnectWhatsApp = false;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot);
+      // await this.switchCreateChatbot(this.displayCreateChatbot);
 
       this.displayInviteTeammate = true
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = false;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = true;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
 
     }
+
     // ----------------------------------------------
     // USECASE 3
     // ----------------------------------------------
@@ -1394,26 +1330,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      // this.displayAnalyticsConvsGraph = false;
-      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
-
-      // this.displayAnalyticsIndicators = false;
-      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-
       this.displayWhatsappAccountWizard = true;
 
-
       this.displayConnectWhatsApp = true;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot);
+      // await this.switchCreateChatbot(this.displayCreateChatbot);
 
       this.displayInviteTeammate = true
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = true;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = false;
       await this.switchCustomizeWidget(this.displayCustomizeWidget)
@@ -1449,19 +1378,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayWhatsappAccountWizard = true;
 
       this.displayConnectWhatsApp = true;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot);
+      // await this.switchCreateChatbot(this.displayCreateChatbot);
 
       this.displayInviteTeammate = true;
-      await this.switchInviteTeammate(this.displayInviteTeammate);
+      // await this.switchInviteTeammate(this.displayInviteTeammate);
 
       this.displayKnowledgeBase = false;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = false;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
 
     }
@@ -1493,19 +1422,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot);
+      // await this.switchCreateChatbot(this.displayCreateChatbot);
 
       this.displayInviteTeammate = true;
-      await this.switchInviteTeammate(this.displayInviteTeammate);
+      // await this.switchInviteTeammate(this.displayInviteTeammate);
 
       this.displayKnowledgeBase = true;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = true;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
     }
 
@@ -1536,19 +1465,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true;
-      await this.switchCreateChatbot(this.displayCreateChatbot);
+      // await this.switchCreateChatbot(this.displayCreateChatbot);
 
       this.displayInviteTeammate = true;
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = false;
       await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = true;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
     }
 
@@ -1576,22 +1505,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // this.displayAnalyticsIndicators = false;
       // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
       this.displayWhatsappAccountWizard = true;
 
       this.displayConnectWhatsApp = true;
-      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+      // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
       this.displayCreateChatbot = true
-      await this.switchCreateChatbot(this.displayCreateChatbot)
+      // await this.switchCreateChatbot(this.displayCreateChatbot)
 
       this.displayInviteTeammate = true
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = true;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = false;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
     }
 
@@ -1618,19 +1548,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayWhatsappAccountWizard = true;
 
       this.displayConnectWhatsApp = true;
-      await this.switchConnectWhatsApp(true);
+      // await this.switchConnectWhatsApp(true);
 
       this.displayCreateChatbot = true
-      await this.switchCreateChatbot(this.displayCreateChatbot)
+      // await this.switchCreateChatbot(this.displayCreateChatbot)
 
       this.displayInviteTeammate = true
-      await this.switchInviteTeammate(this.displayInviteTeammate)
+      // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = false;
-      await this.switchyKnowledgeBase(false);
+      // await this.switchyKnowledgeBase(false);
 
       this.displayCustomizeWidget = false;
-      await this.switchCustomizeWidget(false)
+      // await this.switchCustomizeWidget(false)
 
 
 
@@ -1686,19 +1616,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToConnectWA() {
-    console.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
+    this.logger.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
     this.scrollToChild(this.childWhatsappAccount)
   }
 
   onClickOnGoToLearnMoreOrManageApp() {
-    console.log('HAS CLICKED GO TO WhatsApp Details')
+    this.logger.log('HAS CLICKED GO TO WhatsApp Details')
     this.goToWhatsAppDetails()
 
   }
 
   goToWhatsAppDetails() {
     this.appTitle = "WhatsApp Business"
-    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
     this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
@@ -2015,14 +1945,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-
-
- 
-
-  
-
-
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
     this.logger.log('[HOME] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
@@ -2286,11 +2208,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  
-
-
-
-
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
     this.logger.log('[HOME] BRS-LANG (USED FOR SWITCH MONTH NAME)', this.browserLang)
@@ -2306,7 +2223,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
-      console.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
         this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
@@ -2425,15 +2342,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
-
-
-
-
-  
-  
-
- 
-
   // test link
   goToAnalyticsStaticPage() {
     this.router.navigate(['project/' + this.projectId + '/analytics-demo']);
@@ -2545,7 +2453,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async switchAnalyticsIndicators(event) {
-    console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsIndicators = event
     await this.updatesDashletsPreferences('switchAnalyticsIndicators')
   }
@@ -2583,14 +2491,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   async switchNewsFeed(event) {
     this.logger.log('[HOME] SWITCH NEWS FEED event ', event)
     this.displayNewsFeed = event;
-    // await this.updatesDashletsPreferences('switchNewsFeed')
+    await this.updatesDashletsPreferences('switchNewsFeed')
   }
 
 
 
   async updatesDashletsPreferences(calledBy) {
     // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-    console.log('[HOME] - calling updatesDashletsPreferences by ', calledBy);
+    this.logger.log('[HOME] - calling updatesDashletsPreferences by ', calledBy);
     return await this.projectService.updateDashletsPreferences(
       this.displayAnalyticsConvsGraph,
       this.displayAnalyticsIndicators,
@@ -2601,7 +2509,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget,
       this.displayNewsFeed)
       .toPromise().then((res) => {
-       console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
         return;
       }).catch((err) => {
         this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
@@ -2621,29 +2529,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   goToOperatingHours() {
     this.router.navigate(['project/' + this.projectId + '/hours']);
   }
-
-
-
- 
-  
-
- 
-
-  
-
-
-
- 
-
- 
-
-
-
-  
-
-
-
-
 
   // goToTiledeskMobileAppPage() {
   //   let url = ''
@@ -2684,7 +2569,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.hidechangelogrocket = true;
   }
 
- 
+
 
   goToTemplates() {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
@@ -2875,6 +2760,151 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  // -------------------------
+  // No more used
+  // -------------------------
+  getProjectQuotes() {
+    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
+      this.logger.log("[HOME] getProjectQuotes response: ", response);
+      this.project_limits = response;
+      if (this.project_limits) {
+        this.getQuotes()
+      }
+    }).catch((err) => {
+      this.logger.error("[HOME] getProjectQuotes error: ", err);
+      this.displayQuotaSkeleton = false
+    })
+  }
+
+  // -------------------------
+  // No more used
+  // -------------------------
+  getQuotes() {
+    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[HOME] getAllQuotes response: ", resp)
+      this.quotes = resp
+
+      this.logger.log("[HOME] project_limits: ", this.project_limits)
+      this.logger.log("[HOME] resp.quotes: ", resp.quotes)
+      if (this.project_limits) {
+        this.messages_limit = this.project_limits.messages;
+        this.requests_limit = this.project_limits.requests;
+        this.email_limit = this.project_limits.email;
+        this.tokens_limit = this.project_limits.tokens;
+      }
+      // -----------------------------
+      // For test
+      // -----------------------------
+      // this.requests_limit = 1;
+      // this.email_limit = 1;
+      // this.tokens_limit = 1;
+
+      if (resp.quotes.requests.quote === null) {
+        resp.quotes.requests.quote = 0;
+      }
+      if (resp.quotes.messages.quote === null) {
+        resp.quotes.messages.quote = 0;
+      }
+      if (resp.quotes.email.quote === null) {
+        resp.quotes.email.quote = 0;
+      }
+      if (resp.quotes.tokens.quote === null) {
+        resp.quotes.tokens.quote = 0;
+      }
+
+      this.logger.log('[HOME] used requests', resp.quotes.requests.quote)
+      this.logger.log('[HOME] requests_limit', this.requests_limit)
+
+      this.logger.log('[HOME] used email', resp.quotes.email.quote)
+      this.logger.log('[HOME] email_limit', this.email_limit)
+
+      this.logger.log('[HOME] used tokens', resp.quotes.tokens.quote)
+      this.logger.log('[HOME] tokens_limit', this.tokens_limit)
+
+
+
+      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
+      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
+      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
+      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+
+      this.requests_count = resp.quotes.requests.quote;
+      this.logger.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
+      this.messages_count = resp.quotes.messages.quote;
+      this.email_count = resp.quotes.email.quote;
+      this.tokens_count = resp.quotes.tokens.quote;
+
+    }, (error) => {
+      this.logger.error("[HOME] get all quotes error: ", error)
+      this.displayQuotaSkeleton = false
+
+
+    }, () => {
+      this.logger.log("[HOME] get all quotes *COMPLETE*");
+      setTimeout(() => {
+        this.displayQuotaSkeleton = false
+        this.getRunnedOutQuotes(this.quotes)
+      }, 1500);
+
+    })
+  }
+
+  getRunnedOutQuotes(resp) {
+    if (this.project_limits) {
+      if (resp.quotes.requests.quote >= this.project_limits.requests) {
+        this.conversationsRunnedOut = true;
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.conversationsRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+      }
+
+      if (resp.quotes.email.quote >= this.project_limits.email) {
+        this.emailsRunnedOut = true;
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.emailsRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+      }
+
+      if (resp.quotes.tokens.quote >= this.project_limits.tokens) {
+        this.tokensRunnedOut = true;
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+        // this.quotesService.hasReachedQuotasLimitInHome(true)
+      } else {
+        this.tokensRunnedOut = false;
+        // this.quotesService.hasReachedQuotasLimitInHome(false)
+        this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+      }
+    }
+  }
+
+
+
+  // -------------------------
+  // No more used
+  // -------------------------
+  listeHasOpenedNavbarQuotasMenu() {
+    //  this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu ");
+    this.quotesService.hasOpenNavbarQuotasMenu$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((hasOpen) => {
+
+        this.logger.log("[HOME] listeHasOpenedNavbarQuotasMenu hasOpen", hasOpen);
+
+        if (this.projectId) {
+          if (hasOpen !== null) {
+            // this.getQuotes()
+          }
+        }
+      })
+  }
 
   // NOT YET USED
   // superUserAuth() {
@@ -2893,7 +2923,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
 
-    // OLD - NOW NOT WORKS
+  // OLD - NOW NOT WORKS
   // getVisitorCounter() {
   //   this.departmentService.getVisitorCounter()
   //     .subscribe((visitorCounter: any) => {

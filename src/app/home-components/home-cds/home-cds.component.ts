@@ -86,24 +86,24 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     // this.getCurrentProject()
     // this.getFaqKbByProjectId()
 
+  
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.logger.log('[HOME-CDS] - ngOnChanges chatbots', this.chatbots);
+    this.logger.log('[HOME-CDS] - ngOnChanges project', this.project);
+    this.logger.log('[HOME-CDS] - ngOnChanges USER_ROLE', this.USER_ROLE);
+    this.logger.log('[HOME-CDS] - ngOnChanges displayKbHeroSection', this.displayKbHeroSection);
+    this.logger.log('[HOME-CDS] - ngOnChanges isVisibleKNB ', this.isVisibleKNB);
+    this.chatbotCount = this.chatbots?.length
+    this.logger.log('[HOME-CDS] - chatbotCount ngOnChanges', this.chatbotCount);
+    this.projectId = this.project._id
+    this.logger.log('[HOME-CDS] - project ngOnChanges projectId', this.projectId);
+
     if (this.isVisibleKNB) {
       this.getKB()
     }
     this.sortChatbots();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('[HOME-CDS] - ngOnChanges chatbots', this.chatbots);
-    console.log('[HOME-CDS] - ngOnChanges project', this.project);
-    console.log('[HOME-CDS] - ngOnChanges USER_ROLE', this.USER_ROLE);
-    this.logger.log('[HOME-CDS] - ngOnChanges displayKbHeroSection', this.displayKbHeroSection);
-    this.logger.log('[HOME-CDS] - ngOnChanges isVisibleKNB ', this.isVisibleKNB);
-    this.chatbotCount = this.chatbots?.length
-    console.log('[HOME-CDS] - chatbotCount ngOnChanges', this.chatbotCount);
-    this.projectId = this.project._id
-    console.log('[HOME-CDS] - project ngOnChanges projectId', this.projectId);
-
-   
   }
 
 
@@ -116,10 +116,10 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   getKB() {
    
       const storedNamespace = this.localDbService.getFromStorage(`last_kbnamespace-${this.projectId}`)
-      console.log('[HOME-CDS] storedNamespace', storedNamespace);
+      this.logger.log('[HOME-CDS] storedNamespace', storedNamespace);
       if (storedNamespace) {
         let storedNamespaceObjct = JSON.parse(storedNamespace)
-        console.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
+        this.logger.log('[HOME-CDS] storedNamespaceObjct', storedNamespaceObjct);
         this.kbNameSpaceid = storedNamespaceObjct.id;
         this.kbNameSpaceName = storedNamespaceObjct.name
         this.getChatbotUsingNamespace(this.kbNameSpaceid)
@@ -135,7 +135,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.kbService.getAllNamespaces().subscribe((namespaces: any) => {
       if (namespaces) {
 
-        console.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
+        this.logger.log('[HOME-CDS] - GET ALL NAMESPACES', namespaces);
         this.namespaces = namespaces
         namespaces.sort(function compare(a, b) {
           if (a['updatedAt'] > b['updatedAt']) {
@@ -169,7 +169,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((kbAssistants: any) => {
 
-      console.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
+      this.logger.log('[HOME-CDS] - GET kbAssistant USING NAMESPACE kbAssistants', kbAssistants);
       this.chatbotsUsingNamespace = kbAssistants
 
       if (this.chatbotsUsingNamespace.length > 0) {
@@ -273,7 +273,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   goToKBPage() {
-    console.log('[HOME-CDS] goToKBPage projectId ', this.projectId, ' kbNameSpaceid ', this.kbNameSpaceid)
+    this.logger.log('[HOME-CDS] goToKBPage projectId ', this.projectId, ' kbNameSpaceid ', this.kbNameSpaceid)
     this.router.navigate(['project/' + this.projectId + '/knowledge-bases/' + this.kbNameSpaceid]);
   }
 
@@ -398,7 +398,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
 
   importChatbotFromJSON(editedChatbot) {
-   console.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
+    this.logger.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON editedChatbot ', editedChatbot)
     this.faqService.importChatbotFromJSONFromScratch(editedChatbot).subscribe((faqkb: any) => {
       this.logger.log('[HOME-CDS] - IMPORT CHATBOT FROM JSON - ', faqkb)
       if (faqkb) {
@@ -421,7 +421,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
   getDeptsByProjectId(faqkb?: string) {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[HOME-CDS] --->  DEPTS RES ', departments);
+      this.logger.log('[HOME-CDS] --->  DEPTS RES ', departments);
 
       if (departments) {
         const depts_length = departments.length
