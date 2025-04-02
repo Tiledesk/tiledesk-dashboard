@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.96-rc2
+- Removes duplicated code
+
 ### 2.7.96-rc1
 - Improves Home page performance
 - Implements the HTTP interceptor
