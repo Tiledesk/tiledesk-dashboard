@@ -1,5 +1,17 @@
 # tiledesk-dashboard
 
+### 2.7.96-rc1
+- Improves Home page performance
+
+### 2.7.95
+- Minor improvements and bug fixing
+
+### 2.7.94
+- Makes Automations Log available from the Pro plan
+
+### 2.7.93
+- Enables Ollama integration
+
 ### 2.7.93-rc3
 - Improves the integration Ollama 
 
