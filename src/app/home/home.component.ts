@@ -620,13 +620,79 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         const projectProfileData = project.profile
-
+    
         this.manageChatbotVisibility(projectProfileData)
         this.manageVoiceQuotaVisibility(projectProfileData)
 
         this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 
+        this.prjct_name = project.name
+        this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
 
+        this.prjct_profile_name = projectProfileData.name;
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
+
+        this.profile_name = projectProfileData.name;
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
+
+        this.prjct_trial_expired = project.trialExpired;
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
+
+        this.prjct_profile_type = projectProfileData.type;
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
+
+        this.subscription_is_active = project.isActiveSubscription;
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
+
+        this.subscription_end_date = projectProfileData.subEnd;
+        this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
+
+        if (projectProfileData && projectProfileData.extra3) {
+          this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
+
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+          this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
+          this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+        } else if (!projectProfileData.extra3) {
+          this.tPlanParams = { 'plan_name': PLAN_NAME.B }
+        }
+
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+          this.DISPLAY_OPH_AS_DISABLED = true;
+        } else {
+          this.DISPLAY_OPH_AS_DISABLED = false;
+        }
+
+
+        this.buildProjectProfileName()
+
+
+        const projectCreatedAt = project.createdAt
+        this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
+        const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
+        this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
+
+        const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
+        this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
+
+        const currentTime = moment();
+
+        const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
+        this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
+
+        const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
+        this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
+        this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
+
+        if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
+          this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+
+          localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
+
+          this.trackTrialEnded(project, trialStarDate, trialEndDate)
+
+        }
 
         this.trackGroup(projectProfileData)
       }
@@ -734,77 +800,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-  destructureProjectProfile(project, projectProfileData) {
-    this.prjct_name = project.name
-    this.logger.log('[HOME] - (getProjectById) - prjct_name', this.prjct_name)
-
-    this.prjct_profile_name = projectProfileData.name;
-    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
-
-    this.profile_name = projectProfileData.name;
-    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
-
-    this.prjct_trial_expired = project.trialExpired;
-    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
-
-    this.prjct_profile_type = projectProfileData.type;
-    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
-
-    this.subscription_is_active = project.isActiveSubscription;
-    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
-
-    this.subscription_end_date = projectProfileData.subEnd;
-    this.logger.log('[HOME] - (getProjectById) CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
-
-    if (projectProfileData && projectProfileData.extra3) {
-      this.logger.log('[HOME] (getProjectById) extra3 ', projectProfileData.extra3)
-
-      this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
-      this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-      this.logger.log('[HOME] (getProjectById) appSumoProfile ', this.appSumoProfile)
-      this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-    } else if (!projectProfileData.extra3) {
-      this.tPlanParams = { 'plan_name': PLAN_NAME.B }
-    }
-
-    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-      this.DISPLAY_OPH_AS_DISABLED = true;
-    } else {
-      this.DISPLAY_OPH_AS_DISABLED = false;
-    }
-
-
-    this.buildProjectProfileName()
-
-
-    const projectCreatedAt = project.createdAt
-    this.logger.log('[HOME] - getProjectById CreatedAt', projectCreatedAt)
-    const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
-    this.logger.log('[HOME] - getProjectById trialStarDate', trialStarDate)
-
-    const trialEndDate = moment(new Date(projectCreatedAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-    this.logger.log('[HOME] - getProjectById trialEndDate', trialEndDate)
-
-    const currentTime = moment();
-
-    const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
-    this.logger.log('[HOME] - getProjectById daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
-
-    const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + project._id)
-    this.logger.log('[HOME] - getProjectById hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', project._id)
-    this.logger.log('[HOME] - getProjectById - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
-
-    if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
-      this.logger.log('[HOME] - getProjectById - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
-
-      localStorage.setItem('dshbrd----' + project._id, 'hasEmittedTrialEnded')
-
-      this.trackTrialEnded(project, trialStarDate, trialEndDate)
-
-    }
-
-  }
 
 
   buildProjectProfileName() {
