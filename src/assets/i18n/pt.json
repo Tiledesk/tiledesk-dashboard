@@ -631,6 +631,8 @@
     "UploadLogo":"Carregar logotipo",
     "FileTooLarge": "O ficheiro é demasiado grande para ser carregado. Tamanho máximo do ficheiro {{file_size}}",
     "ImagePreview":"Pré-visualização da imagem",
+    "Models": "Modelos",
+    "Optional": "opcional",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -634,6 +634,8 @@
     "UploadLogo":"Logoyu yükle",
     "FileTooLarge": "Dosya yüklenemeyecek kadar büyük. Maksimum dosya boyutu {{file_size}}",
     "ImagePreview":"Resim önizlemesi",
+    "Models": "Modeller",
+    "Optional": "isteğe bağlı",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -427,7 +427,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     project_id: string,
     project_status: number,
     ) {
-    console.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
+    // console.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
     
     localStorage.setItem('last_project', JSON.stringify(project_user))
     // window.top.postMessage('hasChangedProject', '*')

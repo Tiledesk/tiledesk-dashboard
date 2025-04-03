@@ -1062,19 +1062,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.displayWhatsappAccountWizard = false;
     this.displayConnectWhatsApp = false;
-    await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+    // await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
 
     this.displayCreateChatbot = true;
-    await this.switchCreateChatbot(this.displayCreateChatbot)
+    // await this.switchCreateChatbot(this.displayCreateChatbot)
 
     this.displayInviteTeammate = true;
-    await this.switchInviteTeammate(this.displayInviteTeammate)
+    // await this.switchInviteTeammate(this.displayInviteTeammate)
 
     this.displayCustomizeWidget = false;
-    await this.switchCustomizeWidget(this.displayCustomizeWidget);
+    // await this.switchCustomizeWidget(this.displayCustomizeWidget);
 
     this.displayKnowledgeBase = true;
-    await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+    // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
   }
 
 
@@ -1345,7 +1345,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = false;
-      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+      // await this.switchCustomizeWidget(this.displayCustomizeWidget)
 
     }
 
@@ -1474,7 +1474,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayKnowledgeBase = false;
-      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+      // await this.switchyKnowledgeBase(this.displayKnowledgeBase);
 
       this.displayCustomizeWidget = true;
       // await this.switchCustomizeWidget(this.displayCustomizeWidget)

@@ -266,11 +266,13 @@
               <!-- -------------------------- -->
               <!-- Conversations  -->
               <!-- -------------------------- -->
+              <!-- class="quote-title link" --> 
+              <!-- (click)="goToHistoryAllConvs()" -->
               <div class="home-quote-container"
                 [ngClass]="{'home-quote-container-conversations-runned-out': conversationsRunnedOut}">
 
                 <div class="home-quote-title-count-wpr">
-                  <p class="quote-title link" (click)="goToHistoryAllConvs()" matTooltipClass="custom-mat-tooltip"
+                  <p class="quote-title" matTooltipClass="custom-mat-tooltip"
                     matTooltip="Current usage" #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                     Conversations
                   </p>

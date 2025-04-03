@@ -632,6 +632,8 @@
     "UploadLogo":"Загрузить логотип",
     "FileTooLarge": "Файл слишком большой для загрузки. Максимальный размер файла {{file_size}}",
     "ImagePreview":"Предварительный просмотр изображения",
+    "Models": "Модели",
+    "Optional": "необязательный",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},
