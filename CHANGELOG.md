@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.96-rc3
+- Minor improvements and bug fixing
+
 ### 2.7.96-rc2
 - Removes duplicated code
 
