@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.96
+- Improves Home page performance
+- Implements the HTTP interceptor
+
 ### 2.7.95
 - Minor improvements and bug fixing
 
