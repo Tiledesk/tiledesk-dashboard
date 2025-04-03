@@ -3747,24 +3747,42 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   enableSingleConversation(event) {
     // this.logger.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
     this.singleConversation = event.target.checked
+    // if (this.singleConversation === true) {
+
+    //   this.widgetObj['singleConversation'] = this.singleConversation;
+
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+    // } else if (this.singleConversation === false) {
+
+    //   delete this.widgetObj['singleConversation'];
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+
+    // }
+  }
+
+  saveWidgetSingleConversation () {
+
     if (this.singleConversation === true) {
 
       this.widgetObj['singleConversation'] = this.singleConversation;
 
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.singleConversation === false) {
 
       delete this.widgetObj['singleConversation'];
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
+
+    this.widgetService.updateWidgetProject(this.widgetObj)
+    console.log('[WIDGET-SET-UP] SAVE WIDGET single conversation widgetObj', this.widgetObj)
   }
 
   // --------------------------------------------------------------------------------------
   //  @ Widget visibility
   // --------------------------------------------------------------------------------------
   changeDesktopWidgetVisibility(event) {
-    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
+    console.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
     this.desktop_widget_is_visible = event.target.checked;
 
     if (this.desktop_widget_is_visible === false) {
@@ -3782,30 +3800,54 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   changeMobileWidgetVisibility(event) {
-    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
+    console.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
     this.mobile_widget_is_visible = event.target.checked
+
+    // if (this.mobile_widget_is_visible === false) {
+    //   this.widgetObj['displayOnMobile'] = this.mobile_widget_is_visible;
+    //   delete this.widgetObj['onPageChangeVisibilityMobile']
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+    // } else if (this.mobile_widget_is_visible === true) {
+    //   this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
+    //   delete this.widgetObj['displayOnMobile'];
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+    // }
+  }
+
+  onSelectDesktopWidgetStatus() {
+    console.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
+    // this.widgetObj['onPageChangeVisibilityDesktop'] = this.desktopWidgetStatus;
+    // this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  onSelectMobilepWidgetStatus() {
+    console.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
+    // this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
+    // this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  saveWidgetVisibility() {
+   
 
     if (this.mobile_widget_is_visible === false) {
       this.widgetObj['displayOnMobile'] = this.mobile_widget_is_visible;
       delete this.widgetObj['onPageChangeVisibilityMobile']
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.mobile_widget_is_visible === true) {
       this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
       delete this.widgetObj['displayOnMobile'];
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     }
-  }
 
-  onSelectDesktopWidgetStatus() {
-    // this.logger.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
     this.widgetObj['onPageChangeVisibilityDesktop'] = this.desktopWidgetStatus;
-    this.widgetService.updateWidgetProject(this.widgetObj)
-  }
+    // this.widgetService.updateWidgetProject(this.widgetObj)
 
-  onSelectMobilepWidgetStatus() {
-    // this.logger.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
     this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
+
+
     this.widgetService.updateWidgetProject(this.widgetObj)
+
+    console.log('[WIDGET-SET-UP] SAVE WIDGET VISIBILITY widgetObj', this.widgetObj)
   }
 
 

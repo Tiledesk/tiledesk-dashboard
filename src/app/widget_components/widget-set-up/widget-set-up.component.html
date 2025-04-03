@@ -1140,6 +1140,22 @@
 											</div>
 										</div>
 
+										<!-- ------------------------------------- -->
+										<!-- Save -->
+										<!-- ------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											<div class="col-sm-12">
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" btn-success-no-boxshadow-->
+												<button class="btn btn-tdblu-no-boxshadow appearance_save_btn_bottom"
+													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+													(click)="saveWidgetVisibility()">
+
+													{{ 'UpdateWidget' | translate }}
+												</button>
+											</div>
+										</div>
+
 									</div> <!-- ./	section-offset -->
 								</div>
 
@@ -1312,6 +1328,23 @@
 														</div>
 													</div>
 												</div>
+											</div>
+										</div>
+
+										<!-- ------------------------------------- -->
+										<!-- Save -->
+										<!-- ------------------------------------- -->
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+											
+											<div class="col-sm-12">
+												<!-- [disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0" btn-success-no-boxshadow-->
+												<button class="btn btn-tdblu-no-boxshadow appearance_save_btn_bottom"
+													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
+													(click)="saveWidgetSingleConversation()">
+
+													{{ 'UpdateWidget' | translate }}
+												</button>
 											</div>
 										</div>
 
@@ -2919,7 +2952,7 @@
 													<div *ngIf="translation?.code !== defaultLangCode "
 														(click)="makeDefaultLanguage(translation?.code)">
 														<button class="btn btn-outlined"
-															style="padding: 4px 9px !important;font-size: 11px;">
+															style="padding: 4px 9px !important;font-size: 11px;height: 25px;">
 															{{'MakeDefault' | translate}}
 														</button>
 													</div>
