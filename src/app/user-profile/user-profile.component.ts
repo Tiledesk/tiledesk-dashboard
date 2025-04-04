@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, isDevMode, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 // USED FOR go back last page
@@ -21,6 +21,8 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
+import { parsePhoneNumberFromString, isValidPhoneNumber, AsYouType, getCountries, getCountryCallingCode } from 'libphonenumber-js/max';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -31,6 +33,7 @@ const Swal = require('sweetalert2')
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent extends PricingBaseComponent implements OnInit {
+  @ViewChild('phoneInput') phoneInput!: ElementRef<HTMLInputElement>;
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
@@ -39,8 +42,14 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   userFirstname: string;
   userLastname: string;
   userEmail: string;
+  userPhone: string;
+  userPhoneValue:string;
+  selectedCountry: any;
+  countries: { code: string; name: string; dialCode: string }[] = [];
+  dialCode: string;
+  isValidPhoneNumber: boolean
   userId: string;
-  displayModalUpdatingUser = 'none';
+  // displayModalUpdatingUser = 'none';
   SHOW_CIRCULAR_SPINNER = false;
   UPDATE_USER_ERROR = false;
   showSpinner = true;
@@ -76,6 +85,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
   prjct_profile_name: string;
   prjct_id: string;
   prjct_name: string;
+  mobile_number_available: boolean;
+  dislayUserPhoneMandatoryMsg: boolean;
 
   @ViewChild('fileInputUserProfileImage', { static: false }) fileInputUserProfileImage: any;
 
@@ -179,14 +190,15 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     public brandService: BrandService
   ) {
     super(prjctPlanService, notify);
-    const brand = brandService.getBrand(); 
+    const brand = brandService.getBrand();
     this.displayChangePwd = brand['display_change_pwd']
-    // console.log('[USER-PROFILE] displayChangePwd ' , this.displayChangePwd) 
-   }
+    // this.logger.log('[USER-PROFILE] displayChangePwd ' , this.displayChangePwd) 
+  }
 
   ngOnInit() {
 
     this.getLoggedUser();
+
     this.getProfileImageStorage();
     this.getCurrentProject();
 
@@ -209,110 +221,6 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.fileUploadAccept = 'image/jpg, image/jpeg, image/png'
   }
 
-
-  trackPage() {
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        try {
-          window['analytics'].page("User Profile Page, Profile", {
-
-          });
-        } catch (err) {
-          // this.logger.error('User Profile page error', err);
-        }
-      }
-    }
-  }
-
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-  //     // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
-  //     if (projectProfileData) {
-  //       this.prjct_id = projectProfileData._id
-  //       this.prjct_name = projectProfileData.name
-
-  //       if (projectProfileData && projectProfileData.extra3) {
-  //         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-  //         this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
-  //       }
-
-
-  //       if (projectProfileData.profile_type === 'free') {
-  //         if (projectProfileData.trial_expired === false) {
-  //           this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-
-  //         } else {
-  //           this.prjct_profile_name = "Free plan";
-
-  //         }
-  //       } else if (projectProfileData.profile_type === 'payment') {
-
-  //         if (projectProfileData.profile_name === PLAN_NAME.A) {
-  //           if (!this.appSumoProfile) {
-  //             this.prjct_profile_name = PLAN_NAME.A + " plan";
-
-  //           } else {
-  //             this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-  //           }
-  //         } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-  //           if (!this.appSumoProfile) {
-  //             this.prjct_profile_name = PLAN_NAME.B + " plan";
-
-  //           } else {
-  //             this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-
-  //           }
-  //         } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-  //           this.prjct_profile_name = PLAN_NAME.C + " plan";
-  //         }
-  //       }
-
-  //       // if (projectProfileData.profile_type === 'free') {
-  //       //   if (projectProfileData.trial_expired === false) {
-
-  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-  //       //   } else {
-
-  //       //     this.prjct_profile_name = "Free plan"
-
-  //       //   }
-  //       // } else if (projectProfileData.profile_type === 'payment') {
-
-  //       //   if (projectProfileData.profile_name === PLAN_NAME.A) {
-  //       //     this.prjct_profile_name = PLAN_NAME.A + " plan";
-
-  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
-
-  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan";
-
-  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
-
-  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-  //       //     this.prjct_profile_name = PLAN_NAME.C + " plan";
-
-  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
-  //       //   }
-
-  //       // }
-  //     }
-  //   }, error => {
-  //     this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
-  //   }, () => {
-
-  //     this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
-
-  //   });
-  // }
-
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
-  }
-
   ngAfterViewInit(): void {
     try {
       // name of the class of the html div = . + fragment
@@ -328,6 +236,50 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   }
 
+  trackPage() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
+
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
+        }
+      }
+    }
+  }
+
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+
+      if (this.project) {
+        this.projectId = project._id
+        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project)
+      } else {
+        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project, ' - HIDE SIDEBAR')
+        this.selectSidebar();
+      }
+    });
+  }
+
+
+  getProjectUserRole() {
+    this.usersService.projectUser_bs
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[USER-PROFILE] - USER ROLE ', projectUser);
+        if (projectUser) {
+          // this.userRole = user_role
+          this.translate.get(projectUser.role)
+            .subscribe((text: string) => {
+              this.userRole = text;
+            });
+        }
+      });
+  }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
@@ -340,6 +292,10 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.userLastname = user.lastname;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
         this.userId = user._id;
+
+
+        // this.getCurrentProjectUser(this.userId)
+
         this.userEmail = user.email;
         this.firstnameCurrentValue = user.firstname;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
@@ -349,12 +305,63 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
 
+        const user_phone = user['phone'];
+        this.logger.log('[USER-PROFILE] - USER GET user_phone ', user_phone)
+
+        if (user_phone) {
+          this.mobile_number_available = true;
+          this.dislayUserPhoneMandatoryMsg= true;
+          // this.isValidPhoneNumber = isValidPhoneNumber(user_phone)
+          this.logger.log('[USER-PROFILE] USER GET IN USER PROFILE mobile_number_available ', this.mobile_number_available)
+
+          const phoneNumber = parsePhoneNumberFromString(user_phone);
+          this.logger.log('[USER-PROFILE] - USER GET USER  parsed phone Number ', phoneNumber)
+
+          this.logger.log('[USER-PROFILE] - USER GET USER  parsed phone Number country', phoneNumber.country)
+
+          if (phoneNumber) {
+            this.logger.log('USER-PROFILE] - USER GET USER phone Number getType ', phoneNumber.getType())
+          }
+
+          const formatter = new AsYouType();
+          this.userPhone = formatter.input(user_phone);
+
+          this.getSupportedCountry(phoneNumber.country, 'hasMobile')
+
+          if (isValidPhoneNumber(this.userPhone) === false) {
+
+            this.isValidPhoneNumber = false
+          } else if (isValidPhoneNumber(this.userPhone) === true) {
+
+            this.isValidPhoneNumber = true
+          }
+
+          this.logger.log('USER-PROFILE] - getCurrentProjectUser isValidPhoneNumber ', this.isValidPhoneNumber)
+        } else {
+          this.mobile_number_available = false;
+          this.dislayUserPhoneMandatoryMsg = false;
+          // this.isValidPhoneNumber = true;
+          try {
+
+          fetch('https://ipinfo.io/json?token=80a9a2b7dc46e3')
+            .then(response => response.json())
+            .then(data => {
+              const userCountry = data.country
+              this.logger.log('[USER-PROFILE] - Detected country from IP:', userCountry);
+              this.getSupportedCountry(userCountry, 'NotHasMobile')
+            })
+          } catch (error) {
+            this.logger.error('FCM error', error);
+          }
+        }
+
+
         const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
+
         if (storedUser) {
-          
-      
+
           if (this.userFirstname && this.userLastname) {
             this.logger.log('Stored user Firstname ', storedUser['firstname'])
             this.logger.log('Stored user Lastname ', storedUser['lastname'])
@@ -391,7 +398,6 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           this.logger.log('[USER-PROFILE] HAS_SELECTED_PREFERRED_LANG ', this.HAS_SELECTED_PREFERRED_LANG)
           this.logger.log('[USER-PROFILE] stored_preferred_lang ', stored_preferred_lang)
         }
-
       }
 
     }, (error) => {
@@ -399,6 +405,148 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       this.showSpinner = false;
     }, () => {
       this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE * COMPLETE *');
+    });
+  }
+
+
+
+  getSupportedCountry(countryCode, calledBy) {
+    this.countries = getCountries().map((code) => ({
+      code: code,
+      name: new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code,
+      dialCode: `+${getCountryCallingCode(code)}`
+    }));
+    this.logger.log('[USER-PROFILE] - getSupportedCountry country', countryCode)
+    this.logger.log('[USER-PROFILE] - getSupportedCountry PHONE VALIDATION SUPPORTED countries', this.countries)
+    // this.selectedCountry = countryCode // set the conntry
+    const selected_country = this.countries.find(c => c.code === countryCode);
+
+    this.logger.log('[USER-PROFILE] - getSupportedCountry PHONE VALIDATION SUPPORTED selected_country', selected_country)
+    if (selected_country) {
+      this.dialCode = selected_country.dialCode
+      this.selectedCountry = selected_country.code // set the conntry
+    } else {
+      this.dialCode = this.countries[0].dialCode;
+      this.selectedCountry = this.countries[0].code // set the default country
+    }
+
+    if (calledBy === 'NotHasMobile') {
+      this.userPhone = this.dialCode + ' '
+    }
+  }
+
+  onCountryChange(country: any) {
+    if (country) {
+      this.logger.log('[USER-PROFILE] onCountryChange country', country)
+      const selectedCountry = this.countries.find(c => c.code === country.code);
+      this.logger.log('[USER-PROFILE] onCountryChange selectedCountry 1 ', selectedCountry)
+
+      if (selectedCountry) {
+        this.logger.log('[USER-PROFILE] onCountryChange selectedCountry 2', selectedCountry)
+        this.dialCode = selectedCountry.dialCode;
+        this.userPhone = this.dialCode + ' '
+
+        this.isValidPhone()
+
+        setTimeout(() => {
+          const inputElement = this.phoneInput.nativeElement;
+          inputElement.focus();
+          inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+        }, 100); // Delay to ensure the input is ready
+      }
+    }
+  }
+
+
+  formatAsYouType(event) {
+    this.logger.log('[USER-PROFILE] formatAsYouType ---->  event ', event)
+    this.userPhoneValue = event.target.value;
+    this.logger.log('[USER-PROFILE] formatAsYouType event value', this.userPhoneValue)
+ 
+
+    const formatter = new AsYouType();
+    this.userPhone = formatter.input(this.userPhone);
+
+    // Prevent user from removing the dial code
+    this.logger.log('[USER-PROFILE] formatAsYouType  userPhone start with dial code ', this.userPhone.startsWith(this.dialCode))
+
+    if (!this.userPhone.startsWith(this.dialCode)) {
+      this.userPhone = this.dialCode + ' '
+      // + ' ' + inputValue.replace(dialCode, '').trim();
+    }
+
+    this.isValidPhone()
+  }
+
+  isValidPhone() {
+    this.logger.log('[USER-PROFILE] --> isValidPhone userPhone', this.userPhone)
+    this.logger.log('[USER-PROFILE] --> isValidPhone mobile_number_available', this.mobile_number_available)
+
+    const phoneNumber = parsePhoneNumberFromString(this.userPhone);
+    this.logger.log('[USER-PROFILE] --> isValidPhone parsePhoneNumberFromString phoneNumber', phoneNumber)
+
+    this.logger.log('[USER-PROFILE] --> isValidPhoneNumber ', isValidPhoneNumber(this.userPhone))
+
+    if (phoneNumber) {
+      this.logger.log('[USER-PROFILE] --> isValidPhoneNumber getType ', phoneNumber.getType())
+    }
+
+    
+    if (isValidPhoneNumber(this.userPhone) === false) {
+
+      this.isValidPhoneNumber = false
+    } else if (isValidPhoneNumber(this.userPhone) === true) {
+
+      this.isValidPhoneNumber = true
+    }
+
+    // if (!this.mobile_number_available && this.userPhone !== this.dialCode || this.userPhone === this.dialCode) {
+    //   this.logger.log('[USER-PROFILE] --> isValidPhoneNumber - HAS SIGNED UP WITHOUT PHONE NUMBER AND HAS ENTERED A PHONE NUMBER ', this.userPhone)
+    //   this.mobile_number_available  = false
+    // }
+    // if (this.mobile_number_available && this.userPhone === this.dialCode || this.userPhone !== this.dialCode ) {
+    //   this.logger.log('[USER-PROFILE] --> isValidPhoneNumber - HAS SIGNED UP WITHOUT PHONE NUMBER AND HAS NOT ENTERED A PHONE NUMBER ', this.userPhone)
+    //   this.mobile_number_available  = true
+    // }
+  }
+
+  updateCurrentUserFirstnameLastname() {
+    let mobile_phone = this.userPhone.replace(/\s/g, "");
+    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER MOBILE PHONE ', mobile_phone)
+
+    if (mobile_phone === this.dialCode) {
+      this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - HAS SIGNED UP WITHOUT PHONE NUMBER AND NOT HAS ENTERED A PHONE NUMBER ', mobile_phone)
+      mobile_phone = null
+    }
+
+    // this.displayModalUpdatingUser = 'block';
+    this.SHOW_CIRCULAR_SPINNER = true;
+
+    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
+    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
+    
+    this.usersService.updateCurrentUser(this.userFirstname, this.userLastname, mobile_phone, (response) => {
+
+      this.logger.log('[USER-PROFILE] - update Current User  RES ', response)
+      this.logger.log('[USER-PROFILE] - update Current User  RES updatedUser ', response.updatedUser)
+
+      if (response.success === true) {
+
+        this.trackUpdateProfileName(response.updatedUser)
+        // this.getLoggedUser()
+
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.UPDATE_USER_ERROR = false;
+        this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UserProfile.YourProfileHasBeenUploaded'), 2, 'done');
+        // if (response === 'error')
+      } else {
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.UPDATE_USER_ERROR = true;
+        // =========== NOTIFY ERROR ===========
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UserProfile.AnErrorHasOccurred'), 4, 'report_problem')
+      }
     });
   }
 
@@ -485,51 +633,6 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
   }
 
-  refreshPage() {
-    location.reload();
-  }
-
-  translateStrings() {
-
-    const keys = [
-      'YourProfilePhotoHasBeenUploadedSuccessfully',
-      'Warning',
-      'ItIsNecessaryToSelectAProjectToManageNotificationEmails',
-      'SorryFileTypeNotSupported',
-      'AnErrorHasOccurred',
-      'UserProfile.AnErrorHasOccurredSendingVerificationLink',
-      'UserProfile.YourProfileHasBeenUploaded',
-      'UserProfile.AnErrorHasOccurred'
-      
-    ];
-
-    this.translate.get(keys).subscribe(translations => {
-      Object.keys(translations).forEach(key => {
-        this.translationsMap.set(key, translations[key])
-      });
-    });
-    
-
-  }
-
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[USER-PROFILE] - USER ROLE ', user_role);
-        if (user_role) {
-          // this.userRole = user_role
-
-          this.translate.get(user_role)
-            .subscribe((text: string) => {
-              this.userRole = text;
-            });
-        }
-      });
-  }
-
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -547,7 +650,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     const file = event.target.files[0]
 
     const canUploadFile = checkAcceptedFile(event.target.files[0].type, this.fileUploadAccept)
-    if(!canUploadFile){
+    if (!canUploadFile) {
       // this.presentToastOnlyImageFilesAreAllowedToDrag()
       this.notify.showToast(this.translationsMap.get('SorryFileTypeNotSupported'), 4, 'report_problem')
       this.logger.error('[IMAGE-UPLOAD] detectFiles: can not upload current file type--> NOT ALLOWED', event.target.files[0].type, this.fileUploadAccept)
@@ -611,7 +714,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
           this.logger.log('[USER-PROFILE] stored_user', stored_user)
           stored_user['hasImage'] = true;
           this.usersLocalDbService.saveMembersInStorage(this.userId, stored_user, 'user-profile');
-        }else if (image_exist === false){
+        } else if (image_exist === false) {
           this.notify.showToast(this.translationsMap.get('UserProfile.AnErrorHasOccurred'), 4, 'report_problem')
         }
       });
@@ -712,33 +815,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     }
     return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
   }
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-
-      if (this.project) {
-        this.projectId = project._id
-        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project)
-      } else {
-        this.logger.log('[USER-PROFILE] - GET CURRENT PROJECT project ', project, ' - HIDE SIDEBAR')
-        this.selectSidebar();
-      }
-    });
-  }
-
-  // hides the sidebar if the user views his profile but has not yet selected a project
-  selectSidebar() {
-    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-    this.logger.log('[USER-PROFILE]  elemAppSidebar ', elemAppSidebar)
-    elemAppSidebar.setAttribute('style', 'display:none;');
-
-    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    this.logger.log('[USER-PROFILE] elemMainPanel ', elemMainPanel)
-    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
-  }
-
-
-
+  
 
   onEditFirstname(updatedFirstname) {
     this.logger.log('[USER-PROFILE] - onEditFirstname ==> firstname previous value ', this.firstnameCurrentValue);
@@ -766,40 +843,11 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
 
 
-  updateCurrentUserFirstnameLastname() {
-    this.displayModalUpdatingUser = 'block';
-    this.SHOW_CIRCULAR_SPINNER = true;
-
-    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
-    this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
-    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
-
-      this.logger.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
 
 
-
-      if (response === 'success') {
-
-        this.trackUpdateProfileName()
-        this.getLoggedUser()
-
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.UPDATE_USER_ERROR = false;
-        this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification(this.translationsMap.get('YourProfileHasBeenUploaded'), 2, 'done');
-
-      } else if (response === 'error') {
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.UPDATE_USER_ERROR = true;
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurred'), 4, 'report_problem')
-      }
-    });
-  }
-
-  trackUpdateProfileName() {
+  trackUpdateProfileName(updateUserResponse) {
     this.logger.log('[USER-PROFILE] - trackUpdateProfileName  ', this.prjct_profile_name);
+    this.logger.log('[USER-PROFILE] - updateUserResponse  ', updateUserResponse);
     if (!isDevMode()) {
       if (window['analytics']) {
         try {
@@ -843,15 +891,15 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
 
 
-  closeModalUpdatingUser() {
-    this.displayModalUpdatingUser = 'none';
-  }
+  // closeModalUpdatingUser() {
+    // this.displayModalUpdatingUser = 'none';
+  // }
 
-  closeModalUpdatingUserHandler() {
-    this.displayModalUpdatingUser = 'none';
-    this.HAS_EDIT_FIRSTNAME = false;
-    this.HAS_EDIT_LASTNAME = false;
-  }
+  // closeModalUpdatingUserHandler() {
+  //   this.displayModalUpdatingUser = 'none';
+  //   this.HAS_EDIT_FIRSTNAME = false;
+  //   this.HAS_EDIT_LASTNAME = false;
+  // }
 
 
   resendVerificationEmail() {
@@ -869,11 +917,69 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       const error_body = JSON.parse(error._body);
       this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
       if (error_body['success'] === false) {
-        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UserProfile.AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
       }
     }, () => {
       this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');
     });
+  }
+
+
+
+
+  presentModalSelectAProjectToManageEmailNotification() {
+    Swal.fire({
+      title: this.translationsMap.get('Warning'),
+      text: this.translationsMap.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails'),
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      focusConfirm: false,
+      // button: "Ok",
+      // dangerMode: false,
+    })
+  }
+
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+  }
+
+  refreshPage() {
+    location.reload();
+  }
+
+  translateStrings() {
+    const keys = [
+      'YourProfilePhotoHasBeenUploadedSuccessfully',
+      'Warning',
+      'ItIsNecessaryToSelectAProjectToManageNotificationEmails',
+      'SorryFileTypeNotSupported',
+      'AnErrorHasOccurred',
+      'UserProfile.AnErrorHasOccurredSendingVerificationLink',
+      'UserProfile.YourProfileHasBeenUploaded',
+      'UserProfile.AnErrorHasOccurred'
+    ];
+
+    this.translate.get(keys).subscribe(translations => {
+      Object.keys(translations).forEach(key => {
+        this.translationsMap.set(key, translations[key])
+      });
+    });
+  }
+
+  // hides the sidebar if the user views his profile but has not yet selected a project
+  selectSidebar() {
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    this.logger.log('[USER-PROFILE]  elemAppSidebar ', elemAppSidebar)
+    elemAppSidebar.setAttribute('style', 'display:none;');
+
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    this.logger.log('[USER-PROFILE] elemMainPanel ', elemMainPanel)
+    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
 
@@ -907,18 +1013,5 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     } else {
       this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/notifications']);
     }
-  }
-
-  presentModalSelectAProjectToManageEmailNotification() {
-    Swal.fire({
-      title: this.translationsMap.get('Warning'),
-      text: this.translationsMap.get('ItIsNecessaryToSelectAProjectToManageNotificationEmails'),
-      icon: "warning",
-      showCancelButton: false,
-      confirmButtonText: this.translate.instant('Ok') ,
-      focusConfirm: false,
-      // button: "Ok",
-      // dangerMode: false,
-    })
   }
 }

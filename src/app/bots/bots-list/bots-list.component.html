@@ -9,39 +9,32 @@
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <div class="chatbot-svg-icon">
-    <!-- <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-      x="0px" y="0px" viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;width: 29px;height: 29px;"
-      xml:space="preserve">
-      <style type="text/css">
-        .cb--0 {
-          fill: #3C4858;
-        }
-      </style>
-      <g>
-        <path class="cb--0" d="M24.6,12.6c-0.1,0-0.2,0-0.3,0c-1.6-2.9-4.5-5.8-9.2-5.8s-7.6,2.9-9.2,5.8c-0.2,0-0.4-0.1-0.6-0.1
-            c-2,0-3.5,2.3-3.5,5c0,2.8,1.6,5,3.5,5c0.1,0,0.3,0,0.4,0c2.3,3.6,7,3.9,9.4,3.9c2.3,0,6.9-0.5,9.2-3.9c0.1,0,0.1,0,0.2,0
-            c2,0,3.5-2.3,3.5-5C28.1,14.8,26.6,12.6,24.6,12.6z M22,21.1c0,0-7.8,2.3-14.3-0.1c0,0-0.8-4.1-0.5-7.2c0,0,8.1-3.2,15.6,0.3
-            C22.8,14.1,23.3,19.1,22,21.1z" />
-        <ellipse class="cb--0" cx="11.9" cy="17.4" rx="0.7" ry="1.4" />
-        <ellipse class="cb--0" cx="18.1" cy="17.4" rx="0.7" ry="1.4" />
-        <path class="cb--0" d="M14.5,5.3v1.1h1V5.3C15.8,5.1,16,4.8,16,4.5c0-0.5-0.4-0.9-1-0.9c-0.5,0-0.9,0.4-0.9,0.9
-            C14.1,4.8,14.2,5.1,14.5,5.3z" />
-      </g>
-    </svg> -->
+ 
 
     <!-- <svg xmlns="http://www.w3.org/2000/svg" height="29px" viewBox="0 -960 960 960" width="29px" fill="#3C4858">
       <path
-        d="M160-120v-200q0-33 23.5-56.5T240-400h480q33 0 56.5 23.5T800-320v200H160Zm200-320q-83 0-141.5-58.5T160-640q0-83 58.5-141.5T360-840h240q83 0 141.5 58.5T800-640q0 83-58.5 141.5T600-440H360ZM240-200h480v-120H240v120Zm120-320h240q50 0 85-35t35-85q0-50-35-85t-85-35H360q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0-80q17 0 28.5-11.5T400-640q0-17-11.5-28.5T360-680q-17 0-28.5 11.5T320-640q0 17 11.5 28.5T360-600Zm240 0q17 0 28.5-11.5T640-640q0-17-11.5-28.5T600-680q-17 0-28.5 11.5T560-640q0 17 11.5 28.5T600-600ZM480-200Zm0-440Z" />
+        d="M151.33-370.67q-46.66 0-79-32.47Q40-435.61 40-482t32.47-78.86q32.47-32.47 78.86-32.47V-702q0-27 19.84-46.83Q191-768.67 218-768.67h150.67q0-46.66 32.47-79Q433.61-880 480-880t78.86 32.47q32.47 32.47 32.47 78.86H742q27 0 46.83 19.84Q808.67-729 808.67-702v108.67q46.66 0 79 32.47Q920-528.39 920-482t-32.47 78.86q-32.47 32.47-78.86 32.47v184q0 27-19.84 46.84Q769-120 742-120H218q-27 0-46.83-19.83-19.84-19.84-19.84-46.84v-184ZM348.82-464q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.65-33.01-13.66-13.5-33.17-13.5t-33.01 13.65Q302-530.02 302-510.51t13.66 33.01q13.65 13.5 33.16 13.5Zm262.67 0q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.66-33.01-13.65-13.5-33.16-13.5-19.51 0-33.01 13.65-13.5 13.66-13.5 33.17t13.65 33.01q13.66 13.5 33.17 13.5ZM314.67-283.33h330.66V-350H314.67v66.67ZM218-186.67h524V-702H218v515.33Zm262-258Z" />
     </svg> -->
 
-    <svg xmlns="http://www.w3.org/2000/svg" height="29px" viewBox="0 -960 960 960" width="29px" fill="#3C4858">
-      <path
-        d="M151.33-370.67q-46.66 0-79-32.47Q40-435.61 40-482t32.47-78.86q32.47-32.47 78.86-32.47V-702q0-27 19.84-46.83Q191-768.67 218-768.67h150.67q0-46.66 32.47-79Q433.61-880 480-880t78.86 32.47q32.47 32.47 32.47 78.86H742q27 0 46.83 19.84Q808.67-729 808.67-702v108.67q46.66 0 79 32.47Q920-528.39 920-482t-32.47 78.86q-32.47 32.47-78.86 32.47v184q0 27-19.84 46.84Q769-120 742-120H218q-27 0-46.83-19.83-19.84-19.84-19.84-46.84v-184ZM348.82-464q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.65-33.01-13.66-13.5-33.17-13.5t-33.01 13.65Q302-530.02 302-510.51t13.66 33.01q13.65 13.5 33.16 13.5Zm262.67 0q19.51 0 33.01-13.66 13.5-13.65 13.5-33.16 0-19.51-13.66-33.01-13.65-13.5-33.16-13.5-19.51 0-33.01 13.65-13.5 13.66-13.5 33.17t13.65 33.01q13.66 13.5 33.17 13.5ZM314.67-283.33h330.66V-350H314.67v66.67ZM218-186.67h524V-702H218v515.33Zm262-258Z" />
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve"   height="29px" width="29px">
+      <style type="text/css">
+          .st0 {
+              fill: #3C4858
+          }
+      </style>
+    <path class="st0" d="M12,21.9c-1,0-1.8-0.3-2.5-1c-0.7-0.7-1-1.5-1-2.5c0-0.8,0.3-1.6,0.8-2.2c0.5-0.6,1.2-1,1.9-1.2v-2.3H5.5V9H3
+        V2.5h6.4V9H7v2.3h10V8.9c-0.8-0.2-1.4-0.6-1.9-1.2c-0.5-0.6-0.8-1.3-0.8-2.2c0-1,0.3-1.8,1-2.5c0.7-0.7,1.5-1,2.5-1
+        c1,0,1.8,0.3,2.5,1c0.7,0.7,1,1.5,1,2.5c0,0.8-0.3,1.6-0.8,2.2c-0.5,0.6-1.2,1-1.9,1.2v3.9h-5.7v2.3c0.8,0.2,1.4,0.6,1.9,1.2
+        c0.5,0.6,0.8,1.3,0.8,2.2c0,1-0.3,1.8-1,2.5C13.8,21.6,13,21.9,12,21.9z M17.8,7.5c0.5,0,1-0.2,1.4-0.6c0.4-0.4,0.6-0.8,0.6-1.4
+        c0-0.5-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6c-0.5,0-1,0.2-1.4,0.6C16,4.5,15.8,5,15.8,5.5c0,0.5,0.2,1,0.6,1.4S17.2,7.5,17.8,7.5
+        z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6
+        c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z" />
     </svg>
 
   </div>
 
-  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Chatbots </span>
+  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Flows </span>
 
 </span>
 
@@ -51,7 +44,8 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    My Chatbots
+    <!-- My Chatbots -->
+    {{ pageName }}
   </div>
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
@@ -62,6 +56,8 @@
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
         [myChatbotOtherCount]="myChatbotOtherCount"
+        [automationsCount]="automationsCount"
+        [flowWebhooksCount]="flowWebhooksCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
         [increaseSalesBotsCount]="increaseSalesBotsCount" >
       </appdashboard-bots-sidebar>
@@ -80,7 +76,8 @@
               style="margin-right: 20px">
               Create from scratch
             </button>
-            <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
+            <!-- *ngIf="pageName !== 'Automations'" -->
+            <button  class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               Add from template
             </button>
           </div>
@@ -138,15 +135,9 @@
                     </div>
                   </div>
                 </div>
-
+                
                 <div *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
-
-                  <p class="no-bot-msg">
-                    <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
-                        info
-                      </i>
-                      {{ 'BotsPage.NoBot' | translate }} -->
-
+                  <p class="no-bot-msg" *ngIf="isChatbotRoute">
                     <span style="display: block;">
                       You don't have Chatbots.
                     </span>
@@ -155,11 +146,23 @@
                         template </span> or create a new one from scratch
                     </span>
                     <span style="display: block;">
-                      <!-- <span class="btn---link" (click)="createBlankTilebot()"> create a new one from scratch
-                        </span> -->
-                      <!-- btn-new btn-size-m btn--primary -->
                       <button class="btn btn-tdblu-no-boxshadow center" (click)="createBlankTilebot()"
                         style="margin-right: 20px; box-shadow: unset;">
+                        Create from scratch
+                      </button>
+                    </span>
+                  </p>
+
+                  <p class="no-bot-msg" *ngIf="!isChatbotRoute">
+                    <span style="display: block;">
+                      You don't have Automation yet.
+                    </span>
+                    <span style="display: block;">
+                      Create a new one from scratch
+                    </span>
+                    <span style="display: block;">
+                      <button class="btn btn-tdblu-no-boxshadow center" (click)="createBlankTilebot()"
+                        style="box-shadow: unset;">
                         Create from scratch
                       </button>
                     </span>
@@ -167,6 +170,7 @@
                 </div>
 
           
+             
 
                 <div class="card-list" *ngFor="let faqkb of faqkbList; let i = index">
 
@@ -210,18 +214,30 @@
 
                         <div class="cl-card-img-wpr">
 
-                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                          <!--  -->
+                          <ng-container *ngIf="!faqkb?.subtype || faqkb?.subtype === 'chatbot'">
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" [src]="faqkb.botImage"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" [src]="faqkb.botImage"
+                              onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                          </ng-container>
+
+                          <ng-container *ngIf="faqkb?.subtype && faqkb?.subtype !== 'chatbot'">
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/avatar_flow_tiledesk.svg'" />
+
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" [src]="faqkb.botImage"
+                              onerror="this.src='assets/img/avatar_flow_tiledesk.svg'" />
+
+                          </ng-container>
 
                         </div>
 
                         <div class="cl-card-info-wpr">
                           <span class="cl-card-item-name-wpr">
-
 
                             <div class="cl-card-item-name">
 
@@ -251,16 +267,19 @@
                       <!-- Icon human in the loop -->
                       <!-- (mouseenter)="openPopover()"  -->
                       <!-- scheduleClosePopover() -->
+                      <!-- (mouseleave)="scheduleClosePopover()" -->
                       <!-- ---------------------------------------------- -->
                       <div class="cl-card-second-column">
-                        <div *ngIf="faqkb.agents_available === true || faqkb.agents_available === undefined" class="cl-availble-for-agent"
-                          style="position: relative; top: 1px;height: 24px;" 
-        
-                          [satPopoverAnchor]="botAvailableForAgents"
-                          (mouseenter)="botAvailableForAgents.open()"
-                          (mouseleave)="botAvailableForAgents.close()">
-                          <span class="material-icons">boy</span>
-                        </div>
+                        <ng-container *ngIf="!faqkb?.subtype || faqkb?.subtype === 'chatbot'">
+                          <div *ngIf="faqkb.agents_available === true || faqkb.agents_available === undefined" class="cl-availble-for-agent"
+                            style="position: relative; top: 1px;height: 24px;" 
+          
+                            [satPopoverAnchor]="botAvailableForAgents"
+                            (mouseenter)="botAvailableForAgents.open()"
+                            (mouseleave)="botAvailableForAgents.close()">
+                            <span class="material-icons">boy</span>
+                          </div>
+                        </ng-container>
                         <div class="cl-card-stats-wpr">
 
                           <div *ngIf="faqkb.type === 'tilebot'" class="cl-card-item-stats">
@@ -280,15 +299,17 @@
                             </div>
                           </div>
 
-                          <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
-                            <div class="cl-card-item-stats-title">
-                              <!-- {{ "BotsAddEditPage.Messages" | translate }} -->
-                              Messages
+                          <ng-container *ngIf="!faqkb?.subtype || faqkb?.subtype === 'chatbot'">
+                            <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
+                              <div class="cl-card-item-stats-title">
+                                <!-- {{ "BotsAddEditPage.Messages" | translate }} -->
+                                Messages
+                              </div>
+                              <div class="cl-card-item-stats-values">
+                                {{ faqkb?.message_count}}
+                              </div>
                             </div>
-                            <div class="cl-card-item-stats-values">
-                              {{ faqkb?.message_count}}
-                            </div>
-                          </div>
+                          </ng-container>
 
 
 
@@ -296,14 +317,18 @@
 
                         <div class="cl-card-action-wpr">
                           <div class="cl-card-action-group">
-                            <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr">
-                              <button id="btn-{{faqkb._id}}" mat-icon-button
-                                (click)="$event.stopPropagation();openBotMsgsStats(faqkb)"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="Messages" #tooltip="matTooltip"
-                                matTooltipPosition='below' matTooltipHideDelay="100">
-                                <mat-icon>leaderboard</mat-icon>
-                              </button>
-                            </div>
+                            <ng-container *ngIf="!faqkb?.subtype || faqkb?.subtype === 'chatbot'">
+                              <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr">
+                                <button id="btn-{{faqkb._id}}" mat-icon-button
+                                  (click)="$event.stopPropagation();openBotMsgsStats(faqkb)"
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="Messages" #tooltip="matTooltip"
+                                  matTooltipPosition='below' 
+                                  matTooltipHideDelay="100">
+                                  <mat-icon>leaderboard</mat-icon>
+                                </button>
+                              </div>
+                            </ng-container>
 
                             <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
                               <button id="share-btn-{{faqkb._id}}" mat-icon-button [matMenuTriggerFor]="menu"
@@ -374,30 +399,29 @@
 
                     </div>
 
-                    
-                         <!-- ---------------------------------------------- -->
-                          <!-- Popover for the icon human in the loop -->
-                          <!-- (mouseenter)="cancelClosePopover()"  -->
-                          <!-- (mouseleave)="scheduleClosePopover()"  -->
-                          <!-- ---------------------------------------------- -->
-                          <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
-                          panelClass="custom-panel-sat-popover" 
-                          closeTransition="1ms ease-in"
-                          
-                          forceAlignment="true">
+                    <!-- ---------------------------------------------- -->
+                    <!-- Popover for the icon human in the loop 
+                      (mouseenter)="cancelClosePopover()" 
+                      (mouseleave)="scheduleClosePopover()" -->
+                    <!-- ---------------------------------------------- -->
+                    <sat-popover #botAvailableForAgents horizontalAlign="center" verticalAlign="above"
+                      panelClass="custom-panel-sat-popover" 
+                      closeTransition="1ms ease-in"
+                      forceAlignment="true">
 
-                          <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
+                      <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
 
-                            <div class="custom-panel-sat-popover-title">
-                              Available to agents
-                            </div>
+                        <div class="custom-panel-sat-popover-title">
+                          Available to agents
+                        </div>
 
-                            <div class="custom-panel-sat-popover-description">
-                              Chatbot visible to agents for the purpose to be put back in the conversation
-                            </div>
+                        <div class="custom-panel-sat-popover-description">
+                          Chatbot visible to agents for the purpose to be put back in the conversation
+                        </div>
 
-                          </div>
-                        </sat-popover>
+                      </div>
+                    </sat-popover>
+
                   </div>
                 </div>
               </div>
