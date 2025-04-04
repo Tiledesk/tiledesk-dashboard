@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.97-rc1
+- Adds the “Update widget” button for all sections of the widget set-up page
+- Adds a preview in the widget set-up page Advanced section
+- Other minor improvements
+
 ### 2.7.96-rc3
 - Minor improvements and bug fixing
 
