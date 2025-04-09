@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -16,8 +16,14 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { TranslateService } from '@ngx-translate/core';
 import { WebhookService } from 'app/services/webhook.service';
 import { BrandService } from 'app/services/brand.service';
+import { CreateChatbotModalComponent } from '../bots-list/create-chatbot-modal/create-chatbot-modal.component';
+import { containsXSS, formatBytesWithDecimal, goToCDSVersion } from 'app/utils/util';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { CreateFlowsModalComponent } from '../bots-list/create-flows-modal/create-flows-modal.component';
+import { FaqService } from 'app/services/faq.service';
+import { ProjectService } from 'app/services/project.service';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-
+const Swal = require('sweetalert2')
 
 
 @Component({
@@ -80,6 +86,14 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   public BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
   public BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
   public BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE: boolean;
+  chatbotName: string;
+  user: any;
+  botDefaultLangCode: string = 'en';
+  isChatbotRoute: boolean = true;
+  chatbotToImportSubtype: string;
+
+  diplayTwilioVoiceChabotCard: boolean;
+  diplayVXMLVoiceChabotCard:boolean;
 
   constructor(
     private auth: AuthService,
@@ -94,8 +108,11 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     private translate: TranslateService,
     private webhookService: WebhookService,
     public brandService: BrandService,
+    private botLocalDbService: BotLocalDbService,
+     private faqService: FaqService,
+     private projectService: ProjectService
     // private kbService: KnowledgeBaseService,
-  ) { 
+  ) {
     super(prjctPlanService, notify);
 
     const brand = brandService.getBrand();
@@ -128,11 +145,23 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[BOT-LIST] - USER GET IN HOME ', user)
+
+        this.user = user;
+      })
+  }
+
   getCurreURL() {
     const currentUrl = this.router.url;
     this.logger.log('[BOTS-TEMPLATES] - current URL »»» ', currentUrl)
     const currentUrlLastSegment = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-    this.logger.log('[BOTS-TEMPLATES] - current URL last segment ',  currentUrlLastSegment);
+    this.logger.log('[BOTS-TEMPLATES] - current URL last segment ', currentUrlLastSegment);
     if (currentUrlLastSegment === 'all') {
       this.pageTitle = "All templates"
     } else if (currentUrlLastSegment === 'community') {
@@ -201,7 +230,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       this.CERTIFIED_TEMPLATE = false
       this.logger.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
-    } else if ((this.route.indexOf('bots/templates/all') !== -1 ) || (this.route.indexOf('bots/templates/customer-satisfaction') !== -1 ) || (this.route.indexOf('bots/templates/increase-sales') !== -1 )) {
+    } else if ((this.route.indexOf('bots/templates/all') !== -1) || (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) || (this.route.indexOf('bots/templates/increase-sales') !== -1)) {
       this.CERTIFIED_TEMPLATE = true
       this.COMMUNITY_TEMPLATE = false
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
@@ -282,8 +311,49 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       if (project) {
         this.project = project;
         this.projectId = project._id;
+        this.getProjectById(this.projectId)
       }
     });
+  }
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => { 
+
+      console.log('[BOTS-TEMPLATES] - GET PROJECT BY ID - project ', project);
+      const projectProfileData = project.profile
+      console.log('[BOTS-TEMPLATES] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
+
+      this.manageVoiceChatbotVisibility(projectProfileData)
+
+    }, error => {
+      this.logger.error('[BOTS-TEMPLATES] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[BOTS-TEMPLATES] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
+    });
+  }
+
+  manageVoiceChatbotVisibility(projectProfileData: any): void {
+    const customization = projectProfileData?.customization;
+  
+    if (!customization) {
+      console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) No customization found.');
+      this.diplayTwilioVoiceChabotCard = false;
+      this.diplayVXMLVoiceChabotCard = false;
+      console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
+      console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
+      return;
+    }
+  
+    const voiceTwilio = customization['voice-twilio'] ?? false;
+    const voice = customization['voice'] ?? false;
+  
+    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
+    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice:', voice);
+  
+    this.diplayTwilioVoiceChabotCard = voiceTwilio === true;
+    this.diplayVXMLVoiceChabotCard = voice === true;
+    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
+    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
   }
 
   openDialog(template) {
@@ -307,12 +377,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       if (faqKb) {
         this.chatBotCount = faqKb.length
         // this.myChatbotOtherCount = faqKb.length
-        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
-        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - faqKb',  faqKb);
+        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount', this.myChatbotOtherCount);
+        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - faqKb', faqKb);
       }
 
       const myChatbot = faqKb.filter((obj) => {
-        return !obj.subtype || obj.subtype === "chatbot";
+        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
       });
       this.logger.log('[BOTS-TEMPLATES]  - myChatbot', myChatbot);
       if (myChatbot) {
@@ -373,14 +443,14 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   //     if (res) {
   //       this.kbCount = res.length
   //       this.logger.log('[BOTS-TEMPLATES] - GET ALL NAMESPACES', res);
-        
+
   //     }
   //   }, (error) => {
   //     this.logger.error('[BOTS-TEMPLATES]  GET GET ALL NAMESPACES ERROR ', error);
 
   //   }, () => {
   //     this.logger.log('[BOTS-TEMPLATES]  GET ALL NAMESPACES * COMPLETE *');
-      
+
   //   });
   // }
   getFlowWebhooks() {
@@ -443,7 +513,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserCommunityProfile(communityTemplates) {
-    this.logger.log('[BOTS-TEMPLATES] USER CMNTY PROFILE ',communityTemplates);
+    this.logger.log('[BOTS-TEMPLATES] USER CMNTY PROFILE ', communityTemplates);
     communityTemplates.forEach(tmplt => {
       this.logger.log('BOTS-TEMPLATES] created by  ', tmplt.createdBy)
 
@@ -549,7 +619,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     let stripHere = 115;
     templates.forEach(template => {
       this.logger.log('[BOTS-TEMPLATES] startChatBot', template);
-      if ( template['description']) { 
+      if (template['description']) {
         template['shortDescription'] = template['description'].substring(0, stripHere) + '...';
       }
     });
@@ -608,10 +678,64 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
   }
 
+  presentDialogCreateFlows(isChatbotRoute) {
+    console.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
+    const showTwilio = this.diplayTwilioVoiceChabotCard;
+    const showVXML = this.diplayVXMLVoiceChabotCard;
+    let dialogWidth = '800px';
+
+    if (isChatbotRoute && !showTwilio && !showVXML) {
+      dialogWidth = '550px';
+    }
+
+    const dialogRef = this.dialog.open(CreateFlowsModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: dialogWidth,
+      data: {
+        'isChatbotRoute': isChatbotRoute,
+        'diplayTwilioVoiceChabotCard': this.diplayTwilioVoiceChabotCard,
+        'diplayVXMLVoiceChabotCard': this.diplayVXMLVoiceChabotCard
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(subType => {
+      console.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType);
+      console.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType typeof:`, typeof subType);
+      if (subType && typeof subType !== 'object') {
+        this.presentModalAddBotFromScratch(subType)
+      } else if (subType && typeof subType === 'object') {
+        this.fileChangeUploadChatbotFromJSON(subType)
+      }
+    });
+  }
+
+  presentModalAddBotFromScratch(subtype) {
+    console.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
+    // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
+    // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
+    // createBotFromScratchBtnEl.blur()
+    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
+      width: '400px',
+      data: {
+        'subtype': subtype
+      },
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[BOTS-LIST] Dialog result:`, result);
+
+      if (result) {
+        this.chatbotName = result.chatbotName;
+
+        if (this.chatbotName) {
+          this.createBlankTilebot(result.subType)
+        }
+      }
+    });
+  }
 
 
-
-  createBlankTilebot() {
+  createBlankTilebot(botSubtype?: string) {
     // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
     // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
     this.logger.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
@@ -619,21 +743,266 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
-          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+          this.createTilebotBotFromScratch(botSubtype)
 
         } else if (this.chatBotCount >= this.chatBotLimit) {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (this.chatBotLimit === null) {
-        this.logger.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN NAVIGATE')
-        this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+        this.logger.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN Create')
+        // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+        this.createTilebotBotFromScratch(botSubtype)
       }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()
     }
 
   }
+
+  createTilebotBotFromScratch(botSubtype) {
+    this.faqKbService.createChatbotFromScratch(this.chatbotName, 'tilebot', botSubtype, this.botDefaultLangCode).subscribe((faqKb) => {
+      console.log('[BOT-LIST] createTilebotBotFromScratch - RES ', faqKb);
+      if (faqKb) {
+        // SAVE THE BOT IN LOCAL STORAGE
+        this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
+
+        let newfaqkb = {
+          createdAt: new Date(),
+          _id: faqKb['_id']
+        }
+
+        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        this.trackChatbotCreated(faqKb, 'Create')
+      }
+
+    }, (error) => {
+
+      this.logger.error('[BOT-LIST] CREATE FAQKB - POST REQUEST ERROR ', error);
+
+
+    }, () => {
+      this.logger.log('[BOT-LIST] CREATE FAQKB - POST REQUEST * COMPLETE *');
+      this.chatbotName = null;
+      // this.getFaqKbByProjectId();
+      // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
+    })
+  }
+
+  // --------------------------------------------------------------------------
+  // @ Import chatbot from json 
+  // --------------------------------------------------------------------------
+  async fileChangeUploadChatbotFromJSON(event) {
+
+    console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON $event ', event);
+    // let fileJsonToUpload = ''
+    // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    const selectedFile = event.target.files[0];
+    this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON selectedFile ', selectedFile);
+    if (selectedFile && selectedFile.type === "application/json") {
+      const fileReader = new FileReader();
+      fileReader.readAsText(selectedFile, "UTF-8");
+      fileReader.onload = () => {
+        let fileJsonToUpload = JSON.parse(fileReader.result as string)
+        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  onload fileJsonToUpload CHATBOT 1', fileJsonToUpload);
+
+        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  isChatbotRoute ', this.isChatbotRoute)
+        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  fileJsonToUpload subtype ', fileJsonToUpload.subtype)
+        this.chatbotToImportSubtype = fileJsonToUpload.subtype ?? 'chatbot';
+      }
+
+      const fileList: FileList = event.target.files;
+      const file: File = fileList[0];
+      console.log('fileChangeUploadChatbotFromJSON ---> file', file)
+
+      // Check for valid JSON
+      let json = await this.readFileAsync(file).catch(e => { return; })
+      if (!json) {
+        this.notify.showToast(this.translate.instant('InvalidJSON'), 4, 'report_problem')
+        return;
+      }
+
+      const jsonString = JSON.stringify(json)
+      // Check for XSS patterns
+      if (containsXSS(jsonString)) {
+        // this.logger.log("Potential XSS attack detected!");
+        this.notify.showToast(this.translate.instant('UploadedFileMayContainsDangerousCode'), 4, 'report_problem')
+        return;
+      }
+
+      const formData: FormData = new FormData();
+      // formData.set('id_faq_kb', this.id_faq_kb);
+      formData.append('uploadFile', file, file.name);
+      console.log('[BOT-LIST] ---> FORM DATA ', formData)
+
+      if (this.USER_ROLE !== 'agent') {
+        if (this.chatBotLimit || this.chatBotLimit === 0) {
+          if (this.chatBotCount < this.chatBotLimit) {
+            // console.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
+            // if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
+            //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
+            //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'automations')
+            // }
+            // if (!this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) {
+            //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Chatbots list. Do you want to continue? `)
+            //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'chatbots')
+            // }
+            // if ((this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) || (!this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot'))) {
+            //   this.importChatbotFromJSON(formData)
+            // }
+            this.importChatbotFromJSON(formData)
+          } else if (this.chatBotCount >= this.chatBotLimit) {
+            this.logger.log('[BOT-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+            this.presentDialogReachedChatbotLimit()
+          }
+        } else if (this.chatBotLimit === null) {
+          this.logger.log('[BOT-LIST] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.importChatbotFromJSON(formData)
+        }
+      } if (this.USER_ROLE === 'agent') {
+        this.presentModalAgentCannotManageChatbot()
+      }
+    } else {
+      this.notify.presenModalAttachmentFileTypeNotSupported()
+    }
+  }
+
+  presentDialogImportMismatch(formData: any, chatbotToImportSubtype: string, correctMatch: string) {
+    console.log(`[BOT-LIST] formData ${formData} chatbotToImportSubtype ${chatbotToImportSubtype} correctMatch ${correctMatch}`)
+    Swal.fire({
+      title: 'Are you sure',
+      text: `You are about to import a  ${chatbotToImportSubtype} flow and it will be added to the ${correctMatch} list. Do you want to continue?`,
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: true,
+      cancelButtonText: 'Cancel', // this.translate.instant('Cancel'),
+      confirmButtonText: 'Ok', // this.translate.instant('Ok'),
+      focusConfirm: false,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.importChatbotFromJSON(formData)
+      }
+    })
+  }
+
+
+  importChatbotFromJSON(formData) {
+    // this.showUploadingSpinner = true
+    this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON formData ', formData)
+    this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
+      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      if (faqkb) {
+        // this.showUploadingSpinner = false
+
+        console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
+        this.botLocalDbService.saveBotsInStorage(faqkb._id, faqkb);
+
+        let newfaqkb = {
+          createdAt: new Date(),
+          _id: faqkb['_id']
+        }
+
+        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+
+        this.trackChatbotCreated(faqkb, 'Import')
+      }
+
+    }, (error) => {
+      // this.showUploadingSpinner = false
+      this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      this.manageUploadError(error)
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
+    }, () => {
+      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+      // this.getFaqKbByProjectId();
+    });
+
+  }
+
+   manageUploadError(error) {
+      if (error.status === 413) {
+        this.logger.log(`[BOT-CREATE] - upload json error message 1`, error.error.err)
+        this.logger.log(`[BOT-CREATE] - upload json error message 2`, error.error.limit_file_size)
+        const uploadLimitInBytes = error.error.limit_file_size
+        const uploadFileLimitSize = formatBytesWithDecimal(uploadLimitInBytes, 2)
+        this.logger.log(`[BOT-CREATE] - upload json error limitInMB`, uploadFileLimitSize)
+        this.notify.presentModalAttachmentFileSizeTooLarge(uploadFileLimitSize)
+      }
+    }
+
+    private readFileAsync(file: File): Promise<{}> {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+  
+        fileReader.onload = (event: ProgressEvent<FileReader>) => {
+          try {
+            let fileJsonToUpload = JSON.parse(fileReader.result as string);
+            this.logger.log('fileJsonToUpload CHATBOT readFileAsync', fileJsonToUpload);
+            resolve(fileJsonToUpload)
+          } catch (error) {
+            this.logger.error('Error while parsing JSON:', error);
+            reject(error)
+          }
+        };
+  
+        fileReader.onerror = (e) => {
+          reject(e);
+        };
+  
+        fileReader.readAsText(file);
+      });
+    }
+
+
+    trackChatbotCreated(faqKb, action) {
+      let userFullname = ''
+      if (this.user.firstname && this.user.lastname) {
+        userFullname = this.user.firstname + ' ' + this.user.lastname
+      } else if (this.user.firstname && !this.user.lastname) {
+        userFullname = this.user.firstname
+      }
+      if (!isDevMode()) {
+        try {
+          window['analytics'].track(action + ' ' + faqKb.subtype, {
+            "type": "organic",
+            "username": userFullname,
+            "email": this.user.email,
+            'userId': this.user._id,
+            'chatbotName': faqKb['name'],
+            'chatbotId': faqKb['_id'],
+            'subtype': faqKb.subtype,
+            'page': 'Templates',
+            'button': action,
+          });
+        } catch (err) {
+          // this.logger.error(`Track Create chatbot error`, err);
+        }
+  
+        try {
+          window['analytics'].identify(this.user._id, {
+            username: userFullname,
+            email: this.user.email,
+            logins: 5,
+  
+          });
+        } catch (err) {
+          // this.logger.error(`Identify Create chatbot error`, err);
+        }
+  
+        try {
+          window['analytics'].group(this.project._id, {
+            name: this.project.name,
+            plan: this.prjct_profile_name
+  
+          });
+        } catch (err) {
+          // this.logger.error(`Group Create chatbot error`, err);
+        }
+      }
+    }
 
   presentModalAgentCannotManageChatbot() {
     this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
@@ -664,8 +1033,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   goToExternalCommunity() {
-   const url = "https://tiledesk.com/community/"
-   window.open(url, '_blank');
+    const url = "https://tiledesk.com/community/"
+    window.open(url, '_blank');
   }
 
 
@@ -674,16 +1043,16 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - value to search ', this.valueToSearch);
     this.faqKbService.searchInCommunityTemplates(this.valueToSearch).subscribe((searchedtemplates: any) => {
       if (searchedtemplates) {
-       this.templates = searchedtemplates
-       
-       if (searchedtemplates.length === 0) {
-         this.THERE_ARE_RESULTS = false;
+        this.templates = searchedtemplates
 
-       } else {
-        this.THERE_ARE_RESULTS = true;
-       }
+        if (searchedtemplates.length === 0) {
+          this.THERE_ARE_RESULTS = false;
+
+        } else {
+          this.THERE_ARE_RESULTS = true;
+        }
       }
-      
+
       this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES  ', searchedtemplates);
     }, (error) => {
       this.logger.error('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE - ERROR ', error);
@@ -698,9 +1067,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.logger.log('[BOTS-TEMPLATES] onChangeValueToSearch  valueToSearch ', valueToSearch);
     if (valueToSearch === '') {
       // this.getCommunityTemplates()
-     this.templates = this.communityTemplates
+      this.templates = this.communityTemplates
     }
-   
+
   }
 
   clearSearchInCommunityTemplates() {

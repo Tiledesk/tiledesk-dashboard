@@ -13,15 +13,16 @@
     border-radius: 12px;
     // border: 1px solid rgb(226, 232, 239);
     box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
+    border: 1px solid rgb(226, 232, 239);
     outline: none;
     cursor: pointer;
     min-height: 162px;
     pointer-events: auto;
 }
 
-.add-content-card-wpr:hover {
-    box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
-}
+// .add-content-card-wpr:hover {
+//     box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
+// }
 
 .add-content-card-content {
     padding: 20px;
@@ -38,6 +39,17 @@
 .add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg {
     fill: var(--icon-hover-color);
 }
+
+.add-content-card-content-icon-wpr>span>svg.svg-stroke {
+    stroke: var(--sidebar-inactive-icon);
+    fill: none !important;
+  }
+  
+  .add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg.svg-stroke {
+    stroke: var(--icon-hover-color);
+    fill: none !important;
+  }
+  
 
 .add-content-card-content-title {
     margin-top: 0px;
@@ -89,37 +101,43 @@
     color: rgb(28, 30, 33)
 }
 
-.link-to-docs--container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    text-align: center;
-    margin-top: 16px;
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
-.kb-link-to-docs-wpr {
-    font-size: 14px;
-    font-weight: 400;
-    margin-bottom: 6px;
-    line-height: 20px;
-    // background-color: rgb(241, 241, 241);
-    // padding: 15px;
+/* Flip card */
+// https://www.30secondsofcode.org/css/s/card-hover-effects/
+.rotating-card {
+    perspective: 150rem;
+    position: relative;
+    box-shadow: none;
+    background: none;
+  }
+  
+  .rotating-card .card-side {
+    transition: all 0.8s ease;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-}
-
-.kb-link-to-docs-wpr>span>svg {
-    fill: var(--blue-light);
-}
-
-.kb-link-to-docs {
-    margin-left: 8px;
-    vertical-align: middle;
-    color: var(--blue-light); // #0f62ff;
-    font-size: 14px;
-    font-weight: 400;
-    cursor: pointer;
-}
-
-.kb-link-to-docs:hover {
-    text-decoration: underline;
-}
+    height: 100%;
+  }
+  
+  .rotating-card .card-side.back {
+    transform: rotateY(-180deg);
+  }
+  
+  .rotating-card:hover .card-side.front {
+    transform: rotateY(180deg);
+  }
+  
+  .rotating-card:hover .card-side.back {
+    transform: rotateY(0deg);
+  }

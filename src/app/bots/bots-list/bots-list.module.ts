@@ -11,9 +11,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ChatbotAlertComponent } from './chatbot-alert/chatbot-alert.component';
 import { ChatbotAlertModule } from './chatbot-alert/chatbot-alert.module';
 import { SatPopoverModule } from '@ncstate/sat-popover';
+import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CreateChatbotModalModule } from './create-chatbot-modal/create-chatbot-modal.module';
+import { CreateFlowsModalModule } from './create-flows-modal/create-flows-modal.module';
 
 const routes: Routes = [
   { path: "", component: BotListComponent},
@@ -21,13 +27,17 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    BotListComponent
+    BotListComponent,
+    // CreateFlowsModalComponent,
+    // CreateChatbotModalComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     BotsSidebarModule,
     ChatbotAlertModule,
+    CreateChatbotModalModule,
+    CreateFlowsModalModule,
     SharedModule,
     TranslateModule,
     MatIconModule,
@@ -36,7 +46,10 @@ const routes: Routes = [
     MatMenuModule,
     FormsModule,
     MatTooltipModule,
-    SatPopoverModule
+    SatPopoverModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
   ]
 })
 export class BotsListModule { }

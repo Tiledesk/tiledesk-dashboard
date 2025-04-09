@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
-import { HomeCreateChatbotModalComponent } from './home-create-chatbot-modal/home-create-chatbot-modal.component';
+
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
@@ -514,29 +514,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     }
   }
 
-  presentModalAddBotFromScratch() {
-    this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
-    const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
-    // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
-    createBotFromScratchBtnEl.blur()
-    const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
-      width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[HOME-CREATE-CHATBOT] Dialog result:`, result);
-
-      if (result) {
-        this.chatbotName = result.chatbotName;
-
-        if (this.chatbotName) {
-          // this.createTilebotBotFromScratch(this.chatbotName)
-        }
-      }
-    });
-  }
+  
 
   // createTilebotBotFromScratch(chatbotName) {
   //   this.language = this.botDefaultSelectedLangCode;

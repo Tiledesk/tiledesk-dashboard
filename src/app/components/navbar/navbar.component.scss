@@ -922,6 +922,8 @@ button.close.custom-hover:hover {
 
 ::ng-deep .mat-menu-panel.quotas-usage-menu {
   max-width: 550px !important;
+  border-radius: 16px !important;
+  margin-top: 8px !important;
 }
 
 .menu-container {
@@ -979,16 +981,25 @@ button.close.custom-hover:hover {
   box-shadow: unset;
   margin-top: 7px;
   margin-right: 8px;
+  border-radius: 9999px;
 
   // &:hover {
-  //   background-color: #0000001a;
+    // background-color: rgb(220, 233, 255);
   // }
+}
+
+.quote-modal-btn.quote-modal-btn-active {
+  background-color: rgb(220, 233, 255);
 }
 
 .quote-modal-btn::ng-deep .data-usage-icon {
   font-size: 20px !important;
   color: #555555;
   height: 20px;
+}
+
+.quote-modal-btn::ng-deep .data-usage-icon.data-usage-icon-active {
+  color: var(--blue-20);
 }
 
 .data-usage-icon-resource-limit-reached {

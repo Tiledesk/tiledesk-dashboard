@@ -1,0 +1,62 @@
+<h1 mat-dialog-title> 
+    <!-- Enter the name of the   -->
+    Create 
+    <span *ngIf="botSubType === 'chatbot'">
+        Chatbot flow
+    </span>
+    <span *ngIf="botSubType === 'voice' || botSubType === 'voice-twilio'">
+        Voice chatbot flow
+    </span>
+    <span *ngIf="botSubType === 'copilot'">
+        Copilot flow
+    </span>
+    <span *ngIf="botSubType === 'webhook'">
+        Webhook flow
+    </span>
+
+    
+</h1>
+<!-- <div mat-dialog-content>
+        <mat-form-field appearance="fill" class="cc-mat-form-field">
+            <mat-label> Chatbot name</mat-label>
+            <input type="text" matInput [(ngModel)]="chatbotName">
+        </mat-form-field>
+    
+</div> -->
+
+<div mat-dialog-content>
+
+    <mat-form-field appearance="fill" class="cc-mat-form-field">
+        <mat-label>
+            <span *ngIf="botSubType === 'chatbot'">
+                Chatbot 
+            </span>
+            <span *ngIf="botSubType === 'voice' || botSubType === 'voice-twilio'">
+                Voice chatbot
+            </span>
+
+            <span *ngIf="botSubType === 'copilot'">
+                Copilot
+            </span>
+
+            <span *ngIf="botSubType === 'webhook'">
+                Webhook
+            </span>
+        
+            name 
+        </mat-label>
+        <input matInput [(ngModel)]="chatbotName"  (keydown.enter)='onOkPresssed(chatbotName)'>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+       
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button [disabled]="chatbotName?.length < 2" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed(chatbotName)"
+        cdkFocusInitial>
+        {{'Create' | translate}}
+    </button>
+</div>

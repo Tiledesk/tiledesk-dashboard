@@ -167,10 +167,10 @@
 
             <!-- mat-mini-fab -->
             <button mat-button aria-label="trend icon" [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
-              class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
+              class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free', 'quote-modal-btn-active':isOpenCurrentUsageMenu}"
               (click)="onOpenQuoteMenu()">
               <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
-              <mat-icon class="data-usage-icon">
+              <mat-icon class="data-usage-icon" [ngClass]="{'data-usage-icon-active': isOpenCurrentUsageMenu}">
                 data_usage
               </mat-icon>
               <span>{{'CurrentUsage' | translate}}</span>

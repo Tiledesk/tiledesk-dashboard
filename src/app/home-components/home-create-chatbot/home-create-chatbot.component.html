@@ -106,7 +106,7 @@
           (click)="goToMyChatbots()">
           <div class="btn-content">
             <div class="btn--text">
-              Your chatbots
+              Your Flows
             </div>
             <div class="btn--bot-count">
               {{countOfChatbots}}
@@ -116,7 +116,6 @@
       </div>
 
       <div class="start-from-scratch-btn-wpr">
-        <!-- btn-p btn-p-ripple -->
         <button id="start-from-scratch-btn" class="btn btn-tdblu-no-boxshadow"
           (click)="createBlankTilebot()">
           <div class="btn-content">
@@ -287,12 +286,12 @@
   <div class="chatbots-created" *ngIf="(chatBotLimit || chatBotLimit === 0) && areActivePay">
     <span class="chatbots-created-num" 
       matTooltipClass="h-custom-mat-tooltip" 
-      matTooltip="View detail in Chatbots list"
+      matTooltip="View detail in Flows list"
       #tooltip="matTooltip" 
       matTooltipPosition='below' 
       matTooltipHideDelay="100" (click)="goToMyChatbots()"
       [ngStyle]="{'color': countOfChatbots > chatBotLimit ? '#f44336' : 'var(--blue-20)'}">
-      {{ countOfChatbots }} chatbots
+      {{ countOfChatbots }} flows
     </span>
     <span>
       {{ 'NumberOfChatbotCreated' | translate: tParamsPlanAndChatBot }}
@@ -305,14 +304,14 @@
       matTooltipPosition='below' 
       matTooltipHideDelay="100"
       (click)="openModalSubsExpired()">
-      <!--  -->
+     
       <i class="material-icons"
         style="vertical-align: middle; cursor: pointer; color: #f44336; font-size: 20px;     position: relative;
         top: -1px;">
         error
       </i>
     </div>
-    <!--  -->
+   
     <div style="cursor: pointer;" *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfChatbots > chatBotLimit)"
       matTooltipClass="h-custom-mat-tooltip" 
       matTooltip="Your 14-day free trial has expired"

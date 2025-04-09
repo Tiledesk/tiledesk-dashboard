@@ -1,0 +1,226 @@
+<div class="m-header">
+    <h1 mat-dialog-title>Create flow </h1>
+
+    <div class="m-top-right-icon">
+        <span class="material-icons-outlined" (click)="onNoClick()">
+            <!-- play_arrow -->
+            close
+        </span>
+    </div>
+</div>
+
+
+<div mat-dialog-content>
+    <!-- isChatbotRoute {{isChatbotRoute}} -->
+    <div class="add-content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === true">
+
+        <div class="add-content-card-wpr" (click)="onOkPresssed('chatbot')">
+
+            <div class="add-content-card-content">
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="svg-stroke">
+                            <path d="M12 8V4H8"></path>
+                            <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+                            <path d="M2 14h2"></path>
+                            <path d="M20 14h2"></path>
+                            <path d="M15 13v2"></path>
+                            <path d="M9 13v2"></path>
+                        </svg>
+                    </span>
+                </div>
+                <span class="span-12"> </span>
+                <p class="add-content-card-content-title">
+                    Chatbot
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+        <!-- ------------------------------------ -->
+        <!-- Voice Chatbot (Twilio) -->
+        <!-- ------------------------------------ -->
+        <div *ngIf="diplayTwilioVoiceChabotCard" class="add-content-card-wpr" (click)="onOkPresssed('voice-twilio')">
+            <div class="add-content-card-content">
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+
+                            <path
+                                d="M12,20a8.009,8.009,0,0,0,8-8V8A8,8,0,0,0,4,8v4A8.009,8.009,0,0,0,12,20ZM12,2a6.006,6.006,0,0,1,5.91,5H15a1,1,0,0,0,0,2h3v2H15a1,1,0,0,0,0,2h2.91A5.993,5.993,0,0,1,6.09,13H9a1,1,0,0,0,0-2H6V9H9A1,1,0,0,0,9,7H6.09A6.006,6.006,0,0,1,12,2Z">
+                            </path>
+                            <path
+                                d="M23,12a1,1,0,0,0-1,1,9.01,9.01,0,0,1-9,9H11a9.011,9.011,0,0,1-9-9,1,1,0,0,0-2,0A11.013,11.013,0,0,0,11,24h2A11.013,11.013,0,0,0,24,13,1,1,0,0,0,23,12Z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+                <span class="span-12"> </span>
+                <p class="add-content-card-content-title">
+                    Voice chatbot
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+        <!-- ------------------------------------ -->
+        <!-- Voice Chatbot (VXML) -->
+        <!-- ------------------------------------ -->
+        <div *ngIf="diplayVXMLVoiceChabotCard" class="add-content-card-wpr" (click)="onOkPresssed('voice')">
+            <div class="add-content-card-content">
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+
+                            <path
+                                d="M12,20a8.009,8.009,0,0,0,8-8V8A8,8,0,0,0,4,8v4A8.009,8.009,0,0,0,12,20ZM12,2a6.006,6.006,0,0,1,5.91,5H15a1,1,0,0,0,0,2h3v2H15a1,1,0,0,0,0,2h2.91A5.993,5.993,0,0,1,6.09,13H9a1,1,0,0,0,0-2H6V9H9A1,1,0,0,0,9,7H6.09A6.006,6.006,0,0,1,12,2Z">
+                            </path>
+                            <path
+                                d="M23,12a1,1,0,0,0-1,1,9.01,9.01,0,0,1-9,9H11a9.011,9.011,0,0,1-9-9,1,1,0,0,0-2,0A11.013,11.013,0,0,0,11,24h2A11.013,11.013,0,0,0,24,13,1,1,0,0,0,23,12Z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+                <span class="span-12"> </span>
+                <p class="add-content-card-content-title">
+                    Voice chatbot
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+        <div class="add-content-card-wpr" (click)="fileInput.click()">
+            <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
+                id="upload-chatbot-from-json" (change)="onFileSelected($event)" accept=".json">
+            <div class="add-content-card-content">
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                            <path
+                                d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h100v80H260Zm220-280Z" />
+                        </svg>
+                    </span>
+                </div>
+                <span class="span-12"> </span>
+                <p class="add-content-card-content-title">
+                    Import chatbot
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === false">
+
+        <!-- --------------------------------- -->
+        <!-- Copilot -->
+        <!-- --------------------------------- -->
+        <div class="add-content-card-wpr" (click)="onOkPresssed('copilot')">
+            <div class="add-content-card-content" >
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
+                            style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
+
+                            <path d="M33.7,10.9L30,0.5l-3.7,10.4c-2.4,7-8.3,12.9-15.3,15.3L0.5,30l10.4,3.7c7,2.4,12.9,8.3,15.3,15.3L30,59.5
+                                    l3.7-10.4c2.4-7,8.3-12.9,15.3-15.3L59.5,30l-10.4-3.7C42,23.7,36.3,18,33.7,10.9z" />
+                        </svg>
+                    </span>
+                </div>
+                <!-- <span class="span-12"> </span> -->
+                <p class="add-content-card-content-title">
+                    Copilot
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- --------------------------------- -->
+        <!-- Webhook -->
+        <!-- --------------------------------- -->
+        <div class="add-content-card-wpr" (click)="onOkPresssed('webhook')">
+            <div class="add-content-card-content" >
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg version="1.1" id="webhooks" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
+                            style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
+
+                            <g>
+                                <path d="M28.2,25.2c-2.5,4.5-4.8,8.7-7.2,13c-0.6,1.1-1,2-0.4,3.4c1.4,3.8-0.5,7.6-4.2,8.6c-3.4,1-6.7-1.5-7.4-5.3
+                                        c-0.6-3.4,1.9-6.8,5.4-7.4c0.3,0,0.6,0,1.1-0.1l5.4-9.7c-3.4-3.6-5.4-7.9-5-13.1c0.3-3.7,1.7-6.9,4.2-9.6c4.8-5.2,12-6,17.7-2.1
+                                        c5.4,3.7,7.9,11,5.8,17.2c-1.6-0.4-3.2-1-4.9-1.5c0.6-3.4,0.2-6.5-2-9.2c-1.4-1.7-3.3-2.7-5.3-3C27.2,5.8,23,8.7,21.8,13
+                                        C20.3,18.1,22.5,22.1,28.2,25.2L28.2,25.2z" />
+                                <path
+                                    d="M35.2,20c1.7,3.3,3.5,6.6,5.2,9.9c8.8-2.9,15.5,2.3,17.8,7.9c2.9,6.7,1,14.8-4.7,19
+                                        c-5.8,4.3-13.1,3.5-18.2-1.9c1.3-1.2,2.7-2.3,4.1-3.6c5.1,3.5,9.5,3.4,12.8-0.9c2.8-3.5,2.8-8.8-0.1-12.4
+                                        c-3.3-4.1-7.8-4.2-13.2-0.3c-2.2-4.3-4.5-8.5-6.7-12.8c-0.7-1.5-1.5-2.2-3.2-2.6c-2.8-0.5-4.5-3.1-4.6-5.9
+                                        c-0.1-2.8,1.4-5.3,3.8-6.4c2.3-1,5.2-0.2,6.8,2c1.3,1.8,1.7,3.8,1.1,6C35.7,18.7,35.5,19.2,35.2,20L35.2,20z" />
+                                <path d="M39.3,46.7H28.8c-1.1,4.5-3.2,8.1-7,10.4c-3,1.8-6.1,2.3-9.5,1.8C6.1,57.9,0.9,52,0.5,45.1
+                                        c-0.5-7.7,4.4-14.5,10.9-16c0.4,1.7,1,3.5,1.4,5.3c-6,3.3-8.1,7.5-6.4,12.6c1.5,4.6,5.7,7,10.2,6.1c4.7-1,7-5.1,6.7-11.8
+                                        c4.4,0,8.8,0,13.2,0c1.7,0,3.1-0.2,4.4-1.8c2.1-2.7,6.1-2.5,8.3,0.1c2.3,2.6,2.2,6.7-0.2,9.3c-2.3,2.3-6.2,2.2-8.4-0.3
+                                        C40.2,48,39.8,47.5,39.3,46.7L39.3,46.7z" />
+                            </g>
+                        </svg>
+                    </span>
+                </div>
+                <!-- <span class="span-12"> </span> -->
+                <p class="add-content-card-content-title">
+                    Webhook
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- -------------------------------- -->
+        <!-- Import Automations -->
+        <!-- -------------------------------- -->
+        <div class="add-content-card-wpr" (click)="fileInput.click()">
+            <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
+                id="upload-chatbot-from-json" (change)="onFileSelected($event)" accept=".json">
+            <div class="add-content-card-content">
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                            <path
+                                d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h100v80H260Zm220-280Z" />
+                        </svg>
+                    </span>
+                </div>
+                <!-- <span class="span-12"> </span> -->
+                <p class="add-content-card-content-title">
+                    Import automation
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</div>

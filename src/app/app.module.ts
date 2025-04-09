@@ -351,7 +351,6 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 
 import { OpenaiService } from './services/openai.service';
 import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/home-kb-modal.component';
-import { HomeCreateChatbotModalComponent } from './home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
 import { HomeInviteTeammateErrorModalComponent } from './home-components/home-create-teammate/home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
 // import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component'; // now lazy
@@ -407,6 +406,7 @@ import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
 import { LogoutModalComponent } from './auth/logout-modal/logout-modal.component';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
+
 
 
 // import { ModalAddContentComponent } from './modal-add-content/modal-add-content.component';
@@ -684,7 +684,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HomeKbComponent, // now lazy
     CnpIsMobileComponent,
     HomeKbModalComponent,
-    HomeCreateChatbotModalComponent,
     HomeInviteTeammateModalComponent,
     HomeInviteTeammateErrorModalComponent,
     // HomeGoToChatComponent, // now lazy

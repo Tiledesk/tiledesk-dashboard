@@ -663,12 +663,18 @@
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
                     style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                    (goToCreateChatbot)="goToCreateChatbot()" 
+                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" 
+                    [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
+                    [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" 
+                    [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" 
+                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -690,9 +696,12 @@
                 <!-- Child 5 Create Chatbot -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
-                  <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
+                  <appdashboard-home-create-chatbot 
+                    #childCreateChatbot *ngIf="displayCreateChatbot"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" 
+                    [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
                     (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
                     (trackUserAction)="trackUserAction($event)">
