@@ -632,6 +632,7 @@
     "UploadLogo":"Loqo yükləyin",
     "FileTooLarge": "Fayl yükləmək üçün çox böyükdür. Maksimum fayl ölçüsü {{file_size}}",
     "ImagePreview":"Şəkil önizləmə",
+    "Flows": "Axınlar",
     "Models": "Modellər",
     "Optional": "isteğe bağlıdır",
     "TYPE_GPT_MODEL": {

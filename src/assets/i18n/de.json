@@ -631,6 +631,7 @@
 	"UploadLogo":"Logo hochladen",
 	"FileTooLarge": "Die Datei ist zu groß zum Hochladen. Maximale Dateigröße {{file_size}}",
 	"ImagePreview":"Bildvorschau",
+	"Flows": "Fließt",
 	"Models": "Modelle",
 	"Optional": "optional",
 	"TYPE_GPT_MODEL": {

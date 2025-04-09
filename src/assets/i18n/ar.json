@@ -631,6 +631,7 @@
     "UploadLogo":"قم بتحميل شعارك",
     "FileTooLarge": "الملف كبير جدًا بحيث لا يمكن تحميله. الحد الأقصى لحجم الملف {{file_size}}",
     "ImagePreview":"معاينة الصورة",
+    "Flows": "التدفقات",
     "Models": "نماذج",
     "Optional": "اختياري",
     "TYPE_GPT_MODEL": {
