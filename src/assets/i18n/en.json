@@ -602,6 +602,7 @@
     "PleaseTrySigningInAgain": "Please try signing in again",
     "ReturnToLoginPage": "Return to login page", 
     "QuotaExceeded": "Quota exceeded",
+    "TooManyRequests": "Too Many Requests",
     "PleaseContactSupport": "Please contact support",
     "Rename":"Rename",
     "WelcomeToYourHelpCenter":"Welcome to your Help Center!",
@@ -631,6 +632,8 @@
     "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "ImagePreview":"Image preview",
     "Flows": "Flows",
+    "Models": "Models",
+    "Optional": "optional",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

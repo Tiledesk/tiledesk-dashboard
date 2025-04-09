@@ -17,10 +17,10 @@ aws cloudfront create-invalidation --distribution-id E2D4FS8NGUODM4 --paths "/*"
 echo new version deployed on s3://panel.tiledesk.com/v3/dashboard/
 echo available on https://panel.tiledesk.com/v3/dashboard/index.html
 
-# aws s3 sync --cache-control max-age=172800 . s3://panel.tiledesk.com/v3/dashboard/snx
+# aws s3 sync --cache-control max-age=172800 . s3://panel.tiledesk.com/v3/dashboard/int
 # aws cloudfront create-invalidation --distribution-id E2D4FS8NGUODM4 --paths "/*"
-# echo new version deployed on s3://panel.tiledesk.com/v3/dashboard/snx
-# echo available on https://panel.tiledesk.com/v3/dashboard/snx/index.html
+# echo new version deployed on s3://panel.tiledesk.com/v3/dashboard/int
+# echo available on https://panel.tiledesk.com/v3/dashboard/int/index.html
 
 
 

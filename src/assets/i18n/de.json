@@ -602,6 +602,7 @@
 	"PleaseTrySigningInAgain": "Bitte versuchen Sie erneut, sich anzumelden",
 	"ReturnToLoginPage": "Kehren Sie zur Anmeldeseite zurück",
 	"QuotaExceeded": "Quote überschritten",
+	"TooManyRequests": "Zu viele Anfragen",
 	"PleaseContactSupport": "Bitte wenden Sie sich an den Support",
 	"Rename": "Umbenennen",
 	"WelcomeToYourHelpCenter": "Willkommen in Ihrem Hilfe-Center!",
@@ -630,7 +631,8 @@
 	"UploadLogo":"Logo hochladen",
 	"FileTooLarge": "Die Datei ist zu groß zum Hochladen. Maximale Dateigröße {{file_size}}",
 	"ImagePreview":"Bildvorschau",
-	"Flows": "Fließt",
+	"Models": "Modelle",
+	"Optional": "optional",
 	"TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

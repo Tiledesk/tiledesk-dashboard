@@ -602,6 +602,7 @@
     "PleaseTrySigningInAgain": "Есептік жазбаға қайта кіріп көріңіз",
     "ReturnToLoginPage": "Жүйеге кіру бетіне оралу",
     "QuotaExceeded": "Квота асып кетті",
+    "TooManyRequests": "Тым көп сұраулар",
     "PleaseContactSupport": "Қолдау қызметіне хабарласыңыз",
     "Rename": "Атын өзгерту",
     "WelcomeToYourHelpCenter": "Анықтама орталығына қош келдіңіз!",
@@ -631,6 +632,8 @@
     "FileTooLarge": "Файл жүктеп салу үшін тым үлкен. Максималды файл өлшемі {{file_size}}",
     "ImagePreview":"Кескінді алдын ала қарау",
     "Flows": "Ағындар",
+    "Models": "Модельдер",
+    "Optional": "міндетті емес",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

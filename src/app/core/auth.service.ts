@@ -61,6 +61,7 @@ export class AuthService {
 
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null)
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null)
+  public hasChangedProjectFroList$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
   public settingSidebarIsOpned: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   public nativeBotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
@@ -293,6 +294,18 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
+
+    if (calledBy === 'PROJECTS') {
+      this.hasChangedProjectFroList$.next(true)
+      this.logger.log('[AUTH-SERV][HAS CHANGED PROJECT FROM LIST] PUBLISH ')
+    }
+
+    if (calledBy === 'navbar') {
+      this.hasChangedProjectFroList$.next(false)
+      this.logger.log('[AUTH-SERV][HAS CHANGED PROJECT FROM LIST] PUBLISH ')
+    }
+
+
   }
 
   projectProfile(projectprofile) {

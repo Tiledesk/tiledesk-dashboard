@@ -120,16 +120,13 @@
         </div>
 
         <div class="button-container">
-            <!-- btn-size-xl btn-p  btn-p-ripple -->
-            <!-- id="home-cds-btn" -->
-            <button *ngIf="chatbotsUsingNamespace?.length > 0" id="home--cds-btn" class="btn  btn-tdblu-no-boxshadow"
+            <!-- chatbotsUsingNamespace?.length > 0 -->
+            <button *ngIf="displayKbManageContent" id="home--cds-btn" class="btn  btn-tdblu-no-boxshadow"
                 (click)="goToKBPage()">
-                <!-- Manage <b> {{ kbAssistantName }} </b>  contents -->
                 Manage contents
             </button>
-            <!-- btn-size-xl btn-p  btn-p-ripple -->
-            <!-- id="home-cds-btn" -->
-            <button *ngIf="chatbotsUsingNamespace?.length === 0" id="home--cds-btn" class="btn btn-tdblu-no-boxshadow"
+            <!-- chatbotsUsingNamespace?.length === 0 -->
+            <button *ngIf="!displayKbManageContent" id="home--cds-btn" class="btn btn-tdblu-no-boxshadow"
                 (click)="createChatbotfromKbOfficialResponderTemplate()">
                 Create your Assistant
             </button>

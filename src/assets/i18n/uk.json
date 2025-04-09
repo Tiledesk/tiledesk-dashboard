@@ -605,6 +605,7 @@
     "PleaseTrySigningInAgain": "Спробуйте ввійти знову",
     "ReturnToLoginPage": "Повернутися на сторінку входу", 
     "QuotaExceeded": "Квоту перевищено",
+    "TooManyRequests": "Забагато запитів",
     "PleaseContactSupport": "Будь ласка, зв'яжіться зі службою підтримки",
     "Rename":"Перейменувати",
     "WelcomeToYourHelpCenter":"Ласкаво просимо до вашого довідкового центру!",
@@ -634,6 +635,8 @@
     "FileTooLarge": "Файл завеликий для завантаження. Максимальний розмір файлу {{file_size}}",
     "ImagePreview":"Попередній перегляд зображення",
     "Flows": "Потоки",
+    "Models": "Моделі",
+    "Optional": "необов'язковий",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -602,6 +602,7 @@
     "PleaseTrySigningInAgain": "من فضلك حاول تسجيل الدخول مرة أخرى",
     "ReturnToLoginPage": "العودة إلى صفحة تسجيل الدخول",
     "QuotaExceeded": "تم تجاوز الحصة",
+    "TooManyRequests": "طلبات كثيرة جدًا",
     "PleaseContactSupport": "يرجى الاتصال بالدعم",
     "Rename": "إعادة تسمية",
     "WelcomeToYourHelpCenter": "مرحباً بكم في مركز المساعدة الخاص بكم!",
@@ -630,7 +631,8 @@
     "UploadLogo":"قم بتحميل شعارك",
     "FileTooLarge": "الملف كبير جدًا بحيث لا يمكن تحميله. الحد الأقصى لحجم الملف {{file_size}}",
     "ImagePreview":"معاينة الصورة",
-    "Flows": "التدفقات",
+    "Models": "نماذج",
+    "Optional": "اختياري",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

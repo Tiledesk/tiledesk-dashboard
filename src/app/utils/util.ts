@@ -437,15 +437,15 @@ export enum KB_MAX_NUM {
 
 export const PLANS_LIST = {
     // FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
-    FREE_TRIAL: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
-    Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
-    Starter: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
-    Pro: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
-    Business: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
-    Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
-    Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
-    Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
-    Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+    FREE_TRIAL: { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 120000, email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
+    Sandbox:    { requests: 200,  messages: 0, tokens: 100000,   voice_duration: 0,      email: 200, chatbots: 2,  namespace: 1,  kbs: 50 },
+    Starter:    { requests: 800,  messages: 0, tokens: 2000000,  voice_duration: 0,      email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
+    Pro:        { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 0,      email: 200, chatbots: 20, namespace: 3,  kbs: 300 },
+    Business:   { requests: 5000, messages: 0, tokens: 10000000, voice_duration: 0,      email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+    Basic:      { requests: 800,  messages: 0, tokens: 2000000,  voice_duration: 0,      email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
+    Premium:    { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 0,      email: 200, chatbots: 20, namespace: 3,  kbs: 300 },
+    Team:       { requests: 5000, messages: 0, tokens: 10000000, voice_duration: 0,      email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+    Custom:     { requests: 5000, messages: 0, tokens: 10000000, voice_duration: 120000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
 }
 
 // export enum PLAN_SEATS {

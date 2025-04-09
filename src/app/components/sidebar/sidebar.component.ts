@@ -364,10 +364,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   // ngAfterContentInit(): void { 
   //   if (this.company_brand_color) { 
   //     console.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
-  //     // const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
-  //     // console.log('[SIDEBAR] pathElement ', pathElement)
+  //      const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
+  //      console.log('[SIDEBAR] pathElement ', pathElement)
 
-  //     // this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
+  //      this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
   //     this.renderer.setStyle(document.body, '--sidebar-active-icon', this.company_brand_color);
   //   }
   // }
@@ -565,10 +565,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
   }
-
-
-
-
 
 
   presentDialogResetBusy() {
@@ -1490,7 +1486,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.userProfileImageExist = false
       });
     }
+  }
 
+  handleImageError() {
+    // this.userImageUrl = 'assets/img/no_image_user.png';
   }
 
 
@@ -1539,28 +1538,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       })
     }
   }
-
-  // setImageProfileUrl_Native(storage) {
-  //   this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-  //   this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
-  //   this.timeStamp = (new Date()).getTime();
-  // }
-
-  // setImageProfileUrl(storageBucket) {
-  //   this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
-  //   this.timeStamp = (new Date()).getTime();
-  // }
-
-  // getUserProfileImage() {
-  //   if (this.timeStamp) {
-  //     // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
-  //     return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
-  //   }
-  //   return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
-  // }
-
-
-
 
   getProjectUserId() {
     this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
@@ -1649,124 +1626,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     })
   }
 
-
-
-
-  // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
-  getProjectUser() {
-    //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-      // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
-      if ((projectUser) && (projectUser.length !== 0)) {
-        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
-        // this.user_is_available_bs = projectUser.user_available;
-
-        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
-        this.subsTo_WsCurrentUser(projectUser[0]._id)
-
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
-        }
-
-        // ADDED 21 AGO
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
-
-          // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-          this.USER_ROLE = projectUser[0].role;
-
-          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
-
-        }
-      } else {
-        // this could be the case in which the current user was deleted as a member of the current project
-        this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
-      }
-
-    }, (error) => {
-      this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
-    }, () => {
-      this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
-    });
-  }
-
-
-  subsTo_WsCurrentUser(currentuserprjctuserid) {
-    this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-    // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-    this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-
-    this.getWsCurrentUserAvailability$();
-    this.getWsCurrentUserIsBusy$();
-  }
-
-
-
-  getWsCurrentUserAvailability$() {
-    // this.usersService.currentUserWsAvailability$
-    this.wsRequestsService.currentUserWsAvailability$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((data) => {
-        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
-        if (data !== null) {
-          if (data['user_available'] === false && data['profileStatus'] === "inactive") {
-            this.IS_AVAILABLE = false;
-            this.IS_INACTIVE = true;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
-          } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
-            this.IS_AVAILABLE = false;
-            this.IS_INACTIVE = false;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
-          } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
-            this.IS_AVAILABLE = true;
-            this.IS_INACTIVE = false;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
-          }
-
-          // if (this.IS_AVAILABLE === true) {
-          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
-          // } else {
-          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
-          // }
-        }
-      }, error => {
-        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
-      }, () => {
-        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
-      });
-  }
-
-  getWsCurrentUserIsBusy$() {
-    // this.usersService.currentUserWsIsBusy$
-    this.wsRequestsService.currentUserWsIsBusy$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((currentuser_isbusy) => {
-        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
-        if (currentuser_isbusy !== null) {
-          this.IS_BUSY = currentuser_isbusy;
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
-        }
-      }, error => {
-        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
-      }, () => {
-        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
-      });
-
-
-  }
-
-
   // NO MORE USED - SUBSTITUDED WITH changeAvailabilityState
   // availale_unavailable_status(hasClickedChangeStatus: boolean) {
   //     hasClickedChangeStatus = hasClickedChangeStatus;
@@ -1830,7 +1689,132 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     });
   }
 
+    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
+    getProjectUser() {
+      //    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
+      this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
+        // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
+        if ((projectUser) && (projectUser.length !== 0)) {
+          // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
+          // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
+          // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+          // this.user_is_available_bs = projectUser.user_available;
+  
+          // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
+          this.subsTo_WsCurrentUser(projectUser[0]._id)
+  
+          if (projectUser[0].user_available !== undefined) {
+            this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
+          }
+  
+          // ADDED 21 AGO
+          if (projectUser[0].role !== undefined) {
+            this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+  
+            // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
+            this.USER_ROLE = projectUser[0].role;
+  
+            // SEND THE ROLE TO USER SERVICE THAT PUBLISH
+            this.usersService.user_role(projectUser[0].role);
+  
+          }
+        } else {
+          // this could be the case in which the current user was deleted as a member of the current project
+          this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
+        }
+  
+      }, (error) => {
+        this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+      }, () => {
+        this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+      });
+    }
 
+    getProjectUserRole() {
+      this.usersService.project_user_role_bs.subscribe((user_role) => {
+        this.USER_ROLE = user_role;
+        this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+        if (this.USER_ROLE) {
+          // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+          if (this.USER_ROLE === 'agent') {
+            this.SHOW_SETTINGS_SUBMENU = false;
+          }
+        }
+  
+      });
+    }
+
+    subsTo_WsCurrentUser(currentuserprjctuserid) {
+      this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+      // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+      this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+  
+      this.getWsCurrentUserAvailability$();
+      this.getWsCurrentUserIsBusy$();
+    }
+  
+  
+  
+    getWsCurrentUserAvailability$() {
+      // this.usersService.currentUserWsAvailability$
+      this.wsRequestsService.currentUserWsAvailability$
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((data) => {
+          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+          if (data !== null) {
+            if (data['user_available'] === false && data['profileStatus'] === "inactive") {
+              this.IS_AVAILABLE = false;
+              this.IS_INACTIVE = true;
+              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
+            } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
+              this.IS_AVAILABLE = false;
+              this.IS_INACTIVE = false;
+              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+            } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
+              this.IS_AVAILABLE = true;
+              this.IS_INACTIVE = false;
+              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+            }
+  
+            // if (this.IS_AVAILABLE === true) {
+            //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+            // } else {
+            //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+            // }
+          }
+        }, error => {
+          this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+        }, () => {
+          this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+        });
+    }
+  
+    getWsCurrentUserIsBusy$() {
+      // this.usersService.currentUserWsIsBusy$
+      this.wsRequestsService.currentUserWsIsBusy$
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((currentuser_isbusy) => {
+          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+          if (currentuser_isbusy !== null) {
+            this.IS_BUSY = currentuser_isbusy;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          }
+        }, error => {
+          this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
+        }, () => {
+          this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
+        });
+  
+  
+    }
 
   // No more used  
   // getKnowledgeBaseSettings() {
@@ -1855,41 +1839,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   //   })
   // }
 
-  getFaqKbByProjectId() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      if (faqKb) {
-        this.myChatbotCount = faqKb.length
-        this.logger.log('[SIDEBAR] - GET BOTS BY PROJECT ID - myChatbotCount', this.myChatbotCount);
-      }
-    }, (error) => {
-      this.logger.error('[SIDEBAR] GET BOTS ERROR ', error);
+  // getFaqKbByProjectId() {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+  //     if (faqKb) {
+  //       this.myChatbotCount = faqKb.length
+  //       this.logger.log('[SIDEBAR] - GET BOTS BY PROJECT ID - myChatbotCount', this.myChatbotCount);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error('[SIDEBAR] GET BOTS ERROR ', error);
 
-    }, () => {
-      this.logger.log('[SIDEBAR] GET BOTS COMPLETE');
-    });
-  }
+  //   }, () => {
+  //     this.logger.log('[SIDEBAR] GET BOTS COMPLETE');
+  //   });
+  // }
 
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-      if (this.USER_ROLE) {
-        // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
-        if (this.USER_ROLE === 'agent') {
-          this.SHOW_SETTINGS_SUBMENU = false;
-        }
-      }
 
-    });
-    // }
-  }
-
-  round5(x) {
-    // const percentageRounded = Math.ceil(x / 5) * 5;
-    // this.logger.log('SIDEBAR project trial days left % rounded', percentageRounded);
-    // return Math.ceil(x / 5) * 5;
-    return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
-  }
 
 
 
@@ -1949,37 +1913,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.IS_MOBILE_MENU = true
     }
   }
-
-  // smallSidebar(IS_SMALL) {
-  //     this.SIDEBAR_IS_SMALL = IS_SMALL;
-  //     this.logger.log('[SIDEBAR] smallSidebar ', IS_SMALL)
-
-  //     const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-  //     const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-  //     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-  //     const elemHtmlTag = <HTMLElement>document.querySelector('html');
-  //     this.logger.log('[SIDEBAR] smallSidebar', elemHtmlTag)
-  //     elemHtmlTag.style.overflowY = 'auto';
-  //     // this.logger.log('elemAppSidebar', elemAppSidebar)
-
-  //     if (IS_SMALL === true) {
-  //         elemSidebar.setAttribute('style', 'width: 70px;');
-  //         elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-  //         elemMainPanel.setAttribute('style', 'width:calc(100% - 70px);');
-  //         elemMainPanel.style.overflowX = 'hidden';
-  //         elemSidebarWrapper.style.height = "calc(100vh - 45px)";
-
-  //     } else {
-  //         if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE === false) {
-  //             elemSidebar.setAttribute('style', 'width: 260px;');
-  //             elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-  //             elemMainPanel.setAttribute('style', 'width:calc(100% - 260px);');
-  //             elemSidebarWrapper.style.height = "calc(100vh - 60px)";
-  //         }
-  //     }
-  // }
-
-
 
 
   onScroll(event: any): void {
@@ -2066,18 +1999,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   goToCannedResponses() {
     this.router.navigate(['project/' + this.projectId + '/cannedresponses']);
   }
-  // goToOperatingHours() {
-  //     this.router.navigate(['/project/' + this.projectId + '/hours']);
-  // }
 
-
-  // goToBlogChangelog() {
-  //     const url = 'https://www.tiledesk.com/category/changelog/';
-  //     window.open(url, '_blank');
-
-  //     this.usersLocalDbService.savChangelogDate()
-  //     this.hidechangelogrocket = true;
-  // }
 
   goToProjects() {
     this.logger.log('[SIDEBAR] IS MOBILE -  HAS CLICCKED GO TO PROJECT')

@@ -629,8 +629,7 @@ export class WsSharedComponent implements OnInit {
   // @ departments in Requests & Count of depts in requests - called by ws-requests-list.component.ts
   // -----------------------------------------------------------------------------------------------------
   /**
-   * Count of depts in requests !! no more get from request attributes but from dept
-   * 
+   * Count of depts in requests !! No more USED
    * @param requests_array 
    */
   // DEPTS_LAZY: replace the existing one with this

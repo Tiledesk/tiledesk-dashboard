@@ -233,7 +233,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       if (projects.length > 0) {
         this.isFirstProject = false; // the good one
         // this.isFirstProject = true; // for test onbording without sign up
-        this.logger.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
+        // this.logger.log('[ONBOARDING-CONTENT] isFirstProject ', this.isFirstProject)
       }
       this.logger.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
       this.getLoggedUser();

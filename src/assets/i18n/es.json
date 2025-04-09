@@ -602,6 +602,7 @@
     "PleaseTrySigningInAgain": "Por favor intenta iniciar sesión nuevamente",
     "ReturnToLoginPage": "Volver a la página de inicio de sesión",
     "QuotaExceeded": "Cuota excedida",
+    "TooManyRequests": "Demasiadas solicitudes",
     "PleaseContactSupport": "Por favor contacte con soporte",
     "Rename": "Rebautizar",
     "WelcomeToYourHelpCenter": "¡Bienvenido a su Centro de ayuda!",
@@ -631,6 +632,8 @@
     "FileTooLarge": "El archivo es demasiado grande para cargarlo. Tamaño máximo de archivo: {{file_size}}",
     "ImagePreview":"Vista previa de la imagen",
     "Flows": "Flujos",
+    "Models": "Modelos",
+    "Optional": "opcional",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

@@ -1087,6 +1087,10 @@ button.close.custom-hover:hover {
   stroke: #f55a4e !important;
 }
 
+.mat-progress-spinner-voice-runned-out::ng-deep circle {
+  stroke: #f55a4e !important;
+}
+
 // .quote-container {
 //   padding: 4px;
 //   margin-bottom: 20px;

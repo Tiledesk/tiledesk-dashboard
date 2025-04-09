@@ -188,6 +188,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_perc = 0;
   tokens_limit = 0;
 
+  voice_count = 0;
+  voice_perc = 0;
+  voice_limit = 0;
+  voice_limit_in_sec = 0;
+  voice_count_min_sec: any;
+
+  voiceRunnedOut: boolean = false;
+  diplayVXMLVoiceQuota: boolean;
+
   requestsPieStroke: string;
   requestsPieGreenStroke: boolean;
   requestsPieYellowStroke: boolean;
@@ -234,6 +243,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public dialog: MatDialog,
     private sleekplanSsoService: SleekplanSsoService,
     private sleekplanService: SleekplanService,
+
   ) {
 
     super(prjctPlanService, notifyService);
@@ -305,14 +315,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getTestSiteUrl();
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
-
+    this.manageVoiceQuotaVisibility()
 
     this.listenSoundPreference()
     this.listenToLiveAnnouncementOpened()
     // this.listenToQuotasReachedInHome()
 
     // this.listenToWSRequestsDataCallBack()
-  } // OnInit
+
+
+
+    this.listenToHomeRequestQuotes()
+  }
 
 
   ngOnDestroy() {
@@ -320,6 +334,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  listenToHomeRequestQuotes() {
+    this.quotesService.requestQuotes$.subscribe(() => {
+      this.logger.log('[QUOTA-DEBUG][NAVBAR] Home call getProjectQuotes')
+      this.getProjectQuotes();
+    });
   }
 
 
@@ -353,14 +374,68 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectId = project._id;
           this.projectName = project.name;
           // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          this.getProjectQuotes();
+          // this.getProjectQuotes();
           // this.getQuotasCount()
           // this.getQuotes();
           // this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+
+          // Fetch quotes only if they haven't been fetched yet
+          // if (!this.quotesService['hasFetchedData']) {
+          //   this.logger.log('[NAVBAR] Fetching quotes in Navbar because Home has not requested it.');
+          //   this.getProjectQuotes();
+          // }
         }
 
         this.getProjects()
       }
+    });
+  }
+
+
+  manageVoiceQuotaVisibility() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      this.logger.log('[NAVBAR] - manageVoiceQuotaVisibility getProjectPlan project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        if (projectProfileData['customization']) {
+
+          // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+          if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
+
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+            // this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+            // if (projectProfileData['customization']['voice-twilio'] === true) {
+            //   this.diplayTwilioVoiceQuota = true
+            // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+            //   this.diplayTwilioVoiceQuota = false
+            // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+            //   this.diplayTwilioVoiceQuota = false
+            // } 
+
+            if (projectProfileData['customization']['voice'] === true) {
+              this.diplayVXMLVoiceQuota = true
+            } else if (projectProfileData['customization']['voice'] === false) {
+              this.diplayVXMLVoiceQuota = false
+            } else if (projectProfileData['customization']['voice'] === undefined) {
+              this.diplayVXMLVoiceQuota = false
+            }
+          } else {
+            this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+            this.diplayVXMLVoiceQuota = false
+          }
+
+        } else {
+
+          this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+          // this.diplayTwilioVoiceQuota = false
+          this.diplayVXMLVoiceQuota = false
+        }
+
+      }
+
+    }, error => {
+      this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
+    }, () => {
+      this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
     });
   }
 
@@ -370,15 +445,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] - onOpenQuoteMenu - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
     this.getProjectQuotes();
     // this.getQuotasCount()
-    this.getQuotes();
+    // this.getQuotes();
     const currentURL = this.router.url;
     this.logger.log('[NAVBAR] - currentURL 1 ', currentURL);
     if (currentURL.indexOf('/home') !== -1) {
       this.logger.log('[NAVBAR] - currentURL 2 ', currentURL);
-      this.quotesService.hasOpenedNavbarQuotasMenu()
+      // this.quotesService.hasOpenedNavbarQuotasMenu()
     }
-
-
   }
 
 
@@ -388,74 +461,43 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   getProjectQuotes() {
+    this.logger.log("[NAVBAR][QUOTA-DEBUG] getProjectQuotes this.projectId: ", this.projectId);
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
-      this.logger.log("getProjectQuotes: ", response);
       this.project_limits = response;
+      if (this.project_limits) {
+        this.getQuotes(this.project_limits)
+      }
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
     })
   }
 
 
-  getQuotasCount() {
-    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
-
-      this.openedConversations = resp.open;
-      this.closedConversations = resp.closed;
-      this.startSlot = resp.slot.startDate;
-      this.endSlot = resp.slot.endDate;
-
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
-    }, (error) => {
-      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
-    }, () => {
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
-    })
-  }
-
-
-
-
-  // listenToWSRequestsDataCallBack() {
-  //   // .pipe(throttleTime(0))
-  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
-  //   this.wsRequestsService.wsConvData$
-
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((wsConv) => {
-  //       // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
-  //       this.getQuotes()
-  //     })
-  // }
-
-  // listenToQuotasReachedInHome() {
-  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
-
-  //   if (this.projectId)  {
-  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
-  //     this.getQuotes()
-  //   }
-  // }
-
-  getQuotes() {
+  getQuotes(project_limits) {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
-
-      this.logger.log("project_limits: ", this.project_limits)
+      this.logger.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("resp.quotes: ", resp.quotes)
-      if (this.project_limits) {
+      if (resp?.quotes) {
 
-        this.messages_limit = this.project_limits.messages;
-        this.requests_limit = this.project_limits.requests;
-        this.email_limit = this.project_limits.email;
-        this.tokens_limit = this.project_limits.tokens;
+        this.logger.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE")
+
+        this.quotesService.updateQuotasData({
+          projectLimits: project_limits, // Pass fetched project limits
+          allQuotes: resp.quotes // Pass fetched quotes
+        });
+
+      }
+
+      if (project_limits) {
+
+        this.messages_limit = project_limits.messages;
+        this.requests_limit = project_limits.requests;
+        this.email_limit = project_limits.email;
+        this.tokens_limit = project_limits.tokens;
+        this.voice_limit_in_sec = this.project_limits.voice_duration
+        this.voice_limit = Math.floor(this.project_limits.voice_duration / 60);
       }
 
       if (resp.quotes.requests.quote === null) {
@@ -470,6 +512,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (resp.quotes.tokens.quote === null) {
         resp.quotes.tokens.quote = 0;
       }
+      if (resp.quotes.voice_duration && resp.quotes.voice_duration.quote === null) {
+        resp.quotes.voice_duration.quote = 0;
+      }
 
       this.logger.log('[NAVBAR] used requests', resp.quotes.requests.quote)
       this.logger.log('[NAVBAR] requests_limit', this.requests_limit)
@@ -477,9 +522,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log('[NAVBAR] used email', resp.quotes.email.quote)
       this.logger.log('[NAVBAR] email_limit', this.email_limit)
 
-
       this.logger.log('[NAVBAR] used tokens', resp.quotes.tokens.quote)
       this.logger.log('[NAVBAR] tokens_limit', this.tokens_limit)
+
+      this.logger.log('[NAVBAR] used voice', resp.quotes.voice_duration.quote)
+      this.logger.log('[NAVBAR] voice_limit', this.voice_limit)
 
       if (resp.quotes.requests.quote >= this.requests_limit) {
         this.conversationsRunnedOut = true;
@@ -505,11 +552,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] tokensRunnedOut', this.tokensRunnedOut)
       }
 
+      this.logger.log('[HOME] voiceRunnedOut diplayVXMLVoiceQuota', this.diplayVXMLVoiceQuota)
+
+      // if (120000 >= this.voice_limit) {
+      if (resp.quotes.voice_duration.quote >= this.voice_limit_in_sec) {
+        this.voiceRunnedOut = true;
+        this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+      } else {
+        this.voiceRunnedOut = false;
+        this.logger.log('[NAVBAR] voiceRunnedOut', this.voiceRunnedOut)
+      }
+
 
       this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
       this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
       this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
       this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit_in_sec) * 100));
 
       this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
       if (this.requests_perc <= 25) {
@@ -535,22 +594,71 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.requestsPieRedStroke = true; // 76% a 100%
       }
 
-
-
-
-
-
       this.requests_count = resp.quotes.requests.quote;
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
+      this.voice_count = resp.quotes.voice_duration.quote
+      this.logger.log("[NAVBAR] getAllQuotes voice_count: ", this.voice_count)
+      this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
+      this.logger.log("[HOME] getAllQuotes  voice_count_min_sec: ", this.voice_count_min_sec)
 
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
     }, () => {
-      this.logger.log("get all quotes *COMPLETE*");
+      this.logger.log("[QUOTA-DEBUG][NAVBAR][DISPLAY-SKELETON] get all quotes *COMPLETE*");
+
     })
   }
+
+  secondsToMinutes_seconds(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
+  }
+
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
+
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+    }, (error) => {
+      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+  // listenToWSRequestsDataCallBack() {
+  //   // .pipe(throttleTime(0))
+  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
+  //   this.wsRequestsService.wsConvData$
+
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((wsConv) => {
+  //       // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
+  //       this.getQuotes()
+  //     })
+  // }
+
+  // listenToQuotasReachedInHome() {
+  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
+
+  //   if (this.projectId)  {
+  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
+  //     this.getQuotes()
+  //   }
+  // }
 
 
   goToHistoryOpenedConvs() {
@@ -934,8 +1042,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
           /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
           if (event.url.indexOf('/home') !== -1) {
-            // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+            // console.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
             this.HOME_ROUTE_IS_ACTIVE = true;
+
+            // Get quotas limit and quotas to update the home
+            //  this.getProjectQuotes();
+
           } else {
             // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
             this.HOME_ROUTE_IS_ACTIVE = false;
@@ -1006,7 +1118,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/pricing/te') !== -1) ||
           (this.route.indexOf('/pricing') !== -1) ||
           (this.route.indexOf('/projects') !== -1)
-          
+
 
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
@@ -1057,15 +1169,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   }
 
- 
+
   detectRouteAndInitSleekPlan() {
-    
+
     this.router.events.subscribe((val) => {
 
       if (this.location.path() !== '') {
         this.route = this.location.path();
         this.logger.log('[NAVBAR] »> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
-         if (this.route !== '/signup' && this.route !== '/onboarding'&& this.route !== "/create-new-project") {
+        if (this.route !== '/signup' && this.route !== '/onboarding' && this.route !== "/create-new-project") {
           this.logger.log('[NAVBAR] window[$sleek]', window['$sleek'])
           this.browserRefresh = browserRefresh
           this.logger.log('[NAVBAR] browserRefresh', this.browserRefresh)
@@ -1073,10 +1185,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             // Sleekplan is already loaded
             return;
           }
-        if (this.user && this.isVisiblePay && !this.browserRefresh)
+          if (this.user && this.isVisiblePay && !this.browserRefresh)
             this.sleekplanSso(this.user)
-         }
-         this.logger.log('[NAVBAR] this.user' , this.user) 
+        }
+        this.logger.log('[NAVBAR] this.user', this.user)
         if (
           this.route === '/user-profile' ||
           this.route === '/create-new-project' ||
@@ -1113,42 +1225,42 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   sleekplanSso(user) {
     this.logger.log('[NAVBAR] calling sleekplanSso ')
     this.sleekplanSsoService.getSsoToken(user).subscribe(
-        (response) => {
-            this.logger.log('[NAVBAR] sleekplanSso response ', response)
-            this.logger.log('[NAVBAR] sleekplanSso response token', response['token'])
+      (response) => {
+        this.logger.log('[NAVBAR] sleekplanSso response ', response)
+        this.logger.log('[NAVBAR] sleekplanSso response token', response['token'])
 
-            // Configure Sleekplan with SSO
-            // window['Sleekplan'] = {
-            //   id: 'YOUR_SLEEKPLAN_ID',
-            //   sso: response.token,
-            // };
+        // Configure Sleekplan with SSO
+        // window['Sleekplan'] = {
+        //   id: 'YOUR_SLEEKPLAN_ID',
+        //   sso: response.token,
+        // };
 
-            // window['$sleek'].setUser({
-            //   token: response['token'],
-            // });
+        // window['$sleek'].setUser({
+        //   token: response['token'],
+        // });
 
-            // window.document.addEventListener('sleek:init', () => {
-            //   window['$sleek'].setUser({ token: response['token'] });
-            // }, false);
+        // window.document.addEventListener('sleek:init', () => {
+        //   window['$sleek'].setUser({ token: response['token'] });
+        // }, false);
 
-            // window['$sleek'].sso = { token: response['token'] }
+        // window['$sleek'].sso = { token: response['token'] }
 
-            window['SLEEK_USER'] = { token: response['token'] }
+        window['SLEEK_USER'] = { token: response['token'] }
 
-            // Load the Sleekplan widget
-            this.sleekplanService.loadSleekplan().then(() => {
-                this.logger.log('[NAVBAR] - Sleekplan successfully initialized');
-            })
-                .catch(err => {
-                    this.logger.error('[NAVBAR] - Sleekplan initialization failed', err);
-                });
-        },
-        (error) => {
-            this.logger.error('[NAVBAR] - Failed to fetch Sleekplan SSO token', error);
+        // Load the Sleekplan widget
+        this.sleekplanService.loadSleekplan().then(() => {
+          this.logger.log('[NAVBAR] - Sleekplan successfully initialized');
+        })
+          .catch(err => {
+            this.logger.error('[NAVBAR] - Sleekplan initialization failed', err);
+          });
+      },
+      (error) => {
+        this.logger.error('[NAVBAR] - Failed to fetch Sleekplan SSO token', error);
 
-        }
+      }
     );
-}
+  }
 
 
   getTrialLeft() {
@@ -1247,7 +1359,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     if (this.isVisiblePay) {
       if (this.USER_ROLE === 'owner') {
-       
+
         if (this.prjct_profile_type === 'payment') {
           // this.notify._displayContactUsModal(true, 'upgrade_plan');
           this.notify._displayContactUsModal(true, 'upgrade_plan');
@@ -1420,7 +1532,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.auth.projectSelected(project, 'navbar')
       this.router.navigate([`/project/${id_project}/home`]);
-      // this.logger.log('[NAVBAR] goToHome prjct ', project )  
+      // this.logger.log('[NAVBAR] goToHome prjct ', project )
+      this.quotesService.resetFetchStatus()
     }
   }
 

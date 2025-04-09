@@ -95,7 +95,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     this.translateString();
     // this.getKnowledgeBaseSettings();
     this.getUserRole()
-    this.getFaqKbByProjectId()
+    // this.getFaqKbByProjectId()
   }
 
 
@@ -134,7 +134,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       })
   }
 
-
+  // No more used
    getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[HOME-KB] - GET BOTS BY PROJECT ID', faqKb);
@@ -171,7 +171,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
         this.logger.log('[HOME-KB] - GET ALL NAMESPACES ', namespaces);
         this.kbNameSpaceid = namespaces[0].id;
         this.kbNameSpaceName = namespaces[0].name
-        this.getChatbotUsingNamespace(this.kbNameSpaceid)
+        // this.getChatbotUsingNamespace(this.kbNameSpaceid)
 
       }
     }, (error) => {
@@ -183,6 +183,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     });
   }
 
+  // no more used
   getChatbotUsingNamespace(selectedNamespaceid: string) {
     this.chatbotsUsingNamespace = []
     this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((kbAssistants: any) => {

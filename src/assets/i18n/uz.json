@@ -603,6 +603,7 @@
     "PleaseTrySigningInAgain": "Iltimos, qaytadan kiring",
     "ReturnToLoginPage": "Kirish sahifasiga qaytish", 
     "QuotaExceeded": "Kvota oshib ketdi",
+    "TooManyRequests": "Juda koʻp soʻrovlar",
     "PleaseContactSupport": "Iltimos, qo'llab-quvvatlash xizmatiga murojaat qiling",
     "Rename":"Nomini o'zgartirish",
     "WelcomeToYourHelpCenter":"Yordam markazingizga xush kelibsiz!",
@@ -632,6 +633,8 @@
     "FileTooLarge": "Fayl yuklash uchun juda katta. Maksimal fayl hajmi {{file_size}}",
     "ImagePreview":"Rasmni oldindan ko'rish",
     "Flows": "Oqim",
+    "Models": "Modellar",
+    "Optional": "ixtiyoriy",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

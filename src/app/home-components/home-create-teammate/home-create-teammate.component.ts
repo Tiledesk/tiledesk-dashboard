@@ -93,7 +93,6 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   ngOnInit(): void {
     this.logger.log('[HOME-CREATE-TEAMMATE] OnInit  ')
     this.getCurrentProjectAndPrjctTeammates();
-    // this.getGroupsByProjectId();
     this.getUserRole()
     this.getPendingInvitation()
     this.getCurrentProject()
@@ -199,21 +198,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
 
-  getGroupsByProjectId() {
-    this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-      this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
-
-      // this.groupsList = groups;
-
-
-    }, (error) => {
-      this.logger.error('[HOME-CREATE-TEAMMATE] GET GROUPS - ERROR ', error);
-      // this.showSpinner = false;
-    }, () => {
-      // this.showSpinner = false;
-      this.logger.log('[HOME-CREATE-TEAMMATE] GET GROUPS * COMPLETE');
-    });
-  }
+ 
 
 
 
@@ -275,47 +260,19 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
           return obj.id_user._id === this.CURRENT_USER_ID;
         });
 
-        this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
-          this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
-          let groupArray = []
-          let groupArrayGrouped = []
-          if (groups && groups.length > 0) {
-            for (let i = 0; i < groups.length; i++) {
-              this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP NAME ', groups[i].name)
-              this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS ', groups[i].members)
-              groupArray.push({ groupName: groups[i].name, groupMembers: groups[i].members })
-              this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP ARRAY ', groupArray)
-
-
-
-              //   if (groups[i].members && groups[i].members.length > 0) {
-              //     for (let j = 0; j < groups[i].members.length; j++) {
-              //       this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS > MEMBER', groups[i].members[j])
-
-              //       if (projectUsers && projectUsers.length > 0) {
-              //         for (let x = 0; x < projectUsers.length; x++) {
-              //           // this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > PU > USER ID', projectUsers[x].id_user._id)
-              //           if (groups[i].members[j] === projectUsers[x].id_user._id) {
-              //             // group.push(groups[i].name)
-              //             projectUsers[x]['group'] = groups[i].name
-              //           }
-              //         }
-              //       }
-              //     }
-              //   }
-              // }
-            }
-
-            // if (groupArray && groupArray['groupMembers'] && groupArray['groupMembers'].length > 0) {
-            //   groupArray['groupMembers'].forEach(member => {
-            //     groupArrayGrouped.push({memberId:member , groupName: groupArray['groupName']} ) 
-            //   });
-            //   this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > groupArrayGrouped ', groupArrayGrouped)
-            // }
-
-
-          }
-        })
+        // this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
+        //   this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
+        //   let groupArray = []
+        //   let groupArrayGrouped = []
+        //   if (groups && groups.length > 0) {
+        //     for (let i = 0; i < groups.length; i++) {
+        //       this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP NAME ', groups[i].name)
+        //       this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS ', groups[i].members)
+        //       groupArray.push({ groupName: groups[i].name, groupMembers: groups[i].members })
+        //       this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP ARRAY ', groupArray)
+        //     }
+        //   }
+        // })
 
 
 

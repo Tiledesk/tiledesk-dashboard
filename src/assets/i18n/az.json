@@ -603,6 +603,7 @@
     "PleaseTrySigningInAgain": "Lütfən, yenidən daxil olmağa cəhd edin",
     "ReturnToLoginPage": "Giriş səhifəsinə qayıt", 
     "QuotaExceeded": "Kvota keçib",
+    "TooManyRequests": "Çox Çox Sorğu",
     "PleaseContactSupport": "Zəhmət olmasa dəstək ilə əlaqə saxlayın",
     "Rename":"Adını dəyişdirin",
     "WelcomeToYourHelpCenter":"Yardım Mərkəzinizə xoş gəlmisiniz!",
@@ -631,7 +632,8 @@
     "UploadLogo":"Loqo yükləyin",
     "FileTooLarge": "Fayl yükləmək üçün çox böyükdür. Maksimum fayl ölçüsü {{file_size}}",
     "ImagePreview":"Şəkil önizləmə",
-    "Flows": "Axınlar",
+    "Models": "Modellər",
+    "Optional": "isteğe bağlıdır",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

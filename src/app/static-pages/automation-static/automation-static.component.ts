@@ -81,7 +81,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     this.getTranslationStrings();
     this.getBrowserVersion();
     this.presentModalsOnInit()
-    this.tparams = { 'plan_name': PLAN_NAME.F }
+    this.tparams = { 'plan_name': PLAN_NAME.E }
     this.listenSidebarIsOpened();
   }
 

@@ -604,6 +604,7 @@
     "PleaseTrySigningInAgain": "Försök att logga in igen",
     "ReturnToLoginPage": "Återgå till inloggningssidan", 
     "QuotaExceeded": "Kvoten överskriden",
+    "TooManyRequests": "För många förfrågningar",
     "PleaseContactSupport": "Vänligen kontakta support",
     "Rename":"Döp om",
     "WelcomeToYourHelpCenter":"Välkommen till ditt hjälpcenter!",
@@ -633,6 +634,8 @@
     "FileTooLarge": "Filen är för stor för att ladda upp. Max filstorlek {{file_size}}",
     "ImagePreview":"Förhandsgranskning av bild",
     "Flows": "Flöden",
+    "Models": "Modeller",
+    "Optional": "frivillig",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

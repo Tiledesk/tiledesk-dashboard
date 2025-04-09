@@ -793,7 +793,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-    // { provide: HTTP_INTERCEPTORS, useClass: LogRequestsInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LogRequestsInterceptor, multi: true },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,

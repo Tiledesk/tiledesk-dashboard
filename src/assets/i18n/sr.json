@@ -604,6 +604,7 @@
     "PleaseTrySigningInAgain": "Молимо покушајте да се пријавите поново",
     "ReturnToLoginPage": "Вратите се на страницу за пријаву", 
     "QuotaExceeded": "Квота је премашена",
+    "TooManyRequests": "Превише захтева",
     "PleaseContactSupport": "Обратите се подршци",
     "Rename":"Преименуј",
     "WelcomeToYourHelpCenter":"Добродошли у ваш центар за помоћ!",
@@ -633,6 +634,8 @@
     "FileTooLarge": "Датотека је превелика за отпремање. Максимална величина датотеке {{file_size}}",
     "ImagePreview":"Преглед слике",
     "Flows": "Токови",
+    "Models": "Модели",
+    "Optional": "опционо",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

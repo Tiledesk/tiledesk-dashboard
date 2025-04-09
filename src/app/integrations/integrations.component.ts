@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration,  } from './utils'; // OllamaIntegration, DeepseekIntegration
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration} from './utils'; // , DeepseekIntegration
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -69,6 +69,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   trialExpired: boolean
   subscriptionIsActive: boolean;
   profileType: string;
+  user: any;
 
   constructor(
     private auth: AuthService,
@@ -88,12 +89,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
     // this.INTEGRATIONS_CLONE = JSON.parse(JSON.stringify(INTEGRATION_LIST_ARRAY))
-    
+
   }
 
   ngOnInit(): void {
     this.getCurrentProject();
-
+    this.getLoggedUser()
     this.getProjectPlan();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
@@ -101,14 +102,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.getProjectUserRole()
   }
 
-
-  /**
-   * UTILS FUNCTIONS - START
-   */
-
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  // ------------------------------
+  // UTILS FUNCTIONS - START
+  // ------------------------------
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[INTEGRATION-COMP] - USER GET IN HOME ', user)
+
+        this.user = user;
+      })
   }
 
   listenSidebarIsOpened() {
@@ -142,6 +154,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
 
           this.profile_name = projectProfileData.profile_name;
+          this.logger.log('[INTEGRATION-COMP] INTEGRATIONS profile_name ', this.profile_name)
+
           this.trialExpired = projectProfileData.trial_expired
           this.trialExpired = projectProfileData.trial_expired
           this.profileType = projectProfileData.profile_type
@@ -386,7 +400,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
     }).catch((err) => {
-      this.logger.error("[INTEGRATIONS] err ", err)
+      if (err !== false) {
+        this.logger.error("[INTEGRATIONS] err ", err)
+      }
       this.showInIframe = false;
       this.integrationLocked = true;
       this.plan_require = integration.plan;
@@ -407,7 +423,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   integrationUpdateEvent(data) {
-    this.logger.log('[INTEGRATION-COMP] data',  data) 
+    this.logger.log('[INTEGRATION-COMP] data', data)
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
       this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
@@ -417,6 +433,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // } else {
       //   this.notify.showWidgetStyleUpdateNotification("Saved but not verified", 3, 'priority_high');
       // }
+      this.logger.log('Integration ', data.integration.name, 'saved ', ' key verified ', data.isVerified)
+
+      this.trackSavedIntegration(data.integration.name, data.isVerified)
 
       this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');
 
@@ -427,6 +446,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   integrationDeletedEvent(integration) {
     this.presentDeleteConfirmModal(integration);
+  
   }
 
   reloadSelectedIntegration(integration) {
@@ -457,6 +477,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
         this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
           this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
+          this.logger.log('Integration ', integration.name, 'deleted ')
+          this.trackDeletedIntegration(integration.name)
           Swal.fire({
             title: this.translate.instant('Done') + "!",
             text: this.translate.instant('TheIntegrationHasBeenDeleted'),
@@ -474,7 +496,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
           Swal.fire({
             title: this.translate.instant('Oops') + '!',
-            text: this.translate.instant('AnErrorOccurreWhileDeletingTheIntegration'), 
+            text: this.translate.instant('AnErrorOccurreWhileDeletingTheIntegration'),
             icon: "error",
             showCloseButton: false,
             showCancelButton: false,
@@ -562,9 +584,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       return new CohereIntegration();
     }
 
-    // if (key === INTEGRATIONS_KEYS.OLLAMA) {
-    //   return new OllamaIntegration();
-    // }
+    if (key === INTEGRATIONS_KEYS.OLLAMA) {
+      return new OllamaIntegration();
+    }
 
     if (key === INTEGRATIONS_KEYS.DEEPSEEK) {
       return new DeepseekIntegration();
@@ -840,7 +862,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   manageAppVisibility(projectProfileData) {
 
     if (projectProfileData && projectProfileData.customization) {
-   
+
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
@@ -867,8 +889,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
-       // Restores the "VXML voice" integration (use case: it was removed from the Integration array in a project where it was not active)
-       if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === true) {
+      // Restores the "VXML voice" integration (use case: it was removed from the Integration array in a project where it was not active)
+      if (projectProfileData.customization[this.INT_KEYS.VXML_VOICE] && projectProfileData.customization[this.INT_KEYS.VXML_VOICE] === true) {
         this.logger.log('[INTEGRATIONS] manageAppVisibility VXML_VOICE ')
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
         if (index != -1) {
@@ -876,7 +898,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         } else if (index == -1) {
           this.logger.log('VXML_VOICE index B', index)
           const VXMLVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.VXML_VOICE);
-          this.logger.log('VXMLVoiceObjct' , VXMLVoiceObjct) 
+          this.logger.log('VXMLVoiceObjct', VXMLVoiceObjct)
           this.INTEGRATIONS.push(VXMLVoiceObjct)
         }
       }
@@ -900,7 +922,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         } else if (index == -1) {
           this.logger.log('TWILIO_VOICE index B', index)
           const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-          this.logger.log('twilioVoiceObjct' , twilioVoiceObjct) 
+          this.logger.log('twilioVoiceObjct', twilioVoiceObjct)
           this.INTEGRATIONS.push(twilioVoiceObjct)
         }
       }
@@ -924,6 +946,98 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     }
 
     this.integrationListReady = true;
+  }
+
+  trackSavedIntegration(integrationName, integrationisVerified) {
+    this.logger.log('[INTEGRATIONS] trackSavedIntegration integrationName ', integrationName)
+    this.logger.log('[INTEGRATIONS] trackSavedIntegration integrationisVerified ', integrationisVerified)
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname) {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+        if (!isDevMode()) {
+          try {
+            window['analytics'].track('Integration saved', {
+              "type": "organic",
+              "username": userFullname,
+              "email": this.user.email,
+              'userId': this.user._id,
+              'integration': integrationName,
+              'apiKeyVerified': integrationisVerified,
+              'action': 'save'
+            });
+          } catch (err) {
+            // this.logger.error(`Track Integration saved error`, err);
+          }
+    
+          try {
+            window['analytics'].identify(this.user._id, {
+              username: userFullname,
+              email: this.user.email,
+              logins: 5,
+    
+            });
+          } catch (err) {
+            // this.logger.error(`Identify Integration saved error`, err);
+          }
+    
+          try {
+            window['analytics'].group(this.project._id, {
+              name: this.project.name,
+              plan: this.profile_name
+    
+            });
+          } catch (err) {
+            // this.logger.error(`Group Integration saved error`, err);
+          }
+        }
+  }
+
+  trackDeletedIntegration(integrationName) {
+    this.logger.log('[INTEGRATIONS] trackDeletedIntegrations integrationName ', integrationName)
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname) {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track('Integration deleted', {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.user.email,
+          'userId': this.user._id,
+          'integration': integrationName,
+          'action': 'delete'
+        });
+      } catch (err) {
+        // this.logger.error(`Track Integration deleted error`, err);
+      }
+
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        // this.logger.error(`Identify Integration deleted error`, err);
+      }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.profile_name
+
+        });
+      } catch (err) {
+        // this.logger.error(`Group Integration deleted error`, err);
+      }
+    }
   }
 
 }
