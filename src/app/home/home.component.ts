@@ -448,7 +448,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToCreateChatbot() {
     this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
-    this.scrollToChild(this.childCreateChatbot)
+    // this.scrollToChild(this.childCreateChatbot)
+    this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 
 

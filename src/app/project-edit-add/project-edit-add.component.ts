@@ -1242,7 +1242,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   manageSmtpSettingsVisibility(projectProfileData) {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     if (projectProfileData['customization']) {
-      this.logger.log('[PRJCT-EDIT-ADD] USECASE EXIST customization > SMTPsettings (1)', projectProfileData['customization']['smtpSettings'])
+      console.log('[PRJCT-EDIT-ADD] USECASE EXIST customization > SMTPsettings (1)', projectProfileData['customization']['smtpSettings'])
     }
 
     if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] !== undefined) {

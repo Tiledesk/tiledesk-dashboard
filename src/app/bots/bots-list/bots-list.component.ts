@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { Chatbot, FaqKb } from '../../models/faq_kb-model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
@@ -171,6 +171,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   diplayTwilioVoiceChabotCard: boolean;
   diplayVXMLVoiceChabotCard: boolean;
+  displayDialogCreateFlowsOnInit: boolean = false;
 
   // editBotName: boolean = false;
   constructor(
@@ -193,6 +194,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
     private webhookService: WebhookService,
+    private activatedroute: ActivatedRoute,
     // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
@@ -249,7 +251,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getUserRole();
     this.getDefaultDeptId();
     this.getLoggedUser()
+    // this.getQueryParams()
   }
+
+  // getQueryParams() {
+  //   this.activatedroute.queryParams.subscribe(params => {
+  //     console.log('[BOTS-LIST] GET QUERY PARAMS params ', params )
+  //     if (params && params.fl === '1') {
+  //       this.displayDialogCreateFlowsOnInit = true
+  //     }
+
+  //   });
+  // }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -657,6 +670,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.diplayVXMLVoiceChabotCard = voice === true;
     console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
     console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
+
+    // if (this.displayDialogCreateFlowsOnInit)  {
+    //   this.presentDialogCreateFlows(true)
+    // }
   }
 
 
@@ -1479,17 +1496,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         if (this.chatBotLimit || this.chatBotLimit === 0) {
           if (this.chatBotCount < this.chatBotLimit) {
             console.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
-            if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
-              console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
-              this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'automations')
-            }
-            if (!this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) {
-              console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Chatbots list. Do you want to continue? `)
-              this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'chatbots')
-            }
-            if ((this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) || (!this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot'))) {
-              this.importChatbotFromJSON(formData)
-            }
+            // if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
+            //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
+            //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'automations')
+            // }
+            // if (!this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) {
+            //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Chatbots list. Do you want to continue? `)
+            //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'chatbots')
+            // }
+            // if ((this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) || (!this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot'))) {
+            //   this.importChatbotFromJSON(formData)
+            // }
+            this.importChatbotFromJSON(formData)
           } else if (this.chatBotCount >= this.chatBotLimit) {
             this.logger.log('[BOT-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
             this.presentDialogReachedChatbotLimit()
