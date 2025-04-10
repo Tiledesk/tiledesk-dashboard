@@ -45,8 +45,8 @@
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-    <!-- My Chatbots -->
-    {{ pageName }}
+  
+    {{ pageName | translate}}
   </div>
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
@@ -146,7 +146,8 @@
                 <div *ngIf="isChatbotRoute && myChatbot?.length === 0" class="no-bot-tr-msg-wpr">
                   <p class="no-bot-msg" *ngIf="isChatbotRoute">
                     <span style="display: block;" *ngIf="isChatbotRoute">
-                      You don't have Chatbots yet.
+                      <!-- You don't have Chatbots yet. -->
+                      {{ YouDoNotHaveAIAgents | translate}}
                     </span>
                     <!-- <span style="display: block;">
                       Get you started with a <span class="btn---link" (click)="goToBotAllTemplates()"> chatbot
@@ -185,7 +186,7 @@
                         </div>
                         <!-- <span class="span-12"> </span> -->
                         <p class="add-content-card-content-title">
-                          Chatbot
+                          {{'AIAgent' | translate}}
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
@@ -273,7 +274,7 @@
                         </div>
                         <!-- <span class="span-12"> </span> -->
                         <p class="add-content-card-content-title">
-                          Import chatbot
+                          {{'ImportChatbot' | translate}}
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">

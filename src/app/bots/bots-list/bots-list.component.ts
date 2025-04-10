@@ -920,7 +920,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.route = this.router.url
         if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
           this.faqkbList = this.myChatbot // this.faqkbList
-          this.pageName = "Chatbots"
+          this.pageName = "AIAgents"
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
         } else if (this.route.indexOf('/flows/flow-automations') !== -1) {
           this.faqkbList = this.automations
