@@ -1208,7 +1208,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     Swal.fire({
       // title: this.translate.instant('Success'),
       // text: this.translate.instant('ChatbotSuccessfullyCreated'),
-      title: this.translate.instant('ChatbotSuccessfullyCreated'),
+      title: this.translate.instant('AI Agent Successfully Created'),
       text: this.translate.instant('NowItIsTimeToAddContent') + ' !',
       icon: "success",
       showCloseButton: false,
