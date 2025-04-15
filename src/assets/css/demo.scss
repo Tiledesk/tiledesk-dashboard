@@ -3186,6 +3186,33 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   color: #f44336;
 }
 
+
+.custom-error-snackbar {
+  // animation: slide-in 0.4s ease-out;
+  background: rgb(253,243,209) !important;
+  color: #000 !important;
+  font-weight: 400;
+  min-width: fit-content !important;
+}
+
+.custom-error-snackbar::before {
+  font-family: "FontAwesome";
+  content: "\f071";
+  position: absolute;
+  color: rgb(245, 196, 68);
+}
+
+.custom-error-snackbar>div>div>simple-snack-bar>span {
+  margin-left: 22px;
+}
+
+.custom-error-snackbar>div>div>simple-snack-bar>div>button {
+  color: #000 !important;
+  font-weight: 400;
+}
+
+
+
 /*
 /* Settings sidebar / Bot sidebar 
 /* ---------------------------------------------- */

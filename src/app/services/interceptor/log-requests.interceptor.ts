@@ -10,19 +10,19 @@ import { Observable, throwError } from 'rxjs';
 // import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 
-import { TranslateService } from '@ngx-translate/core';
-import { NotifyService } from 'app/core/notify.service';
+// import { TranslateService } from '@ngx-translate/core';
+// import { NotifyService } from 'app/core/notify.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 // const Swal = require('sweetalert2')
 
 
 
 @Injectable()
 export class LogRequestsInterceptor implements HttpInterceptor {
-  private supportEmail: string
+  
   constructor(
- 
-    private translate: TranslateService,
-     public notify: NotifyService,
+    //  public notify: NotifyService,
+    private snackBar: MatSnackBar
   ) {
    
   }
@@ -40,9 +40,18 @@ export class LogRequestsInterceptor implements HttpInterceptor {
     //     // Optionally handle the response or log it here
     //   })
     // );
+    // this.snackBar.open( `529 Server overloaded`, '✕',
+    //   { duration: 1500, 
+    //     horizontalPosition: 'end',  // aligns to the right
+    //     verticalPosition: 'top',    // aligns to the top
+    //     panelClass: ['custom-error-snackbar'] // apply your own style 
+    //   }
+    // );
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+
+      
         // console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
         // if (request.method === 'GET') {
           // Handle request error
@@ -50,15 +59,35 @@ export class LogRequestsInterceptor implements HttpInterceptor {
           // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
           // console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
           if (error.status === 429) {
-            this.notify.showWidgetStyleUpdateNotification("429 Too many requests", 4, 'report_problem');
+            // this.notify.showWidgetStyleUpdateNotification("429 Too many requests", 4, 'report_problem');
+            this.snackBar.open( `429 Too many requests`, '✕',
+              { duration: 1500, 
+                horizontalPosition: 'end',  // aligns to the right
+                verticalPosition: 'top',    // aligns to the top
+                panelClass: ['custom-error-snackbar'] // apply your own style 
+              }
+            );
           }
           if (error.status === 529) { 
-            this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
+            // this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
+            this.snackBar.open( `529 Server overloaded`,'✕',
+              { duration: 1500, 
+                horizontalPosition: 'end',  // aligns to the right
+                verticalPosition: 'top',    // aligns to the top
+                panelClass: ['custom-error-snackbar'] // apply your own style 
+              }
+            );
           }
 
           if ((error.status !== 529) && error.status >= 500 && error.status < 600) { 
             const errorMessage = `${error.status} ${error.error?.msg || 'Server Error'}`;
-            this.notify.showWidgetStyleUpdateNotification(errorMessage, 4, 'report_problem')
+            this.snackBar.open( `${errorMessage} `, '✕',
+              { duration: 1500, 
+                horizontalPosition: 'end',  // aligns to the right
+                verticalPosition: 'top',    // aligns to the top
+                panelClass: ['custom-error-snackbar'] // apply your own style 
+              }
+            );
           } 
       
         return throwError(error);
