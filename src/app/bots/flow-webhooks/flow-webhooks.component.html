@@ -27,7 +27,9 @@
         </svg>
 
     </div>
-    <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Flows </span>
+    <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">
+        {{'Flows' | translate }} 
+    </span>
 
 </span>
 
@@ -64,7 +66,8 @@
 
                                     <p class="no-bot-msg">
                                         <span style="display: block;max-width: 600px;margin: auto;">
-                                            You don't have any webhooks in your automations flows yet.
+                                            <!-- You don't have any Webhooks in your automations yet. -->
+                                            {{'YouDoNotHaveWebhooks' | translate}}.
                                         </span>
                                     </p>
                                 </div>
@@ -114,7 +117,7 @@
                                                                 *ngIf="copiedStates['item-' + i]">
                                                                 <span style="position: relative;
                                                                    top: -2px;
-                                                                   font-weight: 600;"> Copied! </span>
+                                                                   font-weight: 600;"> {{'Copied' | translate}}! </span>
                                                             </span>
                                                         </span>
 

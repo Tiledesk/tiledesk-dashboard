@@ -35,7 +35,9 @@
 
   </div>
 
-  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Flows </span>
+  <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">
+    {{'Flows' | translate}} 
+  </span>
 
 </span>
 
@@ -77,10 +79,21 @@
             <!-- createBlankTilebot() -->
             <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentDialogCreateFlows(isChatbotRoute)"
               style="margin-right: 20px">
-              Create from scratch
+              <!-- Create from scratch -->
+              <!-- {{'CreateFromScratch' | translate}} -->
+              <span *ngIf="isChatbotRoute">
+                {{'NewAIAgent' | translate}}
+              </span>
+
+              <span *ngIf="!isChatbotRoute">
+                {{'NewAutomation' | translate}}
+              </span>
+
             </button>
             <button class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
-              Add from template
+              <!-- Add from template -->
+              {{'AddFromTemplate' | translate}}
+              
             </button>
           </div>
         </div>
@@ -107,30 +120,30 @@
                   </div>
 
                   <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
-                    <span class="order-by-label">Order by </span>
+                    <span class="order-by-label">{{'OrderBy' | translate}} </span>
 
                     <div class="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="order-by-selected-value" *ngIf="orderBylastUpdated">Last updates </span>
-                        <span class="order-by-selected-value" *ngIf="orderByCreationDate">Creation date </span>
-                        <span class="order-by-selected-value" *ngIf="orderByChatbotName">Name </span>
+                        <span class="order-by-selected-value" *ngIf="orderBylastUpdated">{{'LastUpdated' | translate }} </span>
+                        <span class="order-by-selected-value" *ngIf="orderByCreationDate">{{'CreationDate' | translate}} </span>
+                        <span class="order-by-selected-value" *ngIf="orderByChatbotName">{{'Name' | translate}} </span>
                         <span class="caret dropdown-caret"
                           [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
                       </a>
                       <ul class="dropdown-menu" style="left: -53px;">
                         <li>
                           <a (click)="orderBy('lastUpdates')">
-                            Last updates
+                            {{'LastUpdated' | translate }}
                           </a>
                         </li>
                         <li>
                           <a (click)="orderBy('creationDate')">
-                            Creation date
+                            {{'CreationDate' | translate}}
                           </a>
                         </li>
                         <li>
                           <a (click)="orderBy('botname')">
-                            Name
+                            {{'Name' | translate}} 
                           </a>
                         </li>
                       </ul>
@@ -143,11 +156,12 @@
                 <!-- Chatbots -->
                 <!-- ----------------------------- -->
                 <!-- <div *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr"> -->
+  
                 <div *ngIf="isChatbotRoute && myChatbot?.length === 0" class="no-bot-tr-msg-wpr">
-                  <p class="no-bot-msg" *ngIf="isChatbotRoute">
-                    <span style="display: block;" *ngIf="isChatbotRoute">
+                  <p class="no-bot-msg">
+                    <span style="display: block;">
                       <!-- You don't have Chatbots yet. -->
-                      {{ YouDoNotHaveAIAgents | translate}}
+                      {{ 'YouDoNotHaveAIAgents' | translate}}.
                     </span>
                     <!-- <span style="display: block;">
                       Get you started with a <span class="btn---link" (click)="goToBotAllTemplates()"> chatbot
@@ -190,7 +204,8 @@
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          <!-- Automate business workflows and operations with customizable AI Agents -->
+                          {{'AIAgentDesc' | translate}}
                         </p>
 
                       </div>
@@ -217,11 +232,13 @@
                         </div>
                         <!-- <span class="span-12"> </span> -->
                         <p class="add-content-card-content-title">
-                          Voice chatbot
+                          <!-- Voice chatbot -->
+                          {{'AIVoiceAgent' | translate}}
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          <!-- Elevate your customer service with intelligent voice automation -->
+                          {{'AIVoiceAgentDesc' | translate}}
                         </p>
 
                       </div>
@@ -247,11 +264,13 @@
                         </div>
                         <!-- <span class="span-12"> </span> -->
                         <p class="add-content-card-content-title">
-                          Voice chatbot
+                          <!-- Voice chatbot -->
+                          {{'AIVoiceAgent' | translate}}
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          <!-- Elevate your customer service with intelligent voice automation -->
+                          {{'AIVoiceAgentDesc' | translate}}
                         </p>
 
                       </div>
@@ -278,7 +297,7 @@
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          {{'AIAgentImportDesc' | translate}}
                         </p>
 
                       </div>
@@ -293,7 +312,8 @@
                 <div *ngIf="!isChatbotRoute && automations?.length === 0" class="no-bot-tr-msg-wpr">
                   <p class="no-bot-msg">
                     <span style="display: block;">
-                      You don't have Automation yet.
+                      <!-- You don't have Automation yet. -->
+                      {{'YouDoNotHaveAutomations' | translate}}
                     </span>
                     <!-- <span style="display: block;">
                       Create a new one from scratch
@@ -310,37 +330,10 @@
 
                   <div class="add-content-cards-wpr">
                     <!-- --------------------------------- -->
-                    <!-- Copilot -->
-                    <!-- --------------------------------- -->
-                    <div class="add-content-card-wpr">
-                      <div class="add-content-card-content" (click)="presentModalAddBotFromScratch('copilot')">
-                        <div class="add-content-card-content-icon-wpr">
-                          <span>
-                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
-                              style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
-
-                              <path d="M33.7,10.9L30,0.5l-3.7,10.4c-2.4,7-8.3,12.9-15.3,15.3L0.5,30l10.4,3.7c7,2.4,12.9,8.3,15.3,15.3L30,59.5
-                                  l3.7-10.4c2.4-7,8.3-12.9,15.3-15.3L59.5,30l-10.4-3.7C42,23.7,36.3,18,33.7,10.9z" />
-                            </svg>
-                          </span>
-                        </div>
-                        <!-- <span class="span-12"> </span> -->
-                        <p class="add-content-card-content-title">
-                          Copilot
-                        </p>
-                        <span class="span-8"> </span>
-                        <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                      </div>
-                    </div>
-
-                    <!-- --------------------------------- -->
                     <!-- Webhook -->
                     <!-- --------------------------------- -->
-                    <div class="add-content-card-wpr">
-                      <div class="add-content-card-content" (click)="presentModalAddBotFromScratch('webhook')">
+                    <div class="add-content-card-wpr"  (click)="presentModalAddBotFromScratch('webhook')">
+                      <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
                             <svg version="1.1" id="webhooks" xmlns="http://www.w3.org/2000/svg"
@@ -370,17 +363,45 @@
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          {{'WebhookDesc' | translate}}
                         </p>
                       </div>
                     </div>
 
+                    <!-- --------------------------------- -->
+                    <!-- Copilot -->
+                    <!-- --------------------------------- -->
+                    <div class="add-content-card-wpr"  (click)="presentModalAddBotFromScratch('copilot')">
+                      <div class="add-content-card-content">
+                        <div class="add-content-card-content-icon-wpr">
+                          <span>
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
+                              style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
+
+                              <path d="M33.7,10.9L30,0.5l-3.7,10.4c-2.4,7-8.3,12.9-15.3,15.3L0.5,30l10.4,3.7c7,2.4,12.9,8.3,15.3,15.3L30,59.5
+                                  l3.7-10.4c2.4-7,8.3-12.9,15.3-15.3L59.5,30l-10.4-3.7C42,23.7,36.3,18,33.7,10.9z" />
+                            </svg>
+                          </span>
+                        </div>
+                        <!-- <span class="span-12"> </span> -->
+                        <p class="add-content-card-content-title">
+                          Copilot
+                        </p>
+                        <span class="span-8"> </span>
+                        <p class="add-content-card-content-subtitle">
+                          {{'CopilotDesc' | translate}}
+                        </p>
+                      </div>
+                    </div>
 
                     <!-- -------------------------------- -->
                     <!-- Import Automations -->
                     <!-- -------------------------------- -->
-                    <div class="add-content-card-wpr">
-                      <div class="add-content-card-content" (click)="presentModalAddBotFromScratch('webhook')">
+                    <div class="add-content-card-wpr" (click)="fileInput.click()">
+                      <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
+                          id="upload-chatbot-from-json" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json">
+                      <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -391,11 +412,12 @@
                         </div>
                         <!-- <span class="span-12"> </span> -->
                         <p class="add-content-card-content-title">
-                          Import automation
+                          <!-- Import automation -->
+                          {{'ImportAutomation' | translate}}
                         </p>
                         <span class="span-8"> </span>
                         <p class="add-content-card-content-subtitle">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                          {{'AutomationImportDesc' | translate}}
                         </p>
                       </div>
                     </div>
@@ -512,7 +534,8 @@
                         <ng-container *ngIf="!faqkb?.subtype || (faqkb?.subtype !== 'webhook' && faqkb?.subtype !== 'copilot')">
                           <div *ngIf="faqkb.agents_available === true || faqkb.agents_available === undefined"
                             class="cl-availble-for-agent" style="position: relative; top: 1px;height: 24px;"
-                            [satPopoverAnchor]="botAvailableForAgents" (mouseenter)="botAvailableForAgents.open()"
+                            [satPopoverAnchor]="botAvailableForAgents" 
+                            (mouseenter)="botAvailableForAgents.open()"
                             (mouseleave)="botAvailableForAgents.close()">
                             <span class="material-icons">boy</span>
                           </div>
@@ -521,8 +544,12 @@
 
                           <div *ngIf="faqkb.type === 'tilebot'" class="cl-card-item-stats">
                             <div class="cl-card-item-stats-title">
-                              <span *ngIf="faqkb.published"> Published </span>
-                              <span *ngIf="!faqkb.published"> Draft </span>
+                              <span *ngIf="faqkb.published"> 
+                                {{'Published' | translate}} 
+                              </span>
+                              <span *ngIf="!faqkb.published"> 
+                                {{'Draft' | translate}} 
+                              </span>
                             </div>
 
                             <div class="cl-card-item-stats-values">
@@ -539,17 +566,14 @@
                           <ng-container *ngIf="!faqkb?.subtype || (faqkb?.subtype !== 'webhook' && faqkb?.subtype !== 'copilot')">
                             <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
                               <div class="cl-card-item-stats-title">
-                                <!-- {{ "BotsAddEditPage.Messages" | translate }} -->
-                                Messages
+                                {{ 'BotsAddEditPage.Messages' | translate }}
+                                <!-- Messages -->
                               </div>
                               <div class="cl-card-item-stats-values">
                                 {{ faqkb?.message_count}}
                               </div>
                             </div>
                           </ng-container>
-
-
-
                         </div>
 
                         <div class="cl-card-action-wpr">
@@ -558,16 +582,22 @@
                               <div *ngIf="isVisibleAnalytics" class="cl-card-action-btn-wpr">
                                 <button id="btn-{{faqkb._id}}" mat-icon-button
                                   (click)="$event.stopPropagation();openBotMsgsStats(faqkb)"
-                                  matTooltipClass="custom-mat-tooltip" matTooltip="Messages" #tooltip="matTooltip"
-                                  matTooltipPosition='below' matTooltipHideDelay="100">
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="{{ 'BotsAddEditPage.Messages' | translate }}" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below' 
+                                  matTooltipHideDelay="100">
                                   <mat-icon>leaderboard</mat-icon>
                                 </button>
                               </div>
                             </ng-container>
 
                             <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                              <button id="share-btn-{{faqkb._id}}" mat-icon-button [matMenuTriggerFor]="menu"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="Share" #tooltip="matTooltip"
+                              <button id="share-btn-{{faqkb._id}}" mat-icon-button 
+                                [matMenuTriggerFor]="menu"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{'Share' | translate}}" 
+                                #tooltip="matTooltip"
                                 matTooltipPosition='below' matTooltipHideDelay="100">
                                 <mat-icon>share</mat-icon>
                               </button>
@@ -575,13 +605,18 @@
                                 <button class="mat-menu-btn" mat-menu-item
                                   (click)='shareWithLink(faqkb._id, faqkb?.name)'>
                                   <mat-icon>link</mat-icon>
-                                  <span>Share with link</span>
+                                  <span>
+                                    <!-- Share with link -->
+                                    {{'ShareWithLink' | translate}}
+                                  </span>
                                 </button>
 
                                 <button class="mat-menu-btn" mat-menu-item (click)='exportChatbotToJSON(faqkb)'>
                                   <mat-icon>file_download</mat-icon>
-
-                                  <span>Export</span>
+                                    <span>
+                                      <!-- Export -->
+                                      {{'Export' | translate}}
+                                    </span>
                                 </button>
                                 <!-- <button *ngIf="!faqkb?.is_system_identity_bot" mat-menu-item 
                                 (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
@@ -592,9 +627,13 @@
                             </div>
 
                             <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                              <button mat-icon-button [matMenuTriggerFor]="sharemenu"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="Actions" #tooltip="matTooltip"
-                                matTooltipPosition='below' matTooltipHideDelay="100">
+                              <button mat-icon-button 
+                                [matMenuTriggerFor]="sharemenu"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{'Actions' | translate}}" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100">
                                 <mat-icon>more_vert</mat-icon>
                               </button>
                               <mat-menu #sharemenu="matMenu">
@@ -609,20 +648,27 @@
                                 <button class="mat-menu-btn" mat-menu-item
                                   (click)="openTestSiteInPopupWindow(faqkb?._id)">
                                   <mat-icon>visibility</mat-icon>
-                                  <span>Test it out</span>
+                                  <span>
+                                    <!-- Test it out -->
+                                    {{ 'TestItOut' | translate }}
+                                  </span>
                                 </button>
 
                                 <button class="mat-menu-btn" mat-menu-item
                                   (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'>
                                   <mat-icon>content_copy</mat-icon>
-                                  <!-- <span>{{ 'Duplicate' | translate }}</span> -->
-                                  <span>Duplicate</span>
+                                  <span>
+                                    {{ 'Duplicate' | translate }}
+                                  </span>
+                                  <!-- <span>Duplicate</span> -->
                                 </button>
                                 <button class="mat-menu-btn" *ngIf="!faqkb?.is_system_identity_bot" mat-menu-item
-                                  (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
+                                  (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type,faqkb?.subtype)'>
                                   <mat-icon>delete</mat-icon>
                                   <!-- <span>{{ 'BotsPage.tooltipDeleteBot' | translate }}</span> -->
-                                  <span>Delete</span>
+                                  <span>
+                                    {{'Integration.Delete' | translate}}
+                                  </span>
                                 </button>
                               </mat-menu>
 
@@ -646,11 +692,13 @@
                       <div class="custom-panel-sat-popover-content-wpr" style="padding: 12px;">
 
                         <div class="custom-panel-sat-popover-title">
-                          Available to agents
+                          <!-- Available to agents -->
+                          {{'AvailableToAgents' | translate}}
                         </div>
 
                         <div class="custom-panel-sat-popover-description">
-                          Chatbot visible to agents for the purpose to be put back in the conversation
+                          <!-- Chatbot visible to agents for the purpose to be put back in the conversation -->
+                           {{'AIAgentVisibleToAgents' | translate}}
                         </div>
 
                       </div>
@@ -699,7 +747,13 @@
             </svg>
           </span>
           <span style="vertical-align: middle; padding-left:8px">
-            {{ "BotsPage.DeleteBot" | translate }}
+            <span *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice-twilio' ">
+              {{ "DeleteAIAgent" | translate }}
+            </span>
+            <span *ngIf="botSubType === 'copilot' || botSubType === 'webhook'">
+              {{ "DeleteAutomation" | translate }}
+            </span>
+            <!-- {{ "BotsPage.DeleteBot" | translate }} - botSubType {{botSubType}} -->
           </span>
         </h4>
         <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
@@ -718,12 +772,18 @@
         </p> -->
 
         <label class="col-sm-10 modal-body--content">
-          {{ "BotsPage.ToDeleteTheBotType" | translate }}
+          <span *ngIf="!botSubType || botSubType === 'chatbot' || botSubType === 'voice' || botSubType === 'voice-twilio' ">
+            {{ "ToDeleteAIAgentTypeID" | translate }}:
+          </span>
+          <span *ngIf="botSubType === 'copilot' || botSubType === 'webhook'">
+            {{ "ToDeleteAutomationTypeID" | translate }}:
+          </span>
+          <!-- {{ "BotsPage.ToDeleteTheBotType" | translate }} -->
           <strong> {{id_toDelete}}</strong>
 
         </label>
         <div class="col-sm-10">
-          <input [(ngModel)]="bot_id_typed" (input)="checkIdBotTyped()" class="" type="text" placeholder="ID bot">
+          <input [(ngModel)]="bot_id_typed" (input)="checkIdBotTyped()" class="" type="text" placeholder="ID">
         </div>
       </div>
       <div class="modal-footer">
@@ -732,7 +792,7 @@
         </button>
         <button style="margin-top:0px" class="btn btn-red" [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID"
           (click)="trashTheBot()">
-          {{ "BotsPage.DeleteBot" | translate }}
+          {{ "Delete" | translate }}
         </button>
       </div>
     </div>

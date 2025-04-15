@@ -1,5 +1,13 @@
 <div class="m-header">
-    <h1 mat-dialog-title>Create flow </h1>
+    <h1 mat-dialog-title>
+        <span *ngIf="isChatbotRoute"> 
+        <!-- {{'CreateFromScratch' | translate}} -->
+            {{'NewAIAgent' | translate}}
+        </span>
+        <span *ngIf="!isChatbotRoute"> 
+            {{'NewAutomation' | translate}}
+        </span>
+    </h1>
 
     <div class="m-top-right-icon">
         <span class="material-icons-outlined" (click)="onNoClick()">
@@ -37,7 +45,8 @@
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <!-- Automate business workflows and operations with customizable AI Agents -->
+                    {{'AIAgentDesc' | translate }}
                 </p>
             </div>
         </div>
@@ -62,11 +71,13 @@
                 </div>
                 <span class="span-12"> </span>
                 <p class="add-content-card-content-title">
-                    Voice chatbot
+                    <!-- Voice chatbot -->
+                    {{'AIVoiceAgent' | translate}}
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <!-- Streamline operations and elevate customer engagement with intelligent AI voice agents -->
+                    {{'AIVoiceAgentDesc' | translate}}
                 </p>
             </div>
         </div>
@@ -91,11 +102,13 @@
                 </div>
                 <span class="span-12"> </span>
                 <p class="add-content-card-content-title">
-                    Voice chatbot
+                    <!-- Voice chatbot -->
+                    {{'AIVoiceAgent' | translate}}
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <!-- Streamline operations and elevate customer engagement with intelligent AI voice agents -->
+                    {{'AIVoiceAgentDesc' | translate}}
                 </p>
             </div>
         </div>
@@ -114,45 +127,19 @@
                 </div>
                 <span class="span-12"> </span>
                 <p class="add-content-card-content-title">
-                    Import chatbot
+                    <!-- Import chatbot -->
+                    {{'ImportChatbot' | translate}}
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <!-- Import an existing AI Agent flow  -->
+                    {{'AIAgentImportDesc' | translate}}
                 </p>
             </div>
         </div>
     </div>
 
     <div class="add-content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === false">
-
-        <!-- --------------------------------- -->
-        <!-- Copilot -->
-        <!-- --------------------------------- -->
-        <div class="add-content-card-wpr" (click)="onOkPresssed('copilot')">
-            <div class="add-content-card-content" >
-                <div class="add-content-card-content-icon-wpr">
-                    <span>
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
-                            style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
-
-                            <path d="M33.7,10.9L30,0.5l-3.7,10.4c-2.4,7-8.3,12.9-15.3,15.3L0.5,30l10.4,3.7c7,2.4,12.9,8.3,15.3,15.3L30,59.5
-                                    l3.7-10.4c2.4-7,8.3-12.9,15.3-15.3L59.5,30l-10.4-3.7C42,23.7,36.3,18,33.7,10.9z" />
-                        </svg>
-                    </span>
-                </div>
-                <!-- <span class="span-12"> </span> -->
-                <p class="add-content-card-content-title">
-                    Copilot
-                </p>
-                <span class="span-8"> </span>
-                <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-            </div>
-        </div>
-
 
         <!-- --------------------------------- -->
         <!-- Webhook -->
@@ -189,11 +176,39 @@
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <!-- Trigger automated workflows from external systems via Webhooks -->
+                    {{'WebhookDesc' | translate}}
                 </p>
             </div>
         </div>
 
+        <!-- --------------------------------- -->
+        <!-- Copilot -->
+        <!-- --------------------------------- -->
+        <div class="add-content-card-wpr" (click)="onOkPresssed('copilot')">
+            <div class="add-content-card-content" >
+                <div class="add-content-card-content-icon-wpr">
+                    <span>
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
+                            style="enable-background:new 0 0 60 60;" xml:space="preserve" width="24" height="24">
+
+                            <path d="M33.7,10.9L30,0.5l-3.7,10.4c-2.4,7-8.3,12.9-15.3,15.3L0.5,30l10.4,3.7c7,2.4,12.9,8.3,15.3,15.3L30,59.5
+                                    l3.7-10.4c2.4-7,8.3-12.9,15.3-15.3L59.5,30l-10.4-3.7C42,23.7,36.3,18,33.7,10.9z" />
+                        </svg>
+                    </span>
+                </div>
+                <!-- <span class="span-12"> </span> -->
+                <p class="add-content-card-content-title">
+                    Copilot
+                </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    <!-- Enhance agent responses with internal AI suggestions -->
+                    {{'CopilotDesc' | translate}}
+                </p>
+            </div>
+        </div>
 
         <!-- -------------------------------- -->
         <!-- Import Automations -->
@@ -212,11 +227,13 @@
                 </div>
                 <!-- <span class="span-12"> </span> -->
                 <p class="add-content-card-content-title">
-                    Import automation
+                    <!-- Import automation -->
+                    {{'ImportAutomation' | translate}}
                 </p>
                 <span class="span-8"> </span>
                 <p class="add-content-card-content-subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <!-- Import an existing Automantion flow -->
+                    {{'AutomationImportDesc' | translate}}
                 </p>
             </div>
         </div>

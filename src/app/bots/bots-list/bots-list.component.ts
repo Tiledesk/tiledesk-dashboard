@@ -31,6 +31,8 @@ import { SatPopover } from '@ncstate/sat-popover';
 import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
+import { aiAgents, automations } from 'app/integrations/utils';
+// import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
 const swal = require('sweetalert');
@@ -173,6 +175,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   diplayVXMLVoiceChabotCard: boolean;
   displayDialogCreateFlowsOnInit: boolean = false;
 
+  botSubType: string
+  automationIsAssociatedWithTheDepartment: string
+  automationIsAssociatedWithDepartments: string
+  disassociateTheAutomation: string
+
+
   // editBotName: boolean = false;
   constructor(
     private faqKbService: FaqKbService,
@@ -256,7 +264,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   // getQueryParams() {
   //   this.activatedroute.queryParams.subscribe(params => {
-  //     console.log('[BOTS-LIST] GET QUERY PARAMS params ', params )
+  //     this.logger.log('[BOTS-LIST] GET QUERY PARAMS params ', params )
   //     if (params && params.fl === '1') {
   //       this.displayDialogCreateFlowsOnInit = true
   //     }
@@ -635,9 +643,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
-      console.log('[BOTS-LIST] - GET PROJECT BY ID - project ', project);
+      this.logger.log('[BOTS-LIST] - GET PROJECT BY ID - project ', project);
       const projectProfileData = project.profile
-      console.log('[BOTS-LIST] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
+      this.logger.log('[BOTS-LIST] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
 
       this.manageVoiceChatbotVisibility(projectProfileData)
 
@@ -652,69 +660,30 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     const customization = projectProfileData?.customization;
 
     if (!customization) {
-      console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) No customization found.');
+      this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) No customization found.');
       this.diplayTwilioVoiceChabotCard = false;
       this.diplayVXMLVoiceChabotCard = false;
-      console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
-      console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
+      this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
+      this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
       return;
     }
 
     const voiceTwilio = customization['voice-twilio'] ?? false;
     const voice = customization['voice'] ?? false;
 
-    console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
-    console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice:', voice);
+    this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
+    this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice:', voice);
 
     this.diplayTwilioVoiceChabotCard = voiceTwilio === true;
     this.diplayVXMLVoiceChabotCard = voice === true;
-    console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
-    console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
+    this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
+    this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
 
     // if (this.displayDialogCreateFlowsOnInit)  {
     //   this.presentDialogCreateFlows(true)
     // }
   }
 
-
-  _manageVoiceChatbotVisibility(projectProfileData) {
-
-    if (projectProfileData['customization']) {
-      console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) projectProfileData[customization] ', projectProfileData['customization'])
-      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
-      if (projectProfileData['customization'] && (((projectProfileData['customization']['voice-twilio'] !== undefined) || projectProfileData['customization']['voice'] !== undefined))) {
-
-        console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-        console.log('[BOTS-LIST] (manageVoiceChatbotVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-        if (projectProfileData['customization']['voice-twilio'] === true) {
-          this.diplayTwilioVoiceChabotCard = true
-        } else if (projectProfileData['customization']['voice-twilio'] === false) {
-          this.diplayTwilioVoiceChabotCard = false
-
-        } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-          this.diplayTwilioVoiceChabotCard = false
-        }
-
-        if (projectProfileData['customization']['voice'] === true) {
-          this.diplayVXMLVoiceChabotCard = true
-        } else if (projectProfileData['customization']['voice'] === false) {
-          this.diplayVXMLVoiceChabotCard = false
-        } else if (projectProfileData['customization']['voice'] === undefined) {
-          this.diplayVXMLVoiceChabotCard = false
-        }
-      } else {
-        this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
-        this.diplayVXMLVoiceChabotCard = false
-      }
-
-    } else {
-
-      this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-      this.diplayTwilioVoiceChabotCard = false
-      this.diplayVXMLVoiceChabotCard = false
-    }
-
-  }
 
   openBotMsgsStats(bot) {
     this.logger.log('[BOTS-LIST] openBotStats  ')
@@ -771,7 +740,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
@@ -875,7 +844,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.logger.log('[BOTS-LIST] - myChatbot', this.myChatbot);
         if (this.myChatbot) {
           this.myChatbotOtherCount = this.myChatbot.length;
-          console.log('[BOTS-LIST] - myChatbot COUNT', this.myChatbotOtherCount);
+          this.logger.log('[BOTS-LIST] - myChatbot COUNT', this.myChatbotOtherCount);
         }
 
         // ---------------------------------------------------------------------
@@ -887,7 +856,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.logger.log('[BOTS-LIST] - automations', this.automations);
         if (this.automations) {
           this.automationsCount = this.automations.length;
-          console.log('[BOTS-LIST] - automations COUNT', this.automationsCount);
+          this.logger.log('[BOTS-LIST] - automations COUNT', this.automationsCount);
         }
 
         // ---------------------------------------------------------------------
@@ -1133,11 +1102,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   /**
-   * MODAL DELETE FAQ KB
+   * MODAL DELETE AI agent / Automation
    * @param id
    */
-  openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string) {
+  openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string, botSubType: string) {
+    this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - botSubType', botSubType);
     const deptsArray = this.getDepartments(id)
+    
     this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - deptsArray', deptsArray);
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, IS DISPLAYED THE ID OF THE BOT DELETED PREVIOUSLY
     this.bot_id_typed = '';
@@ -1153,7 +1124,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.HAS_FAQ_RELATED = HAS_FAQ_RELATED;
 
     // this.display = 'block'; // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT
-
+    this.botSubType = botSubType
     this.id_toDelete = id;
     this.bot_name_to_delete = bot_name;
   }
@@ -1203,10 +1174,36 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
         // this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
         // this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
-        if (foundDeptsArray.length === 1) {
+        this.logger.log('[BOTS-LIST] -  GET DEPTS botSubType' , this.botSubType)
+        const subtype = this.botSubType || '';
+        let warningText = '';
+        let warningTextPartTwo = '';
+        if (foundDeptsArray.length > 1) {
+          if (automations.includes(subtype)) {
+            this.logger.log('[BOTS-LIST] use case dept array > 1 - Automation: webhook or copilot')
+            warningText = this.automationIsAssociatedWithDepartments;
+          } else if (!subtype || aiAgents.includes(subtype)) {
+            this.logger.log('[BOTS-LIST] use case dept array > 1 - AI Agent (chatbot, voice, voice-twilio) or undefined')
+            warningText = this.botIsAssociatedWithDepartments;
+            warningTextPartTwo = this.disassociateTheBot;
+          }
+        } else if (foundDeptsArray.length === 1) {
+          if (automations.includes(subtype)) {
+            
+            warningText = this.automationIsAssociatedWithTheDepartment;
+            warningTextPartTwo = this.disassociateTheAutomation;
+            this.logger.log('[BOTS-LIST] use case dept array = 1 - Automation: webhook or copilot warningText ', warningText)
+          } else if (!subtype || aiAgents.includes(subtype)) {
+            this.logger.log('[BOTS-LIST] use case dept array = 1 -  AI Agent (chatbot, voice, voice-twilio) or undefined')
+            // AI Agent (chatbot, voice, voice-twilio) or undefined
+            warningText = this.botIsAssociatedWithTheDepartment;
+            warningTextPartTwo = this.disassociateTheBot
+          }
+        }
+
           Swal.fire({
             title: this.warning,
-            text: this.botIsAssociatedWithTheDepartment + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
+            text: warningText + ' ' + this.deptsNameAssociatedToBot + '. ' + warningTextPartTwo,
             icon: "warning",
             showCancelButton: false,
             confirmButtonText: this.translate.instant('Ok'),
@@ -1216,22 +1213,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             // button: true,
             // dangerMode: false,
           })
-        }
+       
 
-        if (foundDeptsArray.length > 1) {
-          Swal.fire({
-            title: this.warning,
-            text: this.botIsAssociatedWithDepartments + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
-            icon: "warning",
-            showCancelButton: false,
-            confirmButtonText: this.translate.instant('Ok'),
-            // confirmButtonColor: "var(--blue-light)",
-            focusConfirm: false,
-            // button: true,
-            // dangerMode: false,
-          })
-
-        }
+        // if (foundDeptsArray.length > 1) {
+        //   Swal.fire({
+        //     title: this.warning,
+        //     text: this.botIsAssociatedWithDepartments + ' ' + this.deptsNameAssociatedToBot + '. ' + this.disassociateTheBot,
+        //     icon: "warning",
+        //     showCancelButton: false,
+        //     confirmButtonText: this.translate.instant('Ok'),
+        //     focusConfirm: false,
+        //   })
+        // }
 
       }
 
@@ -1382,14 +1375,14 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // --------------------------------------------------------------------------
   // @ Create Chatbots / Automations
   // --------------------------------------------------------------------------
-  createBlankTilebot(botSubtype?: string) {
-    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, '- chatBotLimit:', this.chatBotLimit, '- botSubtype:', botSubtype, '- chatbotName:', this.chatbotName, '- botDefaultLangCode:', this.botDefaultLangCode)
+  createBlankTilebot( botSubtype?: string, namespaceid?: string) {
+    this.logger.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, '- chatBotLimit:', this.chatBotLimit, '- botSubtype:', botSubtype, '- chatbotName:', this.chatbotName, '- botDefaultLangCode:', this.botDefaultLangCode, '- namespaceid: ', namespaceid)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
           // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-          this.createTilebotBotFromScratch(botSubtype)
+          this.createTilebotBotFromScratch(botSubtype, namespaceid)
           this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
           // if (this.isChatbotRoute) {
           // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'chatbot' }})
@@ -1403,7 +1396,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       } else if (this.chatBotLimit === null) {
         this.logger.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
         this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
-        this.createTilebotBotFromScratch(botSubtype)
+        this.createTilebotBotFromScratch(botSubtype, namespaceid)
         // if (this.isChatbotRoute) {
         // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'chatbot' }})
         // } else {
@@ -1415,9 +1408,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }
   }
 
-  createTilebotBotFromScratch(botSubtype) {
-    this.faqKbService.createChatbotFromScratch(this.chatbotName, 'tilebot', botSubtype, this.botDefaultLangCode).subscribe((faqKb) => {
-      console.log('[BOT-LIST] createTilebotBotFromScratch - RES ', faqKb);
+  createTilebotBotFromScratch(botSubtype, namespaceid) {
+    this.faqKbService.createChatbotFromScratch(this.chatbotName, 'tilebot', botSubtype, this.botDefaultLangCode, namespaceid).subscribe((faqKb) => {
+      this.logger.log('[BOT-LIST] createTilebotBotFromScratch - RES ', faqKb);
       if (faqKb) {
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
@@ -1451,7 +1444,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // --------------------------------------------------------------------------
   async fileChangeUploadChatbotFromJSON(event) {
 
-    console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON $event ', event);
+    this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON $event ', event);
     // let fileJsonToUpload = ''
     // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
@@ -1461,16 +1454,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       fileReader.readAsText(selectedFile, "UTF-8");
       fileReader.onload = () => {
         let fileJsonToUpload = JSON.parse(fileReader.result as string)
-        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  onload fileJsonToUpload CHATBOT 1', fileJsonToUpload);
+        this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  onload fileJsonToUpload CHATBOT 1', fileJsonToUpload);
 
-        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  isChatbotRoute ', this.isChatbotRoute)
-        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  fileJsonToUpload subtype ', fileJsonToUpload.subtype)
+        this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  isChatbotRoute ', this.isChatbotRoute)
+        this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  fileJsonToUpload subtype ', fileJsonToUpload.subtype)
         this.chatbotToImportSubtype = fileJsonToUpload.subtype ?? 'chatbot';
       }
 
       const fileList: FileList = event.target.files;
       const file: File = fileList[0];
-      console.log('fileChangeUploadChatbotFromJSON ---> file', file)
+      this.logger.log('fileChangeUploadChatbotFromJSON ---> file', file)
 
       // Check for valid JSON
       let json = await this.readFileAsync(file).catch(e => { return; })
@@ -1490,12 +1483,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       const formData: FormData = new FormData();
       // formData.set('id_faq_kb', this.id_faq_kb);
       formData.append('uploadFile', file, file.name);
-      console.log('[BOT-LIST] ---> FORM DATA ', formData)
+      this.logger.log('[BOT-LIST] ---> FORM DATA ', formData)
 
       if (this.USER_ROLE !== 'agent') {
         if (this.chatBotLimit || this.chatBotLimit === 0) {
           if (this.chatBotCount < this.chatBotLimit) {
-            console.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
+            this.logger.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
             // if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
             //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
             //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'automations')
@@ -1525,7 +1518,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   presentDialogImportMismatch(formData: any, chatbotToImportSubtype: string, correctMatch: string) {
-    console.log(`[BOT-LIST] formData ${formData} chatbotToImportSubtype ${chatbotToImportSubtype} correctMatch ${correctMatch}`)
+    this.logger.log(`[BOT-LIST] formData ${formData} chatbotToImportSubtype ${chatbotToImportSubtype} correctMatch ${correctMatch}`)
     Swal.fire({
       title: 'Are you sure',
       text: `You are about to import a  ${chatbotToImportSubtype} flow and it will be added to the ${correctMatch} list. Do you want to continue?`,
@@ -1552,7 +1545,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (faqkb) {
         // this.showUploadingSpinner = false
 
-        console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
+        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
         this.botLocalDbService.saveBotsInStorage(faqkb._id, faqkb);
 
         let newfaqkb = {
@@ -1663,7 +1656,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   presentDialogCreateFlows(isChatbotRoute) {
-    console.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
+    this.logger.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
     const showTwilio = this.diplayTwilioVoiceChabotCard;
     const showVXML = this.diplayVXMLVoiceChabotCard;
 
@@ -1685,8 +1678,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
 
     dialogRef.afterClosed().subscribe(subType => {
-      console.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType);
-      console.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType typeof:`, typeof subType);
+      this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType);
+      this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType typeof:`, typeof subType);
       if (subType && typeof subType !== 'object') {
         this.presentModalAddBotFromScratch(subType)
       } else if (subType && typeof subType === 'object') {
@@ -1696,7 +1689,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   presentModalAddBotFromScratch(subtype) {
-    console.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
+    this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
     // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     // createBotFromScratchBtnEl.blur()
@@ -1707,13 +1700,15 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       },
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[BOTS-LIST] Dialog result:`, result);
+      this.logger.log(`[BOTS-LIST] Dialog result:`, result);
 
       if (result) {
         this.chatbotName = result.chatbotName;
 
-        if (this.chatbotName) {
+        if (this.chatbotName && result.subType !== 'copilot') {
           this.createBlankTilebot(result.subType)
+        } else if (this.chatbotName && result.subType === 'copilot' && result.namespace_id) {
+          this.createBlankTilebot(result.subType, result.namespace_id)
         }
       }
     });
@@ -1845,9 +1840,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
         this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
         this.disassociateTheBot = text['DisassociateTheBot'];
+        this.automationIsAssociatedWithTheDepartment = text['TheAutomationIsAssociatedWithTheDepartment'];
+        this.automationIsAssociatedWithDepartments = text['TheAutomationIsAssociatedWithDepartments'];
+        this.disassociateTheAutomation = text['DisassociateTheAutomation'];
       });
 
-
+     
     this.translate.get('Warning')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;

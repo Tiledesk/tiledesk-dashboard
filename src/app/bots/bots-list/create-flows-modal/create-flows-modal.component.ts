@@ -19,14 +19,14 @@ export class CreateFlowsModalComponent implements OnInit {
     private translate: TranslateService,
       public dialog: MatDialog,
   ) {
-    console.log('[CREATE FLOWS MODAL] data ', data)
+    this.logger.log('[CREATE FLOWS MODAL] data ', data)
     if (data ) {
       this.isChatbotRoute = data.isChatbotRoute
       this.diplayTwilioVoiceChabotCard = data.diplayTwilioVoiceChabotCard
       this.diplayVXMLVoiceChabotCard = data.diplayVXMLVoiceChabotCard
-      console.log('[CREATE FLOWS MODAL] isChatbotRoute ', this.isChatbotRoute)
-      console.log('[CREATE FLOWS MODAL] diplayVXMLVoiceChabotCard ', this.diplayVXMLVoiceChabotCard)
-      console.log('[CREATE FLOWS MODAL] diplayVXMLVoiceChabotCard ', this.diplayVXMLVoiceChabotCard)
+      this.logger.log('[CREATE FLOWS MODAL] isChatbotRoute ', this.isChatbotRoute)
+      this.logger.log('[CREATE FLOWS MODAL] diplayVXMLVoiceChabotCard ', this.diplayVXMLVoiceChabotCard)
+      this.logger.log('[CREATE FLOWS MODAL] diplayVXMLVoiceChabotCard ', this.diplayVXMLVoiceChabotCard)
     }
   }
 
@@ -44,7 +44,7 @@ export class CreateFlowsModalComponent implements OnInit {
 
 
   onOkPresssed(subType) {
-    console.log('[CREATE FLOWS MODAL] onOkPresssed subType ', subType) 
+    this.logger.log('[CREATE FLOWS MODAL] onOkPresssed subType ', subType) 
       this.dialogRef.close(subType);
   }
 
@@ -53,7 +53,7 @@ export class CreateFlowsModalComponent implements OnInit {
   }
 
     presentModalAddBotFromScratch(subtype) {
-       console.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ',subtype);
+      this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ',subtype);
         // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
         // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
         // createBotFromScratchBtnEl.blur()
@@ -64,7 +64,7 @@ export class CreateFlowsModalComponent implements OnInit {
           },
         })
         dialogRef.afterClosed().subscribe(result => {
-          console.log(`[BOTS-LIST] Dialog result:`, result);
+          this.logger.log(`[BOTS-LIST] Dialog result:`, result);
     
           // if (result) {
           //   this.chatbotName = result.chatbotName;

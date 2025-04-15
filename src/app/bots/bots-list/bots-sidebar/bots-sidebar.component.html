@@ -17,7 +17,7 @@
     <ng-container *ngIf="USER_ROLE !== 'agent'">
       <li class="sidebar-item-wpr-no-link">
         <a class="sidebar-item-no-link">
-          FLOWS
+          {{'Flows' | translate}} 
         </a>
       </li>
 
@@ -53,7 +53,7 @@
             <circle cx="12" cy="12" r="4"></circle>
           </svg>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-            Automations
+            {{'Automations' | translate}}
           </p>
           <span class="sidebar-item-s">{{ automationsCount }}</span>
         </a>

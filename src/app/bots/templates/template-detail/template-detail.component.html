@@ -13,16 +13,16 @@
         <div class="template-detail-header">
             <div class="template-detail-img-wpr">
 
-                <span *ngIf="!template?.bigImage">
+                <!-- <span *ngIf="!template?.bigImage">
                     <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
                         src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"
                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
                     <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
-                </span>
+                </span> -->
 
-                <img *ngIf="template?.bigImage" style="width: auto; height: 40px;" src="{{template.bigImage}}">
+                <img *ngIf="template?.bigImage" style="width: auto; height: 40px; margin-right: 12px;" src="{{template.bigImage}}">
             </div>
             <div class="template-detail-name-wpr">
                 <h2 weight="bold" class="template-detail-name">{{template?.name}}</h2>
@@ -32,13 +32,14 @@
             <!-- btn-new btn-size-l btn--primary -->
             <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="importTempalte()">
                 <span>
-                    Import Template
+                   {{'ImportTemplate' | translate}}
                 </span>
             </button>
             <!-- btn-new btn-size-l btn--default -->
             <button type="button" class=" btn  btn-outlined" (click)="openTestSiteInPopupWindow()">
                 <span>
-                    Test it out
+                    {{'TestItOut' | translate}}
+                    
                 </span>
             </button>
         </div>
@@ -46,7 +47,7 @@
             <div class="template-detail-tags-wpr">
                 <p weight="normal" class="template-detail-tags-section-name"
                     *ngIf="template.certifiedTags && template.certifiedTags.length > 0">
-                    Categories
+                    {{'Categories' | translate}}
                 </p>
                 <div class="template-detail-tags" *ngIf="template.certifiedTags">
                     <span aria-label="tag" class="template-detail-tag-wpr"
@@ -170,7 +171,7 @@
             </p>
             <span size="24" class="blank-span-h24 " *ngIf="template.templateFeatures"></span>
             <p weight="medium" class="template-detail-section-features-name" *ngIf="template.templateFeatures">
-                Template features:
+                {{'TemplateFeatures' | translate}}:
             </p>
             <span size="16" class="blank-span-h16 "></span>
             <!-- <div class="template-detail-feature-wpr" *ngIf="template.templateFeatures" >

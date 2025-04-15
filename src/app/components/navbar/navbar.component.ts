@@ -476,7 +476,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotes(project_limits) {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("[NAVBAR] getAllQuotes response: ", resp)
+      this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
       this.logger.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("resp.quotes: ", resp.quotes)
       if (resp?.quotes) {
@@ -619,7 +619,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotasCount() {
     this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      console.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
+      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
 
       this.openedConversations = resp.open;
       this.closedConversations = resp.closed;
@@ -628,8 +628,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
       this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      console.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      console.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
     }, (error) => {
       this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
     }, () => {

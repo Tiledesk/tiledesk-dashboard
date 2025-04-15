@@ -443,7 +443,7 @@ export class FaqKbService {
   }
 
 
-  createChatbotFromScratch(botname, bottype, botSubtype, language) {
+  createChatbotFromScratch(botname: string, bottype: string, botSubtype: string, language: string, namespaceid?:string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -455,6 +455,9 @@ export class FaqKbService {
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
     const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, subtype:botSubtype, language: language, template: 'blank' };
+    if(namespaceid) {
+      body['namespace_id'] = namespaceid
+    }
 
     // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 

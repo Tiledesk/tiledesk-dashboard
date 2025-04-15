@@ -759,7 +759,7 @@
                               <img *ngIf="bot_subtype && bot_subtype === 'chatbot'" class="dept_bot-type-logo" [src]="botLogo" />
                               <img *ngIf="bot_subtype && bot_subtype === 'copilot'" class="dept_bot-type-logo" src="assets/img/logos/copilot-logo.svg"/>
                               <img *ngIf="bot_subtype && bot_subtype === 'webhook'" class="dept_bot-type-logo" src="assets/img/logos/webhook-logo.svg"/>
-                           
+                              <img *ngIf="bot_subtype && (bot_subtype === 'voice' || bot_subtype === 'voice-twilio')" class="dept_bot-type-logo" src="assets/img/logos/voice-logo.svg"/>
                           </div>
 
 

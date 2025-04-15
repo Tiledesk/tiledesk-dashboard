@@ -319,9 +319,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => { 
 
-      console.log('[BOTS-TEMPLATES] - GET PROJECT BY ID - project ', project);
+      this.logger.log('[BOTS-TEMPLATES] - GET PROJECT BY ID - project ', project);
       const projectProfileData = project.profile
-      console.log('[BOTS-TEMPLATES] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
+      this.logger.log('[BOTS-TEMPLATES] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
 
       this.manageVoiceChatbotVisibility(projectProfileData)
 
@@ -336,24 +336,24 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     const customization = projectProfileData?.customization;
   
     if (!customization) {
-      console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) No customization found.');
+      this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) No customization found.');
       this.diplayTwilioVoiceChabotCard = false;
       this.diplayVXMLVoiceChabotCard = false;
-      console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
-      console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
+      this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
+      this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
       return;
     }
   
     const voiceTwilio = customization['voice-twilio'] ?? false;
     const voice = customization['voice'] ?? false;
   
-    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
-    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice:', voice);
+    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
+    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) voice:', voice);
   
     this.diplayTwilioVoiceChabotCard = voiceTwilio === true;
     this.diplayVXMLVoiceChabotCard = voice === true;
-    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
-    console.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
+    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayTwilioVoiceChabotCard:', this.diplayTwilioVoiceChabotCard);
+    this.logger.log('[BOTS-TEMPLATES] (manageVoiceChatbotVisibility) diplayVXMLVoiceChabotCard:', this.diplayVXMLVoiceChabotCard);
   }
 
   openDialog(template) {
@@ -679,7 +679,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentDialogCreateFlows(isChatbotRoute) {
-    console.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
+    this.logger.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
     const showTwilio = this.diplayTwilioVoiceChabotCard;
     const showVXML = this.diplayVXMLVoiceChabotCard;
     let dialogWidth = '800px';
@@ -700,8 +700,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(subType => {
-      console.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType);
-      console.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType typeof:`, typeof subType);
+      this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType);
+      this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType typeof:`, typeof subType);
       if (subType && typeof subType !== 'object') {
         this.presentModalAddBotFromScratch(subType)
       } else if (subType && typeof subType === 'object') {
@@ -711,7 +711,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentModalAddBotFromScratch(subtype) {
-    console.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
+    this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
     // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     // createBotFromScratchBtnEl.blur()
@@ -722,7 +722,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       },
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[BOTS-LIST] Dialog result:`, result);
+      this.logger.log(`[BOTS-LIST] Dialog result:`, result);
 
       if (result) {
         this.chatbotName = result.chatbotName;
@@ -763,7 +763,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
 
   createTilebotBotFromScratch(botSubtype) {
     this.faqKbService.createChatbotFromScratch(this.chatbotName, 'tilebot', botSubtype, this.botDefaultLangCode).subscribe((faqKb) => {
-      console.log('[BOT-LIST] createTilebotBotFromScratch - RES ', faqKb);
+      this.logger.log('[BOT-LIST] createTilebotBotFromScratch - RES ', faqKb);
       if (faqKb) {
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
@@ -795,7 +795,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   // --------------------------------------------------------------------------
   async fileChangeUploadChatbotFromJSON(event) {
 
-    console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON $event ', event);
+    this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON $event ', event);
     // let fileJsonToUpload = ''
     // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     const selectedFile = event.target.files[0];
@@ -805,16 +805,16 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       fileReader.readAsText(selectedFile, "UTF-8");
       fileReader.onload = () => {
         let fileJsonToUpload = JSON.parse(fileReader.result as string)
-        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  onload fileJsonToUpload CHATBOT 1', fileJsonToUpload);
+        this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  onload fileJsonToUpload CHATBOT 1', fileJsonToUpload);
 
-        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  isChatbotRoute ', this.isChatbotRoute)
-        console.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  fileJsonToUpload subtype ', fileJsonToUpload.subtype)
+        this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  isChatbotRoute ', this.isChatbotRoute)
+        this.logger.log('[BOT-LIST] - fileChangeUploadChatbotFromJSON  fileJsonToUpload subtype ', fileJsonToUpload.subtype)
         this.chatbotToImportSubtype = fileJsonToUpload.subtype ?? 'chatbot';
       }
 
       const fileList: FileList = event.target.files;
       const file: File = fileList[0];
-      console.log('fileChangeUploadChatbotFromJSON ---> file', file)
+      this.logger.log('fileChangeUploadChatbotFromJSON ---> file', file)
 
       // Check for valid JSON
       let json = await this.readFileAsync(file).catch(e => { return; })
@@ -834,7 +834,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       const formData: FormData = new FormData();
       // formData.set('id_faq_kb', this.id_faq_kb);
       formData.append('uploadFile', file, file.name);
-      console.log('[BOT-LIST] ---> FORM DATA ', formData)
+      this.logger.log('[BOT-LIST] ---> FORM DATA ', formData)
 
       if (this.USER_ROLE !== 'agent') {
         if (this.chatBotLimit || this.chatBotLimit === 0) {
@@ -869,7 +869,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentDialogImportMismatch(formData: any, chatbotToImportSubtype: string, correctMatch: string) {
-    console.log(`[BOT-LIST] formData ${formData} chatbotToImportSubtype ${chatbotToImportSubtype} correctMatch ${correctMatch}`)
+    this.logger.log(`[BOT-LIST] formData ${formData} chatbotToImportSubtype ${chatbotToImportSubtype} correctMatch ${correctMatch}`)
     Swal.fire({
       title: 'Are you sure',
       text: `You are about to import a  ${chatbotToImportSubtype} flow and it will be added to the ${correctMatch} list. Do you want to continue?`,
@@ -896,7 +896,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       if (faqkb) {
         // this.showUploadingSpinner = false
 
-        console.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
+        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
         this.botLocalDbService.saveBotsInStorage(faqkb._id, faqkb);
 
         let newfaqkb = {

@@ -32,7 +32,9 @@
 
     </div>
 
-    <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">Flows </span>
+    <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">
+        {{'Flows' | translate}} 
+    </span>
 
 </span>
 
@@ -40,7 +42,7 @@
 
     <div class="page-title--sidebar-settings"
         [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-        {{pageTitle}}
+        {{pageTitle | translate}}
     </div>
 
     <div class="container-fluid" style="padding-left: 10px;padding-right: 5px;">
@@ -104,7 +106,7 @@
                                         </g>
                                     </svg>
                                     <span class="" [ngClass]="{'tmplt-header-active-category-name': BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category-name': !BOTS_ALL_TEMPALTES_ROUTE_IS_ACTIVE}">
-                                        All templates
+                                        {{'AllTemplates' | translate}}
                                     </span>
                                 </div>
                             </button>
@@ -117,7 +119,10 @@
                                         <path
                                             d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z" />
                                     </svg>
-                                    <span class="" [ngClass]="{'tmplt-header-active-category-name': BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category-name': !BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE}">Increase Sales</span>
+                                    <span class="" [ngClass]="{'tmplt-header-active-category-name': BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category-name': !BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE}">
+                                        <!-- Increase Sales -->
+                                        {{'IncreaseSales' | translate}}
+                                    </span>
                                 </div>
                             </button>
                             <button *ngIf="displayTemplatesCategory" class="" [ngClass]="{'tmplt-header-active-category': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category': !BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}" (click)="goToBotCustomerSatisfactionTemplates()" >
@@ -140,7 +145,8 @@
                                         </g>
                                     </svg>
                                     <span class="" [ngClass]="{'tmplt-header-active-category-name': BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE, 'tmplt-header-category-name': !BOTS_CUSTOMER_SATISFACTION_TEMPALTES_ROUTE_IS_ACTIVE}">
-                                        Customer Satisfaction
+                                        <!-- Customer Satisfaction -->
+                                        {{'CustomerSatisfaction' | translate}}
                                     </span>
                                 </div>
                             </button>
@@ -169,7 +175,8 @@
                                         </g>
                                     </svg>
                                     <span class="" [ngClass]="{'tmplt-header-active-category-name': BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE, 'tmplt-header-category-name': !BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE}">
-                                        Community
+                                        <!-- Community -->
+                                        {{'CommunityTemplates' | translate}}
                                     </span>
                                 </div>
                             </button>
@@ -179,10 +186,12 @@
 
                     </div>
                     <div class="tmplt-header-right">
-                        <!-- createBlankTilebot() -->
-                        <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="presentDialogCreateFlows(isChatbotRoute)">
-                            <span>Create from scratch</span>
-                        </button>
+                       
+                        <!-- <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="presentDialogCreateFlows(isChatbotRoute)">
+                            <span>
+                                {{'CreateFromScratch' | translate}}
+                            </span>
+                        </button> -->
                     </div>
                 </div>
 
@@ -190,7 +199,7 @@
                 <div class="page-content--wpr">
                     <div class="template-page-title">
                         <div *ngIf="COMMUNITY_TEMPLATE" style="text-align: center;">
-                            Community
+                            {{'CommunityTemplates' | translate}}
                         </div>
                         <!-- <div class="t--btn-wpr" *ngIf="!COMMUNITY_TEMPLATE">
                             <button type="button" class="btn btn-new btn-size-m btn--primary"
@@ -293,7 +302,9 @@
                                         <button type="button" class="btn btn-tdblu-no-boxshadow"
                                             (click)="openDialog(template)" style="width: 100%;">
 
-                                            <span>Use template</span>
+                                            <span>
+                                                {{'UseTemplate' | translate}}
+                                            </span>
 
                                         </button>
                                     </div>
@@ -418,16 +429,17 @@
                                 <img class="cmnty-img" src="assets/img/logos/Tiledesk_community_v2.svg" />
                             </div>
                             <div class="cmnty-text">
-                                Explore a world of possibilities in our Community, where you'll discover a vast array of
+                                <!-- Explore a world of possibilities in our Community, where you'll discover a vast array of
                                 ready-to-use chatbots and automation ideas. Get support directly from the creators and
-                                import your favorites with just one click!
+                                import your favorites with just one click! -->
+                                {{'CommunityDesc1' | translate}} {{ 'CommunityDesc2' | translate}}
                             </div>
 
                             <div class="cmnty-btn">
                                 <!-- btn-new btn-size-xl btn--primary -->
                                 <button type="button" class="btn btn-tdblu-no-boxshadow"
                                     (click)="goToExternalCommunity()">
-                                    <span>Chatbots Community</span>
+                                    <span>{{'CommunityTemplates' | translate}}</span>
                                 </button>
                             </div>
 
