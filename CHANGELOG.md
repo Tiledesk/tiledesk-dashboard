@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.97-rc3
+- Fixes the bug: if the remote configuration key is set to true in the environment the app crashes
+
 ### 2.7.97-rc2
 - Improves the UI for the creation of the AI Agents and the Automations
 
