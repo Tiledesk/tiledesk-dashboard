@@ -107,11 +107,11 @@ export class FlowWebhooksComponent implements OnInit {
     this.webhookService.updateFlowWebhook(event.target.checked, webhook_id).subscribe((res: any) => {
 
       this.logger.log('[FLOW-WEBHOOKS] UPDATE WH RES  ', res);
-      this.notify.showWidgetStyleUpdateNotification('Webhook updated successfully', 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('WebhookUpdatedSuccessfully'), 2, 'done');
 
     }, (error) => {
       this.logger.error('[FLOW-WEBHOOKS] UPDATE WH ERROR ', error);
-      this.notify.showWidgetStyleUpdateNotification('An error occurred while updating', 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorOccurredWhileUpdating'), 4, 'report_problem');
     }, () => {
       this.logger.log('[FLOW-WEBHOOKS] UPDATE WH COMPLETE');
    
@@ -123,15 +123,15 @@ export class FlowWebhooksComponent implements OnInit {
   deleteWebhook(webhookid) {
     this.logger.log('[FLOW-WEBHOOKS] delete flow webhook - webhookid ', webhookid)
     Swal.fire({
-      title: 'Are you sure?', // this.translate.instant('AreYouSure'),
-      text: 'The webhook will be deleted',
+      title: this.translate.instant('AreYouSure'),
+      text: this.translate.instant('TheWebhookWillBeDeleted'),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
       showConfirmButton: false,
       showDenyButton: true,
-      denyButtonText: 'Delete', // this.translate.instant('Delete'),
-      cancelButtonText: 'Cancel', //this.translate.instant('Cancel'),
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
       // buttons: ["Cancel", "Delete"],
@@ -143,12 +143,12 @@ export class FlowWebhooksComponent implements OnInit {
             this.logger.log('[FLOW-WEBHOOKS] DELETE  - RES', res);
           }, (error) => {
             Swal.fire({
-              title: 'Oops !', // this.translate.instant('Oops') + '!',
-              text: 'An error occurred',
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('HoursPage.ErrorOccurred'),
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
-              confirmButtonText: 'Ok', // this.translate.instant('Ok'),
+              confirmButtonText: this.translate.instant('Ok'),
               // confirmButtonColor: "var(--primary-btn-background)",
             });
             this.logger.error('[FLOW-WEBHOOKS] DELETE  ERROR ', error);
@@ -167,13 +167,13 @@ export class FlowWebhooksComponent implements OnInit {
             this.getFlowWebhooks()
 
             Swal.fire({
-              title: 'Done !', // this.translate.instant('Done') + "!",
-              text: 'The webhook has been deleted',
+              title: this.translate.instant('Done') + "!",
+              text: this.translate.instant('TheWebhookHasBeenDeleted'),
               icon: "success",
               showCloseButton: false,
               showCancelButton: false,
               // confirmButtonColor: "var(--primary-btn-background)",
-              confirmButtonText: 'Ok'// this.translate.instant('Ok'),
+              confirmButtonText: this.translate.instant('Ok'),
             }).then((okpressed) => {
 
             });
