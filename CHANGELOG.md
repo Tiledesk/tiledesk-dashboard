@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.97-rc2
+- Improves the UI for the creation of the AI Agents and the Automations
+
 ### 2.7.97-rc1
 - Adds the “Update widget” button for all sections of the widget set-up page
 - Adds a preview in the widget set-up page Advanced section
