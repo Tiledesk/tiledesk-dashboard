@@ -34,6 +34,7 @@ import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatb
 import { aiAgents, automations } from 'app/integrations/utils';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -300,15 +301,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getNavigationBaseUrl() {
