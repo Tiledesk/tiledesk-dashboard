@@ -608,23 +608,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.profile.type ', project.profile.type)
             this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - project.trialExpired ', project.trialExpired)
 
-            if (projectCreationDate >= freePlanLimitDate) {
-                this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
+            // if (projectCreationDate >= freePlanLimitDate) {
+            this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
 
 
-                if (project.profile.type === 'free' && project.trialExpired === true) {
-                    if (role === 'owner') {
+            if (project.profile.type === 'free' && project.trialExpired === true) {
+                if (role === 'owner') {
 
-                        this.router.navigate(['project/' + project._id + '/pricing/te']);
+                    this.router.navigate(['project/' + project._id + '/pricing/te']);
 
 
-                    } else {
-                        this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
-                    }
+                } else {
+                    this.router.navigate(['project/' + project._id + '/unauthorized-to-upgrade']);
                 }
-            } else {
-                this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
             }
+            // } else {
+            //     this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate < dateLimit ')
+            // }
         }
     }
 
@@ -1313,7 +1313,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/projects') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1) ||
                     (this.route.indexOf('/get-chatbot') !== -1) ||
-                    (this.route.indexOf('/success') !== -1) 
+                    (this.route.indexOf('/success') !== -1)
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');
                     // this.logger.log('DETECT LOGIN PAGE')
