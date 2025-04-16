@@ -1,25 +1,29 @@
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AppConfigService {
   private appConfig: any;
+  private rawHttp: HttpClient;
+ 
 
   constructor(
-    private _httpClient: HttpClient
+    private _httpClient: HttpClient,
+    handler: HttpBackend // <--- inject the raw handler
   ) {
     // console.log('AppConfigService HELLO !!!!');
     this.appConfig = environment;
+    this.rawHttp = new HttpClient(handler); // bypass interceptors
   }
 
 
   async loadAppConfig() {
 
     try {
-      const data = await this._httpClient.get(this.appConfig.remoteConfigUrl)
-        .toPromise();
+      // const data = await this._httpClient.get(this.appConfig.remoteConfigUrl).toPromise();
+      const data = await this.rawHttp.get(this.appConfig.remoteConfigUrl).toPromise();
       // console.log('AppConfigService loadAppConfig data: ', data['_body']['firebase']);
       // console.log('[APP-CONFIG-SERVICE] loadAppConfig data: ', data);
 
