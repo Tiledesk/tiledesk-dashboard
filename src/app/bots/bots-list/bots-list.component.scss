@@ -441,6 +441,14 @@ input[type="checkbox"]:disabled {
   min-height: 8px;
 }
 
+.span-6 {
+  display: block;
+  width: 6px;
+  min-width: 6px;
+  height: 6px;
+  min-height: 6px;
+}
+
 .add-content-cards-wpr {
   width: 100%;
   display: grid;

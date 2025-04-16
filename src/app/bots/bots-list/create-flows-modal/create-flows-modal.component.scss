@@ -1,23 +1,23 @@
 .add-content-cards-wpr {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
-    gap: 20px;
-    -webkit-box-pack: center;
-    justify-content: center;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+  gap: 20px;
+  -webkit-box-pack: center;
+  justify-content: center;
 }
 
 .add-content-card-wpr {
-    position: relative;
-    background-color: rgb(255, 255, 255);
-    border-radius: 12px;
-    // border: 1px solid rgb(226, 232, 239);
-    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
-    border: 1px solid rgb(226, 232, 239);
-    outline: none;
-    cursor: pointer;
-    min-height: 162px;
-    pointer-events: auto;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  // border: 1px solid rgb(226, 232, 239);
+  box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a !important;
+  border: 1px solid rgb(226, 232, 239);
+  outline: none;
+  cursor: pointer;
+  min-height: 162px;
+  pointer-events: auto;
 }
 
 // .add-content-card-wpr:hover {
@@ -25,80 +25,103 @@
 // }
 
 .add-content-card-content {
-    padding: 20px;
+  padding: 20px;
 }
 
 .add-content-card-content-icon-wpr {
-    text-align: left;
+  text-align: left;
 }
 
 .add-content-card-content-icon-wpr>span>svg {
-    fill: var(--sidebar-inactive-icon);
+  fill: var(--sidebar-inactive-icon);
 }
 
 .add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg {
-    fill: var(--icon-hover-color);
+  fill: var(--icon-hover-color);
 }
 
 .add-content-card-content-icon-wpr>span>svg.svg-stroke {
-    stroke: var(--sidebar-inactive-icon);
-    fill: none !important;
-  }
-  
-  .add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg.svg-stroke {
-    stroke: var(--icon-hover-color);
-    fill: none !important;
-  }
-  
+  stroke: var(--sidebar-inactive-icon);
+  fill: none !important;
+}
+
+.add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg.svg-stroke {
+  stroke: var(--icon-hover-color);
+  fill: none !important;
+}
+
 
 .add-content-card-content-title {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    letter-spacing: -0.01em;
-    text-align: left;
-    font-family: var(--header-font-family);
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  text-align: left;
+  font-family: var(--header-font-family);
 }
 
 .add-content-card-content-subtitle {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 18px;
-    letter-spacing: -0.01em;
-    color: rgb(100, 116, 145);
-    text-align: left;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  color: rgb(100, 116, 145);
+  text-align: left;
 }
 
+.span-8 {
+  display: block;
+  width: 8px;
+  min-width: 8px;
+  height: 8px;
+  min-height: 8px;
+}
+
+.span-6 {
+  display: block;
+  width: 6px;
+  min-width: 6px;
+  height: 6px;
+  min-height: 6px;
+}
+
+.span-12 {
+  display: block;
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  min-height: 12px;
+}
 
 .m-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .m-top-right-icon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .m-top-right-icon>span {
-    padding: 8px;
-    background: #e4e6eb;
-    border-radius: 999px;
-    position: relative;
-    top: 0px;
-    left: 0px;
-    font-size: 18px;
-    color: rgb(91, 98, 106);
+  padding: 8px;
+  background: #e4e6eb;
+  border-radius: 999px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  font-size: 18px;
+  color: rgb(91, 98, 106);
 
 }
 
 .m-top-right-icon:hover>span {
-    background-color: rgb(213, 214, 220);
-    color: rgb(28, 30, 33)
+  background-color: rgb(213, 214, 220);
+  color: rgb(28, 30, 33)
 }
 
 
@@ -114,30 +137,30 @@
 /* Flip card */
 // https://www.30secondsofcode.org/css/s/card-hover-effects/
 .rotating-card {
-    perspective: 150rem;
-    position: relative;
-    box-shadow: none;
-    background: none;
-  }
-  
-  .rotating-card .card-side {
-    transition: all 0.8s ease;
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .rotating-card .card-side.back {
-    transform: rotateY(-180deg);
-  }
-  
-  .rotating-card:hover .card-side.front {
-    transform: rotateY(180deg);
-  }
-  
-  .rotating-card:hover .card-side.back {
-    transform: rotateY(0deg);
-  }
+  perspective: 150rem;
+  position: relative;
+  box-shadow: none;
+  background: none;
+}
+
+.rotating-card .card-side {
+  transition: all 0.8s ease;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rotating-card .card-side.back {
+  transform: rotateY(-180deg);
+}
+
+.rotating-card:hover .card-side.front {
+  transform: rotateY(180deg);
+}
+
+.rotating-card:hover .card-side.back {
+  transform: rotateY(0deg);
+}
