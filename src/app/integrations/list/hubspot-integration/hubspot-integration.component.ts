@@ -28,9 +28,9 @@ export class HubspotIntegrationComponent implements OnInit {
     this.logger.log("[INT-Hubspot] integration ", this.integration)
     this.logger.debug("[INT-Hubspot] integration ", this.integration)
     this.translateparams = { intname: 'Hubspot' };
-    if (this.integration.value.apikey) {
-      this.checkKey();
-    }
+    // if (this.integration.value.apikey) {
+    //   this.checkKey();
+    // }
   }
 
   showHideKey() {
@@ -45,13 +45,17 @@ export class HubspotIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey().then((status) => {
-      let data = {
-        integration: this.integration,
-        isVerified: status
-      }
-      this.onUpdateIntegration.emit(data);
-    })
+    let data = {
+      integration: this.integration
+    }
+    this.onUpdateIntegration.emit(data);
+    // this.checkKey().then((status) => {
+    //   let data = {
+    //     integration: this.integration,
+    //     isVerified: status
+    //   }
+    //   this.onUpdateIntegration.emit(data);
+    // })
   }
 
   // saveIntegration() {
@@ -91,7 +95,7 @@ export class HubspotIntegrationComponent implements OnInit {
   checkKey() {
     return new Promise((resolve) => {
       this.logger.log('checkKey  this.integration.value.apikey; ', this.integration.value.apikey)
-      let url = "https://api.hubapi.com/crm/v3/objects/contacts?limit=10";
+      let url = "https://api.hubapi.com/account-info/v3/details"; // "https://api.hubapi.com/integrations/v1/me"; //"https://api.hubapi.com/crm/v3/objects/contacts?limit=10";
       let key = "Bearer " + this.integration.value.apikey;
       this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp: any) => {
         this.isVerified = true;      
