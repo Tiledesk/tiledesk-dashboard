@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateChatbotModalModule } from './create-chatbot-modal/create-chatbot-modal.module';
 import { CreateFlowsModalModule } from './create-flows-modal/create-flows-modal.module';
+import { MatRippleModule } from '@angular/material/core';
 
 const routes: Routes = [
   { path: "", component: BotListComponent},
@@ -50,6 +51,7 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRippleModule
   ]
 })
 export class BotsListModule { }

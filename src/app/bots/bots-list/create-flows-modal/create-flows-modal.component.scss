@@ -1,4 +1,4 @@
-.add-content-cards-wpr {
+.add--content-cards-wpr {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-.add-content-card-wpr {
+.add--content-card-wpr {
   position: relative;
   background-color: rgb(255, 255, 255);
   border-radius: 12px;
@@ -20,9 +20,9 @@
   pointer-events: auto;
 }
 
-// .add-content-card-wpr:hover {
-//     box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
-// }
+.add--content-card-wpr:hover {
+    box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
+}
 
 .add-content-card-content {
   padding: 20px;
@@ -36,7 +36,7 @@
   fill: var(--sidebar-inactive-icon);
 }
 
-.add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg {
+.add--content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg {
   fill: var(--icon-hover-color);
 }
 
@@ -45,7 +45,7 @@
   fill: none !important;
 }
 
-.add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg.svg-stroke {
+.add--content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg.svg-stroke {
   stroke: var(--icon-hover-color);
   fill: none !important;
 }

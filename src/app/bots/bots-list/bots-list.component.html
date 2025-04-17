@@ -177,13 +177,13 @@
 
                   <span class="span-32"> </span>
 
-                  <div class="add-content-cards-wpr">
-                    <div class="add-content-card-wpr">
+                  <div class="add--content-cards-wpr">
+                    <div class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('chatbot')" matRipple>
 
                       <!-- <div class="add-content-card-content"> -->
 
                       <!-- Chatbot -->
-                      <div class="add-content-card-content" (click)="presentModalAddBotFromScratch('chatbot')">
+                      <div class="add-content-card-content" >
                         <div class="add-content-card-content-icon-wpr">
                           <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -215,7 +215,7 @@
                     <!-- ------------------------------------ -->
                     <!-- Voice Chatbot (Twilio) -->
                     <!-- ------------------------------------ -->
-                    <div *ngIf="diplayTwilioVoiceChabotCard" class="add-content-card-wpr" (click)="presentModalAddBotFromScratch('voice-twilio')">
+                    <div *ngIf="diplayTwilioVoiceChabotCard" class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('voice-twilio')" matRipple>
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -247,7 +247,7 @@
                     <!-- ------------------------------------ -->
                     <!-- Voice Chatbot (VXML) -->
                     <!-- ------------------------------------ -->
-                    <div *ngIf="diplayVXMLVoiceChabotCard" class="add-content-card-wpr" (click)="presentModalAddBotFromScratch('voice')">
+                    <div *ngIf="diplayVXMLVoiceChabotCard" class="add--content-card-wpr" (click)="presentModalAddBotFromScratch('voice')" matRipple>
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -279,10 +279,10 @@
                     <!-- -------------------------------- -->
                     <!-- Import Chatbot -->
                     <!-- -------------------------------- -->
-                    <div class="add-content-card-wpr" (click)="fileInput.click()">
+                    <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
                       <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
                         id="upload-chatbot-from-json" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json">
-                      <div class="add-content-card-content">
+                      <div class="add-content-card-content" >
                         <div class="add-content-card-content-icon-wpr">
                           <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -330,11 +330,11 @@
 
                   <span class="span-32"> </span>
 
-                  <div class="add-content-cards-wpr">
+                  <div class="add--content-cards-wpr">
                     <!-- --------------------------------- -->
                     <!-- Webhook -->
                     <!-- --------------------------------- -->
-                    <div class="add-content-card-wpr"  (click)="presentModalAddBotFromScratch('webhook')">
+                    <div class="add--content-card-wpr"  (click)="presentModalAddBotFromScratch('webhook')" matRipple>
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -373,7 +373,7 @@
                     <!-- --------------------------------- -->
                     <!-- Copilot -->
                     <!-- --------------------------------- -->
-                    <div class="add-content-card-wpr"  (click)="presentModalAddBotFromScratch('copilot')">
+                    <div class="add--content-card-wpr"  (click)="presentModalAddBotFromScratch('copilot')" matRipple>
                       <div class="add-content-card-content">
                         <div class="add-content-card-content-icon-wpr">
                           <span>
@@ -400,10 +400,10 @@
                     <!-- -------------------------------- -->
                     <!-- Import Automations -->
                     <!-- -------------------------------- -->
-                    <div class="add-content-card-wpr" (click)="fileInput.click()">
+                    <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
                       <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
                           id="upload-chatbot-from-json" (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json">
-                      <div class="add-content-card-content">
+                      <div class="add-content-card-content" >
                         <div class="add-content-card-content-icon-wpr">
                           <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">

@@ -18,11 +18,11 @@
 </div>
 
 
-<div mat-dialog-content>
+<div mat-dialog-content style="padding-bottom: 18px;">
     <!-- isChatbotRoute {{isChatbotRoute}} -->
-    <div class="add-content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === true">
+    <div class="add--content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === true">
 
-        <div class="add-content-card-wpr" (click)="onOkPresssed('chatbot')">
+        <div class="add--content-card-wpr" (click)="onOkPresssed('chatbot')" matRipple>
 
             <div class="add-content-card-content">
                 <div class="add-content-card-content-icon-wpr">
@@ -54,7 +54,7 @@
         <!-- ------------------------------------ -->
         <!-- Voice Chatbot (Twilio) -->
         <!-- ------------------------------------ -->
-        <div *ngIf="diplayTwilioVoiceChabotCard" class="add-content-card-wpr" (click)="onOkPresssed('voice-twilio')">
+        <div *ngIf="diplayTwilioVoiceChabotCard" class="add--content-card-wpr" (click)="onOkPresssed('voice-twilio')" matRipple>
             <div class="add-content-card-content">
                 <div class="add-content-card-content-icon-wpr">
                     <span>
@@ -85,7 +85,7 @@
         <!-- ------------------------------------ -->
         <!-- Voice Chatbot (VXML) -->
         <!-- ------------------------------------ -->
-        <div *ngIf="diplayVXMLVoiceChabotCard" class="add-content-card-wpr" (click)="onOkPresssed('voice')">
+        <div *ngIf="diplayVXMLVoiceChabotCard" class="add--content-card-wpr" (click)="onOkPresssed('voice')" matRipple>
             <div class="add-content-card-content">
                 <div class="add-content-card-content-icon-wpr">
                     <span>
@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <div class="add-content-card-wpr" (click)="fileInput.click()">
+        <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
             <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
                 id="upload-chatbot-from-json" (change)="onFileSelected($event)" accept=".json">
             <div class="add-content-card-content">
@@ -140,12 +140,12 @@
         </div>
     </div>
 
-    <div class="add-content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === false">
+    <div class="add--content-cards-wpr" style="padding: 10px;" *ngIf="isChatbotRoute === false">
 
         <!-- --------------------------------- -->
         <!-- Webhook -->
         <!-- --------------------------------- -->
-        <div class="add-content-card-wpr" (click)="onOkPresssed('webhook')">
+        <div class="add--content-card-wpr" (click)="onOkPresssed('webhook')" matRipple>
             <div class="add-content-card-content" >
                 <div class="add-content-card-content-icon-wpr">
                     <span>
@@ -186,7 +186,7 @@
         <!-- --------------------------------- -->
         <!-- Copilot -->
         <!-- --------------------------------- -->
-        <div class="add-content-card-wpr" (click)="onOkPresssed('copilot')">
+        <div class="add--content-card-wpr" (click)="onOkPresssed('copilot')" matRipple>
             <div class="add-content-card-content" >
                 <div class="add-content-card-content-icon-wpr">
                     <span>
@@ -214,7 +214,7 @@
         <!-- -------------------------------- -->
         <!-- Import Automations -->
         <!-- -------------------------------- -->
-        <div class="add-content-card-wpr" (click)="fileInput.click()">
+        <div class="add--content-card-wpr" (click)="fileInput.click()" matRipple>
             <input type="file" #fileInput class="inputfile" name="upload-chatbot-from-json"
                 id="upload-chatbot-from-json" (change)="onFileSelected($event)" accept=".json">
             <div class="add-content-card-content">
