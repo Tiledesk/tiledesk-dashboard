@@ -28,9 +28,9 @@ export class HubspotIntegrationComponent implements OnInit {
     this.logger.log("[INT-Hubspot] integration ", this.integration)
     this.logger.debug("[INT-Hubspot] integration ", this.integration)
     this.translateparams = { intname: 'Hubspot' };
-    if (this.integration.value.apikey) {
-      this.checkKey();
-    }
+    // if (this.integration.value.apikey) {
+    //   this.checkKey();
+    // }
   }
 
   showHideKey() {
@@ -45,13 +45,17 @@ export class HubspotIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey().then((status) => {
-      let data = {
-        integration: this.integration,
-        isVerified: status
-      }
-      this.onUpdateIntegration.emit(data);
-    })
+    let data = {
+      integration: this.integration
+    }
+    this.onUpdateIntegration.emit(data);
+    // this.checkKey().then((status) => {
+    //   let data = {
+    //     integration: this.integration,
+    //     isVerified: status
+    //   }
+    //   this.onUpdateIntegration.emit(data);
+    // })
   }
 
   // saveIntegration() {
