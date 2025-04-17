@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.97-rc4
+- Improves Create AI agents and Create Automations UI 
+- Fixes translations
+- Removes the Free plan
+- Fixes Hubspot integration "Invalid" message
+
 ### 2.7.97-rc3
 - Fixes the bug: if the remote configuration key is set to true in the environment the app crashes
 
