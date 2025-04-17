@@ -2071,6 +2071,7 @@ button.buttonRounded:hover {
   border-right: 1px solid #e5effe;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
+  padding-bottom: 272px;
 }
 
 .widget-section-header {
@@ -2213,7 +2214,7 @@ button.buttonRounded:hover {
 }
 
 .widget-settings-control-head-label {
-  font-size: 15px !important;
+  font-size: 14px !important;
   color: #566787 !important;
   text-align: left;
   padding-bottom: 12px;
@@ -2648,6 +2649,36 @@ button.buttonRounded:hover {
 .select-prechat-form-field {
   max-width: 570px;
 }
+
+// .widget-footer-actions-preview-wpr {
+//   margin-right: 4px;
+// }
+
+// .widget-footer-actions-preview {
+//   height: 200px;
+//   box-shadow: 0 2px 6px #e6e9ed;
+//   border-radius: 10px;
+//   width: 315px;
+//   position: relative
+// }
+
+// .widget-footer-actions {
+//   display: flex;
+//   position: absolute;
+//   bottom: 0px;
+//   width: 100%;
+//   padding: 6px;
+//   align-items: center;
+// }
+
+// .widget-footer-action-texatarea {
+//   flex-grow: 1;
+//   background-color: #f6f7fb;
+//   border-radius: 16px;
+//   height: 32px;
+//   margin-right: 6px;
+// }
+
 
 pre {
   font-family: monospace;
@@ -3220,19 +3251,20 @@ pre {
 }
 
 .upload-widget-logo-image-container {
-  display: grid; 
+  display: grid;
   place-items: center;
   position: absolute;
   inset: 0px;
 }
 
-.upload-widget-logo-image-container > svg {
+.upload-widget-logo-image-container>svg {
   fill: var(--icon-color);
 }
 
-.upload-widget-logo-image-container:not(.upload-logo-disabled):hover > svg {
+.upload-widget-logo-image-container:not(.upload-logo-disabled):hover>svg {
   fill: var(--icon-hover-color);
 }
+
 .upload-widget-logo-image-container.upload-logo-disabled {
   cursor: not-allowed;
 }
@@ -3268,11 +3300,11 @@ pre {
   opacity: 1;
 }
 
-.widget-logo-image-uploaded-background-div:hover>.delete-widget-logo-btn-wpr>.delete-widget-logo-image > svg{ 
+.widget-logo-image-uploaded-background-div:hover>.delete-widget-logo-btn-wpr>.delete-widget-logo-image>svg {
   fill: var(--icon-color);
 }
 
-.widget-logo-image-uploaded-background-div>.delete-widget-logo-btn-wpr>.delete-widget-logo-image:hover > svg{ 
+.widget-logo-image-uploaded-background-div>.delete-widget-logo-btn-wpr>.delete-widget-logo-image:hover>svg {
   fill: #e81332;
 }
 
