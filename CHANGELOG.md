@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.97-rc5
+- Fixes bug: In Analytics > Metrics > Satisfaction the Average Satisfaction value is displayed with too many decimal
+
 ### 2.7.97-rc4
 - Improves Create AI agents and Create Automations UI 
 - Fixes translations
