@@ -47,6 +47,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service';
 import { SleekplanService } from 'app/services/sleekplan.service';
 import { browserRefresh } from 'app/app.component';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -194,9 +195,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   voice_limit_in_sec = 0;
   voice_count_min_sec: any;
 
-  voiceRunnedOut: boolean = false;
-  diplayVXMLVoiceQuota: boolean;
-
   requestsPieStroke: string;
   requestsPieGreenStroke: boolean;
   requestsPieYellowStroke: boolean;
@@ -212,6 +210,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+  voiceRunnedOut: boolean = false;
+
+  // diplayTwilioVoiceQuota: boolean;
+  diplayVXMLVoiceQuota: boolean;
 
   startSlot: string;
   endSlot: string;
@@ -263,7 +265,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   ngOnInit() {
     this.getCurrentProject();
-    this.getProjectUserRole();
     this.getProfileImageStorage();
 
     // -------------------------------------------
@@ -284,7 +285,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.getUnservedRequestLenght_bs();
 
 
-    this.getProjectUserId();
+    this.getProjectUser();
 
     this.getActiveRoute();
     this.hidePendingEmailNotification();
@@ -298,7 +299,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.getFromLocalStorageHasOpenedTheChat();
     this.getFromNotifyServiceHasOpenedChat();
 
-    this.getUserAvailability();
     this.hasChangedAvailabilityStatusInSidebar();
     this.hasChangedAvailabilityStatusInUsersComp();
     // this.subscribeToLogoutPressedinSidebarNavMobile();
@@ -317,6 +317,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.listenHasDeleteUserProfileImage();
     this.manageVoiceQuotaVisibility()
 
+    this.manageVoiceQuotaVisibility()
     this.listenSoundPreference()
     this.listenToLiveAnnouncementOpened()
     // this.listenToQuotasReachedInHome()
@@ -385,12 +386,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           //   this.getProjectQuotes();
           // }
         }
-
+        
         this.getProjects()
+
       }
     });
   }
-
 
   manageVoiceQuotaVisibility() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -399,8 +400,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         if (projectProfileData['customization']) {
 
           // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
-          if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
-
+          if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined) )) {
+    
             this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
             // this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
             // if (projectProfileData['customization']['voice-twilio'] === true) {
@@ -410,21 +411,21 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
             //   this.diplayTwilioVoiceQuota = false
             // } 
-
+    
             if (projectProfileData['customization']['voice'] === true) {
               this.diplayVXMLVoiceQuota = true
             } else if (projectProfileData['customization']['voice'] === false) {
               this.diplayVXMLVoiceQuota = false
             } else if (projectProfileData['customization']['voice'] === undefined) {
               this.diplayVXMLVoiceQuota = false
-            }
+            } 
           } else {
             this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
             this.diplayVXMLVoiceQuota = false
           }
-
+    
         } else {
-
+    
           this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
           // this.diplayTwilioVoiceQuota = false
           this.diplayVXMLVoiceQuota = false
@@ -611,54 +612,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     })
   }
 
-  secondsToMinutes_seconds(seconds) {
-    let minutes = Math.floor(seconds / 60);
-    let remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  }
-
-  getQuotasCount() {
-    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
-      this.logger.log("[NAVBAR] - GET QUOTAS COUNT - response: ", resp)
-
-      this.openedConversations = resp.open;
-      this.closedConversations = resp.closed;
-      this.startSlot = resp.slot.startDate;
-      this.endSlot = resp.slot.endDate;
-
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - START SLOT ", this.startSlot);
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT - END SLOT ", this.endSlot);
-    }, (error) => {
-      this.logger.error("[NAVBAR] GET QUOTAS COUNT error: ", error)
-    }, () => {
-      this.logger.log("[NAVBAR] GET QUOTAS COUNT * COMPLETE *");
-    })
-  }
-
-  // listenToWSRequestsDataCallBack() {
-  //   // .pipe(throttleTime(0))
-  //   this.logger.log("[NAVBAR] listenToWSRequestsDataCallBack ");
-  //   this.wsRequestsService.wsConvData$
-
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((wsConv) => {
-  //       // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
-  //       this.getQuotes()
-  //     })
-  // }
-
-  // listenToQuotasReachedInHome() {
-  //   this.logger.log("[NAVBAR] listenToQuotasReachedInHome ", )
-
-  //   if (this.projectId)  {
-  //     this.logger.log("[NAVBAR] listenToQuotasReachedInHome 2 ", )
-  //     this.getQuotes()
-  //   }
-  // }
+  secondsToMinutes_seconds(seconds) {  
+    let minutes = Math.floor(seconds / 60);  
+    let remainingSeconds = seconds % 60;  
+    return `${minutes}m ${remainingSeconds}s`;  
+  } 
 
 
   goToHistoryOpenedConvs() {
@@ -789,29 +747,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  getProjectUserRole() {
-    // const user___role =  this.usersService.project_user_role_bs.value;
-    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] - USER ROLE from $ubscription', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true;
-
-          } else {
-            this.ROLE_IS_AGENT = false;
-          }
-        }
-      });
-  }
-
-
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -915,13 +850,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
     this.logger.log('[NAVBAR] ===== BRS LANG ', this.browserLang)
-  }
-
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      this.logger.log('[NAVBAR]- USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
   }
 
   hasChangedAvailabilityStatusInSidebar() {
@@ -1042,7 +970,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
           /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
           if (event.url.indexOf('/home') !== -1) {
-            // console.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+            // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
             this.HOME_ROUTE_IS_ACTIVE = true;
 
             // Get quotas limit and quotas to update the home
@@ -2155,10 +2083,21 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     return 'Dashboard';
   }
 
-  getProjectUserId() {
-    this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-      this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser_id);
-      this.projectUser_id = projectUser_id;
+  getProjectUser() {
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NAVBAR] - PROJECT-USER-ID ', projectUser);
+      if(projectUser){
+        this.projectUser_id = projectUser._id;
+        this.IS_AVAILABLE = projectUser.user_available;
+
+        this.USER_ROLE = projectUser.role
+        if (this.USER_ROLE === 'agent') {
+          this.ROLE_IS_AGENT = true;
+
+        } else {
+          this.ROLE_IS_AGENT = false;
+        }
+      }
     });
   }
 
@@ -2255,7 +2194,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       )
       .pipe(skip(1))
       .subscribe((hasSeenChangelog) => {
-        // console.log('[NAVBAR] listenToLiveAnnouncementOpened hasSeenChangelog', hasSeenChangelog);
+        // this.logger.log('[NAVBAR] listenToLiveAnnouncementOpened hasSeenChangelog', hasSeenChangelog);
         const lastSeen = Date.now()
         localStorage.setItem(`lastSeenTimestamp-${this.user._id}`, lastSeen.toString())
         this.newChangelogCount = false

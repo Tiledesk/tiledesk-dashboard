@@ -537,6 +537,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     getCurrentProject(url) {
         // this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 1', url)
+        // console.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - url 1', url)
         this.logger.log('[APP-COMPONENT] calling --- GET CURRENT PROJECT ---- - this.auth.user_bs.value 1 ', this.auth.user_bs.value)
         this.auth.project_bs.subscribe((project) => {
             if (project) {
@@ -566,6 +567,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     const url_segments = url.split('/');
                     const nav_project_id = url_segments[2];
                     this.logger.log('[APP-COMPONENT] -->> project from $ubscription 2 nav_project_id', nav_project_id)
+                    // console.log('[APP-COMPONENT] project from $ubscription 2 nav_project_id', nav_project_id)
 
                     const navProjectIdContainsNumber = this.containsNumber(nav_project_id)
                     this.logger.log('[APP-COMPONENT] -->> project from $ubscription 2 projectIdIsNumber', navProjectIdContainsNumber)
@@ -599,7 +601,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // const dateLimit = new Date('2022-07-04T00:00:00') // for test purpose
         // console.log('[APP-COMPONENT] REDIRECT TO PRICING - dateLimit ', dateLimit)
         this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - freePlanLimitDate ', freePlanLimitDate)
-
 
         if (project) {
 
