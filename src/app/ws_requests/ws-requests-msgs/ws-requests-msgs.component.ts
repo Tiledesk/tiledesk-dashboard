@@ -678,7 +678,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        this.logger.log('[WS-REQUESTS-MSGS]  queryParams', params);
+        console.log('[WS-REQUESTS-MSGS]  queryParams', params);
         this.queryParams = params
       });
   }

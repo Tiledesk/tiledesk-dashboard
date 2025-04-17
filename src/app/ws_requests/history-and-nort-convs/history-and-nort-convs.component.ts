@@ -471,7 +471,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING FROM SUBSCRIPTION searchedForArray: ', searchedForArray)
           searchedForArray.forEach(param => {
             const paramArray = param.split('=');
-            this.logger.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
+            console.log('paramArray[0] ', paramArray[0], '- paramArray[1]: ', paramArray[1])
 
             if (paramArray[0] === 'ticket_id' && paramArray[1] !== '') {
               const ticket_id_value = paramArray[1]
@@ -596,6 +596,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             if (paramArray[0] === 'call_id' && paramArray[1] !== '') {
               this.call_id = paramArray[1]
+            }
+
+            if (paramArray[0] === 'qspageNo' && paramArray[1] !== '') {
+              this.pageNo = +paramArray[1]
             }
 
 
@@ -1460,7 +1464,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-    this.logger.log('getRequests queryString', this.queryString)
+    console.log('getRequests queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
     this.logger.log('getRequests requests_statuses ', this.requests_statuses)
     this.logger.log('getRequests requests_status ', this.requests_status)
@@ -2271,9 +2275,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
-    this.pageNo = 0
-
-
+    
+    // this.pageNo = 0 // nikola
 
 
     if (this.fullText) {
@@ -2761,7 +2764,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'requester_email=' + '&'
       + 'tags=' + '&'
       + 'channel=';
-    + 'rstatus=' + '&'
+      + 'rstatus=' + '&'
       + 'duration_op=' + '&'
       + 'duration=' + '&'
       + 'called=' + '&'
@@ -2788,7 +2791,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   increasePageNumber() {
     this.pageNo += 1;
-    this.logger.log('[HISTORY & NORT-CONVS] - INCREASE PAGE NUMBER ', this.pageNo);
+    const qspageNo = this.pageNo
+    console.log('[HISTORY & NORT-CONVS] - INCREASE PAGE NUMBER ', this.pageNo);
+    console.log('[HISTORY & NORT-CONVS] - INCREASE PAGE NUMBER typeof', typeof this.pageNo);
+    if (this.queryString) {
+      this.queryString += '&qspageNo=' + qspageNo;
+    }
     this.getRequests()
   }
 
