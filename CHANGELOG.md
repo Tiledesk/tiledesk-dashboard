@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.97
+- Adds the “Update widget” button for all sections of the widget set-up page
+- Adds a preview in the widget set-up page Advanced section
+
 ### 2.7.96
 - Improves Home page performance
 - Implements the HTTP interceptor

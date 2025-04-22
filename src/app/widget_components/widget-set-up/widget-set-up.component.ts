@@ -1523,17 +1523,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
       let firstAccordion = acc[0];
-
       let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-      this.logger.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
+
+      // console.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
 
       const hasClosedFirstAccordion = this.localDbService.getFromStorage(`hasclosedfirstaccordion-${this.id_project}`)
-      this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+      // console.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+
       if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
-        // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
+        // console.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
         setTimeout(() => {
           firstAccordion.classList.add("active");
-          firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+          // firstPanel.style.maxHeight = firstPanel.scrollHeight + "px"; // auto with setTimeout 2000
+          firstPanel.style.maxHeight = 523 + "px"; // hardcoded with setTimeout 100
+          // console.log('firstPanel.scrollHeight ', firstPanel.scrollHeight) 
+
+          this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
 
           var arrow_icon_div = firstAccordion.children[1];
           this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -1541,7 +1546,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           var arrow_icon = arrow_icon_div.children[0]
           // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
           arrow_icon.classList.add("arrow-up");
-        }, 2000);
+        // }, 2000);
+        }, 100);
       }
 
       // var arrow_icon_div = firstAccordion.children[1];
@@ -1560,7 +1566,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // this.logger.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
 
         setTimeout(() => {
-          // this.logger.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+        // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
 
           if (firstAccordion.classList.contains('active')) {
             self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'false')
@@ -3747,24 +3753,42 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   enableSingleConversation(event) {
     // this.logger.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
     this.singleConversation = event.target.checked
+    // if (this.singleConversation === true) {
+
+    //   this.widgetObj['singleConversation'] = this.singleConversation;
+
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+    // } else if (this.singleConversation === false) {
+
+    //   delete this.widgetObj['singleConversation'];
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+
+    // }
+  }
+
+  saveWidgetSingleConversation () {
+
     if (this.singleConversation === true) {
 
       this.widgetObj['singleConversation'] = this.singleConversation;
 
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.singleConversation === false) {
 
       delete this.widgetObj['singleConversation'];
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
+
+    this.widgetService.updateWidgetProject(this.widgetObj)
+    // console.log('[WIDGET-SET-UP] SAVE WIDGET single conversation widgetObj', this.widgetObj)
   }
 
   // --------------------------------------------------------------------------------------
   //  @ Widget visibility
   // --------------------------------------------------------------------------------------
   changeDesktopWidgetVisibility(event) {
-    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
+    // console.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
     this.desktop_widget_is_visible = event.target.checked;
 
     if (this.desktop_widget_is_visible === false) {
@@ -3782,30 +3806,54 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   changeMobileWidgetVisibility(event) {
-    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
+    // console.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
     this.mobile_widget_is_visible = event.target.checked
+
+    // if (this.mobile_widget_is_visible === false) {
+    //   this.widgetObj['displayOnMobile'] = this.mobile_widget_is_visible;
+    //   delete this.widgetObj['onPageChangeVisibilityMobile']
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+    // } else if (this.mobile_widget_is_visible === true) {
+    //   this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
+    //   delete this.widgetObj['displayOnMobile'];
+    //   this.widgetService.updateWidgetProject(this.widgetObj)
+    // }
+  }
+
+  onSelectDesktopWidgetStatus() {
+    // console.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
+    // this.widgetObj['onPageChangeVisibilityDesktop'] = this.desktopWidgetStatus;
+    // this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  onSelectMobilepWidgetStatus() {
+    // console.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
+    // this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
+    // this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  saveWidgetVisibility() {
+   
 
     if (this.mobile_widget_is_visible === false) {
       this.widgetObj['displayOnMobile'] = this.mobile_widget_is_visible;
       delete this.widgetObj['onPageChangeVisibilityMobile']
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.mobile_widget_is_visible === true) {
       this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
       delete this.widgetObj['displayOnMobile'];
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     }
-  }
 
-  onSelectDesktopWidgetStatus() {
-    // this.logger.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
     this.widgetObj['onPageChangeVisibilityDesktop'] = this.desktopWidgetStatus;
-    this.widgetService.updateWidgetProject(this.widgetObj)
-  }
+    // this.widgetService.updateWidgetProject(this.widgetObj)
 
-  onSelectMobilepWidgetStatus() {
-    // this.logger.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
     this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
+
+
     this.widgetService.updateWidgetProject(this.widgetObj)
+
+    // console.log('[WIDGET-SET-UP] SAVE WIDGET VISIBILITY widgetObj', this.widgetObj)
   }
 
 
