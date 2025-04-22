@@ -104,7 +104,7 @@
             <div class="dropdown pull-right" *ngIf="isChatbotRoute === 'all'">
               <a  class="btn dropdown-toggle select-flow-btn" data-toggle="dropdown"   (click)="isOpenSelecFlowTypeDropdown(isOpen = !isOpen)">
                 {{'NewFlow' | translate}}
-                  <b class="caret"  [ngClass]="{'caret-rotate-0': is0penSelectFlowDropDown === true, 'caret-rotate-180': is0penSelectFlowDropDown === false}"
+                  <b class="caret"  [ngClass]="{'caret-rotate-0': is0penSelectFlowDropDown === false, 'caret-rotate-180': is0penSelectFlowDropDown === true }"
                    style="position: relative; left: 8px;"></b>
               </a>
               <ul class="dropdown-menu dropdown-menu-custom">

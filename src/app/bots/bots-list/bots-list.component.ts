@@ -1710,6 +1710,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     // createBotFromScratchBtnEl.blur()
     const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
       width: '400px',
       data: {
         'subtype': subtype
