@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.97-rc6
+- Adds the menu item “All” in the Flows sidebar
+
 ### 2.7.97-rc5
 - Fixes bug: In Analytics > Metrics > Satisfaction the Average Satisfaction value is displayed with too many decimal
 
