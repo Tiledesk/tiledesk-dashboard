@@ -153,6 +153,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   WIDGET_BASE_URL: string;
   defaultDeptId: string;
   is0penDropDown: boolean = false
+  is0penSelectFlowDropDown: boolean = false
   isOpen: boolean;
 
   orderBylastUpdated: boolean = true;
@@ -162,8 +163,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   isVisiblePAY: boolean;
   chatbotNumExceedChatbotLimit: boolean = false;
 
-
-  isChatbotRoute: boolean
+  isAllFlowRoute: boolean
+  isChatbotRoute: any
   currentRoute: string;
 
   botDefaultLangCode: string = 'en'
@@ -218,10 +219,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST] - currentRoute ', this.currentRoute)
 
     if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1) {
-      this.isChatbotRoute = true
+      this.isChatbotRoute = 'all'
 
       this.logger.log('[BOTS-LIST] - currentRoute isChatbotRoute ', this.isChatbotRoute)
-    } else {
+    } else if (this.currentRoute.indexOf('/flows/flow-aiagent') !== -1) {
+      this.isChatbotRoute = true
+    } else if (this.currentRoute.indexOf('/flows/flow-automations') !== -1) {
       this.isChatbotRoute = false
     }
   }
@@ -712,6 +715,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST] this.is0penDropDown ', this.is0penDropDown)
   }
 
+  isOpenSelecFlowTypeDropdown(_is0penSelectFlowDropDown) {
+    this.is0penSelectFlowDropDown = _is0penSelectFlowDropDown
+  }
+
   orderBy(sortfor) {
     this.logger.log('[BOTS-LIST] - orderBy', sortfor);
     if (sortfor === 'lastUpdates') {
@@ -835,9 +842,14 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         // automations:any
         // automationsCount: number;
 
+
+
+        this.faqkbList = this.faqkbList
         // ---------------------------------------------------------------------
         // Chatbot
         // ---------------------------------------------------------------------
+
+
         this.myChatbot = this.faqkbList.filter((obj) => {
           return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
         });
@@ -888,9 +900,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
         this.route = this.router.url
         if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
-          this.faqkbList = this.myChatbot // this.faqkbList
-          this.pageName = "AIAgents"
+          this.faqkbList = this.faqkbList
+          this.pageName = "All"
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
+        } else if (this.route.indexOf('/flows/flow-aiagent') !== -1) {
+          this.faqkbList = this.myChatbot
+          this.pageName = "AIAgents"
+          this.logger.log('/flows/flow-aiagent ', this.faqkbList);
         } else if (this.route.indexOf('/flows/flow-automations') !== -1) {
           this.faqkbList = this.automations
           this.pageName = "Automations"
@@ -1108,7 +1124,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string, botSubType: string) {
     this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - botSubType', botSubType);
     const deptsArray = this.getDepartments(id)
-    
+
     this.logger.log('[BOTS-LIST] »» ON MODAL DELETE OPEN - deptsArray', deptsArray);
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, IS DISPLAYED THE ID OF THE BOT DELETED PREVIOUSLY
     this.bot_id_typed = '';
@@ -1174,7 +1190,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
         // this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
         // this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
-        this.logger.log('[BOTS-LIST] -  GET DEPTS botSubType' , this.botSubType)
+        this.logger.log('[BOTS-LIST] -  GET DEPTS botSubType', this.botSubType)
         const subtype = this.botSubType || '';
         let warningText = '';
         let warningTextPartTwo = '';
@@ -1189,7 +1205,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           }
         } else if (foundDeptsArray.length === 1) {
           if (automations.includes(subtype)) {
-            
+
             warningText = this.automationIsAssociatedWithTheDepartment;
             warningTextPartTwo = this.disassociateTheAutomation;
             this.logger.log('[BOTS-LIST] use case dept array = 1 - Automation: webhook or copilot warningText ', warningText)
@@ -1201,19 +1217,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           }
         }
 
-          Swal.fire({
-            title: this.warning,
-            text: warningText + ' ' + this.deptsNameAssociatedToBot + '. ' + warningTextPartTwo,
-            icon: "warning",
-            showCancelButton: false,
-            confirmButtonText: this.translate.instant('Ok'),
-            // confirmButtonColor: "var(--blue-light)",
-            focusConfirm: false,
-            // reverseButtons: true
-            // button: true,
-            // dangerMode: false,
-          })
-       
+        Swal.fire({
+          title: this.warning,
+          text: warningText + ' ' + this.deptsNameAssociatedToBot + '. ' + warningTextPartTwo,
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonText: this.translate.instant('Ok'),
+          // confirmButtonColor: "var(--blue-light)",
+          focusConfirm: false,
+          // reverseButtons: true
+          // button: true,
+          // dangerMode: false,
+        })
+
 
         // if (foundDeptsArray.length > 1) {
         //   Swal.fire({
@@ -1375,7 +1391,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   // --------------------------------------------------------------------------
   // @ Create Chatbots / Automations
   // --------------------------------------------------------------------------
-  createBlankTilebot( botSubtype?: string, namespaceid?: string) {
+  createBlankTilebot(botSubtype?: string, namespaceid?: string) {
     this.logger.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, '- chatBotLimit:', this.chatBotLimit, '- botSubtype:', botSubtype, '- chatbotName:', this.chatbotName, '- botDefaultLangCode:', this.botDefaultLangCode, '- namespaceid: ', namespaceid)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit || this.chatBotLimit === 0) {
@@ -1490,11 +1506,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           if (this.chatBotCount < this.chatBotLimit) {
             this.logger.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
             // if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
-            //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
+            //   this.logger.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
             //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'automations')
             // }
             // if (!this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) {
-            //   console.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Chatbots list. Do you want to continue? `)
+            //   this.logger.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Chatbots list. Do you want to continue? `)
             //   this.presentDialogImportMismatch(formData, this.chatbotToImportSubtype, 'chatbots')
             // }
             // if ((this.isChatbotRoute && (this.chatbotToImportSubtype !== 'webhook' && this.chatbotToImportSubtype !== 'copilot')) || (!this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot'))) {
@@ -1845,7 +1861,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.disassociateTheAutomation = text['DisassociateTheAutomation'];
       });
 
-     
+
     this.translate.get('Warning')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;

@@ -536,6 +536,11 @@ my-app .main-panel .main-content .card {
 
 /* DROP-DOWN MENU
 /* ------------------------- */
+
+.dropdown-menu-custom li a {
+  cursor: pointer;
+}
+
 .dropdown-menu-custom li a:hover,
 .dropdown-menu li a:focus,
 .dropdown-menu li a:active {

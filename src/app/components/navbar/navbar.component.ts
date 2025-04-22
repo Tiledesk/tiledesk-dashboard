@@ -461,12 +461,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   getProjectQuotes() {
-    this.logger.log("[NAVBAR][QUOTA-DEBUG] getProjectQuotes this.projectId: ", this.projectId);
+    this.logger.log("[NAVBAR][QUOTA-DEBUG] getProjectQuotes this.projectId -------> : ", this.projectId);
     this.quotesService.getProjectQuotes(this.projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
       this.project_limits = response;
       if (this.project_limits) {
-        this.getQuotes(this.project_limits)
+        this.getQuotes(this.project_limits , this.projectId)
       }
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
@@ -474,18 +474,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
 
-  getQuotes(project_limits) {
+  getQuotes(project_limits, projectId) {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
       this.logger.log("[NAVBAR] project_limits: ", project_limits)
-      this.logger.log("resp.quotes: ", resp.quotes)
+      this.logger.log("[NAVBAR] resp.quotes: ", resp.quotes)
       if (resp?.quotes) {
 
-        this.logger.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE")
+        this.logger.log(" [QUOTA-DEBUG][NAVBAR] -----> PASS FECHED DATA TO QUOTA SERVICE projectId ",projectId)
 
         this.quotesService.updateQuotasData({
           projectLimits: project_limits, // Pass fetched project limits
-          allQuotes: resp.quotes // Pass fetched quotes
+          allQuotes: resp.quotes, // Pass fetched quotes
+          projectId: projectId
         });
 
       }

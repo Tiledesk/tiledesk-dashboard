@@ -471,132 +471,140 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   listenToQuotas() {
-    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ", this.projectId);
+    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ------------> ", this.projectId);
+    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectChangedFromList :", this.projectChangedFromList);
     this.quotasSubscription = this.quotesService.quotesData$
       .subscribe((data) => {
+
         if (data) {
-          this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2");
-          this.quotasLimits = data.projectLimits;
-          this.allQuotas = data.allQuotes;
-          this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
-          this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
+          if (data['projectId'] === this.projectId) {
+            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
+            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
+            this.quotasLimits = data.projectLimits;
+            this.allQuotas = data.allQuotes;
+            this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
+            this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
 
-          if (this.quotasLimits) {
-            this.messages_limit = this.quotasLimits.messages;
-            this.requests_limit = this.quotasLimits.requests;
-            this.email_limit = this.quotasLimits.email;
-            this.tokens_limit = this.quotasLimits.tokens;
+            if (this.quotasLimits) {
+              this.messages_limit = this.quotasLimits.messages;
+              this.requests_limit = this.quotasLimits.requests;
+              this.email_limit = this.quotasLimits.email;
+              this.tokens_limit = this.quotasLimits.tokens;
 
-            // if (this.quotasLimits.voice_duration)  {
-            this.voice_limit_in_sec = this.quotasLimits.voice_duration;
-            this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
-            // } else {
-            //   this.voice_limit = 0
-            // }
-
-
-            this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
-            this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
-            this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
-            this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
-            this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
-            this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
-            this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
-          }
-
-          // -----------------------------
-          // For test
-          // -----------------------------
-          // this.requests_limit = 1;
-          // this.email_limit = 1;
-          // this.tokens_limit = 1;
-
-          this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
-          this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
-          this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
-          this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
-          if (this.allQuotas.requests.quote === null) {
-            this.allQuotas.requests.quote = 0;
-          }
-          if (this.allQuotas.messages.quote === null) {
-            this.allQuotas.messages.quote = 0;
-          }
-          if (this.allQuotas.email.quote === null) {
-            this.allQuotas.email.quote = 0;
-          }
-          if (this.allQuotas.tokens.quote === null) {
-            this.allQuotas.tokens.quote = 0;
-          }
-          if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
-            this.allQuotas.voice_duration.quote = 0;
-            this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
-          }
+              // if (this.quotasLimits.voice_duration)  {
+              this.voice_limit_in_sec = this.quotasLimits.voice_duration;
+              this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
+              // } else {
+              //   this.voice_limit = 0
+              // }
 
 
-          if (this.allQuotas.requests.quote >= this.requests_limit) {
-            this.conversationsRunnedOut = true;
-            this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-          } else {
-            this.conversationsRunnedOut = false;
-            this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-          }
-
-          if (this.allQuotas.email.quote >= this.email_limit) {
-            this.emailsRunnedOut = true;
-            this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-          } else {
-            this.emailsRunnedOut = false;
-            this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-          }
-
-          if (this.allQuotas.tokens.quote >= this.tokens_limit) {
-            this.tokensRunnedOut = true;
-            this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-          } else {
-            this.tokensRunnedOut = false;
-            this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-          }
-
-          if (this.diplayVXMLVoiceQuota) {
-            if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
-              // if (3342 >= this.voice_limit_in_sec) {   
-              this.voiceRunnedOut = true;
-              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-            } else {
-              this.voiceRunnedOut = false;
-              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
+              this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
+              this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
+              this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+              this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
+              this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
+              this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
             }
-          }
+
+            // -----------------------------
+            // For test
+            // -----------------------------
+            // this.requests_limit = 1;
+            // this.email_limit = 1;
+            // this.tokens_limit = 1;
+
+            this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
+            this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
+            this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
+            this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
+            if (this.allQuotas.requests.quote === null) {
+              this.allQuotas.requests.quote = 0;
+            }
+            if (this.allQuotas.messages.quote === null) {
+              this.allQuotas.messages.quote = 0;
+            }
+            if (this.allQuotas.email.quote === null) {
+              this.allQuotas.email.quote = 0;
+            }
+            if (this.allQuotas.tokens.quote === null) {
+              this.allQuotas.tokens.quote = 0;
+            }
+            if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
+              this.allQuotas.voice_duration.quote = 0;
+              this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
+            }
 
 
-          this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
-          this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
-          this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
-          this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
-          this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
+            if (this.allQuotas.requests.quote >= this.requests_limit) {
+              this.conversationsRunnedOut = true;
+              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+            } else {
+              this.conversationsRunnedOut = false;
+              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+            }
 
-          this.requests_count = this.allQuotas.requests.quote;
-          this.messages_count = this.allQuotas.messages.quote;
-          this.email_count = this.allQuotas.email.quote;
-          this.tokens_count = this.allQuotas.tokens.quote;
-          this.voice_count = this.allQuotas.voice_duration?.quote
-          this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
+            if (this.allQuotas.email.quote >= this.email_limit) {
+              this.emailsRunnedOut = true;
+              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+            } else {
+              this.emailsRunnedOut = false;
+              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+            }
 
-          this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
-          if (this.projectChangedFromList) {
-            setTimeout(() => {
-              this.displayQuotaSkeleton = false
-            }, 1000);
+            if (this.allQuotas.tokens.quote >= this.tokens_limit) {
+              this.tokensRunnedOut = true;
+              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+            } else {
+              this.tokensRunnedOut = false;
+              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+            }
 
-            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
-          } else {
+            if (this.diplayVXMLVoiceQuota) {
+              if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
+                // if (3342 >= this.voice_limit_in_sec) {   
+                this.voiceRunnedOut = true;
+                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              } else {
+                this.voiceRunnedOut = false;
+                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              }
+            }
+
+
+            this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
+            this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
+            this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
+            this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
+            this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
+
+            this.requests_count = this.allQuotas.requests.quote;
+            this.messages_count = this.allQuotas.messages.quote;
+            this.email_count = this.allQuotas.email.quote;
+            this.tokens_count = this.allQuotas.tokens.quote;
+            this.voice_count = this.allQuotas.voice_duration?.quote
+            this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
+
+            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
             this.displayQuotaSkeleton = false
-            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
+            // if (this.projectChangedFromList) {
+            //   setTimeout(() => {
+            //     this.displayQuotaSkeleton = false
+            //   }, 1000);
+
+            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
+            // } 
+            // else {
+            //   this.displayQuotaSkeleton = false
+            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
+            // }
           }
         }
       },
         (error) => {
           // Handle error
+          this.displayQuotaSkeleton = false
         },
         () => {
           // This complete callback will be called if/when the observable completes

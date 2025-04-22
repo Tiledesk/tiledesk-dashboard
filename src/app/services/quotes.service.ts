@@ -75,7 +75,7 @@ export class QuotesService {
   }
 
   /** Called by NavbarComponent to update the stored quotes */
-  updateQuotasData(data: { projectLimits: any; allQuotes: any }) {
+  updateQuotasData(data: { projectLimits: any; allQuotes: any; projectId: string }) {
     this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
     this.hasFetchedData = true; // Mark data as fetched
@@ -84,7 +84,7 @@ export class QuotesService {
   /** Called by HomeComponent to request Navbar to fetch quotas */
   requestQuotasUpdate() {
     // if (!this.hasFetchedData) {
-    this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
+    console.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
     this.requestQuotesSubject.next(); // Notify Navbar to fetch data
     // }
   }
