@@ -20,6 +20,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import scrollToWithAnimation from 'scrollto-with-animation'
 import { CHANNELS_NAME } from 'app/utils/util';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -272,15 +273,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GET PROJECT-USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role;
+          if (this.USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
           } else {
             this.ROLE_IS_AGENT = false

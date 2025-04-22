@@ -37,6 +37,7 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -1394,17 +1395,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectUserRole() {
     // const user___role =  this.usersService.project_user_role_bs.value;
     // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 2', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
   getLoggedUser() {

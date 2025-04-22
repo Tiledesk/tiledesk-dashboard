@@ -9,23 +9,22 @@ import {
 import { Observable, throwError } from 'rxjs';
 // import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { BrandService } from '../brand.service';
-import { TranslateService } from '@ngx-translate/core';
-import { NotifyService } from 'app/core/notify.service';
-const Swal = require('sweetalert2')
+
+// import { TranslateService } from '@ngx-translate/core';
+// import { NotifyService } from 'app/core/notify.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+// const Swal = require('sweetalert2')
 
 
 
 @Injectable()
 export class LogRequestsInterceptor implements HttpInterceptor {
-  private supportEmail: string
+  
   constructor(
-    public brandService: BrandService,
-    private translate: TranslateService,
-     public notify: NotifyService,
+    //  public notify: NotifyService,
+    private snackBar: MatSnackBar
   ) {
-    const brand = brandService.getBrand();
-    this.supportEmail = brand['CONTACT_US_EMAIL'];
+   
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -41,9 +40,18 @@ export class LogRequestsInterceptor implements HttpInterceptor {
     //     // Optionally handle the response or log it here
     //   })
     // );
+    // this.snackBar.open( `529 Server overloaded`, '✕',
+    //   { duration: 1500, 
+    //     horizontalPosition: 'end',  // aligns to the right
+    //     verticalPosition: 'top',    // aligns to the top
+    //     panelClass: ['custom-error-snackbar'] // apply your own style 
+    //   }
+    // );
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+
+      
         // console.log('[HTTP-INTERCEPTOR] Request URL in catchError:', request.url , ' method: ', request.method);
         // if (request.method === 'GET') {
           // Handle request error
@@ -51,14 +59,35 @@ export class LogRequestsInterceptor implements HttpInterceptor {
           // console.log('[HTTP-INTERCEPTOR] error status ', error.status) 
           // console.log('[HTTP-INTERCEPTOR] GET request error msg:', error.error.msg);
           if (error.status === 429) {
-            this.presentAlert()
+            // this.notify.showWidgetStyleUpdateNotification("429 Too many requests", 4, 'report_problem');
+            this.snackBar.open( `429 Too many requests`, '✕',
+              { duration: 1500, 
+                horizontalPosition: 'end',  // aligns to the right
+                verticalPosition: 'top',    // aligns to the top
+                panelClass: ['custom-error-snackbar'] // apply your own style 
+              }
+            );
           }
           if (error.status === 529) { 
-            this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
+            // this.notify.showWidgetStyleUpdateNotification("529 Server overloaded", 4, 'report_problem');
+            this.snackBar.open( `529 Server overloaded`,'✕',
+              { duration: 1500, 
+                horizontalPosition: 'end',  // aligns to the right
+                verticalPosition: 'top',    // aligns to the top
+                panelClass: ['custom-error-snackbar'] // apply your own style 
+              }
+            );
           }
 
           if ((error.status !== 529) && error.status >= 500 && error.status < 600) { 
-            this.notify.showWidgetStyleUpdateNotification(error.status + ' ' + error.error.msg, 4, 'report_problem')
+            const errorMessage = `${error.status} ${error.error?.msg || 'Server Error'}`;
+            this.snackBar.open( `${errorMessage} `, '✕',
+              { duration: 1500, 
+                horizontalPosition: 'end',  // aligns to the right
+                verticalPosition: 'top',    // aligns to the top
+                panelClass: ['custom-error-snackbar'] // apply your own style 
+              }
+            );
           } 
       
         return throwError(error);
@@ -68,24 +97,24 @@ export class LogRequestsInterceptor implements HttpInterceptor {
   
 
 
-  presentAlert() {
-    Swal.fire({
-      title: '429 ' + this.translate.instant('TooManyRequests'),
-      text: this.translate.instant('PleaseContactSupport'), 
-      icon: "warning",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.translate.instant('ContactUs'),
-      // confirmButtonColor: "var(--blue-light)",
-      // cancelButtonColor: "var(--red-color)",
-      focusConfirm: false,
-      reverseButtons: true,
-    }).then((result) => { 
-      if (result.isConfirmed) { 
-        window.open(`mailto:${this.supportEmail}?subject=Quota exceeded`);
-      }
-    })
-  }
+  // presentAlert() {
+  //   Swal.fire({
+  //     title: '429 ' + this.translate.instant('TooManyRequests'),
+  //     text: this.translate.instant('PleaseContactSupport'), 
+  //     icon: "warning",
+  //     showCloseButton: false,
+  //     showCancelButton: true,
+  //     confirmButtonText: this.translate.instant('ContactUs'),
+  //     // confirmButtonColor: "var(--blue-light)",
+  //     // cancelButtonColor: "var(--red-color)",
+  //     focusConfirm: false,
+  //     reverseButtons: true,
+  //   }).then((result) => { 
+  //     if (result.isConfirmed) { 
+  //       window.open(`mailto:${this.supportEmail}?subject=Quota exceeded`);
+  //     }
+  //   })
+  // }
 
 }
 

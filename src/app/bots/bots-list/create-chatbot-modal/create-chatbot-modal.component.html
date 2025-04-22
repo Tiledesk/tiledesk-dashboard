@@ -1,0 +1,78 @@
+<h1 mat-dialog-title>
+    <!-- Enter the name of the   -->
+    <!-- {{'Create' | translate}}  -->
+    <span *ngIf="botSubType === 'chatbot'">
+        {{'CreateAnAIAgent' | translate}}
+    </span>
+    <span *ngIf="botSubType === 'voice' || botSubType === 'voice-twilio'">
+        {{'CreateAnAIVoiceAgent' | translate}}
+    </span>
+    <span *ngIf="botSubType === 'copilot'">
+        {{'CreateACopilot' | translate}}
+    </span>
+    <span *ngIf="botSubType === 'webhook'">
+        {{'CreateAWebhook' | translate}}
+    </span>
+
+
+</h1>
+<!-- <div mat-dialog-content>
+        <mat-form-field appearance="fill" class="cc-mat-form-field">
+            <mat-label> Chatbot name</mat-label>
+            <input type="text" matInput [(ngModel)]="chatbotName">
+        </mat-form-field>
+    
+</div> -->
+
+<div mat-dialog-content>
+
+    <mat-form-field appearance="fill" class="cc-mat-form-field">
+        <mat-label>
+            <span *ngIf="botSubType === 'chatbot'">
+                {{'ChatbotName' | translate}}
+            </span>
+            <span *ngIf="botSubType === 'voice' || botSubType === 'voice-twilio'">
+                {{'AIVoiceAgentName' | translate}}
+            </span>
+
+            <span *ngIf="botSubType === 'copilot'">
+                {{'CopilotName' | translate}}
+            </span>
+
+            <span *ngIf="botSubType === 'webhook'">
+                {{'WebhookName' | translate}}
+            </span>
+
+        </mat-label>
+        <input matInput [(ngModel)]="chatbotName" (keydown.enter)='onOkPresssed(chatbotName)'>
+    </mat-form-field>
+
+    <form *ngIf="botSubType === 'copilot'" class="example-form">
+        <mat-form-field class="cc-mat-form-field" appearance="fill">
+            <mat-label>{{'KnowledgeBases' | translate}}</mat-label>
+            <input type="text" 
+                placeholder="{{'SelectAkB' | translate}}" 
+                matInput 
+                [formControl]="myControl"
+                [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of namespaces" [value]="option">
+                    {{ option.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button [disabled]="chatbotName?.length < 2 || (botSubType === 'copilot' && !namespace_id)"
+        class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed(chatbotName)" cdkFocusInitial>
+        {{'Create' | translate}}
+    </button>
+</div>

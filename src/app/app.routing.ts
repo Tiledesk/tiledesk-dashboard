@@ -8,7 +8,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { AuthGuard } from './core/auth.guard';
-import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
@@ -1029,6 +1028,8 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
 
+
+
   {
     path: 'project/:projectid/bots/my-chatbots/all',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
@@ -1036,6 +1037,30 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
   // { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  {
+    path: 'project/:projectid/flows/flow-aiagent',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
+
+  {
+    path: 'project/:projectid/flows/flow-automations',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
+  {
+    path: 'project/:projectid/flows/flow-webhooks',
+    loadChildren: () => import('app/bots/flow-webhooks/flow-webhooks.module').then(m => m.FlowWebhooksModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
 
   {
     path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',
@@ -1053,6 +1078,8 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
+
+ 
 
   // Used in app-store to create an External chatbot
   {
@@ -1300,6 +1327,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]
+  providers: [AuthGuard, ProjectProfileGuard, PendingChangesGuard]
 })
 export class AppRoutingModule { }

@@ -205,7 +205,7 @@
                 <!-- </div> -->
               </div>
 
-              <ng-container *ngIf="botSubtypeAreEnabled">
+              <ng-container *ngIf="botSubtypeAreEnabled && botSubtypeItems.length > 1">
                 <label class="col-sm-12 label-left-align">
                   {{'ChatbotType' | translate}}
                 </label>
@@ -949,7 +949,7 @@
               <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
                 stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
             </svg>
-            <h5 style="color:#73AF55;"> {{'BotExtSuccessfullyActivated' | translate }}</h5>
+            <h5 style="color:#73AF55;"> {{'BotSuccessfullyActivated' | translate }}</h5>
 
           </span>
           <span *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR">

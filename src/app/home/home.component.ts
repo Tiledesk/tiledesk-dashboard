@@ -41,6 +41,7 @@ import { AnalyticsService } from 'app/services/analytics.service';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
+import { ProjectUser } from 'app/models/project-user';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -330,15 +331,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
-    this.getProjectUser();
+    // this.getProjectUser();
 
     // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-    this.usersService.getBotsByProjectIdAndSaveInStorage();
+    this.faqKbService.getBotsByProjectIdAndSaveInStorage();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     // this.getAvailableProjectUsersByProjectId();
 
-    this.getUserRole();
+    // this.getUserRole();
     // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
@@ -398,6 +399,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       })
   }
 
+ 
+
   getCurrentProjectProjectByIdAndBots() {
     this.auth.project_bs
       .pipe(
@@ -434,6 +437,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
           this.getProjectBots();
+          // this.getUserRole()
           // this.init()
         }
       }, (error) => {
@@ -448,154 +452,146 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   goToCreateChatbot() {
     this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
-    this.scrollToChild(this.childCreateChatbot)
-  }
-
-
-  goToHistoryOpenedConvs() {
-    this.logger.log("[HOME] goToHistoryOpenedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
-  }
-
-
-  goToHistoryClosedConvs() {
-    this.logger.log("[HOME] goToHistoryClosedConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
-  }
-
-  goToHistoryAllConvs() {
-    this.logger.log("[HOME] goToHistoryAllConvs ");
-    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
+    // this.scrollToChild(this.childCreateChatbot)
+    this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 
 
   listenToQuotas() {
-    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ", this.projectId);
+    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ------------> ", this.projectId);
+    this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectChangedFromList :", this.projectChangedFromList);
     this.quotasSubscription = this.quotesService.quotesData$
       .subscribe((data) => {
+
         if (data) {
-          this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2");
-          this.quotasLimits = data.projectLimits;
-          this.allQuotas = data.allQuotes;
-          this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
-          this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
+          if (data['projectId'] === this.projectId) {
+            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
+            this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
+            this.quotasLimits = data.projectLimits;
+            this.allQuotas = data.allQuotes;
+            this.logger.log("[HOME] Received quotasLimits:", this.quotasLimits);
+            this.logger.log("[HOME] Received allQuotas:", this.allQuotas);
 
-          if (this.quotasLimits) {
-            this.messages_limit = this.quotasLimits.messages;
-            this.requests_limit = this.quotasLimits.requests;
-            this.email_limit = this.quotasLimits.email;
-            this.tokens_limit = this.quotasLimits.tokens;
+            if (this.quotasLimits) {
+              this.messages_limit = this.quotasLimits.messages;
+              this.requests_limit = this.quotasLimits.requests;
+              this.email_limit = this.quotasLimits.email;
+              this.tokens_limit = this.quotasLimits.tokens;
 
-            // if (this.quotasLimits.voice_duration)  {
-            this.voice_limit_in_sec = this.quotasLimits.voice_duration;
-            this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
-            // } else {
-            //   this.voice_limit = 0
-            // }
-
-
-            this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
-            this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
-            this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
-            this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
-            this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
-            this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
-            this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
-          }
-
-          // -----------------------------
-          // For test
-          // -----------------------------
-          // this.requests_limit = 1;
-          // this.email_limit = 1;
-          // this.tokens_limit = 1;
-
-          this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
-          this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
-          this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
-          this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
-          if (this.allQuotas.requests.quote === null) {
-            this.allQuotas.requests.quote = 0;
-          }
-          if (this.allQuotas.messages.quote === null) {
-            this.allQuotas.messages.quote = 0;
-          }
-          if (this.allQuotas.email.quote === null) {
-            this.allQuotas.email.quote = 0;
-          }
-          if (this.allQuotas.tokens.quote === null) {
-            this.allQuotas.tokens.quote = 0;
-          }
-          if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
-            this.allQuotas.voice_duration.quote = 0;
-            this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
-          }
+              // if (this.quotasLimits.voice_duration)  {
+              this.voice_limit_in_sec = this.quotasLimits.voice_duration;
+              this.voice_limit = Math.floor(this.quotasLimits.voice_duration / 60);
+              // } else {
+              //   this.voice_limit = 0
+              // }
 
 
-          if (this.allQuotas.requests.quote >= this.requests_limit) {
-            this.conversationsRunnedOut = true;
-            this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-          } else {
-            this.conversationsRunnedOut = false;
-            this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
-          }
-
-          if (this.allQuotas.email.quote >= this.email_limit) {
-            this.emailsRunnedOut = true;
-            this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-          } else {
-            this.emailsRunnedOut = false;
-            this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
-          }
-
-          if (this.allQuotas.tokens.quote >= this.tokens_limit) {
-            this.tokensRunnedOut = true;
-            this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-          } else {
-            this.tokensRunnedOut = false;
-            this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
-          }
-
-          if (this.diplayVXMLVoiceQuota) {
-            if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
-              // if (3342 >= this.voice_limit_in_sec) {   
-              this.voiceRunnedOut = true;
-              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-            } else {
-              this.voiceRunnedOut = false;
-              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              this.logger.log("[HOME] Received allQuotas limit - messages_limit:", this.messages_limit);
+              this.logger.log("[HOME] Received allQuotas limit - requests_limit:", this.requests_limit);
+              this.logger.log("[HOME] Received allQuotas limit - email_limit:", this.email_limit);
+              this.logger.log("[HOME] Received allQuotas limit - tokens_limit:", this.tokens_limit);
+              this.logger.log("[HOME] Received allQuotas limit - voice_limit_in_sec:", this.voice_limit_in_sec);
+              this.logger.log("[HOME] Received allQuotas limit - quotasLimits.voice_duration:", this.quotasLimits.voice_duration);
+              this.logger.log("[HOME] Received allQuotas limit - voice_limit:", this.voice_limit);
             }
-          }
+
+            // -----------------------------
+            // For test
+            // -----------------------------
+            // this.requests_limit = 1;
+            // this.email_limit = 1;
+            // this.tokens_limit = 1;
+
+            this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
+            this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
+            this.logger.log("[HOME] Received allQuotas quota - email quota :", this.allQuotas.email.quote);
+            this.logger.log("[HOME] Received allQuotas quota - tokens quota :", this.allQuotas.tokens.quote);
+            if (this.allQuotas.requests.quote === null) {
+              this.allQuotas.requests.quote = 0;
+            }
+            if (this.allQuotas.messages.quote === null) {
+              this.allQuotas.messages.quote = 0;
+            }
+            if (this.allQuotas.email.quote === null) {
+              this.allQuotas.email.quote = 0;
+            }
+            if (this.allQuotas.tokens.quote === null) {
+              this.allQuotas.tokens.quote = 0;
+            }
+            if (this.allQuotas.voice_duration && this.allQuotas.voice_duration.quote === null) {
+              this.allQuotas.voice_duration.quote = 0;
+              this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
+            }
 
 
-          this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
-          this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
-          this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
-          this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
-          this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
+            if (this.allQuotas.requests.quote >= this.requests_limit) {
+              this.conversationsRunnedOut = true;
+              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+            } else {
+              this.conversationsRunnedOut = false;
+              this.logger.log('[HOME] conversationsRunnedOut', this.conversationsRunnedOut)
+            }
 
-          this.requests_count = this.allQuotas.requests.quote;
-          this.messages_count = this.allQuotas.messages.quote;
-          this.email_count = this.allQuotas.email.quote;
-          this.tokens_count = this.allQuotas.tokens.quote;
-          this.voice_count = this.allQuotas.voice_duration?.quote
-          this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
+            if (this.allQuotas.email.quote >= this.email_limit) {
+              this.emailsRunnedOut = true;
+              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+            } else {
+              this.emailsRunnedOut = false;
+              this.logger.log('[HOME] emailsRunnedOut', this.emailsRunnedOut)
+            }
 
-          this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
-          if (this.projectChangedFromList) {
-            setTimeout(() => {
-              this.displayQuotaSkeleton = false
-            }, 1000);
+            if (this.allQuotas.tokens.quote >= this.tokens_limit) {
+              this.tokensRunnedOut = true;
+              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+            } else {
+              this.tokensRunnedOut = false;
+              this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
+            }
 
-            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
-          } else {
+            if (this.diplayVXMLVoiceQuota) {
+              if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
+                // if (3342 >= this.voice_limit_in_sec) {   
+                this.voiceRunnedOut = true;
+                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              } else {
+                this.voiceRunnedOut = false;
+                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              }
+            }
+
+
+            this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
+            this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
+            this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
+            this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
+            this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
+
+            this.requests_count = this.allQuotas.requests.quote;
+            this.messages_count = this.allQuotas.messages.quote;
+            this.email_count = this.allQuotas.email.quote;
+            this.tokens_count = this.allQuotas.tokens.quote;
+            this.voice_count = this.allQuotas.voice_duration?.quote
+            this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
+
+            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] projectChangedFromList :", this.projectChangedFromList);
             this.displayQuotaSkeleton = false
-            this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
+            // if (this.projectChangedFromList) {
+            //   setTimeout(() => {
+            //     this.displayQuotaSkeleton = false
+            //   }, 1000);
+
+            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 2:", this.displayQuotaSkeleton);
+            // } 
+            // else {
+            //   this.displayQuotaSkeleton = false
+            //   this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] listenToQuotas displayQuotaSkeleton 3:", this.displayQuotaSkeleton);
+            // }
           }
         }
       },
         (error) => {
           // Handle error
+          this.displayQuotaSkeleton = false
         },
         () => {
           // This complete callback will be called if/when the observable completes
@@ -610,13 +606,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return `${minutes}m ${remainingSeconds}s`;
   }
 
-  contacUsViaEmail() {
-    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
-  }
-
-  contacUsViaEmailToUpdadePaymentInformation() {
-    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
-  }
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
@@ -640,7 +629,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         const projectProfileData = project.profile
-
+    
         this.manageChatbotVisibility(projectProfileData)
         this.manageVoiceQuotaVisibility(projectProfileData)
 
@@ -725,6 +714,102 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     });
   }
+
+
+
+
+
+  getQuotasCount() {
+    this.quotesService.getQuotasCount(this.projectId).subscribe((resp: any) => {
+      this.logger.log("[HOME] - GET QUOTAS COUNT - response: ", resp)
+
+      this.openedConversations = resp.open;
+      this.closedConversations = resp.closed;
+      this.startSlot = resp.slot.startDate;
+      this.endSlot = resp.slot.endDate;
+
+
+      this.logger.log("[HOME] GET QUOTAS COUNT - OPENED CONV ", this.openedConversations);
+      this.logger.log("[HOME] GET QUOTAS COUNT - CLOSED CONV ", this.closedConversations);
+      this.logger.log("[HOME] GET QUOTAS COUNT - START SLOT ", this.startSlot);
+      this.logger.log("[HOME] GET QUOTAS COUNT - END SLOT ", this.endSlot);
+    }, (error) => {
+      this.logger.error("[HOME] GET QUOTAS COUNT error: ", error)
+    }, () => {
+      this.logger.log("[HOME] GET QUOTAS COUNT * COMPLETE *");
+    })
+  }
+
+  manageVoiceQuotaVisibility(projectProfileData) {
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
+      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+      if (projectProfileData['customization'] && ( (projectProfileData['customization']['voice'] !== undefined))) {
+
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
+        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
+        // if (projectProfileData['customization']['voice-twilio'] === true) {
+        //   this.diplayTwilioVoiceQuota = true
+        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
+        //   this.diplayTwilioVoiceQuota = false
+        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
+        //   this.diplayTwilioVoiceQuota = false
+        // }
+
+        if (projectProfileData['customization']['voice'] === true) {
+          this.diplayVXMLVoiceQuota = true
+        } else if (projectProfileData['customization']['voice'] === false) {
+          this.diplayVXMLVoiceQuota = false
+        } else if (projectProfileData['customization']['voice'] === undefined) {
+          this.diplayVXMLVoiceQuota = false
+        }
+      } else {
+        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
+        this.diplayVXMLVoiceQuota = false
+      }
+
+    } else {
+
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
+      // this.diplayTwilioVoiceQuota = false
+      this.diplayVXMLVoiceQuota = false
+    }
+
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+    this.logger.log('[HOME] (manageChatbotVisibility) ')
+
+    if (projectProfileData['customization']) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
+      this.areVisibleChatbot = true;
+      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
+
+    }
+  }
+
+
 
   buildProjectProfileName() {
     if (this.prjct_profile_type === 'free') {
@@ -839,74 +924,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  manageChatbotVisibility(projectProfileData) {
-    this.logger.log('[HOME] (manageChatbotVisibility) ')
 
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
-    }
-
-    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
-
-      if (projectProfileData['customization']['chatbot'] === true) {
-        this.areVisibleChatbot = true;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      } else if (projectProfileData['customization']['chatbot'] === false) {
-
-        this.areVisibleChatbot = false;
-        this.logger.log('[HOME] (manageChatbotVisibility) USECASE A areVisibleChatbot', this.areVisibleChatbot)
-      }
-
-    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE B areVisibleChatbot', this.areVisibleChatbot)
-
-    } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C customization is  ', projectProfileData['customization'])
-      this.areVisibleChatbot = true;
-      this.logger.log('[HOME] (manageChatbotVisibility) USECASE C areVisibleChatbot', this.areVisibleChatbot)
-
-    }
-  }
-
-  manageVoiceQuotaVisibility(projectProfileData) {
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
-      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
-      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
-
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-        // if (projectProfileData['customization']['voice-twilio'] === true) {
-        //   this.diplayTwilioVoiceQuota = true
-        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
-        //   this.diplayTwilioVoiceQuota = false
-        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-        //   this.diplayTwilioVoiceQuota = false
-        // }
-
-        if (projectProfileData['customization']['voice'] === true) {
-          this.diplayVXMLVoiceQuota = true
-        } else if (projectProfileData['customization']['voice'] === false) {
-          this.diplayVXMLVoiceQuota = false
-        } else if (projectProfileData['customization']['voice'] === undefined) {
-          this.diplayVXMLVoiceQuota = false
-        }
-      } else {
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
-        this.diplayVXMLVoiceQuota = false
-      }
-
-    } else {
-
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-      // this.diplayTwilioVoiceQuota = false
-      this.diplayVXMLVoiceQuota = false
-    }
-
-  }
 
 
   trackTrialEnded(project, trialStarDate, trialEndDate) {
@@ -938,6 +956,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 100);
     }
 
+  }
+
+  goToHistoryOpenedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryOpenedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=100,200"` } })
+  }
+
+  goToHistoryClosedConvs() {
+    this.logger.log("[NAVBAR] goToHistoryClosedConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000"` } })
+  }
+
+  goToHistoryAllConvs() {
+    this.logger.log("[NAVBAR] goToHistoryAllConvs ");
+    this.router.navigate(['project/' + this.projectId + '/history'], { queryParams: { qs: `"full_text=&dept_id=&start_date=${this.startSlot}&end_date=${this.endSlot}&participant=&requester_email=&tags=&channel=&rstatus=1000,100,200"` } })
+  }
+
+  contacUsViaEmail() {
+    window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
+  }
+
+  contacUsViaEmailToUpdadePaymentInformation() {
+    window.open(`mailto:${this.salesEmail}?subject=Update payment information for project ${this.projectName} (${this.projectId})`);
   }
 
   trackGroup(projectProfileData) {
@@ -2222,30 +2263,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
     this.logger.log('[HOME] CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: ProjectUser) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
-        this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)
-        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser[0].user_available)
-        this.logger.log('[HOME] USER IS BUSY ', projectUser[0].isBusy)
+        this.logger.log('[HOME] PROJECT-USER ID ', projectUser._id)
+        this.logger.log('[HOME] USER IS AVAILABLE ', projectUser.user_available)
+        this.logger.log('[HOME] USER IS BUSY ', projectUser.isBusy)
         // this.user_is_available_bs = projectUser.user_available;
 
-        if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
+        if (projectUser.user_available !== undefined) {
+          this.usersService.setProjectUser(projectUser);
         }
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+        if (projectUser.role !== undefined) {
+          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser.role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-          this.usersService.user_role(projectUser[0].role);
+          this.USER_ROLE = projectUser.role; 
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
-          // this.auth.user_role(projectUser[0].role);
-          // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-
-          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-          this.USER_ROLE = projectUser[0].role;
+          // this.auth.user_role(projectUser.role);
+          // this.usersLocalDbService.saveUserRoleInStorage(projectUser.role);
         }
 
       }
@@ -2321,18 +2359,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // CON getUserRole() AGGIORNO this.USER_ROLE QUANDO LA SIDEBAR, NEL MOMENTO
   // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
   // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
-  getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+  // getUserRole() {
+  //   this.usersService.project_user_role_bs
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((userRole) => {
 
-        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-        this.USER_ROLE = userRole;
-      })
-  }
+  //       this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+  //       // used to display / hide 'WIDGET' and 'ANALYTCS' in home.component.html
+  //       this.USER_ROLE = userRole;
+  //     })
+  // }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
   getAvailableProjectUsersByProjectId() {

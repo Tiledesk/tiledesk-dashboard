@@ -1,6 +1,3 @@
-
-
-
 .add-content-cards-wpr {
     width: 100%;
     display: grid;
@@ -21,6 +18,7 @@
     min-height: 162px;
     pointer-events: auto;
 }
+
 .add-content-card-wpr:hover {
     box-shadow: 0 7px 8px -4px #0003, 0 12px 17px 2px #00000024, 0 5px 22px 4px #0000001f !important;
 }
@@ -33,11 +31,11 @@
     text-align: left;
 }
 
-.add-content-card-content-icon-wpr > span > svg  {
- fill: var(--sidebar-inactive-icon);
+.add-content-card-content-icon-wpr>span>svg {
+    fill: var(--sidebar-inactive-icon);
 }
 
-.add-content-card-wpr:hover > .add-content-card-content .add-content-card-content-icon-wpr > span > svg {
+.add-content-card-wpr:hover>.add-content-card-content .add-content-card-content-icon-wpr>span>svg {
     fill: var(--icon-hover-color);
 }
 
@@ -49,6 +47,7 @@
     line-height: 20px;
     letter-spacing: -0.01em;
     text-align: left;
+    font-family: var(--header-font-family);
 }
 
 .add-content-card-content-subtitle {
@@ -62,32 +61,24 @@
     text-align: left;
 }
 
+.span-8 {
+    display: block;
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
+    min-height: 8px;
+}
 
-// .kb-link-to-docs-wpr {
-//     font-size: 14px;
-//     font-weight: 400;
-//     margin-bottom: 6px;
-//     line-height: 20px;
-//     // background-color: rgb(241, 241, 241);
-//     // padding: 15px;
-//     width: 100%;
-//   }
-  
-//   .kb-link-to-docs {
-//     margin-left: 8px;
-//     vertical-align: middle;
-//     color: #0f62ff;
-//     font-size: 14px;
-//     font-weight: 400;
-//     cursor: pointer;
-//   }
-  
-//   .kb-link-to-docs:hover {
-//     text-decoration: underline;
-//   }
+.span-6 {
+    display: block;
+    width: 6px;
+    min-width: 6px;
+    height: 6px;
+    min-height: 6px;
+}
 
 
-  .m-header {
+.m-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -117,7 +108,7 @@
 .link-to-docs--container {
     display: flex;
     flex-direction: row;
-    justify-content: center; 
+    justify-content: center;
     text-align: center;
     margin-top: 16px;
 }
@@ -130,21 +121,21 @@
     // background-color: rgb(241, 241, 241);
     // padding: 15px;
     width: 100%;
-  }
+}
 
-  .kb-link-to-docs-wpr > span > svg {
+.kb-link-to-docs-wpr>span>svg {
     fill: var(--blue-light);
-  }
-  
-  .kb-link-to-docs {
+}
+
+.kb-link-to-docs {
     margin-left: 8px;
     vertical-align: middle;
     color: var(--blue-light); // #0f62ff;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
-  }
-  
-  .kb-link-to-docs:hover {
+}
+
+.kb-link-to-docs:hover {
     text-decoration: underline;
-  }
+}
