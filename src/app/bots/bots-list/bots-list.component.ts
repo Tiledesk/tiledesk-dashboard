@@ -1351,6 +1351,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.notify.showWidgetStyleUpdateNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
 
       this.getFaqKbByProjectId();
+      this.getFlowWebhooks()
 
       this.displayDeleteBotModal = 'none';
       setTimeout(() => {
