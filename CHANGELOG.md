@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.98
+- Adds the ability to test Knowledge Bases with the Open AI models: GPT-4.1, GPT-4.1 mini and GPT-4.1 nano
+- Removes the Free plan 
+- Fixes Hubspot integration "Invalid" message
+- Sort conversations in History by creation date
+
 ### 2.7.97
 - Adds the “Update widget” button for all sections of the widget set-up page
 - Adds a preview in the widget set-up page Advanced section
