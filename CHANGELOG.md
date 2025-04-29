@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.99
+- Adds the ability to activate the refresh rate for the contents of type URLs
+
 ### 2.7.98
 - Adds the ability to test Knowledge Bases with the Open AI models: GPT-4.1, GPT-4.1 mini and GPT-4.1 nano
 - Removes the Free plan 
