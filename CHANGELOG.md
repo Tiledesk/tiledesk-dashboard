@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.100
+- Minor improvements and bug fixing
+
 ### 2.7.99
 - Adds the ability to activate the refresh rate for the contents of type URLs
 
