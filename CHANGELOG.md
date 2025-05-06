@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.101
+- Removes the webhook and copilot subtypes from the list of chatbots that can be activated for a department
+
 ### 2.7.100
 - Minor improvements and bug fixing
 
