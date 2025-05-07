@@ -227,7 +227,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
-    this.listenSidebarIsOpened();
+   
 
     // this.getListOfKb(this.paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
@@ -237,9 +237,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getCurrentProject();
     this.getRouteParams();
     // this.listenToKbVersion(); // no more used
-    this.getTemplates();
-    this.getCommunityTemplates()
-    this.getFaqKbByProjectId();
+    // this.listenSidebarIsOpened();
+    // this.getTemplates();
+    // this.getCommunityTemplates()
+    // this.getFaqKbByProjectId();
     this.getOSCODE();
     this.getProjectPlan();
     this.getProjectUserRole();
