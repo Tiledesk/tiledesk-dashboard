@@ -1,7 +1,7 @@
+import { ProjectUser } from 'app/models/project-user';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user-model';
 import { PendingInvitation } from '../models/pending-invitation-model';
-import { ProjectUser } from '../models/project-user';
 import { Observable , BehaviorSubject} from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
+import { map } from 'rxjs/operators';
 interface NewUser {
   displayName: string;
   email: string;
@@ -24,11 +25,7 @@ interface NewUser {
 export class UsersService {
 
   wsService: WebSocketJs;
-  public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  public user_is_busy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public projectUser_bs: BehaviorSubject<ProjectUser> = new BehaviorSubject<ProjectUser>(null);
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -67,8 +64,6 @@ export class UsersService {
     private auth: AuthService,
     private usersLocalDbService: LocalDbService,
     private router: Router,
-    private faqKbService: FaqKbService,
-    private botLocalDbService: BotLocalDbService,
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
@@ -318,7 +313,7 @@ export class UsersService {
    */
   public getProjectUserById(user_id): Observable<User[]> {
 
-    const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/users/' + user_id;;
+    const url = this.SERVER_BASE_PATH + this.project?._id + '/project_users/users/' + user_id;;
 
     this.logger.log('[USER-SERV] - GET PROJECT-USERS BY USER ID - URL', url);
 
@@ -525,7 +520,7 @@ export class UsersService {
    * @param user_id 
    * @returns 
    */
-  public getProjectUserByUserId(user_id: string): Observable<ProjectUser[]> {
+  public getProjectUserByUserId(user_id: string): Observable<ProjectUser> {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
     this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
@@ -540,7 +535,7 @@ export class UsersService {
   
 
     return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
+      .get<ProjectUser>(url, httpOptions).pipe(map((res)=> res[0]));
   }
 
   public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
@@ -586,47 +581,6 @@ export class UsersService {
       .get<ProjectUser[]>(url, httpOptions)
   }
 
-
-  // ------------------------------------------------------------------------------------------------
-  // TODO: TO REPLACE "getProjectUser()" USED BY THE SIDEBAR AND HOME COMPONENTS - CURRENTLY NOT USED
-  // -------------------------------------------------------------------------------------------------
-  getProjectUserAvailabilityAndRole() {
-    this.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      // this.logger.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USE ID ', this.currentUserId);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ', projectUser);
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER LENGTH', projectUser.length);
-      if ((projectUser) && (projectUser.length !== 0)) {
-        this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER ID ', projectUser[0]._id)
-        this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - USER IS AVAILABLE ', projectUser[0].user_available)
-        // this.user_is_available_bs = projectUser.user_available;
-
-        if (projectUser[0].user_available !== undefined) {
-          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
-        }
-
-        // ADDED 21 AGO
-        if (projectUser[0].role !== undefined) {
-          this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - CURRENT USER ROLE ', projectUser[0].role);
-          this.user_role(projectUser[0].role);
-
-          // save the user role in storage - then the value is get by auth.service:
-          // the user with agent role can not access to the pages under the settings sub-menu
-          // this.auth.user_role(projectUser[0].role);
-
-          this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-        }
-      } else {
-        // this could be the case in which the current user was deleted as a member of the current project
-        this.logger.log('[USER-SERV] -  PROJECT-USER GET BY CURRENT-USER-ID - PROJECT-USER UNDEFINED ')
-      }
-
-    }, (error) => {
-      this.logger.error('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID - ERROR  ', error);
-    }, () => {
-      this.logger.log('[USER-SERV] - PROJECT-USER GET BY CURRENT-USER-ID * COMPLETE *');
-    });
-  }
 
 
   // -------------------------------------------------------------------------
@@ -705,29 +659,6 @@ export class UsersService {
     }
   }
 
-  // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-  getBotsByProjectIdAndSaveInStorage() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
-      if (bots && bots !== null) {
-
-        bots.forEach(bot => {
-          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT', bot);
-          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT-ID', bot._id);
-          this.botLocalDbService.saveBotsInStorage(bot._id, bot);
-        });
-
-      }
-    }, (error) => {
-      this.logger.error('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - ERROR ', error);
-    }, () => {
-      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE * COMPLETE');
-
-    });
-
-  }
-
-
   // -----------------------------------------------------------------------------------------------------
   // PUBLISH: Project User ID, Availability; Busy - PUBLISH projectUser_id, user_available, isBusy
   // -----------------------------------------------------------------------------------------------------
@@ -740,15 +671,9 @@ export class UsersService {
    * @param user_available 
    * @param user_isbusy 
    */
-  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean, projctuser:any) {
-    this.logger.log('[USER-SERV] - PUBLISH PROJECT-USER-ID ', projectUser_id);
-    this.logger.log('[USER-SERV] - PUBLISH USER AVAILABLE ', user_available);
-    this.logger.log('[USER-SERV] - PUBLISH USER IS BUSY ', user_isbusy);
-
-    this.project_user_id_bs.next(projectUser_id);
-    this.user_is_available_bs.next(user_available);
-    this.user_is_busy$.next(user_isbusy);
-    this.projectUser_bs.next(projctuser);
+  public setProjectUser(projctUser:ProjectUser) {
+    this.logger.log('[USER-SERV] - PUBLISH PROJECT_USER ', projctUser);
+    this.projectUser_bs.next(projctUser);
   }
 
 
@@ -858,47 +783,6 @@ export class UsersService {
       });
 
     })
-  }
-
-
-  /**
-   * PUBLISH PROJECT-USER ROLE AND CHECK THE ROLE (FOR THE CURRENT PROJECT) SAVED IN THE STORAGE
-   * NOTE: THE projectUser_role IS PASSED FROM HOME - SIDEBAR - NAVBAR-FOR-PANEL
-   * NOTE: IF THE USER ROLE STORED NOT MATCHES THE USER ROLE PUBLISHED IS RESET IN STORAGE THE PROJECT OBJCT
-   * @param projectUser_role 
-   */
-  public user_role(projectUser_role: string) {
-    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
-
-    // PUBLISH THE USER ROLE
-    this.project_user_role_bs.next(projectUser_role);
-
-    // COMPARE THE STORED ROLE WITH THE USER ROLE PUBLISHED
-    // const storedProjectJson = localStorage.getItem(this.project_id);
-    // if (storedProjectJson) {
-    //   const projectObject = JSON.parse(storedProjectJson);
-    //   const storedUserRole = projectObject['role'];
-    //   const storedProjectName = projectObject['name'];
-    //   const storedProjectId = projectObject['_id'];
-    //   const storedProjectOH = projectObject['operatingHours'];
-    //   this.logger.log('[USER-SERV] USER ROLE FROM STORAGE >>', storedUserRole, '<<');
-    //   this.logger.log('[USER-SERV] PROJECT NAME FROM STORAGE ', storedProjectName);
-    //   this.logger.log('[USER-SERV] PROJECT ID FROM STORAGE ', storedProjectId);
-
-      // if (storedUserRole !== projectUser_role) {
-      // this.logger.log('[USER-SERV] - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
-
-      //   // const projectForStorage: Project = {
-      //   //   _id: storedProjectId,
-      //   //   name: storedProjectName,
-      //   //   role: projectUser_role,
-      //   //   operatingHours: storedProjectOH
-      //   // }
-
-      //   // RESET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
-      //   localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
-      // }
-    // }
   }
 
 
@@ -1058,8 +942,8 @@ export class UsersService {
    * @param callback 
    * @returns 
    */
-  public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string, callback) {
-
+  public updateCurrentUser(user_firstname: string, user_lastname: string, user_phone: string, callback) {
+    this.logger.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname, 'MOBILE-PHONE ',user_phone);
     const url = this.UPDATE_USER_URL;
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME (PUT) URL ', url);
 
@@ -1072,8 +956,12 @@ export class UsersService {
     };
 
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER-LASTNAME ', user_lastname, 'USER-FIRSTNAME', user_firstname);
-
+    // 'phone': user_phone
     const body = { 'firstname': user_firstname, 'lastname': user_lastname };
+
+    if (user_phone) {
+      body['phone'] = user_phone
+    }
 
     this.logger.log('[USER-SERV] - UPDATE CURRENT USER LASTNAME & FIRSTNAME - BODY ', body);
 
@@ -1088,7 +976,7 @@ export class UsersService {
 
         if (jsonRes['success'] === true) {
 
-          callback('success');
+          callback(res);
 
           const user: User = jsonRes['updatedUser'];
 

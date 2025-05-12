@@ -79,6 +79,11 @@
   margin-right: 4px;
 }
 
+
+.start-from-scratch-btn-wpr {
+  height: 70px;
+}
+
 #start-from-scratch-btn {
   min-width: 270px;
   max-height: 40px;
@@ -103,6 +108,8 @@
   max-height: 40px;
   min-width: 270px;
   font-size: 16px;
+  position: relative;
+  top: -14px;
 }
 
 #hc-chatbot-count-btn>.btn-content {

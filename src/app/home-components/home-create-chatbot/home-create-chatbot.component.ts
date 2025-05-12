@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
-import { HomeCreateChatbotModalComponent } from './home-create-chatbot-modal/home-create-chatbot-modal.component';
+
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
@@ -21,6 +21,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
@@ -258,15 +259,12 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-
-        this.logger.log('[HOME-CREATE-CHATBOT] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-CREATE-CHATBOT] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -306,7 +304,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         if (this.countOfChatbots < this.chatBotLimit) {
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: Go to crete chatbot')
           // this.presentModalAddBotFromScratch()
-          this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+          // this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+          this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
 
         } else if (this.countOfChatbots >= this.chatBotLimit) {
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
@@ -315,7 +314,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       } else if (this.chatBotLimit === null) {
         this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: Go to crete chatbot')
         // this.presentModalAddBotFromScratch()
-        this.router.navigate(['project/' + this.projectId  + '/bots/create/tilebot/blank']);
+        // this.router.navigate(['project/' + this.projectId  + '/bots/create/tilebot/blank']);
+        this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
       }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()

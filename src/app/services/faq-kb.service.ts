@@ -8,6 +8,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BotLocalDbService } from './bot-local-db.service';
 @Injectable()
 export class FaqKbService {
 
@@ -26,6 +27,7 @@ export class FaqKbService {
   constructor(
     private auth: AuthService,
     public appConfigService: AppConfigService,
+    private botLocalDbService: BotLocalDbService,
     private _httpClient: HttpClient,
     private logger: LoggerService
   ) {
@@ -49,7 +51,7 @@ export class FaqKbService {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     // this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
     // this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().communityTemplatesUrl
-  
+
     this.TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/templates"
     this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/community"
 
@@ -412,6 +414,28 @@ export class FaqKbService {
       .delete(url, httpOptions)
   }
 
+  // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+  public getBotsByProjectIdAndSaveInStorage() {
+    this.getFaqKbByProjectId().subscribe((bots: any) => {
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
+      if (bots && bots !== null) {
+
+        bots.forEach(bot => {
+          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT', bot);
+          this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - BOT-ID', bot._id);
+          this.botLocalDbService.saveBotsInStorage(bot._id, bot);
+        });
+
+      }
+    }, (error) => {
+      this.logger.error('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - ERROR ', error);
+    }, () => {
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE * COMPLETE');
+
+    });
+
+  }
+
   /**
    * @param name 
    * @param urlfaqkb 
@@ -443,7 +467,7 @@ export class FaqKbService {
   }
 
 
-  createChatbotFromScratch(botname, bottype, botSubtype, language) {
+  createChatbotFromScratch(botname: string, bottype: string, botSubtype: string, language: string, namespaceid?:string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -455,6 +479,9 @@ export class FaqKbService {
     this.logger.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - URL ', url);
 
     const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, subtype:botSubtype, language: language, template: 'blank' };
+    if(namespaceid) {
+      body['namespace_id'] = namespaceid
+    }
 
     // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);
 
@@ -587,13 +614,13 @@ export class FaqKbService {
     this.logger.log('update BOT - URL ', url);
 
     let body = {}
-    body = { 
-      'name': name, 
-      'url': urlfaqkb, 
-      'type': bottype, 
+    body = {
+      'name': name,
+      'url': urlfaqkb,
+      'type': bottype,
       'description': faqKb_description
     };
-    
+
     if (bottype === 'internal' || bottype === 'tilebot') {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
@@ -605,7 +632,7 @@ export class FaqKbService {
   }
   // PROJECT_ID/faq_kb/FAQ_KB_ID/language/LANGUAGE
 
-  updateFaqKbLanguage (id: string, chatbotlanguage: string) {
+  updateFaqKbLanguage(id: string, chatbotlanguage: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -617,9 +644,9 @@ export class FaqKbService {
     let url = this.FAQKB_URL + id + '/language/' + chatbotlanguage;
     this.logger.log('update BOT LANG - URL ', url);
 
-  
-   const body = {  'language': chatbotlanguage };
-    
+
+    const body = { 'language': chatbotlanguage };
+
     this.logger.log('[FAQ-KB.SERV] update BOT LANG - BODY ', body);
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
@@ -700,8 +727,8 @@ export class FaqKbService {
   }
 
 
-  
-  addNodeToChatbotAttributes(idBot: string, key:string,  json:any) {
+
+  addNodeToChatbotAttributes(idBot: string, key: string, json: any) {
     this.logger.log('[FAQ-KB.SERV] - addNodeToAttributesChatbot idBot ', idBot)
     const httpOptions = {
       headers: new HttpHeaders({

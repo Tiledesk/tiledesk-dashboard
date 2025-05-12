@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
-import { HomeCreateChatbotModalComponent } from 'app/home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { BrandService } from 'app/services/brand.service';
@@ -17,6 +16,7 @@ import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chat
 import { FaqService } from 'app/services/faq.service';
 import { DepartmentService } from 'app/services/department.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -359,11 +359,11 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   presentModalAddBotFromScratch() {
     // this.logger.log('[TEMPLATE DETAIL] - presentModalAddBotFromScratch ');
-    const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
+    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
       width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
+      data: {
+        'subtype': 'chatbot'
+      },
     })
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[CNP-TEMPLATES] Dialog result:`, result);

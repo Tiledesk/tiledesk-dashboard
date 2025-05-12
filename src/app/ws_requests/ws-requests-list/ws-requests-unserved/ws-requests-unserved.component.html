@@ -754,7 +754,7 @@
                 <div class="requester---avatar"
                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}">
                   <span
-                    *ngIf="(request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.fullname !== request?.lead?.phone"
+                    *ngIf="(request?.channel?.name !== CHANNELS_NAME.VOICE_VXML && request?.channel?.name !== CHANNELS_NAME.VOICE_TWILIO) && (request?.lead?.fullname !== request?.lead?.phone || request?.fullnameIsNumber)"
                     style="color: #ffffff">
                     {{ request?.requester_fullname_initial }}
                   </span>
@@ -764,23 +764,23 @@
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
                   </span>
-                  <span
+                  <!-- <span
                     *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO)  && !request?.lead?.phone"
                     class="material-icons-outlined"
                     style="color: #ffffff; font-size:18px; position: relative; top: 1px;">
                     call
-                  </span>
+                  </span> -->
                   <span
-                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone)"
+                    *ngIf="(request?.channel?.name === CHANNELS_NAME.VOICE_VXML || request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO) && request?.lead?.phone && (request?.lead?.fullname !== request?.lead?.phone  && !request?.fullnameIsNumber)"
                     style="color: #ffffff;">
                     {{ request?.requester_fullname_initial }}
                   </span>
 
-                  <!-- *ngIf="request?.requester_is_verified === true" -->
-                  <div class="verified-user-icon-wpr">
-                    <svg class="requester-verified--icon" version="1.1" id="Livello_1"
-                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                      viewBox="0 0 26.6 26.6" width="17" height="17" xml:space="preserve">
+                 
+                  <div class="verified-user-icon-wpr" *ngIf="request?.requester_is_verified === true">
+                    <svg class="requester-verified--icon" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
+                      height="17" xml:space="preserve">
                       <style type="text/css">
                         .st0_UserVerified {
                           fill: none;

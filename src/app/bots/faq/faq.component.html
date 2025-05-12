@@ -3,9 +3,8 @@
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title=""
     (click)="goBack()">keyboard_arrow_left</i>
-  <!-- FAQs of BOT:  -->
-  <!-- {{ 'FaqPage.FAQsOfBOT' | translate }} -->
-  {{ 'FaqPage.EditBOT' | translate }}
+  <!-- {{ 'FaqPage.EditBOT' | translate }} -->
+  {{'Edit' | translate}}
   <span style="color: #566787; font-weight:400">
     “{{ faqKb_name }}”
   </span>
@@ -140,6 +139,7 @@
             <!-- ------------------------------------------------------------------------------------------- -->
             <!-- Bot type (for external & native) -->
             <!-- ------------------------------------------------------------------------------------------- -->
+            
             <section *ngIf="botType !== 'dialogflow'">
 
               <!-- ------------------------------------------------------------------------------------------- -->

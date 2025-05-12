@@ -75,7 +75,7 @@ export class QuotesService {
   }
 
   /** Called by NavbarComponent to update the stored quotes */
-  updateQuotasData(data: { projectLimits: any; allQuotes: any }) {
+  updateQuotasData(data: { projectLimits: any; allQuotes: any; projectId: string }) {
     this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
     this.hasFetchedData = true; // Mark data as fetched
