@@ -17,30 +17,31 @@ const Swal = require('sweetalert2')
 export class FlowWebhooksComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean = true;
-  allTemplatesCount: number;
-  customerSatisfactionTemplatesCount: number;
-  increaseSalesTemplatesCount: number;
-  route: string
-  showSpinner: boolean
-
+  
   chatBotCount: any;
-
   myChatbotOtherCount: number;
   automationsCount: number;
-
-  customerSatisfactionBotsCount: number;
-  increaseSalesBotsCount: number;
-
-  allCommunityTemplatesCount: number;
-
   flowWebhooks: any;
   flowWebhooksCount: number;
 
+  route: string
+  showSpinner: boolean
+  
   // webhookid: string
   copied: boolean = false;
   copiedStates: { [key: string]: boolean } = {};
 
   SERVER_BASE_PATH: string;
+  project: any;
+
+  // TO REMOVE
+  allCommunityTemplatesCount: number;
+  allTemplatesCount: number;
+  customerSatisfactionTemplatesCount: number;
+  increaseSalesTemplatesCount: number;
+  customerSatisfactionBotsCount: number;
+  increaseSalesBotsCount: number;
+  
 
   constructor(
     private auth: AuthService,
@@ -50,7 +51,7 @@ export class FlowWebhooksComponent implements OnInit {
     private webhookService: WebhookService,
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
-     public notify: NotifyService,
+    public notify: NotifyService,
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +61,15 @@ export class FlowWebhooksComponent implements OnInit {
     // this.getCommunityTemplates()
     this.getFlowWebhooks()
     this.getServerBaseURL()
+    this.getCurrentProject()
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.project = project;
+      }
+    })
   }
 
   getServerBaseURL() {
@@ -78,7 +88,7 @@ export class FlowWebhooksComponent implements OnInit {
     this.showSpinner = true;
     this.webhookService.getFlowWebhooks().subscribe((res: any) => {
 
-      this.logger.log('[FLOW-WEBHOOKS] GET WH RES  ', res);
+      console.log('[FLOW-WEBHOOKS] GET WH RES  ', res);
       if (res) {
         this.flowWebhooks = res
         this.flowWebhooksCount = res.length
@@ -97,12 +107,17 @@ export class FlowWebhooksComponent implements OnInit {
     });
   }
 
+  goToFlowWebhookDetail(webhookid) {
+    this.router.navigate(['project/' + this.project._id + '/flows/flow-webhooks-logs/' + webhookid]);
+  }
+
 
   // --------------------------------------------------------------------------------------
   //  @ Enable / disable flow webkook
   // --------------------------------------------------------------------------------------
   webhookOnOff(event, webhook_id) {
-    this.logger.log('[FLOW-WEBHOOKS] Enable / Disable flow webhook - event', event.target.checked, 'webhook_id ', webhook_id)
+    event.stopPropagation();
+    console.log('[FLOW-WEBHOOKS] Enable / Disable flow webhook - event', event.target.checked, 'webhook_id ', webhook_id)
 
     this.webhookService.updateFlowWebhook(event.target.checked, webhook_id).subscribe((res: any) => {
 
@@ -114,8 +129,12 @@ export class FlowWebhooksComponent implements OnInit {
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorOccurredWhileUpdating'), 4, 'report_problem');
     }, () => {
       this.logger.log('[FLOW-WEBHOOKS] UPDATE WH COMPLETE');
-   
+
     });
+  }
+
+  stopEvent(event: MouseEvent): void {
+    event.stopPropagation();
   }
 
 
@@ -184,7 +203,8 @@ export class FlowWebhooksComponent implements OnInit {
       });
   }
 
-  copyToClipboard(element: HTMLElement,  itemId: string) {
+  copyToClipboard(event, element: HTMLElement, itemId: string) {
+    event.stopPropagation();
     const text = element.innerText.trim(); // Get the text content
     navigator.clipboard.writeText(text).then(() => {
       this.logger.log('Copied to clipboard:', text);

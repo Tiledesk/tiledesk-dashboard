@@ -1062,6 +1062,13 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
 
+  {
+    path: 'project/:projectid/flows/flow-webhooks-logs/:webhookid',
+    loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: [{ roles: ['owner', 'admin'] }]
+  },
+
 
   {
     path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',

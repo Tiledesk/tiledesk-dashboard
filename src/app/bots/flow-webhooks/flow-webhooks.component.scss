@@ -163,9 +163,14 @@
 .copy-container>span>svg {
     font-size: 14px;
     vertical-align: middle;
-    fill: var(--blue-20) !important;
+    fill: var(--accent-text-color) !important;
     // flex-shrink: 0; /* Prevent icon from shrinking */
     // margin-left: 8px; /* Add spacing */
+}
+
+.copy-text {
+    font-size: 14px;
+    color: var(--accent-text-color);
 }
 
 
@@ -188,6 +193,7 @@
     transition: opacity 0.3s;
     border: 1px solid #aaa;
     height: 20px;
+    font-weight: 400;
 }
 
 .copy-container:hover .copied-tooltip {

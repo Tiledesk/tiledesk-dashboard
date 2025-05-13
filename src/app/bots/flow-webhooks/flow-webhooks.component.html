@@ -42,7 +42,8 @@
 
     <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
         <div class="content-wpr" style="display: flex;">
-            <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
+            <appdashboard-bots-sidebar 
+                [allTemplatesCount]="allTemplatesCount"
                 [allCommunityTemplatesCount]="allCommunityTemplatesCount"
                 [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
                 [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
@@ -75,7 +76,7 @@
 
                                 <div class="card-list" *ngFor="let webhook of flowWebhooks; let i = index">
                                     <!-- (click)='goToBotDtls(faqkb)' -->
-                                    <div class="cl-card">
+                                    <div class="cl-card" (click)="goToFlowWebhookDetail(webhook.webhook_id)"> 
                                         <div class="cl-card-content">
 
                                             <div class="cl-card-first-column">
@@ -105,10 +106,10 @@
                                 
                                                         </div>
                                                         <span class="copy-container"
-                                                            (click)="copyToClipboard(copyText, 'item-' + i)">
+                                                            (click)="copyToClipboard($event,copyText, 'item-' + i)">
                                                             <span>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" height="14px"
-                                                                    viewBox="0 0 24 24" width="14px" fill="#e8eaed">
+                                                                    viewBox="0 0 24 24" width="14px">
                                                                     <path d="M0 0h24v24H0V0z" fill="none" />
                                                                     <path
                                                                         d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
@@ -132,8 +133,10 @@
                                                     <input type="checkbox" name="onoffswitch{{i}}"
                                                         class="wh-onoffswitch-checkbox" id="whonoffswitch{{i}}"
                                                         tabindex="0" [checked]="webhook.enabled"
-                                                        (change)="webhookOnOff($event, webhook.webhook_id)">
-                                                    <label class="wh-onoffswitch-label" for="whonoffswitch{{i}}">
+                                                        (click)="webhookOnOff($event, webhook.webhook_id)">
+                                                    <label class="wh-onoffswitch-label" 
+                                                        for="whonoffswitch{{i}}"
+                                                        (click)="stopEvent($event)">
                                                         <span class="wh-onoffswitch-inner"></span>
                                                         <span class="wh-onoffswitch-switch"></span>
                                                     </label>
