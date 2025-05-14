@@ -1464,7 +1464,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   // GET REQUEST COPY - START
   getRequests() {
-    console.log('getRequests queryString', this.queryString)
+    console.log('[HISTORY & NORT-CONVS] - GET REQUESTS queryString', this.queryString)
     // this.logger.log('getRequests _preflight' , this._preflight) 
     this.logger.log('getRequests requests_statuses ', this.requests_statuses)
     this.logger.log('getRequests requests_status ', this.requests_status)
@@ -2262,7 +2262,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('HERE IN SEARCH duration call_id ', this.call_id)
     // this.logger.log('HERE IN SEARCH calledBy ', calledBy)
     this.logger.log('HERE IN SEARCH this.preflight', this.preflight)
-    this.logger.log('HERE IN SEARCH this.fullText', this.fullText)
+    console.log('HERE IN SEARCH this.fullText', this.fullText)
     this.logger.log('HERE IN SEARCH this.startDate', this.startDate)
     this.logger.log('HERE IN SEARCH this.endDate', this.endDate)
     this.logger.log('HERE IN SEARCH this.requests_status', this.requests_status)
@@ -2276,6 +2276,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
     
+    console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
     // this.pageNo = 0 // nikola
 
 
@@ -2688,7 +2689,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] clearSearch this.conversationTypeValue ', this.conversationTypeValue);
     this.has_searched = false;
     const currentUrl = this.router.url;
-    // this.logger.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
+    console.log('[HISTORY & NORT-CONVS] clearSearch current_url ', currentUrl);
     const url_segments = currentUrl.split('/');
     url_segments.shift(); // removes the first element of the array which is an empty string created due to the first slash present in the URL
     // this.logger.log('[HISTORY & NORT-CONVS] clearSearch url_segments ', url_segments);
@@ -2786,6 +2787,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.pageNo -= 1;
 
     this.logger.log('[HISTORY & NORT-CONVS] - DECREASE PAGE NUMBER ', this.pageNo);
+    const qspageNo = this.pageNo
+    console.log('[HISTORY & NORT-CONVS] - DECREASE PAGE NUMBER ', this.pageNo);
+    console.log('[HISTORY & NORT-CONVS] - DECREASE PAGE NUMBER typeof', typeof this.pageNo);
+    if (this.queryString) {
+      this.queryString += '&qspageNo=' + qspageNo;
+    }
     this.getRequests()
   }
 
