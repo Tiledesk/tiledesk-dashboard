@@ -671,10 +671,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       return;
     }
 
-    const voiceTwilio = customization['voice-twilio'] ?? false;
+    const voiceTwilio = customization['voice_twilio'] ?? false;
     const voice = customization['voice'] ?? false;
 
-    this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice-twilio:', voiceTwilio);
+    this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice_twilio:', voiceTwilio);
     this.logger.log('[BOTS-LIST] (manageVoiceChatbotVisibility) voice:', voice);
 
     this.diplayTwilioVoiceChabotCard = voiceTwilio === true;
@@ -851,7 +851,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
         this.myChatbot = this.faqkbList.filter((obj) => {
-          return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
+          return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
         });
         this.logger.log('[BOTS-LIST] - myChatbot', this.myChatbot);
         if (this.myChatbot) {
@@ -1199,7 +1199,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             this.logger.log('[BOTS-LIST] use case dept array > 1 - Automation: webhook or copilot')
             warningText = this.automationIsAssociatedWithDepartments;
           } else if (!subtype || aiAgents.includes(subtype)) {
-            this.logger.log('[BOTS-LIST] use case dept array > 1 - AI Agent (chatbot, voice, voice-twilio) or undefined')
+            this.logger.log('[BOTS-LIST] use case dept array > 1 - AI Agent (chatbot, voice, voice_twilio) or undefined')
             warningText = this.botIsAssociatedWithDepartments;
             warningTextPartTwo = this.disassociateTheBot;
           }
@@ -1210,8 +1210,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             warningTextPartTwo = this.disassociateTheAutomation;
             this.logger.log('[BOTS-LIST] use case dept array = 1 - Automation: webhook or copilot warningText ', warningText)
           } else if (!subtype || aiAgents.includes(subtype)) {
-            this.logger.log('[BOTS-LIST] use case dept array = 1 -  AI Agent (chatbot, voice, voice-twilio) or undefined')
-            // AI Agent (chatbot, voice, voice-twilio) or undefined
+            this.logger.log('[BOTS-LIST] use case dept array = 1 -  AI Agent (chatbot, voice, voice_twilio) or undefined')
+
             warningText = this.botIsAssociatedWithTheDepartment;
             warningTextPartTwo = this.disassociateTheBot
           }

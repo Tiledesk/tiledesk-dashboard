@@ -883,18 +883,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   manageVoiceQuotaVisibility(projectProfileData) {
     if (projectProfileData['customization']) {
       this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
-      // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+    
       if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
 
         this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-        // this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-        // if (projectProfileData['customization']['voice-twilio'] === true) {
-        //   this.diplayTwilioVoiceQuota = true
-        // } else if (projectProfileData['customization']['voice-twilio'] === false) {
-        //   this.diplayTwilioVoiceQuota = false
-        // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-        //   this.diplayTwilioVoiceQuota = false
-        // }
+     
 
         if (projectProfileData['customization']['voice'] === true) {
           this.diplayVXMLVoiceQuota = true

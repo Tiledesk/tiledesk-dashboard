@@ -398,18 +398,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (projectProfileData) {
         if (projectProfileData['customization']) {
 
-          // (projectProfileData['customization']['voice-twilio'] !== undefined) ||
+         
           if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
 
             this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-            // this.logger.log('[NAVBAR] (manageVoiceQuotaVisibility) projectProfileData[customization] voice-twilio', projectProfileData['customization']['voice-twilio'])
-            // if (projectProfileData['customization']['voice-twilio'] === true) {
-            //   this.diplayTwilioVoiceQuota = true
-            // } else if (projectProfileData['customization']['voice-twilio'] === false) {
-            //   this.diplayTwilioVoiceQuota = false
-            // } else if (projectProfileData['customization']['voice-twilio'] === undefined) {
-            //   this.diplayTwilioVoiceQuota = false
-            // } 
+           
 
             if (projectProfileData['customization']['voice'] === true) {
               this.diplayVXMLVoiceQuota = true

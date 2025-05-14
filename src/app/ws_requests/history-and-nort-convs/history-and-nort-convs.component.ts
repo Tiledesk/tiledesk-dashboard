@@ -695,7 +695,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
             let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
             this.conversationType.splice(voice_twilio_index, 1);
           } 
-          else if (projectProfile.customization['voice-twilio'] && projectProfile.customization['voice-twilio'] === true) {
+          else if (projectProfile.customization['voice_twilio'] && projectProfile.customization['voice_twilio'] === true) {
             let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
             this.conversationType.splice(voice_vxml_index, 1);
           }
@@ -2079,9 +2079,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.conversation_type = 'voice-vxml'
     }
 
-    if (this.conversation_type === 'voice-twilio') {
+    if (this.conversation_type === 'voice_twilio') {
       // this.conversationTypeValue = 'whatsapp'
-      this.conversation_type = 'voice-twilio'
+      this.conversation_type = 'voice_twilio'
     }
   }
 

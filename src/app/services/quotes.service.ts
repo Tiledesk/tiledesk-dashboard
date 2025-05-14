@@ -84,7 +84,7 @@ export class QuotesService {
   /** Called by HomeComponent to request Navbar to fetch quotas */
   requestQuotasUpdate() {
     // if (!this.hasFetchedData) {
-    console.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
+    this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] -  Home Notify Navbar to fetch quotas data');
     this.requestQuotesSubject.next(); // Notify Navbar to fetch data
     // }
   }

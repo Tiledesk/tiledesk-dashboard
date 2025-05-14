@@ -145,7 +145,7 @@ export function getKeyByValue(value, keys) {
 }
 
 export const automations = ['webhook', 'copilot'];
-export const aiAgents = ['chatbot', 'voice', 'voice-twilio'];
+export const aiAgents = ['chatbot', 'voice', 'voice_twilio'];
 
 // MODELS
 
