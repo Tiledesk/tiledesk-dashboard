@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.98-rc2
+- Renames "voice-twilio" in "voice_twilio"
+
 ### 2.7.98-rc1
 - Adds the ability to test Knowledge Bases with the Open AI models: GPT-4.1, GPT-4.1 mini and GPT-4.1 nano
 
