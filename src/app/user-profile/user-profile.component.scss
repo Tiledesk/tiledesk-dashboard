@@ -1,6 +1,7 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-input[type="text"] {
+input[type="text"],
+input[type="tel"] {
   /* min-width: 307px !important; */
   height: 36px;
   font-size: 14px;
@@ -40,8 +41,14 @@ select {
 
 /* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS > OF 768  */
 @media (min-width: 767px) {
+
   input[type="text"] {
     width: 400px !important;
+  }
+
+
+  input[type="tel"] {
+    width: 320px !important;
   }
 }
 
@@ -268,7 +275,7 @@ button.close {
 
 
 .resend-verification-email {
-  cursor: pointer; 
+  cursor: pointer;
   color: var(--blue-light) // #03a5e8
 }
 
@@ -308,6 +315,51 @@ button.close {
   font-size: 12px;
 }
 
+
+.mobile-phone-number-danger {
+  color: #f6303a;
+  font-size: 12px;
+  line-height: 16px;
+  // font-weight: 400;
+  display: block;
+  margin-bottom: 8px;
+  margin-top: -6px;
+}
+
+
+.phone-container {
+  display: flex;
+  align-items: center;
+  // border: 1px solid #ccc;
+  // border-radius: 5px;
+  // padding: 5px;
+  width: 100%;
+}
+
+.country--select {
+  // width: 120px;
+  width: 80px;
+  margin-bottom: 10px // margin-right: 5px;
+}
+
+.ng-select.country--select ::ng-deep .ng-select-container {
+
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: unset;
+  border-color: #d9d9d9;
+}
+
+.ng-select.country--select ::ng-deep ng-dropdown-panel {
+  width: max-content !important;
+}
+
+.user-prolile-mobile-number {
+  // width: 320px !important;     
+  border-bottom-left-radius: 0px !important; 
+  border-top-left-radius: 0px !important;
+  border-left: 0px !important;
+}
 
 // .automatic-dshbrd-lang > div > label {
 //   color:  #7695a5 // var(--secondary-text-color)

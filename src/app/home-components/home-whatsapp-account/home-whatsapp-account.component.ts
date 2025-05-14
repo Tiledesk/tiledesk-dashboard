@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
-
 @Component({
   selector: 'appdashboard-home-whatsapp-account',
   templateUrl: './home-whatsapp-account.component.html',
