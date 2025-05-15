@@ -497,8 +497,15 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
-  {
+  // {
+  //   path: 'project/:projectid/wsrequest/:requestid/:calledby/messages',
+  //   loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+  //   canActivate: [AuthGuard]
+  // },
+
+   {
     path: 'project/:projectid/wsrequest/:requestid/:calledby/messages',
+    outlet: 'overlay',  // <- use named outlet
     loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
     canActivate: [AuthGuard]
   },

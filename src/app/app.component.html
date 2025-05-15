@@ -36,6 +36,7 @@
     <notification-message></notification-message>
     
     <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+    <router-outlet (activate)="changeOfRoutes()" name="overlay"></router-outlet>
    
     <div *ngIf="isMaps('maps')">
       <app-footer></app-footer>

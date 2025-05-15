@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'overlay-panel': isInOverlayOutlet }">
 <!-- Navbar brand for Chrome, Firefox ... -->
 <div #navbarBrand *ngIf="CHAT_PANEL_MODE === false && !isSafari" class="navbar-brand"
   style="z-index: 1050;position: relative; padding-left:30px"
@@ -3351,7 +3352,7 @@
 
   </div>
 </div>
-
+</div>
 
 
 

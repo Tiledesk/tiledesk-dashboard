@@ -373,10 +373,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   HIDE_CHATBOT_ATTRIBUTES: boolean;
 
   panelOpenState = false;
-
+   isInOverlayOutlet = false;
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
+
   /**
    * Constructor
    * @param router 
@@ -427,7 +428,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private faqService: FaqService,
     private cacheService: CacheService
   ) {
+    
+    
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
+    
+    this.isInOverlayOutlet = this.checkIfOverlayOutlet();
+    console.log( '[WS-REQUESTS-MSGS isInOverlayOutlet',  this.isInOverlayOutlet)
     this.jira_issue_types = [
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
@@ -436,6 +442,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
+
+
+  checkIfOverlayOutlet(): boolean {
+    const outlets = this.router.routerState.root.children;
+    for (let outlet of outlets) {
+      if (outlet.outlet === 'overlay') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
 
 
   @ViewChild('cont', { static: false }) contEl: any;

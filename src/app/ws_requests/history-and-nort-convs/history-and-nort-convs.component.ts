@@ -311,6 +311,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
+  isInOverlayOutlet= false;
   /**
    * 
    * @param router 
@@ -353,7 +354,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public brandService: BrandService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
-
+  this.isInOverlayOutlet = this.checkIfOverlayOutlet();
+    console.log( '[HISTORY & NORT-CONVS] isInOverlayOutlet',  this.isInOverlayOutlet)
     const brand = brandService.getBrand();
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
     this.duration_operator_temp = this.request_duration_operator_array[0]['id']
@@ -361,6 +363,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.logger.log('[HISTORY & NORT-CONVS] duration_op (on init)', this.duration_op)
 
+  }
+
+   checkIfOverlayOutlet(): boolean {
+    const outlets = this.router.routerState.root.children;
+    for (let outlet of outlets) {
+      if (outlet.outlet === 'overlay') {
+        return true;
+      }
+    }
+    return false;
   }
 
   ngOnInit() {
@@ -400,6 +412,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  conversationTypeValue', this.conversationTypeValue);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  has_searched', this.has_searched);
 
+  }
+
+  closeOverlayed() {
+    this.router.navigate([{ outlets: { overlay: null } }]);
   }
 
   getProjectUserRole() {
@@ -487,12 +503,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               const email_value = paramArray[1]
               // this.logger.log('[HISTORY & NORT-CONVS]  queryParams email_value value', email_value)
               if (email_value) {
-                this.fullText =  email_value;
+                this.fullText = email_value;
                 // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > this.fullText:', this.fullText)
                 this.fullText_temp = this.fullText
               }
             }
-            
+
 
             if (paramArray[0] === 'full_text' && paramArray[1] !== '') {
               const full_text_value = paramArray[1]
@@ -698,7 +714,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           if (projectProfile.customization.voice && projectProfile.customization.voice === true) {
             let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
             this.conversationType.splice(voice_twilio_index, 1);
-          } 
+          }
           else if (projectProfile.customization['voice-twilio'] && projectProfile.customization['voice-twilio'] === true) {
             let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
             this.conversationType.splice(voice_vxml_index, 1);
@@ -778,13 +794,29 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
     if (this.IS_HERE_FOR_HISTORY) {
+      console.log('goToRequestMsgs ')
+      // this.router.navigate([{ outlets: { overlay: ['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'] } }]);
 
+      this.router.navigate([
+        {
+          outlets: {
+            overlay: [
+              'project',
+              this.projectId,
+              'wsrequest',
+              request_recipient,
+              '2',  // or this.calledBy if it's dynamic
+              'messages'
+            ]
+          }
+        }
+      ]);
+      // if (this.has_searched === true) {
 
-      if (this.has_searched === true) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
-      } else if (this.has_searched === false) {
-        this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'])
-      }
+      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'], { queryParams: { qs: JSON.stringify(this.queryString) } })
+      // } else if (this.has_searched === false) {
+      //   this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/2/' + '/messages'])
+      // }
     }
     else {
       this.logger.log('showAdvancedSearchOption goToRequestMsgs', this.showAdvancedSearchOption)
@@ -2019,10 +2051,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName event term', event.term);
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName tags_array ', this.tags_array);
 
-  
-    const existsInList  = this.tags_array.filter((tag: any) => {
+
+    const existsInList = this.tags_array.filter((tag: any) => {
       return tag.name === event.term;
-      
+
     });
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName existsInList ', existsInList);
 
@@ -2275,8 +2307,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.has_searched = true;
     // this.logger.log('search has_searched ' + this.has_searched)
-    
-    console.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
+
+    console.log('[HISTORY & NORT-CONVS] - QUERY PARAMS ', this.queryParams);
     // this.pageNo = 0 // nikola
 
 
@@ -2433,9 +2465,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.SEARCH_FOR_TICKET_ID === true) {
       variable_parameter = "ticket_id="
     }
-    
+
     if (this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX === true) {
-      variable_parameter =  "snap_lead_email="  
+      variable_parameter = "snap_lead_email="
     }
 
     if (!this.duration) {
@@ -2765,7 +2797,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       + 'requester_email=' + '&'
       + 'tags=' + '&'
       + 'channel=';
-      + 'rstatus=' + '&'
+    + 'rstatus=' + '&'
       + 'duration_op=' + '&'
       + 'duration=' + '&'
       + 'called=' + '&'
@@ -3317,7 +3349,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.errorDeleting + ' ' + this.pleaseTryAgain, 
+              text: this.errorDeleting + ' ' + this.pleaseTryAgain,
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -3329,7 +3361,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
             });
           }, () => {
             this.logger.log('[HISTORY & NORT-CONVS] in swal deleteRequest res* COMPLETE *');
-            Swal.fire( {
+            Swal.fire({
               title: this.done_msg + "!",
               text: this.requestWasSuccessfullyDeleted,
               icon: "success",
