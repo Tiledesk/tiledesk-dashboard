@@ -2704,7 +2704,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
         if (project.widget.themeColorOpacity === 0) {
           // this.logger.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
-          this.themeColorOpacity = "0.50";
+          // this.themeColorOpacity = "0.50";
+            this.themeColorOpacity = "0";
           this.primaryColorOpacityEnabled = true
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
@@ -3115,7 +3116,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.generateRgbaGradientAndBorder(this.primaryColorRgb)
       this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.primaryColorOpacityEnabled === true) {
-      this.themeColorOpacity = "0.50"
+      // this.themeColorOpacity = "0.50"
+      this.themeColorOpacity = "0"
       // this.themeColorOpacity = "1"
       this.widgetObj['themeColorOpacity'] = 0;
       // delete this.widgetObj['themeColorOpacity'];
