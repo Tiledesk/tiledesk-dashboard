@@ -3270,14 +3270,25 @@ pre {
 }
 
 .widget-logo-image-uploaded-background-div {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  inset: 0px;
-  background-position: center center;
-  background-size: contain, 24px;
-  background-repeat: no-repeat, repeat;
-  margin: 1px;
+  // display: grid;
+  // place-items: center;
+  // position: absolute;
+  // inset: 0px;
+  // background-position: center center;
+  // background-size: contain, 24px;
+  // background-repeat: no-repeat, repeat;
+  // margin: 1px;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.widget-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or 'contain' if you want the full image visible */
 }
 
 .delete-widget-logo-btn-wpr {

@@ -903,9 +903,15 @@
 																</span>
 															</div>
 
+															<!-- [ngStyle]="{'background-image': 'url(' + logoUrl + ')'}" -->
+															 
 															<div *ngIf="logoUrl && logoUrl !== 'No Logo' "
-																class="widget-logo-image-uploaded-background-div"
-																[ngStyle]="{'background-image': 'url(' + logoUrl + ')'}">
+																class="widget-logo-image-uploaded-background-div">
+																<img [src]="logoUrl" 
+																		alt="Widget Logo" 
+																		class="widget-logo-img" 
+																		>
+																																	
 																<div class="delete-widget-logo-btn-wpr">
 																	<button class="delete-widget-logo-image"
 																		(click)="$event.stopPropagation(); deleteWidegetLogo()">
@@ -994,7 +1000,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveWidgetAppearance()">
 
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -1156,7 +1162,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveWidgetVisibility()">
 
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -1348,7 +1354,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveWidgetSingleConversation()">
 
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -1773,7 +1779,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveFooterBrandAndLauncherBtn()"
 													[disabled]="prjct_profile_type === 'payment' && subscription_is_active === false || prjct_profile_type === 'free' && prjct_trial_expired === true">
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -2063,7 +2069,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation()">
 
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -2266,7 +2272,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation(); saveReplyTime()">
 
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -2458,7 +2464,7 @@
 													(click)="saveCalloutSettings();saveTranslation()"
 													[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
 
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -2689,7 +2695,7 @@
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="saveTranslation()"
 													(click)="hasClickedUpdatePrechatformCustomFields()">
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -2883,7 +2889,7 @@
 												<button class="btn  btn-tdblu-no-boxshadow prechatform-savejson-btn"
 													style="margin-top: 15px; margin-bottom: 15px;font-size: 12px; letter-spacing: 1px;"
 													(click)="savePrechatFormCustomFields(); saveTranslation()">
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -3298,7 +3304,7 @@
 												<button class="btn btn-tdblu-no-boxshadow"
 													style="margin-top: 16px; font-size: 12px; letter-spacing: 1px;"
 													(click)="saveWidgetAdvancedSetting()">
-													{{ 'UpdateWidget' | translate }}
+													{{ 'Save' | translate }}
 												</button>
 											</div>
 										</div>
@@ -3353,11 +3359,16 @@
 									<div style="width: 437px;">
 
 										<appdashboard-widget-home *ngIf="DISPLAY_WIDGET_HOME"
-											[primaryColorGradiend]="primaryColorGradiend" [LOGO_IS_ON]="LOGO_IS_ON"
-											[hasOwnLogo]="hasOwnLogo" [logoUrl]="logoUrl"
-											[secondaryColor]="secondaryColor" [welcomeTitle]="welcomeTitle"
-											[welcomeMsg]="welcomeMsg" [primaryColorBorder]="primaryColorBorder"
-											[company_name]="company_name" [primaryColor]="primaryColor"
+											[primaryColorGradiend]="primaryColorGradiend" 
+											[LOGO_IS_ON]="LOGO_IS_ON"
+											[hasOwnLogo]="hasOwnLogo" 
+											[logoUrl]="logoUrl"
+											[secondaryColor]="secondaryColor" 
+											[welcomeTitle]="welcomeTitle"
+											[welcomeMsg]="welcomeMsg" 
+											[primaryColorBorder]="primaryColorBorder"
+											[company_name]="company_name" 
+											[primaryColor]="primaryColor"
 											[selected_translation]="selected_translation"
 											[company_site_url]="company_site_url"
 											[hasSelectedRightAlignment]="hasSelectedRightAlignment"
@@ -3365,19 +3376,24 @@
 											[C21_BODY_HOME]="C21_BODY_HOME"
 											[waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
 											[DISPLAY_LAUNCER_BUTTON]="DISPLAY_LAUNCER_BUTTON"
-											[waitingTimeFoundMsg]="waitingTimeFoundMsg" [currentUserId]="currentUserId"
-											[user]="user" [UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" [newConversation]="newConversation"
+											[waitingTimeFoundMsg]="waitingTimeFoundMsg" 
+											[currentUserId]="currentUserId"
+											[user]="user" 
+											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
+											[imageUrl]="imageUrl" 
+											[newConversation]="newConversation"
 											[noConversation]="noConversation"
 											[HAS_SELECT_DYMANIC_REPLY_TIME_MSG]="HAS_SELECT_DYMANIC_REPLY_TIME_MSG"
 											[HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG"
-											[footerBrand]="footerBrand" [prjct_profile_type]="prjct_profile_type"
+											[footerBrand]="footerBrand" 
+											[prjct_profile_type]="prjct_profile_type"
 											[subscription_is_active]="subscription_is_active"
 											[prjct_trial_expired]="prjct_trial_expired"
 											[hasOwnLauncherBtn]="hasOwnLauncherBtn"
 											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
 											[customLauncherURL]="customLauncherURL"
-											[featureIsAvailable]="featureIsAvailable" [id_project]="id_project"
+											[featureIsAvailable]="featureIsAvailable" 
+											[id_project]="id_project"
 											[imageStorage]="imageStorage">
 										</appdashboard-widget-home>
 
@@ -3397,20 +3413,27 @@
 
 
 										<appdashboard-widget-chat *ngIf="DISPLAY_WIDGET_CHAT"
-											[primaryColor]="primaryColor" [secondaryColor]="secondaryColor"
+											[primaryColor]="primaryColor" 
+											[secondaryColor]="secondaryColor"
 											[themeColorOpacity]="themeColorOpacity"
 											[HAS_FOCUSED_ONLINE_MSG]="HAS_FOCUSED_ONLINE_MSG"
 											[HAS_FOCUSED_OFFLINE_MSG]="HAS_FOCUSED_OFFLINE_MSG"
 											[HAS_FOCUSED_OFFICE_CLOSED_MSG]="HAS_FOCUSED_OFFICE_CLOSED_MSG"
 											[selected_translation]="selected_translation"
-											[officeClosedMsg]="officeClosedMsg" [onlineMsg]="onlineMsg"
-											[offlineMsg]="offlineMsg" [projectName]="projectName"
+											[officeClosedMsg]="officeClosedMsg" 
+											[onlineMsg]="onlineMsg"
+											[LABEL_PLACEHOLDER]="LABEL_PLACEHOLDER"
+											[offlineMsg]="offlineMsg" 
+											[selectedLangCode]="selectedLangCode"
+											[projectName]="projectName"
 											[UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE"
-											[imageUrl]="imageUrl" [currentUserId]="currentUserId"
+											[imageStorage]="imageStorage" 
+											[currentUserId]="currentUserId"
 											[current_user_name]="current_user_name"
 											[showAttachmentButton]="showAttachmentButton"
 											[showEmojiButton]="showEmojiButton"
-											[showAudioRecorderButton]="showAudioRecorderButton">
+											[showAudioRecorderButton]="showAudioRecorderButton"
+											[footerBrand]="footerBrand" >
 										</appdashboard-widget-chat>
 
 										<appdashboard-widget-prechat-form *ngIf="DISPLAY_WIDGET_PRECHAT_FORM"

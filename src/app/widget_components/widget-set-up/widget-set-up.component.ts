@@ -170,6 +170,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public offlineMsg: string; // LABEL_FIRST_MSG_NO_AGENTS
   public officeClosedMsg: string; // LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED
   public newConversation: string // LABEL_START_NW_CONV
+
   public noConversation: string // NO_CONVERSATION
   public waitingTimeNotFoundMsg: string; // WAITING_TIME_NOT_FOUND
   public waitingTimeFoundMsg: string; //  WAITING_TIME_FOUND
@@ -200,7 +201,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   C21_BODY_HOME = true
   imageStorage: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
-  imageUrl: string;
+  // imageUrl: string;
   currentUserId: string;
   preChatFormFieldName: string
   displayNewCustomPrechatFormBuilder: boolean;
@@ -1828,6 +1829,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         this.selected_translation = translation.data
         this.logger.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
+
 
         // ---------------------------------------------------------------------------------------------
         // @ New Conversation (not editable in the widhet setting page but only from multilanguage page)
