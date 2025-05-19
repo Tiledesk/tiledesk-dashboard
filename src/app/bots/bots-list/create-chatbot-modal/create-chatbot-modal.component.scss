@@ -1,0 +1,22 @@
+.cc-mat-form-field {
+  width: 100%;
+}
+
+
+::ng-deep .mat-autocomplete-panel.mat-autocomplete-visible {
+  border-left: unset !important;
+  border-right: unset !important;
+  border-bottom: unset !important;
+  outline: unset !important;
+}
+
+// .mat-dialog-close-btn {
+//   background-color: #647491;
+//   color: #fff;
+// }
+
+// .mat-dialog-ok-btn {
+//   background-color: var(--blue-light);
+//   color: #fff;
+
+// }

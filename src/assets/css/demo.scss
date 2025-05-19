@@ -536,6 +536,11 @@ my-app .main-panel .main-content .card {
 
 /* DROP-DOWN MENU
 /* ------------------------- */
+
+.dropdown-menu-custom li a {
+  cursor: pointer;
+}
+
 .dropdown-menu-custom li a:hover,
 .dropdown-menu li a:focus,
 .dropdown-menu li a:active {
@@ -955,6 +960,14 @@ my-app .main-panel .main-content .card {
   min-width: 12px;
   height: 12px;
   min-height: 12px;
+}
+
+.span-6 {
+  display: block;
+  width: 6px;
+  min-width: 6px;
+  height: 6px;
+  min-height: 6px;
 }
 
 
@@ -1464,6 +1477,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -1479,10 +1493,15 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
-.custom-swal>.swal-title {
-  color: black;
-  font-weight: 500;
-}
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
+
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
 
 
 
@@ -3186,6 +3205,33 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   color: #f44336;
 }
 
+
+.custom-error-snackbar {
+  // animation: slide-in 0.4s ease-out;
+  background: rgb(253,243,209) !important;
+  color: #000 !important;
+  font-weight: 400;
+  min-width: fit-content !important;
+}
+
+.custom-error-snackbar::before {
+  font-family: "FontAwesome";
+  content: "\f071";
+  position: absolute;
+  color: rgb(245, 196, 68);
+}
+
+.custom-error-snackbar>div>div>simple-snack-bar>span {
+  margin-left: 22px;
+}
+
+.custom-error-snackbar>div>div>simple-snack-bar>div>button {
+  color: #000 !important;
+  font-weight: 400;
+}
+
+
+
 /*
 /* Settings sidebar / Bot sidebar 
 /* ---------------------------------------------- */
@@ -3268,6 +3314,14 @@ appdashboard-bots-sidebar {
 .settings-sidebar>li:hover:not(.sidebar-item-wpr-no-link) {
   background-color: var(--settings-sidebar-hover-background-color);
   color: var(--settings-sidebar-hover-color);
+}
+
+.settings-sidebar>li:hover >a > svg.svg-stroke {
+  stroke: var(--settings-sidebar-hover-color);
+}
+
+.settings-sidebar>li:hover >a > svg.svg-fill {
+  fill: var(--settings-sidebar-hover-color);
 }
 
 .sidebar-item-no-link {
@@ -3399,6 +3453,10 @@ li.active-item a span>.settings-sidebar-icons {
 }
 
 li.active-item a p.custom_paragraph {
+  color: var(--settings-sidebar-active-color);
+}
+
+li.active-item a svg {
   color: var(--settings-sidebar-active-color);
 }
 
@@ -3775,10 +3833,27 @@ div:where(.swal2-container) .swal2-select {
   border-radius: var(--btn-border-radius);
 }
 
+
 /* Use case KB > Upload CSV 
 /* ************************************* */
 .mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
+}
+
+.mat-dialog-actions > button  {
+  border-radius: var(--btn-border-radius) !important;
+}
+
+// Sleek widget overwrite iframe css
+.i-sl-wrapper {
+  // display: none!important;
+  border-radius: 0px !important;
+  height: 100vh !important;
+}
+
+.i-sl-wrapper.right { 
+  right: 0px !important;
+  top: 0px !important;
 }
 
 /* Graph card
@@ -3929,6 +4004,45 @@ div:where(.swal2-container) .swal2-select {
 .mat-spinner circle {
   stroke: var(--blue-light) !important;
 }
+
+.date-picker-wpr>.analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr {
+  position: relative;
+  top: -2px;
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr>i {
+  font-size: 18px;
+  color: #566787;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.chart-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  height: 375px;
+  justify-content: center;
+}
+
+.chart-loading-spinner > p {
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: var(--blue-light) !important;
+}
+
+
 
 
 .radio>label {

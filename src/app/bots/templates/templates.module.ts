@@ -9,6 +9,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChatbotAlertModule } from '../bots-list/chatbot-alert/chatbot-alert.module';
+import { CreateChatbotModalModule } from '../bots-list/create-chatbot-modal/create-chatbot-modal.module';
+import { CreateFlowsModalModule } from '../bots-list/create-flows-modal/create-flows-modal.module';
 
 const routes: Routes = [
   { path: "", component: TemplatesComponent},
@@ -23,6 +25,8 @@ const routes: Routes = [
     CommonModule,
     SharedModule,
     ChatbotAlertModule,
+    CreateChatbotModalModule,
+    CreateFlowsModalModule,
     TranslateModule,
     BotsSidebarModule,
     FormsModule,

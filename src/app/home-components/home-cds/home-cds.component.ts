@@ -8,6 +8,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { ModalChatbotNameComponent } from 'app/knowledge-bases/modals/modal-chatbot-name/modal-chatbot-name.component';
 import { ModalHookBotComponent } from 'app/knowledge-bases/modals/modal-hook-bot/modal-hook-bot.component';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { ProjectUser } from 'app/models/project-user';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
@@ -189,24 +190,16 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
     });
   }
 
-
-
-
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[HOME-CDS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[HOME-CDS] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
-
-
   sortChatbots() {
-
     if (this.chatbots && this.chatbots.length > 0) {
 
       this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
@@ -223,18 +216,24 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
       this.chatbotName = this.chatbots[0].name;
       this.lastUpdatedChatbot = this.chatbots[0];
-      this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
-      this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+      this.logger.log('[HOME-CDS] - chatbotName ', this.chatbotName);
+      this.logger.log('[HOME-CDS] - lastUpdatedChatbot', this.lastUpdatedChatbot);
     }
   }
 
   goToBotProfile() {
-    this.logger.log('[HOME-CDS] - goToBotProfile  projectId ', this.projectId);
+     this.logger.log('[HOME-CDS] - goToBotProfile  projectId ', this.projectId);
     if (this.USER_ROLE !== 'agent') {
       if (this.chatbots?.length > 0) {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
         // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
-        goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        if(this.lastUpdatedChatbot.type === 'external') {
+          // this.router.navigate(['project/' + this.project._id + '/bots/intents/', this.lastUpdatedChatbot._id, 'external']);
+          this.router.navigate(['project/' + this.project._id + '/bots', this.lastUpdatedChatbot._id, 'external']);
+        } else {
+          goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        }
+        // goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       } else if (this.chatbots?.length === 0) {
 
         if (this.chatBotLimit) {

@@ -51,7 +51,7 @@ export class WebhookService {
   }
 
   // --------------------------------------------
-  // GET ALL VEBHOOK SUBSCRIPTIONS FOR PROJECT ID
+  // GET ALL WEBHOOK SUBSCRIPTIONS FOR PROJECT ID
   // --------------------------------------------
   getAllSubscriptions(): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - GET ALL SUBSCRIPTION FOR PROJECT ID: ', this.projectID);
@@ -155,6 +155,63 @@ export class WebhookService {
     return this.http
       .delete<[any]>(url, { headers: headers });
   }
+
+
+  /**
+   * Get Flow Webhooks
+   * @returns 
+   */
+  getFlowWebhooks(): Observable<[any]> {
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/';
+    this.logger.log('[WEBHOOK-SERV] - GET FLOW WEBHOOKS URL: ', url);
+
+    let headers = new HttpHeaders({
+      'Authorization': this.TOKEN
+    })
+
+    return this.http
+      .get<[any]>(url, { headers: headers })
+  }
+
+  /**
+   * Delete Flow Webhooks
+   * @param webhookid 
+   * @returns 
+   */
+  deleteFlowWebhook(webhookid): Observable<[any]> {
+    this.logger.log('[WEBHOOK-SERV] - DELETE FLOW WEBHOOK - WEBHOOK ID: ', webhookid, ' FOR PROJECT ID: ', this.projectID);
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/delete/' + webhookid
+    this.logger.log('[WEBHOOK-SERV] - DELETE FLOW WEBHOOK URL: ', url);
+
+    let headers = new HttpHeaders({
+      'Authorization': this.TOKEN
+    })
+
+    return this.http
+      .delete<[any]>(url, { headers: headers });
+  }
+
+  updateFlowWebhook(status, webhookid): Observable<[any]> {
+    this.logger.log('[WEBHOOK-SERV] - UPDATE FLOW WEBHOOK WITH ID: ', webhookid, ' FOR PROJECT ID: ', this.projectID);
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/update/' + webhookid;
+    this.logger.log('[WEBHOOK-SERV] - UPDATE FLOW WEBHOOK PUT URL: ', url);
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': this.TOKEN,
+    })
+
+    let body = { enabled: status }
+    this.logger.log('[WEBHOOK-SERV] - UPDATE FLOW WEBHOOK BODY: ', body);
+
+    return this.http
+      .put<[any]>(url, body, { headers: headers });
+  }
+
+
 
 
 }

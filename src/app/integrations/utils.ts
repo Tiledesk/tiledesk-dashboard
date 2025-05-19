@@ -144,6 +144,8 @@ export function getKeyByValue(value, keys) {
     return key;
 }
 
+export const automations = ['webhook', 'copilot'];
+export const aiAgents = ['chatbot', 'voice', 'voice_twilio'];
 
 // MODELS
 

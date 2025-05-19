@@ -48,7 +48,7 @@ export class TagsService {
   }
 
   public geTagsForGraph(type, start_date, end_date): Observable<[any]> {
-    this.logger.log('[TAGS-SERV] start_date', start_date, 'end_date', end_date)
+    this.logger.log('[TAGS-SERV] GET TAG FOR GRAPH -->> start_date', start_date, '-->> end_date', end_date)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

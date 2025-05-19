@@ -1,0 +1,206 @@
+/* WH on off switch
+/* ******************* */
+
+.wh-onoffswitch {
+    position: relative;
+    width: 76px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.wh-onoffswitch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.wh-onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #FFFFFF;
+    border-radius: 20px;
+    margin-bottom: 0px;
+}
+
+.wh-onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.wh-onoffswitch-inner:before,
+.wh-onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 32px;
+    padding: 0;
+    line-height: 32px;
+    font-size: 14px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.wh-onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 10px;
+    background-color: #2196F3;
+    color: #FFFFFF;
+    padding-top: 1px;
+}
+
+.wh-onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 10px;
+    background-color: #EEEEEE;
+    color: #999;
+    text-align: right;
+    padding-top: 1px;
+}
+
+.wh-onoffswitch-switch {
+    display: block;
+    width: 26px;
+    height: 26px;
+    margin: 5px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 40px;
+    border: 2px solid #FFFFFF;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.wh-onoffswitch-checkbox:checked+.wh-onoffswitch-label .wh-onoffswitch-inner {
+    margin-left: 0;
+}
+
+.wh-onoffswitch-checkbox:checked+.wh-onoffswitch-label .wh-onoffswitch-switch {
+    right: 0px;
+}
+
+/* WH on off switch end
+/* ******************* */
+
+
+
+.wh-btn-delete-wpr {
+    margin-left: 16px;
+}
+
+.delete-flow-wh {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 4px !important;
+}
+
+.delete-flow-wh>span>svg {
+    fill: #fff
+}
+
+// .cl-card-item-description {
+//   color:  var(--blue-20) !important;
+// }
+
+
+
+
+.cl--card-item-description-wpr {
+    display: flex;
+    align-items: center;
+    padding-right: 104px;
+    font-size: var(--cl-card-item-description-wpr-font-size);
+    font-weight: var(--cl-card-item-description-wpr-font-weight);
+    margin-top: 4px;
+}
+
+.cl--card-item-description {
+    word-break: break-word;
+    align-items: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+// .copy-text {
+//     flex-grow: 1;
+//     overflow: hidden;
+//     white-space: nowrap;
+//     text-overflow: ellipsis;
+//     max-width: calc(100% - 40px); /* Ensures the icon stays visible */
+//     text-align: center; /* Helps with centering effect */
+// }
+
+.copy-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    margin-left: 3px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: transparent;
+    // flex-shrink: 0;
+    // margin-left: 8px;
+}
+
+
+.copy-container:hover {
+    background-color: rgba(100, 116, 145, 0.08);
+}
+
+.copy-container>span>svg {
+    font-size: 14px;
+    vertical-align: middle;
+    fill: var(--blue-20) !important;
+    // flex-shrink: 0; /* Prevent icon from shrinking */
+    // margin-left: 8px; /* Add spacing */
+}
+
+
+.copied-tooltip {
+    position: absolute;
+    // top: -25px;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    // background-color: black;
+    background-color: #fff;
+    // color: white;
+    color: #aaa;
+    // padding: 5px 8px;
+    padding: 0px 6px;
+    font-size: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s;
+    border: 1px solid #aaa;
+    height: 20px;
+}
+
+.copy-container:hover .copied-tooltip {
+    opacity: 1;
+}
+
+.no-bot-msg {
+    font-size: 24px;
+    margin-bottom: 0px;
+    color: var(--text-color);
+    font-weight: 600;
+    font-family: var(--header-font-family);
+    margin-top: 60px;
+    text-align: center;
+    line-height: 1.7em;
+}
