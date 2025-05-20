@@ -1909,6 +1909,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Bitta javob yaratish uchun ishlatilishi mumkin bo'lgan tokenlarning maksimal soni",
          "ControlTheRandomnessOfTheAnswer":"LLM taqdim etgan javobning tasodifiyligini nazorat qiling.",
          "DeterminesHowManyChunksWillBePassedToTheLLM":"Javobni yaratish uchun LLM ga kontekst sifatida qancha maʼlumot manbasi boʻlaklari uzatilishini aniqlaydi. LLM chalkashmaslik uchun 2-4 ni tavsiya qilamiz.",
+         "TheMaximumSupportedChunksNumberDependsByTheModel":"Maksimal qo'llab-quvvatlanadigan bo'laklar soni modelga bog'liq.",
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Tizimga javoblaringizni yaratishda o'ynashi kerak bo'lgan rolni bering.",
          "Deterministic":"Deterministik",
          "Random":"Tasodifiy",

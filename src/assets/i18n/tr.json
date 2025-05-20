@@ -1911,6 +1911,7 @@
          "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Tek bir yanıt oluşturmak için kullanılabilecek maksimum token sayısı.",
          "ControlTheRandomnessOfTheAnswer":"LLM yanıtının rastgeleliğini kontrol edin.",
          "DeterminesHowManyChunksWillBePassedToTheLLM":"Bir yanıt oluşturmak için LLM'ye bağlam olarak kaç veri kaynağı parçasının geçirileceğini belirler. LLM karışıklığını önlemek için 2-4 öneririz.",
+         "TheMaximumSupportedChunksNumberDependsByTheModel":"Desteklenen maksimum parça sayısı modele göre değişir.",
          "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Cevaplarınızı oluştururken sisteme bir rol verin.",
          "Deterministic":"Deterministik",
          "Random":"Rastgele",
