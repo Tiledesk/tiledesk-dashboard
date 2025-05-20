@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.105-rc2
+- Fixes the bug: Twilio voice menu item is not visible in integrations even if it is enabled in customizations
+
 ### 2.7.105-rc1
 - Increases the chunks limit that can be selected in the AI ​​Settings modal window on the Knowledge Bases page to 40
 
