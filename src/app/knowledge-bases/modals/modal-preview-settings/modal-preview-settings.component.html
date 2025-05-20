@@ -245,10 +245,10 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">1</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="0" max="10" [(ngModel)]="topK"
+                <mat-slider class="wait-slider" thumbLabel step="1" min="0" max="40" [(ngModel)]="topK"
                     (change)="updateSliderValue($event.value, 'top_k')" aria-label="units">
                 </mat-slider>
-                <div class="action-wait-range">10</div>
+                <div class="action-wait-range">40</div>
             </div>
             <!-- <input type="text" class="slider-output" value="{{topK}}" disabled> -->
         </div>
@@ -262,7 +262,8 @@
                 <!-- Determines how many data source chunks will be passed to the LLM as context to generate a response. We
                 recommend 2-4 to avoid LLM confusion. -->
                  
-                {{'KbPage.DeterminesHowManyChunksWillBePassedToTheLLM' | translate }}
+               {{'KbPage.DeterminesHowManyChunksWillBePassedToTheLLM' | translate }} 
+               <span style="display: block;font-weight:500">  {{'KbPage.TheMaximumSupportedChunksNumberDependsByTheModel' | translate}} </span>
             
             </div>
 
