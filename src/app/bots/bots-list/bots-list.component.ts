@@ -180,6 +180,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   automationIsAssociatedWithTheDepartment: string
   automationIsAssociatedWithDepartments: string
   disassociateTheAutomation: string
+  automationCopilotIsEnables: boolean;
 
 
   // editBotName: boolean = false;
@@ -651,12 +652,41 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOTS-LIST] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
 
       this.manageVoiceChatbotVisibility(projectProfileData)
+      this.getIfBotSubtypeAreEnabled(projectProfileData)
 
     }, error => {
       this.logger.error('[BOTS-LIST] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[BOTS-LIST] - GET PROJECT BY ID * COMPLETE *  this.project ', this.project);
     });
+  }
+
+    getIfBotSubtypeAreEnabled(projectProfile) {
+    // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - projectProfile: ', projectProfile);
+    if (projectProfile && projectProfile['customization']) {
+
+      if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] !== undefined) {
+
+        if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === true) {
+
+          this.automationCopilotIsEnables = true
+          // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 1: ', this.botSubtypeAreEnabled);
+
+        } else if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === false) {
+
+          this.automationCopilotIsEnables = false;
+          // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 2: ', this.botSubtypeAreEnabled);
+        }
+
+      } else {
+        this.automationCopilotIsEnables = false
+        // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 3: ', this.botSubtypeAreEnabled);
+      }
+
+    } else {
+      this.automationCopilotIsEnables = false
+      // this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 4: ', this.botSubtypeAreEnabled);
+    }
   }
 
   manageVoiceChatbotVisibility(projectProfileData: any): void {
@@ -1706,7 +1736,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   presentModalAddBotFromScratch(subtype) {
-    this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
+    console.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
     // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     // createBotFromScratchBtnEl.blur()
