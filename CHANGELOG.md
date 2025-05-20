@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.105-rc1
+- Increases the chunks limit that can be selected in the AI ​​Settings modal window on the Knowledge Bases page to 40
 
 ### 2.7.104
 - Improves the widget preview available on the widget setup page
