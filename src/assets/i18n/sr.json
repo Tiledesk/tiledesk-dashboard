@@ -1979,6 +1979,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Максималан број токена који се може користити за генерисање једног одговора.",
         "ControlTheRandomnessOfTheAnswer":"Проверите случајност одговора који је дао ЛЛМ.",
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Одређује колико ће делова извора података бити прослеђено ЛЛМ-у као контекст за генерисање одговора. Препоручујемо 2-4 да бисте избегли забуну LLM.",
+        "TheMaximumSupportedChunksNumberDependsByTheModel":"Максималан број подржаних делова зависи од модела.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Дајте систему улогу коју треба да игра приликом креирања ваших одговора.",
         "Deterministic":"Детерминистички",
         "Random":"Рандом",

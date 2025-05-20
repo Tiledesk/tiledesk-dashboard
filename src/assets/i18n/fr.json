@@ -1978,6 +1978,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse": "Le nombre maximal de jetons pouvant être utilisés pour générer une seule réponse.",
         "ControlTheRandomnessOfTheAnswer": "Contrôlez le caractère aléatoire de la réponse fournie par le LLM.",
         "DeterminesHowManyChunksWillBePassedToTheLLM": "Détermine le nombre de blocs de sources de données qui seront transmis au LLM en tant que contexte pour générer une réponse. Nous recommandons 2 à 4 pour éviter toute confusion avec le LLM.",
+        "TheMaximumSupportedChunksNumberDependsByTheModel":"Le nombre maximal de morceaux pris en charge dépend du modèle.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Donnez au système un rôle qu’il doit jouer lors de la création de vos réponses.",
         "Deterministic": "Déterministe",
         "Random": "Aléatoire",

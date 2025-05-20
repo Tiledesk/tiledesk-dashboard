@@ -1979,6 +1979,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Максимальна кількість токенів, які можна використати для створення однієї відповіді",
         "ControlTheRandomnessOfTheAnswer":"Контролюйте випадковість відповіді, яку надає LLM.",
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Визначає, скільки фрагментів джерела даних буде передано LLM як контекст для генерації відповіді. Ми рекомендуємо 2-4, щоб уникнути плутанини з LLM.",
+        "TheMaximumSupportedChunksNumberDependsByTheModel":"Максимальна підтримувана кількість фрагментів залежить від моделі.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Дайте системі роль, яку вона повинна відігравати під час створення ваших відповідей.",
         "Deterministic":"Детермінований",
         "Random":"Випадковий",
