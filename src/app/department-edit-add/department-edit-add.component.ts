@@ -1061,7 +1061,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       });
 
       this.botsList = faqkb.filter((obj) => {
-        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice-twilio";
+        return !obj.subtype || obj.subtype === "chatbot" || obj.subtype === "voice" || obj.subtype === "voice_twilio";
       });
       this.logger.log('[DEPT-EDIT-ADD] - GET BOTS botsList ', this.botsList);
     }, (error) => {

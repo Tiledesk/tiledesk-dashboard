@@ -338,18 +338,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (environment['voiceTwilioConfigUrl']) {
           if (voiceTwiloApp) {
             voiceTwiloApp.runURL = environment['voiceTwilioConfigUrl'];
-            voiceTwiloApp.channel = "voice-twilio";
+            voiceTwiloApp.channel = "voice_twilio";
           } else {
             voiceTwiloApp = {
               voiceTwiloApp: environment['voiceTwilioConfigUrl'],
-              channel: "voice-twilio"
+              channel: "voice_twilio"
             }
           }
         }
         else {
           this.logger.log('heree voiceTwiloApp ', voiceTwiloApp)
           if (voiceTwiloApp) {
-            voiceTwiloApp.channel = "voice-twilio";
+            voiceTwiloApp.channel = "voice_twilio";
           }
         }
         this.availableApps.push(voiceTwiloApp);
