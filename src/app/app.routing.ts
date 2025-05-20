@@ -3,7 +3,7 @@ import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-wi
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
@@ -1300,11 +1300,19 @@ const routes: Routes = [
 
 ];
 
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'enabled', // or 'top'
+  // anchorScrolling: 'enabled',           // if you want to support anchor links (e.g. #section1)
+  // scrollOffset: [0, 0]                  // optional: scroll offset [x, y]
+};
+
+
+
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, routerOptions)
   ],
   exports: [RouterModule],
   providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]

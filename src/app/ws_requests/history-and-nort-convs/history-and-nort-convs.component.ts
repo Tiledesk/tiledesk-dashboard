@@ -414,6 +414,23 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
 
+   ngOnDestroy() {
+    console.log('[HISTORY & NORT-CONVS] - call ngOnDestroy ');
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.closeOverlayed()
+
+    // if (this.requestList.length > 0) {
+    //   this.requestList.forEach(request => {
+    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
+    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
+    //     this.unsuscribeRequestById(request.request_id);
+    //     this.unsuscribeMessages(request.request_id);
+    //   });
+    // }
+  }
+
   closeOverlayed() {
     this.router.navigate([{ outlets: { overlay: null } }]);
   }
@@ -843,20 +860,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    // if (this.requestList.length > 0) {
-    //   this.requestList.forEach(request => {
-    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
+ 
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
