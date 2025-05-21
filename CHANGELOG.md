@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.105-rc4
+- Fixes the bug: Copilot automation block does not work when called from Automations section
+
 ### 2.7.105-rc3
 - Makes Copilot automation available from the Business plan and with enablement in customizations
 
