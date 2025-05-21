@@ -1971,6 +1971,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse": "Бір жауапты жасау үшін пайдалануға болатын токендердің ең көп саны.",
         "ControlTheRandomnessOfTheAnswer": "LLM ұсынған жауаптың кездейсоқтығын тексеріңіз.",
         "DeterminesHowManyChunksWillBePassedToTheLLM": "Жауапты жасау үшін мәтінмән ретінде LLM-ге қанша деректер көзінің бөліктері жіберілетінін анықтайды. LLM шатастыруын болдырмау үшін 2-4 ұсынамыз.",
+        "TheMaximumSupportedChunksNumberDependsByTheModel":"Қолдау көрсетілетін бөліктердің максималды саны үлгіге байланысты.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "Жүйеге жауаптарыңызды жасау кезінде ойнайтын рөлді беріңіз.",
         "Deterministic": "Детерминистік",
         "Random": "Кездейсоқ",

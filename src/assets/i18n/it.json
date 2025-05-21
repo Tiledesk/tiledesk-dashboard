@@ -1971,6 +1971,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse":"Il numero massimo di token che possono essere utilizzati per generare una singola risposta.",
         "ControlTheRandomnessOfTheAnswer":"Controlla la casualità della risposta fornita dall'LLM.",
         "DeterminesHowManyChunksWillBePassedToTheLLM":"Determina quanti chunks saranno passati all'LLM come contesto per generare una risposta. Consigliamo 2-4 per evitare confusione con l'LLM.",
+        "TheMaximumSupportedChunksNumberDependsByTheModel":"Il numero massimo di chunks supportati dipende dal modello.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers":"Assegna al sistema un ruolo che dovrà svolgere durante la creazione delle tue risposte.",
         "Deterministic":"Deterministico",
         "Random":"Casuale",

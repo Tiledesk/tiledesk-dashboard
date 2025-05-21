@@ -1972,6 +1972,7 @@
         "TheMaxTokensThatCanBeUsedToGenerateSingleResponse": "الحد الأقصى لعدد الرموز المميزة التي يمكن استخدامها لإنشاء استجابة واحدة",
         "ControlTheRandomnessOfTheAnswer": "التحكم في عشوائية الإجابة التي يقدمها LLM.",
         "DeterminesHowManyChunksWillBePassedToTheLLM": "يحدد عدد أجزاء مصدر البيانات التي سيتم تمريرها إلى LLM كسياق لتوليد استجابة. نوصي بـ 2-4 لتجنب ارتباك LLM.",
+        "TheMaximumSupportedChunksNumberDependsByTheModel":"يعتمد الحد الأقصى لعدد القطع المدعومة على النموذج.",
         "GiveTheSystemARoleThatItShouldPlayWhenCreatingYourAnswers": "أعطِ النظام دورًا يجب أن يلعبه عند إنشاء إجاباتك.",
         "Deterministic": "حتمية",
         "Random": "عشوائي",
