@@ -54,11 +54,26 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  top: 73px;
+  top: 60px;
   margin-left: 12px;
 }
 
 .td-widget-preview-avatar-image img {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+}
+
+.td-widget-preview-avatar--image  {
+  width: 40px;
+  height: 40px;
+  margin-left: 12px;
+  // position: absolute;
+  // top: 60px;
+}
+
+.td-widget-preview-avatar--image img {
   border-radius: 50%;
   height: 40px;
   width: 40px;
@@ -80,6 +95,18 @@
   margin-left: 59px;
 }
 
+.td-widget-preview-msg_receive > div { 
+  display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin: 10px 8px 0px;
+                padding-top: 3px;
+                font-size: 12px;
+                font-weight: 600;
+                color: #ee7aae;
+
+}
+
 .td-widget-preview-msg_receive-p {
   font-size: 14px;
   margin: 0;
@@ -96,13 +123,14 @@
 }
 
 .td-widget-preview-msg-sent-p {
-    text-align: right;
+    // text-align: right;
     padding: 6px 12px;
     // background-color: #62a8ea;
     background: linear-gradient(135grad, rgb(42, 106, 193), rgba(42, 106, 193, 0.8));
     color: #fff;
     margin-right: 0;
     margin-left: 114px;
+     margin-left: 1oopx;
     margin-top: 10px;
     border-radius: 20px;
 }
@@ -115,6 +143,47 @@
   width: 100%;
 }
 
+
+.powered-by-container {
+width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.powered-by-container > .footer--wpr-text-and-logo {
+text-align: center;
+    color: #5f6368;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.powered-by-container >  .footer--wpr-text-and-logo ::ng-deep a {
+  text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    color: #5f6368;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 22px;
+    font-family: Mulish, sans-serif;
+    letter-spacing: .24px;
+    -webkit-font-smoothing: antialiased;
+    padding: 4px 12px;
+
+}
+
+.powered-by-container > .footer--wpr-text-and-logo ::ng-deep a > img {
+      width: 20px;
+    height: auto;
+    max-height: 40px;
+    position: relative;
+    vertical-align: middle;
+    object-fit: contain;
+    padding-right: 1px;
+ }
 
 #buttons-in-message {
   text-align: right;

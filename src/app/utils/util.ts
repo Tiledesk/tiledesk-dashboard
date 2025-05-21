@@ -435,6 +435,14 @@ export enum KB_MAX_NUM {
     Custom = 1000
 };
 
+// export const PLANS_LIST = {
+//     FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
+//     Sandbox: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 2, namespace: 1, kbs: 50 },
+//     Basic: { requests: 800, messages: 0, tokens: 2000000, email: 200, chatbots: 5, namespace: 1, kbs: 150 },
+//     Premium: { requests: 3000, messages: 0, tokens: 5000000, email: 200, chatbots: 20, namespace: 3, kbs: 300 },
+//     Team: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+//     Custom: { requests: 5000, messages: 0, tokens: 10000000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+// }
 export const PLANS_LIST = {
     // FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
     FREE_TRIAL: { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 120000, email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
@@ -490,8 +498,29 @@ export const featuresPlanD = [
     "1 user",
     "800 Conversations/mo.",
     "5 AI Agents",
-    "Basic AI automation",
-    "Email support"
+    "Basic Al automation",
+    "Email support",
+    "Account manager",
+    // -------
+    "Live Chat",
+    "Notifications",
+    "CRM",
+    "Unlimited conversation history",
+    "Webhooks",
+    "Team inbox",
+    "Private notes",
+    "Working hours",
+    "Canned responses",
+    "Telegram",
+    "n8n",
+    "Make",
+    "iOS",
+    "Android",
+    "Basic widget customization",
+    "Multilanguage",
+    "Widget visibility",
+    "Community support",
+    "User ratings",
 
     // 'CRM',
     // 'Private Notes',
@@ -526,8 +555,28 @@ export const featuresPlanE = [
     "3 users",
     "3,000 Conversations/mo.",
     "20 AI Agents",
-    "Advanced AI workflows",
-    "Priority support"
+    "Advanced Al workflows",
+    "Priority support",
+    // ------
+    'Unlimited Groups',
+    'Unlimited Departments',
+    "Help Center",
+    "OpenAI",
+    "Google Gemini",
+    "Claude",
+    "Groq",
+    "Cohere",
+    "Facebook Messenger",
+    "Twilio SMS",
+    "WhatsApp Business",
+    'Brevo',
+    "Customer.io",
+    "HubSpot",
+    "Qapla’",
+    "Widget unbranding",
+    "Advanced analytics",
+    "Data export",
+
     // 'Widget Unbranding',
     // 'WhatsApp Business',
     // 'Facebook Messenger',
@@ -572,11 +621,34 @@ export const featuresPlanEE = [
     // "10 Knowledge Base",
     // '1,000 contents across all Knowledge Bases',
     // '10,000,000 AI Tokens'
-    "5 users", //"Up to 5 users",
+    "5 users",
     "5,000 Conversations/mo.",
     "50 AI Agents",
-    "Built-in AI automation", //"Custom AI tools",
-    "Dedicated support", //"Premium support"
+    "Built-in AI automation",
+    "Dedicated support",
+    "Live chat support",
+    // -----
+    'Unlimited Groups',
+    'Unlimited Departments',
+    "Help Center",
+    "OpenAI",
+    "Google Gemini",
+    "Claude",
+    "Groq",
+    "Cohere",
+    "Facebook Messenger",
+    "Twilio SMS",
+    "WhatsApp Business",
+    'Brevo',
+    "Customer.io",
+    "HubSpot",
+    "Qapla’",
+    "Widget unbranding",
+    "Advanced analytics",
+    "Data export",
+    // "Up to 5 users",
+    // "Custom AI tools",
+    // "Premium support"
 ]
 
 // Business plan (ex Team plan) 
@@ -593,20 +665,45 @@ export const additionalFeaturesPlanEE = [
 
 // Custom Plan
 export const featuresPlanF = [
-    'Dedicated Customer Success Manager',
-    'Chatbot Design Assistance',
-    'Onboarding and Training',
-    'Smart Assignment',
-    'Email Ticketing',
-    'IP Filtering',
-    'Email Templates Customisation',
-    'Activities Log',
-    'Ban Visitors',
-    'Connector with 3rd party AI',
-    'Automations Log',
-    'SMTP Settings',
-    'Support to host Tiledesk on your Infrastructure',
-    'Premium Customer Support',
+    "Unlimited users",
+    "Unlimited conversations",
+    "Unlimited AI Agents",
+    "Enterprise Support & SLA",
+    "Account manager",
+    //-- ------
+    "Email ticketing",
+    "IP filtering",
+    "Activities log",
+    "Bring your own AI",
+    "SMTP Settings",
+    "Smart Assignment",
+    "Ban visitors",
+    "SMS",
+    "Voice",
+    "Email templates customization",
+    "Self-hosting or private cloud",
+    "Single-Sign-On (SSO)",
+    // "Custom contracting / SLAs",
+    "Priority support",
+    "Account manager",
+    "Onboarding and training",
+    "Chatbot design assistance",
+    "Migration support"
+
+    // 'Dedicated Customer Success Manager',
+    // 'Chatbot Design Assistance',
+    // 'Onboarding and Training',
+    // 'Smart Assignment',
+    // 'Email Ticketing',
+    // 'IP Filtering',
+    // 'Email Templates Customisation',
+    // 'Activities Log',
+    // 'Ban Visitors',
+    // 'Connector with 3rd party AI',
+    // 'Automations Log',
+    // 'SMTP Settings',
+    // 'Support to host Tiledesk on your Infrastructure',
+    // 'Premium Customer Support',
 ]
 
 // Custom Plan
@@ -770,16 +867,31 @@ export function loadTokenMultiplier(ai_models) {
 //     'GPT-4o-mini':{ name: "GPT-4o mini",value: "gpt-4o-mini", status: "active"}
 // }
 
-export const TYPE_GPT_MODEL: Array<{ name: string, value: string, description: string, status: "active" | "inactive" }> = [
-    { name: "GPT-3 (DaVinci)", value: "text-davinci-003", description: "TYPE_GPT_MODEL.text-davinci-003.description", status: "inactive" },
-    { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description", status: "active" },
-    { name: "GPT-4 (Legacy)", value: "gpt-4", description: "TYPE_GPT_MODEL.gpt-4.description", status: "active" },
-    { name: "GPT-4 Turbo Preview", value: "gpt-4-turbo-preview", description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description", status: "active" },
-    { name: "GPT-4o", value: "gpt-4o", description: "TYPE_GPT_MODEL.gpt-4o.description", status: "active" },
-    { name: "GPT-4o mini", value: "gpt-4o-mini", description: "TYPE_GPT_MODEL.gpt-4o-mini.description", status: "active" },
-    { name: "OpenAI o1-mini", value: "o1-mini", description: "TYPE_GPT_MODEL.o1-mini.description", status: "active" },
-    { name: "OpenAI o1-preview", value: "o1-preview", description: "TYPE_GPT_MODEL.o1-preview.description", status: "active" }
+// export const TYPE_GPT_MODEL: Array<{ name: string, value: string, description: string, status: "active" | "inactive" }> = [
+//     { name: "GPT-3 (DaVinci)", value: "text-davinci-003", description: "TYPE_GPT_MODEL.text-davinci-003.description", status: "inactive" },
+//     { name: "GPT-3.5 Turbo", value: "gpt-3.5-turbo", description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description", status: "active" },
+//     { name: "GPT-4 (Legacy)", value: "gpt-4", description: "TYPE_GPT_MODEL.gpt-4.description", status: "active" },
+//     { name: "GPT-4 Turbo Preview", value: "gpt-4-turbo-preview", description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description", status: "active" },
+//     { name: "GPT-4o", value: "gpt-4o", description: "TYPE_GPT_MODEL.gpt-4o.description", status: "active" },
+//     { name: "GPT-4o mini", value: "gpt-4o-mini", description: "TYPE_GPT_MODEL.gpt-4o-mini.description", status: "active" },
+//     { name: "OpenAI o1-mini", value: "o1-mini", description: "TYPE_GPT_MODEL.o1-mini.description", status: "active" },
+//     { name: "OpenAI o1-preview", value: "o1-preview", description: "TYPE_GPT_MODEL.o1-preview.description", status: "active" }
+// ]
+
+export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: string, status: "active" | "inactive"}> = [
+    { name: "GPT-4.1",                          value: "gpt-4.1",               description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
+    { name: "GPT-4.1 mini",                     value: "gpt-4.1-mini",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
+    { name: "GPT-4.1 nano",                     value: "gpt-4.1-nano",          description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
+    { name: "GPT-4o",                           value: "gpt-4o",                description: "TYPE_GPT_MODEL.gpt-4o.description",                   status: "active"    },
+    { name: "GPT-4o mini",                      value: "gpt-4o-mini",           description: "TYPE_GPT_MODEL.gpt-4o-mini.description",              status: "active"    },
+    { name: "GPT-4 (Legacy)",                   value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                    status: "active"    },
+    { name: "GPT-4 Turbo Preview",              value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",      status: "active"    },
+    { name: "GPT-3 (DaVinci)",                  value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
+    { name: "GPT-3.5 Turbo",                    value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",            status: "active"    },
+    { name: "OpenAI o1-mini",                   value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",                  status: "active"    },
+    { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    }
 ]
+
 export const CHANNELS_NAME = {
     CHAT21: 'chat21',
     EMAIL: 'email',

@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { ProjectUser } from 'app/models/project-user';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -92,6 +93,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   isOpenEditContactFullnameDropdown: boolean = false;
   contactNewFirstName: string;
   contactNewLastName: string;
+  USER_ROLE: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -132,6 +134,15 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getChatUrl();
     this.getBrowserVersion();
     this.getOSCODE();
+    this.getProjectUserRole();
+  }
+
+  getProjectUserRole() {
+   this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+       if(projectUser){
+         this.USER_ROLE = projectUser.role;
+       }
+     })
   }
 
 

@@ -128,9 +128,14 @@
                                 </button> -->
               
                     <!-- ----------- MAT-MENU ----------- -->
-                    <button id="select-namespace" mat-icon-button [matMenuTriggerFor]="namespaceList" aria-label="namespaceList"
-                      matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                    <button id="select-namespace" mat-icon-button 
+                      [matMenuTriggerFor]="namespaceList" 
+                      aria-label="namespaceList"
+                      matTooltipClass="kb-custom-mat-tooltip" 
+                      matTooltip="{{ 'KbPage.AddNewKbOrSelectExistingOne' | translate }}"
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='right' 
+                      matTooltipHideDelay="100">
                       <mat-icon>unfold_more</mat-icon>
                     </button>
               
@@ -218,19 +223,29 @@
                 <!-- ---------------------------------------- -->
                 <!-- Delete KB / CONTENT -->
                 <!-- ---------------------------------------- -->
+               
+
+                    <!-- matTooltipClass="kb-custom-mat-tooltip" 
+                    matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below' 
+                    matTooltipHideDelay="100" -->
                 <div class="buttons-div">
                   <button id="delete-kb" class="btn btn-red" [disabled]="addButtonDisabled" aria-label="Delete"
                     style="text-transform: capitalize;" (click)="onOpenDeleteNamespaceModal()"
-                    matTooltipClass="kb-custom-mat-tooltip" 
-                    matTooltip="{{ 'KbPage.DeleteKb' | translate }}"
-                    #tooltip="matTooltip" 
-                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    >
                     <!-- <span class=""> {{ 'KbPage.Add' | translate }} </span> -->
                     <!-- <span class="material-icons-round" style="vertical-align: middle;">
                       delete
                     </span> -->
                     <!-- {{ 'KbPage.DeleteNamespace' | translate }} -->
-                    {{ 'Delete' | translate }}
+                      <span *ngIf="selectedNamespace.default === false">
+                        {{ 'Delete' | translate }}
+                      </span>
+                      <span *ngIf="selectedNamespace.default === true">
+                        {{'KbPage.DeleteNamespace' | translate}}
+                      </span>
+                    
                   </button>
 
                   <!-- ---------------------------------------- -->
