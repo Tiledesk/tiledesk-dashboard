@@ -221,7 +221,8 @@ export class SatisfactionComponent implements OnInit, OnDestroy {
       this.logger.log("[ANALYTICS - SATISFACTION] !!! AVG Satisfaction: ", res);
       // const testN = 3.84577114427861
       // this.avgSatisfaction = res[0].satisfaction_avg;
-      const satisfaction_avg_formatted = res[0].satisfaction_avg % 1 === 0 ? res[0].satisfaction_avg.toString() : res[0].satisfaction_avg.toFixed(1)
+      // const satisfaction_avg_formatted = testN % 1 === 0 ? testN.toString() : testN.toFixed(2)
+      const satisfaction_avg_formatted = res[0].satisfaction_avg % 1 === 0 ? res[0].satisfaction_avg.toString() : res[0].satisfaction_avg.toFixed(2)
       const satisfaction_avg_formatted_with_comma = satisfaction_avg_formatted.replace('.', ',');
      
       this.avgSatisfaction = satisfaction_avg_formatted_with_comma;
