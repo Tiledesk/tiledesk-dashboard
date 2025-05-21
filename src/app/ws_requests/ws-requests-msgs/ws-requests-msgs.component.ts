@@ -3536,7 +3536,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
       .subscribe(pair => {
         // this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
-        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+        this.logger.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
 
         if (pair && pair._projectUsers) {
           this.projectUsersList = pair._projectUsers;
