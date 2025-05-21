@@ -33,7 +33,7 @@ export class CreateChatbotModalComponent implements OnInit {
     private logger: LoggerService,
     private kbService: KnowledgeBaseService,
   ) {
-    this.logger.log('[Create-chatbot-modal] data:', data)
+    // console.log('[Create-chatbot-modal] data:', data)
     this.logger.log('[Create-chatbot-modal] data automationCopilotIsEnabled:', data.automationCopilotIsEnabled)
     if (data ) {
       this.botSubType = data.subtype;

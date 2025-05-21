@@ -1879,6 +1879,17 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
   }
 
+  presentModalAddCopilot(subtype) {
+     this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
+    
+    if(this.automationCopilotIsAvailable === false || this.automationCopilotIsEnabled === false) {
+      this.presentModalAddBotFromScratch(subtype, this.automationCopilotIsAvailable, this.automationCopilotIsEnabled, this.t_params, this.salesEmail, this.project_name, this.currentProjectId, this.isVisiblePAY)
+    } else if (this.automationCopilotIsAvailable === true && this.automationCopilotIsEnabled === true) {
+      this.presentModalAddBotFromScratch(subtype)
+    }
+  }
+
+
   presentModalAddBotFromScratch(subtype: string, automationCopilotIsAvailable?:boolean, automationCopilotIsEnabled?:boolean ,t_params?: any,salesEmail?:string, project_name?:string, currentProjectId?: string, isVisiblePAY?:boolean) {
     this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype, 'automationCopilotIsAvailable ' , automationCopilotIsAvailable, 'automationCopilotIsEnabled ', automationCopilotIsEnabled);
     // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
