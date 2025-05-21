@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.105
+- Renames the sidebar menu item "Bot" in "Flows"
+- Moves the menu items Templates from the Flows sidebar in the Templates page
+- Adds in the Flows sidebar the menu items AI Agents, Automations and Webhooks
+- Adds the ability to create Copilot and Webhook type Flows
+
 ### 2.7.104
 - Improves the widget preview available on the widget setup page
 
