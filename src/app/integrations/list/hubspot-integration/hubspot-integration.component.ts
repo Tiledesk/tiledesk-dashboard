@@ -46,7 +46,7 @@ export class HubspotIntegrationComponent implements OnInit {
 
   saveIntegration() {
     let data = {
-      integration: this.integration
+      integration: this.integration,
     }
     this.onUpdateIntegration.emit(data);
     // this.checkKey().then((status) => {

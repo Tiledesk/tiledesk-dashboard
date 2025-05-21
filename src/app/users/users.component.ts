@@ -950,15 +950,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.user_firstname = userFirstname
     this.user_lastname = userLastname
 
-    this.logger.log(
-      '[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',
-      this.id_projectUser,
-      ' - (Firstname: ',
-      userFirstname,
-      '; Lastname: ',
-      userLastname,
-      ')',
-    )
+    this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',  this.id_projectUser, ' - (Firstname: ',  userFirstname, '; Lastname: ',    userLastname,  ')')
   }
 
   onCloseDeleteModalHandled() {

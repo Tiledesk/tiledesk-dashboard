@@ -461,7 +461,8 @@
                     #tooltip="matTooltip" 
                     matTooltipPosition='above' 
                     matTooltipHideDelay="100"
-                    style="height: 32px !important;padding: 4px 7px 7px 7px !important;">
+                    style="height: 32px !important;padding: 4px 7px 7px 7px !important;"
+                    [disabled]="USER_ROLE === 'agent'">
                  
                   <span class="material-icons-round" style="vertical-align: middle; font-size: 18px;">
                     delete

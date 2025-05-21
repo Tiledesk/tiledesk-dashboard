@@ -1,5 +1,33 @@
 # tiledesk-dashboard
 
+### 2.7.104
+- Improves the widget preview available on the widget setup page
+
+### 2.7.103
+- Updates the widget preview available on the widget setup page
+
+### 2.7.102
+- Removes unused code in the Knowledge Bases page
+
+### 2.7.101
+- Removes the webhook and copilot subtypes from the list of chatbots that can be activated for a department
+
+### 2.7.100
+- Minor improvements and bug fixing
+
+### 2.7.99
+- Adds the ability to activate the refresh rate for the contents of type URLs
+
+### 2.7.98
+- Adds the ability to test Knowledge Bases with the Open AI models: GPT-4.1, GPT-4.1 mini and GPT-4.1 nano
+- Removes the Free plan 
+- Fixes Hubspot integration "Invalid" message
+- Sort conversations in History by creation date
+
+### 2.7.97
+- Adds the “Update widget” button for all sections of the widget set-up page
+- Adds a preview in the widget set-up page Advanced section
+
 ### 2.7.96
 - Improves Home page performance
 - Implements the HTTP interceptor
