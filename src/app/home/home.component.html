@@ -404,9 +404,12 @@
               </span>
               <span
                 *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true || prjct_profile_type === 'free'">
-                ATTENTION: You have used up one or more of your monthly resources. To increase your monthly resources
-                quotas,
-                <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+                ATTENTION: You have used up one or more of your monthly resources. 
+                <span *ngIf="USER_ROLE === 'owner'">  To increase monthly resources quotas,
+                  <span class="sales-mail-to" (click)="contacUsViaEmail()"> contact our sales team </span>
+                </span>
+                <span *ngIf="USER_ROLE !== 'owner'">  To increase monthly resources quotas, contact the project owner </span>
+                
               </span>
             </div>
           </div>

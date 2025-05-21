@@ -44,63 +44,81 @@
           </svg>
         </span>
       </span>
-
-
-
     </div>
 
     <div class="card-footer td-widget-preview-card-footer">
-      <div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
+      <!-- <div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div> -->
+      <div style="margin-top: 12px;">
+        <div class="td-widget-preview-avatar-image">
+          <img src="assets/img/avatar_bot_tiledesk.svg">
+        </div>
 
-      <div class="td-widget-preview-avatar-image">
-        <img src="assets/img/avatar_bot_tiledesk.svg">
+        <!-- onlineMsg {{ onlineMsg }} -->
+        <div *ngIf="HAS_FOCUSED_ONLINE_MSG" class="td-widget-preview-msg_receive">
+          <div>
+            Bot
+          </div>
+          <p [innerHTML]="onlineMsg" class="td-widget-preview-msg_receive-p"></p>
+        </div>
+
+
+        <div *ngIf="HAS_FOCUSED_OFFLINE_MSG" class="td-widget-preview-msg_receive">
+          <div>
+            Bot
+          </div>
+          <p [innerHTML]="offlineMsg" class="td-widget-preview-msg_receive-p"></p>
+        </div>
+
+
+        <div *ngIf="HAS_FOCUSED_OFFICE_CLOSED_MSG" class="td-widget-preview-msg_receive">
+          <div>
+            Bot
+          </div>
+          <p [innerHTML]="officeClosedMsg" class="td-widget-preview-msg_receive-p"></p>
+        </div>
       </div>
 
-      <!-- onlineMsg {{ onlineMsg }} -->
-      <div *ngIf="HAS_FOCUSED_ONLINE_MSG" class="td-widget-preview-msg_receive">
-        <p [innerHTML]="onlineMsg" class="td-widget-preview-msg_receive-p"></p>
-      </div>
-
-      <div *ngIf="HAS_FOCUSED_OFFLINE_MSG" class="td-widget-preview-msg_receive">
-        <p [innerHTML]="offlineMsg" class="td-widget-preview-msg_receive-p"></p>
-      </div>
-
-
-      <div *ngIf="HAS_FOCUSED_OFFICE_CLOSED_MSG" class="td-widget-preview-msg_receive">
-        <p [innerHTML]="officeClosedMsg" class="td-widget-preview-msg_receive-p"></p>
-      </div>
 
       <div *ngIf="!IS_ONBOARDING_PAGE" style="position: relative;">
-        <div class="td-widget-preview-msg-sent-p" style="">
-          Hi, i'm having trouble logging in.
+        <div class="td-widget-preview-msg-sent-p-wpr" style="margin-right: 38px;">
+
+          <div class="td-widget-preview-msg-sent-p" style="">
+            <!-- Hi, i'm having trouble logging in. -->
+            {{chatPreviewText1}}
+          </div>
         </div>
 
 
-        <div class="td-widget-preview-slide-in-left" role="messaggio">{{current_user_name}}</div>
+        <!-- <div class="td-widget-preview-slide-in-left" role="messaggio">{{current_user_name}}</div> -->
+        <div class="d-widget-preview-msg_receive-wpr" style="margin-top: 20px; display: flex;
+              flex-direction: row; align-items: flex-start;">
+          <div class="td-widget-preview-avatar--image">
 
-        <div class="td-widget-preview-avatar-image" style="top: 64px;left: 0;">
+            <!-- --------------------------------------------------- -->
+            <!-- Usecase Firebase -->
+            <!-- --------------------------------------------------- -->
+            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+              src="https://firebasestorage.googleapis.com/v0/b/{{imageStorage}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"
+              onerror="this.src='assets/img/no_image_user.png'" />
 
-          <!-- --------------------------------------------------- -->
-          <!-- Usecase Firebase -->
-          <!-- --------------------------------------------------- -->
-          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-            src="https://firebasestorage.googleapis.com/v0/b/{{imageUrl}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media"
-            onerror="this.src='assets/img/no_image_user.png'" />
+            <!-- --------------------------------------------------- -->
+            <!-- Usecase Native -->
+            <!-- --------------------------------------------------- -->
+            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+              src="{{imageStorage}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+              onerror="this.src='assets/img/no_image_user.png'" />
+          </div>
+          <div style="">
+            <!-- text-align: right; padding: 6px 12px;  background-color: #f7f7f7; color: #1a1a1a; margin-left: 66px; margin-top: 0px; border-radius: 8px; -->
+            <div class="td-widget-preview-msg_receive" style="margin-left: 8px;">
 
-          <!-- --------------------------------------------------- -->
-          <!-- Usecase Native -->
-          <!-- --------------------------------------------------- -->
-          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-            src="{{imageUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-            onerror="this.src='assets/img/no_image_user.png'" />
-        </div>
-        <div>
-          <!-- text-align: right; padding: 6px 12px;  background-color: #f7f7f7; color: #1a1a1a; margin-left: 66px; margin-top: 0px; border-radius: 8px; -->
-          <div  class="td-widget-preview-msg_receive" 
-            style="">
-            <p class="td-widget-preview-msg_receive-p"> 
-              Can you tell me more?
-            </p>
+              <div style=""> {{current_user_name}} </div>
+              <p class="td-widget-preview-msg_receive-p" >
+                <!-- Can you tell me more? -->
+                {{chatPreviewText2}}
+              </p>
+
+            </div>
           </div>
         </div>
       </div>
@@ -116,8 +134,7 @@
                   [ngStyle]="{
                   'color':activeQuestion === i ? 'rgba(255,255,255,1)' : 'rgba(42,106,193,1)',
                   'background-color':activeQuestion === i ? 'rgba(42,106,193,1)' : 'rgba(255,255,255,1)',
-                  'border-color':'rgba(42,106,193,1)'
-                }">
+                  'border-color':'rgba(42,106,193,1)'}">
                   {{question}}
                 </div>
               </div>
@@ -132,11 +149,19 @@
 
     <div id="chat-preview-footer">
 
-      <div class="textarea-container" [ngClass]="{'no-gap': showAttachmentButton === false && showEmojiButton === false}">
+      <div class="powered-by-container">
+        <div class="footer--wpr-text-and-logo" [innerHTML]="footerBrand"></div>
+      </div>
+
+
+
+      <div class="textarea-container"
+        [ngClass]="{'no-gap': showAttachmentButton === false && showEmojiButton === false}">
 
         <div class="icons-container">
 
-          <div id="chat21-start-upload-doc" class="chat21-textarea-button" [ngClass]="{'hide-attachment-btn': showAttachmentButton === false }">
+          <div id="chat21-start-upload-doc" class="chat21-textarea-button"
+            [ngClass]="{'hide-attachment-btn': showAttachmentButton === false }">
             <span class="v-align-center">
               <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 28 28" transform="rotate(45)"
                 style="position: relative; top: 3px;">
@@ -145,13 +170,15 @@
                 </path>
               </svg> -->
 
-              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24" viewBox="0 0 24 24" >
-                    <path d="M18.4,13.2l-2.6,4.5c-1.5,2.6-4.9,3.6-7.6,2c-2.6-1.5-3.6-4.9-2-7.6l3.9-6.7c1.1-1.9,3.6-2.6,5.5-1.5 c1.9,1.1,2.6,3.6,1.5,5.5l-3.3,5.7c-0.7,1.3-2.3,1.7-3.6,1c-1.3-0.7-1.7-2.3-1-3.6l2-3.4c0.2-0.3,0.6-0.5,1-0.3s0.5,0.6,0.3,1 l-2,3.4c-0.3,0.5-0.2,1.1,0.3,1.5c0.4,0.4,1.1,0.4,1.5,0c0.1-0.1,0.2-0.2,0.2-0.3l3.3-5.7c0.7-1.2,0.3-2.8-1-3.5 c-1.2-0.7-2.8-0.3-3.5,1l-3.9,6.7C6.4,14.9,7,17.4,9,18.5c1.9,1.1,4.4,0.5,5.6-1.5l2.6-4.5c0.2-0.3,0.6-0.5,1-0.3 C18.5,12.5,18.6,12.9,18.4,13.2L18.4,13.2z"/>
-                </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24" viewBox="0 0 24 24">
+                <path
+                  d="M18.4,13.2l-2.6,4.5c-1.5,2.6-4.9,3.6-7.6,2c-2.6-1.5-3.6-4.9-2-7.6l3.9-6.7c1.1-1.9,3.6-2.6,5.5-1.5 c1.9,1.1,2.6,3.6,1.5,5.5l-3.3,5.7c-0.7,1.3-2.3,1.7-3.6,1c-1.3-0.7-1.7-2.3-1-3.6l2-3.4c0.2-0.3,0.6-0.5,1-0.3s0.5,0.6,0.3,1 l-2,3.4c-0.3,0.5-0.2,1.1,0.3,1.5c0.4,0.4,1.1,0.4,1.5,0c0.1-0.1,0.2-0.2,0.2-0.3l3.3-5.7c0.7-1.2,0.3-2.8-1-3.5 c-1.2-0.7-2.8-0.3-3.5,1l-3.9,6.7C6.4,14.9,7,17.4,9,18.5c1.9,1.1,4.4,0.5,5.6-1.5l2.6-4.5c0.2-0.3,0.6-0.5,1-0.3 C18.5,12.5,18.6,12.9,18.4,13.2L18.4,13.2z" />
+              </svg>
             </span>
           </div>
 
-          <div id="chat21-emoticon-picker" class="chat21-textarea-button" [ngClass]="{'hide-emoji-btn': showEmojiButton === false }">
+          <div id="chat21-emoticon-picker" class="chat21-textarea-button"
+            [ngClass]="{'hide-emoji-btn': showEmojiButton === false }">
             <span class="v-align-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path d="M0,0H20.57V20.57H0V0Z" fill="none"></path>
@@ -166,11 +193,16 @@
 
         </div>
 
-        <div class="visible-text-area" [ngClass]="{'w-90': showAudioRecorderButton === false && showEmojiButton === false && showAttachmentButton === false }" >
-          <span> type your message.. </span>
+        <div class="visible-text-area"
+          [ngClass]="{'w-90': showAudioRecorderButton === false && showEmojiButton === false && showAttachmentButton === false }">
+          <span>
+            <!-- type your message..  -->
+            {{LABEL_PLACEHOLDER}}
+          </span>
         </div>
 
-        <div  id="chat21-button-rec" class="chat21-audio-button" [ngClass]="{'hide-audio-btn': showAudioRecorderButton === false }">
+        <div id="chat21-button-rec" class="chat21-audio-button"
+          [ngClass]="{'hide-audio-btn': showAudioRecorderButton === false }">
           <div class="audio-recorder">
             <div class="mic-button ">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"
@@ -186,9 +218,11 @@
 
         <div *ngIf="!showAudioRecorderButton" id="chat21-button-send" class="chat21-textarea-button">
           <span class="v-align-center">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24" width="24" viewBox="0 0 24 24" xml:space="preserve" 
-                style="enable-background: new 0 0 24 24;" fill="#B2B2B2">
-              <path  d="M1.8,18.9V1.7L22,10.3L1.8,18.9z M3.9,15.6l12.6-5.4L3.9,4.9v3.7l6.4,1.6l-6.4,1.6V15.6z M3.9,15.6V4.9v7V15.6z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24" width="24"
+              viewBox="0 0 24 24" xml:space="preserve" style="enable-background: new 0 0 24 24;" fill="#B2B2B2">
+              <path
+                d="M1.8,18.9V1.7L22,10.3L1.8,18.9z M3.9,15.6l12.6-5.4L3.9,4.9v3.7l6.4,1.6l-6.4,1.6V15.6z M3.9,15.6V4.9v7V15.6z">
+              </path>
             </svg>
           </span>
         </div>

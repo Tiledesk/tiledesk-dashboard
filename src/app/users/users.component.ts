@@ -378,14 +378,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.USER_ROLE = user_role
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role
         this.logger.log('[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
-      })
+      }
+    })
   }
 
   getBrowserVersion() {
@@ -950,15 +948,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.user_firstname = userFirstname
     this.user_lastname = userLastname
 
-    this.logger.log(
-      '[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',
-      this.id_projectUser,
-      ' - (Firstname: ',
-      userFirstname,
-      '; Lastname: ',
-      userLastname,
-      ')',
-    )
+    this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',  this.id_projectUser, ' - (Firstname: ',  userFirstname, '; Lastname: ',    userLastname,  ')')
   }
 
   onCloseDeleteModalHandled() {

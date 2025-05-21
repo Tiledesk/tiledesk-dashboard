@@ -13,6 +13,8 @@ import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
+import { NotifyService } from 'app/core/notify.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -39,7 +41,8 @@ export class AutologinComponent implements OnInit {
     private projectService: ProjectService,
     private logger: LoggerService,
     private localDbService: LocalDbService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public notify: NotifyService,
   ) {
 
     this.user = auth.user_bs.value;
@@ -70,11 +73,12 @@ export class AutologinComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .subscribe((userRole) => {
-        this.logger.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[AUTOLOGIN] - $UBSCRIPTION TO USER ROLE »»» ', projectUser)
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
 
@@ -168,11 +172,11 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin routeSegments ', routeSegments);
 
       const projectIDGetFromRoute = routeSegments[2]
-      
+
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
-    
+
       this.getProject(projectIDGetFromRoute)
-    
+
 
       this.router.navigate([route]);
 
@@ -198,12 +202,13 @@ export class AutologinComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser  error', error);
-      // console.log('[AUTOLOGIN] SSO error.error ',  error.error);
-      // console.log('[AUTOLOGIN] SSO error.status ',  error.status);
+      // this.logger.log('[AUTOLOGIN] SSO error.error ',  error.error);
+      // this.logger.log('[AUTOLOGIN] SSO error.status ',  error.status);
       if (error && error.status && error.status === 401) {
         this.router.navigate(['invalid-token'])
       }
      
+
 
     }, () => {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser * COMPLETE *');
@@ -222,7 +227,7 @@ export class AutologinComponent implements OnInit {
     });
   }
 
- 
+
 
 
   getProject(projectIDGetFromRouteIsNumber) {
@@ -240,7 +245,7 @@ export class AutologinComponent implements OnInit {
     })
   }
 
- 
+
 
 
 
@@ -292,6 +297,11 @@ export class AutologinComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[AUTOLOGIN] - GET PROJECT BY ID - ERROR ', error);
+      this.logger.log(error.error)
+      if (error.error.msg === 'you dont belong to the project.') {
+        this.notify.presentModalYouDontBelongToTheProject()
+      }
+
     }, () => {
       this.logger.log('[AUTOLOGIN] - GET PROJECT BY ID - COMPLETE ');
 
