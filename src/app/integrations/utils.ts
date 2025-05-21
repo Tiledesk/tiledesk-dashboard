@@ -18,7 +18,7 @@ export enum INTEGRATIONS_KEYS {
     TELEGRAM = 'telegram',
     TWILIO = 'twilio',
     VXML_VOICE = 'voice',
-    TWILIO_VOICE = "voice-twilio",
+    TWILIO_VOICE = "voice_twilio",
     WHATSAPP = 'whatsapp',
     ZAPIER = 'zapier',
     ZENDESK = 'zendesk',

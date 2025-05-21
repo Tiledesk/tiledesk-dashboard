@@ -131,6 +131,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   public selectedProjectId: string;
   public projectname: string;
+  public project_name: string;
+
   public currentProjectId: string;
   public botProfileImageExist: boolean;
   public botProfileImageurl: string;
@@ -149,6 +151,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   public contactUs: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
   salesEmail: string;
   WIDGET_BASE_URL: string;
   defaultDeptId: string;
@@ -180,8 +183,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   automationIsAssociatedWithTheDepartment: string
   automationIsAssociatedWithDepartments: string
   disassociateTheAutomation: string
-  automationCopilotIsEnables: boolean;
-
+  automationCopilotIsEnabled: boolean;
+  automationCopilotIsAvailable: boolean;
+  t_params: any
 
   // editBotName: boolean = false;
   constructor(
@@ -648,11 +652,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
       this.logger.log('[BOTS-LIST] - GET PROJECT BY ID - project ', project);
+      this.project_name = project.name;
       const projectProfileData = project.profile
       this.logger.log('[BOTS-LIST] - GET PROJECT BY ID - projectProfileData ', projectProfileData);
-
+      this.profile_name = project.profile.name;
+      const isActiveSubscription = project.isActiveSubscription
+      const trialExpired = project.trialExpired
+      const projectProfileType = project.profile.type
       this.manageVoiceChatbotVisibility(projectProfileData)
-      this.getIfBotSubtypeAreEnabled(projectProfileData)
+      this.getIfAutomationCopilotIsEnabled(projectProfileData)
+      this.managePlanAutomationCopilotAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
 
     }, error => {
       this.logger.error('[BOTS-LIST] - GET PROJECT BY ID - ERROR ', error);
@@ -661,31 +670,157 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
   }
 
-    getIfBotSubtypeAreEnabled(projectProfile) {
-    // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - projectProfile: ', projectProfile);
+  managePlanAutomationCopilotAvailability(profileName, isActiveSubscription, trialExpired, projectProfileType) {
+    this.logger.log('[BOTS-LIST] - managePlanRefreshRateAvailability - profile_name: ', profileName);
+    this.logger.log('[BOTS-LIST] - managePlanRefreshRateAvailability - isActiveSubscription: ', isActiveSubscription);
+    this.logger.log('[BOTS-LIST] - managePlanRefreshRateAvailability - isActiveSubscription: ', trialExpired);
+    this.logger.log('[BOTS-LIST] - managePlanRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
+    this.t_params = { 'plan_name': PLAN_NAME.EE }
+    if (projectProfileType === 'free') {
+      if (trialExpired === false) {
+        // Trial active
+        if (profileName === 'free') {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+
+        } else if (profileName === 'Sandbox') {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else {
+        // Trial expired
+        if (profileName === 'free') {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        } else if (this.profile_name === 'Sandbox') {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  isAvailableRefreshRateFeature', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    } else if (projectProfileType === 'payment') {
+
+      if (isActiveSubscription === true) {
+        // Growth sub active
+        if (profileName === PLAN_NAME.A) {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub active
+        } else if (profileName === PLAN_NAME.B) {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub active
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.automationCopilotIsAvailable = true;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Basic sub active
+        } else if (profileName === PLAN_NAME.D) {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Premium sub active
+        } else if (profileName === PLAN_NAME.E) {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Team sub active
+        } else if (profileName === PLAN_NAME.EE) {
+          this.automationCopilotIsAvailable = true;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub active
+        } else if (profileName === PLAN_NAME.F) {
+          this.automationCopilotIsAvailable = true;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      } else if (isActiveSubscription === false) {
+        // Growth sub expired
+        if (profileName === PLAN_NAME.A) {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Scale sub expired
+        } else if (profileName === PLAN_NAME.B) {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Plus sub expired
+        } else if (profileName === PLAN_NAME.C) {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Basic sub expired
+        } else if (profileName === PLAN_NAME.D) {
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Premium sub expired
+        } else if (profileName === PLAN_NAME.E) {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Team sub expired
+        } else if (profileName === PLAN_NAME.EE) {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+          // Custom sub expired
+        } else if (profileName === PLAN_NAME.F) {
+
+          this.automationCopilotIsAvailable = false;
+          this.logger.log('[BOTS-LIST]  automationCopilotIsAvailable', this.automationCopilotIsAvailable, '  profileName  ', profileName, 'trialExpired ', trialExpired, 'projectProfileType ', projectProfileType, 'isActiveSubscription ', isActiveSubscription)
+
+        }
+
+      }
+    }
+  }
+
+  
+
+  getIfAutomationCopilotIsEnabled(projectProfile) {
+    this.logger.log('[BOT-CREATE] - getIfAutomationCopilotIsEnabled - projectProfile: ', projectProfile);
     if (projectProfile && projectProfile['customization']) {
 
       if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] !== undefined) {
 
         if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === true) {
 
-          this.automationCopilotIsEnables = true
-          // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 1: ', this.botSubtypeAreEnabled);
+          this.automationCopilotIsEnabled = true
+          this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - automationCopilotIsEnabled 1: ', this.automationCopilotIsEnabled);
 
         } else if (projectProfile && projectProfile['customization']['webhook'] && projectProfile['customization']['webhook'] === false) {
 
-          this.automationCopilotIsEnables = false;
-          // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 2: ', this.botSubtypeAreEnabled);
+          this.automationCopilotIsEnabled = false;
+          this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - automationCopilotIsEnabled 2: ', this.automationCopilotIsEnabled);
         }
 
       } else {
-        this.automationCopilotIsEnables = false
-        // this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 3: ', this.botSubtypeAreEnabled);
+        this.automationCopilotIsEnabled = false
+        this.logger.log('[BOT-CREATE] - getIfBotSubtypeAreEnabled - automationCopilotIsEnabled 3: ', this.automationCopilotIsEnabled);
       }
 
     } else {
-      this.automationCopilotIsEnables = false
-      // this.logger.log('[KNOWLEDGE-BASES-COMP] - getIfBotSubtypeAreEnabled - botSubtypeAreEnabled 4: ', this.botSubtypeAreEnabled);
+      this.automationCopilotIsEnabled = false
+      this.logger.log('[BOTS-LIST] - getIfBotSubtypeAreEnabled - automationCopilotIsEnabled 4: ', this.automationCopilotIsEnabled);
     }
   }
 
@@ -1728,15 +1863,24 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType);
       this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType typeof:`, typeof subType);
       if (subType && typeof subType !== 'object') {
+        if (subType !== 'copilot') {
         this.presentModalAddBotFromScratch(subType)
+        } else if (subType === 'copilot' && (this.automationCopilotIsAvailable === false || this.automationCopilotIsEnabled === false)) { 
+          this.logger.log(`[BOTS-LIST] Dialog Create Flows after Closed - subType :`, subType, ' automationCopilotIsAvailable ' , this.automationCopilotIsAvailable);
+          
+          this.presentModalAddBotFromScratch(subType, this.automationCopilotIsAvailable, this.automationCopilotIsEnabled, this.t_params, this.salesEmail, this.project_name, this.currentProjectId, this.isVisiblePAY)
+          
+        } else if (subType === 'copilot' && (this.automationCopilotIsAvailable === true && this.automationCopilotIsEnabled === true)) {
+          this.presentModalAddBotFromScratch(subType)
+        }
       } else if (subType && typeof subType === 'object') {
         this.fileChangeUploadChatbotFromJSON(subType)
       }
     });
   }
 
-  presentModalAddBotFromScratch(subtype) {
-    console.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype);
+  presentModalAddBotFromScratch(subtype: string, automationCopilotIsAvailable?:boolean, automationCopilotIsEnabled?:boolean ,t_params?: any,salesEmail?:string, project_name?:string, currentProjectId?: string, isVisiblePAY?:boolean) {
+    this.logger.log('[BOTS-LIST] - presentModalAddBotFromScratch subtype ', subtype, 'automationCopilotIsAvailable ' , automationCopilotIsAvailable, 'automationCopilotIsEnabled ', automationCopilotIsEnabled);
     // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     // createBotFromScratchBtnEl.blur()
@@ -1745,13 +1889,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       hasBackdrop: true,
       width: '400px',
       data: {
-        'subtype': subtype
+        'subtype': subtype,
+        "automationCopilotIsAvailable": automationCopilotIsAvailable,
+        "automationCopilotIsEnabled": automationCopilotIsEnabled,
+         "t_params": t_params,
+         "salesEmail": salesEmail,
+         "project_name": project_name,
+         "currentProjectId":currentProjectId,
+         "isVisiblePAY":isVisiblePAY
       },
     })
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[BOTS-LIST] Dialog result:`, result);
 
-      if (result) {
+      if (result && result !== 'upgrade-plan') {
         this.chatbotName = result.chatbotName;
 
         if (this.chatbotName && result.subType !== 'copilot') {
@@ -1759,11 +1910,55 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         } else if (this.chatbotName && result.subType === 'copilot' && result.namespace_id) {
           this.createBlankTilebot(result.subType, result.namespace_id)
         }
+      } else if (result && result === 'upgrade-plan') {
+        this.goToPricing()
       }
     });
   }
 
+   goToPricing() {
+    if (this.isVisiblePAY) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          if (this.profile_name === PLAN_NAME.C) {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 1 ')
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
 
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 2 ')
+          } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+            // this.notify._displayContactUsModal(true, 'upgrade_plan');
+            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 3 ')
+          }
+        } else if (this.prjct_profile_type === 'free') {
+          this.router.navigate(['project/' + this.currentProjectId + '/pricing']);
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.profile_name === PLAN_NAME.EE
+
+        ) {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 4 ')
+          // this.presentModalFeautureAvailableOnlyWithPlanC()
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 5 ')
+      }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.logger.log('[KNOWLEDGE-BASES-COMP] goToPricing HERE 6 ')
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
 
   presentDialogReachedChatbotLimit() {
     this.logger.log('[BOTS-LIST] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
@@ -1907,6 +2102,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       .subscribe((translation: any) => {
         this.learnMoreAboutDefaultRoles = translation
       })
+
+      this.translate
+      .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
 
     this.translate
       .get('AgentsCannotManageChatbots')
