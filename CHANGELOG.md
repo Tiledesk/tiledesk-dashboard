@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.105-rc3
+- Makes Copilot automation available from the Business plan and with enablement in customizations
+
 ### 2.7.105-rc2
 - Fixes the bug: Twilio voice menu item is not visible in integrations even if it is enabled in customizations
 
