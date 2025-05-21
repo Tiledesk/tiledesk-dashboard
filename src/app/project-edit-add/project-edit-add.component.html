@@ -277,7 +277,7 @@
                     <div class="col-md-12">
                       <!-- btn-danger -->
                       <button id="delete-project-btn" class="btn  btn-red " style="margin-top:0px"
-                        (click)="openDeleteModal()">
+                        (click)="openDeleteModal()" [disabled]="USER_ROLE !== 'owner'">
                         <i class="material-icons" style="vertical-align: middle">delete_forever</i>
                         {{ "ProjectEditPage.DeleteProject" | translate }}
                       </button>

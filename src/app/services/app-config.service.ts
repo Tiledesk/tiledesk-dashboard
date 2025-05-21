@@ -13,6 +13,7 @@ export class AppConfigService {
   ) {
     // console.log('AppConfigService HELLO !!!!');
     this.appConfig = environment;
+ 
     this.rawHttp = new HttpClient(handler); // bypass interceptors
   }
 
@@ -20,8 +21,8 @@ export class AppConfigService {
   async loadAppConfig() {
 
     try {
-      // const data = await this._httpClient.get(this.appConfig.remoteConfigUrl).toPromise();
       const data = await this.rawHttp.get(this.appConfig.remoteConfigUrl).toPromise();
+      // const data = await this._httpClient.get(this.appConfig.remoteConfigUrl).toPromise();
       // console.log('AppConfigService loadAppConfig data: ', data['_body']['firebase']);
       // console.log('[APP-CONFIG-SERVICE] loadAppConfig data: ', data);
 

@@ -1482,7 +1482,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
           this.logger.log('[HISTORY & NORT-CONVS] - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
-          this.requestList = requests['requests'];
+          this.requestList = requests['requests'].sort(function compare(a: Request, b: Request) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+
           this.logger.log('requestList ', this.requestList)
           for (const request of this.requestList) {
 

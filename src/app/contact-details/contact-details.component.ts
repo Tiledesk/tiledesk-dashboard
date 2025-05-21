@@ -92,6 +92,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   isOpenEditContactFullnameDropdown: boolean = false;
   contactNewFirstName: string;
   contactNewLastName: string;
+  USER_ROLE: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -132,6 +133,18 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getChatUrl();
     this.getBrowserVersion();
     this.getOSCODE();
+    this.getProjectUserRole();
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+   
+
+      if (user_role) {
+        this.USER_ROLE = user_role;
+      }
+      
+    });
   }
 
 

@@ -391,11 +391,12 @@
                                 <mat-icon>edit</mat-icon>
                                 <span>{{ 'UsersPage.tootipEditUser' | translate }}</span>
                               </button>
-
+                
                               <button class="mat-menu-btn"
                                 *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
                                 mat-menu-item
-                                (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
+                                (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                                [disabled]="USER_ROLE !== 'owner'">
                                 <mat-icon>delete</mat-icon>
 
                                 <span>{{ 'UsersPage.tootipDeleteUser' | translate }}</span>
