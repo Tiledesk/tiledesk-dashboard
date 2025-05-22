@@ -444,6 +444,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.router.navigate(['project/' + this.id_project + '/groups'])
   }
 
+   goToUsersRoles() {
+    this.router.navigate(['project/' + this.id_project + '/roles']);
+  }
+
   goToPendingInvitation() {
     this.logger.log('[USERS] - goToPendingInvitation')
     this.router.navigate(['project/' + this.id_project + '/users/pending'])

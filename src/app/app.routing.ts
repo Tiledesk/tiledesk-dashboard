@@ -782,6 +782,20 @@ const routes: Routes = [
   // { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
 
+  // Roles  canActivate: [AuthGuard, ProjectProfileGuard],
+  {
+    path: 'project/:projectid/roles',
+    loadChildren: () => import('app/users-roles/users-roles.module').then(m => m.UsersRolesModule),
+    canActivate: [AuthGuard],
+  },
+
+   // New Role  canActivate: [AuthGuard, ProjectProfileGuard],
+  {
+    path: 'project/:projectid/create-new-role',
+    loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
+    canActivate: [AuthGuard],
+  },
+
   // Email ticketing
   {
     path: 'project/:projectid/email',
