@@ -8,6 +8,8 @@ import { Subject } from 'rxjs';
 import { AppConfigService } from 'app/services/app-config.service';
 import { RolesService } from 'app/services/roles.service';
 import { TranslateService } from '@ngx-translate/core';
+import { UsersService } from 'app/services/users.service';
+import { ProjectUser } from 'app/models/project-user';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -26,8 +28,9 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   showSpinner = true
   isVisibleGroups: boolean;
   areActivePay: boolean;
-  roles: any
-
+  roles: any;
+  projectUsers: any
+  projectUsersAssociatedToRole: any
 
   constructor(
     private router: Router,
@@ -36,7 +39,8 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     private rolesService: RolesService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private usersService: UsersService
   ) {
     // this.roles = [{ "name":"role1", "permissions":["lead_create","request_read_group"]}, { "name":"role2", "permissions":["request_read_group"]}]
 
@@ -48,7 +52,28 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     this.getOSCODE()
     this.getCurrentProject()
     this.getRoles()
+    this.getAllUsersOfCurrentProject()
   }
+
+  getAllUsersOfCurrentProject() {
+
+    this.usersService.getProjectUsersByProjectId().subscribe(
+      (projectUsers: any) => {
+
+        console.log('[USERS-ROLES] - GET PROJECT-USERS - RES', projectUsers)
+
+        if (projectUsers) {
+          this.projectUsers = projectUsers
+        }
+      }, (error) => {
+        console.log('[USERS-ROLES] - GET PROJECT-USERS - ERROR', error)
+
+      }, () => {
+        console.log('[USERS-ROLES] - GET PROJECT-USERS * COMPLETE *')
+      });
+  }
+
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -95,12 +120,58 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   }
 
   deleteRole(roleid, rolename) {
-    console.log('[USERS-ROLES] delete flow webhook - roleid ', roleid)
-    const htmlContent = this.translate.instant('TheRoleWillBeDeleted', {
+
+    const puFilteredForRoleArray = this.projectUsers.filter((obj: any) => {
+      return obj.role === rolename;
+    });
+
+    console.log('[USERS-ROLES] delete role - puFilteredForRoleArray ', puFilteredForRoleArray)
+    this.projectUsersAssociatedToRole = []
+
+    puFilteredForRoleArray.forEach(pu => {
+      let userFullname = ""
+      if (pu.id_user.firstname) {
+        userFullname = pu.id_user.firstname + ' ' + pu.id_user.lastname
+      }
+
+      this.projectUsersAssociatedToRole.push(userFullname)
+    });
+
+    console.log('[USERS-ROLES] delete role - projectUsersAssociatedToRole ', this.projectUsersAssociatedToRole)
+
+    if (puFilteredForRoleArray.length === 0) {
+      this.presentDialogDeleteRole(rolename, roleid)
+    }
+    if (puFilteredForRoleArray.length > 0) {
+      this.presentDialogRoleAssigned(rolename, this.projectUsersAssociatedToRole)
+    }
+
+  }
+
+  presentDialogRoleAssigned(rolename, projectUsersAssociatedToRole) {
+
+    const htmlContent = this.translate.instant('TheRoleCannotBeDeleted', {
       role_name: `<strong>${rolename}</strong>`
     });
     Swal.fire({
-      title: this.translate.instant('AreYouSure'),
+      title: this.translate.instant('Warning'),
+      html: htmlContent + ' ' + projectUsersAssociatedToRole + '. ' + this.translate.instant('RemoveTheRoleAssignments')+ '.',
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      focusConfirm: false,
+
+    })
+  }
+
+  presentDialogDeleteRole(rolename, roleid) {
+    console.log('[USERS-ROLES] delete role - roleid ', roleid)
+    const htmlContent = this.translate.instant('TheRoleWillBeDeleted', {
+      role_name: `<strong>${rolename}</strong>`
+    });
+
+    Swal.fire({
+      title: this.translate.instant('AreYouSure') + '?',
       // text: this.translate.instant('TheRoleWillBeDeleted', { role_name: rolename }),
       html: htmlContent,
       icon: "warning",
@@ -112,8 +183,7 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
-      // buttons: ["Cancel", "Delete"],
-      // dangerMode: true,
+
     })
       .then((result) => {
         if (result.isDenied) {
@@ -158,9 +228,8 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
           this.logger.log('[USERS-ROLES] (else)')
         }
       });
+
   }
-
-
 
 
   getOSCODE() {

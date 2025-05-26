@@ -609,7 +609,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
-        this.logger.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
+        console.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
 
         if (projectUsers) {
           this.projectUsersList = projectUsers

@@ -139,7 +139,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   appSumoProfile: string;
   public hideHelpLink: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-
+  roles: any;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -210,9 +210,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       .pipe(
         takeUntil(this.unsubscribe$)
       )
-      .subscribe((roles: any) => {
-        console.log('[USER-EDIT-ADD] - GET ROLES - RES ', roles);
-    
+      .subscribe((res: any) => {
+        console.log('[USER-EDIT-ADD] - GET ROLES - RES ', res);
+        this.roles = res
 
       }, error => {
 
@@ -568,9 +568,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
   getProjectUsersById() {
+    
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
 
-      // console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
       if (projectUser) {
         this.projectUser = projectUser;
         if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
@@ -807,7 +808,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   setSelected(role) {
     this.role = role;
-    this.logger.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
+    console.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;

@@ -152,7 +152,8 @@
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="email"
                       autocomplete="off" 
-                      autocorrect="off" autocapitalize="off" 
+                      autocorrect="off" 
+                      autocapitalize="off" 
                       spellcheck="false"
                       placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}'
                       [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}"
@@ -178,15 +179,19 @@
                       </option>
                       <option value="admin">{{ 'admin' | translate }}</option>
                       <option value="agent">{{ 'agent' | translate }} </option>
-                    </select>
+                      <option *ngFor="let role of roles" [value]="role.name"> 
+                          {{ role.name }}
+                      </option>
 
+                    </select>
+            <!-- roles {{roles | json}} -->
 
                   </div>
                   
 
 
                   <!-- New role select  -->
-                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                   <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class=""
                       style="width: 100%;border-radius: 5px;"
                       [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
@@ -196,9 +201,8 @@
                       <option value="admin">{{ 'admin' | translate }}</option>
                       <option value="agent">{{ 'agent' | translate }} </option>
                     </select>
+                  </div> -->
 
-
-                  </div>
                   <!-- SPACER -->
                   <div class="col-sm-12" style="height:15px"></div>
 

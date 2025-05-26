@@ -202,6 +202,8 @@
     "AnErrorOccurredWhileCreatingTheNewRole":"An error occurred while creating the new role",
     "RoleSuccessfullyUpdated":"Role successfully updated",
     "AnErrorOccurredWhileUpdatingTheRole":"An error occurred while updating the role",
+    "TheRoleCannotBeDeleted": "The role {{role_name}} cannot be deleted because it is assigned to the following teammates:",
+    "RemoveTheRoleAssignments": "Remove role assignment before deleting it",
     "Greetings": "Greetings",
     "Callout": "Callout",
     "openUserProfile": "Set your profile image",
