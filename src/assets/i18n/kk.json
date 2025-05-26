@@ -109,6 +109,8 @@
     "TotalAITokensUsage": "Токендерді AI толық пайдалануы",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
     "Email": "Электронды пошта",
+    "Voice":"Дауыс",
+    "TotalVoiceUsage": "Дауысты жалпы қолдану",
     "RequestsForAgent": "Агентке арналған әңгімелер",
     "RequestsForTeammate": "Әріптеске арналған әңгімелер",
     "RequestsForDept": "Бөлімге арналған әңгімелер",
@@ -704,6 +706,11 @@
     "Flows": "Ағындар",
     "Models": "Модельдер",
     "Optional": "міндетті емес",
+    "MobileNumber":"Мобильді нөмір",
+    "InvalidMobileNumber": "Ұялы телефон нөмірі жарамсыз",
+    "AccessDenied":"Кіруге тыйым салынды",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Сіз бұл жобаның серіктесі емес сияқтысыз",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Сізге рұқсат беру үшін жоба әкімшісіне хабарласыңыз",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

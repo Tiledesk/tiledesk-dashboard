@@ -109,6 +109,8 @@
     "TotalAITokensUsage": "Total användning av Tokens AI",
     "TotalEmailUsage": "Total e-postanvändning",
     "Email": "E-post",
+    "Voice":"Röst",
+    "TotalVoiceUsage": "Total röstanvändning",
     "RequestsForAgent": "Samtal för agent",
     "RequestsForTeammate": "Konversationer för lagkamrater",
     "RequestsForDept": "Samtal för avdelningen",
@@ -705,6 +707,11 @@
     "Flows": "Flöden",
     "Models": "Modeller",
     "Optional": "frivillig",
+    "MobileNumber":"Mobilnummer",
+    "InvalidMobileNumber": "Ogiltigt mobilnummer",
+    "AccessDenied":"Åtkomst nekad",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Det verkar som att du inte är en lagkamrat i det här projektet",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Kontakta projektadministratören för att ge dig åtkomst",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

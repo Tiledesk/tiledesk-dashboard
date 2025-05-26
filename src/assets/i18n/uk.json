@@ -111,6 +111,8 @@
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",
     "Email": "Електронна пошта",
     "Temporary": "Тимчасовий",
+    "Voice":"Голос",
+    "TotalVoiceUsage": "Загальне використання голосу",
     "RequestsForDept": "Бесіди для кафедри",
     "NumberOfRequestsLast7Days": "Кількість розмов за останні 7 днів",
     "NumberOfRequests": "Кількість розмов",
@@ -705,6 +707,11 @@
     "Flows": "Потоки",
     "Models": "Моделі",
     "Optional": "необов'язковий",
+    "MobileNumber":"Мобільний номер",
+    "InvalidMobileNumber": "Недійсний номер мобільного",
+    "AccessDenied":"Доступ заборонено",
+    "ItLooksLikeYouAreNotTeammateOfThisProject": "Схоже, ви не учасник цього проекту",
+    "ContactTheProjectAdministratorToGrantYouTheAccess":"Зверніться до адміністратора проекту, щоб надати вам доступ",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""

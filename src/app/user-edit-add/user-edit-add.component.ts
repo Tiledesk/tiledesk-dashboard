@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RolesService } from 'app/services/roles.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -339,11 +340,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getUserRole() {
-    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
-
-      console.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+    this.subscription = this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', projectUser)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.CURRENT_USER_ROLE = userRole;
+      this.CURRENT_USER_ROLE = projectUser.role;
     })
   }
 

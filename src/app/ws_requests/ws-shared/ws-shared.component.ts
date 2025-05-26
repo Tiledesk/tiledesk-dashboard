@@ -9,6 +9,7 @@ import { UsersService } from '../../services/users.service';
 import { NotifyService } from '../../core/notify.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-ws-shared',
@@ -608,7 +609,7 @@ export class WsSharedComponent implements OnInit {
 
   _getProjectUserByUserId(member_id) {
     this.usersService.getProjectUserByUserId(member_id)
-      .subscribe((projectUser: any) => {
+      .subscribe((projectUser: ProjectUser) => {
         this.logger.log('[WS-SHARED][WS-REQUESTS-LIST][SERVED] - GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
           this.logger.log('[WS-SHARED][WS-REQUESTS-LIST][SERVED] - GET projectUser id', projectUser);
