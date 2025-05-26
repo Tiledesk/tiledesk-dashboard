@@ -51,6 +51,9 @@ export class SettingsSidebarComponent implements OnInit {
   GROUPS_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
   ADD_GROUP_ROUTE_IS_ACTIVE: boolean;
+  ROLE_ROUTE_IS_ACTIVE: boolean;
+  CREATE_NEW_ROLE_ROUTE_IS_ACTIVE: boolean;
+  EDIT_ROLE_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
   WIDGET_INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   CHATBOT_ROUTE_IS_ACTIVE: boolean;
@@ -650,6 +653,30 @@ export class SettingsSidebarComponent implements OnInit {
     } else {
       this.ADD_GROUP_ROUTE_IS_ACTIVE = false
       this.logger.log( '[SETTING-SIDEBAR] - ADD_GROUP_ROUTE_IS_ACTIVE  ', this.ADD_GROUP_ROUTE_IS_ACTIVE )
+    }
+
+    if (this.route.indexOf('/roles') !== -1) {
+      this.ROLE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - ROLE_ROUTE_IS_ACTIVE  ', this.ROLE_ROUTE_IS_ACTIVE )
+    } else {
+      this.ROLE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - ROLE_ROUTE_IS_ACTIVE  ', this.ROLE_ROUTE_IS_ACTIVE )
+    }
+
+     if (this.route.indexOf('/create-new-role') !== -1) {
+      this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - CREATE_NEW_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
+    } else {
+      this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - CREATE_NEW_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
+    }
+
+     if (this.route.indexOf('/edit-role') !== -1) {
+      this.EDIT_ROLE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - EDIT_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
+    } else {
+      this.EDIT_ROLE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - EDIT_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
     }
 
     

@@ -2416,6 +2416,21 @@ footer ul {
   color: var(--blue-20) !important
 }
 
+/* Angular material checkbox 
+/* ****************************** */
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+/* Angular radio button 
+/* ****************************** */
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: var(--blue-20) !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--blue-20) !important;
+}
 
 
 // Used 

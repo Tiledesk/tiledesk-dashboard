@@ -10,4 +10,16 @@
     margin-bottom: 16px;
 }
 
+.go--back {
+    cursor: pointer;
+    color: #6a6a6a;
+}
+
+.go--back:hover {
+    color: var(--accent-text-color); //#3c4858;
+    // font-weight: 400;
+}
    
+.active-breadcrumb {
+    font-weight: 400;
+}

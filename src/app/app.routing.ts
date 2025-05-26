@@ -796,6 +796,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
+  // Role details
+  {
+    path: 'project/:projectid/edit-role/:roleid',
+    loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
+    canActivate: [AuthGuard],
+  },
+  
+
   // Email ticketing
   {
     path: 'project/:projectid/email',

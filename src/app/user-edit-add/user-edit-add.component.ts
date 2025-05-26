@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { RolesService } from 'app/services/roles.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -151,6 +152,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     public location: Location,
     public brandService: BrandService,
     private logger: LoggerService,
+    private rolesService: RolesService,
 
   ) {
     super(prjctPlanService, notify);
@@ -162,8 +164,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   ngOnInit() {
 
-    this.logger.log('on init Selected Role ', this.role);
+    console.log('on init  Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
+    console.log('on init Selected Role ', this.selectedRole);
 
     if (this.router.url.indexOf('/add') !== -1) {
       this.logger.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
@@ -193,7 +196,32 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.trackPage()
-   
+    this.getRoles()
+  }
+
+   ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getRoles() {
+    this.rolesService.getAllRoles()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((roles: any) => {
+        console.log('[USER-EDIT-ADD] - GET ROLES - RES ', roles);
+    
+
+      }, error => {
+
+        this.showSpinner = false
+        console.error('[USER-EDIT-ADD] - GET ROLES - ERROR: ', error);
+      }, () => {
+        this.showSpinner = false
+        console.log('[USER-EDIT-ADD] - GET ROLES * COMPLETE *')
+      });
   }
 
   trackPage() {
@@ -313,7 +341,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   getUserRole() {
     this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
 
-      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+      console.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
       this.CURRENT_USER_ROLE = userRole;
     })
@@ -420,11 +448,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
 
 
@@ -855,17 +879,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.SHOW_CIRCULAR_SPINNER = false
     }, 1000);
 
-    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
-    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
+    console.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
+    console.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
 
     if (this.role === 'ROLE_NOT_SELECTED') {
       this.role = ''
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
-      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
-      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
+      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
+      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
+      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
 
       if (project_user) {
         this.invitedProjectUser = project_user
@@ -929,6 +953,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
+
       if (!isDevMode()) {
         if (window['analytics']) {
           let userFullname = ''
