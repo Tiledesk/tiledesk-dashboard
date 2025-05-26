@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.106-rc1
+- Roles CRUD
+
 ### 2.7.105
 - Renames the sidebar menu item "Bot" in "Flows"
 - Moves the menu items Templates from the Flows sidebar in the Templates page
