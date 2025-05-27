@@ -1105,7 +1105,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // Chatbot sidebar
-        if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
+        if (event.url.indexOf('/bots/my-chatbots/all') !== -1 || event.url.indexOf('/bots') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
