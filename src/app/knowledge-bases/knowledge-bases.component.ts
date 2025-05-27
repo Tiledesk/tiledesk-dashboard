@@ -1159,6 +1159,113 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   }
 
+  presentDialogExportContents() {
+      Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.OnlyUrlTextFaqWillBeExported'),
+      icon: "info",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: true,
+      showDenyButton:  false,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          // this.kbService.deleteFlowWebhook(webhookid).subscribe((res: any) => {
+          //  console.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
+          // }, (error) => {
+          //   Swal.fire({
+          //     title: this.translate.instant('Oops') + '!',
+          //     text:  this.translate.instant('HoursPage.ErrorOccurred'),
+          //     icon: "error",
+          //     showCloseButton: false,
+          //     showCancelButton: false,
+          //     confirmButtonText: this.translate.instant('Ok'),
+          //     // confirmButtonColor: "var(--primary-btn-background)",
+          //   });
+            // this.logger.error('[KNOWLEDGE-BASES-COMP] DELETE  ERROR ', error);
+          // }, () => {
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+
+           
+
+          //   Swal.fire({
+          //     title: this.translate.instant('Done') + "!",
+          //     text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyExported'),
+          //     icon: "success",
+          //     showCloseButton: false,
+          //     showCancelButton: false,
+          //     // confirmButtonColor: "var(--primary-btn-background)",
+          //     confirmButtonText: this.translate.instant('Ok'),
+          //   }).then((okpressed) => {
+
+          //   });
+          // });
+        } else {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] (else)')
+        }
+      });
+
+  }
+
+  presentDialogImportContents() {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.ImportWillDeleteAllContents'),
+      icon: "info",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: true,
+      showDenyButton:  false,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // buttons: ["Cancel", "Delete"],
+      // dangerMode: true,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          // this.kbService.deleteFlowWebhook(webhookid).subscribe((res: any) => {
+          //  console.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
+          // }, (error) => {
+          //   Swal.fire({
+          //     title: this.translate.instant('Oops') + '!',
+          //     text:  this.translate.instant('HoursPage.ErrorOccurred'),
+          //     icon: "error",
+          //     showCloseButton: false,
+          //     showCancelButton: false,
+          //     confirmButtonText: this.translate.instant('Ok'),
+          //     // confirmButtonColor: "var(--primary-btn-background)",
+          //   });
+            // this.logger.error('[KNOWLEDGE-BASES-COMP] DELETE  ERROR ', error);
+          // }, () => {
+          //   this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+
+           
+
+          //   Swal.fire({
+          //     title: this.translate.instant('Done') + "!",
+          //     text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
+          //     icon: "success",
+          //     showCloseButton: false,
+          //     showCancelButton: false,
+          //     // confirmButtonColor: "var(--primary-btn-background)",
+          //     confirmButtonText: this.translate.instant('Ok'),
+          //   }).then((okpressed) => {
+
+          //   });
+          // });
+        } else {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] (else)')
+        }
+      });
+  }
+
 
   presentDialogChatbotSuccessfullyCreated() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
