@@ -306,6 +306,10 @@
                             <!-- {{ "UserEditAddPage.Agent" | translate }} -->
                               {{ "agent" | translate }}
                           </option>
+
+                          <option *ngFor="let role of roles" [value]="role.name" [selected]="user_role === role.name"> 
+                              {{ role.name }}
+                          </option>
                         </select>
                       </div>
                     </div>
