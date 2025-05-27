@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.106
+- Minor improvements and bug fixing
+
 ### 2.7.105
 - Renames the sidebar menu item "Bot" in "Flows"
 - Moves the menu items Templates from the Flows sidebar in the Templates page
