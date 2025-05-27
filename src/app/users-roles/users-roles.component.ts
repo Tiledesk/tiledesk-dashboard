@@ -139,23 +139,42 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
 
     console.log('[USERS-ROLES] delete role - projectUsersAssociatedToRole ', this.projectUsersAssociatedToRole)
 
+    // "TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates": "The role {{role_name}} cannot be deleted because it is assigned to the following teammates:",
+    // "RemoveTheRoleAssignments": "Remove the role assignments before deleting it.",
+    // "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "The role {{role_name}} cannot be deleted because it is assigned to the teammate",
+    // "RemoveTheRoleAssignment":"Remove the role assignment before deleting it.",
+
+    let warningText = '';
+    let warningTextPartTwo = '';
     if (puFilteredForRoleArray.length === 0) {
+
       this.presentDialogDeleteRole(rolename, roleid)
     }
-    if (puFilteredForRoleArray.length > 0) {
-      this.presentDialogRoleAssigned(rolename, this.projectUsersAssociatedToRole)
+    if (puFilteredForRoleArray.length === 1) {
+      warningText = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate', {
+        role_name: `<strong>${rolename}</strong>`
+      });
+      warningTextPartTwo = this.translate.instant('RemoveTheRoleAssignment')
+      this.presentDialogRoleAssigned(warningText,warningTextPartTwo, this.projectUsersAssociatedToRole)
+    }
+    if (puFilteredForRoleArray.length > 1) {
+      warningText = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates', {
+        role_name: `<strong>${rolename}</strong>`
+      });
+      warningTextPartTwo = this.translate.instant('RemoveTheRoleAssignments')
+      this.presentDialogRoleAssigned(warningText,warningTextPartTwo, this.projectUsersAssociatedToRole)
     }
 
   }
 
-  presentDialogRoleAssigned(rolename, projectUsersAssociatedToRole) {
+  presentDialogRoleAssigned(warningText,warningTextPartTwo, projectUsersAssociatedToRole) {
 
-    const htmlContent = this.translate.instant('TheRoleCannotBeDeleted', {
-      role_name: `<strong>${rolename}</strong>`
-    });
+    // const htmlContent = this.translate.instant('TheRoleCannotBeDeletedBecauseItIsAssignedToTeammates', {
+    //   role_name: `<strong>${rolename}</strong>`
+    // });
     Swal.fire({
       title: this.translate.instant('Warning'),
-      html: htmlContent + ' ' + projectUsersAssociatedToRole + '. ' + this.translate.instant('RemoveTheRoleAssignments')+ '.',
+      html: warningText + ' ' + projectUsersAssociatedToRole + '. ' + warningTextPartTwo ,
       icon: "warning",
       showCancelButton: false,
       confirmButtonText: this.translate.instant('Ok'),
