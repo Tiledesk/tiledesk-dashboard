@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -227,7 +227,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
-   
+
 
     // this.getListOfKb(this.paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
@@ -1160,14 +1160,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   presentDialogExportContents() {
-      Swal.fire({
+    Swal.fire({
       title: this.translate.instant('Warning'),
       text: this.translate.instant('KbPage.OnlyUrlTextFaqWillBeExported'),
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
       showConfirmButton: true,
-      showDenyButton:  false,
+      showDenyButton: false,
       confirmButtonText: this.translate.instant('Ok'),
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
@@ -1175,95 +1175,173 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
       .then((result) => {
         if (result.isConfirmed) {
-          // this.kbService.deleteFlowWebhook(webhookid).subscribe((res: any) => {
-          //  console.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
-          // }, (error) => {
-          //   Swal.fire({
-          //     title: this.translate.instant('Oops') + '!',
-          //     text:  this.translate.instant('HoursPage.ErrorOccurred'),
-          //     icon: "error",
-          //     showCloseButton: false,
-          //     showCancelButton: false,
-          //     confirmButtonText: this.translate.instant('Ok'),
-          //     // confirmButtonColor: "var(--primary-btn-background)",
-          //   });
-            // this.logger.error('[KNOWLEDGE-BASES-COMP] DELETE  ERROR ', error);
-          // }, () => {
-          //   this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+          this.kbService.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
+            if (res) {
+              this.downloadObjectAsJson(res, this.selectedNamespace.name + ' contents')
+            }
+          }, (error) => {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('HoursPage.ErrorOccurred'),
+              icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
+            });
+            this.logger.error('[KNOWLEDGE-BASES-COMP] EXPORT  ERROR ', error);
+          }, () => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT * COMPLETE *');
 
-           
 
-          //   Swal.fire({
-          //     title: this.translate.instant('Done') + "!",
-          //     text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyExported'),
-          //     icon: "success",
-          //     showCloseButton: false,
-          //     showCancelButton: false,
-          //     // confirmButtonColor: "var(--primary-btn-background)",
-          //     confirmButtonText: this.translate.instant('Ok'),
-          //   }).then((okpressed) => {
 
-          //   });
-          // });
+            Swal.fire({
+              title: this.translate.instant('Done') + "!",
+              text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyExported'),
+              icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+            }).then((okpressed) => {
+
+            });
+          });
         } else {
-          this.logger.log('[KNOWLEDGE-BASES-COMP] (else)')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT (else)')
         }
       });
+  }
 
+  downloadObjectAsJson(exportObj, exportName) {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   }
 
   presentDialogImportContents() {
     Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('KbPage.ImportWillDeleteAllContents'),
+      // text: this.translate.instant('KbPage.ImportWillDeleteAllContents'),
+      html: `
+      <p> ${this.translate.instant('KbPage.ImportWillDeleteAllContents')}  <p> 
+      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />`,
       icon: "info",
       showCloseButton: false,
       showCancelButton: true,
       showConfirmButton: true,
-      showDenyButton:  false,
-      confirmButtonText: this.translate.instant('Ok'),
+      showDenyButton: false,
+      confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
       cancelButtonText: this.translate.instant('Cancel'),
       focusConfirm: false,
       reverseButtons: true,
-      // buttons: ["Cancel", "Delete"],
-      // dangerMode: true,
+      // input: 'file',
+      // inputAttributes: {
+      //   accept: '.json', // allowed file types
+      //   'aria-label': 'Upload your file'
+      // },
+      didOpen: () => {
+        const confirmBtn = Swal.getConfirmButton();
+        const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
+
+        confirmBtn.addEventListener('click', () => {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files?.[0];
+          this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', file);
+
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const jsonString = JSON.stringify(reader.result as string)
+            this.logger.log('jsonString :', jsonString);
+            try {
+              const jsonData = JSON.parse(reader.result as string);
+              this.logger.log('Parsed JSON:', jsonData);
+              // Handle JSON data here
+              // Swal.fire({
+              //   icon: 'success',
+              //   title: 'Import successful',
+              //   text: `Imported: ${file.name}`
+              // });
+            } catch (error) {
+              Swal.fire({
+                icon: 'error',
+                title: this.translate.instant('InvalidJSON'),
+                text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
+              });
+              return;
+            }
+
+            if (containsXSS(jsonString)) {
+              Swal.fire({
+                icon: 'error',
+                title: this.translate.instant('InvalidJSON'),
+                text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
+              });
+              return;
+            }
+          };
+          reader.readAsText(file);
+
+
+          if (!file) return;
+
+          if (file.type !== "application/json" && !file.name.endsWith('.json')) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('SorryFileTypeNotSupported')
+            });
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('uploadFile', file, file.name); // Backend should accept 'file' field
+
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe((res: any) => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
+          }, (error) => {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('HoursPage.ErrorOccurred'),
+              icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
+            });
+            this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
+          }, () => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+            let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+            this.getListOfKb(paramsDefault, 'onImportJSON');
+            Swal.fire({
+              title: this.translate.instant('Done') + "!",
+              text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
+              icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+
+
+            }).then((okpressed) => {
+
+            });
+          });
+        });
+      }
+
     })
-      .then((result) => {
-        if (result.isConfirmed) {
-          // this.kbService.deleteFlowWebhook(webhookid).subscribe((res: any) => {
-          //  console.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
-          // }, (error) => {
-          //   Swal.fire({
-          //     title: this.translate.instant('Oops') + '!',
-          //     text:  this.translate.instant('HoursPage.ErrorOccurred'),
-          //     icon: "error",
-          //     showCloseButton: false,
-          //     showCancelButton: false,
-          //     confirmButtonText: this.translate.instant('Ok'),
-          //     // confirmButtonColor: "var(--primary-btn-background)",
-          //   });
-            // this.logger.error('[KNOWLEDGE-BASES-COMP] DELETE  ERROR ', error);
-          // }, () => {
-          //   this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
 
-           
-
-          //   Swal.fire({
-          //     title: this.translate.instant('Done') + "!",
-          //     text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
-          //     icon: "success",
-          //     showCloseButton: false,
-          //     showCancelButton: false,
-          //     // confirmButtonColor: "var(--primary-btn-background)",
-          //     confirmButtonText: this.translate.instant('Ok'),
-          //   }).then((okpressed) => {
-
-          //   });
-          // });
-        } else {
-          this.logger.log('[KNOWLEDGE-BASES-COMP] (else)')
-        }
-      });
   }
 
 
@@ -1507,10 +1585,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('Modal preview Backdrop clicked', event);
-       this.hasClickedPreviewModalBackdrop = true
-       const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
-       document.dispatchEvent(customevent);
-     });
+      this.hasClickedPreviewModalBackdrop = true
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
+      document.dispatchEvent(customevent);
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
@@ -1744,7 +1822,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         t_params: this.t_params,
         id_project: this.id_project,
-        project_name:  this.project_name,
+        project_name: this.project_name,
         payIsVisible: this.payIsVisible
       },
     });
@@ -1774,7 +1852,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         t_params: this.t_params,
         id_project: this.id_project,
-        project_name:  this.project_name,
+        project_name: this.project_name,
         payIsVisible: this.payIsVisible
       },
     });
