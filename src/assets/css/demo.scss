@@ -808,7 +808,7 @@ my-app .main-panel .main-content .card {
   background: var(--outlined-btn-hover-background) !important;
 }
 
-/* BTN blu round
+/* BTN Blu round
 /* ------------------------- */
 .btn-blu-round {
   box-shadow: unset !important;
@@ -836,6 +836,43 @@ my-app .main-panel .main-content .card {
   background: var(--blue-40) !important;
 }
 
+
+/* BTN Round Gray outline
+/* ------------------------- */
+.btn-blu-gray-outline {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 9px !important;
+  font-size: 14px;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+  border: 1px solid #cbd5e1;
+  height: 40px;
+  border-radius: var(--btn-border-radius) !important;
+  background: transparent;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-blu-gray-outline>svg {
+  fill: #333
+}
+
+
+.btn-blu-gray-outline:hover {
+  box-shadow: unset !important;
+  background: rgba(136, 148, 171, 0.08) !important;
+  border-color: rgba(136, 148, 171, .56);
+}
+
+.btn-blu-gray-outline:focus {
+  background: transparent !important
+}
+.btn-blu-gray-outline:active {
+  background: transparent !important
+}
 
 
 
