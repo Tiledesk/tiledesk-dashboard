@@ -97,9 +97,9 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'radio',
       expanded: false,
       children: [
-        { key: 'allConversations', label: 'All conversations' },
-        { key: 'assignedToUser', label: 'Conversations assigned to them only' },
-        { key: 'assignedToTeams', label: 'Conversations assigned to their teams only' }
+        { key: 'request_read_all', label: 'All conversations' },
+        { key: 'request_read_group', label: 'Conversations assigned to their teams only' },
+        { key: 'request_read_group_my', label: 'Conversations assigned to them only' }
       ]
     },
     {
