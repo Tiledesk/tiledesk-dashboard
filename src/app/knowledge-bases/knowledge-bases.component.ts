@@ -1176,7 +1176,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       .then((result) => {
         if (result.isConfirmed) {
           this.kbService.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
-            this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
+
+            console.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
+            console.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES header', res);
+
             if (res) {
               this.downloadObjectAsJson(res, this.selectedNamespace.name + ' contents')
             }
@@ -2377,7 +2380,7 @@ presentDialogImportContents() {
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
+    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
