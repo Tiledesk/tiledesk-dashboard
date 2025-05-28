@@ -8,7 +8,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { AuthGuard } from './core/auth.guard';
-import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
@@ -782,6 +781,28 @@ const routes: Routes = [
   // { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
 
+  // Roles  canActivate: [AuthGuard, ProjectProfileGuard],
+  {
+    path: 'project/:projectid/roles',
+    loadChildren: () => import('app/users-roles/users-roles.module').then(m => m.UsersRolesModule),
+    canActivate: [AuthGuard],
+  },
+
+   // New Role  canActivate: [AuthGuard, ProjectProfileGuard],
+  {
+    path: 'project/:projectid/create-new-role',
+    loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
+    canActivate: [AuthGuard],
+  },
+
+  // Role details
+  {
+    path: 'project/:projectid/edit-role/:roleid',
+    loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
+    canActivate: [AuthGuard],
+  },
+  
+
   // Email ticketing
   {
     path: 'project/:projectid/email',
@@ -1328,6 +1349,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]
+  providers: [AuthGuard, ProjectProfileGuard, PendingChangesGuard]
 })
 export class AppRoutingModule { }

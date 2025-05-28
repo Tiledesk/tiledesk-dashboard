@@ -1,0 +1,150 @@
+<span class="navbar-brand navbar-brand-sidebar-settings"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+    [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+    <i class="material-icons">settings</i>
+
+    <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+
+<div class="main-content" style="padding-top:0px; padding-left: 10px;padding-right: 5px;">
+    <div class="page-title--sidebar-settings"
+        [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+        {{ 'UsersAndGroups' | translate }}
+    </div>
+
+    <div class="container-fluid" style="padding-left: 0px;padding-right: 0px; margin-right: -5px;">
+        <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
+        <div class="row"></div>
+
+        <div class="content-wpr" style="display: flex;">
+
+            <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+
+            <div class="teplate-content" style="flex: 1 1 auto;">
+
+                <ul class="bottom-nav" style="top:-9px;">
+                    <li class="btn-with-border-effect  border-from-center" (click)="goToUsers()">
+                        <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
+                    </li>
+                    <li class="btn-with-border-effect li-active">
+                        <a style="text-transform: capitalize;">  {{ "Roles" | translate }}</a>
+                    </li>
+                    <li *ngIf="isVisibleGroups" class="btn-with-border-effect border-from-center"
+                        (click)="goToGroups()">
+                        <a>{{ "Groups" | translate }} </a>
+                    </li>
+                </ul>
+
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                        <!-- *ngIf="!showSpinner" -->
+
+                        <div class="page-title--wrapper">
+                            <div class="title--header">
+                                <!-- {{ pageName }} -->
+                            </div>
+                            <button class="btn btn-tdblu-no-boxshadow pull-right" style="padding: 8px 16px;margin:0px;"
+                                (click)="goToCreateNewRole()">
+
+                                <!-- New role -->
+                                 {{ "NewRole" | translate }}
+                            </button>
+                        </div>
+                        <div class="main--wrapper">
+                            <div class="card roles-card">
+                                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+                                <div *ngIf="!showSpinner" class="card-content table-responsive">
+                                    <table class="table table-hover">
+
+                                        <thead class="text">
+                                            <tr>
+                                                <th>
+                                                    <!-- Role -->
+                                                    {{ "Role" | translate }}
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {{'owner' | translate }}
+                                                </td>
+                                                <td style="width: 1%; white-space: nowrap;;">
+                                                        <button type="button" class="btn btn-primary btn-simple btn-xs" disabled>
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-simple btn-xs" disabled>
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{'admin' | translate }}
+                                                </td>
+                                                <td style="width: 1%; white-space: nowrap;">
+                                                     <button type="button" class="btn btn-primary btn-simple btn-xs" disabled>
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-simple btn-xs" disabled>
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                   
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{'agent' | translate }}
+                                                </td>
+
+                                                <td style="width: 1%; white-space: nowrap;">
+                                                    <button type="button" class="btn btn-primary btn-simple btn-xs" disabled>
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-simple btn-xs" disabled>
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngFor="let role of roles">
+                                                <td>
+                                                    {{role.name}}
+                                                </td>
+                                                <td style="width: 1%; white-space: nowrap;">
+                                                    <button type="button" class="btn btn-primary btn-simple btn-xs" (click)="goToRoleDetail(role._id)">
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-simple btn-xs" (click)="deleteRole(role._id, role.name)">
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                    
+
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div> <!-- ./teplate-content -->
+        </div> <!-- ./content-wpr -->
+    </div> <!-- ./container-fluid -->
+</div> <!-- ./main-content -->
