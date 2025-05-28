@@ -21,7 +21,7 @@ export class NotificationService {
     private logger: LoggerService
   ) {
     this.user = auth.user_bs.value;
-    this.project_user_id = usersService.project_user_id_bs.value;
+    this.project_user_id = usersService.projectUser_bs.value._id;
     this.checkIfUserExistAndGetToken();
 
   

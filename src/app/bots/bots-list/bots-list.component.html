@@ -747,6 +747,7 @@
                       <!-- Icon human in the loop -->
                       <!-- (mouseenter)="openPopover()"  -->
                       <!-- scheduleClosePopover() -->
+                      <!-- (mouseleave)="scheduleClosePopover()" -->
                       <!-- ---------------------------------------------- -->
                       <div class="cl-card-second-column">
                         <ng-container
@@ -803,8 +804,10 @@
                                 <button id="btn-{{faqkb._id}}" mat-icon-button
                                   (click)="$event.stopPropagation();openBotMsgsStats(faqkb)"
                                   matTooltipClass="custom-mat-tooltip"
-                                  matTooltip="{{ 'BotsAddEditPage.Messages' | translate }}" #tooltip="matTooltip"
-                                  matTooltipPosition='below' matTooltipHideDelay="100">
+                                  matTooltip="{{ 'BotsAddEditPage.Messages' | translate }}" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below'
+                                   matTooltipHideDelay="100">
                                   <mat-icon>leaderboard</mat-icon>
                                 </button>
                               </div>

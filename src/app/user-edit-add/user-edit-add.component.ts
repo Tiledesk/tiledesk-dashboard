@@ -17,6 +17,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { RolesService } from 'app/services/roles.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -138,7 +140,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   appSumoProfile: string;
   public hideHelpLink: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-
+  roles: any;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -151,6 +153,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     public location: Location,
     public brandService: BrandService,
     private logger: LoggerService,
+    private rolesService: RolesService,
 
   ) {
     super(prjctPlanService, notify);
@@ -162,8 +165,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   ngOnInit() {
 
-    this.logger.log('on init Selected Role ', this.role);
+    console.log('on init  Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
+    console.log('on init Selected Role ', this.selectedRole);
 
     if (this.router.url.indexOf('/add') !== -1) {
       this.logger.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
@@ -193,7 +197,32 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.trackPage()
-   
+    this.getRoles()
+  }
+
+   ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getRoles() {
+    this.rolesService.getAllRoles()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((res: any) => {
+        console.log('[USER-EDIT-ADD] - GET ROLES - RES ', res);
+        this.roles = res
+
+      }, error => {
+
+        this.showSpinner = false
+        console.error('[USER-EDIT-ADD] - GET ROLES - ERROR: ', error);
+      }, () => {
+        this.showSpinner = false
+        console.log('[USER-EDIT-ADD] - GET ROLES * COMPLETE *')
+      });
   }
 
   trackPage() {
@@ -311,11 +340,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   getUserRole() {
-    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
-
-      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+    this.subscription = this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', projectUser)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.CURRENT_USER_ROLE = userRole;
+      this.CURRENT_USER_ROLE = projectUser.role;
     })
   }
 
@@ -420,11 +448,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
 
 
@@ -544,9 +568,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
   getProjectUsersById() {
+    
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
 
-      // console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
       if (projectUser) {
         this.projectUser = projectUser;
         if (projectUser.user_available === false && projectUser.profileStatus === 'inactive') {
@@ -783,7 +808,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   setSelected(role) {
     this.role = role;
-    this.logger.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
+    console.log('[USER-EDIT-ADD] - setSelected Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
@@ -855,17 +880,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.SHOW_CIRCULAR_SPINNER = false
     }, 1000);
 
-    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
-    this.logger.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
+    console.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
+    console.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
 
     if (this.role === 'ROLE_NOT_SELECTED') {
       this.role = ''
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
-      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
-      // console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
+      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
+      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
+      console.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
 
       if (project_user) {
         this.invitedProjectUser = project_user
@@ -929,6 +954,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
+
       if (!isDevMode()) {
         if (window['analytics']) {
           let userFullname = ''

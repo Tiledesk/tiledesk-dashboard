@@ -28,6 +28,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+// import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
+// import { Max7DaysDateRangeSelectionStrategy } from './metrics/tags-analytics/max7-days-date-range-selection-strategy';
 
 const routes: Routes = [
   { path: "", component: AnalyticsComponent},
@@ -66,7 +70,14 @@ const routes: Routes = [
     MatButtonModule,
     MatNativeDateModule,
     MatProgressSpinnerModule
+    // MomentDateAdapter
   ],
+  // providers: [
+  //   {
+  //     provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+  //     useClass: Max7DaysDateRangeSelectionStrategy,
+  //   },
+  // ],
   exports: [
     RouterModule
   ]
