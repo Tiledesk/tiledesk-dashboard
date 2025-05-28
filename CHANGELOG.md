@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.107-rc3
+- Updates role's key
+
 ### 2.7.107-rc2
 - Improves the import of Knowledge Base contents
 
