@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.107-rc1
+- Adds the ability to export/import content on the Knowledge Base page
+
 ### 2.7.106-rc1
 - Roles CRUD
 
