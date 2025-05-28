@@ -2473,6 +2473,7 @@
     "CustomizeThePreChatForm": "Anpassa förchattformuläret",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Anpassa informationen du begär från kunder i förchattformuläret genom att ta bort eller lägga till fält",
     "InvalidJSON": "Ogiltig JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Den valda filen innehåller inte giltig JSON.",
     "EmailNotAvailable": "E-post inte tillgänglig",
     "Project": "Projekt",
     "YourProjects": "Dina projekt",

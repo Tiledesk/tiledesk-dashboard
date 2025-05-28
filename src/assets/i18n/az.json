@@ -2472,6 +2472,7 @@
     "CustomizeThePreChatForm": "Əvvəlcədən söhbət formasını fərdiləşdirin",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Sahələri silməklə və ya əlavə etməklə, söhbət öncəsi formada müştərilərdən tələb etdiyiniz məlumatları fərdiləşdirin",
     "InvalidJSON": "Yanlış JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Seçilmiş faylda etibarlı JSON yoxdur.",
     "EmailNotAvailable": "E-poçt mövcud deyil",
     "Project": "Layihə",
     "YourProjects": "Layihələriniz",

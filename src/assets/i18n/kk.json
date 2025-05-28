@@ -2471,6 +2471,7 @@
     "CustomizeThePreChatForm": "Алдын ала сөйлесу пішінін теңшеңіз",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Өрістерді жою немесе қосу арқылы алдын ала чат пішінінде тұтынушылардан сұрайтын ақпаратты теңшеңіз",
     "InvalidJSON": "Жарамсыз JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Таңдалған файлда жарамды JSON жоқ.",
     "EmailNotAvailable": "Электрондық пошта қолжетімді емес",
     "Project": "Жоба",
     "YourProjects": "Сіздің жобаларыңыз",

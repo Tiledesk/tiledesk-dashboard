@@ -2472,6 +2472,7 @@
     "CustomizeThePreChatForm": "Налаштуйте форму попереднього чату",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Налаштуйте інформацію, яку ви запитуєте від клієнтів у формі попереднього чату, видаляючи або додаючи поля",
     "InvalidJSON": "Недійсний JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Вибраний файл не містить дійсного JSON.",
     "EmailNotAvailable": "Електронна пошта недоступна",
     "Project": "Проект",
     "YourProjects": "Ваші проекти",

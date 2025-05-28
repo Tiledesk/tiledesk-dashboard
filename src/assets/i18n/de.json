@@ -2470,6 +2470,7 @@
 	"CustomizeThePreChatForm": "Passen Sie das Pre-Chat-Formular an",
 	"CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Passen Sie die Informationen an, die Sie von Kunden im Pre-Chat-Formular anfordern, indem Sie Felder entfernen oder hinzufügen",
 	"InvalidJSON": "Ungültige JSON",
+	"TheSelectedFileDoesNotContainValidJSON":"Die ausgewählte Datei enthält kein gültiges JSON.",
 	"EmailNotAvailable": "E-Mail nicht verfügbar",
 	"Project": "Projekt",
 	"YourProjects": "Ihre Projekte",

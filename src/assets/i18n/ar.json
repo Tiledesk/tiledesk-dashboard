@@ -2472,6 +2472,7 @@
     "CustomizeThePreChatForm": "تخصيص نموذج ما قبل الدردشة",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "خصص المعلومات التي تطلبها من العملاء في نموذج ما قبل الدردشة عن طريق إزالة الحقول أو إضافتها",
     "InvalidJSON": "JSON غير صالح",
+    "TheSelectedFileDoesNotContainValidJSON":"الملف المحدد لا يحتوي على JSON صالح.",
     "EmailNotAvailable": "البريد الإلكتروني غير متوفر",
     "Project": "المشروع",
     "YourProjects": "مشاريعك",

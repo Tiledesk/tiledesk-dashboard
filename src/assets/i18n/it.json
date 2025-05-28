@@ -2481,6 +2481,7 @@
     "CustomizeThePreChatForm": "Personalizza il modulo di pre-chat",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Personalizza le informazioni che richiedi ai clienti nel modulo di pre-chat rimuovendo o aggiungendo campi",
     "InvalidJSON": "JSON non valido",
+    "TheSelectedFileDoesNotContainValidJSON":"Il file selezionato non contiene JSON valido.",
     "EmailNotAvailable": "Email non disponibile",
     "Project": "Progetto",
     "YourProjects": "I tuoi progetti",

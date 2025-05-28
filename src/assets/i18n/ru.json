@@ -2471,6 +2471,7 @@
     "CustomizeThePreChatForm": "Настройте форму предварительного чата",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Настройте информацию, которую вы запрашиваете у клиентов в форме предварительного чата, удаляя или добавляя поля",
     "InvalidJSON": "Неверный JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Выбранный файл не содержит допустимого JSON.",
     "EmailNotAvailable": "Электронная почта недоступна",
     "Project": "Проект",
     "YourProjects": "Ваши проекты",

@@ -2472,6 +2472,7 @@
     "CustomizeThePreChatForm": "Прилагодите образац пре ћаскања",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Прилагодите информације које тражите од клијената у обрасцу пре ћаскања тако што ћете уклонити или додати поља",
     "InvalidJSON": "Неважећи ЈСОН",
+    "TheSelectedFileDoesNotContainValidJSON":"Изабрана датотека не садржи важећи JSON.",
     "EmailNotAvailable": "Е-пошта није доступна",
     "Project": "Пројекат",
     "YourProjects": "Ваши пројекти",

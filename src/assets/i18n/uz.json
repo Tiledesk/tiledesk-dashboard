@@ -2471,6 +2471,7 @@
     "CustomizeThePreChatForm": "Oldindan suhbat shaklini moslashtiring",
     "CustomizeTheInformationYouRequestFromCustomersInThePreChatForm": "Maydonlarni olib tashlash yoki qo'shish orqali chatdan oldingi shaklda mijozlardan so'ragan ma'lumotlarni moslashtiring",
     "InvalidJSON": "Yaroqsiz JSON",
+    "TheSelectedFileDoesNotContainValidJSON":"Tanlangan faylda yaroqli JSON mavjud emas.",
     "EmailNotAvailable": "Elektron pochta mavjud emas",
     "Project": "Loyiha",
     "YourProjects": "Sizning loyihalaringiz",
