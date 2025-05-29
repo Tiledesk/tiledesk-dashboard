@@ -1177,8 +1177,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (result.isConfirmed) {
           this.kbService.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
 
-            console.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
-            console.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES header', res);
+            this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
 
             if (res) {
               this.downloadObjectAsJson(res, this.selectedNamespace.name + ' contents')
