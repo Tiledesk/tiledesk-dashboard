@@ -209,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "لا يمكن حذف الدور {{rob_name}} لأنه تم تعيينه إلى زميله في الفريق",
     "RemoveTheRoleAssignment":"قم بإزالة تخصيص الدور قبل حذفه.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"لا يمكن تعديل أو حذف الأدوار المحددة مسبقًا.",
+    "SelectARole":"حدد الدور",
     "Greetings": "تحيات",
     "Callout": "وسيلة شرح",
     "openUserProfile": "قم بتعيين صورة ملف التعريف الخاص بك",

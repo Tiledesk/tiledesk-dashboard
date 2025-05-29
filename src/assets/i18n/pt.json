@@ -209,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "A função {{role_name}} não pode ser eliminada porque está atribuída ao colega de equipa",
     "RemoveTheRoleAssignment":"Remova a atribuição de função antes de a eliminar.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"As funções predefinidas não podem ser modificadas ou eliminadas.",
+    "SelectARole":"Selecione uma função",
     "Greetings": "Saudações",
     "Callout": "Chamar",
     "openUserProfile": "Defina sua imagem de perfil",

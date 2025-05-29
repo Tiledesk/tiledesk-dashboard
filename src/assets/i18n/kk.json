@@ -209,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "{{role_name}} рөлін жою мүмкін емес, себебі ол әріптеске тағайындалған",
     "RemoveTheRoleAssignment":"Рөл тағайындауын жоймас бұрын оны жойыңыз.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"Алдын ала анықталған рөлдерді өзгерту немесе жою мүмкін емес.",
+    "SelectARole":"Рөлді таңдаңыз",
     "Greetings": "Сәлем",
     "Callout": "Шақыру",
     "openUserProfile": "Профиль суретін орнатыңыз",

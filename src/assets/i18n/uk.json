@@ -209,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "Роль {{role_name}} не може бути видалена, оскільки вона призначена товаришеві по команді",
     "RemoveTheRoleAssignment":"Видаліть призначення ролі перед тим, як його видалити.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"Визначені ролі не можуть бути змінені або видалені.",
+    "SelectARole":"Виберіть роль",
     "Greetings": "Вітаю",
     "Callout": "Виноска",
     "openUserProfile": "Встановіть зображення профілю",

@@ -209,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "{{role_name}} rolini oʻchirib boʻlmaydi, chunki u jamoadoshiga tayinlangan",
     "RemoveTheRoleAssignment":"Rol tayinlanishini o'chirishdan oldin uni olib tashlang.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"Oldindan belgilangan rollar o'zgartirilishi yoki o'chirib bo'lmaydi.",
+    "SelectARole":"Rol tanlang",
     "Greetings": "Salom",
     "Callout": "Chaqirmoq; aniqlamoq",
     "openUserProfile": "Profil rasmingizni o'rnating",

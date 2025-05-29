@@ -209,6 +209,7 @@
     "TheRoleCannotBeDeletedBecauseItIsAssignedToOneTeammate": "Impossible de supprimer le rôle {{role_name}}, car il est attribué au coéquipier.",
     "RemoveTheRoleAssignment":"Supprimez l'attribution de rôle avant de le supprimer.",
     "PredefinedRolesCannotBeModifiedOrDeleted":"Les rôles prédéfinis ne peuvent pas être modifiés ou supprimés.",
+    "SelectARole":"Sélectionnez un rôle",
     "Greetings": "Les salutations",
     "Callout": "Faire appel à",
     "openUserProfile": "Définissez votre image de profil",
