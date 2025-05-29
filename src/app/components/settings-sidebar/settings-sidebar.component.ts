@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
 import { KbSettings } from 'app/models/kbsettings-model'
+import { ProjectUser } from 'app/models/project-user'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -51,6 +52,9 @@ export class SettingsSidebarComponent implements OnInit {
   GROUPS_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
   ADD_GROUP_ROUTE_IS_ACTIVE: boolean;
+  ROLE_ROUTE_IS_ACTIVE: boolean;
+  CREATE_NEW_ROLE_ROUTE_IS_ACTIVE: boolean;
+  EDIT_ROLE_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
   WIDGET_INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   CHATBOT_ROUTE_IS_ACTIVE: boolean;
@@ -113,14 +117,12 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
         //  this.logger.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   listenSidebarIsOpened() {
@@ -650,6 +652,30 @@ export class SettingsSidebarComponent implements OnInit {
     } else {
       this.ADD_GROUP_ROUTE_IS_ACTIVE = false
       this.logger.log( '[SETTING-SIDEBAR] - ADD_GROUP_ROUTE_IS_ACTIVE  ', this.ADD_GROUP_ROUTE_IS_ACTIVE )
+    }
+
+    if (this.route.indexOf('/roles') !== -1) {
+      this.ROLE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - ROLE_ROUTE_IS_ACTIVE  ', this.ROLE_ROUTE_IS_ACTIVE )
+    } else {
+      this.ROLE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - ROLE_ROUTE_IS_ACTIVE  ', this.ROLE_ROUTE_IS_ACTIVE )
+    }
+
+     if (this.route.indexOf('/create-new-role') !== -1) {
+      this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - CREATE_NEW_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
+    } else {
+      this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - CREATE_NEW_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
+    }
+
+     if (this.route.indexOf('/edit-role') !== -1) {
+      this.EDIT_ROLE_ROUTE_IS_ACTIVE = true
+      this.logger.log( '[SETTING-SIDEBAR] - EDIT_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
+    } else {
+      this.EDIT_ROLE_ROUTE_IS_ACTIVE = false
+      this.logger.log( '[SETTING-SIDEBAR] - EDIT_ROLE_ROUTE_IS_ACTIVE  ', this.CREATE_NEW_ROLE_ROUTE_IS_ACTIVE )
     }
 
     
