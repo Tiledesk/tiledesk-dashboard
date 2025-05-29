@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.107-rc6
+- Removes default roles from the select role combobox on the teammate detail page
+
 ### 2.7.107-rc5
 - Renames the roles key "request_read_group_my" to "request_read_my"
 
