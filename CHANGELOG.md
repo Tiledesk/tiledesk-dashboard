@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.107-rc5
+- Renames the roles key "request_read_group_my" to "request_read_my"
+
 ### 2.7.107-rc4
 - Adds a loading spinner to the import contents to Knowledge Base modal window
 
