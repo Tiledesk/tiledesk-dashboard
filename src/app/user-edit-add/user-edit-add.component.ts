@@ -140,7 +140,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   appSumoProfile: string;
   public hideHelpLink: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-  roles: any;
+  roles: any[] = [];
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -160,14 +160,14 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit() {
 
-    console.log('on init  Role ', this.role);
+    // console.log('on init  Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
-    console.log('on init Selected Role ', this.selectedRole);
+    // console.log('on init Selected Role ', this.selectedRole);
 
     if (this.router.url.indexOf('/add') !== -1) {
       this.logger.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
@@ -200,7 +200,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.getRoles()
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -223,6 +223,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.showSpinner = false
         console.log('[USER-EDIT-ADD] - GET ROLES * COMPLETE *')
       });
+  }
+
+  get isUserRoleMatched(): boolean {
+    return this.roles.some(role => role.name === this.user_role);
   }
 
   trackPage() {
@@ -330,7 +334,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
+      this.logger.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
         this.CURRENT_USER_ID = user._id;
@@ -339,13 +343,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     });
   }
 
+
   getUserRole() {
     this.subscription = this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
       this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', projectUser)
-      // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.CURRENT_USER_ROLE = projectUser.role;
+      if (projectUser) {
+        this.CURRENT_USER_ROLE = projectUser.role;
+
+      } 
     })
   }
+
 
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
@@ -399,12 +407,12 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.learnMoreAboutDefaultRoles = translation;
       });
 
-      this.translate.get('TeammatesWithAgentRolesCannotInvite')
+    this.translate.get('TeammatesWithAgentRolesCannotInvite')
       .subscribe((translation: any) => {
         // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.agentsCannotInvite = translation;
       });
-      
+
   }
 
   getProfileImageStorage() {
@@ -448,7 +456,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
 
- 
+
 
 
 
@@ -456,14 +464,14 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
-         
+
           this.notify._displayContactUsModal(true, 'seats_limit_reached')
         } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
           this.router.navigate(['project/' + this.id_project + '/pricing']);
         }
       } else {
-        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
-          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed')
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
           this.notify._displayContactUsModal(true, 'seats_limit_reached');
         } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -474,15 +482,15 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
       if (this.prjct_profile_type === 'free') {
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
-         
+
           this.notify._displayContactOwnerModal(true, 'seats_limit_reached')
         } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
           // this.router.navigate(['project/' + this.id_project + '/pricing']);
           this.notify._displayContactOwnerModal(true, 'upgrade_plan');
         }
       } else {
-        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
-          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
           this.notify._displayContactOwnerModal(true, 'seats_limit_reached');
         } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -500,7 +508,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.notify._displayContactUsModal(true, 'seats_limit_exceed')
     } else {
       // this.presentModalOnlyOwnerCanManageTheAccountPlan()
-      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
     }
   }
 
@@ -508,7 +516,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     if (this.USER_ROLE === 'owner') {
       this.notify.displayGoToPricingModal('user_exceeds')
     } else {
-      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
     }
   }
 
@@ -568,7 +576,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
   getProjectUsersById() {
-    
+
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
 
       console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
@@ -598,7 +606,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - EMAIL: ', this.user_email);
 
         this.user_role = projectUser.role;
-        this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
+        console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
 
         if (projectUser && projectUser.max_assigned_chat) {
           this.max_assigned_chat = projectUser.max_assigned_chat;
