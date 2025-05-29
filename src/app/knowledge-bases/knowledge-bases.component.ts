@@ -1227,7 +1227,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     downloadAnchorNode.remove();
   }
 
-presentDialogImportContents() {
+  presentDialogImportContents() {
   Swal.fire({
     title: this.translate.instant('Warning'),
     html: `
@@ -1241,6 +1241,131 @@ presentDialogImportContents() {
     cancelButtonText: this.translate.instant('Cancel'),
     reverseButtons: true,
     didOpen: () => {
+      const confirmBtn = Swal.getConfirmButton();
+      const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
+
+      // Replace file input to remove old event listeners
+      const newFileInput = fileInput.cloneNode(true) as HTMLInputElement;
+      fileInput.parentNode?.replaceChild(newFileInput, fileInput);
+
+      confirmBtn.addEventListener('click', () => {
+        newFileInput.click();
+      });
+
+      newFileInput.addEventListener('change', () => {
+        const file = newFileInput.files?.[0];
+        if (!file) return;
+
+        if (file.type !== "application/json" && !file.name.endsWith('.json')) {
+          Swal.fire({
+            icon: 'error',
+            title: this.translate.instant('InvalidJSON'),
+            text: this.translate.instant('SorryFileTypeNotSupported')
+          });
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const jsonText = reader.result as string;
+
+          if (containsXSS(jsonText)) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
+            });
+            return;
+          }
+
+          try {
+            JSON.parse(jsonText);
+          } catch (error) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
+            });
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('uploadFile', file, file.name);
+
+          // Show loading modal while importing
+          Swal.fire({
+            title: this.translate.instant('KbPage.Importing'),
+            text: this.translate.instant('KbPage.ImportingDataPleaseWait'),
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe({
+            next: (res) => {
+              this.logger.log('[KB IMPORT] Response:', res);
+            },
+            error: (error) => {
+              let errorMessage = ""
+              if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
+                // console.log('[KB IMPORT] error.error.error :', error.error.error);
+                // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
+                const planLimit = error.error.plan_limit;
+                errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
+              } else {
+                errorMessage = this.translate.instant('HoursPage.ErrorOccurred')
+              }
+              Swal.close();
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: errorMessage, // this.translate.instant('HoursPage.ErrorOccurred'),
+                icon: "error",
+                confirmButtonText: this.translate.instant('Ok')
+              });
+              this.logger.error('[KB IMPORT ERROR]', error);
+            },
+            complete: () => {
+              Swal.close();
+              this.logger.log('[KB IMPORT] * COMPLETE *');
+
+              const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
+              this.getListOfKb(paramsDefault, 'onImportJSON');
+
+              Swal.fire({
+                title: this.translate.instant('Done') + "!",
+                text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
+                icon: "success",
+                confirmButtonText: this.translate.instant('Ok')
+              });
+            }
+          });
+        };
+
+        reader.readAsText(file);
+      });
+    }
+  });
+}
+
+
+_presentDialogImportContents() {
+  Swal.fire({
+    title: this.translate.instant('Warning'),
+    html: `
+      <p>${this.translate.instant('KbPage.ImportWillDeleteAllContents')}</p>
+      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />
+    `,
+    icon: "info",
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
+    cancelButtonText: this.translate.instant('Cancel'),
+    reverseButtons: true,
+    didOpen: () => {
+      
       const confirmBtn = Swal.getConfirmButton();
       const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
 
@@ -1329,7 +1454,7 @@ presentDialogImportContents() {
 
 
 
-  _presentDialogImportContents() {
+  __presentDialogImportContents() {
     Swal.fire({
       title: this.translate.instant('Warning'),
       // text: this.translate.instant('KbPage.ImportWillDeleteAllContents'),
