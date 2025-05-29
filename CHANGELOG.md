@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.107-rc4
+- Adds a loading spinner to the import contents to Knowledge Base modal window
+
 ### 2.7.107-rc3
 - Updates role's key
 
