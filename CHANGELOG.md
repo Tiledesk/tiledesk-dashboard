@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.108-rc1
+
 ### 2.7.107-rc6
 - Removes default roles from the select role combobox on the teammate detail page
 
