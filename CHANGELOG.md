@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.107
+- Adds the ability to import or export contents to the Knowledge Base page
+
 ### 2.7.106
 - Handles the /bots route that can be accidentally accessed
 
