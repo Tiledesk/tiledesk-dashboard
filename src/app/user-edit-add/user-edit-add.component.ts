@@ -225,9 +225,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       });
   }
 
-  get isUserRoleMatched(): boolean {
-    return this.roles.some(role => role.name === this.user_role);
-  }
+  // get isUserRoleMatched(): boolean {
+  //   return this.roles.some(role => role.name === this.user_role);
+  // }
 
   trackPage() {
     if (!isDevMode()) {
