@@ -6574,6 +6574,50 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+    isFirstMessageOfGroup(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (i === 0 || this.messagesList[i - 1] && this.messagesList[i - 1].sender !== message.sender) && message_subtype !== 'info' && message_subtype !== 'info/support';
+  }
+
+  isLastMessageOfGroup(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender) && message_subtype !== 'info' && message_subtype !== 'info/support';
+  }
+
+  isInfoMessage(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (i === this.messagesList.length - 1 || this.messagesList[i + 1]) && message_subtype === 'info' || message_subtype === 'info/support';
+  }
+
+  isFirstInfoMessage(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (i === 0 || this.messagesList[i - 1]) && message_subtype === 'info';
+  }
+
+  shouldShowContactAvatar(message, i): boolean {
+    let message_subtype = ""
+    if (message && message.attributes && message.attributes.subtype) {
+      message_subtype = message.attributes.subtype
+    }
+    return (
+      message.sender !== this.requester_id && message_subtype !== 'info' && ((this.messagesList[i + 1] && this.messagesList[i + 1].sender !== message.sender && message_subtype !== 'info') || !this.messagesList[i + 1])
+    );
+  }
+
+
+
   // NO MORE USED - REPLACED BY getProjectUsersAndBots
   // ------------------------------------------------------------------------------------------------------------------------
   // @ Get all project's Agents (i.e., project-users) - called when the user open the SelectUsersModal (openSelectUsersModal)
