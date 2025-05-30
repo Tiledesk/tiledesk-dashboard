@@ -294,7 +294,7 @@
                         <select #selectElem (change)="setSelected(selectElem.value)" style="width: 100%;" id="userrole"
                           [disabled]="CURRENT_USER_ROLE !== 'owner' || CURRENT_USER_ID === projectUser?.id_user?._id">
 
-                          <!-- <option [selected]="user_role === 'owner'" disabled>
+                          <option [selected]="user_role === 'owner'" disabled>
                             {{ "owner" | translate }}
                           </option>
 
@@ -303,7 +303,7 @@
                           </option>
                           <option value="agent" [selected]="user_role === 'agent'">
                               {{ "agent" | translate }}
-                          </option> -->
+                          </option>
 
                           <option *ngFor="let role of roles" [value]="role.name" [selected]="user_role === role.name"> 
                               {{ role.name }}

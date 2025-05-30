@@ -71,7 +71,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <tr>
+                                             <tr>
                                                 <td>
                                                     {{'owner' | translate }}
                                                 </td>
@@ -97,8 +97,8 @@
                                                 
 
                                                 </td>
-                                            </tr> -->
-                                            <!-- <tr>
+                                            </tr> 
+                                            <tr>
                                                 <td>
                                                     {{'admin' | translate }}
                                                 </td>
@@ -123,8 +123,8 @@
                                                     </button>
                                                    
                                                 </td>
-                                            </tr> -->
-                                            <!-- <tr>
+                                            </tr> 
+                                             <tr>
                                                 <td>
                                                     {{'agent' | translate }}
                                                 </td>
@@ -149,11 +149,13 @@
                                                         <i class="material-icons">delete</i>
                                                     </button>
                                                 </td>
-                                            </tr> -->
+                                            </tr> 
 
                                             <tr *ngFor="let role of roles">
                                                 <td>
+                                                   <span style="text-transform: capitalize;">
                                                     {{role.name}}
+                                                   </span> 
                                                 </td>
                                                 <td style="width: 1%; white-space: nowrap;">
                                                     <button type="button" class="btn btn-primary btn-simple btn-xs" (click)="goToRoleDetail(role._id)">
@@ -163,7 +165,6 @@
                                                         <i class="material-icons">delete</i>
                                                     </button>
                                                     
-
                                                 </td>
 
                                             </tr>

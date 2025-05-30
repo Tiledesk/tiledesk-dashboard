@@ -98,36 +98,47 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: 'request_read_all', label: 'All conversations' },
-        { key: 'request_read_group', label: 'Conversations assigned to their teams only' },
+        { key: 'request_read_group', label: 'Conversations assigned to their groups only' },
         { key: 'request_read_my', label: 'Conversations assigned to them only' }
       ]
     },
     {
-      key: 'dataSecurity',
-      title: 'Data and security',
-      parentLabel: 'Data and security Access',
-      type: 'checkbox',
+      key: 'conversationManagement',
+      title: 'Conversation Management',
+      parentLabel: 'Conversation Management Level',
+      type: 'radio',
       expanded: false,
       children: [
-        { key: 'manageWorkspace', label: 'Can manage workspace data' },
-        { key: 'accessLists', label: 'Can access people, companies, and account lists' },
-        { key: 'profilePages', label: 'Can access lead and user profile pages' },
-        { key: 'leadData', label: 'Can export Lead, User, Company data' },
-        { key: 'importData', label: 'Can import contacts, companies and tickets' },
-        { key: 'manageTags', label: 'Can manage tags' },
+        { key: 'request_update', label: 'Able to update' }
       ]
     },
-    {
-      key: 'appsIntegration',
-      title: 'Apps and Integrations',
-      parentLabel: 'Apps and Integrations Access',
-      type: 'checkbox',
-      expanded: false,
-      children: [
-        { key: 'developerHub', label: 'Can access Developer Hub' },
-        { key: 'manageApps', label: 'Can install, configure and delete apps' }
-      ]
-    }
+    
+    // {
+    //   key: 'dataSecurity',
+    //   title: 'Data and security',
+    //   parentLabel: 'Data and security Access',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: 'manageWorkspace', label: 'Can manage workspace data' },
+    //     { key: 'accessLists', label: 'Can access people, companies, and account lists' },
+    //     { key: 'profilePages', label: 'Can access lead and user profile pages' },
+    //     { key: 'leadData', label: 'Can export Lead, User, Company data' },
+    //     { key: 'importData', label: 'Can import contacts, companies and tickets' },
+    //     { key: 'manageTags', label: 'Can manage tags' },
+    //   ]
+    // },
+    // {
+    //   key: 'appsIntegration',
+    //   title: 'Apps and Integrations',
+    //   parentLabel: 'Apps and Integrations Access',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: 'developerHub', label: 'Can access Developer Hub' },
+    //     { key: 'manageApps', label: 'Can install, configure and delete apps' }
+    //   ]
+    // }
   ];
 
   constructor(
