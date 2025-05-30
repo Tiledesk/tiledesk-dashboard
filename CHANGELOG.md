@@ -1,6 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.7.108-rc1
+- Adds in the New role page the accordion "Conversation Management" and removes the accordions "Apps" and "Data"
 
 ### 2.7.107-rc6
 - Removes default roles from the select role combobox on the teammate detail page
