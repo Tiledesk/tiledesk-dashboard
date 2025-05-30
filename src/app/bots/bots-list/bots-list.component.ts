@@ -223,7 +223,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.currentRoute = this.router.url;
     this.logger.log('[BOTS-LIST] - currentRoute ', this.currentRoute)
 
-    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1) {
+    if (this.currentRoute.indexOf('/bots/my-chatbots/all') !== -1 || this.currentRoute.indexOf('/bots') !== -1 ) {
       this.isChatbotRoute = 'all'
 
       this.logger.log('[BOTS-LIST] - currentRoute isChatbotRoute ', this.isChatbotRoute)
@@ -1064,7 +1064,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
         this.route = this.router.url
-        if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
+        if (this.route.indexOf('/bots/my-chatbots/all') !== -1 || this.route.indexOf('/bots') !== -1) {
           this.faqkbList = this.faqkbList
           this.pageName = "All"
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
