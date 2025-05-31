@@ -3,12 +3,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
-
+import { UsersService } from './users.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class RolesService {
+   private updateRequestPermission$ = new BehaviorSubject<boolean>(true); // ✅ default is true
   SERVER_BASE_PATH: string;
   ROLES_URL: string;
   TOKEN: string
@@ -17,11 +22,37 @@ export class RolesService {
     private logger: LoggerService,
     private _httpClient: HttpClient,
     private auth: AuthService,
+    private usersService: UsersService
 
   ) {
     this.getToken();
     this.getAppBasePath();
     this.getCurrentProjectAndBuildUrl()
+  }
+
+   listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+    this.usersService.projectUser_bs
+      .pipe(
+        takeUntil(unsubscribe$),
+        filter(projectUser => !!projectUser)
+      )
+      .subscribe((projectUser) => {
+        // ✅ Skip checking for these roles
+        if (['owner', 'admin', 'agent'].includes(projectUser.role)) {
+          this.updateRequestPermission$.next(true);
+          return;
+        }
+
+        // 🔍 For custom roles, check the permissions array
+        const hasPermission = Array.isArray(projectUser.permissions)
+          && projectUser.permissions.includes('request_update');
+
+        this.updateRequestPermission$.next(hasPermission);
+      });
+  }
+
+   getUpdateRequestPermission(): Observable<boolean> {
+    return this.updateRequestPermission$.asObservable();
   }
 
   getToken() {

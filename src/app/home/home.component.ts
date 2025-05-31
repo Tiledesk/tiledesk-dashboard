@@ -2223,7 +2223,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
-    this.logger.log('[HOME] CALL GET-PROJECT-USER')
+    console.log('[HOME] CALL GET-PROJECT-USER')
     this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {

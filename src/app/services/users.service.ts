@@ -14,6 +14,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { WebSocketJs } from "../services/websocket/websocket-js";
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
+import { of } from 'rxjs';
 interface NewUser {
   displayName: string;
   email: string;
@@ -525,10 +526,11 @@ export class UsersService {
    * @param user_id 
    * @returns 
    */
-  public getProjectUserByUserId(user_id: string): Observable<ProjectUser[]> {
+  public _getProjectUserByUserId(user_id: string): Observable<any[]> {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
-    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+    // const url = this.PROJECT_USER_URL + 'me';
+   console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -540,28 +542,50 @@ export class UsersService {
   
 
     return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
+      .get<any[]>(url, httpOptions)
   }
 
-  public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+  public getProjectUserByUserId(user_id: string): Observable<any> {
+  const fakeMember = {
+    user_available: false,
+    number_assigned_requests: 0,
+    last_login_at: '2025-05-25T11:40:13.941Z',
+    status: 'active',
+    _id: '6834487fefb254002d625604',
+    id_project: '66acde4ab2d8d9002d383c09',
+    id_user: {
+      status: 100,
+      _id: '5f69e0ffeb20290045d00cf1',
+      email: 'gianni@bello.it',
+      firstname: 'Gianni',
+      lastname: 'Bello',
+      emailverified: false,
+      createdAt: '2020-09-22T11:33:19.662Z',
+      updatedAt: '2020-09-22T11:33:19.662Z',
+      __v: 0,
+      fullname_initial: 'GB',
+      fillColour: '#faa774'
+    },
+    role: 'agent',
+    permissions: ['request_read'],
+    createdBy: '6464e1d7068dcf00312ee5b5',
+    tags: [],
+    createdAt: '2025-05-26T10:54:55.831Z',
+    updatedAt: '2025-05-26T10:54:55.831Z',
+    __v: 0,
+    isAuthenticated: true,
+    id: '6834487fefb254002d625604',
+    isBusy: false,
+    hasImage: false
+  };
+  const url = this.PROJECT_USER_URL + 'users/' + user_id;
+  console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+  this.logger.log('[USER-SERV] - MOCKED GET PROJECT USER BY ID');
 
-    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
+  return of([fakeMember]);
+}
 
-    const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
-    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-  
-
-    return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
-  }
+ 
 
 
   /**
@@ -581,6 +605,65 @@ export class UsersService {
         'Authorization': this.TOKEN
       })
     };
+
+    return this._httpClient
+      .get<ProjectUser[]>(url, httpOptions)
+  }
+
+  public _getProjectUsersById(projectuser_id: string): Observable<any> {
+  const fakeMember = {
+    user_available: false,
+    number_assigned_requests: 0,
+    last_login_at: '2025-05-25T11:40:13.941Z',
+    status: 'active',
+    _id: '6834487fefb254002d625604',
+    id_project: '66acde4ab2d8d9002d383c09',
+    id_user: {
+      status: 100,
+      _id: '5f69e0ffeb20290045d00cf1',
+      email: 'gianni@bello.it',
+      firstname: 'Gianni',
+      lastname: 'Bello',
+      emailverified: false,
+      createdAt: '2020-09-22T11:33:19.662Z',
+      updatedAt: '2020-09-22T11:33:19.662Z',
+      __v: 0,
+      fullname_initial: 'GB',
+      fillColour: '#faa774'
+    },
+    role: 'Nik',
+    permissions: [],
+    createdBy: '6464e1d7068dcf00312ee5b5',
+    tags: [],
+    createdAt: '2025-05-26T10:54:55.831Z',
+    updatedAt: '2025-05-26T10:54:55.831Z',
+    __v: 0,
+    isAuthenticated: true,
+    id: '6834487fefb254002d625604',
+    isBusy: false,
+    hasImage: false
+  };
+
+  this.logger.log('[USER-SERV] - MOCKED GET PROJECT USER BY ID');
+
+  return of(fakeMember);
+}
+
+ public getProjectUserByUserIdPassingProjectId(user_id: string,project_id:  string): Observable<ProjectUser[]> {
+
+    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
+
+    const url = this.SERVER_BASE_PATH + project_id + '/project_users/'+ 'users/' + user_id;
+    this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
 
     return this._httpClient
       .get<ProjectUser[]>(url, httpOptions)

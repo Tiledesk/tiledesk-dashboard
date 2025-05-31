@@ -155,6 +155,15 @@ export class NotifyService {
 
   }
 
+  presentDialogNoPermissionToPermomfAction() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Permission Denied',
+      text: 'We are sorry, bu you don\'t have permissions to perform this action.',
+      confirmButtonText: 'OK'
+    });
+  }
+
 
   // "{{'YourTrialHasEnded' | translate }}"
   // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
