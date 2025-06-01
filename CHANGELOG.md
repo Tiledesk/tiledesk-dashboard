@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.108
+- Fixes the bug: AI Agent creation not working in knowledge base page
+
 ### 2.7.107
 - Adds the ability to import or export contents to the Knowledge Base page
 
