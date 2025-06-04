@@ -85,7 +85,7 @@ export class RoleService {
     return new Promise((resolve, reject) => {
       this.usersService.getProjectUserByUserIdPassingProjectId(currentUserId, prjct_id).subscribe((projectUser) => {
 
-        this.logger.log('[ROLE-SERV] projectUser ', projectUser)
+        console.log('[ROLE-SERV] projectUser ', projectUser)
         this.logger.log('[ROLE-SERV] projectUser role', projectUser[0]['role'])
         resolve(projectUser[0]['role'])
       

@@ -1799,7 +1799,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               const storedTeammate = this.usersLocalDbService.getMemberFromStorage(this.request['closed_by']) //  localStorage.getItem('dshbrd----' + this.request['closed_by'] )
 
               if (storedTeammate) {
-                this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
+                console.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammate ', storedTeammate)
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by storedTeammateObjct ', storedTeammate)
                 this.request['closed_by_label'] = this.translate.instant('By') + ' ' + storedTeammate['firstname'] + ' ' + storedTeammate['lastname']
                 this.logger.log('[WS-REQUESTS-MSGS] request >  closed_by label ', this.request['closed_by_label'])
@@ -1947,7 +1947,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.members_array = this.request.participants;
           this.logger.log('[WS-REQUESTS-MSGS] - *** PARTICIPANTS_ARRAY ', this.members_array)
           this.logger.log('[WS-REQUESTS-MSGS] - *** currentUserID ', this.currentUserID)
-          this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+          console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
           this.logger.log('[WS-REQUESTS-MSGS] - *** id_project ', this.request.id_project);
 
 
@@ -1958,7 +1958,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // }
           if (!this.CURRENT_USER_ROLE) {
             this.CURRENT_USER_ROLE = await this.getProjectUserInProject(this.currentUserID, this.request.id_project)
-            this.logger.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
+            console.log('[WS-REQUESTS-MSGS] - *** CURRENT_USER_ROLE 2 ', this.CURRENT_USER_ROLE);
           }
 
           this.members_array.forEach(member => {
