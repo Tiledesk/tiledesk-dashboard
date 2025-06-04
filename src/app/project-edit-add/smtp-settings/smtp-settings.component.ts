@@ -279,12 +279,12 @@ export class SmtpSettingsComponent implements OnInit {
 
             }, () => {
               this.logger.log('[CONTACTS-DTLS] in swal willResetToDefault * COMPLETE *');
-              this.smtp_host_name = undefined;
-              this.smtp_port = undefined;
-              this.sender_email_address = undefined;
-              this.smtp_usermame = undefined;
-              this.smtp_pswd = undefined;
-              this.smtp_connetion_security = undefined
+              // this.smtp_host_name = undefined;
+              // this.smtp_port = undefined;
+              // this.sender_email_address = undefined;
+              // this.smtp_usermame = undefined;
+              // this.smtp_pswd = undefined;
+              // this.smtp_connetion_security = undefined
 
             });
         } else {
