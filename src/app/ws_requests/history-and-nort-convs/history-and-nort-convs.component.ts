@@ -312,7 +312,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
-  PERMISSION_TO_UPDATE_REQUEST: boolean = true;
+  PERMISSION_TO_UPDATE_REQUEST: boolean
   /**
    * 
    * @param router 
@@ -3121,8 +3121,36 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  selectAll(e) {
-    this.logger.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+  selectAllHistory(e) {
+    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
+
+
+    if (e.target.checked == true) {
+      this.allChecked = true;
+      for (let request of this.requestList) {
+        const index = this.request_selected.indexOf(request.request_id);
+        if (index > -1 || request.status !== 1000) {
+          this.logger.log("[HISTORY & NORT-CONVS] **++ Already present")
+        } else {
+          this.logger.log("[HISTORY & NORT-CONVS] *+*+ Request Selected: ", request.request_id);
+          this.request_selected.push(request.request_id);
+        }
+      }
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    } else {
+      this.allChecked = false;
+      this.request_selected = [];
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    }
+
+  }
+
+  selectAllNort(e) {
+    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
 
@@ -3154,9 +3182,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // --------------------------------------------------------------
   change(requestId) {
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    this.logger.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+    console.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
 
-    this.logger.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
+    console.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
     const index = this.request_selected.indexOf(requestId);
     this.logger.log("[HISTORY & NORT-CONVS] - change - request selected INDEX: ", index);
 
@@ -3187,7 +3215,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   archiveRequest(request_id) {
     if (this.PERMISSION_TO_UPDATE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-      this.logger.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
+      console.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
 
 
       this.wsRequestsService.closeSupportGroup(request_id)
@@ -3210,7 +3238,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
           // this.onArchiveRequestCompleted()
 
-          this.getRequests();
+          // this.getRequests();
+
+          for (var i = 0; i < this.requestList.length; i++) {
+
+          if (this.requestList[i].request_id === request_id) {
+            console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
+            this.requestList[i]['status'] = 1000
+            // this.requestList.splice(i, 1);
+          }
+          console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
+        }
+   
         });
     } else {
       this.notify.presentDialogNoPermissionToPermomfAction()

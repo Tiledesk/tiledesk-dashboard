@@ -2224,7 +2224,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
     console.log('[HOME] CALL GET-PROJECT-USER')
-    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    // this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
+    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
       this.logger.log('[HOME] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         this.logger.log('[HOME] PROJECT-USER ID ', projectUser[0]._id)

@@ -155,12 +155,17 @@ export class NotifyService {
 
   }
 
-  presentDialogNoPermissionToPermomfAction() {
+  presentDialogNoPermissionToPermomfAction(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
     Swal.fire({
       icon: 'warning',
       title: 'Permission Denied',
       text: 'We are sorry, bu you don\'t have permissions to perform this action.',
-      confirmButtonText: 'OK'
+      confirmButtonText: 'OK',
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
     });
   }
 

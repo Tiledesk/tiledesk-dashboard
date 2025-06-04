@@ -570,7 +570,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   getProjectUsersById() {
     
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
-
+      console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', this.project_user_id);
       console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
       if (projectUser) {
         this.projectUser = projectUser;

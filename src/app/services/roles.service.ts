@@ -39,6 +39,7 @@ export class RolesService {
       .subscribe((projectUser) => {
         // ✅ Skip checking for these roles
         if (['owner', 'admin', 'agent'].includes(projectUser.role)) {
+        // if (['owner', 'admin'].includes(projectUser.role)) {
           this.updateRequestPermission$.next(true);
           return;
         }

@@ -47,6 +47,7 @@ import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { CacheService } from 'app/services/cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
+import { RolesService } from 'app/services/roles.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -377,6 +378,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
+  PERMISSION_TO_UPDATE_REQUEST: boolean
   /**
    * Constructor
    * @param router 
@@ -425,7 +427,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public dialog: MatDialog,
     public brandService: BrandService,
     private faqService: FaqService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    public rolesService: RolesService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -537,9 +540,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getRouteParams();
     this.getQueryParams();
     this.getProjectPlan();
+    this.listenToProjectUser()
 
     this.fileUploadAccept = this.appConfigService.getConfig().fileUploadAccept
     // this.getClickOutEditContactFullname()
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((hasPermission) => {
+        this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
+        console.log('[WS-REQUESTS-MSGS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
+      });
   }
 
 
@@ -3068,52 +3083,60 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   addNote() {
     // this.disableMainPanelScroll();
-    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
-      this.showSpinnerInAddNoteBtn = true;
-      this.wsRequestsService.createNote(this.new_note, this.id_request)
-        .subscribe((responses: any) => {
-          this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
-        }, (error) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
-          this.showSpinnerInAddNoteBtn = false;
-        }, () => {
-          this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
-          this.new_note = ''
-          // var panel = <HTMLElement>document.querySelector('.note-panel')
-          // panel.scrollTop = panel.scrollHeight;
-          // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
+        this.showSpinnerInAddNoteBtn = true;
+        this.wsRequestsService.createNote(this.new_note, this.id_request)
+          .subscribe((responses: any) => {
+            this.logger.log('[WS-REQUESTS-MSGS] - CREATE NOTE - RES ', responses);
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE - ERROR ', error);
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteError'], 4, 'report_problem');
+            this.showSpinnerInAddNoteBtn = false;
+          }, () => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CREATE NOTE * COMPLETE *');
+            this.new_note = ''
+            // var panel = <HTMLElement>document.querySelector('.note-panel')
+            // panel.scrollTop = panel.scrollHeight;
+            // this.logger.log('% Ws-REQUESTS-Msgs - note-wf - CREATE NOTE * COMPLETE *');
 
-          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
-          this.showSpinnerInAddNoteBtn = false;
-          // this.enableMainPanelScroll()
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['CreateNoteSuccess'], 2, 'done');
+            this.showSpinnerInAddNoteBtn = false;
+            // this.enableMainPanelScroll()
 
-        });
+          });
+      }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
     }
   }
 
 
   deleteNote(note_id) {
-    this.notify.operationinprogress(this.translationMap.get('Processing'));
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.notify.operationinprogress(this.translationMap.get('Processing'));
 
-    this.wsRequestsService.deleteNote(this.id_request, note_id)
-      .subscribe((responses: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS]  - DELETE NOTE - RES ', responses);
+      this.wsRequestsService.deleteNote(this.id_request, note_id)
+        .subscribe((responses: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS]  - DELETE NOTE - RES ', responses);
 
 
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS]  - DELETE NOTE - ERROR ', error);
-        this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteError'], 4, 'report_problem');
-      }, () => {
+        }, (error) => {
+          this.logger.error('[WS-REQUESTS-MSGS]  - DELETE NOTE - ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteError'], 4, 'report_problem');
+        }, () => {
 
-        var panel = <HTMLElement>document.querySelector('.note-panel')
-        // panel.scrollTop = panel.scrollHeight;
-        this.logger.log('[WS-REQUESTS-MSGS]  DELETE NOTE * COMPLETE *');
-        // this.notify.showWidgetStyleUpdateNotification(this.delete_note_success, 2, 'done');
-        this.notify.operationcompleted(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteSuccess']);
+          var panel = <HTMLElement>document.querySelector('.note-panel')
+          // panel.scrollTop = panel.scrollHeight;
+          this.logger.log('[WS-REQUESTS-MSGS]  DELETE NOTE * COMPLETE *');
+          // this.notify.showWidgetStyleUpdateNotification(this.delete_note_success, 2, 'done');
+          this.notify.operationcompleted(this.translationMap.get('Notes.NotificationMsgs')['DeleteNoteSuccess']);
 
-        // this.closeModalDeleteNote(); // no more used
-      });
+          // this.closeModalDeleteNote(); // no more used
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
 
@@ -3144,6 +3167,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ---------------------------------------------------------------------------------------
   // @ Priority
   // ---------------------------------------------------------------------------------------
+  // handlePriorityClick(event: MouseEvent): void {
+  //   if (!this.PERMISSION_TO_UPDATE_REQUEST) {
+  //     event.stopPropagation(); // Prevent ng-select from opening
+  //     this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+  //   }
+  // }
+
+handleBlockedSelectClick(event: MouseEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+  this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+}
+
+
   onChangeSelectedPriority(selectedPriority) {
     this.logger.log('[WS-REQUESTS-MSGS] - onChangeSelectedPriority selectedPriority ', selectedPriority)
     this.selectedPriority = selectedPriority;
@@ -3445,34 +3482,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   openSelectUsersModal(actionSelected) {
-    this.actionInModal = actionSelected
-    this.logger.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
-    this.closeMoreOptionDropdown();
+    console.log(' openSelectUsersModal PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST)
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.actionInModal = actionSelected
+      console.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+      this.closeMoreOptionDropdown();
 
 
-    if (this.actionInModal === 'invite') {
-      if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
-        if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
-          let agentFullname = ""
-          if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
-            agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
-          } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
-            agentFullname = this.agents_array[0].firstname
+      if (this.actionInModal === 'invite') {
+        if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+          if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
+            let agentFullname = ""
+            if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
+              agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
+            } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
+              agentFullname = this.agents_array[0].firstname
+            }
+            this.presentModalYouCannotAddAgents(agentFullname)
+          } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
+            this.presentModalAddAgent()
+          } else if (this.agents_array.length === 0) {
+            this.presentModalAddAgent()
           }
-          this.presentModalYouCannotAddAgents(agentFullname)
-        } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
-          this.presentModalAddAgent()
-        } else if (this.agents_array.length === 0) {
+        } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
           this.presentModalAddAgent()
         }
-      } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
+      } else {
         this.presentModalAddAgent()
       }
+      // this.getAllUsersOfCurrentProject();
     } else {
-      this.presentModalAddAgent()
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
     }
-    // this.getAllUsersOfCurrentProject();
-
   }
 
   presentModalAddAgent() {
@@ -3806,7 +3847,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
-    this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
+
+    console.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
     Swal.fire({
       title: this.translationMap.get('VisitorsPage.AddAgent'),
       text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', { user: userfirstname + ' ' + userlastname }),
@@ -3865,6 +3907,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] AddAgentToConversation swal willReassign', result);
         }
       });
+
   }
 
 
@@ -3973,7 +4016,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   sendMessage(block) {
     let message = '/' + block;
     this.selectedResponseTypeID = 3
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', message);
+    console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', message);
     this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
       .subscribe((msg) => {
 
@@ -4144,76 +4187,96 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+  handleDropdownClick(event: MouseEvent): void {
+    console.log('[WS-REQUESTS-MSGS] - handleDropdownClick ');
+    if (!this.PERMISSION_TO_UPDATE_REQUEST) {
+      event.preventDefault(); // Prevent dropdown from opening
+      // event.stopPropagation();
+      event.stopImmediatePropagation();
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+
+    }
+  }
+
+
   archiveRequest(requestid) {
-    this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
-    this.wsRequestsService.closeSupportGroup(requestid)
-      .subscribe((data: any) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
+      this.wsRequestsService.closeSupportGroup(requestid)
+        .subscribe((data: any) => {
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - archiveRequest requestid', requestid);
 
-        this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-        this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
 
-        if (requestid === this.storedRequestId) {
-          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
-          this.usersLocalDbService.removeFromStorage('last-selection-id')
-        }
-      },
-        (err) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
+          if (requestid === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+        },
+          (err) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - ERROR ', err);
 
-          //  NOTIFY ERROR 
-          this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
-        }, () => {
+            //  NOTIFY ERROR 
+            this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('AnErrorHasOccurredArchivingTheRequest'), 4, 'report_problem')
+          }, () => {
 
-          this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
-          //  NOTIFY SUCCESS
-          this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
+            this.logger.log('[WS-REQUESTS-MSGS] - CLOSE SUPPORT GROUP - COMPLETE');
+            //  NOTIFY SUCCESS
+            this.notify.showRequestIsArchivedNotification(this.translationMap.get('RequestSuccessfullyClosed'));
 
-          let convWokingStatus = ''
-          this.updateRequestWorkingStatus(convWokingStatus)
-        });
+            let convWokingStatus = ''
+            this.updateRequestWorkingStatus(convWokingStatus)
+          });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   reopenArchivedRequest(request, request_id) {
-    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
-    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
-    // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
-    // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+      // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
+      // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
 
-    // const closedAt = moment(new Date(request['closed_at'])).toDate()
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
-    // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
-    // const today = moment(new Date()).format("YYYY-MM-DD")
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
-    // unarchiveRequest
-
-
-    const requestclosedAt = moment(request['closed_at']);
-    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
-    const currentTime = moment();
-    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
+      // const closedAt = moment(new Date(request['closed_at'])).toDate()
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+      // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+      // const today = moment(new Date()).format("YYYY-MM-DD")
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
+      // unarchiveRequest
 
 
-    const daysDiff = currentTime.diff(requestclosedAt, 'd');
-    this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+      const requestclosedAt = moment(request['closed_at']);
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+      const currentTime = moment();
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
 
 
-    if (daysDiff > 10) {
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
-      this.presentModalReopenConvIsNotPossible()
+      const daysDiff = currentTime.diff(requestclosedAt, 'd');
+      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+
+      if (daysDiff > 10) {
+        this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
+        this.presentModalReopenConvIsNotPossible()
+      } else {
+        // this.logger.log(moment(closedAtPlusTen).isSame(today))
+        this.reopenConversation(request_id)
+
+        let convWokingStatus = 'open'
+        this.updateRequestWorkingStatus(convWokingStatus)
+
+        this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+      }
     } else {
-      // this.logger.log(moment(closedAtPlusTen).isSame(today))
-      this.reopenConversation(request_id)
-
-      let convWokingStatus = 'open'
-      this.updateRequestWorkingStatus(convWokingStatus)
-
-      this.logger.log('[WS-REQUESTS-MSGS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
     }
   }
 
@@ -4249,24 +4312,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // JOIN TO CHAT GROUP
   onJoinHandled() {
-    if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
-      if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
-        this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array ', this.agents_array)
-        this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array 0 is a bot', this.agents_array[0].isBot)
-        let agentFullname = ""
-        if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
-          agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
-        } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
-          agentFullname = this.agents_array[0].firstname
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
+        if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
+          this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array ', this.agents_array)
+          this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array 0 is a bot', this.agents_array[0].isBot)
+          let agentFullname = ""
+          if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
+            agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
+          } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
+            agentFullname = this.agents_array[0].firstname
+          }
+          this.presentModalYouCannotJoinChat(agentFullname)
+        } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
+          this.joinChat()
+        } else if (this.agents_array.length === 0) {
+          this.joinChat()
         }
-        this.presentModalYouCannotJoinChat(agentFullname)
-      } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
-        this.joinChat()
-      } else if (this.agents_array.length === 0) {
+      } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
         this.joinChat()
       }
-    } else if (this.request.channel.name !== 'email' || this.request.channel.name !== 'form' || this.request.channel.name === 'telegram' || this.request.channel.name === 'whatsapp' || this.request.channel.name === 'messenger' || this.request.channel.name === 'chat21') {
-      this.joinChat()
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
     }
   }
 
@@ -5552,73 +5619,84 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   sendChatMessage() {
-    // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
-    const requestclosedAt = moment(this.request['closed_at']);
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
-    const currentTime = moment();
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime);
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
-    const daysDiff = currentTime.diff(requestclosedAt, 'd');
-    this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
-    if (this.request.status === 1000 && daysDiff > 10) {
-      this.presenModalMessageCouldNotBeSent();
-    } else {
+      const requestclosedAt = moment(this.request['closed_at']);
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
+      const currentTime = moment();
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime);
 
-      if (this.selectedResponseTypeID && this.IS_CURRENT_USER_JOINED === false) {
-        this.reopenConversation(this.id_request)
-      }
+      const daysDiff = currentTime.diff(requestclosedAt, 'd');
+      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
+      if (this.request.status === 1000 && daysDiff > 10) {
+        this.presenModalMessageCouldNotBeSent();
+      } else {
 
-      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
-      let _chat_message = ''
-      if (this.type !== 'file') {
-        _chat_message = this.chat_message
-      } else if (this.type === 'file') {
-        // msg = [${metadata.name}](${metadata.src}) + '\n' + msg
-        if (this.chat_message) {
-          _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
-        } else {
-          _chat_message = `[${this.metadata.name}](${this.metadata.src})`
+        if (this.selectedResponseTypeID && this.IS_CURRENT_USER_JOINED === false) {
+          this.reopenConversation(this.id_request)
         }
-      }
 
-      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
-      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
-      // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
-
-      this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
-        .subscribe((msg) => {
-
-          this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
-        }, (error) => {
-          this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
-
-        }, () => {
-          this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
-          this.chat_message = undefined;
-          this.uploadedFiles = undefined;
-          this.metadata = undefined;
-          this.type = undefined;
-          this.existAnAttacment = false;
-          this.sendMessageTexarea.nativeElement.style.height = null;
-
-          let convWokingStatus = ""
-          if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
-            convWokingStatus = 'open'
-          } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
-            convWokingStatus = 'pending'
-          } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
-            convWokingStatus = ''
+        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - type', this.type)
+        let _chat_message = ''
+        if (this.type !== 'file') {
+          _chat_message = this.chat_message
+        } else if (this.type === 'file') {
+          // msg = [${metadata.name}](${metadata.src}) + '\n' + msg
+          if (this.chat_message) {
+            _chat_message = `[${this.metadata.name}](${this.metadata.src})` + '\n' + this.chat_message
+          } else {
+            _chat_message = `[${this.metadata.name}](${this.metadata.src})`
           }
+        }
 
-          this.updateRequestWorkingStatus(convWokingStatus)
+        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
 
-        });
+        this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
+          .subscribe((msg) => {
+
+            this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+          }, () => {
+            this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
+            this.chat_message = undefined;
+            this.uploadedFiles = undefined;
+            this.metadata = undefined;
+            this.type = undefined;
+            this.existAnAttacment = false;
+            this.sendMessageTexarea.nativeElement.style.height = null;
+            let convWokingStatus = ""
+            if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+              convWokingStatus = 'open'
+            } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+              convWokingStatus = 'pending'
+            } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+              convWokingStatus = ''
+            }
+
+            this.updateRequestWorkingStatus(convWokingStatus)
+
+          });
+      }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+
+            this.chat_message = undefined;
+            this.uploadedFiles = undefined;
+            this.metadata = undefined;
+            this.type = undefined;
+            this.existAnAttacment = false;
+            this.sendMessageTexarea.nativeElement.style.height = null
     }
   }
 
@@ -5693,7 +5771,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   isOpenDropdown(_is0penDropDown) {
-    this.is0penDropDown = _is0penDropDown
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.is0penDropDown = _is0penDropDown
+    } else {
+     this.notify.presentDialogNoPermissionToPermomfAction()
+    }
+
     // this.logger.log('[WS-REQUESTS-MSGS] this.is0penDropDown ',this.is0penDropDown)  
   }
 
@@ -6062,7 +6145,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     }
   }
-  
+
   onFileSelected($event) {
     this.uploadNativeAttachmentError = false;
     this.existAnAttacment = false
@@ -6189,130 +6272,137 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   smartAssignmentOff() {
-    Swal.fire({
-      title: this.translationMap.get('AreYouSure') + '?',
-      text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.translate.instant('ConvertToOffline'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: true,
-      reverseButtons: true,
-      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      Swal.fire({
+        title: this.translationMap.get('AreYouSure') + '?',
+        text: this.translationMap.get('SmartReassignmentForThisConversationWillBeDisabled'),
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.translate.instant('ConvertToOffline'),
+        cancelButtonText: this.translate.instant('Cancel'),
+        confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
+        customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
 
-      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
-      // dangerMode: true,
-      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
+        // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOffline')],
+        // dangerMode: true,
+        // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
 
-          this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
+            this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, false).subscribe((res) => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - RES ', res);
 
-          }, (error) => {
-            this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
+            }, (error) => {
+              this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - ERROR ', error);
 
-            Swal.fire({
-              title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
-              icon: "error",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
+                icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              });
+
+            }, () => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
+
+              Swal.fire({
+                title: this.translationMap.get('Done') + "!",
+                icon: "success",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+
+              });
+
             });
-
-          }, () => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT OFF - COMPLETE ');
-
-            Swal.fire({
-              title: this.translationMap.get('Done') + "!",
-              icon: "success",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
-              confirmButtonText: this.translate.instant('Ok'),
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-
-            });
-
-          });
-        } else {
-          // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-          // swal("Your imaginary file is safe!");
-        }
-      });
+          } else {
+            // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   smartAssignmentOn() {
-    Swal.fire({
-      title: this.translationMap.get('AreYouSure') + '?',
-      text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.translate.instant('ConvertToOnline'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      confirmButtonColor: "var(--blue-light)",
-      focusConfirm: true,
-      reverseButtons: true,
-      customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      Swal.fire({
+        title: this.translationMap.get('AreYouSure') + '?',
+        text: this.translationMap.get('SmartReassignmentForThisConversationWillBeEnabled'),
+        icon: "info",
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: this.translate.instant('ConvertToOnline'),
+        cancelButtonText: this.translate.instant('Cancel'),
+        confirmButtonColor: "var(--blue-light)",
+        focusConfirm: true,
+        reverseButtons: true,
+        customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
 
-      // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
-      // dangerMode: true,
-      // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
+        // buttons: [this.translationMap.get('Cancel'), this.translationMap.get('ConvertToOnline')],
+        // dangerMode: true,
+        // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
 
-          this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
+            this.wsMsgsService.updateConversationSmartAssigment(this.request.request_id, true).subscribe((res) => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - RES ', res);
 
-          }, (error) => {
-            this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
+            }, (error) => {
+              this.logger.error('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - ERROR ', error);
 
-            Swal.fire({
-              title: this.translate.instant('Oops') + '!',
-              text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
-              icon: "error",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonText: this.translate.instant('Ok'),
-              confirmButtonColor: "var(--primary-btn-background)",
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('UserEditAddPage.AnErrorHasOccurred'),
+                icon: "error",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
+                confirmButtonColor: "var(--primary-btn-background)",
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              });
+
+            }, () => {
+              this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
+
+              Swal.fire({
+                title: this.translationMap.get('Done') + "!",
+                icon: "success",
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonColor: "var(--primary-btn-background)",
+                confirmButtonText: this.translate.instant('Ok'),
+                customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+
+                // button: "OK",
+                // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
+              }).then((okpressed) => {
+
+              });
+
             });
-
-          }, () => {
-            this.logger.log('[WS-REQUESTS-MSGS] ON SMART ASSIGNMENT ON - COMPLETE ');
-
-            Swal.fire({
-              title: this.translationMap.get('Done') + "!",
-              icon: "success",
-              showCloseButton: false,
-              showCancelButton: false,
-              confirmButtonColor: "var(--primary-btn-background)",
-              confirmButtonText: this.translate.instant('Ok'),
-              customClass: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-
-              // button: "OK",
-              // className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
-            }).then((okpressed) => {
-
-            });
-
-          });
-        } else {
-          // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
-          // swal("Your imaginary file is safe!");
-        }
-      });
-
+          } else {
+            // this.logger.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal  willBan', willBan)
+            // swal("Your imaginary file is safe!");
+          }
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   // --------------------------------------------------

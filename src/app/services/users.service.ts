@@ -521,15 +521,11 @@ export class UsersService {
       .get<PendingInvitation[]>(url, httpOptions)
   }
 
-  /**
-   * GET PROJECT-USER BY USER-ID
-   * @param user_id 
-   * @returns 
-   */
-  public _getProjectUserByUserId(user_id: string): Observable<any[]> {
 
-    const url = this.PROJECT_USER_URL + 'users/' + user_id;
-    // const url = this.PROJECT_USER_URL + 'me';
+  public getCurrentProjectUser(): Observable<any[]> {
+
+    // const url = this.PROJECT_USER_URL + 'users/' + user_id;
+   const url = this.PROJECT_USER_URL + 'me';
    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
 
     const httpOptions = {
@@ -545,7 +541,7 @@ export class UsersService {
       .get<any[]>(url, httpOptions)
   }
 
-  public getProjectUserByUserId(user_id: string): Observable<any> {
+  public _getCurrentProjectUser(): Observable<any> {
   const fakeMember = {
     user_available: false,
     number_assigned_requests: 0,
@@ -566,8 +562,8 @@ export class UsersService {
       fullname_initial: 'GB',
       fillColour: '#faa774'
     },
-    role: 'agent',
-    permissions: ['request_read'],
+    role: 'Custom role',
+    permissions: ['request_read' ],
     createdBy: '6464e1d7068dcf00312ee5b5',
     tags: [],
     createdAt: '2025-05-26T10:54:55.831Z',
@@ -578,14 +574,36 @@ export class UsersService {
     isBusy: false,
     hasImage: false
   };
-  const url = this.PROJECT_USER_URL + 'users/' + user_id;
+  const url = this.PROJECT_USER_URL + 'me';
   console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
   this.logger.log('[USER-SERV] - MOCKED GET PROJECT USER BY ID');
 
   return of([fakeMember]);
 }
 
- 
+  /**
+   * GET PROJECT-USER BY USER-ID
+   * @param user_id 
+   * @returns 
+   */
+  public getProjectUserByUserId(user_id: string): Observable<any[]> {
+
+    const url = this.PROJECT_USER_URL + 'users/' + user_id;
+  //  const url = this.PROJECT_USER_URL + 'me';
+   console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+  
+
+    return this._httpClient
+      .get<any[]>(url, httpOptions)
+  }
 
 
   /**
@@ -596,7 +614,7 @@ export class UsersService {
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
 
     const url = this.PROJECT_USER_URL + projectuser_id;
-    this.logger.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
+    console.log('[USER-SERV] - GET PROJECT USERS BY ID - URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

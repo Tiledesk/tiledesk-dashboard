@@ -105,9 +105,21 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getAllProjectUsers();
     this.buildActivitiesOptions();
     this.getBrowserVersion();
+    // this.getProjectUser()
   }
 
-  
+  // getProjectUser() {
+  //   this.usersService.getProjectUsersById('683f1d279228c9002de74e25')
+  //     .subscribe((projectUser: any) => {
+  //       console.log('[ActivitiesComponent] projectUser ', projectUser)
+
+        
+  //     }, (error) => {
+  //       this.logger.error('[ActivitiesComponent] GET projectUser by USER-ID - ERROR ', error);
+  //     }, () => {
+  //       this.logger.log('[ActivitiesComponent] GET projectUser by USER-ID * COMPLETE *');
+  //     });
+  // }
 
   ngOnDestroy() {
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
@@ -393,6 +405,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     } else {
                       this.usersService.getProjectUserByUserId(activity.actor.id)
                         .subscribe((projectUser: any) => {
+                          console.log('[ActivitiesComponent] projectUser ', projectUser)
 
                           if (projectUser && projectUser[0] && projectUser[0].id_user) {
                             this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'activities');
@@ -619,7 +632,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         botType = bot.type
         this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
-      
+
     } else {
 
       this.logger.log('[ActivitiesComponent] has clicked GO To MEMBER ', participantId);
