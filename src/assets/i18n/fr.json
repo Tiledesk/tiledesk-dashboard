@@ -709,6 +709,7 @@
     "Flows": "Flux",
     "Models": "Modèles",
     "Optional": "facultatif",
+    "DeleteResolvedConversations": "Supprimer les conversations résolues",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

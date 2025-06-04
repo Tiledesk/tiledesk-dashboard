@@ -710,6 +710,7 @@
     "Flows": "Axınlar",
     "Models": "Modellər",
     "Optional": "isteğe bağlıdır",
+    "DeleteResolvedConversations": "Həll edilmiş söhbətləri silin",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": { "description": ""},
         "gpt-3.5-turbo": { "description": ""},

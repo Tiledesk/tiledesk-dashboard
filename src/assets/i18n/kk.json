@@ -709,6 +709,7 @@
     "Flows": "Ағындар",
     "Models": "Модельдер",
     "Optional": "міндетті емес",
+    "DeleteResolvedConversations": "Шешілген сөйлесулерді жою",
     "TYPE_GPT_MODEL": {
         "text-davinci-003": {
             "description": ""
