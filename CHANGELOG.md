@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.7.109-rc1
-- Adds the ability to control how search results are retrieved (hybrid search) in the AI ​​settings modal window
+- Adds the ability to control how search results are retrieved (Hybrid search) in the AI ​​settings modal window
 - Displays chunks used for the answer in the Knowledge Base preview modal window
 
 ### 2.7.108
