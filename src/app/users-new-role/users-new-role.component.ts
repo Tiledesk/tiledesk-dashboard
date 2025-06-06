@@ -112,7 +112,41 @@ export class UsersNewRoleComponent implements OnInit {
         { key: 'request_update', label: 'Able to update' }
       ]
     },
-    
+     {
+      key: 'SectionsAccess',
+      title: 'Sections Access',
+      parentLabel: 'Sections Access',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: 'kb_read', label: 'Able to view Knowledge bases' },
+        { key: 'flows_read', label: 'Able to view Flows' },
+        { key: 'inbox_read', label: 'Able to view Monitor & Not real time conversations' },
+        { key: 'history_read', label: 'Able to view History' },
+        { key: 'lead_read', label: 'Able to view Lead' },
+        { key: 'analytics_read', label: 'Able to view Analytics' },
+        // { key: 'profilePages', label: 'Can access lead and user profile pages' },
+        // { key: 'leadData', label: 'Can export Lead, User, Company data' },
+        // { key: 'importData', label: 'Can import contacts, companies and tickets' },
+        // { key: 'manageTags', label: 'Can manage tags' },
+      ]
+    },
+    {
+      key: 'Settings',
+      title: 'Settings access',
+      parentLabel: 'Settings access',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: 'settings_access', label: 'Can access settings' },
+        { key: 'accessLists', label: 'Can access people, companies, and account lists' },
+        { key: 'profilePages', label: 'Can access lead and user profile pages' },
+        { key: 'leadData', label: 'Can export Lead, User, Company data' },
+        { key: 'importData', label: 'Can import contacts, companies and tickets' },
+        { key: 'manageTags', label: 'Can manage tags' },
+      ]
+    }
+
     // {
     //   key: 'dataSecurity',
     //   title: 'Data and security',
@@ -140,7 +174,10 @@ export class UsersNewRoleComponent implements OnInit {
     //   ]
     // }
   ];
-
+  reservedRoleNames = ['owner', 'admin', 'agent', 'user', 'guest', 'supervisor', 'teammate'];
+  roles: any[] = [];
+  reservedName: boolean = false;
+  nameExists: boolean = false;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -162,11 +199,31 @@ export class UsersNewRoleComponent implements OnInit {
     this.getCurrentProject()
     this.buildForm()
     this.detectsCreateEditInTheUrl()
+    this.getRoles()
     //  this.getOSCODE()
+  }
+
+   getRoles() {
+    this.rolesService.getAllRoles()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((roles: any) => {
+        console.log('[CREATE-NEW-ROLE] - GET ROLES - roles ', roles);
+      this.roles = roles || [];
+
+      }, error => {
+
+        
+        console.error('[CREATE-NEW-ROLE] - GET ROLES - ERROR: ', error);
+      }, () => {
+      
+        console.log('[CREATE-NEW-ROLE] - GET ROLES * COMPLETE *')
+      });
   }
   detectsCreateEditInTheUrl() {
     if (this.router.url.indexOf('/create-new-role') !== -1) {
-      
+
 
       this.CREATE_VIEW = true;
       console.log('[CREATE-NEW-ROLE] - CREATE_VIEW ', this.CREATE_VIEW)
@@ -221,7 +278,7 @@ export class UsersNewRoleComponent implements OnInit {
           console.error('[USERS-ROLES] - GET ROLE BY ID - ERROR: ', error);
         },
         () => {
-          console.log('[USERS-ROLESN] - GET ROLE BY ID * COMPLETE *')
+          console.log('[USERS-ROLES] - GET ROLE BY ID * COMPLETE *')
           this.syncAfterPatch()
         });
   }
@@ -286,12 +343,12 @@ export class UsersNewRoleComponent implements OnInit {
         });
       });
     });
-    this.setupValueChangeLogging()
+    this.onValuesChanges()
   }
 
 
 
-  setupValueChangeLogging() {
+  onValuesChanges() {
     this.form.valueChanges.subscribe(() => {
       this.sections.forEach(section => {
         const parent = section.key;
@@ -302,17 +359,46 @@ export class UsersNewRoleComponent implements OnInit {
           value: this.form.get(child.key)?.value
         }));
 
-        console.log(`Parent [${parent}]:`, parentValue);
-        console.log(`Children:`, children);
+        console.log(`[USERS-ROLES] - Parent [${parent}]:`, parentValue);
+        console.log(`[USERS-ROLES] - Children:`, children);
       });
       const payload = {
         name: this.form.value.roleName,
+        
         permissions: this.getSelectedPermissions()
       };
-      console.log('payload ', payload)
 
+      console.log('[USERS-ROLES] - payload ', payload)
+      this.validateRoleName(payload.name)
     });
 
+  }
+
+  validateRoleName(rolename) {
+   const name = rolename?.toLowerCase()?.trim();
+
+    if (!name) return null;
+
+    // Check against reserved names
+    if (this.reservedRoleNames.includes(name)) {
+      console.log('[USERS-ROLES] - reservedName ', this.reservedRoleNames.includes(name))
+      this.reservedName = true
+      console.log('[USERS-ROLES] - reservedName ', this.reservedName)
+      // return { reservedName: true };
+    } else {
+      this.reservedName = false
+    }
+
+    // Check if name already exists in roles
+    const nameExists = this.roles.some(role => role.name?.toLowerCase()?.trim() === name);
+    if (nameExists) {
+      this.nameExists = true
+      console.log('[USERS-ROLES] - nameExists ', this.nameExists)
+      // return { nameExists: true };
+    } else {
+      this.nameExists = false
+      console.log('[USERS-ROLES] - nameExists ', this.nameExists)
+    }
   }
 
   _getSelectedPermissions(): string[] {
@@ -397,30 +483,30 @@ export class UsersNewRoleComponent implements OnInit {
 
       .subscribe((res: any) => {
         console.log('[CREATE-NEW-ROLE] - SAVE ROLE - RES ', res);
-       
+
 
       }, error => {
         console.error('[CREATE-NEW-ROLE] - SAVE ROLE - ERROR: ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileCreatingTheNewRole"), 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileCreatingTheNewRole"), 4, 'report_problem');
       }, () => {
         console.log('[CREATE-NEW-ROLE] - SAVE ROLE * COMPLETE *')
-         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("TheNewRoleHasBeenSuccessfullyCreated"),  2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("TheNewRoleHasBeenSuccessfullyCreated"), 2, 'done');
       });
   }
 
-   editRole(payload, ) {
+  editRole(payload,) {
     this.rolesService.updateRole(payload, this.roleId)
 
       .subscribe((res: any) => {
         console.log('[CREATE-NEW-ROLE] - EDIT ROLE - RES ', res);
-       
+
 
       }, error => {
         console.error('[CREATE-NEW-ROLE] - EDIT ROLE - ERROR: ', error);
-         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileUpdatingTheRole"),  4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("AnErrorOccurredWhileUpdatingTheRole"), 4, 'report_problem');
       }, () => {
         console.log('[CREATE-NEW-ROLE] - EDIT ROLE * COMPLETE *')
-         this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RoleSuccessfullyUpdated"),  2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant("RoleSuccessfullyUpdated"), 2, 'done');
       });
   }
 
