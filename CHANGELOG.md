@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.109-rc3
+- Minor improvements
+
 ### 2.7.109-rc2
 - Move access blocking (based on roles) from RoleGuard to RoleService for some paths
 - Adds a validity check on role names
