@@ -14,10 +14,10 @@ import { UsersService } from '../../services/users.service';
 import { UAParser } from 'ua-parser-js'
 import { FaqKbService } from '../../services/faq-kb.service';
 import { AppConfigService } from '../../services/app-config.service';
-import { Subscription, zip } from 'rxjs'
+import { BehaviorSubject, Subscription, zip } from 'rxjs'
 import { DepartmentService } from '../../services/department.service';
 import { Subject } from 'rxjs';
-import { skip, takeUntil, throttleTime } from 'rxjs/operators'
+import { filter, skip, switchMap, take, takeUntil, throttleTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 import { Chart } from 'chart.js';
@@ -30,6 +30,9 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { GroupService } from '../../services/group.service';
 import { Group } from 'app/models/group-model';
 import { debounceTime } from 'rxjs/operators';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -196,6 +199,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   cPlanOnly: string;
   prjct_profile_name: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
+  ROLE: string;
+  PERMISSIONS: any;
+  PERMISSION_TO_UPDATE_REQUEST: boolean;
+  private permissionReady$ = new BehaviorSubject<boolean>(false);
+  hasDefaultRole: boolean;
+  CHAT_PANEL_MODE: boolean = false;
   /**
    * 
    * @param wsRequestsService 
@@ -230,7 +239,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     private projectService: ProjectService,
     private prjctPlanService: ProjectPlanService,
     public logger: LoggerService,
-    public groupService: GroupService
+    public groupService: GroupService,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -242,6 +253,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   ngOnInit() {
     // this.logger.log('SELECTED PRIORITY ', this.selectedPriority)
+    this.roleService.checkRoleForCurrentProject('ws-request-list')
     this.getBrowserVersion()
     this.getOSCODE();
     this.getImageStorageAndThenProjectUsers();
@@ -250,7 +262,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getCurrentProject();
     this.getProjectPlan();
     this.getLoggedUser();
-    // this.getProjectUserRole();
+
     this.detectBrowserRefresh();
     this.getChatUrl();
     this.getTestSiteUrl();
@@ -259,8 +271,40 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getWsConv$()
     // this.listenToParentPostMessage()
     // this.getGroupsByProjectId();
+    this.listenToProjectUser()
   }
-  
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('[WS-REQUESTS-LIST] - this.ROLE:', this.ROLE);
+        console.log('[WS-REQUESTS-LIST] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('[WS-REQUESTS-LIST] - hasDefaultRole', this.hasDefaultRole);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
+            console.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_UPDATE)
+            // Enable update action
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = false
+            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST = true
+          console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+
+        }
+        this.permissionReady$.next(true); // ✅ Signal that permission is now ready
+      });
+  }
+
 
 
 
@@ -546,7 +590,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   getProjectUserRole() {
-    // this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
+    console.log('[WS-REQUESTS-LIST] - GET PROJECT-USER ROLE calling getProjectUserRole ');
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -664,7 +708,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        // this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -689,7 +733,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // this.logger.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-   
+
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
@@ -871,7 +915,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-PRJCT AND THEN GET PROJECT BY ID - CURRENT-PRJCT > projectId', this.projectId)
         this.projectName = project.name;
         this.OPERATING_HOURS_ACTIVE = project.activeOperatingHours
-        this.logger.log('[WS-REQUESTS-LIST] OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE ) 
+        this.logger.log('[WS-REQUESTS-LIST] OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
         this.getProjectById(this.projectId)
         this.findCurrentProjectAmongAll(this.projectId)
@@ -1067,7 +1111,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       text: this.featureIsAvailableWithTheProPlan,
       icon: "info",
       showCancelButton: false,
-      confirmButtonText: this.translate.instant('Ok') ,
+      confirmButtonText: this.translate.instant('Ok'),
       // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // button: {
@@ -1097,8 +1141,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   seeIamAgentRequests(seeIamAgentReq) {
+
     this.ONLY_MY_REQUESTS = seeIamAgentReq
     if (this.ONLY_MY_REQUESTS === false && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
+      console.log('[WS-REQUESTS-LIST] seeIamAgentRequests ONLY_MY_REQUESTS', this.ONLY_MY_REQUESTS)
       this.displayAgentsSelect = true
       this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
     } else if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
@@ -1106,7 +1152,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.displayAgentsSelect = false
       this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - displayAgentsSelect ', this.displayAgentsSelect);
     }
-    this.logger.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
+    console.log('[WS-REQUESTS-LIST] - seeIamAgentRequests - ONLY_MY_REQUESTS ', this.ONLY_MY_REQUESTS);
     if (seeIamAgentReq === false) {
       this.displayBtnLabelSeeYourRequets = false;
     } else {
@@ -1202,6 +1248,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     return deptObjct[0]
   }
 
+  handleBlockedSelectClick(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+  }
+
   onChangeDepts() {
     this.hasFiltered = true
     // this.logger.log('% »»» WebSocketJs WF WS-RL - on Change Depts - dept id', this.selectedDeptId);
@@ -1269,14 +1321,23 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    // console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
-    this.wsRequestsService.wsRequestsList$
+    console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    // this.wsRequestsService.wsRequestsList$
+    //   .pipe(
+    //     takeUntil(this.unsubscribe$)
+    //   )
+
+    this.permissionReady$
       .pipe(
+        filter(ready => ready),         // ✅ only continue when true
+        take(1),                        // ✅ only use the first `true`
+        switchMap(() => this.wsRequestsService.wsRequestsList$),
         takeUntil(this.unsubscribe$)
       )
-
       .subscribe((wsrequests) => {
-        // console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        console.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.ROLE ', this.ROLE);
+        console.log('[WS-REQUESTS-LIST] -  getWsRequests$ this.PERMISSIONS ', this.PERMISSIONS);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
@@ -1298,50 +1359,104 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             }
           }
 
+          if (this.ROLE === 'owner' || this.ROLE === 'admin' || this.ROLE === 'agent') {
+            if (this.ONLY_MY_REQUESTS === false) {
+              this.ws_requests = wsrequests;
+              // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
+              this.addDeptObject(this.ws_requests)
+            }
 
-          if (this.ONLY_MY_REQUESTS === false) {
-            this.ws_requests = wsrequests;
-            // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-            this.addDeptObject(this.ws_requests)
-          }
+            if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
 
-          if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === false) {
+              this.ws_requests = [];
+              wsrequests.forEach(wsrequest => {
+                if (wsrequest !== null && wsrequest !== undefined) {
+                  this.logger.log('[WS-REQUESTS-LIST] - AGENTS_CAN_SEE_ONLY_OWN_CONVS ', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS ? ', this.ONLY_MY_REQUESTS);
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
-            this.ws_requests = [];
-            wsrequests.forEach(wsrequest => {
-              if (wsrequest !== null && wsrequest !== undefined) {
-                this.logger.log('[WS-REQUESTS-LIST] - AGENTS_CAN_SEE_ONLY_OWN_CONVS ', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS ? ', this.ONLY_MY_REQUESTS);
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
-
-                if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
-                  this.ws_requests.push(wsrequest);
+                  if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                    this.ws_requests.push(wsrequest);
+                  }
                 }
-              }
-            });
-            this.addDeptObject(this.ws_requests)
-            // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
-          }
+              });
+              this.addDeptObject(this.ws_requests)
+              // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
+            }
 
-          if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
+            if (this.ONLY_MY_REQUESTS === true && this.AGENTS_CAN_SEE_ONLY_OWN_CONVS === true) {
 
-            this.ws_requests = [];
-            wsrequests.forEach(wsrequest => {
-              if (wsrequest !== null && wsrequest !== undefined) {
-                this.logger.log('[WS-REQUESTS-LIST] - AGENTS_CAN_SEE_ONLY_OWN_CONVS ', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS? ', this.ONLY_MY_REQUESTS);
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS ? ', this.ONLY_MY_REQUESTS);
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
-                this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
+              this.ws_requests = [];
+              wsrequests.forEach(wsrequest => {
+                if (wsrequest !== null && wsrequest !== undefined) {
+                  this.logger.log('[WS-REQUESTS-LIST] - AGENTS_CAN_SEE_ONLY_OWN_CONVS ', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS? ', this.ONLY_MY_REQUESTS);
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS ? ', this.ONLY_MY_REQUESTS);
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
-                if (this.hasmeInParticipants(wsrequest.participants) === true) {
-                  this.ws_requests.push(wsrequest);
+                  if (this.hasmeInParticipants(wsrequest.participants) === true) {
+                    this.ws_requests.push(wsrequest);
+                  }
                 }
-              }
-            });
-            this.addDeptObject(this.ws_requests)
-            // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
+              });
+              this.addDeptObject(this.ws_requests)
+              // this.logger.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
+            }
+          } else if (this.ROLE !== 'owner' && this.ROLE !== 'admin' && this.ROLE !== 'agent') {
+            console.log('[WS-REQUESTS-LIST] - getWsRequests$ this.ROLE (else) ', this.ROLE);
+            console.log('[WS-REQUESTS-LIST] - getWsRequests$ this.PERMISSIONS (else) ', this.PERMISSIONS);
+
+            // Se il tuo ruolo è uno custom e ha scelto opzione request_reame_my allora devi visualizzare solo le tue conv e scartare le altre. Praticamente la stessa cosa che fai con AGENTS_CAN_SEE_ONLY_OWN_CONVS
+            // Se invece ha scelto request_read_group allora solo quelle del gruppo di appartenenza
+            // Se request_read_all allora tutte
+
+            // request_read_all
+            if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_ALL)) {
+              console.log('[WS-REQUESTS-LIST] - getWsRequests$ request_read_all');
+              this.ws_requests = wsrequests;
+              this.addDeptObject(this.ws_requests)
+            }
+
+            // request_read_group
+            if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_GROUP)) {
+              this.ws_requests = [];
+              wsrequests.forEach(wsrequest => {
+                if (wsrequest !== null && wsrequest !== undefined) {
+
+                  console.log('[WS-REQUESTS-LIST] - request_read_group - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  console.log('[WS-REQUESTS-LIST] - request_read_group - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
+
+                  if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                    this.ws_requests.push(wsrequest);
+                    console.log('[WS-REQUESTS-LIST] - request_read_group -  this.ws_requests ', this.ws_requests)
+                  }
+                }
+              });
+              this.addDeptObject(this.ws_requests)
+
+            }
+            // request_read_my
+            if (this.PERMISSIONS.includes(PERMISSIONS.REQUEST_READ_MY)) {
+              console.log('[WS-REQUESTS-LIST] - getWsRequests$ request_read_my');
+              this.displayAgentsSelect = false
+
+              this.ws_requests = [];
+              wsrequests.forEach(wsrequest => {
+                if (wsrequest !== null && wsrequest !== undefined) {
+
+                  console.log('[WS-REQUESTS-LIST] - request_read_my - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  console.log('[WS-REQUESTS-LIST] - request_read_my - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
+
+                  if (this.hasmeInParticipants(wsrequest.participants) === true) {
+                    this.ws_requests.push(wsrequest);
+                    console.log('[WS-REQUESTS-LIST] - request_read_my -  this.ws_requests ', this.ws_requests)
+                  }
+                }
+              });
+              this.addDeptObject(this.ws_requests)
+            }
           }
 
 
@@ -1795,7 +1910,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         //  Sort requests
         // ----------------------------------------- 
         if (this.ws_requests) {
-  
+
           // this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - sort requests  * ws_requests *', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
@@ -1838,12 +1953,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         }
         this.logger.log('[WS-REQUESTS-LIST] getWsRequests - served ', this.wsRequestsServed);
         this.logger.log('[WS-REQUESTS-LIST] - getWsRequests - unserved ', this.wsRequestsUnserved);
-      
+
 
         // const sum = this.wsRequestsServed.length + this.wsRequestsUnserved.length
 
         //  
-        const sum = this.countRequestsServedByHumanRr + this.countRequestsServedByBotRr +  this.countRequestsUnservedRr
+        const sum = this.countRequestsServedByHumanRr + this.countRequestsServedByBotRr + this.countRequestsUnservedRr
         this.served_unserved_sum = sum;
         // this.logger.log('[WS-REQUESTS-LIST] getWsRequests sum SERVED + UNSERVED', this.served_unserved_sum);
 
@@ -1888,7 +2003,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .subscribe((wsConv) => {
         // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
         this.getRestRequestConversationCount()
-      
+
         // this.logger.log("[WS-REQUESTS-LIST] - ** wsConv ",  wsConv);
         //   if (wsConv['status'] === 100) {
         //     this.logger.log('[WS-REQUESTS-MSGS] - countRequestsUnservedRestCall - Rest Request + RT ', this.countRequestsUnservedRr + 1);
@@ -1899,38 +2014,38 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         //   if (wsConv['status'] !== 100 && wsConv['hasBot'] === true) {
         //     this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByBot - Rest Request + RT ', this.countRequestsServedByBotRr + 1);
         //   }
-        
+
       })
 
-    }
+  }
 
 
-    getRestRequestConversationCount() {
-      this.wsRequestsService.getConversationCount()
-        .subscribe((requests: any) => {
+  getRestRequestConversationCount() {
+    this.wsRequestsService.getConversationCount()
+      .subscribe((requests: any) => {
         // this.logger.log('[WS-REQUESTS-MSGS] - ************* getRestRequestConversationCount - requests  ', requests);
-          if (requests) {
-            this.requestCountResp = requests
-            this.countRequestsServedByHumanRr = requests.assigned;
-            this.countRequestsServedByBotRr = requests.bot_assigned;
-            this.countRequestsUnservedRr= requests.unassigned;
-  
-            // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByHumanRestCall ', this.countRequestsServedByHumanRr);
-            // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByBotRestCall ', this.countRequestsServedByBotRr);
-            // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsUnservedRestCall ', this.countRequestsUnservedRr);
-          }
-  
-        }, (error) => {
-      
-          this.logger.error('[WS-REQUESTS-MSGS] - getRestRequestConversationCount - ERROR  ', error);
-         
-        }, () => {
-        
-          this.logger.log('[WS-REQUESTS-MSGS] -getRestRequestConversationCount * COMPLETE *');
-        });
-    }
+        if (requests) {
+          this.requestCountResp = requests
+          this.countRequestsServedByHumanRr = requests.assigned;
+          this.countRequestsServedByBotRr = requests.bot_assigned;
+          this.countRequestsUnservedRr = requests.unassigned;
 
-  
+          // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByHumanRestCall ', this.countRequestsServedByHumanRr);
+          // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsServedByBotRestCall ', this.countRequestsServedByBotRr);
+          // this.logger.log('[WS-REQUESTS-MSGS] - countRequestsUnservedRestCall ', this.countRequestsUnservedRr);
+        }
+
+      }, (error) => {
+
+        this.logger.error('[WS-REQUESTS-MSGS] - getRestRequestConversationCount - ERROR  ', error);
+
+      }, () => {
+
+        this.logger.log('[WS-REQUESTS-MSGS] -getRestRequestConversationCount * COMPLETE *');
+      });
+  }
+
+
   // getWsRequest$() {
   //   this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequest$");
   //   this.wsRequestsService.wsRequestList$
@@ -2013,15 +2128,18 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   presentCreateInternalRequestModal() {
-    this.selectedPriority = this.priority[2].name;
-    this.displayInternalRequestModal = 'block'
-    this.hasClickedCreateNewInternalRequest = false;
-    this.projectUserBotsAndDeptsArray = [];
-    this.projectUserAndLeadsArray = [];
-    this.newTicketRequestId = null;
-    this.getProjectUsersAndContacts();
-    this.getProjectUserBotsAndDepts();
-
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.selectedPriority = this.priority[2].name;
+      this.displayInternalRequestModal = 'block'
+      this.hasClickedCreateNewInternalRequest = false;
+      this.projectUserBotsAndDeptsArray = [];
+      this.projectUserAndLeadsArray = [];
+      this.newTicketRequestId = null;
+      this.getProjectUsersAndContacts();
+      this.getProjectUserBotsAndDepts();
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   closeInternalRequestModal() {
