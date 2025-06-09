@@ -291,6 +291,7 @@
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                       <div *ngIf="user_role">
+                        
                         <select #selectElem (change)="setSelected(selectElem.value)" style="width: 100%;" id="userrole"
                           [disabled]="CURRENT_USER_ROLE !== 'owner' || CURRENT_USER_ID === projectUser?.id_user?._id">
 
