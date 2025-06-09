@@ -48,6 +48,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { CacheService } from 'app/services/cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -548,13 +549,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   listenToProjectUser() {
     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
-
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((hasPermission) => {
-        this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
-        console.log('[WS-REQUESTS-MSGS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
+      .subscribe(status => {
+        console.log('[WS-REQUESTS-MSGS] - Role:', status.role);
+        console.log('[WS-REQUESTS-MSGS] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
+            // Enable update action
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
+          }
+        } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
       });
+
+    // this.rolesService.getUpdateRequestPermission()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((hasPermission) => {
+    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
+    //     console.log('[WS-REQUESTS-MSGS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
+    //   });
   }
 
 
@@ -1590,8 +1616,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // Start websocket subscription ro ws request by id
     // this.wsRequestsService.subscribeTo_wsRequestById(id_request);
-    this.wsRequestsService.subscribeTo_wsRequestById(_id_request);
-
+    this.wsRequestsService.subscribeTo_wsRequestById(_id_request);  
+         
     // Subscribe to ws request by id
     this.getWsRequestById$();
   }
@@ -1722,7 +1748,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe(async (wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
 
@@ -5628,14 +5654,14 @@ handleBlockedSelectClick(event: MouseEvent): void {
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
 
-      const requestclosedAt = moment(this.request['closed_at']);
+      const requestclosedAt = moment(this.request?.closed_at);
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
       const currentTime = moment();
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - currentTime ', currentTime);
 
       const daysDiff = currentTime.diff(requestclosedAt, 'd');
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - daysDiff ', daysDiff)
-      if (this.request.status === 1000 && daysDiff > 10) {
+      if (this.request?.status === 1000 && daysDiff > 10) {
         this.presenModalMessageCouldNotBeSent();
       } else {
 

@@ -29,6 +29,7 @@ import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
 import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -179,10 +180,36 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((hasPermission) => {
-        this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
+      .subscribe(status => {
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
+            // Enable update action
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = false
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST = true
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
       });
+
+    // this.rolesService.getUpdateRequestPermission()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((hasPermission) => {
+    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
+    //     console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
+    //   });
   }
 
 
@@ -510,7 +537,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         takeUntil(this.unsubscribe$)
       )
       .subscribe((totalrequests: number) => {
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
 
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
@@ -710,7 +737,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         // Sort requests and manage spinner
         // -------------------------------------------------------
         if (this.ws_requests) {
-          // console.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL]  getWsRequests *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {

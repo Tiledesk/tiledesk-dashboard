@@ -32,6 +32,7 @@ import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { aiAgents, automations } from 'app/integrations/utils';
+import { RoleService } from 'app/services/role.service';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -209,6 +210,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private _snackBar: MatSnackBar,
     private webhookService: WebhookService,
     private activatedroute: ActivatedRoute,
+    private roleService: RoleService
     // private kbService: KnowledgeBaseService,
   ) {
     super(prjctPlanService, notify);
@@ -251,6 +253,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('flows')
     // this.getCommunityTemplates()
     // this.getTemplates()
     this.getBrowserVersion();

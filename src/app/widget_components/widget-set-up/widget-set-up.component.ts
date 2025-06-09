@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Location } from '@angular/common';
 import { ColorPickerService } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
@@ -37,6 +37,9 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -45,7 +48,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 })
 
 
-export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy , AfterViewChecked {
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -400,8 +403,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   fileUploadAccept: string;
 
-  showSpinnerAttachmentUploading: boolean = false
+  showSpinnerAttachmentUploading: boolean = false;
 
+  isAuthorized = false;
+  permissionChecked = false; // To avoid showing the content before check completes
+  private accordionInitialized = false;
+  PERMISSION_TO_READ_TRANSLATIONS: boolean;
+  public ROLE: string
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -422,7 +430,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
-    public localDbService: LocalDbService
+    public localDbService: LocalDbService,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -446,6 +456,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   ngOnInit() {
+  
+
     // this.auth.checkRoleForCurrentProject();
     this.getProjectPlan()
     this.getProjectUserRole();
@@ -469,7 +481,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.getOSCODE();
     this.getTestSiteUrl();
     // this.getAndManageAccordionInstallWidget();
-    this.getAndManageAccordion();
+    
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
 
@@ -484,8 +496,60 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.fileUploadAccept = filterImageMimeTypesAndExtensions(this.appConfigService.getConfig().fileUploadAccept).join(',')
     this.listenToUpladAttachmentProgress()
-   
+    // this.getAndManageAccordion();
+    this.checkPermissions();
+    this.listenToProjectUser()
   }
+
+  ngAfterViewChecked() {
+    if (this.isAuthorized && !this.accordionInitialized) {
+      const acc = document.getElementsByClassName("widget-section-accordion");
+      if (acc.length > 0) {
+        this.getAndManageAccordion();
+        this.accordionInitialized = true;
+      }
+    }
+  }
+
+ async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('widget-set-up')
+    console.log('[WIDGET-SET-UP] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[WIDGET-SET-UP] isAuthorized ',  this.isAuthorized)
+    console.log('[WIDGET-SET-UP] permissionChecked ',  this.permissionChecked)
+  }
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+        this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          this.ROLE =  status.role
+          console.log('[WIDGET-SET-UP] - Role:', this.ROLE);
+          console.log('[WIDGET-SET-UP] - Permissions:', status.matchedPermissions);
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.TRANSLATIONS_READ)) {
+              // Enable read translations
+              this.PERMISSION_TO_READ_TRANSLATIONS = true
+              console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+            } else {
+              this.PERMISSION_TO_READ_TRANSLATIONS = false
+              console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+            }
+          } else {
+            this.PERMISSION_TO_READ_TRANSLATIONS = true
+            console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+          }
+  
+          // if (status.matchedPermissions.includes('lead_update')) {
+          //   // Enable lead update action
+          // }
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
+
 
   listenToUpladAttachmentProgress() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -1267,7 +1331,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -4608,7 +4674,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToWidgetMultilanguage() {
-    this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
+    if (this.PERMISSION_TO_READ_TRANSLATIONS)  {
+      this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
   }
 
   goToInstallWithTagManagerDocs() {

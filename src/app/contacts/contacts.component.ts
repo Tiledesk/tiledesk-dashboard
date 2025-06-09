@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -129,10 +130,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('contacts')
     this.getTranslation();
     this.getOSCODE();
     this.getContacts();

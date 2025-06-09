@@ -33,6 +33,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
 import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -353,7 +355,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     private wsMsgsService: WsMsgsService,
     public route: ActivatedRoute,
     public brandService: BrandService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private roleService: RoleService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -407,16 +410,93 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
+  }
+
   listenToProjectUser() {
     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
 
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((hasPermission) => {
-        this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
-        console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST',  this.PERMISSION_TO_UPDATE_REQUEST);
+      .subscribe(status => {
+        console.log('[HISTORY & NORT-CONVS] - Role:', status.role);
+        console.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
+            console.log('PERMISSIONS.REQUEST_UPDATE ', PERMISSIONS.REQUEST_UPDATE)
+            // Enable update action
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
       });
 
+    // this.rolesService.getUpdateRequestPermission()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((hasPermission) => {
+    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
+    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST',  this.PERMISSION_TO_UPDATE_REQUEST);
+    //   });
+
+    // this.rolesService.getUpdateRequestPermission()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(status => {
+    //   console.log('Permission allowed:', status.allowed);
+    //   console.log('Matched permissions:', status.matchedPermissions);
+
+    //   if (status.allowed) {
+    //     // Use status.matchedPermissions to tailor UI/actions
+    //   }
+    // });
+
+    // this.rolesService.getUpdateRequestPermission()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(status => {
+    //   console.log('Permission allowed:', status.allowed);
+    //   console.log('Matched permissions:', status.matchedPermissions);
+
+    //   if (status.allowed) {
+    //     // ✅ Enable UI actions
+    //   } else {
+    //     // 🚫 Disable or hide actions
+    //   }
+    // });
+
+    // this.rolesService.getUpdateRequestPermission()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(status => {
+    //   console.log('✅ Allowed:', status.allowed);
+    //   console.log('🔐 Permissions:', status.matchedPermissions);
+
+    //   // if 
+
+    //   if (status.allowed) {
+    //     // Enable actions
+    //   } else {
+    //     // Disable UI controls or show warning
+    //   }
+    // });
+
+
+
+    // My code
     // this.usersService.projectUser_bs
     //   .pipe(
     //     takeUntil(this.unsubscribe$)
@@ -783,6 +863,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
+      this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
       if (currentUrl.indexOf('?') === -1) {
@@ -793,6 +874,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
+      this.roleService.checkRoleForCurrentProject('history')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status_temp = '1000'
@@ -852,20 +934,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
 
-    // if (this.requestList.length > 0) {
-    //   this.requestList.forEach(request => {
-    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -3131,7 +3200,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.allChecked = true;
       for (let request of this.requestList) {
         const index = this.request_selected.indexOf(request.request_id);
-        if (index > -1 || request.status !== 1000) {
+        // || request.status !== 1000
+        if (index > -1) {
           this.logger.log("[HISTORY & NORT-CONVS] **++ Already present")
         } else {
           this.logger.log("[HISTORY & NORT-CONVS] *+*+ Request Selected: ", request.request_id);
@@ -3242,14 +3312,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
           for (var i = 0; i < this.requestList.length; i++) {
 
-          if (this.requestList[i].request_id === request_id) {
-            console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
-            this.requestList[i]['status'] = 1000
-            // this.requestList.splice(i, 1);
+            if (this.requestList[i].request_id === request_id) {
+              console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
+              this.requestList[i]['status'] = 1000
+              if (!this.IS_HERE_FOR_HISTORY) {
+                this.requestList.splice(i, 1);
+              }
+            }
+            console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
           }
-          console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
-        }
-   
+
         });
     } else {
       this.notify.presentDialogNoPermissionToPermomfAction()

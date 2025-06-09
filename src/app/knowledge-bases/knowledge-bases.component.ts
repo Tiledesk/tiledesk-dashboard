@@ -44,6 +44,8 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -214,6 +216,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private shepherdService: ShepherdService,
+    private roleService: RoleService
 
   ) {
     super(prjctPlanService, notify);
@@ -224,6 +227,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   ngOnInit(): void {
+    this.roleService.checkRoleForCurrentProject('kb')
     this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
