@@ -1198,7 +1198,7 @@
             <!-- ------------------------------------- -->
             <!-- (click)='openChatInNewWindow(request?.request_id, request?.lead?.fullname)' -->
             <button *ngIf="request?.currentUserIsJoined === true" type="button" rel="tooltip"
-              title="{{ 'RequestMsgsPage.Enter' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
+              title="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" class="btn btn-tdblu btn-simple btn-xs"
               (click)='openChatAtSelectedConversation(request?.request_id, request?.lead?.fullname)'
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{ 'RequestMsgsPage.OpenTheChat' | translate }}" 

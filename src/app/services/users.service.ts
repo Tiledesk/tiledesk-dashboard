@@ -26,7 +26,7 @@ export class UsersService {
 
   wsService: WebSocketJs;
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  public projectUser_bs: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public user_is_busy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -522,7 +522,7 @@ export class UsersService {
   }
 
 
-  public _getCurrentProjectUser(): Observable<any[]> {
+  public getCurrentProjectUser(): Observable<any[]> {
 
     // const url = this.PROJECT_USER_URL + 'users/' + user_id;
     const url = this.PROJECT_USER_URL + 'me';
@@ -560,7 +560,7 @@ export class UsersService {
       .get<ProjectUser[]>(url, httpOptions)
   }
 
-  public getCurrentProjectUser(): Observable<any> {
+  public _getCurrentProjectUser(): Observable<any> {
     const fakeMember = {
       user_available: false,
       number_assigned_requests: 0,

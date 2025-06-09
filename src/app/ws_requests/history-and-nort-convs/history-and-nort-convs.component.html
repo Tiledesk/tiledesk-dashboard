@@ -878,10 +878,12 @@
                   <!-- --------------------------------------------------- -->
                   <!-- Action Delete selected if IS_HERE_FOR_HISTORY -->
                   <!-- --------------------------------------------------- -->
+                  <!-- {{ DeleteResolvedConversations | translate }}  -->
                   <div *ngIf="request_selected.length > 0 && USER_ROLE === 'owner'" class="delete-selected-wpr">
                     <button class="custom-input-group---btn" type="button" style="height: 37px;"
                       (click)="deleteSelected()" matTooltipClass="mat-white-tooltip"
-                      matTooltip="{{ 'DeleteResolvedConversations' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
+                      matTooltip="{{ 'Delete' | translate }}" 
+                      #tooltip="matTooltip" matTooltipPosition='below'
                       matTooltipHideDelay="100">
 
                       <span class="material-icons delete-forever-icon"
@@ -932,10 +934,6 @@
                         style="vertical-align:middle; cursor: pointer; color:grey;">
                         delete_forever
                       </span>
-                      <!-- <span class="bottom" style="min-width: fit-content; padding: 5px 10px;border-radius: 4px;">
-                        {{ 'Delete' | translate }}
-                        <i></i>
-                      </span> -->
                     </button>
                   </div>
                 </th>
@@ -1134,8 +1132,9 @@
                 <td style="text-align: center;width: 46px;" *ngIf="USER_ROLE === 'owner' && IS_HERE_FOR_HISTORY">
                   <div class="checkbox">
                     <label>
+                      <!-- [disabled]="request.status !== 1000" -->
                       <input type="checkbox" class="form-check-input" [checked]="allChecked"
-                        style="width: 16px;height: 16px;" value="{{ request.request_id }}" [disabled]="request.status !== 1000"
+                        style="width: 16px;height: 16px;" value="{{ request.request_id }}" 
                         (click)="change(request.request_id)">
                     </label>
                   </div>
@@ -2331,8 +2330,9 @@
                 <!-- --------------------------------------------------- -->
                <!-- request.status -> ->  {{request.status}} -->
                 <td class="td-actions text-right" *ngIf="IS_HERE_FOR_HISTORY">
+                  <!-- || request.status !== 1000  -->
                   <button type="button" class="btn btn-danger btn-simple btn-xs"
-                    (click)='deleteArchivedRequest(request?.request_id)' [disabled]="USER_ROLE !== 'owner' || request.status !== 1000 "
+                    (click)='deleteArchivedRequest(request?.request_id)' [disabled]="USER_ROLE !== 'owner'"
                     matTooltipClass="mat-white-tooltip" matTooltip="{{ 'Delete' | translate }}" #tooltip="matTooltip"
                     matTooltipPosition='above' matTooltipHideDelay="100">
 
