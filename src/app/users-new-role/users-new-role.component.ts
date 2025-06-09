@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RolesService } from 'app/services/roles.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 
 
@@ -97,9 +98,9 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'radio',
       expanded: false,
       children: [
-        { key: 'request_read_all', label: 'All conversations' },
-        { key: 'request_read_group', label: 'Conversations assigned to their groups only' },
-        { key: 'request_read_my', label: 'Conversations assigned to them only' }
+        { key: PERMISSIONS.REQUEST_READ_ALL, label: 'All conversations' },
+        { key: PERMISSIONS.REQUEST_READ_GROUP, label: 'Conversations assigned to their groups only' },
+        { key: PERMISSIONS.REQUEST_READ_MY, label: 'Conversations assigned to them only' }
       ]
     },
     {
@@ -109,7 +110,7 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'radio',
       expanded: false,
       children: [
-        { key: 'request_update', label: 'Able to update' }
+        { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' }
       ]
     },
      {
@@ -119,12 +120,14 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: 'kb_read', label: 'Able to view Knowledge bases' },
-        { key: 'flows_read', label: 'Able to view Flows' },
-        { key: 'inbox_read', label: 'Able to view Monitor & Not real time conversations' },
-        { key: 'history_read', label: 'Able to view History' },
-        { key: 'lead_read', label: 'Able to view Lead' },
-        { key: 'analytics_read', label: 'Able to view Analytics' },
+        { key: PERMISSIONS.KB_READ, label: 'Able to view Knowledge bases' },
+        { key: PERMISSIONS.FLOWS_READ, label: 'Able to view Flows' },
+        { key: PERMISSIONS.INBOX_READ, label: 'Able to view Monitor & Not real time conversations' },
+        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+        { key: PERMISSIONS.LEAD_READ, label: 'Able to view Leads' },
+        { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
+        { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
+        
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },
         // { key: 'leadData', label: 'Can export Lead, User, Company data' },
         // { key: 'importData', label: 'Can import contacts, companies and tickets' },
@@ -138,12 +141,12 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: 'settings_access', label: 'Can access settings' },
-        { key: 'accessLists', label: 'Can access people, companies, and account lists' },
-        { key: 'profilePages', label: 'Can access lead and user profile pages' },
-        { key: 'leadData', label: 'Can export Lead, User, Company data' },
-        { key: 'importData', label: 'Can import contacts, companies and tickets' },
-        { key: 'manageTags', label: 'Can manage tags' },
+        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view Widget set up' },
+        { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
+        // { key: 'profilePages', label: 'Can access lead and user profile pages' },
+        // { key: 'leadData', label: 'Can export Lead, User, Company data' },
+        // { key: 'importData', label: 'Can import contacts, companies and tickets' },
+        // { key: 'manageTags', label: 'Can manage tags' },
       ]
     }
 

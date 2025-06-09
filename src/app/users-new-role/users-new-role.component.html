@@ -13,18 +13,18 @@
 
         <!-- <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
           (click)="goBack()">keyboard_arrow_left</i> -->
-        <span (click)="goBack()" class="go--back" style="cursor: pointer;"> 
-            {{ "Roles" | translate }} 
+        <span (click)="goBack()" class="go--back" style="cursor: pointer;">
+            {{ "Roles" | translate }}
         </span>
         <i class="material-icons" style="vertical-align: middle !important; font-size: 20px;">
             keyboard_arrow_right
         </i>
-        <span class="active-breadcrumb" *ngIf="CREATE_VIEW"> 
+        <span class="active-breadcrumb" *ngIf="CREATE_VIEW">
             <!-- New role  -->
             {{ "NewRole" | translate }}
         </span>
-        <span class="active-breadcrumb" *ngIf="EDIT_VIEW"> 
-            Edit role 
+        <span class="active-breadcrumb" *ngIf="EDIT_VIEW">
+            Edit role
         </span>
     </div>
 
@@ -49,13 +49,19 @@
                                     <mat-label>Name</mat-label>
                                     <input matInput formControlName="roleName" placeholder="Enter role name">
                                 </mat-form-field>
+                                <!-- reservedName {{reservedName }} nameExists {{nameExists}} -->
+                                 
+                                <div class="role-name-error" *ngIf="reservedName">
+                                    This role name is reserved and cannot be used.
+                                </div>
+                                <div  class="role-name-error" *ngIf="nameExists && CREATE_VIEW">
+                                    This role name already exists.
+                                </div>
 
 
                                 <mat-accordion multi>
-                                    <mat-expansion-panel *ngFor="let section of sections" 
-                                        [expanded]="section.expanded"
-                                        (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false">
+                                    <mat-expansion-panel *ngFor="let section of sections" [expanded]="section.expanded"
+                                        (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>{{ section.title }}</mat-panel-title>
                                             <!-- <mat-panel-description>
@@ -87,16 +93,14 @@
 
                                             <ng-container *ngSwitchCase="'radio'">
                                                 <!-- <label>{{ section.parentLabel }}</label> -->
-                                                <div
-                                                    style="padding-left: 25px;padding-bottom: 12px;">
+                                                <div style="padding-left: 25px;padding-bottom: 12px;">
                                                     <mat-radio-group [formControl]="form.get(section.key)">
-                                                          <div
-                                                    style=" display: flex; flex-direction: column;gap: 3px;">
-                                                        <mat-radio-button *ngFor="let child of section.children"
-                                                            [value]="child.key">
-                                                            {{ child.label }}
-                                                        </mat-radio-button>
-                                                          </div>
+                                                        <div style=" display: flex; flex-direction: column;gap: 3px;">
+                                                            <mat-radio-button *ngFor="let child of section.children"
+                                                                [value]="child.key">
+                                                                {{ child.label }}
+                                                            </mat-radio-button>
+                                                        </div>
                                                     </mat-radio-group>
                                                 </div>
                                             </ng-container>
@@ -107,7 +111,7 @@
 
                                 <div class="submit-btn-wpr">
                                     <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="submit()"
-                                        [disabled]="isSubmitDisabled">
+                                        [disabled]="isSubmitDisabled || reservedName">
                                         Save
                                     </button>
                                 </div>
