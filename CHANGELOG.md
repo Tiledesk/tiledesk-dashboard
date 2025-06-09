@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.109-rc2
+- Move access blocking (based on roles) from RoleGuard to RoleService for some paths
+- Adds a validity check on role names
+- Externalize the keys used in the checkboxes and radio buttons on the role creation or modification page into constants
+- Adds a listener to manage permissions in Flows, Webhooks, Leads, Knowledge bases, Widget set up, Widget translations, Unserved conversations displayed in chat, Conversation list (real time and non-real time), History, Conversation detail, Analytics
+- Manages filters for displaying conversations in the real time conversation list for custom roles (request_read_all, request_read_group, request_read_my)
+
 ### 2.7.109-rc1
 - Adds the ability to control how search results are retrieved (Hybrid search) in the AI ​​settings modal window
 - Displays chunks used for the answer in the Knowledge Base preview modal window
