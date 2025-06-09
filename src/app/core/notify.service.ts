@@ -170,6 +170,21 @@ export class NotifyService {
   }
 
 
+   presentDialogNoPermissionToViewThisSection(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: 'Permission Denied',
+      text: 'We are sorry, but you don\'t have permissions to view this section.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+
   // "{{'YourTrialHasEnded' | translate }}"
   // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
   displayTrialHasExpiredModal(projectId, yourTrialHasEnded, upgradeNowToKeepOurAmazingFeatures, upgrade) {
