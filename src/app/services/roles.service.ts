@@ -6,14 +6,36 @@ import { AuthService } from 'app/core/auth.service';
 import { UsersService } from './users.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
+import { skipWhile } from 'rxjs/operators';
+// Define a type for the emitted value
+interface UpdatePermissionStatus {
+  role: string;
+  matchedPermissions: string[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
 
 
+
 export class RolesService {
-   private updateRequestPermission$ = new BehaviorSubject<boolean>(true); // ✅ default is true
+  // private updateRequestPermission$ = new BehaviorSubject<boolean>(true); // ✅ default is true
+
+  // Define a type for the emitted value
+
+
+  // private updateRequestPermission$ = new BehaviorSubject<UpdatePermissionStatus>({
+  //   allowed: true,
+  //   matchedPermissions: []
+  // });
+
+  private updateRequestPermission$ = new BehaviorSubject<UpdatePermissionStatus>({
+    role: '',
+    matchedPermissions: []
+  });
+
+
   SERVER_BASE_PATH: string;
   ROLES_URL: string;
   TOKEN: string
@@ -30,31 +52,228 @@ export class RolesService {
     this.getCurrentProjectAndBuildUrl()
   }
 
-   listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
-    this.usersService.projectUser_bs
-      .pipe(
-        takeUntil(unsubscribe$),
-        filter(projectUser => !!projectUser)
+  // listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  //   this.usersService.projectUser_bs
+  //     .pipe(
+  //       takeUntil(unsubscribe$),
+  //       filter(projectUser => !!projectUser)
+  //     )
+  //     .subscribe((projectUser) => {
+  //       const rolePermissions: string[] = projectUser.rolePermissions || [];
+  //       const userRole = projectUser.role;
+
+  //       this.updateRequestPermission$.next({
+  //         role: userRole,
+  //         matchedPermissions: rolePermissions
+  //       });
+  //     });
+  // }
+
+  // listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  //   this.usersService.projectUser_bs
+  //     .pipe(
+  //       takeUntil(unsubscribe$),
+  //       filter((projectUser) => !!projectUser && !!projectUser.role) // role must exist
+  //     )
+  //     .subscribe((projectUser) => {
+  //       const rolePermissions: string[] = projectUser.rolePermissions || [];
+  //       const userRole = projectUser.role;
+
+  //       this.updateRequestPermission$.next({
+  //         role: userRole,
+  //         matchedPermissions: rolePermissions
+  //       });
+  //     });
+  // }
+
+// listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+//   this.usersService.projectUser_bs
+//     .pipe(
+//       takeUntil(unsubscribe$),
+//       skipWhile((projectUser) =>
+//         !projectUser ||
+//         typeof projectUser !== 'object' ||
+//         !projectUser.role ||
+//         !Array.isArray(projectUser.rolePermissions) ||
+//         projectUser.rolePermissions.length === 0
+//       )
+//     )
+//     .subscribe((projectUser) => {
+//       const rolePermissions: string[] = projectUser.rolePermissions;
+//       const userRole = projectUser.role;
+
+//       this.updateRequestPermission$.next({
+//         role: userRole,
+//         matchedPermissions: rolePermissions
+//       });
+//     });
+// }
+
+listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  this.usersService.projectUser_bs
+    .pipe(
+      takeUntil(unsubscribe$),
+      skipWhile((projectUser) =>
+        !projectUser ||
+        typeof projectUser !== 'object' ||
+        !projectUser.role // ✅ Allow even if rolePermissions is empty
       )
-      .subscribe((projectUser) => {
-        // ✅ Skip checking for these roles
-        if (['owner', 'admin', 'agent'].includes(projectUser.role)) {
-        // if (['owner', 'admin'].includes(projectUser.role)) {
-          this.updateRequestPermission$.next(true);
-          return;
-        }
+    )
+    .subscribe((projectUser) => {
+      const rolePermissions: string[] = Array.isArray(projectUser.rolePermissions)
+        ? projectUser.rolePermissions
+        : [];
 
-        // 🔍 For custom roles, check the permissions array
-        const hasPermission = Array.isArray(projectUser.permissions)
-          && projectUser.permissions.includes('request_update');
+      const userRole = projectUser.role;
 
-        this.updateRequestPermission$.next(hasPermission);
+      this.updateRequestPermission$.next({
+        role: userRole,
+        matchedPermissions: rolePermissions
       });
-  }
+    });
+}
 
-   getUpdateRequestPermission(): Observable<boolean> {
+  getUpdateRequestPermission(): Observable<UpdatePermissionStatus> {
     return this.updateRequestPermission$.asObservable();
   }
+
+  //  listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  //   this.usersService.projectUser_bs
+  //     .pipe(
+  //       takeUntil(unsubscribe$),
+  //       filter(projectUser => !!projectUser)
+  //     )
+  //     .subscribe((projectUser) => {
+  //       console.log('[ROLES-SERV]  projectUser', projectUser)
+  //       console.log('[ROLES-SERV]  projectUser > rolePermissions', projectUser.rolePermissions)
+  //       // ✅ Skip checking for these roles
+  //       if (['owner', 'admin', 'agent'].includes(projectUser.role)) {
+  //         this.updateRequestPermission$.next(true);
+  //         return;
+  //       }
+
+  //       // 🔍 For custom roles, check the permissions array
+  //       const hasPermission = Array.isArray(projectUser.rolePermissions)
+  //         && projectUser.rolePermissions.includes('request_update');
+
+  //       this.updateRequestPermission$.next(hasPermission);
+  //     });
+  // }
+
+  //  getUpdateRequestPermission(): Observable<boolean> {
+  //   return this.updateRequestPermission$.asObservable();
+  // }
+
+  //   listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  //   this.usersService.projectUser_bs
+  //     .pipe(
+  //       takeUntil(unsubscribe$),
+  //       filter(projectUser => !!projectUser)
+  //     )
+  //     .subscribe((projectUser) => {
+  //       console.log('[ROLES-SERV]  projectUser', projectUser);
+  //       console.log('[ROLES-SERV]  rolePermissions', projectUser.rolePermissions);
+
+  //       if (['owner', 'admin', 'agent'].includes(projectUser.role)) {
+  //         this.updateRequestPermission$.next({
+  //           allowed: true,
+  //           matchedPermissions: ['owner_or_admin_or_agent']
+  //         });
+  //         return;
+  //       }
+
+  //       const requiredPermissions = ['request_update', 'lead_update', 'kb_update', 'flows_update'];
+
+  //       const matchedPermissions = requiredPermissions.filter(perm =>
+  //         projectUser.rolePermissions?.includes(perm)
+  //       );
+
+  //       this.updateRequestPermission$.next({
+  //         allowed: matchedPermissions.length > 0,
+  //         matchedPermissions
+  //       });
+  //     });
+  // }
+
+  // getUpdateRequestPermission(): Observable<UpdatePermissionStatus> {
+  //   return this.updateRequestPermission$.asObservable();
+  // }
+
+  // listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  //   this.usersService.projectUser_bs
+  //     .pipe(
+  //       takeUntil(unsubscribe$),
+  //       filter(projectUser => !!projectUser)
+  //     )
+  //     .subscribe((projectUser) => {
+  //       console.log('[ROLES-SERV] projectUser', projectUser);
+  //       console.log('[ROLES-SERV] rolePermissions', projectUser.rolePermissions);
+
+  //       // ✅ Skip check for system roles
+  //       if (['owner', 'admin', 'agent'].includes(projectUser.role)) {
+  //         this.updateRequestPermission$.next({
+  //           allowed: true,
+  //           matchedPermissions: ['owner_or_admin_or_agent'] // you can replace this with all permissions if needed
+  //         });
+  //         return;
+  //       }
+
+  //       // 🔍 Define which permissions are needed
+  //       const requiredPermissions = [
+  //         'request_update',
+  //         'lead_update',
+  //         'kb_update',
+  //         'flows_update'
+  //         // Add more as needed
+  //       ];
+
+  //       const matchedPermissions = requiredPermissions.filter(perm =>
+  //         projectUser.rolePermissions?.includes(perm)
+  //       );
+
+  //       const allowed = matchedPermissions.length > 0;
+
+  //       this.updateRequestPermission$.next({
+  //         allowed,
+  //         matchedPermissions
+  //       });
+  //     });
+  // }
+
+  // getUpdateRequestPermission(): Observable<UpdatePermissionStatus> {
+  //   return this.updateRequestPermission$.asObservable();
+  // }
+
+  // listenToProjectUserPermissions(unsubscribe$: Observable<void>) {
+  //   this.usersService.projectUser_bs
+  //     .pipe(
+  //       takeUntil(unsubscribe$),
+  //       filter(projectUser => !!projectUser)
+  //     )
+  //     .subscribe((projectUser) => {
+  //       const rolePermissions: string[] = projectUser.rolePermissions || [];
+  //       const systemRoles = ['owner', 'admin', 'agent'];
+
+  //       // ✅ System roles always allowed, but return actual permissions
+  //       if (systemRoles.includes(projectUser.role)) {
+  //         this.updateRequestPermission$.next({
+  //           allowed: true,
+  //           matchedPermissions: rolePermissions
+  //         });
+  //         return;
+  //       }
+
+  //       // 🔍 For custom roles, return the full permissions list (if not empty)
+  //       const allowed = rolePermissions.length > 0;
+
+  //       this.updateRequestPermission$.next({
+  //         allowed,
+  //         matchedPermissions: rolePermissions
+  //       });
+  //     });
+  // }
+
+
 
   getToken() {
     this.auth.user_bs.subscribe((user) => {
