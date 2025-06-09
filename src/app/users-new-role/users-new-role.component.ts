@@ -105,29 +105,56 @@ export class UsersNewRoleComponent implements OnInit {
     },
     {
       key: 'conversationManagement',
-      title: 'Conversation Management',
-      parentLabel: 'Conversation Management Level',
-      type: 'radio',
+      title: 'Conversations Management',
+      parentLabel: 'Select all',
+      type: 'checkbox',
       expanded: false,
       children: [
         { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' }
       ]
     },
-     {
+    {
+      key: 'knowledgeBasesManagement',
+      title: 'Knowledge bases',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.KB_READ, label: 'Able to view' },
+      ]
+    },
+    {
+      key: 'flowsManagement',
+      title: 'Flows',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.FLOWS_READ, label: 'Able to view' },
+      ]
+    },
+    {
+      key: 'inboxManagement',
+      title: 'Monitor & Not real time conversations',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.INBOX_READ, label: 'Able to view' },
+      ]
+    },
+    {
       key: 'SectionsAccess',
       title: 'Sections Access',
       parentLabel: 'Sections Access',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.KB_READ, label: 'Able to view Knowledge bases' },
-        { key: PERMISSIONS.FLOWS_READ, label: 'Able to view Flows' },
-        { key: PERMISSIONS.INBOX_READ, label: 'Able to view Monitor & Not real time conversations' },
         { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
         { key: PERMISSIONS.LEAD_READ, label: 'Able to view Leads' },
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
-        
+
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },
         // { key: 'leadData', label: 'Can export Lead, User, Company data' },
         // { key: 'importData', label: 'Can import contacts, companies and tickets' },
@@ -206,21 +233,21 @@ export class UsersNewRoleComponent implements OnInit {
     //  this.getOSCODE()
   }
 
-   getRoles() {
+  getRoles() {
     this.rolesService.getAllRoles()
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((roles: any) => {
         console.log('[CREATE-NEW-ROLE] - GET ROLES - roles ', roles);
-      this.roles = roles || [];
+        this.roles = roles || [];
 
       }, error => {
 
-        
+
         console.error('[CREATE-NEW-ROLE] - GET ROLES - ERROR: ', error);
       }, () => {
-      
+
         console.log('[CREATE-NEW-ROLE] - GET ROLES * COMPLETE *')
       });
   }
@@ -367,7 +394,7 @@ export class UsersNewRoleComponent implements OnInit {
       });
       const payload = {
         name: this.form.value.roleName,
-        
+
         permissions: this.getSelectedPermissions()
       };
 
@@ -378,7 +405,7 @@ export class UsersNewRoleComponent implements OnInit {
   }
 
   validateRoleName(rolename) {
-   const name = rolename?.toLowerCase()?.trim();
+    const name = rolename?.toLowerCase()?.trim();
 
     if (!name) return null;
 

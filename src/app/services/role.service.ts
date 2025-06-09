@@ -123,14 +123,26 @@ export class RoleService {
             return hasPermission;
           }
 
-           if (calledby === 'widget-multilanguage') {
+          if (calledby === 'widget-multilanguage') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
 
-          
 
+
+        } else if (projectUserRole === 'owner' || projectUserRole === 'admin') {
+          if (calledby === 'widget-set-up') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - widget-set-up hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'widget-multilanguage') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
+            return hasPermission;
+          }
         }
       } else {
         this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
@@ -216,20 +228,29 @@ export class RoleService {
           }
 
           if (calledby === 'widget-set-up') {
-            const hasPermission =  _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-set-up hasPermission ', hasPermission)
             return hasPermission;
           }
 
           if (calledby === 'widget-multilanguage') {
-            const hasPermission =  _projectUser.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
+        } else if (_projectUserRole === 'owner' || _projectUserRole === 'admin') {
+          console.log('HELLO ')
+          if (calledby === 'widget-set-up') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - widget-set-up hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
-
-          
-
+          if (calledby === 'widget-multilanguage') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
+            return hasPermission;
+          }
         }
       }
 
