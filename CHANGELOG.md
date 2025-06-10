@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.109-rc4
+- Moves the "Default" badge at the bottom of Knowledge Bases select and adds the "Hybrid search" badge
+- Translates hybrid search strings
+
 ### 2.7.108
 - Fixes the bug: AI Agent creation not working in knowledge base page
 
