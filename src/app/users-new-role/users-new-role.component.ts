@@ -93,8 +93,8 @@ export class UsersNewRoleComponent implements OnInit {
   sections: PermissionSection[] = [
     {
       key: 'conversationAccess',
-      title: 'Conversation Access',
-      parentLabel: 'Conversation Access Level',
+      title: 'Conversations Access',
+      parentLabel: 'Conversations Access Level',
       type: 'radio',
       expanded: false,
       children: [
@@ -110,6 +110,8 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
+        { key: PERMISSIONS.INBOX_READ, label: 'Able to view real time and opened' },
+        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
         { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' }
       ]
     },
@@ -133,14 +135,30 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.FLOWS_READ, label: 'Able to view' },
       ]
     },
-    {
-      key: 'inboxManagement',
-      title: 'Monitor & Not real time conversations',
-      parentLabel: 'Select all',
+    // {
+    //   key: 'inboxManagement',
+    //   title: 'Monitor & Not real time conversations',
+    //   parentLabel: 'Select all',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: PERMISSIONS.INBOX_READ, label: 'Able to view' },
+    //   ]
+    // },
+     {
+      key: 'widgetSettings',
+      title: 'Widget',
+      parentLabel: 'Widget',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.INBOX_READ, label: 'Able to view' },
+        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view Widget appearance & settings' },
+        { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
+        { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
+        // { key: 'profilePages', label: 'Can access lead and user profile pages' },
+        // { key: 'leadData', label: 'Can export Lead, User, Company data' },
+        // { key: 'importData', label: 'Can import contacts, companies and tickets' },
+        // { key: 'manageTags', label: 'Can manage tags' },
       ]
     },
     {
@@ -150,7 +168,7 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+        
         { key: PERMISSIONS.LEAD_READ, label: 'Able to view Leads' },
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
@@ -161,21 +179,7 @@ export class UsersNewRoleComponent implements OnInit {
         // { key: 'manageTags', label: 'Can manage tags' },
       ]
     },
-    {
-      key: 'Settings',
-      title: 'Settings access',
-      parentLabel: 'Settings access',
-      type: 'checkbox',
-      expanded: false,
-      children: [
-        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view Widget set up' },
-        { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
-        // { key: 'profilePages', label: 'Can access lead and user profile pages' },
-        // { key: 'leadData', label: 'Can export Lead, User, Company data' },
-        // { key: 'importData', label: 'Can import contacts, companies and tickets' },
-        // { key: 'manageTags', label: 'Can manage tags' },
-      ]
-    }
+   
 
     // {
     //   key: 'dataSecurity',

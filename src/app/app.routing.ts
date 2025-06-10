@@ -685,11 +685,19 @@ const routes: Routes = [
   
 
   // Widget installation
+  // {
+  //   path: 'project/:projectid/installation',
+  //   loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+
+   // Widget installation - check moved in Role service
   {
     path: 'project/:projectid/installation',
     loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
 

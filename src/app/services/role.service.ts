@@ -65,6 +65,7 @@ export class RoleService {
           if (calledby === 'history') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
+            // if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ)) { 
               this.router.navigate([`project/${projectId}/unauthorized`])
             }
           }
@@ -125,9 +126,19 @@ export class RoleService {
 
           if (calledby === 'widget-multilanguage') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
+
+           if (calledby === 'widget-installation') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          
 
 
 
@@ -141,6 +152,12 @@ export class RoleService {
           if (calledby === 'widget-multilanguage') {
             const hasPermission = true
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+           if (calledby === 'widget-installation') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
             return hasPermission;
           }
         }
@@ -175,6 +192,7 @@ export class RoleService {
           if (calledby === 'history') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
+            // if (!_projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
               this.router.navigate([`project/${projectId}/unauthorized`])
             }
           }
@@ -235,9 +253,18 @@ export class RoleService {
 
           if (calledby === 'widget-multilanguage') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
+
+           if (calledby === 'widget-installation') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
         } else if (_projectUserRole === 'owner' || _projectUserRole === 'admin') {
           console.log('HELLO ')
           if (calledby === 'widget-set-up') {
@@ -251,6 +278,14 @@ export class RoleService {
             console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
             return hasPermission;
           }
+
+          if (calledby === 'widget-installation') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          
         }
       }
 
