@@ -170,7 +170,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings selectedModel to use for test', this.selectedModel)
     this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings maxTokens to use for test', this.maxTokens)
     this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings temperature to use for test', this.temperature)
-    console.log('[MODAL-PREVIEW-KB] presentDialogAiSettings alpha to use for test', this.alpha)
+    this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings alpha to use for test', this.alpha)
    
     this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings topK to use for test', this.topK)
     this.logger.log('[MODAL-PREVIEW-KB] presentDialogAiSettings context to use for test', this.context)
@@ -282,11 +282,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
         if (editedAiSettings && editedAiSettings[0]['alpha']) {
           this.alpha = editedAiSettings[0]['alpha']
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges alpha to use for test from editedAiSettings 1', this.alpha)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges alpha to use for test from editedAiSettings 1', this.alpha)
         } else {
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges alpha to use for test from editedAiSettings 2', editedAiSettings[0]['alpha'])
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges alpha to use for test from editedAiSettings 2', editedAiSettings[0]['alpha'])
           this.alpha = this.selectedNamespace.preview_settings.alpha
-          console.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges alpha to use for test from selectedNamespace ', this.alpha)
+          this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges alpha to use for test from selectedNamespace ', this.alpha)
         }
 
         if (editedAiSettings && editedAiSettings[0]['top_k']) {
@@ -449,7 +449,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.responseTime = Math.round((endTime - startTime) / 1000);
       this.translateparam = { respTime: this.responseTime };
       this.qa = response;
-      console.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
+      this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       this.contentChunks = this.qa?.content_chunks
       // this.contentChunks =   [
       // "This site uses cookies from Google to deliver its services and to analyze traffic. More details Ok, Got it Skip to main content Material Components CDK Guides 14.2.7 arrow_drop_down format_color_fill GitHub Components CDK Guides menu Expansion Panel Autocomplete Badge Bottom Sheet Button Button toggle Card Checkbox Chips Core Datepicker Dialog Divider Expansion Panel Form field Grid list Icon Input List Menu Paginator Progress bar Progress spinner Radio button Ripples Select Sidenav Slide toggle Slider Snackbar Sort header Stepper Table Tabs Toolbar Tooltip Tree overview (/components/expansion/overview) api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link",
@@ -457,7 +457,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // "api (/components/expansion/api) examples (/components/expansion/examples) Overview for expansion <mat-expansion-panel> provides an expandable details-summary view.  Basic expansion panel link code open_in_new This is the expansion title This is a summary of the content This is the primary content of the panel. Self aware panel Currently I am closed I'm visible because I am open   link Expansion-panel content   link Header  The <mat-expansion-panel-header> shows a summary of the panel content and acts as the control for expanding and collapsing. This header may optionally contain an <mat-panel-title> and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  <",
       // "and an <mat-panel-description> , which format the content of the header to align with Material Design specifications.  content_copy < mat-expansion-panel  hideToggle >  < mat-expansion-panel-header >  < mat-panel-title > This is the expansion title </ mat-panel-title >  < mat-panel-description > This is a summary of the content </ mat-panel-description >  </ mat-expansion-panel-header >  < p > This is the primary content of the panel. </ p >  </ mat-expansion-panel >  By default, the expansion-panel header includes a toggle icon at the end of the header to indicate the expansion state. This icon can be hidden via the hideToggle property.  content_copy < mat-expansion-panel  hideToggle >   link Action bar  Actions may optionally be included at the bottom of the panel, visible only when the expansion is in its expanded state.  content_copy < mat-action-row >  < button  mat-button  color = \"primary\" ( click )= \"nextStep()\" > Next </ button >  </ mat-action-row >   link Disabling a panel"
       // ]
-      console.log("ask gpt preview contentChunks: ", this.contentChunks);
+      this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.answer) {
         this.answer = response.answer;

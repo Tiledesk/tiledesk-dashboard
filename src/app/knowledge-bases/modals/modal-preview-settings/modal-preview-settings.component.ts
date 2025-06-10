@@ -103,7 +103,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
     this.hideHelpLink = brand['DOCS'];
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace ", this.selectedNamespace)
       this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace))
 
       if (this.selectedNamespace && this.selectedNamespace.engine) {
@@ -121,8 +121,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
       // this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespaceClone ", this.selectedNamespaceClone)
 
       this.selectedNamespace.preview_settings
-      console.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
-      console.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject 1", this.aiSettingsObject)
+      this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace preview_settings 1", this.selectedNamespace.preview_settings)
+      this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject 1", this.aiSettingsObject)
 
       // new
       // this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
@@ -286,8 +286,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
   }
 
   updateSliderValue(value, type) {
-   console.log("[MODAL PREVIEW SETTINGS] value: ", value);
-    console.log("[MODAL PREVIEW SETTINGS] type: ", type);
+   this.logger.log("[MODAL PREVIEW SETTINGS] value: ", value);
+   this.logger.log("[MODAL PREVIEW SETTINGS] type: ", type);
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
       if (!this.wasOpenedFromThePreviewKBModal) {
@@ -348,7 +348,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges {
 
       // Comunicate to the subscriber "modal-preview-k-b" the change of the alpha
       this.aiSettingsObject[0].alpha = value
-      console.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
+      this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
