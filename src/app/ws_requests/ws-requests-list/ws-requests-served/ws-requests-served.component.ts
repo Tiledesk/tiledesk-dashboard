@@ -26,6 +26,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 import scrollToWithAnimation from 'scrollto-with-animation'
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -38,6 +39,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number;
   @Input() current_selected_prjct: any;
+  @Input() PERMISSION_TO_UPDATE_REQUEST: boolean;
+  CHAT_PANEL_MODE: boolean = false;
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
@@ -92,7 +95,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   scrollYposition: any;
   storedRequestId: string
   CHANNELS_NAME = CHANNELS_NAME;
-  
+
   /**
    * Constructor
    * @param botLocalDbService 
@@ -166,7 +169,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
-  
+
 
     // this.router.events.subscribe((event) => { 
     //   if (event instanceof NavigationEnd || event instanceof NavigationStart) {    
@@ -176,7 +179,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   }
 
- 
+
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -185,20 +188,21 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         'scrollTop', // direction to scroll
         +this.scrollYposition, // target scrollY (0 means top of the page)
         500, // duration in ms
-        'easeInOutCirc', 
+        'easeInOutCirc',
         // Can be a name of the list of 'Possible easing equations' or a callback
         // that defines the ease. # http://gizma.com/easing/
-  
+
         () => { // callback function that runs after the animation (optional)
           this.logger.log('done!')
           this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId',  this.storedRequestId)
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] storedRequestId', this.storedRequestId)
         }
       );
     }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
     // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
@@ -215,9 +219,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
       // this.logger.log('[WS-REQUEST-SERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
     }
-   
-    
-  
+
+
+
     if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
       // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
@@ -233,7 +237,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       //       'easeInOutCirc', 
       //       // Can be a name of the list of 'Possible easing equations' or a callback
       //       // that defines the ease. # http://gizma.com/easing/
-       
+
       //       () => { // callback function that runs after the animation (optional)
       //         this.logger.log('done!')
       //         this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
@@ -406,15 +410,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // @ Subscribe to project user role
   // -------------------------------------------------------------
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+        this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER ROLE ', projectUser);
+        if (projectUser) {
+          this.USER_ROLE = projectUser.role;
+          if (this.USER_ROLE === 'agent') {
             this.ROLE_IS_AGENT = true
           } else {
             this.ROLE_IS_AGENT = false
@@ -553,7 +553,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // }
 
   goToServedNTR() {
-    this.router.navigate(['project/' + this.projectId + '/all-conversations'],{ queryParams: { leftfilter: 200 } });
+    this.router.navigate(['project/' + this.projectId + '/all-conversations'], { queryParams: { leftfilter: 200 } });
   }
 
 
@@ -620,9 +620,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       .subscribe((projectUser: any) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser ', projectUser)
         if (projectUser) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser[0]._id);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - ERROR ', error);
@@ -661,104 +661,112 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // }
 
   archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - HAS CLICKED ARCHIVE REQUEST (CLOSE SUPPORT GROUP)');
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - HAS CLICKED ARCHIVE REQUEST (CLOSE SUPPORT GROUP)');
 
 
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
-       
-       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-       this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+      this.wsRequestsService.closeSupportGroup(request_id)
+        .subscribe((data: any) => {
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
 
-       if (request_id === this.storedRequestId) {
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
+
+          if (request_id === this.storedRequestId) {
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+          }
+
+        }, (err) => {
+          this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+
+
+          //  NOTIFY ERROR 
+          this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
           this.usersLocalDbService.removeFromStorage('last-selection-id')
-       }
-      
-      }, (err) => {
-        this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+          // this.ngOnInit();
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
 
+          //  NOTIFY SUCCESS
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
-        //  NOTIFY ERROR 
-        this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        this.usersLocalDbService.removeFromStorage('last-selection-id')
-        // this.ngOnInit();
-        this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-
-        //  NOTIFY SUCCESS
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-
-      });
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   // ------------------------------------------
   // Join request
   // ------------------------------------------
   joinRequest(currentuserisjoined, participantingagents, request_id: string, channel) {
-    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
-    //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
-    //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
+      //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
+      //   this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
 
-    const participantingagentslength = participantingagents.length
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
+      const participantingagentslength = participantingagents.length
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
 
-    let chatAgent = '';
+      let chatAgent = '';
 
-    participantingagents.forEach((agent, index) => {
-      let stringEnd = ' '
+      participantingagents.forEach((agent, index) => {
+        let stringEnd = ' '
 
-      // if (participantingagentslength === 1) {
-      //   stringEnd = '.';
-      // }
+        // if (participantingagentslength === 1) {
+        //   stringEnd = '.';
+        // }
 
-      if (participantingagentslength - 1 === index) {
-        stringEnd = '.';
-      } else {
-        stringEnd = ', ';
-      }
+        if (participantingagentslength - 1 === index) {
+          stringEnd = '.';
+        } else {
+          stringEnd = ', ';
+        }
 
-      // if (participantingagentslength > 2 ) {
-      //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
-      //   if (participantingagentslength - 1 === index) {
-      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
-      //     stringEnd = '.';
-      //   } else if (participantingagentslength - 2) {
-      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
-      //     stringEnd = ' and ';
-      //   } else {
-      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
-      //     stringEnd = ', ';
-      //   }
-      // }
+        // if (participantingagentslength > 2 ) {
+        //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
+        //   if (participantingagentslength - 1 === index) {
+        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
+        //     stringEnd = '.';
+        //   } else if (participantingagentslength - 2) {
+        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
+        //     stringEnd = ' and ';
+        //   } else {
+        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
+        //     stringEnd = ', ';
+        //   }
+        // }
 
-      if (agent.firstname && agent.lastname) {
+        if (agent.firstname && agent.lastname) {
 
-        chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
-      }
+          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+        }
 
-      if (agent.name) {
-        chatAgent += agent.name + stringEnd
-      }
+        if (agent.name) {
+          chatAgent += agent.name + stringEnd
+        }
 
-    });
+      });
 
 
-    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
+      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
 
-    if (currentuserisjoined === false) {
-      if (channel.name === 'email' || channel.name === 'form') {
-        if (participantingagents.length === 1) {
-          this.presentModalYouCannotJoinChat()
-        } else if (participantingagents.length === 0) {
+      if (currentuserisjoined === false) {
+        if (channel.name === 'email' || channel.name === 'form') {
+          if (participantingagents.length === 1) {
+            this.presentModalYouCannotJoinChat()
+          } else if (participantingagents.length === 0) {
+            this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
+          }
+        } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
           this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
         }
-      } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
-        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
       }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
     }
   }
 
@@ -1013,64 +1021,68 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   archiveSelected() {
-    let count = 0;
-    this.requests_selected.forEach((requestid, index) => {
-      this.wsRequestsService.closeSupportGroup(requestid)
-        .subscribe((data: any) => {
-          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-          
-
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
-
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
-   
-          if (requestid === this.storedRequestId) {
-            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STORAGE storedRequestId ', this.storedRequestId);
-             this.usersLocalDbService.removeFromStorage('last-selection-id')
-          }
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      let count = 0;
+      this.requests_selected.forEach((requestid, index) => {
+        this.wsRequestsService.closeSupportGroup(requestid)
+          .subscribe((data: any) => {
+            //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - DATA ', data);
 
 
-          // this.allChecked = false;
-          // this.requests_selected = []
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
-        }, (err) => {
-          this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
+
+            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
+
+            if (requestid === this.storedRequestId) {
+              this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STORAGE storedRequestId ', this.storedRequestId);
+              this.usersLocalDbService.removeFromStorage('last-selection-id')
+            }
 
 
-          //  NOTIFY ERROR 
-          // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-        }, () => {
-          //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
-          this.usersLocalDbService.removeFromStorage('last-selection-id')
-          // this.ngOnInit();
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-          count = count + 1;
-          //  NOTIFY SUCCESS
-          // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-          const index = this.requests_selected.indexOf(requestid);
-          if (index > -1) {
-            this.requests_selected.splice(index, 1);
-            
-          }
-          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
+            // this.allChecked = false;
+            // this.requests_selected = []
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
+          }, (err) => {
+            this.logger.error('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
 
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
 
-          if (this.requests_selected.length === 0) {
-            this.allChecked = false;
-            var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
-            this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-            this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
-            if (checkbox) {
-              checkbox.indeterminate = false;
+            //  NOTIFY ERROR 
+            // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+          }, () => {
+            //  this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - HERE Y ');
+            this.usersLocalDbService.removeFromStorage('last-selection-id')
+            // this.ngOnInit();
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - CLOSE SUPPORT GROUP - COMPLETE');
+            count = count + 1;
+            //  NOTIFY SUCCESS
+            // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+            const index = this.requests_selected.indexOf(requestid);
+            if (index > -1) {
+              this.requests_selected.splice(index, 1);
 
             }
-          }
+            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
 
-        });
-    })
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
+            this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);
+
+            if (this.requests_selected.length === 0) {
+              this.allChecked = false;
+              var checkbox = <HTMLInputElement>document.getElementById("allServedCheckbox");
+              this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+              this.logger.log("[WS-REQUESTS-LIST][SERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+              if (checkbox) {
+                checkbox.indeterminate = false;
+
+              }
+            }
+
+          });
+      })
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
 

@@ -10,6 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { UsersService } from '../services/users.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
+import { ProjectUser } from 'app/models/project-user';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -103,7 +105,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private appConfigService: AppConfigService,
     private usersService: UsersService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -126,6 +129,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('contact-edit')
     this.getRequesterIdParam_AndThenGetRequestsAndContactById();
     this.getCurrentProject();
     this.getCurrentUser();
@@ -137,14 +141,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-   
-
-      if (user_role) {
-        this.USER_ROLE = user_role;
-      }
-      
-    });
+   this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+       if(projectUser){
+         this.USER_ROLE = projectUser.role;
+       }
+     })
   }
 
 

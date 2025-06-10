@@ -155,6 +155,35 @@ export class NotifyService {
 
   }
 
+  presentDialogNoPermissionToPermomfAction(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: 'Permission Denied',
+      text: 'We are sorry, bu you don\'t have permissions to perform this action.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
+
+   presentDialogNoPermissionToViewThisSection(CHAT_PANEL_MODE?: boolean) {
+    console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
+
+    Swal.fire({
+      icon: 'warning',
+      title: 'Permission Denied',
+      text: 'We are sorry, but you don\'t have permissions to view this section.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+      customClass: CHAT_PANEL_MODE === true ? "swal-size-sm" : "",
+    });
+  }
+
 
   // "{{'YourTrialHasEnded' | translate }}"
   // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
@@ -912,7 +941,24 @@ export class NotifyService {
       // },
       // dangerMode: false,
     })
+  }
 
+
+  presentModalYouDontBelongToTheProject() {
+    Swal.fire({
+      title: this.translate.instant('AccessDenied') + '!',
+      text: this.translate.instant('ItLooksLikeYouAreNotTeammateOfThisProject') + '. ' + this.translate.instant('ContactTheProjectAdministratorToGrantYouTheAccess') + '.',
+      icon: "warning",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   presentModalOnlyOwnerCanManageTSMTPsettings(onlyOwnerCanManageSMTPSettings: string, learnMoreAboutDefaultRoles: string) {

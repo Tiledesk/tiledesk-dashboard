@@ -32,6 +32,9 @@
           <li class="btn-with-border-effect li-active">
             <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
           </li>
+          <li class="btn-with-border-effect  border-from-center" (click)="goToUsersRoles()">
+            <a style="text-transform: capitalize;"> {{ "Roles" | translate }} </a>
+          </li>
           <li *ngIf="isVisibleGroups" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
             <a>{{ "Groups" | translate }} </a>
           </li>
@@ -333,7 +336,7 @@
                           <div class="cl-card-item-stats-title">
                             {{ "UsersPage.Role" | translate }}
                           </div>
-                          <div id="pu-role" class="cl-card-item-stats-values">
+                          <div id="pu-role" class="cl-card-item-stats-values" style="text-align: center;">
                             {{ projectUser?.role | translate}}
                           </div>
                         </div>

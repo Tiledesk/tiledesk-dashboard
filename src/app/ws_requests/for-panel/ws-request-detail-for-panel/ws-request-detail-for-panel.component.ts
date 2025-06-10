@@ -24,6 +24,8 @@ import { LoggerService } from '../../../services/logger/logger.service';
 // import * as moment from 'moment';
 import moment from "moment";
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'appdashboard-ws-request-detail-for-panel',
   templateUrl: './ws-request-detail-for-panel.component.html',
@@ -72,7 +74,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   join_polling: any
   archive_polling: any
   MORE_INFO_ACCORDION_IS_OPENED: boolean = false;
-
+  CHAT_PANEL_MODE: boolean = true;
+  PERMISSION_TO_UPDATE_REQUEST: boolean
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -87,7 +90,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     public translate: TranslateService,
     public contactsService: ContactsService,
     public logger: LoggerService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    public rolesService: RolesService
   ) { super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate); }
 
   ngOnInit() {
@@ -137,16 +141,52 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.setMomentLocale();
     this.getCurrentYear();
     this.manageMoreInfoAccordion();
+
+    this.listenToProjectUser()
   }
 
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
+        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
+            // Enable update action
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = false
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST = true
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
 
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
+
+    // this.rolesService.getUpdateRequestPermission()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((hasPermission) => {
+    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
+    //     console.log('[REQUEST-DTLS-X-PANEL] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST);
+    //   });
+  }
 
   getCurrentYear() {
     this.currentYear = moment().format('YYYY');
     this.logger.log('[REQUEST-DTLS-X-PANEL] - currentYear ', this.currentYear)
   }
 
-  
+
   setMomentLocale() {
     this.browserLang = this.translate.getBrowserLang();
     // console.log('[REQUEST-DTLS-X-PANEL] - setMomentLocale browserLang', this.browserLang)
@@ -176,18 +216,11 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   getProjectUserRole() {
     // const user___role =  this.usersService.project_user_role_bs.value;
     // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', user_role);
-        if (user_role) {
-
-          if (user_role === 'agent') {
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: any) => {
+        this.logger.log('[REQUEST-DTLS-X-PANEL] USER ROLE ', projectUser);
+        if (projectUser) {
+          if (projectUser.role === 'agent') {
             this.ROLE_IS_AGENT = true;
-
           } else {
             this.ROLE_IS_AGENT = false;
           }
@@ -196,13 +229,17 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   joinRequest(request_id: string) {
-    const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
-    window.parent.postMessage(msg, '*')
-    this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
-    // ------------------------
-    // For test
-    // ------------------------
-    // this.onJoinHandledinWsRequestDetailForPanel(request_id, this.currentUserID)
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
+      window.parent.postMessage(msg, '*')
+      this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
+      // ------------------------
+      // For test
+      // ------------------------
+      // this.onJoinHandledinWsRequestDetailForPanel(request_id, this.currentUserID)
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
   }
 
   listenToParentPostMessage() {
@@ -256,19 +293,23 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   archiveRequest(request_id) {
-    // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 
-    // console.log('[REQUEST-DTLS-X-PANEL]  ARCHIVE waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
-    // this.archive_polling = setInterval(() => {
-    // if (this.webSocketJs.ws.readyState === 1) {
-    //   if (this.webSocketJs.ws.readyState === 1) {
-    //     clearInterval(this.archive_polling);
-    //   }
-    // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
-    this._closeSupportGroupAndCloseConvsDeatail(request_id)
-    //   }
-    // }, 100);
+      // console.log('[REQUEST-DTLS-X-PANEL]  ARCHIVE waiting for service-worker to be ready - current state', this.webSocketJs.ws.readyState)
+      // this.archive_polling = setInterval(() => {
+      // if (this.webSocketJs.ws.readyState === 1) {
+      //   if (this.webSocketJs.ws.readyState === 1) {
+      //     clearInterval(this.archive_polling);
+      //   }
+      // console.log('[REQUEST-DTLS-X-PANEL] ARCHIVE service-worker is ready ', this.webSocketJs.ws.readyState, ' - run ARCHIVE')
+      this._closeSupportGroupAndCloseConvsDeatail(request_id)
+      //   }
+      // }, 100);
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+    }
 
   }
 

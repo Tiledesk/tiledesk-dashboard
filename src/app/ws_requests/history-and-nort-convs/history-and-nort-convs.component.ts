@@ -32,6 +32,10 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
+import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -311,6 +315,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
+  PERMISSION_TO_UPDATE_REQUEST: boolean
   /**
    * 
    * @param router 
@@ -351,6 +356,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     private wsMsgsService: WsMsgsService,
     public route: ActivatedRoute,
     public brandService: BrandService,
+    public rolesService: RolesService,
+    private roleService: RoleService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -390,6 +397,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.getQueryParams();
 
+    this.listenToProjectUser()
+
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  fullText_applied_filter', this.fullText_applied_filter);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  startDateFormatted', this.startDateFormatted);
     // this.logger.log('[HISTORY & NORT-CONVS]  ngOnInit  selectedAgentFirstname', this.selectedAgentFirstname);
@@ -402,13 +411,127 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[HISTORY & NORT-CONVS] - Role:', status.role);
+        console.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
+            console.log('PERMISSIONS.REQUEST_UPDATE ', PERMISSIONS.REQUEST_UPDATE)
+            // Enable update action
+            this.PERMISSION_TO_UPDATE_REQUEST = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
+          } else {
+            this.PERMISSION_TO_UPDATE_REQUEST = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_REQUEST = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
+
+    // this.rolesService.getUpdateRequestPermission()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((hasPermission) => {
+    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
+    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST',  this.PERMISSION_TO_UPDATE_REQUEST);
+    //   });
+
+    // this.rolesService.getUpdateRequestPermission()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(status => {
+    //   console.log('Permission allowed:', status.allowed);
+    //   console.log('Matched permissions:', status.matchedPermissions);
+
+    //   if (status.allowed) {
+    //     // Use status.matchedPermissions to tailor UI/actions
+    //   }
+    // });
+
+    // this.rolesService.getUpdateRequestPermission()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(status => {
+    //   console.log('Permission allowed:', status.allowed);
+    //   console.log('Matched permissions:', status.matchedPermissions);
+
+    //   if (status.allowed) {
+    //     // ✅ Enable UI actions
+    //   } else {
+    //     // 🚫 Disable or hide actions
+    //   }
+    // });
+
+    // this.rolesService.getUpdateRequestPermission()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(status => {
+    //   console.log('✅ Allowed:', status.allowed);
+    //   console.log('🔐 Permissions:', status.matchedPermissions);
+
+    //   // if 
+
+    //   if (status.allowed) {
+    //     // Enable actions
+    //   } else {
+    //     // Disable UI controls or show warning
+    //   }
+    // });
+
+
+
+    // My code
+    // this.usersService.projectUser_bs
+    //   .pipe(
+    //     takeUntil(this.unsubscribe$)
+    //   )
+    //   .subscribe((projectUser) => {
+    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER ', projectUser);
+    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER ROLE', projectUser.role);
+    //     if (projectUser.role !== 'owner' && projectUser.role !== 'admin' && projectUser.role !== 'agent') {
+    //       console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSIONS', projectUser.permissions);
+    //       console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSIONS LENGTH', projectUser.permissions.length);
+    //       if (projectUser.permissions.length === 0) {
+    //         this.PERMISSION_TO_UPDATE_REQUEST = false
+    //         console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST (1)', this.PERMISSION_TO_UPDATE_REQUEST);
+    //       } else if (projectUser.permissions.length > 0) {
+    //         if (!projectUser.permissions.includes('request_update')) {
+    //           this.PERMISSION_TO_UPDATE_REQUEST = false
+    //           console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST (2)', this.PERMISSION_TO_UPDATE_REQUEST);
+    //         } else {
+    //           this.PERMISSION_TO_UPDATE_REQUEST = true
+    //           console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST (3)', this.PERMISSION_TO_UPDATE_REQUEST);
+    //         }
+    //       }
+    //     }
+
+    //   })
+  }
+
   getProjectUserRole() {
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
+        console.log('[HISTORY & NORT-CONVS] - USER ROLE ', user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           this.manageStatusInHistoryForAgentAndExpiredPlan(this.USER_ROLE)
@@ -423,6 +546,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
       });
   }
+
+
+
 
   manageStatusInHistoryForAgentAndExpiredPlan(USER_ROLE) {
     this.logger.log('[HISTORY & NORT-CONVS] manageStatusInHistoryForAgentAndExpiredPlan statusInHistory', this.statusInHistory)
@@ -487,12 +613,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               const email_value = paramArray[1]
               // this.logger.log('[HISTORY & NORT-CONVS]  queryParams email_value value', email_value)
               if (email_value) {
-                this.fullText =  email_value;
+                this.fullText = email_value;
                 // this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > this.fullText:', this.fullText)
                 this.fullText_temp = this.fullText
               }
             }
-            
+
 
             if (paramArray[0] === 'full_text' && paramArray[1] !== '') {
               const full_text_value = paramArray[1]
@@ -694,7 +820,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           if (projectProfile.customization.voice && projectProfile.customization.voice === true) {
             let voice_twilio_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_TWILIO);
             this.conversationType.splice(voice_twilio_index, 1);
-          } 
+          }
           else if (projectProfile.customization['voice_twilio'] && projectProfile.customization['voice_twilio'] === true) {
             let voice_vxml_index = this.conversationType.findIndex(x => x['id'] === CHANNELS_NAME.VOICE_VXML);
             this.conversationType.splice(voice_vxml_index, 1);
@@ -738,6 +864,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     if (currentUrl.indexOf('/all-conversations') !== -1) {
       this.IS_HERE_FOR_HISTORY = false;
+      this.roleService.checkRoleForCurrentProject('all-conversations')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.requests_status = 'all'
       if (currentUrl.indexOf('?') === -1) {
@@ -748,6 +875,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     } else {
       this.IS_HERE_FOR_HISTORY = true;
+      this.roleService.checkRoleForCurrentProject('history')
       // this.logger.log('[HISTORY & NORT-CONVS] - IS_HERE_FOR_HISTORY ? ', this.IS_HERE_FOR_HISTORY);
       this.operator = '='
       this.requests_status_temp = '1000'
@@ -807,20 +935,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
 
-    // if (this.requestList.length > 0) {
-    //   this.requestList.forEach(request => {
-    //     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges request id', request.request_id)
-    //     this.subscribeToWs_MsgsByRequestId(request, request.request_id)
-    //     this.unsuscribeRequestById(request.request_id);
-    //     this.unsuscribeMessages(request.request_id);
-    //   });
-    // }
-  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -1058,50 +1173,54 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // Join request
   // ------------------------------------------
   joinRequest(request, request_id: string) {
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
 
-    // this._onJoinHandled(request_id, this.currentUserID, request);
-    //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
-    //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request.participanting_Agents', request.participanting_Agents)
+      // this._onJoinHandled(request_id, this.currentUserID, request);
+      //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
+      //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request.participanting_Agents', request.participanting_Agents)
 
-    let chatAgent = '';
-    if (request && request.participanting_Agents) {
+      let chatAgent = '';
+      if (request && request.participanting_Agents) {
 
-      const participantingagentslength = request.participanting_Agents.length
-      request.participanting_Agents.forEach((agent, index) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - joinRequest forEach agent', agent);
-        let stringEnd = ' '
-
-
-        if (participantingagentslength - 1 === index) {
-          stringEnd = '.';
-        } else {
-          stringEnd = ', ';
-        }
-
-        if (agent.firstname && agent.lastname) {
-          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
-        }
-
-        if (agent.name) {
-          chatAgent += agent.name + stringEnd
-        }
-
-      });
+        const participantingagentslength = request.participanting_Agents.length
+        request.participanting_Agents.forEach((agent, index) => {
+          this.logger.log('[HISTORY & NORT-CONVS] - joinRequest forEach agent', agent);
+          let stringEnd = ' '
 
 
-      this.logger.log('[HISTORY & NORT-CONVS] - joinRequest chatAgent', chatAgent);
+          if (participantingagentslength - 1 === index) {
+            stringEnd = '.';
+          } else {
+            stringEnd = ', ';
+          }
 
-      if (request && request.currentUserIsJoined === false) {
-        if (request.channel.name === 'email' || request.channel.name === 'form') {
-          if (request.participanting_Agents.length === 1) {
-            this.presentModalYouCannotJoinChat()
-          } else if (request.participanting_Agents.length === 0) {
+          if (agent.firstname && agent.lastname) {
+            chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+          }
+
+          if (agent.name) {
+            chatAgent += agent.name + stringEnd
+          }
+
+        });
+
+
+        this.logger.log('[HISTORY & NORT-CONVS] - joinRequest chatAgent', chatAgent);
+
+        if (request && request.currentUserIsJoined === false) {
+          if (request.channel.name === 'email' || request.channel.name === 'form') {
+            if (request.participanting_Agents.length === 1) {
+              this.presentModalYouCannotJoinChat()
+            } else if (request.participanting_Agents.length === 0) {
+              this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
+            }
+          } else if (request.channel.name !== 'email' || request.channel.name !== 'form' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21') {
             this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
           }
-        } else if (request.channel.name !== 'email' || request.channel.name !== 'form' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21') {
-          this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
         }
       }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
     }
   }
 
@@ -1515,8 +1634,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               let newFillColour = '';
 
               if (request.lead && request.lead.fullname) {
+                this.logger.log('request.lead.fullname', request.lead.fullname)
+                this.logger.log('request.lead.fullname is a number', !isNaN(Number(request.lead.fullname)) )
                 newInitials = avatarPlaceholder(request.lead.fullname);
                 newFillColour = getColorBck(request.lead.fullname)
+                if (!isNaN(Number(request.lead.fullname))) {
+                  request['fullnameIsNumber'] = true
+                }
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';
@@ -1647,6 +1771,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
     this.logger.log('[HISTORY & NORT-CONVS] - detectMobile IS MOBILE ', this.isMobile);
   }
+
 
 
 
@@ -2024,10 +2149,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName event term', event.term);
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName tags_array ', this.tags_array);
 
-  
-    const existsInList  = this.tags_array.filter((tag: any) => {
+
+    const existsInList = this.tags_array.filter((tag: any) => {
       return tag.name === event.term;
-      
+
     });
     this.logger.log('[HISTORY & NORT-CONVS] - onSearchTagName existsInList ', existsInList);
 
@@ -2438,9 +2563,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.SEARCH_FOR_TICKET_ID === true) {
       variable_parameter = "ticket_id="
     }
-    
+
     if (this.SEARCH_FOR_EMAIL_ENTERED_IN_SEARCH_BOX === true) {
-      variable_parameter =  "snap_lead_email="  
+      variable_parameter = "snap_lead_email="
     }
 
     if (!this.duration) {
@@ -2599,7 +2724,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -3027,9 +3153,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       .subscribe((projectUser: any) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);
@@ -3072,8 +3198,37 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  selectAll(e) {
-    this.logger.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+  selectAllHistory(e) {
+    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
+    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
+    this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
+
+
+    if (e.target.checked == true) {
+      this.allChecked = true;
+      for (let request of this.requestList) {
+        const index = this.request_selected.indexOf(request.request_id);
+        // || request.status !== 1000
+        if (index > -1) {
+          this.logger.log("[HISTORY & NORT-CONVS] **++ Already present")
+        } else {
+          this.logger.log("[HISTORY & NORT-CONVS] *+*+ Request Selected: ", request.request_id);
+          this.request_selected.push(request.request_id);
+        }
+      }
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    } else {
+      this.allChecked = false;
+      this.request_selected = [];
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST ', this.request_selected);
+      this.logger.log('[HISTORY & NORT-CONVS] - ARRAY OF SELECTED REQUEST lenght ', this.request_selected.length);
+    }
+
+  }
+
+  selectAllNort(e) {
+    console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
     this.logger.log("[HISTORY & NORT-CONVS] **++ checkbox Indeterminate: ", checkbox.indeterminate);
 
@@ -3105,9 +3260,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // --------------------------------------------------------------
   change(requestId) {
     var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    this.logger.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
+    console.log("[HISTORY & NORT-CONVS] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
 
-    this.logger.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
+    console.log('[HISTORY & NORT-CONVS] - change - SELECTED REQUEST ID: ', requestId);
     const index = this.request_selected.indexOf(requestId);
     this.logger.log("[HISTORY & NORT-CONVS] - change - request selected INDEX: ", index);
 
@@ -3136,66 +3291,87 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   archiveRequest(request_id) {
-    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-    this.logger.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
+      console.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
 
 
-    this.wsRequestsService.closeSupportGroup(request_id)
-      .subscribe((data: any) => {
-        this.logger.log('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - DATA ', data);
-      }, (err) => {
-        this.logger.error('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - ERROR ', err);
+      this.wsRequestsService.closeSupportGroup(request_id)
+        .subscribe((data: any) => {
+          this.logger.log('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - DATA ', data);
+        }, (err) => {
+          this.logger.error('[HISTORY & NORT-CONVS] - CLOSE SUPPORT GROUP - ERROR ', err);
 
 
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
-        this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-      }, () => {
-        // this.ngOnInit();
-        this.logger.log('[HISTORY & NORT-CONVS] +- CLOSE SUPPORT GROUP - COMPLETE');
+          // =========== NOTIFY ERROR ===========
+          // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+          this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
+          // this.ngOnInit();
+          this.logger.log('[HISTORY & NORT-CONVS] +- CLOSE SUPPORT GROUP - COMPLETE');
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
+          // =========== NOTIFY SUCCESS===========
+          // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
 
-        // this.onArchiveRequestCompleted()
+          // this.onArchiveRequestCompleted()
 
-        this.getRequests();
-      });
+          // this.getRequests();
+
+          for (var i = 0; i < this.requestList.length; i++) {
+
+            if (this.requestList[i].request_id === request_id) {
+              console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request  ', this.requestList[i]);
+              this.requestList[i]['status'] = 1000
+              if (!this.IS_HERE_FOR_HISTORY) {
+                this.requestList.splice(i, 1);
+              }
+            }
+            console.log('[HISTORY & NORT-CONVS]  CLOSE SUPPORT GROUP  request after ', this.requestList[i]);
+          }
+
+        });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 
   archiveSelected() {
-    this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
-    this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
-    let count = 0;
-    const promises = [];
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
+      this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
+      let count = 0;
+      const promises = [];
 
-    this.request_selected.forEach((requestid, index) => {
-      promises.push(this.wsRequestsService.archiveRequestOnPromise(requestid)
-        .then((res) => {
+      this.request_selected.forEach((requestid, index) => {
+        promises.push(this.wsRequestsService.archiveRequestOnPromise(requestid)
+          .then((res) => {
 
-          this.logger.log("[HISTORY & NORT-CONVS] - then res : ", res);
+            this.logger.log("[HISTORY & NORT-CONVS] - then res : ", res);
 
 
 
-          count = index + 1;
-          this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
-          this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);
+            count = index + 1;
+            this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
+            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);
 
-        }).catch((error) => {
+          }).catch((error) => {
 
-          this.logger.error('[HISTORY & NORT-CONVS] PROMISE ERROR: ', error);
-        })
-      );
-    });
+            this.logger.error('[HISTORY & NORT-CONVS] PROMISE ERROR: ', error);
+          })
+        );
+      });
 
-    Promise.all(promises).then((res) => {
-      this.logger.log("[HISTORY & NORT-CONVS] - ALL PROMISE RESOLVED", res);
-      this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-      this.allChecked = false;
-      this.getRequests();
-    });
+      Promise.all(promises).then((res) => {
+        this.logger.log("[HISTORY & NORT-CONVS] - ALL PROMISE RESOLVED", res);
+        this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
+        this.allChecked = false;
+        this.getRequests();
+      });
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 
@@ -3311,7 +3487,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             Swal.fire({
               title: this.translate.instant('Oops') + '!',
-              text: this.errorDeleting + ' ' + this.pleaseTryAgain, 
+              text: this.errorDeleting + ' ' + this.pleaseTryAgain,
               icon: "error",
               showCloseButton: false,
               showCancelButton: false,
@@ -3323,7 +3499,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
             });
           }, () => {
             this.logger.log('[HISTORY & NORT-CONVS] in swal deleteRequest res* COMPLETE *');
-            Swal.fire( {
+            Swal.fire({
               title: this.done_msg + "!",
               text: this.requestWasSuccessfullyDeleted,
               icon: "success",
@@ -3344,38 +3520,42 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   reopenArchivedRequest(request, request_id) {
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
-    // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
-    // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ID', request_id)
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST ', request)
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closed_at', request['closed_at'])
+      // const formattedClosedAt = request['closed_at'].format('YYYY , MM,  DD')
+      // const closedAtPlusTen = moment(new Date(request['closed_at'])).add(10, 'days').format("YYYY-MM-DD")
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - REQUEST closedAtPlusTen', closedAtPlusTen)
 
-    // const closedAt = moment(new Date(request['closed_at'])).toDate()
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
-    // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
-    // const today = moment(new Date()).format("YYYY-MM-DD")
-    // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
+      // const closedAt = moment(new Date(request['closed_at'])).toDate()
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - closedAt ', closedAt)
+      // const createdAt = moment(new Date(request['createdAt'])).format("YYYY-MM-DD") // for test
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - createdAt ', createdAt) // for test
+      // const today = moment(new Date()).format("YYYY-MM-DD")
+      // this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - today is ', today)
 
-    const requestclosedAt = moment(request['closed_at']);
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
-    const currentTime = moment();
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
-
-
-    const daysDiff = currentTime.diff(requestclosedAt, 'd');
-    this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+      const requestclosedAt = moment(request['closed_at']);
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - requestclosedAt ', requestclosedAt)
+      const currentTime = moment();
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - currentTime ', currentTime)
 
 
-    if (daysDiff > 10) {
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
-      this.presentModalReopenConvIsNotPossible()
+      const daysDiff = currentTime.diff(requestclosedAt, 'd');
+      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - daysDiff ', daysDiff)
+
+
+      if (daysDiff > 10) {
+        this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST - THE CONVERSATION HAS BEEN ARCHIVED FOR MORE THAN 10 DAYS  ')
+        this.presentModalReopenConvIsNotPossible()
+      } else {
+        // this.logger.log(moment(closedAtPlusTen).isSame(today))
+        this.reopenConversation(request_id)
+
+        this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+      }
     } else {
-      // this.logger.log(moment(closedAtPlusTen).isSame(today))
-      this.reopenConversation(request_id)
-
-      this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
+      this.notify.presentDialogNoPermissionToPermomfAction()
     }
   }
 
@@ -3397,24 +3577,28 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   reopenConversation(request_id) {
-    this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
-      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
+    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+      this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
+        this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
 
-    }, (error) => {
-      this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
+      }, (error) => {
+        this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
 
 
-    }, () => {
-      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
-      for (var i = 0; i < this.requestList.length; i++) {
+      }, () => {
+        this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
+        for (var i = 0; i < this.requestList.length; i++) {
 
-        if (this.requestList[i].request_id === request_id) {
-          // this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
-          this.requestList.splice(i, 1);
+          if (this.requestList[i].request_id === request_id) {
+            // this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
+            this.requestList.splice(i, 1);
+          }
+
         }
-
-      }
-    })
+      })
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 }

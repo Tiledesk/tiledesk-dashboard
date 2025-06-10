@@ -100,7 +100,7 @@
                       matTooltipHideDelay="100">
                       <!-- <div class="selected-namespace-wpr" style="display: flex; flex-direction: row; gap: 12px; align-items: center;">  -->
                       <div class="selected-namespace">
-                        {{selectedNamespace?.name}}
+                       {{selectedNamespace?.name}}
                       </div>
 
                       <!-- </div> -->
@@ -114,6 +114,8 @@
 
                     <!-- <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div> -->
                   </div>
+
+                  
 
                   <!-- <button mat-icon-button (click)="openDialogKbList()">
                                   <mat-icon>view_list</mat-icon>
@@ -149,6 +151,8 @@
                       </div>
                     </button>
                   </mat-menu>
+              
+
                 </div>
                 <div class="kb-bottom-badge-wpr"> 
                   <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div>

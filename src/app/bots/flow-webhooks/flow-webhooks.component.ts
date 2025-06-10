@@ -7,6 +7,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { FaqService } from 'app/services/faq.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
 import { WebhookService } from 'app/services/webhook.service';
 const Swal = require('sweetalert2')
 @Component({
@@ -50,10 +51,12 @@ export class FlowWebhooksComponent implements OnInit {
     private webhookService: WebhookService,
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
-     public notify: NotifyService,
+    public notify: NotifyService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit(): void {
+    this.roleService.checkRoleForCurrentProject('flow-webhook')
     this.getBrowserVersion();
     this.getFaqKbByProjectId()
     // this.getTemplates()

@@ -152,6 +152,10 @@ export class GroupsComponent implements OnInit {
     this.router.navigate(['project/' + this.project_id + '/users']);
   }
 
+  goToUsersRoles() {
+    this.router.navigate(['project/' + this.project_id + '/roles']);
+  }
+
   goToEditAddPage_edit(id_group: string) {
     this.router.navigate(['project/' + this.project_id + '/group/edit/' + id_group]);
   }

@@ -44,6 +44,9 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
+import { ProjectUser } from 'app/models/project-user';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -214,6 +217,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private shepherdService: ShepherdService,
+    private roleService: RoleService
 
   ) {
     super(prjctPlanService, notify);
@@ -224,6 +228,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   ngOnInit(): void {
+    this.roleService.checkRoleForCurrentProject('kb')
     this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
@@ -531,7 +536,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
     }, (error) => {
@@ -862,7 +867,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.hasChangedNameSpace = true;
       this.selectedNamespace = namespace
       this.selectedNamespaceName = namespace['name']
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
       // this.selectedNamespaceName = namespace['name']
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
@@ -2163,17 +2168,12 @@ _presentDialogImportContents() {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
 

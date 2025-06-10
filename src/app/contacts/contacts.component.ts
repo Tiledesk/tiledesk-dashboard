@@ -13,6 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../services/logger/logger.service';
+import { RoleService } from 'app/services/role.service';
+import { ProjectUser } from 'app/models/project-user';
 declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -129,10 +131,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     private translate: TranslateService,
     private prjctPlanService: ProjectPlanService,
     private appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit() {
+    this.roleService.checkRoleForCurrentProject('contacts')
     this.getTranslation();
     this.getOSCODE();
     this.getContacts();
@@ -405,27 +409,29 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      const current_user_role = user_role;
-      this.USER_ROLE = user_role;
-      this.logger.log('[CONTACTS-COMP] - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
-      if (current_user_role) {
-        this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE ', current_user_role);
-        if (current_user_role === 'agent') {
-          this.IS_CURRENT_USER_AGENT = true;
-          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER AGENT? ', this.IS_CURRENT_USER_AGENT);
-        } else {
-          this.IS_CURRENT_USER_AGENT = false;
-          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER AGENT? ', this.IS_CURRENT_USER_AGENT);
-        }
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        const current_user_role = projectUser.role;
+        this.USER_ROLE = current_user_role;
+        this.logger.log('[CONTACTS-COMP] - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
+        if (current_user_role) {
+          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE ', current_user_role);
+          if (current_user_role === 'agent') {
+            this.IS_CURRENT_USER_AGENT = true;
+            this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER AGENT? ', this.IS_CURRENT_USER_AGENT);
+          } else {
+            this.IS_CURRENT_USER_AGENT = false;
+            this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER AGENT? ', this.IS_CURRENT_USER_AGENT);
+          }
 
 
-        if (current_user_role === 'owner') {
-          this.IS_CURRENT_USER_OWNER = true;
-          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER OWNER? ', this.IS_CURRENT_USER_OWNER);
-        } else {
-          this.IS_CURRENT_USER_OWNER = false;
-          this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER OWNER? ', this.IS_CURRENT_USER_OWNER);
+          if (current_user_role === 'owner') {
+            this.IS_CURRENT_USER_OWNER = true;
+            this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER OWNER? ', this.IS_CURRENT_USER_OWNER);
+          } else {
+            this.IS_CURRENT_USER_OWNER = false;
+            this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE - IS CURRENT USER OWNER? ', this.IS_CURRENT_USER_OWNER);
+          }
         }
       }
     });

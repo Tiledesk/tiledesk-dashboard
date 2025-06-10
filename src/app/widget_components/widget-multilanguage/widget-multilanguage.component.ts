@@ -7,6 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
 
 const Swal = require('sweetalert2')
 
@@ -51,6 +53,11 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   isChromeVerGreaterThan100: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean; 
   callingPage: string;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
+
   constructor(
     public location: Location,
     public widgetService: WidgetService,
@@ -58,7 +65,9 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     private translate: TranslateService,
     public auth: AuthService,
     private logger: LoggerService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public rolesService: RolesService,
+    private roleService: RoleService,
   ) {
     super();
   }
@@ -71,7 +80,17 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     // this.getLabels();
     this.getBrowserVersion()
     this.listenSidebarIsOpened();
-    this.getRouteParams()
+    this.getRouteParams();
+    this.checkPermissions();
+  }
+
+   async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('widget-multilanguage')
+    console.log('[MULTILANGUAGE] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[MULTILANGUAGE] isAuthorized ',  this.isAuthorized)
+    console.log('[MULTILANGUAGE] permissionChecked ',  this.permissionChecked)
   }
 
   getRouteParams() {
