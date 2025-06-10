@@ -1997,6 +1997,12 @@
          "GetContentsSourcesDesc1":"Javobni yaratishda foydalaniladigan hujjatlarning aniq manbalarini olish uchun ushbu parametrdan foydalaning.",
          "GetContentsSourcesDesc2": "Shuni yodda tutingki, bu odatiy KB olishdan ko'ra ko'proq tokenlarni iste'mol qiladi.",
          "GetContentsSourcesDesc3":"Agar kerak bo'lsa, iqtiboslarni olish uchun maksimal tokenlar kvotasi avtomatik ravishda o'rnatiladi.",
+         "HybridSearch": "Gibrid qidiruv",
+         "FullText":"To'liq matn",
+         "Semantic": "Semantik",
+         "HybridSearchDescr":"Semantik o'xshashlikni kalit so'z bilan aniq moslashtirish orqali natijalar qanday olinishini boshqaradi.",
+         "ChunksUsedForTheAnswer": "Javob uchun ishlatiladigan bo'laklar",
+         "ThisKBIsEnabledForHybridSearch":  "Ushbu bilimlar bazasi gibrid qidiruv uchun yoqilgan",
          "-----------------------------": "-----------------------------",
          "ThatsIsAll": "Ana xolos"
     },
