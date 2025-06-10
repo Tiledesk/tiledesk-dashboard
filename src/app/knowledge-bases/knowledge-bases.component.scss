@@ -54,6 +54,14 @@
     }
 }
 
+
+.kb-bottom-badge-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
 .kb-default-badge {
     background-color: #677693ab;
     color: white;
@@ -64,6 +72,20 @@
     height: 20px;
     position: relative;
     top: 1px;
+    width: fit-content;
+}
+
+.hybrid-search-badge {
+    background-color: #C065A8;
+    color: white;
+    padding: 0px 8px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 400;
+    height: 20px;
+    position: relative;
+    top: 1px;
+    width: fit-content;
 }
 
 

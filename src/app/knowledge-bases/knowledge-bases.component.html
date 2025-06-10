@@ -112,7 +112,7 @@
                       (focus)="onFocusNamespaceName($event.target.value)"
                       (ngModelChange)="onChangeNamespaceName($event)" (blur)="onBlurUpdateNamespaceName($event)">
 
-                    <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div>
+                    <!-- <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div> -->
                   </div>
 
                   <!-- <button mat-icon-button (click)="openDialogKbList()">
@@ -149,6 +149,17 @@
                       </div>
                     </button>
                   </mat-menu>
+                </div>
+                <div class="kb-bottom-badge-wpr"> 
+                  <div *ngIf="selectedNamespace?.default" class="kb-default-badge">Default</div>
+                  <div class="hybrid-search-badge" *ngIf="selectedNamespace?.engine?.type === 'serverless'"
+                        matTooltipClass="kb-custom-mat-tooltip"
+                        matTooltip="{{ 'KbPage.ThisKBIsEnabledForHybridSearch' | translate }}" 
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='below'
+                        matTooltipHideDelay="100">
+                      {{ 'KbPage.HybridSearch' | translate }}
+                  </div>
                 </div>
               </div>
 
