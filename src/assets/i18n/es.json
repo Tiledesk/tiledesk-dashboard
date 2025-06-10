@@ -1997,11 +1997,12 @@
         "GetContentsSourcesDesc1":"Utilice esta opción para obtener fuentes precisas de los documentos utilizados para generar la respuesta.",
         "GetContentsSourcesDesc2":"Tenga en cuenta que esto consume más tokens que la recuperación de KB normal.",
         "GetContentsSourcesDesc3":"La cuota máxima de tokens se ajustará automáticamente para obtener las citas si es necesario.",
+        "Hybrid": "Híbrida",
         "HybridSearch": "Búsqueda híbrida",
         "FullText":"Texto completo",
         "Semantic": "Semántica",
         "HybridSearchDescr":"Controla la obtención de resultados combinando la similitud semántica con la coincidencia exacta de palabras clave.",
-        "ChunksUsedForTheAnswer": "Fragmentos utilizados para la respuesta",
+        "ChunksUsedForTheAnswer": "Chunks utilizados para la respuesta",
         "ThisKBIsEnabledForHybridSearch":  "Esta base de conocimientos está habilitada para búsqueda híbrida.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "Eso es todo"

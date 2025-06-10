@@ -1997,6 +1997,7 @@
 		"GetContentsSourcesDesc1":"Verwenden Sie diese Option, um genaue Quellen der Dokumente zu erhalten, die zum Erstellen der Antwort verwendet wurden.",
         "GetContentsSourcesDesc2":"Bedenken Sie, dass hierfür mehr Token verbraucht werden als beim normalen KB-Abrufen.",
 		"GetContentsSourcesDesc3":"Das maximale Token-Kontingent wird automatisch angepasst, um die Zitate bei Bedarf zu erhalten.",
+		"Hybrid": "Hybrid",
 		"HybridSearch": "Hybridsuche",
         "FullText":"Volltext",
         "Semantic": "Semantik",

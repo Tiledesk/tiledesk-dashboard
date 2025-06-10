@@ -1997,11 +1997,12 @@
         "GetContentsSourcesDesc1":"Utilisez cette option pour obtenir des sources précises des documents utilisés pour générer la réponse.",
         "GetContentsSourcesDesc2":"Gardez à l’esprit que cela consomme plus de jetons que la récupération normale de Ko.",
         "GetContentsSourcesDesc3":"Le quota de jetons maximum sera automatiquement ajusté pour obtenir les citations si nécessaire.",
+        "Hybrid": "Hybride",
         "HybridSearch": "Recherche hybride",
         "FullText":"Texte intégral",
         "Semantic": "Sémantique",
         "HybridSearchDescr":"Contrôle la façon dont les résultats sont récupérés en combinant la similarité sémantique avec la correspondance exacte des mots clés.",
-        "ChunksUsedForTheAnswer": "Blocs utilisés pour la réponse",
+        "ChunksUsedForTheAnswer": "Chunks utilisés pour la réponse",
         "ThisKBIsEnabledForHybridSearch":  "Cette base de connaissances est compatible avec la recherche hybride.",
         "-----------------------------": "-----------------------------",
         "ThatsIsAll": "C'est tout"
