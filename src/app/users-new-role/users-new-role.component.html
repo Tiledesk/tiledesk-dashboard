@@ -61,12 +61,15 @@
 
                                 <mat-accordion multi>
                                     <mat-expansion-panel *ngFor="let section of sections" [expanded]="section.expanded"
-                                        (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                        (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="margin-top: 6px;border-radius: 4px;box-shadow: unset;border: 1px solid #ddd;">
                                         <mat-expansion-panel-header>
-                                            <mat-panel-title>{{ section.title }}</mat-panel-title>
-                                            <!-- <mat-panel-description>
-                                                <span class="status-label">{{ getAccessLabel(section) }}</span>
-                                            </mat-panel-description> -->
+                                            <mat-panel-title style="margin-top: 3px;">{{ section.title }}</mat-panel-title>
+                                            <mat-panel-description>
+                                                <span class="status-label" style="position: absolute;right: 55px;font-size: 10px;top: 16px;padding: 0px 6px;border-radius: 9999px;line-height: 16px;"
+                                                    [ngClass]="getLabelClass(getAccessLabel(section))">
+                                                    {{ getAccessLabel(section) }}
+                                                </span>
+                                            </mat-panel-description>
                                         </mat-expansion-panel-header>
                                         <ng-container [ngSwitch]="section.type">
                                             <ng-container *ngSwitchCase="'checkbox'">

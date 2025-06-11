@@ -145,7 +145,7 @@ export class UsersNewRoleComponent implements OnInit {
     //     { key: PERMISSIONS.INBOX_READ, label: 'Able to view' },
     //   ]
     // },
-     {
+    {
       key: 'widgetSettings',
       title: 'Widget',
       parentLabel: 'Widget',
@@ -168,7 +168,7 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        
+
         { key: PERMISSIONS.LEAD_READ, label: 'Able to view Leads' },
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
@@ -179,7 +179,7 @@ export class UsersNewRoleComponent implements OnInit {
         // { key: 'manageTags', label: 'Can manage tags' },
       ]
     },
-   
+
 
     // {
     //   key: 'dataSecurity',
@@ -435,15 +435,7 @@ export class UsersNewRoleComponent implements OnInit {
     }
   }
 
-  _getSelectedPermissions(): string[] {
-    return Object.keys(this.form.value)
-      .filter(key => key !== 'roleName' && this.form.value[key] === true);
-  }
-  __getSelectedPermissions(): string[] {
-    const parentKeys = this.sections.map(section => section.key);
-    return Object.keys(this.form.value)
-      .filter(key => key !== 'roleName' && !parentKeys.includes(key) && this.form.value[key] === true);
-  }
+
 
   getSelectedPermissions(): string[] {
     const selected: string[] = [];
@@ -465,11 +457,52 @@ export class UsersNewRoleComponent implements OnInit {
   }
 
 
+  // getAccessLabel(section: PermissionSection): string {
+  //   const allUnchecked = section.children.every(child => !this.form.get(child.key)?.value);
+  //   const allChecked = section.children.every(child => this.form.get(child.key)?.value);
+  //   return allChecked ? 'Full access' : allUnchecked ? 'No access' : 'Custom';
+  // }
+
   getAccessLabel(section: PermissionSection): string {
+    if (section.type === 'radio') {
+      const selectedValue = this.form.get(section.key)?.value;
+      if (!selectedValue) {
+        return 'No access';
+      }
+      const selectedLabel = section.children.find(child => child.key === selectedValue)?.label;
+      return selectedLabel || 'Custom';
+    }
+
+    // Default behavior for checkbox-type sections
     const allUnchecked = section.children.every(child => !this.form.get(child.key)?.value);
     const allChecked = section.children.every(child => this.form.get(child.key)?.value);
-    return allChecked ? 'Full access' : allUnchecked ? 'No access' : 'Custom';
+    return allChecked ? 'Full permissions' : allUnchecked ? 'No permissions' : 'Custom';
   }
+
+  getLabelClass(label: string): string {
+  const labelLower = label.toLowerCase();
+
+  if (labelLower === 'no access' || labelLower === 'no permissions') {
+    return 'label-gray';
+  }
+
+  if (labelLower === 'full access' || labelLower === 'full permissions' ||  labelLower === 'all conversations') {
+    return 'label-green';
+  }
+
+  if (labelLower === 'custom') {
+    return 'label-blue';
+  }
+
+  if (
+    labelLower === 'conversations assigned to their groups only' ||
+    labelLower === 'conversations assigned to them only'
+  ) {
+    return 'label-orange';
+  }
+
+  return 'label-default'; // fallback
+}
 
   isIndeterminate(sectionKey: string): boolean {
     const section = this.sections.find(s => s.key === sectionKey);
@@ -575,6 +608,17 @@ export class UsersNewRoleComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+
+  _getSelectedPermissions(): string[] {
+    return Object.keys(this.form.value)
+      .filter(key => key !== 'roleName' && this.form.value[key] === true);
+  }
+  __getSelectedPermissions(): string[] {
+    const parentKeys = this.sections.map(section => section.key);
+    return Object.keys(this.form.value)
+      .filter(key => key !== 'roleName' && !parentKeys.includes(key) && this.form.value[key] === true);
   }
 
   // updateAllComplete() {

@@ -17,6 +17,8 @@ export const PERMISSIONS = {
   WIDGETSETUP_READ: 'widgetsetup_read',
   INSTALLATION_READ: 'installation_read',
   TRANSLATIONS_READ: 'translations_read',
+
+  
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',
   LEAD_DATA: 'leadData',
