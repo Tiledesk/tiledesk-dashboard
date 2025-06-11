@@ -544,13 +544,13 @@ my-app .main-panel .main-content .card {
 .dropdown-menu-custom li a:hover,
 .dropdown-menu li a:focus,
 .dropdown-menu li a:active {
-  background-color:  var(--dropdown-menu-hover-color) !important; //rgba(0, 0, 0, .04);
+  background-color: var(--dropdown-menu-hover-color) !important; //rgba(0, 0, 0, .04);
   color: var(--blue-20);
   box-shadow: unset;
 }
 
 #navbar_dropdown li a:hover {
-  background-color:  var(--dropdown-menu-hover-color) !important; //rgba(0, 0, 0, .04);
+  background-color: var(--dropdown-menu-hover-color) !important; //rgba(0, 0, 0, .04);
   color: var(--blue-20);
   box-shadow: unset;
 }
@@ -701,7 +701,7 @@ my-app .main-panel .main-content .card {
   height: 40px;
 }
 
-.btn-tdblu-no-boxshadow.h45 { 
+.btn-tdblu-no-boxshadow.h45 {
   height: 45px;
   font-size: 16px;
   padding: 12px 20px !important;
@@ -808,6 +808,72 @@ my-app .main-panel .main-content .card {
   background: var(--outlined-btn-hover-background) !important;
 }
 
+/* BTN Blu round
+/* ------------------------- */
+.btn-blu-round {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 9px !important;
+  background: var(--blue-20) !important;
+  font-size: 14px;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+  height: 40px;
+  border-radius: var(--btn-border-radius) !important;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-blu-round>svg {
+  fill: var(--primary-btn-color)
+}
+
+
+.btn-blu-round:hover {
+  box-shadow: unset !important;
+  background: var(--blue-40) !important;
+}
+
+
+/* BTN Round Gray outline
+/* ------------------------- */
+.btn-blu-gray-outline {
+  box-shadow: unset !important;
+  text-transform: none !important;
+  padding: 9px 9px !important;
+  font-size: 14px;
+  font-family: var(--header-font-family) !important;
+  color: var(--primary-btn-color) !important;
+  border: 1px solid #cbd5e1;
+  height: 40px;
+  border-radius: var(--btn-border-radius) !important;
+  background: transparent;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-blu-gray-outline>svg {
+  fill: #333
+}
+
+
+.btn-blu-gray-outline:hover {
+  box-shadow: unset !important;
+  background: rgba(136, 148, 171, 0.08) !important;
+  border-color: rgba(136, 148, 171, .56);
+}
+
+.btn-blu-gray-outline:focus {
+  background: transparent !important
+}
+.btn-blu-gray-outline:active {
+  background: transparent !important
+}
+
 
 
 
@@ -860,13 +926,13 @@ my-app .main-panel .main-content .card {
   vertical-align: middle;
 }
 
-.upgrade--btn > span { 
+.upgrade--btn>span {
   vertical-align: middle;
 }
 
 .upgrade--btn:hover {
-  background-color:  var(--blue-20) !important;
-  color: var( --primary-btn-color ) !important;
+  background-color: var(--blue-20) !important;
+  color: var(--primary-btn-color) !important;
 }
 
 
@@ -1477,6 +1543,7 @@ my-app .main-panel .main-content .card {
   cursor: pointer;
 }
 
+
 .analytics-date-range-selected {
   margin: 8px !important;
   color: rgba(0, 0, 0, 0.5);
@@ -1492,10 +1559,15 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
-.custom-swal>.swal-title {
-  color: black;
-  font-weight: 500;
-}
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
+
+// .custom-swal>.swal-title {
+//   color: black;
+//   font-weight: 500;
+// }
 
 
 
@@ -1545,25 +1617,25 @@ div.card-content>div>div>div>div>div>div>div.txt>div.message.ow.alt>div>p>p {
 }
 
 // USE CASE Audio sent by user
-.message.ow.alt.audio>p>p{
+.message.ow.alt.audio>p>p {
   margin-bottom: 0px !important;
 }
 
 .message.ow.alt.audio>p>p:hover {
   text-decoration: underline;
-  color:#fff
+  color: #fff
 }
 
-.message.ow.alt.audio>p>p>a { 
+.message.ow.alt.audio>p>p>a {
   color: #fff;
 }
 
 // USE CASE Audio receive by agent
-.message.ow.audio>p>p{
+.message.ow.audio>p>p {
   margin-bottom: 0px !important;
 }
 
-.message.ow.audio>p>p:hover{ 
+.message.ow.audio>p>p:hover {
   text-decoration: underline;
   color: #3ea9f5;
 }
@@ -1852,6 +1924,7 @@ span.navbar-brand-title {
   background-color: unset !important;
   padding: 7px !important;
 }
+
 /* ************************* */
 
 
@@ -3152,7 +3225,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 .demopage-title {
   margin-top: 10px;
   margin-bottom: 5px;
-  font-family:var( --header-font-family);
+  font-family: var(--header-font-family);
   text-align: center;
   color: var(--blue-20);
   line-height: 41px;
@@ -3163,7 +3236,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 .demopage-subtitle {
   margin-top: 5px !important;
-  font-family: var( --header-font-family);
+  font-family: var(--header-font-family);
   text-align: center;
   font-size: 21px;
   font-weight: 400;
@@ -3217,7 +3290,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 
 .custom-error-snackbar {
   // animation: slide-in 0.4s ease-out;
-  background: rgb(253,243,209) !important;
+  background: rgb(253, 243, 209) !important;
   color: #000 !important;
   font-weight: 400;
   min-width: fit-content !important;
@@ -3325,11 +3398,11 @@ appdashboard-bots-sidebar {
   color: var(--settings-sidebar-hover-color);
 }
 
-.settings-sidebar>li:hover >a > svg.svg-stroke {
+.settings-sidebar>li:hover>a>svg.svg-stroke {
   stroke: var(--settings-sidebar-hover-color);
 }
 
-.settings-sidebar>li:hover >a > svg.svg-fill {
+.settings-sidebar>li:hover>a>svg.svg-fill {
   fill: var(--settings-sidebar-hover-color);
 }
 
@@ -3807,17 +3880,17 @@ div:where(.swal2-container) .swal2-select {
   font-family: var(--header-font-family) !important;
 }
 
-.mat-dialog-actions > .mat-dialog-ok-btn {
+.mat-dialog-actions>.mat-dialog-ok-btn {
   background-color: var(--blue-20);
   color: #fff !important;
 }
 
-.mat-dialog-actions > .mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
+.mat-dialog-actions>.mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
   opacity: .6;
   cursor: not-allowed;
 }
 
-.mat-dialog-actions > .mat-dialog-close-btn { 
+.mat-dialog-actions>.mat-dialog-close-btn {
   background-color: #647491;
   color: #fff;
 }
@@ -3842,10 +3915,27 @@ div:where(.swal2-container) .swal2-select {
   border-radius: var(--btn-border-radius);
 }
 
+
 /* Use case KB > Upload CSV 
 /* ************************************* */
 .mat-dialog-actions>div>.mat-button {
   border-radius: var(--btn-border-radius);
+}
+
+.mat-dialog-actions > button  {
+  border-radius: var(--btn-border-radius) !important;
+}
+
+// Sleek widget overwrite iframe css
+.i-sl-wrapper {
+  // display: none!important;
+  border-radius: 0px !important;
+  height: 100vh !important;
+}
+
+.i-sl-wrapper.right { 
+  right: 0px !important;
+  top: 0px !important;
 }
 
 /* Graph card
@@ -3996,6 +4086,45 @@ div:where(.swal2-container) .swal2-select {
 .mat-spinner circle {
   stroke: var(--blue-light) !important;
 }
+
+.date-picker-wpr>.analytics-options-label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr {
+  position: relative;
+  top: -2px;
+}
+
+.date-picker-wpr>.analytics-options-label>.info-icon-wpr>i {
+  font-size: 18px;
+  color: #566787;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.chart-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  height: 375px;
+  justify-content: center;
+}
+
+.chart-loading-spinner > p {
+  font-weight: 400;
+  font-family: var(--header-font-family);
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: var(--blue-light) !important;
+}
+
+
 
 
 .radio>label {
