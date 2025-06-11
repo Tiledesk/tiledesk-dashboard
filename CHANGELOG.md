@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.110-rc1
+- Adds Routing and Departments section to Manage Role page with options to enable/disable department list display, enable/disable department details display, and enable/disable department creation
+
 ### 2.7.109-rc6
 - Improves the accordions style available on New role page
 
