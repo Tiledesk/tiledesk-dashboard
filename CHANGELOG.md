@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.109
+- Adds the ability to control how search results are retrieved (Hybrid search) in the AI ​​settings modal window
+- Displays chunks used for the answer in the Knowledge Base preview modal window
+
 ### 2.7.109-rc4
 - Moves the "Default" badge at the bottom of Knowledge Bases select and adds the "Hybrid search" badge
 - Translates hybrid search strings
