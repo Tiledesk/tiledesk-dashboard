@@ -150,7 +150,10 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   botLogo: string;
-  
+
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -279,7 +282,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('dept-edit-add')
+    // this.roleService.checkRoleForCurrentProject('dept-edit-add')
     this.getProfileImageStorage();
     this.listenSidebarIsOpened();
 
@@ -302,7 +305,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     // if (this.router.url === '/create') {
 
     if (this.router.url.indexOf('/create') !== -1) {
-
+      this.checkCreatePermissions();
       this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.showSpinner = false;
@@ -321,6 +324,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       this.ROUTING_PAGE_MODE = false;
 
     } else if (this.router.url.indexOf('/edit') !== -1) {
+      this.checkEditPermissions();
       this.logger.log('[DEPT-EDIT-ADD] ++ DEPT DTLS - HAS CLICKED EDIT DEPT');
       this.EDIT_VIEW = true;
       this.showSpinner = true;
@@ -360,6 +364,29 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.getBrowserVersion()
     this.getProjectPlan();
     this.getOSCODE();
+  }
+
+
+ async checkEditPermissions(){
+   const result = await this.roleService.checkRoleForCurrentProject('department-edit')
+    console.log('[DEPT-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[DEPT-EDIT-ADD] isAuthorized to view EDIT',  this.isAuthorized)
+    console.log('[DEPT-EDIT-ADD] permissionChecked ',  this.permissionChecked)
+
+  }
+  
+  
+  
+  async checkCreatePermissions(){
+     const result = await this.roleService.checkRoleForCurrentProject('department-create')
+    console.log('[DEPT-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[DEPT-EDIT-ADD] isAuthorized to CREATE',  this.isAuthorized)
+    console.log('[DEPT-EDIT-ADD] permissionChecked ',  this.permissionChecked)
+    
   }
 
 

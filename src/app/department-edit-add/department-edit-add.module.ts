@@ -12,6 +12,7 @@ import { PendingChangesGuard } from 'app/core/pending-changes.guard';
 import { MomentModule } from 'ngx-moment';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule } from '@angular/common/http';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   // { path: "", component: DepartmentEditAddComponent, canDeactivate: [PendingChangesGuard]},
@@ -34,7 +35,8 @@ const routes: Routes = [
     FormsModule,
     MomentModule,
     NgSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class DepartmentEditAddModule { }

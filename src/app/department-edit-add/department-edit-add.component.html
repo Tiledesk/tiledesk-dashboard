@@ -37,139 +37,142 @@
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-
-
-        <div class="row">
-          <div class="col-sm-8 col-md-8 no_padding_left_col">
-            <div class="card card--no-border" style="margin-top: 5px;">
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-              <div *ngIf="!showSpinner" class="card-content">
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
 
 
-                <!-- ------------------------------------------------------------------- -->
-                <!-- Create / Edit view -->
-                <!-- ------------------------------------------------------------------- -->
-                <!-- <span *ngIf="EDIT_VIEW"> -->
-
-                <section *ngIf="IS_DEFAULT_DEPT !== true">
-                  <div class="row" style="margin-bottom: 15px;">
-                    <label class="col-sm-2 custom-label">
-                      {{ "Name" | translate}}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
-                      <input [(ngModel)]="deptName_toUpdate" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'
-                        class="input" type="text" style="margin-top: 2px;margin-bottom: 5px;"
-                        [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}"
-                        [disabled]="IS_DEFAULT_DEPT === true" (ngModelChange)="onChangeDeptName($event)">
-                    </div>
-                  </div>
-
-
-                  <!-- ------------------------------------------------------------------- -->
-                  <!-- Dept description -->
-                  <!-- ------------------------------------------------------------------- -->
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      {{ "DeptsAddEditPage.Description" | translate}}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                      <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
-                        (ngModelChange)="onChangeDeptDescription($event)"
-                        placeholder='{{ "DeptsAddEditPage.Description" | translate}}'
-                        style="margin-top: 2px"> </textarea>
-                    </div>
-                  </div>
-                </section>
+            <div class="row">
+              <div class="col-sm-8 col-md-8 no_padding_left_col">
+                <div class="card card--no-border" style="margin-top: 5px;">
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <div *ngIf="!showSpinner" class="card-content">
 
 
 
-                <!-- ------------------------------------------------------------------------------ -->
-                <!-- Section of info displayed if the selected department is the default department -->
-                <!-- ------------------------------------------------------------------------------ -->
-                <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
-                <section *ngIf="IS_DEFAULT_DEPT === true">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <h4 style="text-transform: none; color: rgba(0,0,0,.54);
+                    <!-- ------------------------------------------------------------------- -->
+                    <!-- Create / Edit view -->
+                    <!-- ------------------------------------------------------------------- -->
+                    <!-- <span *ngIf="EDIT_VIEW"> -->
+
+                    <section *ngIf="IS_DEFAULT_DEPT !== true">
+                      <div class="row" style="margin-bottom: 15px;">
+                        <label class="col-sm-2 custom-label">
+                          {{ "Name" | translate}}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 dept-name-input-wrap">
+                          <input [(ngModel)]="deptName_toUpdate"
+                            placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' class="input" type="text"
+                            style="margin-top: 2px;margin-bottom: 5px;"
+                            [ngClass]="{'input-dept-name-disbled': IS_DEFAULT_DEPT === true}"
+                            [disabled]="IS_DEFAULT_DEPT === true" (ngModelChange)="onChangeDeptName($event)">
+                        </div>
+                      </div>
+
+
+                      <!-- ------------------------------------------------------------------- -->
+                      <!-- Dept description -->
+                      <!-- ------------------------------------------------------------------- -->
+                      <div class="row">
+                        <label class="col-sm-2 custom-label">
+                          {{ "DeptsAddEditPage.Description" | translate}}
+                        </label>
+                        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                          <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text" rows="2"
+                            (ngModelChange)="onChangeDeptDescription($event)"
+                            placeholder='{{ "DeptsAddEditPage.Description" | translate}}'
+                            style="margin-top: 2px"> </textarea>
+                        </div>
+                      </div>
+                    </section>
+
+
+
+                    <!-- ------------------------------------------------------------------------------ -->
+                    <!-- Section of info displayed if the selected department is the default department -->
+                    <!-- ------------------------------------------------------------------------------ -->
+                    <!-- *ngIf="ROUTING_PAGE_MODE === true" -->
+                    <section *ngIf="IS_DEFAULT_DEPT === true">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <h4 style="text-transform: none; color: rgba(0,0,0,.54);
                     font-size: 20px;margin-top:0px">
 
-                        <!-- {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate }} -->
-                        {{ "RoutingPage.SettingUpTileDeskRoutingRules_2" | translate }}
-                      </h4>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <div class="alert dd-info-alert">
-                        <i
-                          class="material-icons">info
-                        </i>
-                        <span style="vertical-align: middle; display: inline-flex;">
-                          {{ "RoutingPage.TheFollowingRules" | translate }}</span>
+                            <!-- {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate }} -->
+                            {{ "RoutingPage.SettingUpTileDeskRoutingRules_2" | translate }}
+                          </h4>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </section>
+
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <div class="alert dd-info-alert">
+                            <i class="material-icons">info
+                            </i>
+                            <span style="vertical-align: middle; display: inline-flex;">
+                              {{ "RoutingPage.TheFollowingRules" | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
 
 
-                <div class="row">
-                  <div class="col-sm-12" style="padding-top:15px">
-
-                    <!-- ------------------------------------------------------------------- -->
-                    <!-- Section title Activate bot  -->
-                    <!-- ------------------------------------------------------------------- -->
                     <div class="row">
-                      <div class="col-xs-6 col-sm-6 col-md-6">
-                        <h3 class="card_title__underlined" style="margin-top: 5px;">
-                          <span class="card_title__underline">
-                            {{ "RoutingPage.ActivateBOT" | translate }}
-                          </span>
-                        </h3>
-                      </div>
+                      <div class="col-sm-12" style="padding-top:15px">
 
-                      <div class="col-xs-6 col-sm-6 col-md-6" style=" margin-top: 6px;">
+                        <!-- ------------------------------------------------------------------- -->
+                        <!-- Section title Activate bot  -->
+                        <!-- ------------------------------------------------------------------- -->
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <h3 class="card_title__underlined" style="margin-top: 5px;">
+                              <span class="card_title__underline">
+                                {{ "RoutingPage.ActivateBOT" | translate }}
+                              </span>
+                            </h3>
+                          </div>
 
-                        <!-- (change)=toggleActivateBot($event) -->
-                        <div class="onoffswitch">
-                          <input (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)"
-                            [checked]="has_selected_bot" type="checkbox" name="activate_bot_on_onoffswitch"
-                            class="onoffswitch-checkbox" id="activate_bot_on_onoffswitch">
-                          <label class="onoffswitch-label" for="activate_bot_on_onoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
+                          <div class="col-xs-6 col-sm-6 col-md-6" style=" margin-top: 6px;">
+
+                            <!-- (change)=toggleActivateBot($event) -->
+                            <div class="onoffswitch">
+                              <input (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)"
+                                [checked]="has_selected_bot" type="checkbox" name="activate_bot_on_onoffswitch"
+                                class="onoffswitch-checkbox" id="activate_bot_on_onoffswitch">
+                              <label class="onoffswitch-label" for="activate_bot_on_onoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="col-xs-12">
+                            <div class="section-subtitle" style="height: 5px;"> </div>
+                          </div>
+                        </div>
+
+
+                        <!-- ------------------------------------------------------------------- -->
+                        <!-- Description select a bot that .. -->
+                        <!-- ------------------------------------------------------------------- -->
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="description-wpr">
+
+                              <span class="dea-description">
+                                {{ "DeptsAddEditPage.SelectABotThatWill" | translate }}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 38px;"> -->
+                          <label class="col-sm-2 custom-label">
+                            {{'AIAgent' | translate}}
                           </label>
-                        </div>
-                      </div>
-
-                      <div class="col-xs-12">
-                        <div class="section-subtitle" style="height: 5px;"> </div>
-                      </div>
-                    </div>
-
-
-                    <!-- ------------------------------------------------------------------- -->
-                    <!-- Description select a bot that .. -->
-                    <!-- ------------------------------------------------------------------- -->
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <div class="description-wpr">
-
-                          <span class="dea-description">
-                            {{ "DeptsAddEditPage.SelectABotThatWill" | translate }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 38px;"> -->
-                      <label class="col-sm-2 custom-label">
-                        {{'AIAgent' | translate}}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                        <!-- <select #selectBot (change)="setSelectedBot(selectBot.value)"
+                          <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                            <!-- <select #selectBot (change)="setSelectedBot(selectBot.value)"
                           [disabled]="has_selected_bot === false">
                           <option style="color: #d9d9d9 !important; font-weight: 200 !important;" class="not_selected"
                             value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
@@ -185,39 +188,39 @@
                           </ng-container>
                         </select> -->
 
-                        <ng-select [items]="botsList" bindValue="_id" bindLabel="name"
-                          placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" [(ngModel)]="selectedBotId"
-                          (change)="_setSelectedBot()" [searchable]="false" [clearable]="false" [loading]=loadingBot
-                          loadingText='Loading...' [disabled]="has_selected_bot === false">
+                            <ng-select [items]="botsList" bindValue="_id" bindLabel="name"
+                              placeholder="{{'DeptsAddEditPage.SelectABot'|translate}}" [(ngModel)]="selectedBotId"
+                              (change)="_setSelectedBot()" [searchable]="false" [clearable]="false" [loading]=loadingBot
+                              loadingText='Loading...' [disabled]="has_selected_bot === false">
 
-                          <ng-template ng-label-tmp let-item="item">
-                            {{item.name}}
-                          </ng-template>
-                          <ng-template ng-option-tmp let-item="item" let-index="index">
-                            <b> {{item.name}} </b>
-                            <div class="bot-description-trunc" *ngIf="item.description"> {{item.description}} </div>
-                          </ng-template>
-                        </ng-select>
-
-
-
-                        <!-- ------------------------------------------------------------------- -->
-                        <!-- Create a new bot link -->
-                        <!-- ------------------------------------------------------------------- -->
-                        <span class="create-new-bot-wpr">
-                          {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                          <!-- openCreateBotRightSideBar() -->
-                          <span class="create-new-bot-btn" (click)="goTo_BotEditAddPage_CREATE()">
-
-                            {{ "DeptsAddEditPage.orCreateABot" | translate }}
-                          </span>
-                        </span>
+                              <ng-template ng-label-tmp let-item="item">
+                                {{item.name}}
+                              </ng-template>
+                              <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <b> {{item.name}} </b>
+                                <div class="bot-description-trunc" *ngIf="item.description"> {{item.description}} </div>
+                              </ng-template>
+                            </ng-select>
 
 
-                        <!-- ------------------------------------------------------------------- -->
-                        <!-- Only Bot as checkbox -->
-                        <!-- ------------------------------------------------------------------- -->
-                        <!-- <div class="checkbox">
+
+                            <!-- ------------------------------------------------------------------- -->
+                            <!-- Create a new bot link -->
+                            <!-- ------------------------------------------------------------------- -->
+                            <span class="create-new-bot-wpr">
+                              {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
+                              <!-- openCreateBotRightSideBar() -->
+                              <span class="create-new-bot-btn" (click)="goTo_BotEditAddPage_CREATE()">
+
+                                {{ "DeptsAddEditPage.orCreateABot" | translate }}
+                              </span>
+                            </span>
+
+
+                            <!-- ------------------------------------------------------------------- -->
+                            <!-- Only Bot as checkbox -->
+                            <!-- ------------------------------------------------------------------- -->
+                            <!-- <div class="checkbox">
                           <label [ngClass]="{'title-attribute' : has_selected_bot}">
                             <input type="checkbox" class="form-check-input" id="exampleCheck2"
                               [disabled]="!has_selected_bot"
@@ -227,75 +230,75 @@
                             {{ "DeptsAddEditPage.BotOnly" | translate  }}
                           </label>
                         </div> -->
-                      </div>
-                    </div>
-
-
-
-
-                    <!-- ------------------------------------------------------------------- -->
-                    <!-- Section title Routing rules -->
-                    <!-- ------------------------------------------------------------------- -->
-                    <div class="row">
-                      <div class="col-xs-12">
-                        <h3 class="card_title__underlined" style="margin-top: 25px;">
-                          <span class="card_title__underline">
-
-                            {{ "RoutingPage.RoutingRules" | translate }}
-                          </span>
-                        </h3>
-                      </div>
-
-                      <div class="col-xs-12">
-                        <div class="section-subtitle" style="height: 5px;"> </div>
-                      </div>
-                    </div>
-
-
-                    <!-- ------------------------------------------------------------------- -->
-                    <!-- Description set routing rules -->
-                    <!-- ------------------------------------------------------------------- -->
-                    <!-- [ngClass]="{'disabled-label' : onlybot_disable_routing}" -->
-                    <section>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="description-wpr">
-                            <span class="dea-description" style="margin-bottom: 6px;">
-                              {{ "DeptsAddEditPage.SetRoutingRules" | translate }}
-                            </span>
-
-                            <!-- // quick tips -->
-                            <div class="quick-tips" style="line-height: 1.1; margin-bottom: 1px;">
-                              <span style="font-size: 12px; color: rgba(0,0,0,1); font-weight: 400;">
-                                Assigned:
-                              </span>
-                              <span
-                                style="vertical-align: middle; font-size: 12px; color: rgba(0,0,0,.6); font-weight: 400;">
-                                {{ "QuickTipsAssigned" | translate }}
-                              </span>
-                            </div>
-                            <div class="quick-tips" style="line-height: 1.1;margin-bottom: 16px;">
-                              <span style="font-size: 12px; color: rgba(0,0,0,1); font-weight: 400;">
-                                Pooled:
-                              </span>
-                              <span
-                                style="vertical-align: middle; font-size: 12px; color: rgba(0,0,0,.6); font-weight: 400;">
-                                {{ "QuickTipsPooled_1" | translate }}
-                                <span style="display: block;"> {{ "QuickTipsPooled_2" | translate }} </span>
-                              </span>
-                            </div>
                           </div>
                         </div>
-                      </div>
 
 
-                      <!-- ------------------------------------------------------------------- -->
-                      <!-- Radio btns as imgs -->
-                      <!-- ------------------------------------------------------------------- -->
-                      <div class="row aligned-row">
-                      
-                        <div class="col-xs-12">
-                          <!-- <label>
+
+
+                        <!-- ------------------------------------------------------------------- -->
+                        <!-- Section title Routing rules -->
+                        <!-- ------------------------------------------------------------------- -->
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <h3 class="card_title__underlined" style="margin-top: 25px;">
+                              <span class="card_title__underline">
+
+                                {{ "RoutingPage.RoutingRules" | translate }}
+                              </span>
+                            </h3>
+                          </div>
+
+                          <div class="col-xs-12">
+                            <div class="section-subtitle" style="height: 5px;"> </div>
+                          </div>
+                        </div>
+
+
+                        <!-- ------------------------------------------------------------------- -->
+                        <!-- Description set routing rules -->
+                        <!-- ------------------------------------------------------------------- -->
+                        <!-- [ngClass]="{'disabled-label' : onlybot_disable_routing}" -->
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="description-wpr">
+                                <span class="dea-description" style="margin-bottom: 6px;">
+                                  {{ "DeptsAddEditPage.SetRoutingRules" | translate }}
+                                </span>
+
+                                <!-- // quick tips -->
+                                <div class="quick-tips" style="line-height: 1.1; margin-bottom: 1px;">
+                                  <span style="font-size: 12px; color: rgba(0,0,0,1); font-weight: 400;">
+                                    Assigned:
+                                  </span>
+                                  <span
+                                    style="vertical-align: middle; font-size: 12px; color: rgba(0,0,0,.6); font-weight: 400;">
+                                    {{ "QuickTipsAssigned" | translate }}
+                                  </span>
+                                </div>
+                                <div class="quick-tips" style="line-height: 1.1;margin-bottom: 16px;">
+                                  <span style="font-size: 12px; color: rgba(0,0,0,1); font-weight: 400;">
+                                    Pooled:
+                                  </span>
+                                  <span
+                                    style="vertical-align: middle; font-size: 12px; color: rgba(0,0,0,.6); font-weight: 400;">
+                                    {{ "QuickTipsPooled_1" | translate }}
+                                    <span style="display: block;"> {{ "QuickTipsPooled_2" | translate }} </span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <!-- ------------------------------------------------------------------- -->
+                          <!-- Radio btns as imgs -->
+                          <!-- ------------------------------------------------------------------- -->
+                          <div class="row aligned-row">
+
+                            <div class="col-xs-12">
+                              <!-- <label>
                             <!- - [disabled]="onlybot_disable_routing" - ->
                             <input type="radio" name="routing" value="assigned"
                               (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
@@ -313,7 +316,7 @@
                               [ngClass]="{'radio_as_img_label_active': dept_routing === 'assigned'}"> Assigned </span>
                           </label> -->
 
-                          <!-- <label>
+                              <!-- <label>
                             <!- - [disabled]="onlybot_disable_routing" - ->
                             <input type="radio" name="routing" value="pooled"
                               (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
@@ -329,74 +332,75 @@
                               [ngClass]="{'radio_as_img_label_active': dept_routing === 'pooled'}"> Pooled </span>
                           </label> -->
 
-                          <div class="routing-rules">
+                              <div class="routing-rules">
 
-                            <!-- Assigned -->
-                            <div class="routing-rule" [ngClass]="{'rule-active': dept_routing === 'assigned'  }"
-                              (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')">
-                              <div class="routing-rule-content">
-                                <div class="routing-rule-icon">
+                                <!-- Assigned -->
+                                <div class="routing-rule" [ngClass]="{'rule-active': dept_routing === 'assigned'  }"
+                                  (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')">
+                                  <div class="routing-rule-content">
+                                    <div class="routing-rule-icon">
 
-                                  <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24" width="34px">
-                                    <path d="M0 0h24v24H0V0z" fill="none" />
-                                    <path
-                                      d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
-                                  </svg>
-
-                                </div>
-                                <div class="routing-rule-text">
-                                  Assigned
-                                </div>
-
-                                <div class="routing-rule-sub-text">
-                                 
-                                  {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
-                                </div>
-
-                              </div>
-
-                            </div>
-
-                            <!-- Pooled -->
-                            <div class="routing-rule"  [ngClass]="{'rule-active': dept_routing === 'pooled'  }"
-                              (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')">
-                              <div class="routing-rule-content">
-                                <div class="routing-rule-icon">
-                                  <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
-                                    height="34px" viewBox="0 0 24 24" width="34px">
-                                    <g>
-                                      <rect fill="none" height="24" width="24" />
-                                    </g>
-                                    <g>
-                                      <g>
+                                      <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 0 24 24"
+                                        width="34px">
+                                        <path d="M0 0h24v24H0V0z" fill="none" />
                                         <path
-                                          d="M18.19,12.44l-3.24-1.62c1.29-1,2.12-2.56,2.12-4.32c0-3.03-2.47-5.5-5.5-5.5s-5.5,2.47-5.5,5.5c0,2.13,1.22,3.98,3,4.89 v3.26c-2.15-0.46-2.02-0.44-2.26-0.44c-0.53,0-1.03,0.21-1.41,0.59L4,16.22l5.09,5.09C9.52,21.75,10.12,22,10.74,22h6.3 c0.98,0,1.81-0.7,1.97-1.67l0.8-4.71C20.03,14.32,19.38,13.04,18.19,12.44z M17.84,15.29L17.04,20h-6.3 c-0.09,0-0.17-0.04-0.24-0.1l-3.68-3.68l4.25,0.89V6.5c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5v6h1.76l3.46,1.73 C17.69,14.43,17.91,14.86,17.84,15.29z M8.07,6.5c0-1.93,1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5c0,0.95-0.38,1.81-1,2.44V6.5 c0-1.38-1.12-2.5-2.5-2.5c-1.38,0-2.5,1.12-2.5,2.5v2.44C8.45,8.31,8.07,7.45,8.07,6.5z" />
-                                      </g>
-                                    </g>
-                                  </svg>
-                                </div>
-                                <div class="routing-rule-text">
-                                  Pooled
+                                          d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
+                                      </svg>
+
+                                    </div>
+                                    <div class="routing-rule-text">
+                                      Assigned
+                                    </div>
+
+                                    <div class="routing-rule-sub-text">
+
+                                      {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
+                                    </div>
+
+                                  </div>
+
                                 </div>
 
-                                <div class="routing-rule-sub-text">
-                                  
-                                  {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
+                                <!-- Pooled -->
+                                <div class="routing-rule" [ngClass]="{'rule-active': dept_routing === 'pooled'  }"
+                                  (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')">
+                                  <div class="routing-rule-content">
+                                    <div class="routing-rule-icon">
+                                      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                                        height="34px" viewBox="0 0 24 24" width="34px">
+                                        <g>
+                                          <rect fill="none" height="24" width="24" />
+                                        </g>
+                                        <g>
+                                          <g>
+                                            <path
+                                              d="M18.19,12.44l-3.24-1.62c1.29-1,2.12-2.56,2.12-4.32c0-3.03-2.47-5.5-5.5-5.5s-5.5,2.47-5.5,5.5c0,2.13,1.22,3.98,3,4.89 v3.26c-2.15-0.46-2.02-0.44-2.26-0.44c-0.53,0-1.03,0.21-1.41,0.59L4,16.22l5.09,5.09C9.52,21.75,10.12,22,10.74,22h6.3 c0.98,0,1.81-0.7,1.97-1.67l0.8-4.71C20.03,14.32,19.38,13.04,18.19,12.44z M17.84,15.29L17.04,20h-6.3 c-0.09,0-0.17-0.04-0.24-0.1l-3.68-3.68l4.25,0.89V6.5c0-0.28,0.22-0.5,0.5-0.5c0.28,0,0.5,0.22,0.5,0.5v6h1.76l3.46,1.73 C17.69,14.43,17.91,14.86,17.84,15.29z M8.07,6.5c0-1.93,1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5c0,0.95-0.38,1.81-1,2.44V6.5 c0-1.38-1.12-2.5-2.5-2.5c-1.38,0-2.5,1.12-2.5,2.5v2.44C8.45,8.31,8.07,7.45,8.07,6.5z" />
+                                          </g>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                    <div class="routing-rule-text">
+                                      Pooled
+                                    </div>
+
+                                    <div class="routing-rule-sub-text">
+
+                                      {{ "DeptsAddEditPage.AgentsAreNotified" | translate }}
+                                    </div>
+
+                                  </div>
+
                                 </div>
 
                               </div>
-
                             </div>
 
-                          </div>
-                        </div>
 
+                            <!--  ------------------------------------------------------------------ -->
+                            <!-- Selected rooting info -->
+                            <!-- ------------------------------------------------------------------- -->
 
-                        <!--  ------------------------------------------------------------------ -->
-                        <!-- Selected rooting info -->
-                        <!-- ------------------------------------------------------------------- -->
-                        
-                        <!-- <div class="col-xs-12 ">
+                            <!-- <div class="col-xs-12 ">
                           <span class="selected-routing-info" *ngIf="dept_routing === 'assigned'">
                             {{ "DeptsAddEditPage.AutomaticallyAssign" | translate }}
                           </span>
@@ -405,21 +409,21 @@
                           </span>
                         </div> -->
 
-                      </div>
+                          </div>
 
 
 
-                      <!-- ------------------------------------------------------------------- -->
-                      <!-- Combo box Assign to Group -->
-                      <!-- ------------------------------------------------------------------- -->
-                      <div class="row" style="margin-top: 12px;">
-                        <label class="col-sm-2 custom-label" style="white-space: nowrap;">
-                          {{ "DeptsAddEditPage.AssignTo" | translate }}
-                        </label>
-                        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                          <!-- [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}" -->
-                          <!-- [disabled]="onlybot_disable_routing" -->
-                          <!-- <select #selectGroup (change)="setSelectedGroup(selectGroup.value)" style="min-width: 150px;"
+                          <!-- ------------------------------------------------------------------- -->
+                          <!-- Combo box Assign to Group -->
+                          <!-- ------------------------------------------------------------------- -->
+                          <div class="row" style="margin-top: 12px;">
+                            <label class="col-sm-2 custom-label" style="white-space: nowrap;">
+                              {{ "DeptsAddEditPage.AssignTo" | translate }}
+                            </label>
+                            <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                              <!-- [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}" -->
+                              <!-- [disabled]="onlybot_disable_routing" -->
+                              <!-- <select #selectGroup (change)="setSelectedGroup(selectGroup.value)" style="min-width: 150px;"
                             [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
 
                             <!- - // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' - ->
@@ -439,509 +443,522 @@
                             </option>
                           </select> -->
 
-                          <ng-select (change)="_setSelectedGroup()" [(ngModel)]="selectedGroupId" [items]="groupsList"
-                            bindLabel="name" bindValue="_id" [searchable]="false" [clearable]="true"
-                            placeholder="{{ 'DeptsAddEditPage.AllUsers' | translate }}">
-                          </ng-select>
+                              <ng-select (change)="_setSelectedGroup()" [(ngModel)]="selectedGroupId"
+                                [items]="groupsList" bindLabel="name" bindValue="_id" [searchable]="false"
+                                [clearable]="true" placeholder="{{ 'DeptsAddEditPage.AllUsers' | translate }}">
+                              </ng-select>
 
 
-                          <!-- ------------------------------------------------------------------- -->
-                          <!-- Create a new group link -->
-                          <!-- ------------------------------------------------------------------- -->
-                          <span class="create-new-group-wpr" *ngIf="isVisibleGroups">
-                            {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
-                            <span  class="create-new-group-btn" (click)="openCreateGroupRightSideBar()">
+                              <!-- ------------------------------------------------------------------- -->
+                              <!-- Create a new group link -->
+                              <!-- ------------------------------------------------------------------- -->
+                              <span class="create-new-group-wpr" *ngIf="isVisibleGroups">
+                                {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
+                                <span class="create-new-group-btn" (click)="openCreateGroupRightSideBar()">
 
-                              {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
-                            </span>
-                          </span>
+                                  {{ "DeptsAddEditPage.orCreateAGroup" | translate }}
+                                </span>
+                              </span>
 
-                        </div>
+                            </div>
+                          </div>
+                        </section>
+
                       </div>
-                    </section>
+                    </div>
 
-                  </div>
-                </div>
-
-                <!-- SPACER -->
-                <div class="row">
-                  <div class="col-sm-12" style="height:15px"></div>
-                </div>
+                    <!-- SPACER -->
+                    <div class="row">
+                      <div class="col-sm-12" style="height:15px"></div>
+                    </div>
 
 
 
-                <!-- ------------------------------------------------------------------- -->
-                <!-- Create btns -->
-                <!-- ------------------------------------------------------------------- -->
-                <div class="row" *ngIf="CREATE_VIEW">
-                  <div class="col-sm-12">
-                    <span *ngIf="has_selected_bot === true">
-                      <button class="btn btn-tdblu-no-boxshadow  create-dept-has-selected-bot"
-                        [disabled]="deptName_toUpdate?.length < 2 || BOT_NOT_SELECTED === true"
-                        (click)="createDepartment()">
-                        {{ "DeptsAddEditPage.CreateDept" | translate}}
-                      </button>
-                    </span>
-                    <!-- btn-primary  -->
-                    <span *ngIf="has_selected_bot !== true">
-                      <button class="btn btn-tdblu-no-boxshadow create-dept-not-has-selected-bot" [disabled]="deptName_toUpdate?.length < 2"
-                        (click)="createDepartment()">
+                    <!-- ------------------------------------------------------------------- -->
+                    <!-- Create btns -->
+                    <!-- ------------------------------------------------------------------- -->
+                    <div class="row" *ngIf="CREATE_VIEW">
+                      <div class="col-sm-12">
+                        <span *ngIf="has_selected_bot === true">
+                          <button class="btn btn-tdblu-no-boxshadow  create-dept-has-selected-bot"
+                            [disabled]="deptName_toUpdate?.length < 2 || BOT_NOT_SELECTED === true"
+                            (click)="createDepartment()">
+                            {{ "DeptsAddEditPage.CreateDept" | translate}}
+                          </button>
+                        </span>
+                        <!-- btn-primary  -->
+                        <span *ngIf="has_selected_bot !== true">
+                          <button class="btn btn-tdblu-no-boxshadow create-dept-not-has-selected-bot"
+                            [disabled]="deptName_toUpdate?.length < 2" (click)="createDepartment()">
 
-                        {{ "DeptsAddEditPage.CreateDept" | translate}}
-                      </button>
-                    </span>
-                  </div>
-                </div>
+                            {{ "DeptsAddEditPage.CreateDept" | translate}}
+                          </button>
+                        </span>
+                      </div>
+                    </div>
 
 
-                <!-- ------------------------------------------------------------------- -->
-                <!-- Edit btns (if ROUTING_PAGE_MODE === true is changed the label) -->
-                <!-- ------------------------------------------------------------------- -->
-                <div class="row" *ngIf="EDIT_VIEW">
-                  <div class="col-sm-12">
+                    <!-- ------------------------------------------------------------------- -->
+                    <!-- Edit btns (if ROUTING_PAGE_MODE === true is changed the label) -->
+                    <!-- ------------------------------------------------------------------- -->
+                    <div class="row" *ngIf="EDIT_VIEW">
+                      <div class="col-sm-12">
 
-                    <span *ngIf="has_selected_bot === true">
-                      <!-- btn-primary  -->
-                      <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
-                        [disabled]="BOT_NOT_SELECTED === true">
-                        <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
-                        {{ "DeptsAddEditPage.UpdateDept" | translate }}
-                        <!-- </span> -->
-                        <!-- <span *ngIf="ROUTING_PAGE_MODE === true">
+                        <span *ngIf="has_selected_bot === true">
+                          <!-- btn-primary  -->
+                          <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
+                            [disabled]="BOT_NOT_SELECTED === true">
+                            <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
+                            {{ "DeptsAddEditPage.UpdateDept" | translate }}
+                            <!-- </span> -->
+                            <!-- <span *ngIf="ROUTING_PAGE_MODE === true">
                       {{ "RoutingPage.UpdateRoutingRules" | translate }}
                     </span> -->
-                      </button>
-                    </span>
+                          </button>
+                        </span>
 
-                    <span *ngIf="has_selected_bot !== true">
-                      <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
-                        <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
-                        {{ "DeptsAddEditPage.UpdateDept" | translate }}
-                        <!-- </span> -->
-                        <!-- <span *ngIf="ROUTING_PAGE_MODE === true">
+                        <span *ngIf="has_selected_bot !== true">
+                          <button class="btn btn-tdblu-no-boxshadow update-dept-btn" (click)="edit()"
+                            [disabled]='GROUP_ID_NOT_EXIST'>
+                            <!-- <span *ngIf="ROUTING_PAGE_MODE === false"> -->
+                            {{ "DeptsAddEditPage.UpdateDept" | translate }}
+                            <!-- </span> -->
+                            <!-- <span *ngIf="ROUTING_PAGE_MODE === true">
                       {{ "RoutingPage.UpdateRoutingRules" | translate }}
                     </span> -->
 
-                      </button>
-                    </span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
-
               </div>
-            </div>
-          </div>
-          <!-- /. col-md-8 -->
+              <!-- /. col-md-8 -->
 
 
-          <!-- --------------------------------------------------- -->
-          <!-- RIGHT SIDEBAR in CREATE VIEW -->
-          <!-- --------------------------------------------------- -->
-          <div *ngIf="CREATE_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
-            [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
-            <div class="card  card--no-border" style="margin-top: 5px;">
-              <div class="card-content" style="padding-top: 0px;">
-                <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+              <!-- --------------------------------------------------- -->
+              <!-- RIGHT SIDEBAR in CREATE VIEW -->
+              <!-- --------------------------------------------------- -->
+              <div *ngIf="CREATE_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
+                [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
+                <div class="card  card--no-border" style="margin-top: 5px;">
+                  <div class="card-content" style="padding-top: 0px;">
+                    <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               {{ "QuickTips" | translate }}
             </h4> -->
 
-                <div class="row">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined">
-                      <span class="card_title__underline">
-                        {{ "QuickTips" | translate }}
-                      </span>
-                    </h3>
-                  </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
-                  </div>
-                </div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            {{ "QuickTips" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
 
-                <p class="title-attribute" style="margin-bottom: 3px">
-                  Assigned
-                </p>
-                <p class="attribute">
-                  {{ "QuickTipsAssigned" | translate }}
-                </p>
-                <p class="title-attribute" style="margin-bottom: 3px">
-                  Pooled
-                </p>
-                <p class="attribute">
-                  {{ "QuickTipsPooled_1" | translate }}
-                  <span style="display: block;"> {{ "QuickTipsPooled_2" | translate }} </span>
-                </p>
-                <!-- <p class="title-attribute" style="margin-bottom: 3px">
+                    <p class="title-attribute" style="margin-bottom: 3px">
+                      Assigned
+                    </p>
+                    <p class="attribute">
+                      {{ "QuickTipsAssigned" | translate }}
+                    </p>
+                    <p class="title-attribute" style="margin-bottom: 3px">
+                      Pooled
+                    </p>
+                    <p class="attribute">
+                      {{ "QuickTipsPooled_1" | translate }}
+                      <span style="display: block;"> {{ "QuickTipsPooled_2" | translate }} </span>
+                    </p>
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px">
                   Bot
                 </p>
                 <p class="attribute">
                   {{ "QuickTipsBot" | translate }}
                 </p> -->
 
-              </div> <!-- ./ card content -->
-
-            </div>
-          </div>
-          <!-- /. col-md-4 -->
-
-
-
-          <!--  --------------------------------------------------- -->
-          <!--  RIGHT SIDEBAR in EDIT VIEW -->
-          <!--  --------------------------------------------------- -->
-          <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
-            [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
-            <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
-
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-              <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
-
-                <div class="row">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined" style="margin-top: 0px;">
-                      <span class="card_title__underline">
-                        {{ "RequestMsgsPage.Details" | translate }}
-                      </span>
-                    </h3>
-                  </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
-                  </div>
-                </div>
-
-                <div class="row" style="height: 50px;">
-                  <div class="col-xs-12">
-
-                    <section *ngIf="IS_DEFAULT_DEPT === true">
-                      <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
-                        <!-- [ngStyle]="{'background-color': dept_name_fillcolour }" -->
-                        <span class="dept-avatar" style="background-color: #6264A7">
-                          <!-- {{ dept_name_initial }} -->
-                          <!-- DR -->
-                          DD
-                        </span>
-                      </span>
-
-                      <span class="dept-name-in-right-sidebar">
-                        {{ deptName_toUpdate}}
-                        <!-- Default Routing -->
-                      </span>
-                    </section>
-
-                    <section *ngIf="IS_DEFAULT_DEPT === false">
-                      <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
-                        <span class="dept-avatar" [ngStyle]="{'background-color': dept_name_fillcolour }">
-                          {{ dept_name_initial }}
-                        </span>
-                      </span>
-
-                      <span class="dept-name-in-right-sidebar">
-                        {{ deptName_toUpdate}}
-                      </span>
-                    </section>
-
-                  </div>
+                  </div> <!-- ./ card content -->
 
                 </div>
+              </div>
+              <!-- /. col-md-4 -->
 
 
-                <!-- --------------------------------------------------------------------- -->
-                <!-- Dept Created At -->
-                <!-- --------------------------------------------------------------------- -->
-                <div class="row" style="margin-top:5px; margin-bottom: 5px;">
-                  <!-- border-top: 1px solid #dadde1; -->
-                  <div class="col-sm-12" style="padding-top: 4px;">
 
-                    <p style="margin-bottom: 0px;">
-                      <span class="tool_tip">
-                        <i class="material-icons right-sidebar--m-icon">calendar_today</i>
-                        <span class="top"
-                          style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
-                          {{ "Created" | translate }}
-                          <i style="top: 88%;"></i>
-                        </span>
-                      </span>
-                      <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                        {{ dept_created_at | amTimeAgo }}
+              <!--  --------------------------------------------------- -->
+              <!--  RIGHT SIDEBAR in EDIT VIEW -->
+              <!--  --------------------------------------------------- -->
+              <div id="right_edit_card" *ngIf="EDIT_VIEW" class="col-sm-4 col-md-4 no_padding_right_col"
+                [ngClass]="{'sidebar-hidden-767': OPEN_CREATE_GROUP_RIGHT_SIDEBAR}">
+                <div class="card card--no-border" style="padding-top: 8px;margin-top: 5px;">
 
-                        <span>({{ dept_created_at | date: 'd/M/y HH:mm:ss' }})
-                        </span>
-                      </span>
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
 
-                    </p>
-                  </div>
-                </div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined" style="margin-top: 0px;">
+                          <span class="card_title__underline">
+                            {{ "RequestMsgsPage.Details" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
 
-                <!-- --------------------------------------------------------------------- -->
-                <!-- Dept id -->
-                <!-- --------------------------------------------------------------------- -->
-                <div class="row" style="margin-top:5px">
+                    <div class="row" style="height: 50px;">
+                      <div class="col-xs-12">
 
-                  <div class="col-sm-12">
+                        <section *ngIf="IS_DEFAULT_DEPT === true">
+                          <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
+                            <!-- [ngStyle]="{'background-color': dept_name_fillcolour }" -->
+                            <span class="dept-avatar" style="background-color: #6264A7">
+                              <!-- {{ dept_name_initial }} -->
+                              <!-- DR -->
+                              DD
+                            </span>
+                          </span>
 
-                    <p style="margin-bottom: 0px;">
-                      <span class="tool_tip">
-                        <i class="material-icons right-sidebar--m-icon">code</i>
-                        <span class="top"
-                          style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
-                          {{ 'DeptsAddEditPage.DeptId' | translate }}
-                          <i style="top: 88%;"></i>
-                        </span>
-                      </span>
-                      <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                        {{ dept_ID }}
-                      </span>
-                    </p>
+                          <span class="dept-name-in-right-sidebar">
+                            {{ deptName_toUpdate}}
+                            <!-- Default Routing -->
+                          </span>
+                        </section>
 
-                  </div>
-                </div>
+                        <section *ngIf="IS_DEFAULT_DEPT === false">
+                          <span class="dept-avatar-wrapper" style="float:left; margin-right: 5px;">
+                            <span class="dept-avatar" [ngStyle]="{'background-color': dept_name_fillcolour }">
+                              {{ dept_name_initial }}
+                            </span>
+                          </span>
 
+                          <span class="dept-name-in-right-sidebar">
+                            {{ deptName_toUpdate}}
+                          </span>
+                        </section>
 
-                <!-- --------------------------------------------------------------------- -->
-                <!-- Bot style="border-top: 1px solid #dadde1;" -->
-                <!-- --------------------------------------------------------------------- -->
-                <div class="row" style="margin-top:5px">
-                  <div class="col-sm-12">
-
-                    <p class="row-header">
-                      <span style="vertical-align: middle;">
-                      {{ 'DeptsAddEditPage.DeptBot' | translate }}
-                      </span>
-                    </p>
-
-                    <div class="bot">
-                      <div *ngIf="BOT_NOT_SELECTED === true" class="row-body"
-                        style="margin-bottom: 10px; margin-left: 2px;">
-                        <div class="dept___served_by_no_bot">
-                          <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;"
-                            src="assets/img/bot_alt_slash.svg" />
-                        </div>
-                        <span class="dept___no_bot" style="position: relative;top: 5px; font-weight:400">
-                          <!-- {{ "BotsPage.NoBot" | translate }} -->
-                         {{'DepartmentsPage.NoBotActivated' | translate}}
-                        </span>
                       </div>
 
-                      <div *ngIf="BOT_NOT_SELECTED === false" class="row-body"
-                        style="margin-bottom: 0px; cursor: pointer;">
-                        <div (click)="goToBotDetails()" class="dept___served_by_bot">
-                          <!-- --------------------------------------------------------------------- -->
-                          <!-- Bot profile photo usecase uploadEngine Firebase -->
-                          <!-- --------------------------------------------------------------------- -->
-                          <img *ngIf="selectedId && UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-dept-edit-add"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{selectedId}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                    </div>
 
-                          <!-- --------------------------------------------------------------------- -->
-                          <!-- Bot profile photo usecase uploadEngine Native -->
-                          <!-- --------------------------------------------------------------------- -->
-                          <img *ngIf="selectedId && !UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-dept-edit-add"
-                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                          <span *ngIf="bot_type === 'internal'">
-                            <img class="dept_bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- Dept Created At -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <div class="row" style="margin-top:5px; margin-bottom: 5px;">
+                      <!-- border-top: 1px solid #dadde1; -->
+                      <div class="col-sm-12" style="padding-top: 4px;">
+
+                        <p style="margin-bottom: 0px;">
+                          <span class="tool_tip">
+                            <i class="material-icons right-sidebar--m-icon">calendar_today</i>
+                            <span class="top"
+                              style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                              {{ "Created" | translate }}
+                              <i style="top: 88%;"></i>
+                            </span>
+                          </span>
+                          <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                            {{ dept_created_at | amTimeAgo }}
+
+                            <span>({{ dept_created_at | date: 'd/M/y HH:mm:ss' }})
+                            </span>
                           </span>
 
-                          <span *ngIf="bot_type === 'external'">
-                            <img class="dept_bot-type-logo" src="assets/img/external_bot_logo.png" />
-                          </span>
+                        </p>
+                      </div>
+                    </div>
 
-                          <span *ngIf="bot_type === 'dialogflow'">
-                            <img class="dept_bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                          </span>
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- Dept id -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <div class="row" style="margin-top:5px">
 
-                          <span *ngIf="bot_type === 'rasa'">
-                            <img class="dept_bot-type-logo" src="assets/img/rasa_bot_logo.png" />
-                          </span>
+                      <div class="col-sm-12">
 
-                          <div *ngIf="bot_type === 'tilebot'">
-                              <img *ngIf="!bot_subtype" class="bot-type-logo" [src]="botLogo" />
-                              <img *ngIf="bot_subtype && bot_subtype === 'chatbot'" class="dept_bot-type-logo" [src]="botLogo" />
-                              <img *ngIf="bot_subtype && bot_subtype === 'copilot'" class="dept_bot-type-logo" src="assets/img/logos/copilot-logo.svg"/>
-                              <img *ngIf="bot_subtype && bot_subtype === 'webhook'" class="dept_bot-type-logo" src="assets/img/logos/webhook-logo.svg"/>
-                              <img *ngIf="bot_subtype && (bot_subtype === 'voice' || bot_subtype === 'voice_twilio')" class="dept_bot-type-logo" src="assets/img/logos/voice-logo.svg"/>
+                        <p style="margin-bottom: 0px;">
+                          <span class="tool_tip">
+                            <i class="material-icons right-sidebar--m-icon">code</i>
+                            <span class="top"
+                              style="min-width: unset; top: -7px;padding: 5px 10px;border-radius: 4px;white-space: nowrap;">
+                              {{ 'DeptsAddEditPage.DeptId' | translate }}
+                              <i style="top: 88%;"></i>
+                            </span>
+                          </span>
+                          <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                            {{ dept_ID }}
+                          </span>
+                        </p>
+
+                      </div>
+                    </div>
+
+
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- Bot style="border-top: 1px solid #dadde1;" -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <div class="row" style="margin-top:5px">
+                      <div class="col-sm-12">
+
+                        <p class="row-header">
+                          <span style="vertical-align: middle;">
+                            {{ 'DeptsAddEditPage.DeptBot' | translate }}
+                          </span>
+                        </p>
+
+                        <div class="bot">
+                          <div *ngIf="BOT_NOT_SELECTED === true" class="row-body"
+                            style="margin-bottom: 10px; margin-left: 2px;">
+                            <div class="dept___served_by_no_bot">
+                              <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;"
+                                src="assets/img/bot_alt_slash.svg" />
+                            </div>
+                            <span class="dept___no_bot" style="position: relative;top: 5px; font-weight:400">
+                              <!-- {{ "BotsPage.NoBot" | translate }} -->
+                              {{'DepartmentsPage.NoBotActivated' | translate}}
+                            </span>
                           </div>
 
+                          <div *ngIf="BOT_NOT_SELECTED === false" class="row-body"
+                            style="margin-bottom: 0px; cursor: pointer;">
+                            <div (click)="goToBotDetails()" class="dept___served_by_bot">
+                              <!-- --------------------------------------------------------------------- -->
+                              <!-- Bot profile photo usecase uploadEngine Firebase -->
+                              <!-- --------------------------------------------------------------------- -->
+                              <img *ngIf="selectedId && UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-dept-edit-add"
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{selectedId}}%2Fphoto.jpg?alt=media"
+                                onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                        </div>
-                        <span class="dept___bot" style="position: relative;top: 5px;">
-                          {{ selectedValue }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                              <!-- --------------------------------------------------------------------- -->
+                              <!-- Bot profile photo usecase uploadEngine Native -->
+                              <!-- --------------------------------------------------------------------- -->
+                              <img *ngIf="selectedId && !UPLOAD_ENGINE_IS_FIREBASE" class="bot-img-dept-edit-add"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{selectedId}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-
-                <!-- --------------------------------------------------------------------- -->
-                <!-- Bot Description -->
-                <!-- --------------------------------------------------------------------- -->
-                <div *ngIf="BOT_NOT_SELECTED === false" class="row" style="margin-top:5px">
-                  <!-- border-bottom: 1px solid #dadde1;  -->
-                  <div class="col-sm-12">
-
-                    <div class="sidebar-description sidebar-description-cropped"
-                      style="margin-bottom: 5px;line-height: 18px;">
-
-                      <!-- <span class="showPosts">
-                    <span class="greekCross"> -->
-                      <!-- white-space: nowrap; -->
-                      <span class="description-icon-and-text" style="margin-right: 3px;">
-                        <i class="material-icons"
-                          style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
-
-                        <span style="font-size: 12px; color: #394f5a; font-weight: 400;font-family: 'Poppins';">
-                          {{'DeptsAddEditPage.Description' | translate}}
-                        </span>
-
-                        <!-- </span>
-                    </span> -->
-                        <span class="bot_description" style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                          {{ bot_description }}
-
-                        </span>
-                      </span>
-
-                    </div>
-                  </div>
-                  <div *ngIf="display_btn_read_all_descr === true" class="col-sm-12">
-                    <a style="font-size: 10px;float: right; cursor: pointer;" (click)="toggleDescriptionReadAll()">
-                      <span *ngIf="read_all === true"> Read all </span>
-                      <span *ngIf="read_all === false"> Read less </span>
-                    </a>
-                  </div>
-                </div>
-
-
-
-                <!-- --------------------------------------------------------------------- -->
-                <!-- Agent -->
-                <!-- --------------------------------------------------------------------- -->
-                <div class="row" style="margin-top:0px">
-                  <!-- border-top: 1px solid #dadde1; -->
-                  <div class="col-sm-12">
-
-                    <p class="row-header">
-                      <span style="vertical-align: middle;">
-                        {{ 'DeptsAddEditPage.DeptAgents' | translate }}
-                      </span>
-
-
-                      <span *ngIf="!selectedGroupId" style="color: rgba(0,0,0,.54);text-transform: uppercase; font-size: 12px;
-                  position: relative;
-                  top: 1px;">
-                        {{ 'DeptsAddEditPage.AllUsers' | translate }}
-                      </span>
-
-                      <span *ngIf="selectedGroupId" style=" color: rgba(0,0,0,.54);font-size: 12px;
-                  position: relative;
-                  top: 1px;">
-                        {{ 'DepartmentsPage.Group' | translate }}
-                        <span style="text-transform: uppercase;">
-                          {{ group_name }}
-
-                          <span class="edit-group-link tool_tip" (click)="goToEditGroup()">
-                            <span style="text-transform:capitalize">({{'Edit' | translate}}) </span>
-
-                            <span class="bottom"
-                              style="min-width: fit-content; text-align: center;top: 30px;line-height: 15px;">
-
-                              <span style="white-space: nowrap; text-transform: capitalize;"> {{
-                                'GroupsPage.tooltipEditGroup' | translate }} </span>
-                              <span style="display: block; white-space: nowrap; text-transform: none;">{{ group_name }}
+                              <span *ngIf="bot_type === 'internal'">
+                                <img class="dept_bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
                               </span>
 
-                              <i></i>
+                              <span *ngIf="bot_type === 'external'">
+                                <img class="dept_bot-type-logo" src="assets/img/external_bot_logo.png" />
+                              </span>
+
+                              <span *ngIf="bot_type === 'dialogflow'">
+                                <img class="dept_bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                              </span>
+
+                              <span *ngIf="bot_type === 'rasa'">
+                                <img class="dept_bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                              </span>
+
+                              <div *ngIf="bot_type === 'tilebot'">
+                                <img *ngIf="!bot_subtype" class="bot-type-logo" [src]="botLogo" />
+                                <img *ngIf="bot_subtype && bot_subtype === 'chatbot'" class="dept_bot-type-logo"
+                                  [src]="botLogo" />
+                                <img *ngIf="bot_subtype && bot_subtype === 'copilot'" class="dept_bot-type-logo"
+                                  src="assets/img/logos/copilot-logo.svg" />
+                                <img *ngIf="bot_subtype && bot_subtype === 'webhook'" class="dept_bot-type-logo"
+                                  src="assets/img/logos/webhook-logo.svg" />
+                                <img *ngIf="bot_subtype && (bot_subtype === 'voice' || bot_subtype === 'voice_twilio')"
+                                  class="dept_bot-type-logo" src="assets/img/logos/voice-logo.svg" />
+                              </div>
+
+
+                            </div>
+                            <span class="dept___bot" style="position: relative;top: 5px;">
+                              {{ selectedValue }}
                             </span>
-                          </span>
-                        </span>
-                      </span>
-                    </p>
-
-                    <!-- --------------------------------------------------- -->
-                    <!-- All teammates profile image -->
-                    <!-- --------------------------------------------------- -->
-                    <div *ngIf="!selectedGroupId" class="row-body" style="margin-bottom: 10px; margin-left: 2px;">
-
-                      <div class="dept___served_by_alluser">
-                        <div *ngFor="let agent of projectUsers" style="margin-bottom: 5px;">
-                          <span (click)="goToMemberProfile( agent?.id_user?._id )" style="cursor:pointer">
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Firebase -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                              onerror="this.src='assets/img/no_image_user.png'" />
-
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Native -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                              onerror="this.src='assets/img/no_image_user.png'" />
-
-
-                            <span style="font-size:12px; font-weight: 400">
-                              {{agent?.id_user?.firstname}} {{agent?.id_user?.lastname}}
-                            </span>
-                          </span>
+                          </div>
                         </div>
                       </div>
                     </div>
 
 
-                    <!-- --------------------------------------------------- -->
-                    <!-- Group selected teammates profile image -->
-                    <!-- --------------------------------------------------- -->
-                    <div *ngIf="selectedGroupId" class="row-body" style="margin-bottom: 0px;">
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- Bot Description -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <div *ngIf="BOT_NOT_SELECTED === false" class="row" style="margin-top:5px">
+                      <!-- border-bottom: 1px solid #dadde1;  -->
+                      <div class="col-sm-12">
 
-                      <div class="dept___served_by_group">
+                        <div class="sidebar-description sidebar-description-cropped"
+                          style="margin-bottom: 5px;line-height: 18px;">
 
-                        <div *ngIf="projectUsersInGroup?.length === 0">
-                          <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                          <!-- <span class="showPosts">
+                    <span class="greekCross"> -->
+                          <!-- white-space: nowrap; -->
+                          <span class="description-icon-and-text" style="margin-right: 3px;">
                             <i class="material-icons"
-                              style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;font-size: 18px;">
-                              info </i>
-                            {{ 'ThisGroupHasNoMembers' | translate }}
-                          </p>
-                        </div>
+                              style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
 
-                        <div *ngFor="let agent of projectUsersInGroup" style="margin-bottom: 5px;">
-                          <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Firebase -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
-                              onerror="this.src='assets/img/no_image_user.png'" />
+                            <span style="font-size: 12px; color: #394f5a; font-weight: 400;font-family: 'Poppins';">
+                              {{'DeptsAddEditPage.Description' | translate}}
+                            </span>
 
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Native -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
-                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                              onerror="this.src='assets/img/no_image_user.png'" />
+                            <!-- </span>
+                    </span> -->
+                            <span class="bot_description" style="color: #7695a5; font-weight: 400; font-size: 12px;">
+                              {{ bot_description }}
 
-
-                            <span style="font-size:12px; font-weight: 400">
-                              {{agent?.firstname}} {{agent?.lastname}}
                             </span>
                           </span>
+
                         </div>
                       </div>
+                      <div *ngIf="display_btn_read_all_descr === true" class="col-sm-12">
+                        <a style="font-size: 10px;float: right; cursor: pointer;" (click)="toggleDescriptionReadAll()">
+                          <span *ngIf="read_all === true"> Read all </span>
+                          <span *ngIf="read_all === false"> Read less </span>
+                        </a>
+                      </div>
                     </div>
+
+
+
+                    <!-- --------------------------------------------------------------------- -->
+                    <!-- Agent -->
+                    <!-- --------------------------------------------------------------------- -->
+                    <div class="row" style="margin-top:0px">
+                      <!-- border-top: 1px solid #dadde1; -->
+                      <div class="col-sm-12">
+
+                        <p class="row-header">
+                          <span style="vertical-align: middle;">
+                            {{ 'DeptsAddEditPage.DeptAgents' | translate }}
+                          </span>
+
+
+                          <span *ngIf="!selectedGroupId" style="color: rgba(0,0,0,.54);text-transform: uppercase; font-size: 12px;
+                  position: relative;
+                  top: 1px;">
+                            {{ 'DeptsAddEditPage.AllUsers' | translate }}
+                          </span>
+
+                          <span *ngIf="selectedGroupId" style=" color: rgba(0,0,0,.54);font-size: 12px;
+                  position: relative;
+                  top: 1px;">
+                            {{ 'DepartmentsPage.Group' | translate }}
+                            <span style="text-transform: uppercase;">
+                              {{ group_name }}
+
+                              <span class="edit-group-link tool_tip" (click)="goToEditGroup()">
+                                <span style="text-transform:capitalize">({{'Edit' | translate}}) </span>
+
+                                <span class="bottom"
+                                  style="min-width: fit-content; text-align: center;top: 30px;line-height: 15px;">
+
+                                  <span style="white-space: nowrap; text-transform: capitalize;"> {{
+                                    'GroupsPage.tooltipEditGroup' | translate }} </span>
+                                  <span style="display: block; white-space: nowrap; text-transform: none;">{{ group_name
+                                    }}
+                                  </span>
+
+                                  <i></i>
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                        </p>
+
+                        <!-- --------------------------------------------------- -->
+                        <!-- All teammates profile image -->
+                        <!-- --------------------------------------------------- -->
+                        <div *ngIf="!selectedGroupId" class="row-body" style="margin-bottom: 10px; margin-left: 2px;">
+
+                          <div class="dept___served_by_alluser">
+                            <div *ngFor="let agent of projectUsers" style="margin-bottom: 5px;">
+                              <span (click)="goToMemberProfile( agent?.id_user?._id )" style="cursor:pointer">
+                                <!-- --------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Firebase -->
+                                <!-- --------------------------------------------------- -->
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
+
+                                <!-- --------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Native -->
+                                <!-- --------------------------------------------------- -->
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
+
+
+                                <span style="font-size:12px; font-weight: 400">
+                                  {{agent?.id_user?.firstname}} {{agent?.id_user?.lastname}}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- --------------------------------------------------- -->
+                        <!-- Group selected teammates profile image -->
+                        <!-- --------------------------------------------------- -->
+                        <div *ngIf="selectedGroupId" class="row-body" style="margin-bottom: 0px;">
+
+                          <div class="dept___served_by_group">
+
+                            <div *ngIf="projectUsersInGroup?.length === 0">
+                              <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                                <i class="material-icons"
+                                  style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;font-size: 18px;">
+                                  info </i>
+                                {{ 'ThisGroupHasNoMembers' | translate }}
+                              </p>
+                            </div>
+
+                            <div *ngFor="let agent of projectUsersInGroup" style="margin-bottom: 5px;">
+                              <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
+                                <!-- --------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Firebase -->
+                                <!-- --------------------------------------------------- -->
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
+
+                                <!-- --------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Native -->
+                                <!-- --------------------------------------------------- -->
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-teammates-in-edit-dept"
+                                  src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                  onerror="this.src='assets/img/no_image_user.png'" />
+
+
+                                <span style="font-size:12px; font-weight: 400">
+                                  {{agent?.firstname}} {{agent?.lastname}}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
 
                 </div>
-
               </div>
+              <!-- /. col-md-4 -->
 
             </div>
-          </div>
-          <!-- /. col-md-4 -->
 
-        </div>
 
+
+          </ng-container>
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+          </ng-template>
+        </ng-container>
       </div>
     </div>
   </div>

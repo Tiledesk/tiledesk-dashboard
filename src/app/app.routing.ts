@@ -701,14 +701,21 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
 
-  // Departments
+  // Departments - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/departments',
+  //   loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
+
+   // Departments 
   {
     path: 'project/:projectid/departments',
     loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Department Create
   {
@@ -720,16 +727,23 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
-  // Department Edit
+  // Department Edit - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/department/edit/:deptid',
+  //   loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  //   // ,
+  //   // canDeactivate: [PendingChangesGuard]
+  // },
+  // { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
+  // Department Edit 
   {
     path: 'project/:projectid/department/edit/:deptid',
     loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-    // ,
-    // canDeactivate: [PendingChangesGuard]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
   // new routing page is the edit department
   // {

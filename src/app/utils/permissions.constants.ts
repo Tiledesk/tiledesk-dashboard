@@ -18,6 +18,10 @@ export const PERMISSIONS = {
   INSTALLATION_READ: 'installation_read',
   TRANSLATIONS_READ: 'translations_read',
 
+  DEPARTMENTS_LIST_READ: 'department_list_read',
+  DEPARTMENT_DETAIL_READ: 'department_detail_read',
+  DEPARTMENT_CREATE_READ: 'department_create_read',
+
   
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',

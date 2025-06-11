@@ -65,7 +65,7 @@ export class RoleService {
           if (calledby === 'history') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
-            // if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ)) { 
+              // if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ)) { 
               this.router.navigate([`project/${projectId}/unauthorized`])
             }
           }
@@ -118,12 +118,14 @@ export class RoleService {
             }
           }
 
+          // Widget set up
           if (calledby === 'widget-set-up') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-set-up hasPermission ', hasPermission)
             return hasPermission;
           }
 
+          // Widget Translations
           if (calledby === 'widget-multilanguage') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
             // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
@@ -131,14 +133,36 @@ export class RoleService {
             return hasPermission;
           }
 
-           if (calledby === 'widget-installation') {
+          // Widget installations
+          if (calledby === 'widget-installation') {
             const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
             // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
             return hasPermission;
           }
 
-          
+          // Department List
+          if (calledby === 'departments-list') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.DEPARTMENTS_LIST_READ);
+            console.log('[ROLE-SERV] - departments-list hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Department detail
+          if (calledby === 'department-edit') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ);
+            console.log('[ROLE-SERV] - department-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Department Create
+          if (calledby === 'department-create') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ);
+            console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
 
 
 
@@ -155,11 +179,32 @@ export class RoleService {
             return hasPermission;
           }
 
-           if (calledby === 'widget-installation') {
+          if (calledby === 'widget-installation') {
             const hasPermission = true
             console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
             return hasPermission;
           }
+
+          if (calledby === 'departments-list') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - departments-list hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'department-edit') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - department-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'department-create') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
+
         }
       } else {
         this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject  projectUserRole * Error *', projectUserRole)
@@ -192,7 +237,7 @@ export class RoleService {
           if (calledby === 'history') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
-            // if (!_projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
+              // if (!_projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
               this.router.navigate([`project/${projectId}/unauthorized`])
             }
           }
@@ -258,12 +303,33 @@ export class RoleService {
             return hasPermission;
           }
 
-           if (calledby === 'widget-installation') {
+          if (calledby === 'widget-installation') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INSTALLATION_READ);
             // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
             console.log('[ROLE-SERV] - widget-installation hasPermission ', hasPermission)
             return hasPermission;
           }
+
+          if (calledby === 'departments-list') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.DEPARTMENTS_LIST_READ);
+            console.log('[ROLE-SERV] - departments-list hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'department-edit') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ);
+            console.log('[ROLE-SERV] - department-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'department-create') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ);
+            console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
+
 
         } else if (_projectUserRole === 'owner' || _projectUserRole === 'admin') {
           console.log('HELLO ')
@@ -285,7 +351,26 @@ export class RoleService {
             return hasPermission;
           }
 
-          
+          if (calledby === 'departments-list') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - departments-list hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'department-edit') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - department-edit hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          if (calledby === 'department-create') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
+
         }
       }
 

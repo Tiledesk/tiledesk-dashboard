@@ -161,6 +161,23 @@ export class UsersNewRoleComponent implements OnInit {
         // { key: 'manageTags', label: 'Can manage tags' },
       ]
     },
+     {
+      key: 'routingAndDepts',
+      title: 'Routing & Depts',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view list' },
+        { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to view detail'},
+        { key: PERMISSIONS.DEPARTMENT_CREATE_READ, label: 'Able to create'},
+        
+        // { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
+        // { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
+    
+      ]
+    },
+
     {
       key: 'SectionsAccess',
       title: 'Sections Access',
