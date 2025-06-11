@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.109-rc6
+- Improves the accordions style available on New role page
+
 ### 2.7.109-rc5 
-- Update options on the Add New Role page
+- Updates options on the Add New Role page
 
 ### 2.7.109-rc3
 - Minor improvements
