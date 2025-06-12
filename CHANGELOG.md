@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.110
+- Fixes the bug: "verified" icon displays incorrectly for requesters in the unassigned conversations section
+
 ### 2.7.109
 - Adds the ability to control how search results are retrieved (Hybrid search) in the AI ​​settings modal window
 - Displays chunks used for the answer in the Knowledge Base preview modal window
