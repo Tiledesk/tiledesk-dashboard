@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { SortByPipe } from 'app/sortby.pipe';
 import { SharedModule } from 'app/shared/shared.module';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: GroupsComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class GroupsModule { }

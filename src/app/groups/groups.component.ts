@@ -49,6 +49,10 @@ export class GroupsComponent implements OnInit {
   warning: string;
 
   public hideHelpLink: boolean;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
@@ -67,7 +71,7 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('groups')
+    // this.roleService.checkRoleForCurrentProject('groups')
     this.getCurrentProject();
     this.getOSCODE();
     this.getGroupsByProjectId();
@@ -75,6 +79,17 @@ export class GroupsComponent implements OnInit {
     this.getOSCODE();
     this.getBrowserVersion()
     this.getTranslations();
+    this.checkPermissions();
+  }
+
+
+   async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('groups')
+    console.log('[GROUPS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[GROUPS] isAuthorized ', this.isAuthorized)
+    console.log('[GROUPS] permissionChecked ', this.permissionChecked)
   }
 
   getBrowserVersion() {
