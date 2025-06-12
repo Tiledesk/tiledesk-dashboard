@@ -81,6 +81,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   PERMISSION_TO_CREATE_DEPT: boolean;
+  PERMISSION_TO_READ_DEPT_DETAILS: boolean;
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -134,7 +135,7 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         console.log('[DEPTS] - Permissions:', status.matchedPermissions);
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_CREATE_READ)) {
-            // Enable read translations
+
             this.PERMISSION_TO_CREATE_DEPT = true
             console.log('[DEPTS] - PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
           } else {
@@ -144,6 +145,20 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
         } else {
           this.PERMISSION_TO_CREATE_DEPT = true
           console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_CREATE_DEPT ', this.PERMISSION_TO_CREATE_DEPT);
+        }
+
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.DEPARTMENT_DETAIL_READ)) {
+
+            this.PERMISSION_TO_READ_DEPT_DETAILS = true
+            console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+          } else {
+            this.PERMISSION_TO_CREATE_DEPT = false
+            console.log('[DEPTS] - PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_READ_DEPT_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_DEPT_DETAILS = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_DEPT_DETAILS ', this.PERMISSION_TO_CREATE_DEPT);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -248,13 +263,17 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
 
 
-  // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
+  // GO TO DEPT-EDIT-ADD COMPONENT 
   goToEditAddPage_EDIT(dept_id: string, dept_default: boolean) {
-    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT ID ', dept_id);
-    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
-    this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
+    if (this.PERMISSION_TO_READ_DEPT_DETAILS) {
+      this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT ID ', dept_id);
+      this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPT DEFAULT ', dept_default);
+      this.logger.log('[DEPTS] - goToEditAddPage_EDIT DEPTS LENGHT ', this.departments.length);
 
-    this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+      this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
+    } else {
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
   }
 
 
