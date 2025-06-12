@@ -23,6 +23,8 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import * as moment from 'moment';
 import { ProjectUser } from 'app/models/project-user'
+import { RoleService } from 'app/services/role.service'
+import { RolesService } from 'app/services/roles.service'
 
 const swal = require('sweetalert')
 
@@ -125,6 +127,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // tagsArray: Array<any> = [];
   // displayAvatarNoProfileFoto: boolean = false
 
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -138,7 +143,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     public dialog: MatDialog,
     public wsRequestsService: WsRequestsService,
     private clipboard: Clipboard,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private roleService: RoleService,
+    public rolesService: RolesService
 
   ) {
     super(prjctPlanService, notify);
@@ -150,7 +157,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProject()
+    // this.auth.checkRoleForCurrentProject()
     this.getUploadEgineAndProjectUsers()
     this.translateStrings()
     // this.getAllUsersOfCurrentProject(); // MOVED IN GET STORAGE BUCKET
@@ -165,12 +172,30 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
     this.getDashboardCurrentLang()
+    this.checkPermissions();
   }
+
+   ngOnDestroy() {
+    // this.subscription.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   ngAfterViewInit(): void {
     // setTimeout(() => {
     //   this.displayAvatarNoProfileFoto = true
     // }, 500);
   }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('teammates')
+    console.log('[USERS] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[USERS] - checkPermissions -isAuthorized ', this.isAuthorized)
+    console.log('[USERS] - checkPermissions - permissionChecked ', this.permissionChecked)
+  }
+
 
   getDashboardCurrentLang() {
     const browserLang = this.translate.getBrowserLang();
@@ -236,11 +261,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
 
-  ngOnDestroy() {
-    // this.subscription.unsubscribe()
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
   presentDialogResetBusy() {
     this.logger.log('[USERS] presentDialogResetBusy ')
@@ -444,7 +465,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.router.navigate(['project/' + this.id_project + '/groups'])
   }
 
-   goToUsersRoles() {
+  goToUsersRoles() {
     this.router.navigate(['project/' + this.id_project + '/roles']);
   }
 
@@ -954,7 +975,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.user_firstname = userFirstname
     this.user_lastname = userLastname
 
-    this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ',  this.id_projectUser, ' - (Firstname: ',  userFirstname, '; Lastname: ',    userLastname,  ')')
+    this.logger.log('[USERS] OPEN DELETE MODAL - PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')')
   }
 
   onCloseDeleteModalHandled() {
