@@ -48,7 +48,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 })
 
 
-export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy , AfterViewChecked {
+export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked {
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -456,7 +456,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   ngOnInit() {
-  
+
 
     // this.auth.checkRoleForCurrentProject();
     this.getProjectPlan()
@@ -481,7 +481,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.getOSCODE();
     this.getTestSiteUrl();
     // this.getAndManageAccordionInstallWidget();
-    
+
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
 
@@ -511,44 +511,44 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
 
- async checkPermissions() {
+  async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('widget-set-up')
     console.log('[WIDGET-SET-UP] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[WIDGET-SET-UP] isAuthorized ',  this.isAuthorized)
-    console.log('[WIDGET-SET-UP] permissionChecked ',  this.permissionChecked)
+    console.log('[WIDGET-SET-UP] isAuthorized ', this.isAuthorized)
+    console.log('[WIDGET-SET-UP] permissionChecked ', this.permissionChecked)
   }
 
-    listenToProjectUser() {
-      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
-        this.rolesService.getUpdateRequestPermission()
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(status => {
-          this.ROLE =  status.role
-          console.log('[WIDGET-SET-UP] - Role:', this.ROLE);
-          console.log('[WIDGET-SET-UP] - Permissions:', status.matchedPermissions);
-          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-            if (status.matchedPermissions.includes(PERMISSIONS.TRANSLATIONS_READ)) {
-              // Enable read translations
-              this.PERMISSION_TO_READ_TRANSLATIONS = true
-              console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
-            } else {
-              this.PERMISSION_TO_READ_TRANSLATIONS = false
-              console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
-            }
-          } else {
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role
+        console.log('[WIDGET-SET-UP] - Role:', this.ROLE);
+        console.log('[WIDGET-SET-UP] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TRANSLATIONS_READ)) {
+            // Enable read translations
             this.PERMISSION_TO_READ_TRANSLATIONS = true
-            console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+            console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+          } else {
+            this.PERMISSION_TO_READ_TRANSLATIONS = false
+            console.log('[WIDGET-SET-UP] - PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
           }
-  
-          // if (status.matchedPermissions.includes('lead_update')) {
-          //   // Enable lead update action
-          // }
-  
-          // You can also check status.role === 'owner' if needed
-        });
-    }
+        } else {
+          this.PERMISSION_TO_READ_TRANSLATIONS = true
+          console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
 
 
   listenToUpladAttachmentProgress() {
@@ -1613,7 +1613,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           var arrow_icon = arrow_icon_div.children[0]
           // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
           arrow_icon.classList.add("arrow-up");
-        // }, 2000);
+          // }, 2000);
         }, 100);
       }
 
@@ -1633,7 +1633,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // this.logger.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
 
         setTimeout(() => {
-        // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+          // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
 
           if (firstAccordion.classList.contains('active')) {
             self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'false')
@@ -1697,7 +1697,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             if (translation.default === true) {
               this.defaultLangCode = translation.lang.toLowerCase()
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** defaultLangCode (onInit) ', this.defaultLangCode);
-            
+
 
             } else {
               this.logger.log('[WIDGET-SET-UP] - GET LABELS ***** No default Lang *****  ', translation);
@@ -1727,18 +1727,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - GET LABELS -  ordered wd_availableTranslations', this.wd_availableTranslations);
           this.logger.log('[WIDGET-SET-UP] - GET LABELS -  defaultLangCode', this.defaultLangCode);
           this.wd_availableTranslations[0]
-          if (this.wd_availableTranslations &&  this.defaultLangCode ) { 
+          if (this.wd_availableTranslations && this.defaultLangCode) {
             const defaultLanguage = this.wd_availableTranslations.find(lang => lang.code === this.defaultLangCode);
 
             this.logger.log('[WIDGET-SET-UP]  defaultLanguage', defaultLanguage);
             this.selectedLang = defaultLanguage.name;
             this.selectedLangCode = defaultLanguage.code;
             this.selectedLangName = defaultLanguage.name;
-          
-          } else if (this.wd_availableTranslations &&  !this.defaultLangCode) {
-              this.selectedLang = this.wd_availableTranslations[0].name;
-              this.selectedLangCode = this.wd_availableTranslations[0].code;
-              this.selectedLangName = this.wd_availableTranslations[0].name;
+
+          } else if (this.wd_availableTranslations && !this.defaultLangCode) {
+            this.selectedLang = this.wd_availableTranslations[0].name;
+            this.selectedLangCode = this.wd_availableTranslations[0].code;
+            this.selectedLangName = this.wd_availableTranslations[0].name;
 
           }
 
@@ -2250,8 +2250,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // ------------------------------------------------------------------------------------
   onSelectlang(selectedLang) {
     this.logger.log('[WIDGET-SET-UP] onSelectlang selectedLang ', selectedLang);
-    this.logger.log('[WIDGET-SET-UP] onSelectlang   this.defaultLangCode ',   this.defaultLangCode);
-  
+    this.logger.log('[WIDGET-SET-UP] onSelectlang   this.defaultLangCode ', this.defaultLangCode);
+
     this.selectedLangCode = selectedLang.code;
     this.logger.log('[WIDGET-SET-UP] - GET LABELS - onSelectlang (onSelectlang) ', this.selectedLangCode);
     this.selectedLangName = selectedLang.name;
@@ -2771,7 +2771,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.themeColorOpacity === 0) {
           // this.logger.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
           // this.themeColorOpacity = "0.50";
-            this.themeColorOpacity = "0";
+          this.themeColorOpacity = "0";
           this.primaryColorOpacityEnabled = true
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
@@ -3605,7 +3605,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] file.type', file.type)
     this.logger.log('[WIDGET-SET-UP] file.size', file.size)
     if (file.size <= 1024000) {
-                     
+
       if (file.type === 'image/gif' || file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
 
 
@@ -3651,7 +3651,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         }
       } else {
-       this.notify.presenModalAttachmentFileTypeNotSupported()
+        this.notify.presenModalAttachmentFileTypeNotSupported()
       }
     } else {
       this.logger.log('[WIDGET-SET-UP] File is too large to upload. Max file size: 1024KB')
@@ -3660,12 +3660,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
 
- 
+
 
   presentModalAttachmentFileSizeTooLarge(fileSize) {
     Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('FileTooLarge', {file_size: fileSize}),
+      text: this.translate.instant('FileTooLarge', { file_size: fileSize }),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: false,
@@ -3836,7 +3836,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // }
   }
 
-  saveWidgetSingleConversation () {
+  saveWidgetSingleConversation() {
 
     if (this.singleConversation === true) {
 
@@ -3903,7 +3903,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   saveWidgetVisibility() {
-   
+
 
     if (this.mobile_widget_is_visible === false) {
       this.widgetObj['displayOnMobile'] = this.mobile_widget_is_visible;
@@ -4674,7 +4674,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToWidgetMultilanguage() {
-    if (this.PERMISSION_TO_READ_TRANSLATIONS)  {
+    if (this.PERMISSION_TO_READ_TRANSLATIONS) {
       this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
     } else {
       this.notify.presentDialogNoPermissionToViewThisSection()
