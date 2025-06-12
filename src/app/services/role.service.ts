@@ -162,7 +162,26 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Teammates list
+          if (calledby === 'teammates') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TEAMMATES_READ);
+            console.log('[ROLE-SERV] - teammates hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
+          // Groups
+          if (calledby === 'groups') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.GROUPS_READ);
+            console.log('[ROLE-SERV] - groups hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles
+          if (calledby === 'users-roles') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.ROLES_READ);
+            console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
 
 
@@ -200,6 +219,27 @@ export class RoleService {
           if (calledby === 'department-create') {
             const hasPermission = true
             console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Teammates list
+          if (calledby === 'teammates') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - department-create hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Groups
+          if (calledby === 'groups') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - groups hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles
+           if (calledby === 'users-roles') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -328,6 +368,27 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Teammates list 
+          if (calledby === 'teammates') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TEAMMATES_READ);
+            console.log('[ROLE-SERV] - teammates hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Groups
+          if (calledby === 'groups') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.GROUPS_READ);
+            console.log('[ROLE-SERV] - groups hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles
+          if (calledby === 'users-roles') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.ROLES_READ);
+            console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
 
 
@@ -369,6 +430,26 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Teammates list 
+          if (calledby === 'teammates') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - teammates hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Groups
+          if (calledby === 'groups') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - teammates hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Roles
+          if (calledby === 'users-roles') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - users-roles hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
 
         }

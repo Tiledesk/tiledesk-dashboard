@@ -22,7 +22,11 @@ export const PERMISSIONS = {
   DEPARTMENT_DETAIL_READ: 'department_detail_read',
   DEPARTMENT_CREATE_READ: 'department_create_read',
 
-  
+  TEAMMATES_READ: 'teammates_read',
+  TEAMMATES_STATUS_UPDATE: 'teammates_status_update',
+  ROLES_READ: 'roles_read',
+  GROUPS_READ: 'groups_read',
+
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',
   LEAD_DATA: 'leadData',

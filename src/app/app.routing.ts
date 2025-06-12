@@ -641,7 +641,7 @@ const routes: Routes = [
   //   canActivate: [AuthGuard, RoleGuard],
   //   data: [{ roles: ['owner', 'admin'] }]
   // },
-    // Widget Set Up control moved in roleService
+  // Widget Set Up control moved in roleService
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
@@ -667,7 +667,7 @@ const routes: Routes = [
   // },
 
 
-    // Widget Multilanguage Check moved in Roleservice
+  // Widget Multilanguage Check moved in Roleservice
   {
     path: 'project/:projectid/widget/translations',
     loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
@@ -682,7 +682,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
-  
+
 
   // Widget installation
   // {
@@ -693,7 +693,7 @@ const routes: Routes = [
   // },
 
 
-   // Widget installation - check moved in Role service
+  // Widget installation - check moved in Role service
   {
     path: 'project/:projectid/installation',
     loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
@@ -710,7 +710,7 @@ const routes: Routes = [
   // },
   // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
 
-   // Departments 
+  // Departments 
   {
     path: 'project/:projectid/departments',
     loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
@@ -765,14 +765,22 @@ const routes: Routes = [
 
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT)
 
-  // Teammates
+  // Teammates - check moved in Role Service
+  // {
+  //   path: 'project/:projectid/users',
+  //   loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
+ 
+  // Teammates - check moved in Role Service
   {
     path: 'project/:projectid/users',
     loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
+
 
   // Add Teammate
   {
@@ -835,7 +843,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
-   // New Role  canActivate: [AuthGuard, ProjectProfileGuard],
+  // New Role  canActivate: [AuthGuard, ProjectProfileGuard],
   {
     path: 'project/:projectid/create-new-role',
     loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
@@ -848,7 +856,7 @@ const routes: Routes = [
     loadChildren: () => import('app/users-new-role/users-new-role.module').then(m => m.UsersNewRoleModule),
     canActivate: [AuthGuard],
   },
-  
+
 
   // Email ticketing
   {
@@ -1076,12 +1084,12 @@ const routes: Routes = [
   //   canActivate: [AuthGuard, RoleGuard],
   //   data: [{ roles: ['owner', 'admin'] }]
   // },
-   {
+  {
     path: 'project/:projectid/knowledge-bases/:namespaceid',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
     canActivate: [AuthGuard]
   },
-  
+
   // Check moved in RoleService
   // {
   //   path: 'project/:projectid/knowledge-bases/:calledby',
@@ -1090,7 +1098,7 @@ const routes: Routes = [
   //   data: [{ roles: ['owner', 'admin'] }]
   // },
 
-   {
+  {
     path: 'project/:projectid/knowledge-bases/:calledby',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
     canActivate: [AuthGuard],
@@ -1116,7 +1124,7 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
 
-        
+
   // Check moved in role service
   // {
   //   path: 'project/:projectid/bots/my-chatbots/all',
@@ -1126,7 +1134,7 @@ const routes: Routes = [
   // },
   // { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
-   {
+  {
     path: 'project/:projectid/bots/my-chatbots/all',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
     canActivate: [AuthGuard]
@@ -1154,7 +1162,7 @@ const routes: Routes = [
   //   data: [{ roles: ['owner', 'admin'] }]
   // },
 
-   {
+  {
     path: 'project/:projectid/flows/flow-automations',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
     canActivate: [AuthGuard]
@@ -1167,7 +1175,7 @@ const routes: Routes = [
   //   canActivate: [AuthGuard, RoleGuard],
   //   data: [{ roles: ['owner', 'admin'] }]
   // },
-   {
+  {
     path: 'project/:projectid/flows/flow-webhooks',
     loadChildren: () => import('app/bots/flow-webhooks/flow-webhooks.module').then(m => m.FlowWebhooksModule),
     canActivate: [AuthGuard]
@@ -1191,7 +1199,7 @@ const routes: Routes = [
   // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
 
- 
+
 
   // Used in app-store to create an External chatbot
   {
@@ -1317,7 +1325,7 @@ const routes: Routes = [
   { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
   { path: 'project/:projectid/unauthorized_access', component: UnauthorizedForProjectComponent },
   { path: 'project/:projectid/unauthorized-to-upgrade', component: UnauthorizedToUpgradeComponent },
-  
+
 
 
 

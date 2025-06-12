@@ -171,10 +171,19 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view list' },
         { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to view detail'},
         { key: PERMISSIONS.DEPARTMENT_CREATE_READ, label: 'Able to create'},
-        
-        // { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
-        // { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
-    
+      ]
+    },
+
+     {
+      key: 'teammatesRolesGroups ',
+      title: 'Teammates & Groups ',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates' },
+        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'},
+        { key: PERMISSIONS.ROLES_READ, label: 'Able to view Roles'},
       ]
     },
 
