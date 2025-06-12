@@ -4085,6 +4085,41 @@ div:where(.swal2-container) .swal2-select {
   //  background-color: #eee;
 }
 
+/* Bottom nav fixed position
+/* *************************** */
+.bottom-nav-fixed {
+  background-color: #fff;
+  width: 100%;
+  position: fixed;
+  top: 65px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+}
+
+.bottom-nav-fixed li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav-fixed li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.bottom-nav-fixed li a:hover {
+  text-decoration: none;
+  //  background-color: #eee;
+}
+
 
 /* COMMON */
 .bottom-nav {
