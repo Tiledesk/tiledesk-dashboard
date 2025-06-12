@@ -10,6 +10,7 @@ import { RolesService } from 'app/services/roles.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from 'app/services/users.service';
 import { ProjectUser } from 'app/models/project-user';
+import { RoleService } from 'app/services/role.service';
 const Swal = require('sweetalert2')
 
 @Component({
@@ -32,6 +33,9 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
   projectUsers: any
   projectUsersAssociatedToRole: any
 
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -40,7 +44,9 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private rolesService: RolesService,
     private translate: TranslateService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private roleService: RoleService,
+  
   ) {
     // this.roles = [{ "name":"role1", "permissions":["lead_create","request_read_group"]}, { "name":"role2", "permissions":["request_read_group"]}]
 
@@ -53,6 +59,21 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
     this.getCurrentProject()
     this.getRoles()
     this.getAllUsersOfCurrentProject()
+    this.checkPermissions();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('users-roles')
+    console.log('[USERS-ROLES] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[USERS-ROLES] isAuthorized ', this.isAuthorized)
+    console.log('[USERS-ROLES] permissionChecked ', this.permissionChecked)
   }
 
   getAllUsersOfCurrentProject() {
@@ -73,12 +94,6 @@ export class UsersRolesComponent implements OnInit, OnDestroy {
       });
   }
 
-
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   getRoles() {
     this.rolesService.getAllRoles()
