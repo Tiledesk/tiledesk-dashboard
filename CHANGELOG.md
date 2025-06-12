@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.111-rc1
+- Adds the section Teammates & Groups in the manage role page
+- Adds the ability to manage the access to Teammates list 
+- Adds the ability to manage the access to Groups list
+- Adds the ability to manage the access to Roles list
+
+### 2.7.110
+- Fixes the bug: "verified" icon displays incorrectly for requesters in the unassigned conversations section
+
 ### 2.7.110-rc1
 - Adds Routing and Departments section to Manage Role page with options to enable/disable department list display, enable/disable department details display, and enable/disable department creation
 
