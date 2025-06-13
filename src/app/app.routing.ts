@@ -782,14 +782,21 @@ const routes: Routes = [
   },
 
 
-  // Add Teammate
+  // Add Teammate - ckeck moved in RoleService
+  // {
+  //   path: 'project/:projectid/user/add',
+  //   loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Add Teammate - ckeck moved in RoleService
   {
     path: 'project/:projectid/user/add',
     loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Teammate profile
   {
