@@ -158,6 +158,12 @@
 //     display: inline-flex !important; //
 // }
 
+.tag-dropdown-toggle.disabled {
+  pointer-events: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
 .create-tag-btn {
   margin: 0px;
   padding-top: 6px !important;
