@@ -501,6 +501,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.listenToProjectUser()
   }
 
+    ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      const test = <HTMLElement>document.querySelector('.' + this.fragment)
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
+      test.scrollIntoView();
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
   ngAfterViewChecked() {
     if (this.isAuthorized && !this.accordionInitialized) {
       const acc = document.getElementsByClassName("widget-section-accordion");
@@ -1316,31 +1338,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     });
   }
 
-
-  ngAfterViewInit(): void {
-    try {
-      // name of the class of the html div = . + fragment
-      const test = <HTMLElement>document.querySelector('.' + this.fragment)
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
-      test.scrollIntoView();
-      // document.querySelector('#' + this.fragment).scrollIntoView();
-      // this.logger.log( document.querySelector('#' + this.fragment).scrollIntoView())
-    } catch (e) {
-      // this.logger.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-
-  // il testo della modale '"Non è impostata nessuna lingua predefinita' e dato che potrebbe essere visualizzata 
-  // all'init della pagina nn può stare nel base compo
 
 
   // scroll to multilanguage section
