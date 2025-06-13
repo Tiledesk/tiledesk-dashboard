@@ -946,6 +946,14 @@ my-app .main-panel .main-content .card {
   font-weight: 400;
 }
 
+.span-18-inline {
+  display: inline-block;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px;
+}
+
 .span-20 {
   display: block;
   width: 20px;
@@ -953,6 +961,7 @@ my-app .main-panel .main-content .card {
   height: 20px;
   min-height: 20px;
 }
+
 
 .span-12 {
   display: block;
