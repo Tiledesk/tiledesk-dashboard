@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CannedResponsesService } from '../services/canned-responses.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
@@ -19,7 +19,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
   templateUrl: './canned-responses-list.component.html',
   styleUrls: ['./canned-responses-list.component.scss']
 })
-export class CannedResponsesListComponent implements OnInit {
+export class CannedResponsesListComponent implements OnInit, OnDestroy {
 
   public canned_responses_docs_url = URL_canned_responses_doc
   displayModal_AddEditResponse = 'none'
