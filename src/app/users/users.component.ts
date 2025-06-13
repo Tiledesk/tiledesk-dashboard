@@ -25,6 +25,7 @@ import * as moment from 'moment';
 import { ProjectUser } from 'app/models/project-user'
 import { RoleService } from 'app/services/role.service'
 import { RolesService } from 'app/services/roles.service'
+import { PERMISSIONS } from 'app/utils/permissions.constants'
 
 const swal = require('sweetalert')
 
@@ -130,6 +131,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   isAuthorized = false;
   permissionChecked = false;
 
+  PERMISSION_TO_INVITE: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -173,9 +177,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.getBrowserVersion()
     this.getDashboardCurrentLang()
     this.checkPermissions();
+    this.listenToProjectUser()
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     // this.subscription.unsubscribe()
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -185,6 +190,49 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     // setTimeout(() => {
     //   this.displayAvatarNoProfileFoto = true
     // }, 500);
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        console.log('[DEPTS] - Role:', status.role);
+        console.log('[DEPTS] - Permissions:', status.matchedPermissions);
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_CREATE)) {
+
+            this.PERMISSION_TO_INVITE = true
+            console.log('[DEPTS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+          } else {
+            this.PERMISSION_TO_INVITE = false
+            console.log('[DEPTS] - PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+          }
+        } else {
+          this.PERMISSION_TO_INVITE = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_INVITE ', this.PERMISSION_TO_INVITE);
+        }
+
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_READ_DETAILS)) {
+
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+            console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          } else {
+            this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+            console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+          }
+        } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
   async checkPermissions() {
@@ -261,7 +309,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
 
 
- 
+
 
   presentDialogResetBusy() {
     this.logger.log('[USERS] presentDialogResetBusy ')
@@ -457,7 +505,11 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // }
 
   goToEditUser(projectUser_id) {
+    if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
     this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id])
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   goToGroups() {
@@ -920,6 +972,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   goToAddUser() {
+    if(this.PERMISSION_TO_INVITE) {
     this.logger.log('[USERS] INVITE USER (GOTO) No of Project Users ', this.projectUsersLength)
     this.logger.log('[USERS] INVITE USER (GOTO) No of Pending Invites ', this.countOfPendingInvites)
     this.logger.log('[USERS] INVITE USER (GOTO) No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
@@ -957,6 +1010,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       // } else {
       //   this.router.navigate(['project/' + this.id_project + '/user/add'])
       // }
+    }
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
     }
   }
 
