@@ -8,7 +8,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { AuthGuard } from './core/auth.guard';
-import { AdminGuard } from './core/admin.guard';
 import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
@@ -1454,6 +1453,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]
+  providers: [AuthGuard, ProjectProfileGuard, PendingChangesGuard]
 })
 export class AppRoutingModule { }

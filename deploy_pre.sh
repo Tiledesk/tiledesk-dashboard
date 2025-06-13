@@ -17,21 +17,21 @@ node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configur
 cd dist
 
 ####### tiledesk
-# aws s3 sync --cache-control max-age=172800 . s3://tiledesk-dashboard-pre/dashboard/
-# # aws s3 sync ./index.html s3://tiledesk-dashboard-pre/dashboard/ --exclude='*' --include='/index.html'
-# aws s3 sync . s3://tiledesk-dashboard-pre/dashboard/
-# aws cloudfront create-invalidation --distribution-id E13L8CUUKUWAJF --paths "/*"
-# echo new version deployed on s3://tiledesk-dashboard-pre/dashboard/
-# echo available on https://support-pre.tiledesk.com/dashboard/index.html
+aws s3 sync --cache-control max-age=172800 . s3://tiledesk-dashboard-pre/dashboard/
+# aws s3 sync ./index.html s3://tiledesk-dashboard-pre/dashboard/ --exclude='*' --include='/index.html'
+aws s3 sync . s3://tiledesk-dashboard-pre/dashboard/
+aws cloudfront create-invalidation --distribution-id E13L8CUUKUWAJF --paths "/*"
+echo new version deployed on s3://tiledesk-dashboard-pre/dashboard/
+echo available on https://support-pre.tiledesk.com/dashboard/index.html
 
 
 
 ####### tiledesk in version subfolder with cache control
-aws s3 sync --cache-control max-age=172800 . s3://tiledesk-dashboard-pre/dashboard/int
-# aws s3 sync ./index.html s3://tiledesk-dashboard-pre/dashboard/ --exclude='*' --include='/index.html'
-# aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*"
-echo new version deployed on s3://tiledesk-dashboard-pre/dashboard/int
-echo available on https://support-pre.tiledesk.com/dashboard/int/index.html
+# aws s3 sync --cache-control max-age=172800 . s3://tiledesk-dashboard-pre/dashboard/int
+# # aws s3 sync ./index.html s3://tiledesk-dashboard-pre/dashboard/ --exclude='*' --include='/index.html'
+# # aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*"
+# echo new version deployed on s3://tiledesk-dashboard-pre/dashboard/int
+# echo available on https://support-pre.tiledesk.com/dashboard/int/index.html
 
 
 ####### tiledesk in version subfolder 
