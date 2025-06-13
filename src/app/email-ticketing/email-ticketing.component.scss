@@ -58,6 +58,17 @@ input[type="text"] {
     // border: solid 1px #ddd;
 }
 
+input[type=text]:disabled {
+    background-color: rgb(248, 249, 249) !important;
+}
+
+.no-copy {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 .ticketing-email-wpr {
     max-width: 640px;
 }

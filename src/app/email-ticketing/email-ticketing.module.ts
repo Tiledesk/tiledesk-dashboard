@@ -7,6 +7,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: EmailTicketingComponent},
@@ -23,7 +24,8 @@ const routes: Routes = [
     SettingsSidebarModule,
     SharedModule,
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class EmailTicketingModule { }
