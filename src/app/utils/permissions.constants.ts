@@ -38,7 +38,10 @@ export const PERMISSIONS = {
   CANNED_RESPONSES_CREATE:'canned_responses_create',
   CANNED_RESPONSES_DELETE:'canned_responses_delete',
   
-  
+  TAGS_READ:'tags_read',
+  TAG_CREATE:'tag_create',
+  TAG_DELETE:'tag_delete',
+  TAG_UPDATE:'tag_update',
 
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',

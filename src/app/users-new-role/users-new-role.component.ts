@@ -200,8 +200,8 @@ export class UsersNewRoleComponent implements OnInit {
       ]
     },
      {
-      key: 'cannedResponses ',
-      title: 'Canned Responses ',
+      key: 'cannedResponses',
+      title: 'Canned Response',
       parentLabel: 'Select all',
       type: 'checkbox',
       expanded: false,
@@ -210,6 +210,21 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.CANNED_RESPONSES_UPDATE, label: 'Able to edit (⚠️ internal note - to resolve Error 403)' },
         { key: PERMISSIONS.CANNED_RESPONSES_CREATE, label: 'Able to create' },
         { key: PERMISSIONS.CANNED_RESPONSES_DELETE, label: 'Able to delete (⚠️ internal note - to resolve Error 403)' },
+      ]
+    },
+
+      {
+      key: 'tags',
+      title: 'Tags',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.TAGS_READ, label: 'Able to view' },
+        { key: PERMISSIONS.TAG_CREATE, label: 'Able to create' },
+        { key: PERMISSIONS.TAG_UPDATE, label: 'Able to edit' },
+        { key: PERMISSIONS.TAG_DELETE, label: 'Able to delete' },
+        
       ]
     },
 
