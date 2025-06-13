@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.111-rc3
+- Adds Tags section in Role Management page
+- Adds the ability to manage access to the Tags page
+- Adds the ability to manage the "edit" function on the Tags page
+- Adds the ability to manage the "create" function on the Tags page
+- Adds the ability to manage the "delete" function on the Tags page
+
 ### 2.7.111-rc2
 - Adds the ability to manage the access to the details of a Teammate
 - Adds the ability to manage the invite  of a new Teammate
