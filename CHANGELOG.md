@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.7.111-rc2
+- Adds the ability to manage the access to the details of a Teammate
+- Adds the ability to manage the invite  of a new Teammate
+- Adds the section Email ticketing and Canned Responses in the manage role page
+- Adds the ability to manage the access to Email ticketing page
+- Adds the ability to manage the "edit" function on the Email ticketing page
+- Adds the ability to manage access to the Canned Responses page
+- Adds the ability to manage the "edit" function on the Canned Responses page
+- Adds the ability to manage the "create" function on the Canned Responses page
+- Adds the ability to manage the "delete" function on the Canned Responses page
+
 ### 2.7.111-rc1
 - Adds the section Teammates & Groups in the manage role page
 - Adds the ability to manage the access to Teammates list 
