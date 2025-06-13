@@ -181,9 +181,35 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates' },
+        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates list' },
+        { key: PERMISSIONS.TEAMMATES_READ_DETAILS, label: 'Able to view Teammate detail' },
+        { key: PERMISSIONS.TEAMMATES_CREATE, label: 'Able to invite a new Teammate' },
         { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'},
         { key: PERMISSIONS.ROLES_READ, label: 'Able to view Roles'},
+      ]
+    },
+    {
+      key: 'emailTicketing',
+      title: 'Email ticketing',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.EMAIL_TICKETING_READ, label: 'Able to view' },
+        { key: PERMISSIONS.EMAIL_TICKETING_UPDATE, label: 'Able to edit' },
+      ]
+    },
+     {
+      key: 'cannedResponses ',
+      title: 'Canned Responses ',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.CANNED_RESPONSES_READ, label: 'Able to view' },
+        { key: PERMISSIONS.CANNED_RESPONSES_UPDATE, label: 'Able to edit (⚠️ internal note - to resolve Error 403)' },
+        { key: PERMISSIONS.CANNED_RESPONSES_CREATE, label: 'Able to create' },
+        { key: PERMISSIONS.CANNED_RESPONSES_DELETE, label: 'Able to delete (⚠️ internal note - to resolve Error 403)' },
       ]
     },
 

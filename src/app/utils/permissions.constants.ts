@@ -23,9 +23,22 @@ export const PERMISSIONS = {
   DEPARTMENT_CREATE_READ: 'department_create_read',
 
   TEAMMATES_READ: 'teammates_read',
-  TEAMMATES_STATUS_UPDATE: 'teammates_status_update',
+  TEAMMATES_READ_DETAILS: 'teammates_detail_read',
+  TEAMMATES_CREATE: 'teammates_create',
   ROLES_READ: 'roles_read',
   GROUPS_READ: 'groups_read',
+
+  TEAMMATE_STATUS_UPDATE: 'teammate_status_update',
+
+  EMAIL_TICKETING_READ:'email_ticketing_read',
+  EMAIL_TICKETING_UPDATE:'email_ticketing_update',
+
+  CANNED_RESPONSES_READ:'canned_responses_read',
+  CANNED_RESPONSES_UPDATE:'canned_responses_update',
+  CANNED_RESPONSES_CREATE:'canned_responses_create',
+  CANNED_RESPONSES_DELETE:'canned_responses_delete',
+  
+  
 
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',
