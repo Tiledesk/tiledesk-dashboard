@@ -882,15 +882,21 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
 
-  // Tags
+  // Tags - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/labels',
+  //   loadChildren: () => import('app/tags/tags.module').then(m => m.TagsModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
+
+  // Tags - check moved in RoleService
   {
     path: 'project/:projectid/labels',
     loadChildren: () => import('app/tags/tags.module').then(m => m.TagsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
-
 
   // Working hours 
   {

@@ -211,6 +211,13 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Tags
+          if (calledby === 'tags') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TAGS_READ);
+            console.log('[ROLE-SERV] - tags hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
           
 
@@ -297,6 +304,13 @@ export class RoleService {
           if (calledby === 'canned-responses') {
             const hasPermission = true
             console.log('[ROLE-SERV] - canned-responses hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Tags
+          if (calledby === 'tags') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - tags hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -467,10 +481,17 @@ export class RoleService {
             return hasPermission;
           }
 
-           // Canned responses
+          // Canned responses
           if (calledby === 'canned-responses') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.CANNED_RESPONSES_READ);
             console.log('[ROLE-SERV] - canned-responses hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Tags
+          if (calledby === 'tags') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.TAGS_READ);
+            console.log('[ROLE-SERV] - tags hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -563,6 +584,13 @@ export class RoleService {
           if (calledby === 'canned-responses') {
             const hasPermission = true;
             console.log('[ROLE-SERV] - canned-responses hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Tags
+          if (calledby === 'tags') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - tags hasPermission ', hasPermission)
             return hasPermission;
           }
 
