@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RolesService } from 'app/services/roles.service';
+import { RoleService } from 'app/services/role.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -140,6 +141,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   public hideHelpLink: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   roles: any;
+
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -153,13 +158,13 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     public brandService: BrandService,
     private logger: LoggerService,
     private rolesService: RolesService,
-
+    private roleService: RoleService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit() {
@@ -169,14 +174,15 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     console.log('on init Selected Role ', this.selectedRole);
 
     if (this.router.url.indexOf('/add') !== -1) {
-      this.logger.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
+      console.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
       this.CREATE_VIEW = true;
       this.EDIT_VIEW = false;
+      this.checkCreatePermissions()
     } else {
-      this.logger.log('[USER-EDIT-ADD] HAS CLICKED EDIT ');
+      console.log('[USER-EDIT-ADD] HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
       this.CREATE_VIEW = false;
-
+      this.checkEditPermissions()
       this.getParamsProjectUserIdAndThenGetProjectUsersById()
     }
 
@@ -199,11 +205,36 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     this.getRoles()
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+
+  async checkCreatePermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('teammate-create')
+    console.log('[USER-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[USER-EDIT-ADD] isAuthorized to CREATE', this.isAuthorized)
+    console.log('[USER-EDIT-ADD] permissionChecked ', this.permissionChecked)
+
+  }
+
+  async checkEditPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('teammate-edit')
+    console.log('[USER-EDIT-ADD] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[USER-EDIT-ADD] isAuthorized to view EDIT', this.isAuthorized)
+    console.log('[USER-EDIT-ADD] permissionChecked ', this.permissionChecked)
+
+  }
+
+
+
+
 
   getRoles() {
     this.rolesService.getAllRoles()
@@ -399,12 +430,12 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.learnMoreAboutDefaultRoles = translation;
       });
 
-      this.translate.get('TeammatesWithAgentRolesCannotInvite')
+    this.translate.get('TeammatesWithAgentRolesCannotInvite')
       .subscribe((translation: any) => {
         // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.agentsCannotInvite = translation;
       });
-      
+
   }
 
   getProfileImageStorage() {
@@ -448,7 +479,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
 
- 
+
 
 
 
@@ -456,14 +487,14 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
-         
+
           this.notify._displayContactUsModal(true, 'seats_limit_reached')
         } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
           this.router.navigate(['project/' + this.id_project + '/pricing']);
         }
       } else {
-        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
-          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed')
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
           this.notify._displayContactUsModal(true, 'seats_limit_reached');
         } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -474,15 +505,15 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
       if (this.prjct_profile_type === 'free') {
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
-         
+
           this.notify._displayContactOwnerModal(true, 'seats_limit_reached')
         } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
           // this.router.navigate(['project/' + this.id_project + '/pricing']);
           this.notify._displayContactOwnerModal(true, 'upgrade_plan');
         }
       } else {
-        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
-          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
           this.notify._displayContactOwnerModal(true, 'seats_limit_reached');
         } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -500,7 +531,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.notify._displayContactUsModal(true, 'seats_limit_exceed')
     } else {
       // this.presentModalOnlyOwnerCanManageTheAccountPlan()
-      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
     }
   }
 
@@ -508,7 +539,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     if (this.USER_ROLE === 'owner') {
       this.notify.displayGoToPricingModal('user_exceeds')
     } else {
-      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
     }
   }
 
@@ -568,7 +599,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
   getProjectUsersById() {
-    
+
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
       console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', this.project_user_id);
       console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
