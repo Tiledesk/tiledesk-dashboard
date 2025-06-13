@@ -9,6 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { FormsModule } from '@angular/forms';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: CannedResponsesListComponent},
@@ -28,7 +29,8 @@ const routes: Routes = [
     MatTooltipModule,
     TranslateModule,
     SettingsSidebarModule,
-    FormsModule
+    FormsModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class CannedResponsesListModule { }

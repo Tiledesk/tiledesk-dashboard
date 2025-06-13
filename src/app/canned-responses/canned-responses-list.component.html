@@ -1,7 +1,8 @@
 <!-- <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   {{ 'Settings' | translate }}
 </p> -->
-<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
   <i class="material-icons">settings</i>
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
@@ -10,220 +11,238 @@
   {{ 'CannedResponses.CannedResponses' | translate }}
 </span> -->
 
-<div class="main-content canned-responses-list-maincontent" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
- 
+<div class="main-content canned-responses-list-maincontent"
+  style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
+
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     {{'CannedResponses.CannedResponses' | translate}}
   </div>
-  
-  
+
+
   <div class="container-fluid" style="padding-right: 5px;    padding-left: 10px;">
 
     <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
-      
+
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-        <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
-          <div class="row link-to-docs">
-            <div class="col-md-12">
-              <span>
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
+
+            <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
+              <div class="row link-to-docs">
+                <div class="col-md-12">
+                  <span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                      fill="none">
+                      <path
+                        d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
+                    </svg>
+                  </span>
+                  <a class="custom-anchor-to-docs" (click)="goCannedResponseDocs()">
+                    {{'HowCannedResponsesWorks' | translate}}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <!-- [ngClass]="{'col-sm-12': innerWidthLessThan992 === true, 'col-sm-7': innerWidthLessThan992 === false }" -->
+              <div class="col-sm-8 left-col-custom-padding">
+              
+                <div class="page-title--wrapper">
+                  <div class="title--header">
+                    <!-- {{ pageName }} -->
+                  </div>
+                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()">
                 
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="none">
-                  <path
-                    d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z" />
-                </svg>
-              </span>
-              <a class="custom-anchor-to-docs" (click)="goCannedResponseDocs()">
-                {{'HowCannedResponsesWorks' | translate}}
-              </a>
-            </div>
-          </div>
-        </div>
+                      {{ "CannedResponses.AddResponses" | translate }}
+                    </button>
+                </div>
 
-        <div class="row">
+                <div class="card left-card-custom-margin ">
+                  <!-- <div class="card-header card-header-custom-bkgrnd">
+                 
+                    <button class="btn btn-tdblu-no-boxshadow pull-right" (click)="presentResponseModal_inAddMode()">
+                   
+                      {{ "CannedResponses.AddResponses" | translate }}
+                    </button>
+                  </div> -->
 
-          <!-- [ngClass]="{'col-sm-12': innerWidthLessThan992 === true, 'col-sm-7': innerWidthLessThan992 === false }" -->
-          <div class="col-sm-8 left-col-custom-padding" >
-            <!-- card--no-border -->
-            <div class="card left-card-custom-margin ">
-              <div class="card-header card-header-custom-bkgrnd">
-                <!-- btn-primary -->
-                <button class="btn btn-tdblu-no-boxshadow pull-right"
-                  (click)="presentResponseModal_inAddMode()">
-                  <!-- <span class="icon" style="padding-right:8px">
-                    <i class="material-icons">add_circle</i>
-                  </span> -->
-                  {{ "CannedResponses.AddResponses" | translate }}
-                </button>
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <div *ngIf="!showSpinner" class="card-content table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>
+                            <span class="column-th-span">
+
+                              {{ "CannedResponses.Responses" | translate }}
+                            </span>
+                          </th>
+
+                          <th>
+                            <span class="column-th-span">
+                              {{ "CreatedBy" | translate }}
+                            </span>
+                          </th>
+
+                          <th>
+                            <span class="column-th-span">
+                              {{ "Actions" | translate }}
+                            </span>
+                          </th>
+
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <!-- IF THERE ISN'T CANNED RESPONSES -->
+                        <tr *ngIf="responsesList && responsesList?.length === 0">
+                          <td colspan="3" style="text-align: center; padding-top: 24px;">
+                            <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                              <i class="material-icons"
+                                style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                                info
+                              </i>
+                              {{ 'CannedResponses.YouHaveNotAddedAnyCannedResponses' | translate }}
+                            </p>
+                          </td>
+                        </tr>
+
+                        <tr *ngFor="let response of responsesList; let i = index">
+                          <!--  style="width: 1%; white-space: nowrap;" -->
+                          <td>
+
+                            <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)">
+                              {{response?.title}}
+                            </span>
+                            <span style="display: block;color:#7695a5; font-size: 13px;">
+                              {{response?.text}}
+                            </span>
+                          </td>
+
+                          <!-- ------------------------------------------------------- -->
+                          <!-- Created By -->
+                          <!-- ------------------------------------------------------- -->
+                          <td>
+                            <!-- --------------------------------------------------- -->
+                            <!-- USECASE uploadEngine Firebase -->
+                            <!-- --------------------------------------------------- -->
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{response?.createdBy}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/no_image_user.png'" />
+
+                            <!-- --------------------------------------------------- -->
+                            <!-- USECASE uploadEngine Native -->
+                            <!-- --------------------------------------------------- -->
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
+                              src="{{baseUrl}}images?path=uploads%2Fusers%2F{{response?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                              onerror="this.src='assets/img/no_image_user.png'" />
+
+                            <span class="td-tag-table">
+                              <span *ngIf="response.createdBy_user">
+                                {{ response?.createdBy_user?.firstname }} {{ response?.createdBy_user?.lastname }}
+                              </span>
+
+                              <span *ngIf="!response.createdBy_user">
+                                n.d
+                              </span>
+                            </span>
+                          </td>
+
+
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                              (click)='presentResponseModal_inEditMode(response?._id)'>
+                              <i class="material-icons">edit</i>
+                            </button>
+
+                            <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                              (click)='deleteCannedResponse(response?._id)'>
+                              <i class="material-icons">close</i>
+                            </button>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
               </div>
+              <!-- /. end col-md-8 -->
 
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
-              <div *ngIf="!showSpinner" class="card-content table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>
-                        <span class="column-th-span">
-
-                          {{ "CannedResponses.Responses" | translate }}
-                        </span>
-                      </th>
-
-                      <th>
-                        <span class="column-th-span">
-                          {{ "CreatedBy" | translate }}
-                        </span>
-                      </th>
-
-                      <th>
-                        <span class="column-th-span">
-                          {{ "Actions" | translate }}
-                        </span>
-                      </th>
-
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <!-- IF THERE ISN'T CANNED RESPONSES -->
-                    <tr *ngIf="responsesList && responsesList?.length === 0">
-                      <td colspan="3" style="text-align: center; padding-top: 24px;">
-                        <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                          <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
-                            info
-                          </i>
-                          {{ 'CannedResponses.YouHaveNotAddedAnyCannedResponses' | translate }}
-                        </p>
-                      </td>
-                    </tr>
-
-                    <tr *ngFor="let response of responsesList; let i = index">
-                      <!--  style="width: 1%; white-space: nowrap;" -->
-                      <td>
-
-                        <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)">
-                          {{response?.title}}
-                        </span>
-                        <span style="display: block;color:#7695a5; font-size: 13px;">
-                          {{response?.text}}
-                        </span>
-                      </td>
-
-                      <!-- ------------------------------------------------------- -->
-                      <!-- Created By -->
-                      <!-- ------------------------------------------------------- -->
-                      <td>
-                        <!-- --------------------------------------------------- -->
-                        <!-- USECASE uploadEngine Firebase -->
-                        <!-- --------------------------------------------------- -->
-                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{response?.createdBy}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <!-- --------------------------------------------------- -->
-                        <!-- USECASE uploadEngine Native -->
-                        <!-- --------------------------------------------------- -->
-                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-canned"
-                          src="{{baseUrl}}images?path=uploads%2Fusers%2F{{response?.createdBy}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <span class="td-tag-table">
-                          <span *ngIf="response.createdBy_user">
-                            {{ response?.createdBy_user?.firstname }} {{ response?.createdBy_user?.lastname }}
-                          </span>
-
-                          <span *ngIf="!response.createdBy_user">
-                            n.d
-                          </span>
-                        </span>
-                      </td>
-
-
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
-                          (click)='presentResponseModal_inEditMode(response?._id)'>
-                          <i class="material-icons">edit</i>
-                        </button>
-
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
-                          (click)='deleteCannedResponse(response?._id)'>
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-
-                    </tr>
-                  </tbody>
-                </table>
-
-              </div>
-            </div>
-          </div>
-          <!-- /. end col-md-8 -->
-
-          <!-- // RIGHT SIDEBAR -->
-          <!-- right-col-custom-padding -->
-          <!-- [ngClass]="{'isHidden': innerWidthLessThan992 === true, 'col-sm-5': innerWidthLessThan992 === false }" -->
-          <div class="col-sm-4 right-col-custom-padding" >
-            <div class="card right-card-custom-margin card--no-border">
-              <div class="card-content">
-                <!-- <h4 class="card-title"
+              <!-- // RIGHT SIDEBAR -->
+              <!-- right-col-custom-padding -->
+              <!-- [ngClass]="{'isHidden': innerWidthLessThan992 === true, 'col-sm-5': innerWidthLessThan992 === false }" -->
+              <div class="col-sm-4 right-col-custom-padding">
+                <div class="card right-card-custom-margin card--no-border">
+                  <div class="card-content">
+                    <!-- <h4 class="card-title"
                   style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
                   {{ "QuickTips" | translate }}
                 </h4> -->
 
-                <div class="row">
-                  <div class="col-sm-12 col-md-12">
-                    <h3 class="card_title__underlined">
-                      <span class="card_title__underline">
-                        {{ "QuickTips" | translate }}
-                      </span>
-                    </h3>
-                  </div>
-                  <div class="col-sm-12 col-md-12">
-                    <div class="section-subtitle"> </div>
-                  </div>
-                </div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <h3 class="card_title__underlined">
+                          <span class="card_title__underline">
+                            {{ "QuickTips" | translate }}
+                          </span>
+                        </h3>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div class="section-subtitle"> </div>
+                      </div>
+                    </div>
 
-                <p style="color:#7695a5">
-                  {{ "CannedResponses.QuickTips.1" | translate }}
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.1" | translate }}
 
-                </p>
-                <p style="color:#7695a5">
-                  {{ "CannedResponses.QuickTips.1B" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "CannedResponses.QuickTips.1C" | translate }}
-                </p>
-                <!-- <div>
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.1B" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.1C" | translate }}
+                    </p>
+                    <!-- <div>
                   <img src="assets/img/canned_response_2.gif">
                 </div> -->
-                <!-- <p style="color:#7695a5;">
+                    <!-- <p style="color:#7695a5;">
               {{ "CannedResponses.QuickTips.2" | translate }}
             </p>
             <p style="color:#7695a5">
               {{ "CannedResponses.QuickTips.3" | translate }}
             </p> -->
-                <p style="color:#7695a5;  margin-top: 10px;">
-                  {{ "CannedResponses.QuickTips.4" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "CannedResponses.QuickTips.5" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "CannedResponses.QuickTips.6" | translate }}
-                </p>
-                <p style="color:#7695a5">
-                  {{ "CannedResponses.QuickTips.7" | translate }}
-                </p>
+                    <p style="color:#7695a5;  margin-top: 10px;">
+                      {{ "CannedResponses.QuickTips.4" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.5" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.6" | translate }}
+                    </p>
+                    <p style="color:#7695a5">
+                      {{ "CannedResponses.QuickTips.7" | translate }}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-        </div>
+            </div>
+
+          </ng-container>
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+          </ng-template>
+        </ng-container>
 
       </div>
     </div>

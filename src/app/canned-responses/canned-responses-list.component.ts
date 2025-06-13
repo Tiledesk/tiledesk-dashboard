@@ -10,6 +10,10 @@ import { AppConfigService } from '../services/app-config.service';
 import { RoleService } from 'app/services/role.service';
 import { BrandService } from 'app/services/brand.service';
 import { URL_canned_responses_doc } from 'app/utils/util';
+import { Subject } from 'rxjs';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'appdashboard-canned-responses-list',
   templateUrl: './canned-responses-list.component.html',
@@ -33,6 +37,15 @@ export class CannedResponsesListComponent implements OnInit {
   baseUrl: string;
   isChromeVerGreaterThan100: boolean
   public hideHelpLink: boolean;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  isAuthorized = false;
+  permissionChecked = false;
+
+  PERMISSION_TO_UPDATE: boolean;
+  PERMISSION_TO_CREATE: boolean;
+  PERMISSION_TO_DELETE: boolean;
+
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
@@ -44,6 +57,7 @@ export class CannedResponsesListComponent implements OnInit {
     public appConfigService: AppConfigService,
     public roleService: RoleService,
     public brandService: BrandService,
+    public rolesService: RolesService
   ) {
     const brand = brandService.getBrand(); 
     this.hideHelpLink= brand['DOCS'];
@@ -51,14 +65,91 @@ export class CannedResponsesListComponent implements OnInit {
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('canned-list')
+    // this.roleService.checkRoleForCurrentProject('canned-list')
     this.getResponses();
     this.translateNotificationMsgs();
     // this.getMainPanelAndSetOverflow();
     this.listenSidebarIsOpened();
     this.getImageStorage();
-    this.getBrowserVersion()
+    this.getBrowserVersion();
+    this.checkPermissions();
+    this.listenToProjectUser()
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('canned-responses')
+    console.log('[CANNED-RES-LIST] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[CANNED-RES-LIST] isAuthorized ', this.isAuthorized)
+    console.log('[CANNED-RES-LIST] permissionChecked ', this.permissionChecked)
+  }
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+          console.log('[CANNED-RES-LIST] - listenToProjectUser-  Role:', status.role);
+          console.log('[CANNED-RES-LIST] - listenToProjectUser - Permissions:', status.matchedPermissions);
+
+          // PERMISSION TO UPDATE
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_UPDATE)) {
+  
+              this.PERMISSION_TO_UPDATE = true
+              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            } else {
+              this.PERMISSION_TO_UPDATE = false
+              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            }
+          } else {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+
+          // PERMISSION TO CREATE
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_CREATE)) {
+  
+              this.PERMISSION_TO_CREATE = true
+              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE 1', this.PERMISSION_TO_CREATE);
+            } else {
+              this.PERMISSION_TO_CREATE = false
+              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_CREATE 2', this.PERMISSION_TO_CREATE);
+            }
+          } else {
+            this.PERMISSION_TO_CREATE = true
+            console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_CREATE ', this.PERMISSION_TO_CREATE);
+          }
+
+           // PERMISSION TO 
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.CANNED_RESPONSES_DELETE)) {
+  
+              this.PERMISSION_TO_DELETE = true
+              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_DELETE 1', this.PERMISSION_TO_DELETE);
+            } else {
+              this.PERMISSION_TO_DELETE = false
+              console.log('[CANNED-RES-LIST] - listenToProjectUser PERMISSION_TO_DELETE 2', this.PERMISSION_TO_DELETE);
+            }
+          } else {
+            this.PERMISSION_TO_DELETE = true
+            console.log('[CANNED-RES-LIST] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_DELETE ', this.PERMISSION_TO_DELETE);
+          }
+  
+          // if (status.matchedPermissions.includes('lead_update')) {
+          //   // Enable lead update action
+          // }
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -175,36 +266,49 @@ export class CannedResponsesListComponent implements OnInit {
   }
 
   deleteCannedResponse(cannedresponseid) {
-    this.cannedResponsesService.deleteCannedResponse(cannedresponseid).subscribe((responses: any) => {
-      this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP - RES ', responses);
+    if (this.PERMISSION_TO_DELETE) {
+      this.cannedResponsesService.deleteCannedResponse(cannedresponseid).subscribe((responses: any) => {
+        this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP - RES ', responses);
 
-    }, (error) => {
-      this.logger.error('[CANNED-RES-LIST] - DELETE CANNED RESP - ERROR  ', error);
+      }, (error) => {
+        this.logger.error('[CANNED-RES-LIST] - DELETE CANNED RESP - ERROR  ', error);
 
-      this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
-    }, () => {
-      this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP * COMPLETE *');
-      this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
-      this.getResponses()
+        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[CANNED-RES-LIST] - DELETE CANNED RESP * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
+        this.getResponses()
 
-    });
+      });
+
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
 
   presentResponseModal_inAddMode() {
-    this.selectCannedResponseId = null;
-    this.displayModal_AddEditResponse = 'block';
-    this.modalMode = 'add';
-    this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
+    if (this.PERMISSION_TO_CREATE) {
+      this.selectCannedResponseId = null;
+      this.displayModal_AddEditResponse = 'block';
+      this.modalMode = 'add';
+      this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode);
+    } else {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+    }
   }
 
   presentResponseModal_inEditMode(cannedresponseid: string) {
-    this.getScrollPos();
-    this.selectCannedResponseId = cannedresponseid;
-    this.displayModal_AddEditResponse = 'block';
-    this.modalMode = 'edit';
-    this.logger.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
-
+    if (!this.PERMISSION_TO_UPDATE) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
+      this.getScrollPos();
+      this.selectCannedResponseId = cannedresponseid;
+      this.displayModal_AddEditResponse = 'block';
+      this.modalMode = 'edit';
+      console.log('[CANNED-RES-LIST] - displayModal ', this.displayModal_AddEditResponse, ' in Mode', this.modalMode, ' canned-response-id', cannedresponseid);
+    
   }
 
   getScrollPos() {
