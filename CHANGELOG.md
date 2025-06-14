@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.111
+- Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari
+
 ### 2.7.110
 - Fixes the bug: "verified" icon displays incorrectly for requesters in the unassigned conversations section
 
