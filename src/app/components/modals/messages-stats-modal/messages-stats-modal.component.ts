@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators'
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-messages-stats-modal',
@@ -89,13 +90,11 @@ export class MessagesStatsModalComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getCurrentProject() {
