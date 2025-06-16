@@ -213,7 +213,7 @@ export class UsersNewRoleComponent implements OnInit {
       ]
     },
 
-      {
+    {
       key: 'tags',
       title: 'Tags',
       parentLabel: 'Select all',
@@ -221,12 +221,33 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.TAGS_READ, label: 'Able to view' },
-        { key: PERMISSIONS.TAG_CREATE, label: 'Able to create' },
         { key: PERMISSIONS.TAG_UPDATE, label: 'Able to edit' },
+        { key: PERMISSIONS.TAG_CREATE, label: 'Able to create' },
         { key: PERMISSIONS.TAG_DELETE, label: 'Able to delete' },
         
       ]
     },
+
+    {
+      key: 'hours',
+      title: 'Operating Hours',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.HOURS_READ, label: 'Able to view' },
+        { key: PERMISSIONS.HOURS_UPDATE, label: 'Able to edit' },
+        { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' },
+        { key: PERMISSIONS.HOURS_CREATE, label: 'Able to create' },
+
+        
+        // { key: PERMISSIONS.TAG_CREATE, label: 'Able to create' },
+        
+        // { key: PERMISSIONS.TAG_DELETE, label: 'Able to delete' },
+        
+      ]
+    },
+
 
     {
       key: 'SectionsAccess',
@@ -239,6 +260,8 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.LEAD_READ, label: 'Able to view Leads' },
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
+        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
+        
 
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },
         // { key: 'leadData', label: 'Can export Lead, User, Company data' },

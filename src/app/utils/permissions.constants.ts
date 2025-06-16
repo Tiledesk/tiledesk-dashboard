@@ -43,6 +43,13 @@ export const PERMISSIONS = {
   TAG_DELETE:'tag_delete',
   TAG_UPDATE:'tag_update',
 
+  HOURS_READ: 'hours_read',
+  HOURS_UPDATE: 'hours_update',
+  HOURS_DELETE: 'hours_delete',
+  HOURS_CREATE: 'hours_create',
+
+  AUTOMATIONSLOG_READ: "automationslog_read",
+
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',
   LEAD_DATA: 'leadData',

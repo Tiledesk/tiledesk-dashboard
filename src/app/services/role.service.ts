@@ -218,6 +218,20 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Operating Hours
+          if (calledby === 'hours') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.HOURS_READ);
+            console.log('[ROLE-SERV] - hours hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Automations Log
+          if (calledby === 'automations') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
           
 
@@ -314,6 +328,19 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Operating Hours
+          if (calledby === 'hours') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - hours hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Automations Log
+          if (calledby === 'automations') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
 
         }
@@ -495,6 +522,20 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Operating Hours
+          if (calledby === 'hours') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.HOURS_READ);
+            console.log('[ROLE-SERV] - hours hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Automations Log
+          if (calledby === 'automations') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
+            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           
 
 
@@ -594,8 +635,19 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Operating Hours
+          if (calledby === 'hours') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - hours hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
-
+          // Automations Log
+          if (calledby === 'automations') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
           
 
