@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.7.112-rc1
+- Adds Operating Hours section to Role Management page
+- Adds the ability to manage access to the Operating Hours page
+- Adds the ability to manage the "edit" function on the Operating Hours page
+- Adds the ability to manage the "create" function on the Operating Hours page
+- Adds the ability to manage the "delete" function on the Operating Hours page
+- Adds the ability to manage access to the Automations Log page
+
+### 2.7.111
+- Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari
+
 ### 2.7.111-rc3
 - Adds Tags section in Role Management page
 - Adds the ability to manage access to the Tags page
