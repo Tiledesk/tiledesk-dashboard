@@ -39,6 +39,9 @@ export class AutomationsComponent implements OnInit {
   rejected_count: any;
   failed_count: any;
 
+  isAuthorized = false;
+  permissionChecked = false;
+
   constructor(
     private auth: AuthService,
     private logger: LoggerService,
@@ -51,13 +54,23 @@ export class AutomationsComponent implements OnInit {
 
   ngOnInit(): void {
     // this.auth.checkRoleForCurrentProject();
-    this.roleService.checkRoleForCurrentProject('automations')
+    // this.roleService.checkRoleForCurrentProject('automations')
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.showSpinner = true;
     this.initializeFilters();
     this.getTransactions();
     this.getCurrentProject();
+    this.checkPermissions()
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('automations')
+    console.log('[AUTOMATION] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[AUTOMATION] isAuthorized ', this.isAuthorized)
+    console.log('[AUTOMATION] permissionChecked ', this.permissionChecked)
   }
 
   initializeFilters() {

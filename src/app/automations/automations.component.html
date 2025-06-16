@@ -9,159 +9,166 @@
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 5px;">
- 
+
   <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     {{ 'AutomationsLog' | translate }}
   </div>
-  
+
   <div class="container-fluid" style="padding-right: 5px;padding-left: 10px;">
 
     <div class="content-wpr" style="display: flex;">
 
       <appdashboard-settings-sidebar></appdashboard-settings-sidebar>
-      
+
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        <ng-container *ngIf="permissionChecked">
+          <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-        <div class="card-content" *ngIf="!showSpinner && showAutomationsList" style="padding-top: 10px;">
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div class="filters">
-            <!-- // to do -->
-          </div>
+            <div class="card-content" *ngIf="!showSpinner && showAutomationsList" style="padding-top: 10px;">
 
-          <div class="automation-header">
-            <p>Last Automations</p>
-            <!--  custom-button -->
-            <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
-              <span class="material-icons-round button-icon">sync</span>
-              Reload</button>
-          </div>
-
-          <div *ngIf="transactions.length === 0" class="no-automations">
-            <span class="material-icons-outlined automation-icon">hdr_auto</span>
-            <p>You haven't created any automation yet.</p>
-            <!-- <a>Create one now</a> -->
-          </div>
-
-          <div class="automation-list">
-
-            <div class="automation" *ngFor="let transaction of transactions"
-              (click)="onAutomationSelect(transaction.transaction_id)">
-              <div class="automation-title-id">
-                <p class="automation-title">{{ transaction.template_name }}</p>
-                <p class="automation-id">{{ transaction.transaction_id }}</p>
-                <div *ngIf="transaction.status === 'pending'" class="automation-status">
-                  <span class="material-icons circle pending-circle">circle</span>
-                  <p>Pending</p>
-                </div>
-
-                <div *ngIf="transaction.status === 'completed'" class="automation-status">
-                  <span class="material-icons circle completed-circle">circle</span>
-                  <p>Completed</p>
-                </div>
-
-                <div *ngIf="transaction.status === 'aborted'" class="automation-status">
-                  <span class="material-icons circle aborted-circle">circle</span>
-                  <p>Aborted</p>
-                </div>
+              <div class="filters">
+                <!-- // to do -->
               </div>
 
-              <div *ngIf="transaction.channel === 'whatsapp'" class="channel-chip">
-                <img src="assets/img/whatsapp-small.png" width="22" height="auto">
-                WhatsApp
+              <div class="automation-header">
+                <p>Last Automations</p>
+                <!--  custom-button -->
+                <button class="btn btn-tdblu-no-boxshadow" (click)="reload('automations')">
+                  <span class="material-icons-round button-icon">sync</span>
+                  Reload</button>
               </div>
 
-              <div class="automation-date">
-                {{ transaction.createdAt | date:'E, d MMM, HH:mm:ss'}}
+              <div *ngIf="transactions.length === 0" class="no-automations">
+                <span class="material-icons-outlined automation-icon">hdr_auto</span>
+                <p>You haven't created any automation yet.</p>
+                <!-- <a>Create one now</a> -->
               </div>
 
-              <div class="automation-option">
-                <div class="vertical-separator"></div>
-                <span class="material-icons-round option-icon">navigate_next</span>
-              </div>
+              <div class="automation-list">
 
+                <div class="automation" *ngFor="let transaction of transactions"
+                  (click)="onAutomationSelect(transaction.transaction_id)">
+                  <div class="automation-title-id">
+                    <p class="automation-title">{{ transaction.template_name }}</p>
+                    <p class="automation-id">{{ transaction.transaction_id }}</p>
+                    <div *ngIf="transaction.status === 'pending'" class="automation-status">
+                      <span class="material-icons circle pending-circle">circle</span>
+                      <p>Pending</p>
+                    </div>
 
-            </div>
+                    <div *ngIf="transaction.status === 'completed'" class="automation-status">
+                      <span class="material-icons circle completed-circle">circle</span>
+                      <p>Completed</p>
+                    </div>
 
-          </div>
-
-
-
-        </div>
-
-        <div class="card-content" *ngIf="!showSpinner && showAutomationDetail" style="padding-top: 10px;">
-          <button class="custom-button" (click)="backToAutomations()">
-            <span class="material-icons-round button-icon">navigate_before</span>
-            Back to Automations</button>
-
-          <div class="automation-stats">
-            <p class="subtitle">Automation Stats</p>
-
-            <div class="stats">
-              <span class="stat">
-                <span class="material-icons-round counter-icon complete">done_all</span>
-                <label>Read:</label> <span>{{ read_count }}</span>
-              </span>
-              <span class="stat">
-                <span class="material-icons-round counter-icon pending">done_all</span>
-                <label>Delivered:</label> {{ delivered_count }}
-              </span>
-              <span class="stat">
-                <span class="material-icons-round counter-icon pending">done</span>
-                <label>Sent:</label> {{ sent_count }}
-              </span>
-              <span class="stat">
-                <span class="material-icons-round counter-icon pending">schedule</span>
-                <label>Accepted:</label> {{ accepted_count }}
-              </span>
-              <span class="stat">
-                <span class="material-icons-round counter-icon error">error_outline</span>
-                <label>Rejected:</label> {{ failed_count }}
-              </span>
-              <span class="stat">
-                <span class="material-icons-round counter-icon error">error_outline</span>
-                <label>Failed:</label> {{ rejected_count }}
-              </span>
-            </div>
-
-          </div>
-
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h4>{{ logs.length }} Messages</h4>
-            <button class="custom-button" (click)="reload('logs')">
-              <span class="material-icons-round button-icon">sync</span>
-              Reload</button>
-          </div>
-
-          <div class="logs-list">
-
-            <mat-expansion-panel *ngFor="let log of logs" style="border-radius: 0px;">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <label>To:</label> {{log.json_message.to}}
-                </mat-panel-title>
-                <mat-panel-description>
-                  <div class="status-chip">
-                    <span *ngIf="log.error" class="material-icons-round warning-icon">warning</span>
-                    {{ log.status }}
+                    <div *ngIf="transaction.status === 'aborted'" class="automation-status">
+                      <span class="material-icons circle aborted-circle">circle</span>
+                      <p>Aborted</p>
+                    </div>
                   </div>
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <label>Sending date:</label> {{ log.timestamp | date:'E, d MMM, HH:mm:ss'}}
-              <div class="error-box" *ngIf="log.error">
-                <p class="error-label">Error</p>
-                {{ log.error }}
+
+                  <div *ngIf="transaction.channel === 'whatsapp'" class="channel-chip">
+                    <img src="assets/img/whatsapp-small.png" width="22" height="auto">
+                    WhatsApp
+                  </div>
+
+                  <div class="automation-date">
+                    {{ transaction.createdAt | date:'E, d MMM, HH:mm:ss'}}
+                  </div>
+
+                  <div class="automation-option">
+                    <div class="vertical-separator"></div>
+                    <span class="material-icons-round option-icon">navigate_next</span>
+                  </div>
+
+
+                </div>
+
               </div>
-            </mat-expansion-panel>
-            <div class="end-list">End of list</div>
 
 
-          </div>
-        </div>
+
+            </div>
+
+            <div class="card-content" *ngIf="!showSpinner && showAutomationDetail" style="padding-top: 10px;">
+              <button class="custom-button" (click)="backToAutomations()">
+                <span class="material-icons-round button-icon">navigate_before</span>
+                Back to Automations</button>
+
+              <div class="automation-stats">
+                <p class="subtitle">Automation Stats</p>
+
+                <div class="stats">
+                  <span class="stat">
+                    <span class="material-icons-round counter-icon complete">done_all</span>
+                    <label>Read:</label> <span>{{ read_count }}</span>
+                  </span>
+                  <span class="stat">
+                    <span class="material-icons-round counter-icon pending">done_all</span>
+                    <label>Delivered:</label> {{ delivered_count }}
+                  </span>
+                  <span class="stat">
+                    <span class="material-icons-round counter-icon pending">done</span>
+                    <label>Sent:</label> {{ sent_count }}
+                  </span>
+                  <span class="stat">
+                    <span class="material-icons-round counter-icon pending">schedule</span>
+                    <label>Accepted:</label> {{ accepted_count }}
+                  </span>
+                  <span class="stat">
+                    <span class="material-icons-round counter-icon error">error_outline</span>
+                    <label>Rejected:</label> {{ failed_count }}
+                  </span>
+                  <span class="stat">
+                    <span class="material-icons-round counter-icon error">error_outline</span>
+                    <label>Failed:</label> {{ rejected_count }}
+                  </span>
+                </div>
+
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4>{{ logs.length }} Messages</h4>
+                <button class="custom-button" (click)="reload('logs')">
+                  <span class="material-icons-round button-icon">sync</span>
+                  Reload</button>
+              </div>
+
+              <div class="logs-list">
+
+                <mat-expansion-panel *ngFor="let log of logs" style="border-radius: 0px;">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <label>To:</label> {{log.json_message.to}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      <div class="status-chip">
+                        <span *ngIf="log.error" class="material-icons-round warning-icon">warning</span>
+                        {{ log.status }}
+                      </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <label>Sending date:</label> {{ log.timestamp | date:'E, d MMM, HH:mm:ss'}}
+                  <div class="error-box" *ngIf="log.error">
+                    <p class="error-label">Error</p>
+                    {{ log.error }}
+                  </div>
+                </mat-expansion-panel>
+                <div class="end-list">End of list</div>
 
 
+              </div>
+            </div>
+
+          </ng-container>
+          <ng-template #unauthorizedTpl>
+            <unauthorized-for-settings></unauthorized-for-settings>
+          </ng-template>
+        </ng-container>
       </div>
 
 
