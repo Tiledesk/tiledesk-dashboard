@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -36,13 +36,16 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'bot-create',
   templateUrl: './bot-create.component.html',
   styleUrls: ['./bot-create.component.scss']
 })
-export class BotCreateComponent extends PricingBaseComponent implements OnInit {
+export class BotCreateComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   // tparams = brand;
   private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
@@ -150,6 +153,10 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     { name: "Copilot", value: 'copilot' },
   ];
 
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+  
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -167,7 +174,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     private projectService: ProjectService,
     public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) {
     super(prjctPlanService, notify);;
 
@@ -193,38 +202,80 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     this.getUserRole();
     this.logger.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
     this.getQueryParamsAndManageChatbotSubtype()
+    this.checkPermissions();
+    this.listenToProjectUser();
   }
-
-  getQueryParamsAndManageChatbotSubtype() {
-    this.route.queryParams.subscribe(params => {
-    
-      this.logger.log('queryParams ', params);
-      this.logger.log('queryParams type', params.type);
-
-      if (params.type === 'chatbot') {
-        this.logger.log('botSubtypeItems 1' ,this.botSubtypeItems)
-        this.botSubtypeItems.splice(1,2)
-        this.botSubtypeItems = this.botSubtypeItems.slice(0)
-        this.logger.log('botSubtypeItems 2' ,this.botSubtypeItems)
-      } else if (params.type === 'automation') {
-        this.botSubtypeItems.shift()
-        this.botSubtypeItems = this.botSubtypeItems.slice(0)
-        this.logger.log('botSubtypeItems 3' ,this.botSubtypeItems)
-        this.botSubtype ="webhook"
-      } else if (params.type === undefined) {
-        this.botSubtypeItems.splice(1,2)
-        this.botSubtypeItems = this.botSubtypeItems.slice(0)
-      }
-    });
-  }
-
-
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('app-store')
+    console.log('[BOT-CREATE] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[BOT-CREATE] isAuthorized ', this.isAuthorized)
+    console.log('[BOT-CREATE] permissionChecked ', this.permissionChecked)
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[BOT-CREATE] - Role:', status.role);
+        console.log('[BOT-CREATE] - Permissions:', status.matchedPermissions);
+
+        // PERMISSION TO UPDATE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[BOT-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          } else {
+            this.PERMISSION_TO_UPDATE = false
+
+            console.log('[BOT-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE = true
+          console.log('[BOT-CREATE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        }
+
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+  getQueryParamsAndManageChatbotSubtype() {
+    this.route.queryParams.subscribe(params => {
+
+      this.logger.log('queryParams ', params);
+      this.logger.log('queryParams type', params.type);
+
+      if (params.type === 'chatbot') {
+        this.logger.log('botSubtypeItems 1', this.botSubtypeItems)
+        this.botSubtypeItems.splice(1, 2)
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+        this.logger.log('botSubtypeItems 2', this.botSubtypeItems)
+      } else if (params.type === 'automation') {
+        this.botSubtypeItems.shift()
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+        this.logger.log('botSubtypeItems 3', this.botSubtypeItems)
+        this.botSubtype = "webhook"
+      } else if (params.type === undefined) {
+        this.botSubtypeItems.splice(1, 2)
+        this.botSubtypeItems = this.botSubtypeItems.slice(0)
+      }
+    });
+  }
 
 
   getUserRole() {
@@ -758,7 +809,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   onSelectBotSubType(botSubtype) {
     // this.logger.log('[BOTS-CREATE] onSelectBotSubType ', botSubtype) 
     this.botSubtype = botSubtype
-    this.logger.log('[BOTS-CREATE] onSelectBotSubType this.botSubtype', this.botSubtype) 
+    this.logger.log('[BOTS-CREATE] onSelectBotSubType this.botSubtype', this.botSubtype)
   }
 
 
@@ -865,7 +916,13 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   // CREATE 
   createBot() {
-    this.displayInfoModal = 'block'
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
+
+    this.displayInfoModal = 'block'  //commented to avoid thr automatic redirect to faq component in wic the user can edit the external bot
+
     this.SHOW_CIRCULAR_SPINNER = true;
 
     this.logger.log('[BOT-CREATE] HAS CLICKED CREATE NEW FAQ-KB');
@@ -922,6 +979,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
       }, (error) => {
 
+         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorHasOccurred'), 4, 'report_problem');
+        
         this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
 
         this.SHOW_CIRCULAR_SPINNER = false;
@@ -933,6 +992,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       }, () => {
         this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
 
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('ChatbotSuccessfullyCreated'), 2, 'done');
         if (this.botType !== 'dialogflow') {
           this.SHOW_CIRCULAR_SPINNER = false;
           this.CREATE_BOT_ERROR = false;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { AppStoreService } from 'app/services/app-store.service';
 import { LoggerService } from '../../services/logger/logger.service';
@@ -6,6 +6,11 @@ import { Location } from '@angular/common';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrandService } from 'app/services/brand.service';
+import { RoleService } from 'app/services/role.service';
+import { Subject } from 'rxjs';
+import { RolesService } from 'app/services/roles.service';
+import { takeUntil } from 'rxjs/operators';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 @Component({
   selector: 'appdashboard-app-create',
   templateUrl: './app-create.component.html',
@@ -13,7 +18,7 @@ import { BrandService } from 'app/services/brand.service';
 })
 
 
-export class AppCreateComponent implements OnInit {
+export class AppCreateComponent implements OnInit, OnDestroy {
   TOKEN: string;
   isChromeVerGreaterThan100: boolean;
 
@@ -48,6 +53,11 @@ export class AppCreateComponent implements OnInit {
 
   clients = { dashboard: false, webchat: false, widget: false, appsstore: false }
 
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+
   constructor(
     public auth: AuthService,
     public logger: LoggerService,
@@ -57,7 +67,9 @@ export class AppCreateComponent implements OnInit {
     private router: Router,
     public route: ActivatedRoute,
     public brandService: BrandService,
-  ) { 
+    private roleService: RoleService,
+    public rolesService: RolesService
+  ) {
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
   }
@@ -77,8 +89,58 @@ export class AppCreateComponent implements OnInit {
       this.logger.log('[APP-CREATE] is EDIT_VIEW', this.EDIT_VIEW)
       this.getRouteParamsAndPopulateField();
     }
+
+    this.checkPermissions()
+    this.listenToProjectUser()
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[APP-CREATE] - Role:', status.role);
+        console.log('[APP-CREATE] - Permissions:', status.matchedPermissions);
+
+        // PERMISSION TO UPDATE
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[APP-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          } else {
+            this.PERMISSION_TO_UPDATE = false
+
+            console.log('[APP-CREATE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE = true
+          console.log('[APP-CREATE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+        }
+
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
+  }
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('app-store')
+    console.log('[APP-CREATE] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[APP-CREATE] isAuthorized ', this.isAuthorized)
+    console.log('[APP-CREATE] permissionChecked ', this.permissionChecked)
+  }
 
   getRouteParamsAndPopulateField() {
     this.route.params.subscribe((params) => {
@@ -219,6 +281,10 @@ export class AppCreateComponent implements OnInit {
   //   this.logger.log('[APP-CREATE] onChangeWhere - selectedClient ', selectedClient)
   // }
   saveOrUpdateNewApp() {
+    if (this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     if (this.CREATE_VIEW === true) {
       this.saveNewApp()
     } else if (this.EDIT_VIEW === true) {
@@ -239,7 +305,7 @@ export class AppCreateComponent implements OnInit {
     // console.log('[APP-CREATE] UPDATE NEW APP app_status', this.app_status)
     // console.log('[APP-CREATE] UPDATE NEW APP user_id', this.user_id)
     // console.log('[APP-CREATE] UPDATE NEW APP APP ID', this.APP_ID)
-  
+
 
     this.appStoreService.updateNewApp(
       this.APP_ID,
@@ -254,7 +320,7 @@ export class AppCreateComponent implements OnInit {
       this.user_id,
       this.clients)
       .subscribe((res) => {
-      //  console.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
+        //  console.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
 
       }, (error) => {
 

@@ -8,6 +8,8 @@
 </div>
 
 <div class="main-content">
+  <ng-container *ngIf="permissionChecked">
+    <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
   <div class="container-fluid">
 
     <div *ngIf="hideHelpLink" class="link-to-docs-wpr">
@@ -224,3 +226,22 @@
 
     </div>
   </div>
+
+   </ng-container>
+    <ng-template #unauthorizedTpl>
+      <div class="unauthorized-message-container-in-page">
+        <h2 class="unauthorized-page-title">
+
+          {{ "UnauthorizedPage.UnauthorizedAccess" | translate }}
+
+        </h2>
+        <h3 class="unauthorized-page-subtitle">
+
+          {{ "UnauthorizedPage.OopsYouDontHave" | translate }}
+        </h3>
+      </div>
+    </ng-template>
+  </ng-container>
+
+
+</div>

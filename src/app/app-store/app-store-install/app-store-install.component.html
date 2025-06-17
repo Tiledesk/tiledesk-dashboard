@@ -7,7 +7,7 @@
     {{ reason}} {{ app_title}}
   </span>
   <span *ngIf="reason === 'Detail'">
-    {{ app_title}} {{ reason}} 
+    {{ app_title}} {{ reason}}
   </span>
 </div>
 
@@ -24,10 +24,12 @@
 </div> -->
 
 <div class="main-content app-install-main-content">
+  <ng-container *ngIf="permissionChecked">
+    <ng-container *ngIf="isAuthorized; else unauthorizedTpl">
 
-  <div class="container-fluid" style="padding-right: 0px;  padding-left: 0px;">
+      <div class="container-fluid" style="padding-right: 0px;  padding-left: 0px;">
 
-    <!-- <div *ngIf="showSpinner" class="stretchspinner_in_app_install">
+        <!-- <div *ngIf="showSpinner" class="stretchspinner_in_app_install">
       <div class="rect1"></div>
       <div class="rect2"></div>
       <div class="rect3"></div>
@@ -35,13 +37,28 @@
       <div class="rect5"></div>
     </div> -->
 
-    <loading-spinner class="stretchspinner_in_app_install" *ngIf="showSpinner"></loading-spinner>
+        <loading-spinner class="stretchspinner_in_app_install" *ngIf="showSpinner"></loading-spinner>
 
-    <iframe *ngIf="URL" allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0"
-      allowfullscreen [ngStyle]="{ 'height': iframeHeight }">
-    </iframe>
+        <iframe *ngIf="URL" allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0"
+          allowfullscreen [ngStyle]="{ 'height': iframeHeight }">
+        </iframe>
 
-    <!-- showSpinner = {{ showSpinner}} -->
-  </div>
+        <!-- showSpinner = {{ showSpinner}} -->
+      </div>
+    </ng-container>
+    <ng-template #unauthorizedTpl>
+      <div class="unauthorized-message-container-in-page">
+        <h2 class="unauthorized-page-title">
+
+          {{ "UnauthorizedPage.UnauthorizedAccess" | translate }}
+
+        </h2>
+        <h3 class="unauthorized-page-subtitle">
+
+          {{ "UnauthorizedPage.OopsYouDontHave" | translate }}
+        </h3>
+      </div>
+    </ng-template>
+  </ng-container>
 
 </div>

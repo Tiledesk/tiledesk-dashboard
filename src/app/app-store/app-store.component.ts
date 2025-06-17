@@ -17,6 +17,9 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { RoleService } from 'app/services/role.service';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -70,6 +73,11 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   public chatBotCount: any;
+
+  isAuthorized = false;
+  permissionChecked = false;
+  PERMISSION_TO_UPDATE: boolean;
+
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -84,6 +92,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     public route: ActivatedRoute,
     private faqKbService: FaqKbService,
     public dialog: MatDialog,
+    private roleService: RoleService,
+    public rolesService: RolesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -106,8 +116,55 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     this.getRouteParams();
     this.listenToParentPostMessage()
     this.getFaqKbByProjectId();
-    this.listenSidebarIsOpened()
+    this.listenSidebarIsOpened();
+    this.checkPermissions();
+    this.listenToProjectUser()
   }
+
+
+  async checkPermissions() {
+    const result = await this.roleService.checkRoleForCurrentProject('app-store')
+    console.log('[APP-STORE] result ', result)
+    this.isAuthorized = result === true;
+    this.permissionChecked = true;
+    console.log('[APP-STORE] isAuthorized ', this.isAuthorized)
+    console.log('[APP-STORE] permissionChecked ', this.permissionChecked)
+  }
+
+
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+  
+          console.log('[APP-STORE] - Role:', status.role);
+          console.log('[APP-STORE] - Permissions:', status.matchedPermissions);
+  
+          // PERMISSION TO UPDATE
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+  
+            if (status.matchedPermissions.includes(PERMISSIONS.APPS_UPDATE)) {
+              this.PERMISSION_TO_UPDATE = true
+              console.log('[APP-STORE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            } else {
+              this.PERMISSION_TO_UPDATE = false
+              console.log('[APP-STORE] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            }
+          } else {
+            this.PERMISSION_TO_UPDATE = true
+            console.log('[APP-STORE] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          }
+  
+  
+          // if (status.matchedPermissions.includes('lead_update')) {
+          //   // Enable lead update action
+          // }
+  
+          // You can also check status.role === 'owner' if needed
+        });
+    }
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
@@ -396,6 +453,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     this.logger.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
     this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
@@ -439,6 +500,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   openInAppStoreInstall(app, appTitle) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
     this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
@@ -450,6 +515,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   openConfigureUrlInAppStoreInstall(app, appTitle) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
     this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
@@ -459,6 +528,11 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   installV2App(projectId, appId, appTitle) {
+
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
 
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
       this.logger.log('[APP-STORE] INSTALL V2 APP projectId ', projectId, ' appId ', appId, ' appTitle ', appTitle)
@@ -485,6 +559,11 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   unistallApp(appId, appTitle) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
+
     this.logger.log('[APP-STORE] UNINSTALL V2 APP - app_id', appId, ' appTitle ', appTitle);
 
     this.appStoreService.unistallNewApp(this.projectId, appId).subscribe((res: any) => {
@@ -562,6 +641,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   deleteNewApp(appId, appTitle) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return
+    }
     this.logger.log('[APP-STORE] - deleteNewApp appId ', appId, 'appTitle ', appTitle)
     Swal.fire({
       title: this.areYouSureMsg,
@@ -623,7 +706,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
             });
           });
         } else {
-          this.logger.log('[FAQ-EDIT-ADD] WS-REQUESTS-LIST swal WillDelete (else)')
+          this.logger.log('[APP-STORE] WS-REQUESTS-LIST swal WillDelete (else)')
         }
       });
   }
@@ -698,10 +781,18 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
   //  project/:projectid/app-create 
   goToCreateApp() {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
     this.router.navigate(['project/' + this.projectId + '/app-create'])
   }
 
   goToEditApp(appid) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return
+    }
     this.router.navigate(['project/' + this.projectId + '/app-edit/' + appid])
   }
 
@@ -746,6 +837,11 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   createExternalBot(type: string) {
+    if(this.PERMISSION_TO_UPDATE === false) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
     this.logger.log('[APP-STORE] createExternalBot ', type)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
