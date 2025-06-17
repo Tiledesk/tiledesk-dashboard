@@ -396,47 +396,85 @@ const routes: Routes = [
   // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
 
 
-  // Apps
+  // Apps - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/app-store',
+  //   loadChildren: () => import('app/app-store/app-store.module').then(m => m.AppStoreModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Apps store - Check moved in RoleService
   {
     path: 'project/:projectid/app-store',
     loadChildren: () => import('app/app-store/app-store.module').then(m => m.AppStoreModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
 
+
+  // Apps store install - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/app-store-install/:appid/:reason',
+  //   loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Apps store install - Check moved in RoleService
   {
     path: 'project/:projectid/app-store-install/:appid/:reason',
     loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Apps store install - Check moved in RoleService
+  // {
+  //   path: 'project/:projectid/app-store-install/:appid/:reason/:calledby',
+  //   loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  // Apps store install - Check moved in RoleService
   {
     path: 'project/:projectid/app-store-install/:appid/:reason/:calledby',
     loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+  // Check moved in Role service
+  // {
+  //   path: 'project/:projectid/app-create',
+  //   loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Check moved in Role service
   {
     path: 'project/:projectid/app-create',
     loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Check moved in Role service
+  // {
+  //   path: 'project/:projectid/app-edit/:appid',
+  //   loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+  // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Check moved in Role service
   {
     path: 'project/:projectid/app-edit/:appid',
     loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
-
 
 
   // Contacts
@@ -932,15 +970,21 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Integrations
+  // Integrations - check moved in RoleService
+  // {
+  //   path: 'project/:projectid/integrations',
+  //   loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }],
+  // },
+  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Integrations - check moved in RoleService
   {
     path: 'project/:projectid/integrations',
     loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }],
+    canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] }, // now lazy
-
 
 
   // { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, seems not used
@@ -1121,12 +1165,18 @@ const routes: Routes = [
   // ---------------------------
   // Chatbots
   // ---------------------------
-  // Start by entering the name of the chatbot
+  // Check moved in Roles service
   {
     path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: [{ roles: ['owner', 'admin'] }]
   },
+
+   // Check moved in Roles service
+  // {
+  //   path: 'project/:projectid/bots/create/:type/:template', component: BotCreateComponent,
+  //   canActivate: [AuthGuard]
+  // },
 
   {
     path: 'project/:projectid/bots',
@@ -1214,11 +1264,30 @@ const routes: Routes = [
 
 
 
-  // Used in app-store to create an External chatbot
+  // Used in app-store to create an External chatbot - Check moved in Roles service
+  // {
+  //   path: 'project/:projectid/bots/create/:type', component: BotCreateComponent,
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+  // Used in app-store to create an External chatbot - Check moved in Roles service 
   {
     path: 'project/:projectid/bots/create/:type', component: BotCreateComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
+    canActivate: [AuthGuard]
+  },
+
+   // Used to edit an External chatbot - Check moved in Roles service 
+  // {
+  //   path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent,
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
+
+   // Used to edit an External chatbot - Check moved in Roles service 
+  {
+    path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent,
+    canActivate: [AuthGuard]
   },
 
   // Chatbots demo page
@@ -1271,12 +1340,7 @@ const routes: Routes = [
     data: [{ roles: ['owner', 'admin'] }]
   },
 
-  // Used to edit an External chatbot
-  {
-    path: 'project/:projectid/bots/:faqkbid/:type', component: FaqComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+ 
 
 
   // Unathorized page - Token not valid
