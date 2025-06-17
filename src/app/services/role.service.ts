@@ -232,6 +232,20 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Integrations
+          if (calledby === 'integrations') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INTEGRATIONS_READ);
+            console.log('[ROLE-SERV] - integrations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // App store
+          if (calledby === 'app-store') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.APPS_READ);
+            console.log('[ROLE-SERV] - app-store hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
           
 
@@ -339,6 +353,20 @@ export class RoleService {
           if (calledby === 'automations') {
             const hasPermission = true
             console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Integrations
+          if (calledby === 'integrations') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - integrations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // App store
+          if (calledby === 'app-store') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - app-store hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -536,6 +564,20 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Integrations
+          if (calledby === 'integrations') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INTEGRATIONS_READ);
+            console.log('[ROLE-SERV] - integrations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // App store
+          if (calledby === 'app-store') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.APPS_READ);
+            console.log('[ROLE-SERV] - app-store hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           
 
 
@@ -646,6 +688,20 @@ export class RoleService {
           if (calledby === 'automations') {
             const hasPermission = true;
             console.log('[ROLE-SERV] - automations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Integrations
+          if (calledby === 'integrations') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - integrations hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // App store
+          if (calledby === 'app-store') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - integrations hasPermission ', hasPermission)
             return hasPermission;
           }
 

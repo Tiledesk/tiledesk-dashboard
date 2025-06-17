@@ -239,12 +239,31 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.HOURS_UPDATE, label: 'Able to edit' },
         { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' },
         { key: PERMISSIONS.HOURS_CREATE, label: 'Able to create' },
+      ]
+    },
 
-        
-        // { key: PERMISSIONS.TAG_CREATE, label: 'Able to create' },
-        
-        // { key: PERMISSIONS.TAG_DELETE, label: 'Able to delete' },
-        
+    {
+      key: 'integrations',
+      title: 'Integrations',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.INTEGRATIONS_READ, label: 'Able to view' },
+        { key: PERMISSIONS.INTEGRATIONS_UPDATE, label: 'Able to manage' }
+      ]
+    },
+    {
+      key: 'appStore',
+      title: 'Apps',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.APPS_READ, label: 'Able to view' },
+        { key: PERMISSIONS.APPS_UPDATE, label: 'Able to manage' },
+        // { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' },
+        // { key: PERMISSIONS.HOURS_CREATE, label: 'Able to create' },
       ]
     },
 

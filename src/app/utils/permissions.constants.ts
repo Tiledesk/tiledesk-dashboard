@@ -50,6 +50,12 @@ export const PERMISSIONS = {
 
   AUTOMATIONSLOG_READ: "automationslog_read",
 
+  INTEGRATIONS_READ: 'integrations_read',
+  INTEGRATIONS_UPDATE: 'integrations_update',
+
+  APPS_READ:'apps_read',
+  APPS_UPDATE:'apps_update',
+
   ACCESS_LISTS: 'accessLists',
   PROFILE_PAGES: 'profilePages',
   LEAD_DATA: 'leadData',
