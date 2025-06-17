@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.112-rc2
+- Adds Integrations and Apps sections to Role Management page
+- Adds the ability to allow access to the Integrations page
+- Adds the ability to manage the Integrations
+- Adds the ability to allow the access to the Apps page
+- Adds the ability to manage the Apps
+
 ### 2.7.112-rc1
 - Adds Operating Hours section to Role Management page
 - Adds the ability to manage access to the Operating Hours page
