@@ -1566,14 +1566,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (this.chatBotLimit || this.chatBotLimit === 0) {
         if (this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+          
           this.createTilebotBotFromScratch(botSubtype, namespaceid)
           this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
-          // if (this.isChatbotRoute) {
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'chatbot' }})
-          // } else {
-          // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'automation' }})
-          // }
+       
         } else if (this.chatBotCount >= this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
@@ -1582,11 +1578,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.logger.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
         this.logger.log('[BOTS-LIST] createBlankTilebot isChatbotRoute ', this.isChatbotRoute)
         this.createTilebotBotFromScratch(botSubtype, namespaceid)
-        // if (this.isChatbotRoute) {
-        // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'],  { queryParams: { 'type': 'chatbot' }})
-        // } else {
-        // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'], { queryParams: { 'type': 'automation' }})
-        // }
+      
       }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()
