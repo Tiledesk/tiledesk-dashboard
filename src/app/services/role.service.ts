@@ -246,6 +246,69 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Project settings > General
+          if (calledby === 'project-settings-general') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_READ);
+            console.log('[ROLE-SERV] - project-settings-general hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Subscription
+          if (calledby === 'project-settings-sub') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ);
+            console.log('[ROLE-SERV] - project-settings-sub hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Developer
+          if (calledby === 'project-settings-dev') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ);
+            console.log('[ROLE-SERV] - project-settings-dev hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Developer > Webhook
+          if (calledby === 'webhook') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ);
+            console.log('[ROLE-SERV] - webhook hasPermission ', hasPermission)
+            return hasPermission;
+          }
+          // Project settings > Smart Assign
+          if (calledby === 'project-settings-smart-assign') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ);
+            console.log('[ROLE-SERV] - project-settings-smart-assign hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Notifications
+          if (calledby === 'project-settings-notifications') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ);
+            console.log('[ROLE-SERV] - project-settings-notifications hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Security
+          if (calledby === 'project-settings-security') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_SECURITY_READ);
+            console.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Banned
+          if (calledby === 'project-settings-banned') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_BANNED_READ);
+            console.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Advanced
+          if (calledby === 'project-settings-advanced') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
+            console.log('[ROLE-SERV] - project-settings-advanced hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+
 
           
 
@@ -367,6 +430,69 @@ export class RoleService {
           if (calledby === 'app-store') {
             const hasPermission = true
             console.log('[ROLE-SERV] - app-store hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > General
+          if (calledby === 'project-settings-general') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - project-settings-general hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Subscription
+          if (calledby === 'project-settings-sub') {
+            const hasPermission = projectUserRole === 'owner'
+            console.log('[ROLE-SERV] - project-settings-sub hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Developer
+          if (calledby === 'project-settings-dev') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - project-settings-dev hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Developer > Webhook
+          if (calledby === 'webhook') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - project-settings-dev hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Smart Assign
+          if (calledby === 'project-settings-smart-assign') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - project-settings-smart-assign hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Notifications
+          if (calledby === 'project-settings-notifications') {
+            const hasPermission = true
+            console.log('[ROLE-SERV] - project-settings-notifications hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Security
+          if (calledby === 'project-settings-security') {
+            const hasPermission = projectUserRole === 'owner'
+            console.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Banned
+          if (calledby === 'project-settings-banned') {
+            const hasPermission = projectUserRole === 'owner'
+            console.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Advanced
+          if (calledby === 'project-settings-advanced') {
+            const hasPermission = projectUserRole === 'owner'
+            console.log('[ROLE-SERV] - project-settings-advanced hasPermission ', hasPermission)
             return hasPermission;
           }
 
@@ -578,9 +704,68 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Project settings > General
+          if (calledby === 'project-settings-general') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_GENERAL_READ);
+            console.log('[ROLE-SERV] - project-settings-general hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Subscription
+          if (calledby === 'project-settings-sub') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ);
+            console.log('[ROLE-SERV] - project-settings-sub hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Developer
+          if (calledby === 'project-settings-dev') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ);
+            console.log('[ROLE-SERV] - project-settings-dev hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Developer > Webhook
+          if (calledby === 'webhook') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ);
+            console.log('[ROLE-SERV] - webhook hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Smart Assign
+          if (calledby === 'project-settings-smart-assign') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ);
+            console.log('[ROLE-SERV] - project-settings-smart-assign hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Notifications
+          if (calledby === 'project-settings-notifications') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ);
+            console.log('[ROLE-SERV] - project-settings-notifications hasPermission ', hasPermission)
+            return hasPermission;
+          }
           
+          // Project settings > Security
+          if (calledby === 'project-settings-security') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_SECURITY_READ);
+            console.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
+          // Project settings > Banned
+          if (calledby === 'project-settings-banned') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_BANNED_READ);
+            console.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
+          // Project settings > Advanced
+          if (calledby === 'project-settings-advanced') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
+            console.log('[ROLE-SERV] - project-settings-advanced hasPermission ', hasPermission)
+            return hasPermission;
+          }
 
 
         } else if (_projectUserRole === 'owner' || _projectUserRole === 'admin') {
@@ -705,9 +890,71 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Project settings > General
+          if (calledby === 'project-settings-general') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - project-settings-general hasPermission ', hasPermission)
+            return hasPermission;
+          }
           
+          // Project settings > Subscription
+          if (calledby === 'project-settings-sub') {
+              const hasPermission = _projectUserRole === 'owner';
+              console.log('[ROLE-SERV] - project-settings-sub hasPermission ', hasPermission)
+              return hasPermission;
+            }
+          }
 
-        }
+          // Project settings > Developer
+          if (calledby === 'project-settings-dev') {
+              const hasPermission = true;
+              console.log('[ROLE-SERV] - project-settings-dev hasPermission ', hasPermission)
+              return hasPermission;
+          }
+
+          // Project settings > Developer > Webhook
+          if (calledby === 'webhook') {
+              const hasPermission = true;
+              console.log('[ROLE-SERV] - webhook hasPermission ', hasPermission)
+              return hasPermission;
+          }
+
+          // Project settings > Smart Assign
+          if (calledby === 'project-settings-smart-assign') {
+              const hasPermission = true;
+              console.log('[ROLE-SERV] - project-settings-smart-assign hasPermission ', hasPermission)
+              return hasPermission;
+          }
+
+          // Project settings > Notifications
+          if (calledby === 'project-settings-notifications') {
+            const hasPermission = true;
+            console.log('[ROLE-SERV] - project-settings-notifications hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Security
+          if (calledby === 'project-settings-security') {
+            const hasPermission = _projectUserRole === 'owner';
+            console.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Banned
+          if (calledby === 'project-settings-banned') {
+            const hasPermission = _projectUserRole === 'owner';
+            console.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          // Project settings > Advanced
+          if (calledby === 'project-settings-advanced') {
+            const hasPermission = _projectUserRole === 'owner';
+            console.log('[ROLE-SERV] - project-settings-advanced hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
+          
       }
 
     }
