@@ -8,6 +8,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
   { path: "", component: ProjectEditAddComponent},
@@ -26,7 +27,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MomentModule,
-    MatTooltipModule
+    MatTooltipModule,
+    UnauthorizedForSettingsModule
   ]
 })
 export class ProjectEditAddModule { }

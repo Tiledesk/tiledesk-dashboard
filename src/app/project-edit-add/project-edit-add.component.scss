@@ -1428,15 +1428,16 @@ button.close {
 }
 
 .link-to-automatic-assignment-doc-wpr {
-  margin-right: -30px !important;
-  margin-right: 40px !important;
+  // margin-right: -30px !important;
+  // margin-right: 40px !important;
 }
 
 .link-to-automatic-assignment-doc {
   // background-color: rgb(241, 241, 241);
   // margin-top: -17px;
   // padding: 20px 20px 10px 36px;
-  margin-left: 55px;
+  // margin-left: 55px;
+  margin-bottom: 8px;
 }
 
 // .link-to-automatic-assignment-doc>div {
@@ -1452,6 +1453,15 @@ button.close {
   fill: var(--blue-light);
 }
 
+.card--footer {
+    border-top: 1px solid #e8f0f5 !important;
+    margin-top: 18px;
+}
+
+
+.btn-edit-smart-assigment {
+  margin-top: 18px !important;
+}
 // .link-to-automatic-assignment-doc>div>svg {
 //   width: 25px;
 //   height: auto;
