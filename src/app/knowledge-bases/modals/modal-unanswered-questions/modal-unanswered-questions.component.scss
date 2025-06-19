@@ -1,0 +1,160 @@
+/* Styles for modal-unanswered-questions component */ 
+.add-content-container.unanswered-questions-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px;
+    border-radius: var(--card-border-radius);
+    border: 1px solid #e5effe !important;
+}
+
+
+.upgrade-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.upgrade-subtitle {
+    font-size: 16px;
+    margin-bottom: 10px;
+    max-width: 500px;
+    font-weight: 400;
+    text-align: center;
+    display: block;
+    line-height: 1.5;
+}
+
+.uq-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #3c4858;
+  margin-bottom: 4px;
+  font-family: var(--header-font-family, 'Poppins', 'Roboto', 'Arial', sans-serif);
+}
+.uq-subtitle {
+  font-size: 15px;
+  color: #7b8a9a;
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+.uq-list {
+  width: 100%;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 18px;
+}
+.uq-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #b2b2b2;
+  padding: 0 0 8px 0;
+  border-bottom: 1px solid #f0f4f8;
+}
+.uq-list-header-question {
+  flex: 1 1 0;
+  text-align: left;
+}
+.uq-list-header-actions {
+  flex: 0 0 120px;
+  text-align: right;
+}
+.uq-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f4f8;
+  font-size: 15px;
+  background: none;
+}
+.uq-list-item:last-child {
+  border-bottom: none;
+}
+.uq-question-text {
+  flex: 1 1 0;
+  color: #3c4858;
+  font-size: 15px;
+  font-family: var(--header-font-family);
+}
+.uq-actions {
+  flex: 0 0 120px;
+  display: flex;
+  gap: 2px;
+  justify-content: flex-end;
+}
+.uq-btn {
+  border: none;
+  background: none;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 18px;
+  color: #7b8a9a;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  outline: none;
+  box-shadow: none;
+  min-width: unset;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.uq-btn-icon mat-icon {
+  font-size: 24px;
+  color: #7b8a9a;
+  transition: color 0.15s;
+}
+.uq-btn-icon:hover mat-icon {
+  color: var(--primary-btn-background, #006cff);
+}
+.uq-btn-icon:active mat-icon {
+  color: #0056b3;
+}
+.uq-btn-add {
+  background: var(--primary-btn-background, #006cff);
+  color: #fff;
+}
+.uq-btn-add:hover {
+  background: #0056b3;
+}
+.uq-btn-discard {
+  background: #f5f7fa;
+  color: #b23b3b;
+  border: 1px solid #f0f0f0;
+}
+.uq-btn-discard:hover {
+  background: #ffeaea;
+  color: #a11a1a;
+}
+.uq-empty {
+  text-align: center;
+  color: #b2b2b2;
+  font-size: 16px;
+  padding: 32px 0 24px 0;
+  font-style: italic;
+}
+.uq-no-questions {
+  text-align: center;
+  color: #b2b2b2;
+  font-size: 18px;
+  font-family: var(--header-font-family);
+  padding: 48px 0 36px 0;
+  font-style: italic;
+  width: 100%;
+}
+.uq-btn-icon[mat-icon-button]:hover mat-icon {
+  color: #e53935;
+}
+.uq-btn-icon[mat-icon-button] mat-icon.add-icon {
+  color: #2196f3;
+} 

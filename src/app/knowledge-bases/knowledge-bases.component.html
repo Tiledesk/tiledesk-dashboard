@@ -36,7 +36,6 @@
 
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
-
   <!-- <div class="page-title--sidebar-settings"
     [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
     Manage your Knowledge Bases
@@ -463,22 +462,52 @@
 
             </div>
 
+            <!-- TAB SWITCHER START -->
+            <div class="kb-switch-field">
+              <input type="radio" id="tab-contents" name="kb-tab-switch" [checked]="selectedTab === 'contents'" (change)="switchTab('contents')">
+              <label for="tab-contents">
+                <mat-icon>list_alt</mat-icon>
+                <span>Contents</span>
+              </label>
+              <input type="radio" id="tab-unanswered" name="kb-tab-switch" [checked]="selectedTab === 'unanswered'" (change)="switchTab('unanswered')">
+              <label for="tab-unanswered">
+                <mat-icon>help_outline</mat-icon>
+                <span>Unanswered questions</span>
+              </label>
+            </div>
+            <!-- TAB SWITCHER END -->
+
             <!-- START TABLE -->
-            <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
-              [hasRemovedKb]="hasRemovedKb" [hasUpdatedKb]="hasUpdatedKb" [getKbCompleted]="getKbCompleted"
-              [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
-              [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature" [t_params]="t_params"
-              [refreshRateIsEnabled]="refreshRateIsEnabled" [payIsVisible]="payIsVisible" [salesEmail]="salesEmail"
-              [project_name]="project_name" [id_project]="id_project"
-              (openBaseModalDetail)="onOpenBaseModalDetail($event)"
-              (openBaseModalDelete)="onOpenBaseModalDelete($event)"
-              (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
-              (openBaseModalPreview)="onOpenBaseModalPreview()" (onOpenAddContents)="onOpenAddContent()"
-              (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
-              (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
-              (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
-              (loadByFilter)="onLoadByFilter($event)">
-            </knowledge-base-table>
+            <div [@fadeInOut] *ngIf="selectedTab === 'contents'">
+              <knowledge-base-table [kbsList]="kbsList" [kbsListCount]="kbsListCount" [refresh]="refreshKbsList"
+                [hasRemovedKb]="hasRemovedKb" [hasUpdatedKb]="hasUpdatedKb" [getKbCompleted]="getKbCompleted"
+                [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
+                [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature" [t_params]="t_params"
+                [refreshRateIsEnabled]="refreshRateIsEnabled" [payIsVisible]="payIsVisible" [salesEmail]="salesEmail"
+                [project_name]="project_name" [id_project]="id_project"
+                (openBaseModalDetail)="onOpenBaseModalDetail($event)"
+                (openBaseModalDelete)="onOpenBaseModalDelete($event)"
+                (openBaseModalNamespaceDelete)="onOpenBaseModalNamespaceDelete()"
+                (openBaseModalPreview)="onOpenBaseModalPreview()" (onOpenAddContents)="onOpenAddContent()"
+                (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
+                (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
+                (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                (loadByFilter)="onLoadByFilter($event)">
+              </knowledge-base-table>
+            </div>
+            <div [@fadeInOut] *ngIf="selectedTab === 'unanswered'">
+              <ng-container *ngIf="!isLoadingUnanswered; else loadingUnanswered">
+                <modal-unanswered-questions 
+                  [unansweredQuestions]="unansweredQuestions"
+                  [namespace]="selectedNamespace"
+                  [id_project]="id_project"
+                  (addFaqFromUnanswered)="onAddFaqFromUnanswered($event)">
+                </modal-unanswered-questions>
+              </ng-container>
+              <ng-template #loadingUnanswered>
+                <loading-spinner></loading-spinner>
+              </ng-template>
+            </div>
             <!-- END TABLE -->
 
           </div>
