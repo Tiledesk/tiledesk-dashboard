@@ -267,6 +267,40 @@ export class UsersNewRoleComponent implements OnInit {
       ]
     },
 
+    {
+      key: 'projectSettings',
+      title: 'Project settings ',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.PROJECTSETTINGS_GENERAL_READ, label: 'Able to view General' },
+        { key: PERMISSIONS.PROJECTSETTINGS_GENERAL_UPDATE, label: 'Able to edit project name (in General)' },
+        { key: PERMISSIONS.PROJECTSETTINGS_SUBSCRIPTION_READ, label: 'Able to view Subscription' },
+        { key: PERMISSIONS.PROJECTSETTINGS_DEVELOPER_READ, label: 'Able to view Developer' },
+        { key: PERMISSIONS.PROJECTSETTINGS_DEVELOPER_UPDATE, label: 'Able to manage features available in Developer' },
+        { key: PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_READ, label: 'Able to view Smart Assignment' },
+        { key: PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_UPDATE, label: 'Able to manage Smart Assignment' },
+        { key: PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ, label: 'Able to view Notifications' },
+        { key: PERMISSIONS.PROJECTSETTINGS_SECURITY_READ, label: 'Able to view Security' },
+        { key: PERMISSIONS.PROJECTSETTINGS_BANNED_READ, label: 'Able to view Banned visitors' },
+        { key: PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ, label: 'Able to view Advanced' },
+      ]
+    },
+
+    //  {
+    //   key: 'projectSettings',
+    //   title: 'Project settings',
+    //   parentLabel: 'Select all',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: PERMISSIONS.PROJECTSETTINGS_GENERAL_READ, label: 'Able to view' },
+    //     { key: PERMISSIONS.PROJECTSETTINGS_GENERAL_UPDATE, label: 'Able to edit project name' },
+
+    //   ]
+    // },
+
 
     {
       key: 'SectionsAccess',
