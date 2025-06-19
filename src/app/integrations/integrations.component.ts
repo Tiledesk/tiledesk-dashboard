@@ -120,7 +120,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-
+        console.log("[INTEGRATION-COMP] - PERMISSION_TO_UPDATE Project: ", this.project) ;
         console.log('[INTEGRATION-COMP] - Role:', status.role);
         console.log('[INTEGRATION-COMP] - Permissions:', status.matchedPermissions);
 
@@ -131,7 +131,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
             this.PERMISSION_TO_UPDATE = true
             console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
-            this.PERMISSION_TO_UPDATE = false
+            this.PERMISSION_TO_UPDATE = false;
+            if (this.PERMISSION_TO_UPDATE === false) {
+              this.router.navigate(['project/' + this.projectID + '/integrations/'])
+            }
            
             console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
@@ -197,7 +200,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
           this.project = project
           this.projectID = project._id
-          this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
+          console.log("[INTEGRATION-COMP] getCurrentProject Project: ", this.project) ;
+          console.log("[INTEGRATION-COMP] getCurrentProject PERMISSION_TO_UPDATE: ", this.PERMISSION_TO_UPDATE) ;
            if (this.PERMISSION_TO_UPDATE === false) {
               this.router.navigate(['project/' + this.projectID + '/integrations/'])
            }
