@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.112-rc3
+- Adds Project settings section to Role Management page
+- Adds the ability to allow access to the Project settings tabs
+- Adds the ability to manage the the "edit" function on Project Settings > General tab
+- Adds the ability to manage available features in Project Settings > Developer tab
+
 ### 2.7.112-rc2
 - Adds Integrations and Apps sections to Role Management page
 - Adds the ability to allow access to the Integrations page
