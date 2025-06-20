@@ -1,4 +1,12 @@
 /* Styles for modal-unanswered-questions component */ 
+.add-header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 30px;
+}
+
 .add-content-container.unanswered-questions-modal {
     display: flex;
     flex-direction: column;
@@ -152,9 +160,9 @@
   font-style: italic;
   width: 100%;
 }
-.uq-btn-icon[mat-icon-button]:hover mat-icon {
+.uq-btn-icon[mat-icon-button]:hover mat-icon.delete-icon {
   color: #e53935;
 }
-.uq-btn-icon[mat-icon-button] mat-icon.add-icon {
+.uq-btn-icon[mat-icon-button]:hover mat-icon.add-icon {
   color: #2196f3;
 } 

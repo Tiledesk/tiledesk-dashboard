@@ -3460,8 +3460,10 @@ _presentDialogImportContents() {
     window.open(url, '_blank');
   }
 
-  onAddFaqFromUnanswered(event: {question: any, done: (success: boolean) => void}) {
+  onAddFaqFromUnanswered(event: {q: any, done: (success: boolean) => void}) {
     // Apre la modale FAQ con la domanda precompilata
+    const question = event.q?.question;
+    this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
     const dialogRef = this.dialog.open(ModalFaqsComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -3469,10 +3471,10 @@ _presentDialogImportContents() {
       data: {
         selectedNamespace: this.selectedNamespace,
         prefillKb: {
-          name: event.question.text,
+          name: question,
           content: '',
           type: 'faq',
-          source: event.question.text,
+          source: question,
           id_project: this.id_project,
           namespace: this.selectedNamespace?.name,
           _id: ''
@@ -3485,6 +3487,7 @@ _presentDialogImportContents() {
       // Se la modale è stata chiusa con successo (FAQ salvata)
       if (result && result.isSingle === "true" && result.body) {
         // Qui puoi anche attendere la risposta del servizio se serve
+        this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
         this.onAddKb(result.body, event.done);
       } else {
         // Annullato o errore
