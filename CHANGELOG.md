@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.112-rc4
+### 2.7.112-rc5
 - Added: added unanswered-questions module in knowledge-base
 
 ### 2.7.111
