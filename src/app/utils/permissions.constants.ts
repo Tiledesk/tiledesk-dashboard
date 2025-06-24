@@ -3,14 +3,21 @@ export const PERMISSIONS = {
   REQUEST_READ_ALL: 'request_read_all',
   REQUEST_READ_GROUP: 'request_read_group',
   REQUEST_READ_MY: 'request_read_my',
-
+ 
+  INBOX_READ: 'inbox_read',
   REQUEST_UPDATE: 'request_update',
 
   KB_READ: 'kb_read',
   FLOWS_READ: 'flows_read',
-  INBOX_READ: 'inbox_read',
+ 
   HISTORY_READ: 'history_read',
-  LEAD_READ: 'lead_read',
+
+  LEADS_READ: 'leads_read',
+  LEAD_UPDATE: 'lead_update',
+  LEAD_TRASH: 'lead_trash',
+  LEAD_DELETE: 'lead_delete',
+  LEADS_EXPORT: 'leads_export',
+
   ANALYTICS_READ: 'analytics_read',
   ACTIVITIES_READ: 'activities_read',
 
