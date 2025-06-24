@@ -135,6 +135,20 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.FLOWS_READ, label: 'Able to view' },
       ]
     },
+    {
+      key: 'leads',
+      title: 'Contacts',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+       { key: PERMISSIONS.LEADS_READ, label: 'Able to view' },
+       { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
+       { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
+       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete (⚠️ internal note - to resolve Error 403)' },
+       { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },
+      ]
+    },
     // {
     //   key: 'inboxManagement',
     //   title: 'Monitor & Not real time conversations',
@@ -310,7 +324,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
 
-        { key: PERMISSIONS.LEAD_READ, label: 'Able to view Leads' },
+        
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
         { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
