@@ -163,7 +163,13 @@ import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/u
 
 const routes: Routes = [
 
-
+   // no-auth page
+  {
+    // path: 'project/:projectid/wsrequests-no-auth',
+    path: 'project/:projectid/:callingpage/no-auth',
+    loadChildren: () => import('app/auth/unauthorized-for-sidebar/unauthorized-for-sidebar.module').then(m => m.UnauthorizedForSidebarModule),
+    canActivate: [AuthGuard]
+  },
 
   // Login
   {
@@ -578,6 +584,8 @@ const routes: Routes = [
   },
 
   // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+
 
   // Conversations list demo page
   {
