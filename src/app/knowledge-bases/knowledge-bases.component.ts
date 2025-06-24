@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
@@ -15,8 +15,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS } from 'app/utils/util';
-import { AppConfigService } from 'app/services/app-config.service';
-const swal = require('sweetalert');
 
 //import { Router } from '@angular/router';
 
@@ -79,8 +77,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   msgErrorIndexingKb: string; // = 'Indicizzazione non riuscita';
   msgSuccesIndexingKb: string; // = 'Indicizzazione terminata con successo';
   msgErrorAddUpdateKb: string; // = 'Non è stato possibile aggiungere o modificare il kb';
-  msgErrorAddUpdateKbLimit: string // = "Non è possibile superare il numero di risorse previste nel piano corrente";
-  warningTitle: string;
+
 
   allTemplatesCount: number;
   allCommunityTemplatesCount: number;
@@ -91,8 +88,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   increaseSalesBotsCount: number;
   listSitesOfSitemap: any = [];
 
-  payIsVisible: boolean = false;
-
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     private auth: AuthService,
@@ -101,13 +96,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private openaiService: OpenaiService,
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
-    private router: Router,
     public route: ActivatedRoute,
     //private router: Router,
     private notify: NotifyService,
     private translate: TranslateService,
     private faqKbService: FaqKbService,
-    public appConfigService: AppConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -127,7 +120,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.getTemplates();
     this.getCommunityTemplates()
     this.getFaqKbByProjectId();
-    this.getOSCODE();
   }
 
 
@@ -280,27 +272,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   }
 
-  getOSCODE() {
-
-    let public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-
-    let keys = public_Key.split("-");
-
-    keys.forEach(key => {
-      if (key.includes("PAY")) {
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.payIsVisible = false;
-          console.log("payIsVisible: ", this.payIsVisible)
-        } else {
-          this.payIsVisible = true;
-          console.log("payIsVisible: ", this.payIsVisible)
-        }
-      }
-    })
-  }
-
   
 
   // loadKbSettings(){
@@ -328,18 +299,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.msgSuccesIndexingKb = KbPage['msgSuccesIndexingKb'];
         this.msgErrorAddUpdateKb = KbPage['msgErrorAddUpdateKb'];
       });
-    
-    this.translate.get('Warning')
-      .subscribe((text: string) => {
-        // this.deleteContact_msg = text;
-        // this.logger.log('+ + + BotsPage translation: ', text)
-        this.warningTitle = text;
-      });
-  }
-
-  getTranslatedStringKbLimitReached(max_num) {
-    this.translate.get('KbPage.msgErrorAddUpdateKbLimit', { max_number: max_num })
-      .subscribe((text: string) => { this.msgErrorAddUpdateKbLimit = text; });
   }
 
 
@@ -544,34 +503,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("onSendSitemap:", resp);
-      console.log("onSendSitemap:", resp);
-      if (resp.errors && resp.errors[0]) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, "Cancel"],
-          dangerMode: false
-        })
-      } else {
-        this.listSitesOfSitemap = resp.sites;
-      }
-      
+      // let error = resp.error;
+      // let url = resp.url;
+      this.listSitesOfSitemap = resp.sites;
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
-      
-      //this.onOpenErrorModal(error);
-
-      swal({
-        title: this.warningTitle,
-        text: error,
-        icon: "warning",
-        className: "custom-swal",
-        buttons: [null, "Cancel"],
-        dangerMode: false
-      })
-
+      this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] send sitemap *COMPLETED*");
     })
@@ -619,37 +556,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //that.onCloseBaseModal();
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
-      // this.onOpenErrorModal(error);
-      if (err.error && err.error.plan_limit) {
-        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
-        error = this.msgErrorAddUpdateKbLimit
-      }
-
-      if (this.payIsVisible === true) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: ["Cancel", "Upgrade Plan"],
-          dangerMode: false
-        }).then((willUpgradePlan: any) => {
-  
-          if (willUpgradePlan) {
-            this.router.navigate(['project/' + this.id_project + '/pricing']);
-          }
-        })
-      } else {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, "Cancel"],
-          dangerMode: false
-        })
-      }
-
+      this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
       //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
@@ -682,40 +589,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       this.refreshKbsList = !this.refreshKbsList;
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
-      
-      //this.onOpenErrorModal(error);
-      if (err.error && err.error.plan_limit) {
-        this.getTranslatedStringKbLimitReached(err.error.plan_limit);
-        error = this.msgErrorAddUpdateKbLimit
-      }
-
-      if (this.payIsVisible === true) {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: ["Cancel", "Upgrade Plan"],
-          dangerMode: false
-        }).then((willUpgradePlan: any) => {
-  
-          if (willUpgradePlan) {
-            this.router.navigate(['project/' + this.id_project + '/pricing']);
-          }
-        })
-      } else {
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, "Cancel"],
-          dangerMode: false
-        })
-      }
-
-      
-
+      this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
       //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
@@ -739,18 +613,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       kb.deleting = false;
       if(!response || (response.success && response.success === false)){
         // this.updateStatusOfKb(kb._id, 0);
-        
-        // this.onOpenErrorModal(error);
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, "Cancel"],
-          dangerMode: false
-        })
-
-
+        this.onOpenErrorModal(error);
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
         // let error = response.error?response.error:"Errore generico";
@@ -770,17 +633,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
       kb.deleting = false;
       //this.kbid_selected.deleting = false;
-      
-      // this.onOpenErrorModal(error);
-      swal({
-        title: this.warningTitle,
-        text: error,
-        icon: "warning",
-        className: "custom-swal",
-        buttons: [null, "Cancel"],
-        dangerMode: false
-      })
-
+      this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
       //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
@@ -813,17 +666,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.kbService.deleteKb(dataDelete).subscribe((response:any) => {
       kb.deleting = false;
       if(!response || (response.success && response.success === false)){
-        
-        // this.onOpenErrorModal(error);
-        swal({
-          title: this.warningTitle,
-          text: error,
-          icon: "warning",
-          className: "custom-swal",
-          buttons: [null, "Cancel"],
-          dangerMode: false
-        })
-
+        this.onOpenErrorModal(error);
       } else {
         this.kbService.addKb(dataAdd).subscribe((resp: any) => {
           let kbNew = resp.value;
@@ -851,17 +694,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
           // }, 2000);
         }, (err) => {
           this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
-          
-          //this.onOpenErrorModal(error);
-          swal({
-            title: this.warningTitle,
-            text: error,
-            icon: "warning",
-            className: "custom-swal",
-            buttons: [null, "Cancel"],
-            dangerMode: false
-          })
-
+          this.onOpenErrorModal(error);
         }, () => {
           this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
         })
@@ -869,17 +702,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }, (err) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
       kb.deleting = false;
-      
-      // this.onOpenErrorModal(error);
-      swal({
-        title: this.warningTitle,
-        text: error,
-        icon: "warning",
-        className: "custom-swal",
-        buttons: [null, "Cancel"],
-        dangerMode: false
-      })
-
+      this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
       kb.deleting = false;

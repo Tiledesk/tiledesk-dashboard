@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "Indexering misslyckades",
         "msgSuccesIndexingKb": "Utbilda om innehåll som har lanserats framgångsrikt",
         "msgErrorAddUpdateKb": "Kunskapsbasen kunde inte läggas till eller redigeras",
-        "msgErrorAddUpdateKbLimit": "Det är inte möjligt att överskrida antalet tillåtna resurser i din plan",
         "noContent": "inget innehåll",
         "titleUrls": "Importera från webbadresser",
         "helpUrls": "Infoga webbsidor från offentliga webbadresser i textområdet nedan, åtskilda av en retur.",

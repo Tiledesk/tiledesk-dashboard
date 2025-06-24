@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "Indicizzazione non riuscita",
         "msgSuccesIndexingKb": "Riqualificazione sui contenuti avviata correttamente",
         "msgErrorAddUpdateKb": "Impossibile aggiungere o modificare la Knowledge Base",
-        "msgErrorAddUpdateKbLimit": "Non è possibile superare il numero di {{ max_number}} risorse previste dal tuo piano attuale",
         "noContent": "nessun contenuto",
         "titleUrls": "Importa da URL",
         "helpUrls": "Inserisci le pagine web dagli URL pubblici nell'area di testo sottostante, separate da un ritorno a capo.",

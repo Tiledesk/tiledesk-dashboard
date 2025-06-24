@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "Dizine ekleme başarısız oldu",
         "msgSuccesIndexingKb": "Başarıyla başlatılan içerikle ilgili yeniden eğitim",
         "msgErrorAddUpdateKb": "Bilgi Bankası eklenemedi veya düzenlenemedi",
-        "msgErrorAddUpdateKbLimit": "Planınızda izin verilen kaynak sayısını aşmanız mümkün değildir",
         "noContent": "içerik yok",
         "titleUrls": "URL'lerden içe aktar",
         "helpUrls": "Genel URL'lerdeki web sayfalarını aşağıdaki metin alanına bir dönüş işaretiyle ayırarak ekleyin.",

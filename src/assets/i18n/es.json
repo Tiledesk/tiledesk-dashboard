@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "Falló la indexación",
         "msgSuccesIndexingKb": "Vuelva a capacitarse sobre el contenido lanzado exitosamente",
         "msgErrorAddUpdateKb": "La base de conocimientos no se pudo agregar ni editar.",
-        "msgErrorAddUpdateKbLimit": "No es posible exceder la cantidad de {{ max_number}} recursos permitidos en su plan",
         "noContent": "sin contenido",
         "titleUrls": "Importar desde URL",
         "helpUrls": "Inserte páginas web desde URL públicas en el área de texto a continuación, separadas por un retorno.",

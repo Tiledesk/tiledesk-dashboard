@@ -1640,7 +1640,6 @@
         "msgErrorIndexingKb": "Indekslash amalga oshmadi",
         "msgSuccesIndexingKb": "Muvaffaqiyatli ishga tushirilgan kontentni qayta o'qitish",
         "msgErrorAddUpdateKb": "Bilimlar bazasini qo‘shib bo‘lmadi yoki tahrirlab bo‘lmadi",
-        "msgErrorAddUpdateKbLimit": "Rejangizda ruxsat etilgan resurslar sonidan oshib ketish mumkin emas",
         "noContent": "tarkib yo'q",
         "titleUrls": "URL manzillaridan import qilish",
         "helpUrls": "Veb-sahifalarni umumiy URL manzillaridan qaytish bilan ajratilgan holda quyidagi matn maydoniga kiriting.",

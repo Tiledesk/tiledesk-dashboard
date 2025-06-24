@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "İndeksləmə uğursuz oldu",
         "msgSuccesIndexingKb": "Uğurla işə salınan məzmunu yenidən hazırlayın",
         "msgErrorAddUpdateKb": "Bilik Bazasını əlavə etmək və ya redaktə etmək mümkün olmadı",
-        "msgErrorAddUpdateKbLimit": "Planınızda icazə verilən resursların sayını aşmaq mümkün deyil",
         "noContent": "məzmun yoxdur",
         "titleUrls": "URL-lərdən idxal",
         "helpUrls": "İctimai URL-lərdən veb səhifələri geri dönüşlə ayrılaraq aşağıdakı mətn sahəsinə daxil edin.",

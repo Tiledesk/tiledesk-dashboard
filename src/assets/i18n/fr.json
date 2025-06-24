@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "Échec de l'indexation",
         "msgSuccesIndexingKb": "Recycler sur le contenu lancé avec succès",
         "msgErrorAddUpdateKb": "La base de connaissances n'a pas pu être ajoutée ou modifiée",
-        "msgErrorAddUpdateKbLimit": "Il n'est pas possible de dépasser le nombre de ressources autorisées dans votre forfait",
         "noContent": "Pas de contenu",
         "titleUrls": "Importer à partir d'URL",
         "helpUrls": "Insérez des pages Web à partir d'URL publiques dans la zone de texte ci-dessous, séparées par un retour.",

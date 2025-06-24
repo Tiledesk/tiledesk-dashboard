@@ -1641,7 +1641,6 @@
 		"msgErrorIndexingKb": "Die Indizierung ist fehlgeschlagen",
 		"msgSuccesIndexingKb": "Neuschulung für erfolgreich eingeführte Inhalte",
 		"msgErrorAddUpdateKb": "Die Wissensdatenbank konnte nicht hinzugefügt oder bearbeitet werden",
-		"msgErrorAddUpdateKbLimit": "Es ist nicht möglich, die in Ihrem Plan zulässige Anzahl an Ressourcen zu überschreiten",
 		"noContent": "kein Inhalt",
 		"titleUrls": "Von URLs importieren",
 		"helpUrls": "Fügen Sie Webseiten von öffentlichen URLs in den Textbereich unten ein, getrennt durch einen Zeilenumbruch.",

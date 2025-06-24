@@ -1641,7 +1641,6 @@
         "msgErrorIndexingKb": "Indexing failed",
         "msgSuccesIndexingKb": "Re-train on content launched successfully",
         "msgErrorAddUpdateKb": "The Knowledge Base could not be added or edited",
-        "msgErrorAddUpdateKbLimit": "It is not possible to exceed the number of {{ max_number}} resources allowed in your plan",
         "noContent": "no content",
         "titleUrls": "Import from URLs",
         "helpUrls": "Insert web pages from public URLs into the text area below, separated by a return.",
