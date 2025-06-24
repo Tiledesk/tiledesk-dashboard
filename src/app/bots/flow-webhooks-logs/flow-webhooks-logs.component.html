@@ -1,0 +1,36 @@
+<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+    [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }"> -->
+
+<div class="logs-header">
+  <label for="logLevelSelect">Tipo di log:</label>
+  <select id="logLevelSelect" [(ngModel)]="selectedLevel" (change)="onLevelChange(selectedLevel)">
+    <option *ngFor="let level of logLevels" [value]="level.value">{{ level.label }}</option>
+  </select>
+</div>
+
+<table class="logs-table">
+  <thead>
+    <tr>
+      <th style="width: 160px;">Data</th>
+      <th style="width: 60px;">Level</th>
+      <th>Testo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let log of filteredLogs" 
+        (click)="toggleExpand(log._id)"
+        [class.expanded]="expandedLogId === log._id">
+      <td class="log-date">{{ formatDate(log.rows.timestamp) }}</td>
+      <td class="log-level">{{ log.rows.level }}</td>
+      <td class="log-text">
+        <ng-container *ngIf="expandedLogId !== log._id">
+          {{ log.rows.text.length > 60 ? (log.rows.text | slice:0:60) + '...' : log.rows.text }}
+        </ng-container>
+        <ng-container *ngIf="expandedLogId === log._id">
+          {{ log.rows.text }}
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table> 

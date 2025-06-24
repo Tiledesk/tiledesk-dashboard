@@ -75,7 +75,7 @@
 
                                 <div class="card-list" *ngFor="let webhook of flowWebhooks; let i = index">
                                     <!-- (click)='goToBotDtls(faqkb)' -->
-                                    <div class="cl-card">
+                                    <div class="cl-card" (click)="goToFlowWebhookDetail(webhook.webhook_id)">
                                         <div class="cl-card-content">
 
                                             <div class="cl-card-first-column">
