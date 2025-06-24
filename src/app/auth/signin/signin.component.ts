@@ -10,6 +10,7 @@ import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { TranslateService } from '@ngx-translate/core';
+import parsePhoneNumberFromString from 'libphonenumber-js/max';
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -83,7 +84,7 @@ export class SigninComponent implements OnInit {
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
-    this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
+    this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR'];
     this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
     this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
@@ -115,12 +116,9 @@ export class SigninComponent implements OnInit {
     }
   }
 
-  signinWithGoogle() {
-    this.auth.siginWithGoogle()
-  }
-  signinWithOAuth2() {
-     this.auth.signinWithOAuth2()
-  }
+  
+  
+
 
   redirectIfLogged() {
     const storedUser = localStorage.getItem('user')
@@ -317,11 +315,11 @@ export class SigninComponent implements OnInit {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
         // this.localDbService.removeFromStorage('signedup')
-        // this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
+        this.logger.log('[SIGN-IN] SSO (Signin) - user', user);
         // this.localDbService.removeFromStorage('hpea');
-        
+
         this.trackSignin(user)
-      
+
 
         if (!this.EXIST_STORED_ROUTE) {
           this.router.navigate(['/projects']);
@@ -413,8 +411,28 @@ export class SigninComponent implements OnInit {
     });
 
   }
+  
+  signinWithOAuth2() {
+     this.auth.signinWithOAuth2()
+  }
+
+  signinWithGoogle() {
+    this.auth.siginWithGoogle()
+  }
 
   trackSignin(user) {
+    this.logger.log('[SIGN-IN] trackSignin ', user)
+    let mobileNumberParsed = null
+    let phoneCountry = ''
+
+    if (user.phone) {
+      mobileNumberParsed = parsePhoneNumberFromString(user.phone);
+      this.logger.log('isValidPhone parsePhoneNumberFromString mobileNumberParsed', mobileNumberParsed)
+      phoneCountry = mobileNumberParsed.country
+    }
+
+
+    this.logger.log('isValidPhone parsePhoneNumberFromString phoneCountry', phoneCountry)
     if (!isDevMode()) {
       if (window['analytics']) {
         try {
@@ -436,8 +454,9 @@ export class SigninComponent implements OnInit {
           window['analytics'].identify(user._id, {
             name: userFullname,
             email: user.email,
+            mobile_phone: user.phone,
+            phone_country: phoneCountry,
             logins: 5,
-
           });
         } catch (err) {
           // this.logger.error('identify signin event error', err);
