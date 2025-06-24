@@ -49,6 +49,7 @@ import { CacheService } from 'app/services/cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { RoleService } from 'app/services/role.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -429,7 +430,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public brandService: BrandService,
     private faqService: FaqService,
     private cacheService: CacheService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private roleService: RoleService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -517,7 +519,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
   ngOnInit() {
-
+    this.roleService.checkRoleForCurrentProject('wsrequest-detail')
     this.getParamRequestId();
     this.getCurrentProject();
     this.getLoggedUser();

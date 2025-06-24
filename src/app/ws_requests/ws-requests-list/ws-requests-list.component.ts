@@ -199,12 +199,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   cPlanOnly: string;
   prjct_profile_name: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
+
   ROLE: string;
   PERMISSIONS: any;
   PERMISSION_TO_UPDATE_REQUEST: boolean;
   private permissionReady$ = new BehaviorSubject<boolean>(false);
   hasDefaultRole: boolean;
   CHAT_PANEL_MODE: boolean = false;
+
+  PERMISSION_TO_EDIT_SMART_ASSIGN:  boolean;
+  PERMISSION_TO_EDIT_OPERATING_HOURS: boolean;
+
+  customHeight: boolean = true;
+
+  // isAuthorized = false;
+  // permissionChecked = false;
+
   /**
    * 
    * @param wsRequestsService 
@@ -253,7 +263,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   ngOnInit() {
     // this.logger.log('SELECTED PRIORITY ', this.selectedPriority)
-    this.roleService.checkRoleForCurrentProject('ws-request-list')
+    this.roleService.checkRoleForCurrentProject('wsrequests')
     this.getBrowserVersion()
     this.getOSCODE();
     this.getImageStorageAndThenProjectUsers();
@@ -272,7 +282,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.listenToParentPostMessage()
     // this.getGroupsByProjectId();
     this.listenToProjectUser()
+    // this.checkPermissions()
   }
+
+  //  async checkPermissions() {
+  //   const result = await this.roleService.checkRoleForCurrentProject('ws-request-list')
+  //   console.log('[WS-REQUESTS-LIST] result ', result)
+  //   this.isAuthorized = result === true;
+  //   this.permissionChecked = true;
+  //   console.log('[WS-REQUESTS-LIST] isAuthorized ', this.isAuthorized)
+  //   console.log('[WS-REQUESTS-LIST] permissionChecked ', this.permissionChecked)
+  // }
 
   listenToProjectUser() {
     this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
@@ -299,8 +319,48 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         } else {
           this.PERMISSION_TO_UPDATE_REQUEST = true
           console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
-
         }
+
+
+        // -------------------------------------
+        // PERMISSION TO EDIT SMART ASSIGNMENT
+        // -------------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner always has permission
+          this.PERMISSION_TO_EDIT_SMART_ASSIGN = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+
+        } else if (status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_EDIT_SMART_ASSIGN = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_SMART_ASSIGN = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_UPDATE);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+        }
+
+        // -------------------------------------
+        // PERMISSION TO EDIT OPERATING HOURS
+        // -------------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner always has permission
+          this.PERMISSION_TO_EDIT_OPERATING_HOURS = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+
+        } else if (status.role === 'agent') {
+          // Admin and agent never have permission
+          this.PERMISSION_TO_EDIT_OPERATING_HOURS = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EDIT_OPERATING_HOURS = status.matchedPermissions.includes(PERMISSIONS.HOURS_UPDATE);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+        }
+
+
         this.permissionReady$.next(true); // ✅ Signal that permission is now ready
       });
   }
@@ -1002,18 +1062,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   goToOperatingHours() {
     this.logger.log('[WS-REQUESTS-LIST] HAS CLICKED goToOperatingHours');
-    if (this.CURRENT_USER_ROLE !== 'agent') {
+    if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.PERMISSION_TO_EDIT_OPERATING_HOURS) {
       this.router.navigate(['project/' + this.projectId + '/hours']);
     } else {
-      this.presentModalAgentCannotManageAvancedSettings();
+      // this.presentModalAgentCannotManageAvancedSettings();
+      this.notify.presentDialogNoPermissionToViewThisSection()
     }
   }
 
 
   goToProjectSettings_Smartassignment() {
-    this.logger.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Smartassignment');
+    console.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Smartassignment');
 
-    if (this.CURRENT_USER_ROLE === 'owner') {
+    if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.PERMISSION_TO_EDIT_SMART_ASSIGN) {
       if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
 
         // this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Smartassignment');
@@ -1026,7 +1087,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       }
 
     } else {
-      this.presentModalAgentCannotManageAvancedSettings()
+      // this.presentModalAgentCannotManageAvancedSettings()
+      this.notify.presentDialogNoPermissionToViewThisSection()
     }
 
 
