@@ -45,6 +45,8 @@ import { getSteps as defaultSteps, defaultStepOptions } from './sidebar.tour.con
 import Step from 'shepherd.js/src/types/step';
 import { environment } from 'environments/environment';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 declare const $: any;
 
@@ -202,6 +204,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
   CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
+  CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE: boolean;
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   TRANSLATIONS_ROUTE_IS_ACTIVE: boolean;
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
@@ -277,7 +280,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   kbNameSpaceid: string = '';
   currentProjectUser: any;
   isVisibleSupportMenu: boolean;
-  company_brand_color: string
+  company_brand_color: string;
+
+  PERMISSION_TO_VIEW_MONITOR: boolean;
+  PERMISSION_TO_VIEW_CONTACTS: boolean;
+  PERMISSION_TO_VIEW_FLOWS: boolean;
+  PERMISSION_TO_VIEW_KB: boolean;
+  PERMISSION_TO_VIEW_ANALYTICS: boolean;
+  PERMISSION_TO_VIEW_ACTVITIES: boolean;
 
   constructor(
     private router: Router,
@@ -302,7 +312,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private shepherdService: ShepherdService,
     public localDbService: LocalDbService,
     private element: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    public rolesService: RolesService
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -349,6 +360,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // this.listenToKbVersion()
 
     // document.documentElement.style.setProperty('--sidebar-active-icon', this.company_brand_color);
+    this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
@@ -358,6 +370,135 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (this.company_brand_color) {
       // this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
     }
+  }
+
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+
+        console.log('[SIDEBAR] - Role:', status.role);
+        console.log('[SIDEBAR] - Permissions:', status.matchedPermissions);
+        // -------------------------------
+        // PERMISSION TO VIEW MONITOR
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.INBOX_READ)) {
+            this.PERMISSION_TO_VIEW_MONITOR = true
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
+          } else {
+            this.PERMISSION_TO_VIEW_MONITOR = false
+
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_MONITOR = true
+          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
+        }
+        // -------------------------------
+        // PERMISSION TO VIEW CONTACTS
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.LEADS_READ)) {
+            this.PERMISSION_TO_VIEW_CONTACTS = true
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_CONTACTS ', this.PERMISSION_TO_VIEW_CONTACTS);
+          } else {
+            this.PERMISSION_TO_VIEW_CONTACTS = false
+
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_CONTACTS ', this.PERMISSION_TO_VIEW_CONTACTS);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_CONTACTS = true
+          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_CONTACTS ', this.PERMISSION_TO_VIEW_CONTACTS);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_FLOWS = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_FLOWS = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+        }
+
+        // -------------------------------
+        // PERMISSION TO VIEW KB
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_KB = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_KB = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_ANALYTICS
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_ACTVITIES
+        // -------------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ACTVITIES = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ACTVITIES = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user agent (2)', 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ACTVITIES = status.matchedPermissions.includes(PERMISSIONS.ACTIVITIES_READ);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+        }
+
+
+
+        // if (status.matchedPermissions.includes('lead_update')) {
+        //   // Enable lead update action
+        // }
+
+        // You can also check status.role === 'owner' if needed
+      });
   }
 
 
@@ -1113,6 +1254,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('flows/no-auth') !== -1) {
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+        } else {
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+        }
+
+        
+
         if (event.url.indexOf('/flows/flow-automations') !== -1) {
           this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - FLOW_AUTOMATION_ROUTE_IS_ACTIVE ', this.FLOW_AUTOMATION_ROUTE_IS_ACTIVE);
@@ -1129,7 +1280,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
         }
 
-   
+        if (event.url.indexOf('/flow-webhook/no-auth') !== -1) {
+          this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
+        } else {
+          this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - FLOW_WEBHOOKS_ROUTE_IS_ACTIVE ', this.FLOW_WEBHOOKS_ROUTE_IS_ACTIVE);
+        }
+
+        
+
+
         if (event.url.indexOf('/bots-demo') !== -1) {
           this.BOTS_DEMO_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - BOTS_DEMO_ROUTE_IS_ACTIVE ', this.BOTS_DEMO_ROUTE_IS_ACTIVE);
@@ -1293,6 +1454,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/wsrequest-detail') !== -1) {
+          this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+        }
+
         if (event.url.indexOf('/wsrequests-demo') !== -1) {
           this.CONV_DEMO_ROUTE_IS_ACTIVE = true;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
@@ -1328,6 +1497,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/contacts/no-auth') !== -1) {
+          this.CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE ', this.CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE ', this.CONTACTS_NO_AUTH_ROUTE_IS_ACTIVE);
+        }
+
+        
 
 
 
@@ -1395,6 +1574,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.KB_ROUTE_IS_ACTIVE = false;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/kb/no-auth') !== -1) {
+          this.KB_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+        } else {
+          this.KB_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+        }
+        
 
         if (event.url.indexOf('/bots/create/tilebot/blank') !== -1) {
           this.CREATE_BOT_ROUTE_IS_ACTIVE = true;
@@ -1647,9 +1835,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
   getCurrentProjectProjectUsersProjectBots() {
- 
+
     this.auth.project_bs.subscribe((project) => {
-    
+
 
       if (project) {
         this.project = project
@@ -1680,142 +1868,142 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getProjectUser();
         // this.getFaqKbByProjectId()
         // if(this.isVisibleKNB) {
-          // const areEnabledKbn = this.getKnbValue()
-          // console.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
-          // if (areEnabledKbn) {
-          //   this.getKnowledgeBaseSettings()
-          // }
+        // const areEnabledKbn = this.getKnbValue()
+        // console.log('[SIDEBAR] getCurrentProjectProjectUsersProjectBots areEnabledKbn ', areEnabledKbn) 
+        // if (areEnabledKbn) {
+        //   this.getKnowledgeBaseSettings()
+        // }
       }
     });
   }
 
-    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
-    getProjectUser() {
-      this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
-      // this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-      this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
-        console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
-        // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
-        if ((projectUser) && (projectUser.length !== 0)) {
-          // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
-          // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
-          // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
-          // this.user_is_available_bs = projectUser.user_available;
-  
-          // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
-          this.subsTo_WsCurrentUser(projectUser[0]._id)
-  
-          if (projectUser[0].user_available !== undefined) {
-            this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
-          }
-  
-          // ADDED 21 AGO
-          if (projectUser[0].role !== undefined) {
-            this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
-  
-            // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-            this.USER_ROLE = projectUser[0].role;
-  
-            // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-            this.usersService.user_role(projectUser[0].role);
-  
-          }
-        } else {
-          // this could be the case in which the current user was deleted as a member of the current project
-          this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
+  // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
+  getProjectUser() {
+    this.logger.log('[SIDEBAR]  !!! SIDEBAR CALL GET-PROJECT-USER')
+    // this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+    this.usersService.getCurrentProjectUser().subscribe((projectUser: any) => {
+      console.log('[SIDEBAR] PROJECT-USER GET BY USER-ID  ', projectUser);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT-ID ', this.projectId);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - CURRENT-USER-ID ', this.user._id);
+      // this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER ', projectUser);
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY USER-ID - PROJECT USER LENGTH', projectUser.length);
+      if ((projectUser) && (projectUser.length !== 0)) {
+        // this.logger.log('[SIDEBAR] PROJECT-USER ID ', projectUser[0]._id)
+        // this.logger.log('[SIDEBAR] USER IS AVAILABLE ', projectUser[0].user_available)
+        // this.logger.log('[SIDEBAR] USER IS BUSY (from db)', projectUser[0].isBusy)
+        // this.user_is_available_bs = projectUser.user_available;
+
+        // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
+        this.subsTo_WsCurrentUser(projectUser[0]._id)
+
+        if (projectUser[0].user_available !== undefined) {
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0])
         }
-  
-      }, (error) => {
-        this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+
+        // ADDED 21 AGO
+        if (projectUser[0].role !== undefined) {
+          this.logger.log('[SIDEBAR] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+
+          // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
+          this.USER_ROLE = projectUser[0].role;
+
+          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
+          this.usersService.user_role(projectUser[0].role);
+
+        }
+      } else {
+        // this could be the case in which the current user was deleted as a member of the current project
+        this.logger.log('[SIDEBAR] PROJECT-USER UNDEFINED ')
+      }
+
+    }, (error) => {
+      this.logger.error('[SIDEBAR] PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+    }, () => {
+      this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+    });
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      this.USER_ROLE = user_role;
+      this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
+      if (this.USER_ROLE) {
+        // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
+        if (this.USER_ROLE === 'agent') {
+          this.SHOW_SETTINGS_SUBMENU = false;
+        }
+      }
+
+    });
+  }
+
+  subsTo_WsCurrentUser(currentuserprjctuserid) {
+    this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+    // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+    this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
+
+    this.getWsCurrentUserAvailability$();
+    this.getWsCurrentUserIsBusy$();
+  }
+
+
+
+  getWsCurrentUserAvailability$() {
+    // this.usersService.currentUserWsAvailability$
+    this.wsRequestsService.currentUserWsAvailability$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((data) => {
+        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+        if (data !== null) {
+          if (data['user_available'] === false && data['profileStatus'] === "inactive") {
+            this.IS_AVAILABLE = false;
+            this.IS_INACTIVE = true;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
+          } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
+            this.IS_AVAILABLE = false;
+            this.IS_INACTIVE = false;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+          } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
+            this.IS_AVAILABLE = true;
+            this.IS_INACTIVE = false;
+            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
+          }
+
+          // if (this.IS_AVAILABLE === true) {
+          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
+          // } else {
+          //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
+          // }
+        }
+      }, error => {
+        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
       }, () => {
-        this.logger.log('[SIDEBAR] PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
       });
-    }
+  }
 
-    getProjectUserRole() {
-      this.usersService.project_user_role_bs.subscribe((user_role) => {
-        this.USER_ROLE = user_role;
-        this.logger.log('[SIDEBAR] - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
-        if (this.USER_ROLE) {
-          // this.logger.log('[SIDEBAR] - PROJECT USER ROLE get from $ subsription', this.USER_ROLE);
-          if (this.USER_ROLE === 'agent') {
-            this.SHOW_SETTINGS_SUBMENU = false;
-          }
+  getWsCurrentUserIsBusy$() {
+    // this.usersService.currentUserWsIsBusy$
+    this.wsRequestsService.currentUserWsIsBusy$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((currentuser_isbusy) => {
+        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        if (currentuser_isbusy !== null) {
+          this.IS_BUSY = currentuser_isbusy;
+          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
-  
+      }, error => {
+        this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
+      }, () => {
+        this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
       });
-    }
 
-    subsTo_WsCurrentUser(currentuserprjctuserid) {
-      this.logger.log('[SIDEBAR] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-      // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-      this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
-  
-      this.getWsCurrentUserAvailability$();
-      this.getWsCurrentUserIsBusy$();
-    }
-  
-  
-  
-    getWsCurrentUserAvailability$() {
-      // this.usersService.currentUserWsAvailability$
-      this.wsRequestsService.currentUserWsAvailability$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((data) => {
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
-          if (data !== null) {
-            if (data['user_available'] === false && data['profileStatus'] === "inactive") {
-              this.IS_AVAILABLE = false;
-              this.IS_INACTIVE = true;
-              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_INACTIVE ' , this.IS_INACTIVE) 
-            } else if (data['user_available'] === false && (data['profileStatus'] === '' || !data['profileStatus'])) {
-              this.IS_AVAILABLE = false;
-              this.IS_INACTIVE = false;
-              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
-            } else if (data['user_available'] === true && (data['profileStatus'] === '' || !data['profileStatus'])) {
-              this.IS_AVAILABLE = true;
-              this.IS_INACTIVE = false;
-              // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - data - IS_AVAILABLE ' , this.IS_AVAILABLE) 
-            }
-  
-            // if (this.IS_AVAILABLE === true) {
-            //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE')
-            // } else {
-            //     this.tooltip_text_for_availability_status = this.translate.instant('CHANGE_TO_YOUR_STATUS_TO_AVAILABLE')
-            // }
-          }
-        }, error => {
-          this.logger.error('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY * error * ', error)
-        }, () => {
-          this.logger.log('[SIDEBAR] - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
-        });
-    }
-  
-    getWsCurrentUserIsBusy$() {
-      // this.usersService.currentUserWsIsBusy$
-      this.wsRequestsService.currentUserWsIsBusy$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((currentuser_isbusy) => {
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
-          if (currentuser_isbusy !== null) {
-            this.IS_BUSY = currentuser_isbusy;
-            // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
-          }
-        }, error => {
-          this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
-        }, () => {
-          this.logger.log('[SIDEBAR] - GET WS CURRENT-USER IS BUSY *** complete *** ')
-        });
-  
-  
-    }
+
+  }
 
   // No more used  
   // getKnowledgeBaseSettings() {
@@ -1945,9 +2133,75 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
 
+  // -------------------------------------------
+  // @ Sidebar navigation
+  // -------------------------------------------
+
+
   goToHome() {
     this.router.navigate(['/project/' + this.projectId + '/home']);
   }
+
+
+  goToAllMyChatbot() {
+    if (!this.PERMISSION_TO_VIEW_FLOWS) {
+      this.notify.presentDialogNoPermissionToViewThisSection();
+      return;
+    }
+
+    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+  }
+
+  goToNewKnowledgeBases() {
+   
+    if (!this.PERMISSION_TO_VIEW_KB) {
+      this.notify.presentDialogNoPermissionToViewThisSection();
+      return;
+    }
+    if (this.kbNameSpaceid !== '') {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
+    }
+  }
+
+  handleMonitorClick(event: MouseEvent): void {
+    if (!this.PERMISSION_TO_VIEW_MONITOR) {
+      event.preventDefault(); // Stops routerLink navigation
+      event.stopPropagation(); // Stops bubbling
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+  }
+
+
+  handleContactsClick(event: MouseEvent): void {
+    if (!this.PERMISSION_TO_VIEW_CONTACTS) {
+      event.preventDefault(); // Stops routerLink navigation
+      event.stopPropagation(); // Stops bubbling
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+  }
+
+   handleAnalyticsClick(event: MouseEvent): void {
+    if (!this.PERMISSION_TO_VIEW_ANALYTICS) {
+      event.preventDefault(); // Stops routerLink navigation
+      event.stopPropagation(); // Stops bubbling
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+  }
+
+  handleActivitiesClick(event: MouseEvent): void {
+    if (!this.PERMISSION_TO_VIEW_ACTVITIES) {
+      event.preventDefault(); // Stops routerLink navigation
+      event.stopPropagation(); // Stops bubbling
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+  }
+
+
+
+
+
 
   onMenuOptionFN(item: { key: string, label: string, icon: string, src?: string }) {
     this.logger.log('[SIDEBAR] onMenuOptionFN', item)
@@ -1966,23 +2220,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   goToSuppotPage() {
     this.router.navigate(['/project/' + this.projectId + '/support']);
-  }
-
-  goToAllMyChatbot() {
-    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
-    // if (this.areVisibleChatbot) {
-    //   this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
-    // } else {
-    //   this.router.navigate(['/project/' + this.projectId + '/bots-demo']);
-    // }
-  }
-
-  goToNewKnowledgeBases() {
-    if (this.kbNameSpaceid !== '') {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.kbNameSpaceid]);
-    } else {
-      this.router.navigate(['project/' + this.project._id + '/knowledge-bases/0']);
-    }
   }
 
   goToWidgetSetUpOrToCannedResponses() {
