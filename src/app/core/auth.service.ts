@@ -1460,6 +1460,12 @@ export class AuthService {
 
   }
 
+  signinWithOAuth2() {
+    const url = this.SERVER_BASE_PATH + 'auth/oauth2'
+    console.log('[AUTH-SERV] signinWithOAuth2 url ', url)
+    window.open(url, '_self');
+  }
+
 
 
 
