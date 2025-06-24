@@ -40,25 +40,32 @@ export class RoleService {
       if (projectUserRole) {
 
         if (projectUserRole === 'agent') {
-          if (calledby === 'ws-request-list' ||
+          if (calledby === 'wsrequests' ||
+             calledby === 'all-conversations' ||
+            calledby === 'wsrequest-detail' ||
             calledby === 'contacts' ||
-            calledby === 'contact-edit' ||
-            calledby === 'all-conversations' ||
+            calledby === 'contact-details' ||
             calledby === 'history') {
-            return
+            console.log('hey i am an agent !!!!! RETURN PLEASE')
+            return true
           }
 
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
           this.router.navigate([`project/${projectId}/unauthorized`])
+          return false;
 
         } else if (projectUserRole !== 'owner' && projectUserRole !== 'admin') {
           console.log('[ROLE-SERV] - custom role 2', projectUserRole)
+         
           // Monitor & NORT
-          if (calledby === 'ws-request-list' || calledby === 'all-conversations') {
+          if (calledby === 'wsrequests' || calledby === 'all-conversations' || calledby === 'wsrequest-detail')  {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+             this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ);
+            // console.log('[ROLE-SERV] - contacts & contact-details hasPermission ', hasPermission)
+            // return hasPermission;
           }
 
           // History
@@ -74,7 +81,8 @@ export class RoleService {
           if (calledby === 'kb') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.KB_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -82,7 +90,8 @@ export class RoleService {
           if (calledby === 'flows') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.FLOWS_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -90,23 +99,38 @@ export class RoleService {
           if (calledby === 'flow-webhook') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.FLOWS_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
           // Leads
-          if (calledby === 'contacts' || calledby === 'contact-edit') {
+          if (calledby === 'contacts' || calledby === 'contact-details') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
-            if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.LEAD_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+            if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.LEADS_READ)) {
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.LEADS_READ);
+            // console.log('[ROLE-SERV] - contacts & contact-details hasPermission ', hasPermission)
+            // return hasPermission;
           }
+
+          // Widget Translations
+          if (calledby === 'widget-multilanguage') {
+            const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.TRANSLATIONS_READ);
+            // const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.WIDGETSETUP_READ);
+            console.log('[ROLE-SERV] - widget-multilanguage hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
 
           // Analytics
           if (calledby === 'analytics') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -114,7 +138,8 @@ export class RoleService {
           if (calledby === 'activities') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.ACTIVITIES_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -313,6 +338,20 @@ export class RoleService {
           
 
         } else if (projectUserRole === 'owner' || projectUserRole === 'admin') {
+
+          // Monitor & NORT
+          // if (calledby === 'ws-request-list' || calledby === 'all-conversations') {
+          //   const hasPermission = true
+          //   console.log('[ROLE-SERV] - ws-request-list & all-conversations hasPermission ', hasPermission)
+          //   return hasPermission;
+          // }
+
+          // if (calledby === 'contacts' || calledby === 'contact-details') {
+          //   const hasPermission = true
+          //   console.log('[ROLE-SERV] - contacts & contact-details hasPermission ', hasPermission)
+          //   return hasPermission;
+          // }
+
           if (calledby === 'widget-set-up') {
             const hasPermission = true
             console.log('[ROLE-SERV] - widget-set-up hasPermission ', hasPermission)
@@ -504,25 +543,32 @@ export class RoleService {
         const _projectUserRole = _projectUser['role']
         console.log('[ROLE-SERV] - checkRoleForCurrentProject  _projectUserRole GET from remote', _projectUserRole)
         if (_projectUserRole === 'agent') {
-          if (calledby === 'ws-request-list' ||
-            calledby === 'contacts' ||
-            calledby === 'contact-edit' ||
+          if (calledby === 'wsrequests' ||
             calledby === 'all-conversations' ||
+            calledby === 'wsrequest-detail' ||
+            calledby === 'contacts' ||
+            calledby === 'contact-details' ||
             calledby === 'history') {
-            return
+            return true
           }
 
           this.logger.log('[ROLE-SERV] - checkRoleForCurrentProject ', projectUserRole, ' RUN NAVIGATE TO unauthorized page')
           this.router.navigate([`project/${projectId}/unauthorized`])
+          return false
+
         } else if (_projectUserRole !== 'owner' && _projectUserRole !== 'admin') {
           console.log('[ROLE-SERV] - checkRoleForCurrentProject get from remote _projectUser.rolePermissions ', _projectUser.rolePermissions)
 
           // Monitor & Nort
-          if (calledby === 'ws-request-list' || calledby === 'all-conversations') {
+          if (calledby === 'wsrequests' || calledby === 'all-conversations' || calledby === 'wsrequest-detail') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ);
+            // console.log('[ROLE-SERV] - ws-request-list & all-conversations hasPermission ', hasPermission)
+            // return hasPermission;
           }
 
           // History
@@ -538,7 +584,8 @@ export class RoleService {
           if (calledby === 'kb') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.KB_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -546,7 +593,8 @@ export class RoleService {
           if (calledby === 'flows') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.FLOWS_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -554,23 +602,29 @@ export class RoleService {
           if (calledby === 'flow-webhook') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.FLOWS_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
           // Leads
-          if (calledby === 'contacts' || calledby === 'contact-edit') {
+          if (calledby === 'contacts' || calledby === 'contact-details') {
             console.log('[ROLE-SERV] - here yes 2')
-            if (!_projectUser.rolePermissions.includes(PERMISSIONS.LEAD_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+            if (!_projectUser.rolePermissions.includes(PERMISSIONS.LEADS_READ)) {
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
+            // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.LEADS_READ);
+            // console.log('[ROLE-SERV] - contacts & contact-details hasPermission ', hasPermission)
+            // return hasPermission;
           }
 
           // Analytics
           if (calledby === 'analytics') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -578,7 +632,8 @@ export class RoleService {
           if (calledby === 'activities') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.ACTIVITIES_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -770,6 +825,20 @@ export class RoleService {
 
         } else if (_projectUserRole === 'owner' || _projectUserRole === 'admin') {
           console.log('HELLO ')
+
+           // Monitor & Nort
+          // if (calledby === 'ws-request-list' || calledby === 'all-conversations') {
+          //   const hasPermission = true
+          //   console.log('[ROLE-SERV] - ws-request-list & all-conversations hasPermission ', hasPermission)
+          //   return hasPermission;
+          // }
+
+          // if (calledby === 'contacts' || calledby === 'contact-details') { 
+          //   const hasPermission = true
+          //   console.log('[ROLE-SERV] - contacts & contact-details hasPermission ', hasPermission)
+          //   return hasPermission;
+          // }
+
           if (calledby === 'widget-set-up') {
             const hasPermission = true
             console.log('[ROLE-SERV] - widget-set-up hasPermission ', hasPermission)
