@@ -1,4 +1,5 @@
-<div class="unauthorized-message-container">
+<div class="unauthorized-message-container"
+    [ngStyle]="customHeight ? {'min-height': 'calc(100vh - 160px)'} : {}">
     <h2 class="unauthorized-page-title">
 
         {{ "UnauthorizedPage.UnauthorizedAccess" | translate }}
