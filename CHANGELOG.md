@@ -1,5 +1,23 @@
 # tiledesk-dashboard
 
+### 2.7.112-rc6
+- Adds environment variable "OAUTH2_SIGNIN_ENABLED"
+- Adds the ability to perform OAuth2 sign in
+- Manages read permissions on the click of each sidebar menu item and changes the page the user is redirected to if they do not have permissions
+- Adds Leads section to Role Management page
+- Adds the ability to allow access to the Leads page
+- Adds the ability to manage the the “update” function of a lead (on Lead detail page and on conversation detail page)
+- Adds the ability to manage the “move in the trash” function of a lead (on Leads list page and Lead details page )
+- Adds the ability to manage the “delete” function of a lead 
+- Adds the ability to manage the “export leads” function
+- Adds a control on the conversation list page to access the Smart Assignments and Operating Hours pages
+
+### 2.7.112-rc5
+- Added unanswered-questions module in knowledge-base - improvements (deployed only on stage)
+
+### 2.7.112-rc4
+- Added unanswered-questions module in knowledge-base (deployed only on stage)
+
 ### 2.7.112-rc3
 - Adds Project settings section to Role Management page
 - Adds the ability to allow access to the Project settings tabs
