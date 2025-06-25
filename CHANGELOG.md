@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.113
+- Adds the environment variable "oauth2SigninEnabled"
+
 ### 2.7.112
 - Adds the ability for teammates with admin roles to edit email templates
 
