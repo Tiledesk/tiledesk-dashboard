@@ -164,6 +164,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   automatic_unavailable_status_on: boolean;
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
+  isAllowedSendEmoji: boolean;
 
   // unavailable_status_on: boolean;
 
@@ -2941,6 +2942,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // is_disabled_unavailable_status_section: boolean;
 
         if (project.settings) {
+          console.log('[PRJCT-EDIT-ADD] project.settings',  project.settings) 
+          console.log('[PRJCT-EDIT-ADD] allow_send_emoji ', project.settings.allow_send_emoji) 
           // Chat limit
           if (project.settings.max_agent_assigned_chat) {
             this.max_agent_assigned_chat = project.settings.max_agent_assigned_chat
@@ -2979,6 +2982,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.areHideChatbotAttributesInConvDtls = false;
           }
 
+          if (project.settings.allow_send_emoji !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
+            this.isAllowedSendEmoji = project.settings.allow_send_emoji
+             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
+          } else {
+            this.isAllowedSendEmoji = true;
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
+          }
+
+          
+
 
 
           // Automatic unavailable status
@@ -3004,6 +3018,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.automatic_unavailable_status_on = false;
           this.agents_can_see_only_own_convs = false;
           this.areHideChatbotAttributesInConvDtls = false;
+          this.isAllowedSendEmoji = true;
+           console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
         }
       }
 
@@ -3141,6 +3157,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.cacheService.clearCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  toggleAllowSendEmoji(event) {
+    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji', event.target.checked);
+    this.isAllowedSendEmoji = event.target.checked;
+    this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      console.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }

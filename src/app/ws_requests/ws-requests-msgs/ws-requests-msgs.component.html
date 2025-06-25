@@ -446,9 +446,13 @@
                     <!-- (paste)="onPasteInSendMsg($event)" -->
                     <div class="col-xs-12 h-100 plr-0"
                       [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-                      <textarea #sendMessageTexarea class="send-message-texarea" [(ngModel)]="chat_message"
-                        placeholder="Write your message" (input)="resizeTextArea()"
-                        (paste)="onPasteInSendMsg($event)">  </textarea>
+                      
+                      <textarea #sendMessageTexarea class="send-message-texarea" 
+                        [(ngModel)]="chat_message"
+                        placeholder="Write your message" 
+                        (input)="resizeTextArea()"
+                        (paste)="onPasteInSendMsg($event)">  
+                      </textarea>
 
 
                       <!-- <div class="chat-msg-attachement" *ngIf="uploadedFiles">

@@ -374,6 +374,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   CHANNELS_NAME = CHANNELS_NAME;
   HIDE_CHATBOT_ATTRIBUTES: boolean;
+  ALLOW_TO_SEND_EMOJI: boolean;
 
   panelOpenState = false;
 
@@ -566,8 +567,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
           }
         } else {
-            this.PERMISSION_TO_UPDATE_REQUEST = true
-            console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          this.PERMISSION_TO_UPDATE_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -1415,8 +1416,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - current_selected_prjct ', this.current_selected_prjct);
 
-      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.settings) {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.settings) {
+        console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - projects > id_project > setting', this.current_selected_prjct.id_project.settings);
         if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden) {
 
           this.HIDE_CHATBOT_ATTRIBUTES = this.current_selected_prjct.id_project.settings.chatbots_attributes_hidden;
@@ -1426,9 +1429,34 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.HIDE_CHATBOT_ATTRIBUTES = false;
           this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
         }
+
+        // Allow to send emoji
+        const allowSendEmoji = this.current_selected_prjct.id_project.settings.allow_send_emoji;
+
+        if (allowSendEmoji !== undefined) {
+          this.ALLOW_TO_SEND_EMOJI = allowSendEmoji;
+          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+        } else {
+          this.ALLOW_TO_SEND_EMOJI = true;
+          console.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+        }
+
+
+        // if (this.current_selected_prjct.id_project.settings && this.current_selected_prjct.id_project.settings.allow_send_emoji) {
+
+        //   this.ALLOW_TO_SEND_EMOJI = this.current_selected_prjct.id_project.settings.allow_send_emoji;
+        //   console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 1', this.ALLOW_TO_SEND_EMOJI);
+
+        // } else {
+        //   this.ALLOW_TO_SEND_EMOJI = true;
+        //  console.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 2', this.HIDE_CHATBOT_ATTRIBUTES)
+        // }
       } else {
         this.HIDE_CHATBOT_ATTRIBUTES = false;
         this.logger.log('[WS-REQUESTS-MSGS] - GET PROJECTS - HIDE_CHATBOT_ATTRIBUTES 3', this.HIDE_CHATBOT_ATTRIBUTES)
+
+        this.ALLOW_TO_SEND_EMOJI = true
+        console.log('[WS-REQUESTS-MSGS] - allow_send_emoji GET PROJECTS - ALLOW_TO_SEND_EMOJI 3', this.ALLOW_TO_SEND_EMOJI)
       }
 
 
@@ -1618,8 +1646,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // Start websocket subscription ro ws request by id
     // this.wsRequestsService.subscribeTo_wsRequestById(id_request);
-    this.wsRequestsService.subscribeTo_wsRequestById(_id_request);  
-         
+    this.wsRequestsService.subscribeTo_wsRequestById(_id_request);
+
     // Subscribe to ws request by id
     this.getWsRequestById$();
   }
@@ -3202,11 +3230,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   }
   // }
 
-handleBlockedSelectClick(event: MouseEvent): void {
-  event.preventDefault();
-  event.stopPropagation();
-  this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
-}
+  handleBlockedSelectClick(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+  }
 
 
   onChangeSelectedPriority(selectedPriority) {
@@ -4048,7 +4076,7 @@ handleBlockedSelectClick(event: MouseEvent): void {
     this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
       .subscribe((msg) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+        console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
 
@@ -5645,13 +5673,19 @@ handleBlockedSelectClick(event: MouseEvent): void {
     }
   }
 
+    removeEmojis(text: string): string {
+      return text.replace(
+        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|\uD83C[\uDDE6-\uDDFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]|\uD83E[\uDD00-\uDFFF]|\u2600-\u26FF|\uFE0F|\u200D)/g,
+        ''
+      );
+    }
 
   sendChatMessage() {
 
     if (this.PERMISSION_TO_UPDATE_REQUEST) {
       // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
       console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
-      this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
+      console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
@@ -5682,6 +5716,12 @@ handleBlockedSelectClick(event: MouseEvent): void {
           } else {
             _chat_message = `[${this.metadata.name}](${this.metadata.src})`
           }
+        }
+
+        
+        // ❌ Remove emojis if not allowed
+        if (!this.ALLOW_TO_SEND_EMOJI) {
+          _chat_message = this.removeEmojis(_chat_message);
         }
 
         // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
@@ -5719,12 +5759,12 @@ handleBlockedSelectClick(event: MouseEvent): void {
     } else {
       this.notify.presentDialogNoPermissionToPermomfAction()
 
-            this.chat_message = undefined;
-            this.uploadedFiles = undefined;
-            this.metadata = undefined;
-            this.type = undefined;
-            this.existAnAttacment = false;
-            this.sendMessageTexarea.nativeElement.style.height = null
+      this.chat_message = undefined;
+      this.uploadedFiles = undefined;
+      this.metadata = undefined;
+      this.type = undefined;
+      this.existAnAttacment = false;
+      this.sendMessageTexarea.nativeElement.style.height = null
     }
   }
 
@@ -5802,7 +5842,7 @@ handleBlockedSelectClick(event: MouseEvent): void {
     if (this.PERMISSION_TO_UPDATE_REQUEST) {
       this.is0penDropDown = _is0penDropDown
     } else {
-     this.notify.presentDialogNoPermissionToPermomfAction()
+      this.notify.presentDialogNoPermissionToPermomfAction()
     }
 
     // this.logger.log('[WS-REQUESTS-MSGS] this.is0penDropDown ',this.is0penDropDown)  
