@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.112
+- Adds the ability for teammates with admin roles to edit email templates
+
 ### 2.7.111
 - Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari
 
