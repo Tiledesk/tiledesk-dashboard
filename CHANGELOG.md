@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.114-rc1
+- Added: added flow webhooks logs
+
+### 2.7.112-rc5
+- Added: added unanswered-questions module in knowledge-base
+
 ### 2.7.111
 - Fixes the bug: navigation buttons are not displayed in onboarding steps if browser is Safari
 

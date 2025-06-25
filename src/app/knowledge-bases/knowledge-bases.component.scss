@@ -923,3 +923,102 @@ table {
     position: absolute;
     z-index: -1;
 }
+
+.kb-tab-switcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  margin-top: 8px;
+}
+.kb-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px 7px 14px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(rgba(239,245,246,0.64) 0%, rgb(238,244,246) 100%), #fff;
+  color: #3C4858;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(60,72,88,0.04);
+  transition: background 0.2s, color 0.2s;
+}
+.kb-tab-btn.active {
+  background: var(--primary-btn-background, #006cff);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,108,255,0.08);
+}
+.kb-tab-btn mat-icon {
+  font-size: 20px;
+  vertical-align: middle;
+}
+.kb-tab-btn:not(.active):hover {
+  background: #f0f4f8;
+  color: #006cff;
+}
+.unanswered-placeholder {
+  padding: 40px 0;
+  text-align: center;
+  color: #b2b2b2;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.kb-switch-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 18px;
+  margin-top: 8px;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f5f7fa;
+  border: 1px solid #e3e8ee;
+  width: fit-content;
+  height: 40px;
+  min-height: 40px;
+}
+.kb-switch-field input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.kb-switch-field label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+    padding: 0 20px;
+    font-size: 14px;
+    // font-weight: 500;
+    color: #3c4858;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: background .2s, color .2s;
+    position: relative;
+    z-index: 1;
+    height: 40px;
+    box-sizing: border-box;
+    border: none;
+    margin: 0px;
+}
+.kb-switch-field label mat-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  margin-right: 0px;
+  position: relative;
+  top: 0px;
+}
+.kb-switch-field input[type="radio"]:checked + label {
+  background: var(--primary-btn-background, #006cff);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,108,255,0.08);
+  z-index: 2;
+}

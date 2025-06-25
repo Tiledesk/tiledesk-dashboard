@@ -44,6 +44,7 @@ import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.
 import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -192,6 +193,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   esportingKBChatBotTemplate: boolean = false;
   refreshRateIsEnabled: boolean
 
+  // --- TAB SWITCHER ---
+  selectedTab: 'contents' | 'unanswered' = 'contents';
+  switchTab(tab: 'contents' | 'unanswered') {
+    this.selectedTab = tab;
+    if (tab === 'unanswered') {
+      this.loadUnansweredQuestions();
+    }
+  }
+
+  unansweredQuestions: UnansweredQuestion[] = [];
+  isLoadingUnanswered = false;
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -214,6 +227,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public faqService: FaqService,
     private departmentService: DepartmentService,
     private shepherdService: ShepherdService,
+    private unansweredQuestionsService: UnansweredQuestionsService,
 
   ) {
     super(prjctPlanService, notify);
@@ -249,7 +263,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.getDeptsByProjectId()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-
+    this.loadUnansweredQuestions();
   }
 
   ngAfterViewInit() {
@@ -1918,7 +1932,7 @@ _presentDialogImportContents() {
 
   onOpenBaseModalDetail(kb) {
     // this.kbid_selected = kb;
-    // this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+    this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
 
     const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
@@ -1977,27 +1991,51 @@ _presentDialogImportContents() {
   }
 
 
-  openAddKnowledgeBaseModal(type?: string) {
-    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
-    this.typeKnowledgeBaseModal = type;
+  openAddKnowledgeBaseModal(typeOrKb?: any) {
+    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal typeOrKb', typeOrKb);
+    // Se è un oggetto KB (ad esempio da unanswered questions), apri direttamente la modale FAQ con i dati precompilati
+    if (typeOrKb && typeof typeOrKb === 'object' && typeOrKb.type === 'faq') {
+      const dialogRef = this.dialog.open(ModalFaqsComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          selectedNamespace: this.selectedNamespace,
+          prefillKb: typeOrKb
+        },
+      });
+      this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs with prefillKb')
+      dialogRef.afterClosed().subscribe(result => {
+        this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+        if (result && result.isSingle === "true") {
+          if (result.body) {
+            this.onAddKb(result.body)
+          }
+        } else if (result && result.isSingle === "false") {
+          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+          this.getListOfKb(paramsDefault, 'add-multi-faq')
+        }
+      });
+      return;
+    }
+    // Altrimenti, logica classica
+    this.typeKnowledgeBaseModal = typeOrKb;
     this.addKnowledgeBaseModal = 'block';
 
-    if (type === 'text-file') {
+    if (typeOrKb === 'text-file') {
       this.presentModalAddContent()
     }
-    if (type === 'urls') {
+    if (typeOrKb === 'urls') {
       this.presentModalAddURLs()
     }
 
-    if (type === 'site-map') {
+    if (typeOrKb === 'site-map') {
       this.presentModalImportSitemap()
     }
-    if (type === 'file-upload') {
-
+    if (typeOrKb === 'file-upload') {
       this.presentModalUploadFile()
     }
-
-    if (type === 'faq') {
+    if (typeOrKb === 'faq') {
       this.presentModalAddFaqs()
     }
   }
@@ -2007,7 +2045,6 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
-
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
@@ -2026,8 +2063,9 @@ _presentDialogImportContents() {
       data: {
         selectedNamespace: this.selectedNamespace,
       },
-
     });
+    this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs ')
+
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
       if (result && result.isSingle === "true") {
@@ -2598,7 +2636,7 @@ _presentDialogImportContents() {
   /**
    * onAddKb
    */
-  onAddKb(body) {
+  onAddKb(body, doneCb?: (success: boolean) => void) {
     this.logger.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
     this.logger.log("onAddKb body:", body);
@@ -2637,6 +2675,7 @@ _presentDialogImportContents() {
       //   this.checkStatusWithRetry(kb);
       // }, 2000);
       //that.onCloseBaseModal();
+      if (doneCb) doneCb(true);
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
       // this.onOpenErrorModal(error);
@@ -2709,6 +2748,7 @@ _presentDialogImportContents() {
           }
         })
       }
+      if (doneCb) doneCb(false);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
       this.trackUserActioOnKB('Added Knowledge Base')
@@ -3420,5 +3460,57 @@ _presentDialogImportContents() {
     window.open(url, '_blank');
   }
 
+  onAddFaqFromUnanswered(event: {q: any, done: (success: boolean) => void}) {
+    // Apre la modale FAQ con la domanda precompilata
+    const question = event.q?.question;
+    this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
+    const dialogRef = this.dialog.open(ModalFaqsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        prefillKb: {
+          name: question,
+          content: '',
+          type: 'faq',
+          source: question,
+          id_project: this.id_project,
+          namespace: this.selectedNamespace?.name,
+          _id: ''
+        }
+      },
+    });
+    this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs from unanswered')
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+      // Se la modale è stata chiusa con successo (FAQ salvata)
+      if (result && result.isSingle === "true" && result.body) {
+        // Qui puoi anche attendere la risposta del servizio se serve
+        this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
+        this.onAddKb(result.body, event.done);
+      } else {
+        // Annullato o errore
+        event.done(false);
+      }
+    });
+  }
+
+  loadUnansweredQuestions() {
+    if (!this.id_project || !this.selectedNamespace?.id) return;
+    //this.isLoadingUnanswered = true;
+    this.unansweredQuestionsService.getUnansweredQuestions(this.id_project, this.selectedNamespace.id)
+      .subscribe(
+        (res) => {
+          this.unansweredQuestions = res['questions'];
+          this.isLoadingUnanswered = false;
+        },
+        (err) => {
+          this.isLoadingUnanswered = false;
+          this.unansweredQuestions = [];
+          this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
+        }
+      );
+  }
 
 }
