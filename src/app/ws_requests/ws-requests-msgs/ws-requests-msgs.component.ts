@@ -50,6 +50,7 @@ import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
+import { removeEmojis} from 'app/utils/utils-message';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -5673,12 +5674,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-    removeEmojis(text: string): string {
-      return text.replace(
-        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\u24C2|\uD83C[\uDDE6-\uDDFF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]|\uD83E[\uDD00-\uDFFF]|\u2600-\u26FF|\uFE0F|\u200D)/g,
-        ''
-      );
+  // removeEmojis(text: string): string {
+  //   // Remove all emoji characters including ZWJ sequences and modifiers
+  //   return text.replace(
+  //     /([\u231A-\u231B]|\u23E9|\u23EA|\u23EB|\u23EC|\u23F0|\u23F3|\u25FD|\u25FE|\u2614|\u2615|\u2648-\u2653|\u267F|\u2693|\u26A1|\u26AA|\u26AB|\u26BD|\u26BE|\u26C4|\u26C5|\u26CE|\u26D4|\u26EA|\u26F2|\u26F3|\u26F5|\u26FA|\u26FD|\u2705|\u270A|\u270B|\u2728|\u274C|\u274E|\u2753|\u2754|\u2755|\u2757|\u2795|\u2796|\u2797|\u27B0|\u27BF|\u2B1B|\u2B1C|\u2B50|\u2B55|\u3030|\u303D|\u3297|\u3299|\uD83C[\uDC04-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDFFF]|\uFE0F|\u200D)+/gu,
+  //     ''
+  //   );
+  // }
+
+  removeEmojis(text: string): string {
+    const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Emoji}\u200d]+/gu;
+   
+    return text.replace(emojiRegex, '');
+  }
+
+  onMessageChange(msg: string) {
+    if (!this.ALLOW_TO_SEND_EMOJI) {
+      this.chat_message = this.removeEmojis(msg);
     }
+  }
 
   sendChatMessage() {
 
@@ -5721,7 +5735,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         
         // ❌ Remove emojis if not allowed
         if (!this.ALLOW_TO_SEND_EMOJI) {
-          _chat_message = this.removeEmojis(_chat_message);
+          _chat_message = removeEmojis(_chat_message);
         }
 
         // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
@@ -5943,6 +5957,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Attachments
   // -------------------------------------------
   onPasteInSendMsg(event: ClipboardEvent) {
+
+     if (!this.ALLOW_TO_SEND_EMOJI) {
+      this.chat_message = this.removeEmojis(this.chat_message);
+    }
 
     const items = event.clipboardData?.items;
     // const items = (event.clipboardData || event.originalEvent.clipboardData).items;

@@ -451,7 +451,8 @@
                         [(ngModel)]="chat_message"
                         placeholder="Write your message" 
                         (input)="resizeTextArea()"
-                        (paste)="onPasteInSendMsg($event)">  
+                        (paste)="onPasteInSendMsg($event)"
+                        (ngModelChange)="onMessageChange($event)">  
                       </textarea>
 
 
