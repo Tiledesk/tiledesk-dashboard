@@ -50,7 +50,7 @@ import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
-import { removeEmojis} from 'app/utils/utils-message';
+import { isOnlyEmoji, removeEmojis} from 'app/utils/utils-message';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -5684,14 +5684,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   removeEmojis(text: string): string {
     const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Emoji}\u200d]+/gu;
-   
     return text.replace(emojiRegex, '');
   }
 
   onMessageChange(msg: string) {
-    if (!this.ALLOW_TO_SEND_EMOJI) {
-      this.chat_message = this.removeEmojis(msg);
-    }
+    // if (!this.ALLOW_TO_SEND_EMOJI) {
+    //   this.chat_message = removeEmojis(msg);
+    // }
   }
 
   sendChatMessage() {
@@ -5734,9 +5733,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         
         // ❌ Remove emojis if not allowed
+        // let cleanedMessage = _chat_message;
         if (!this.ALLOW_TO_SEND_EMOJI) {
-          _chat_message = removeEmojis(_chat_message);
+          console.log('[WS-REQUESTS-MSGS] removeEmojis _chat_message ', _chat_message)
+          _chat_message = removeEmojis(_chat_message).trim();
         }
+
+        if(_chat_message === '') {
+           this.chat_message = _chat_message
+          return;
+        }
+
+        // if (!this.ALLOW_TO_SEND_EMOJI && isOnlyEmoji(_chat_message)) {
+        //   // this.notify.presentDialogNoPermissionToPermomfAction();
+        //   return;
+        // }
 
         // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
         // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
@@ -5958,9 +5969,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -------------------------------------------
   onPasteInSendMsg(event: ClipboardEvent) {
 
-     if (!this.ALLOW_TO_SEND_EMOJI) {
-      this.chat_message = this.removeEmojis(this.chat_message);
-    }
+    //  if (!this.ALLOW_TO_SEND_EMOJI) {
+    //   this.chat_message = removeEmojis(this.chat_message);
+    // }
 
     const items = event.clipboardData?.items;
     // const items = (event.clipboardData || event.originalEvent.clipboardData).items;

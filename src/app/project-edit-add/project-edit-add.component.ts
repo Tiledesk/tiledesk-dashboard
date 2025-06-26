@@ -31,6 +31,7 @@ import { CacheService } from 'app/services/cache.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { WidgetService } from 'app/services/widget.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -292,6 +293,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PERMISSION_TO_VIEW_ADVANCED: boolean;
 
   ROLE: string
+  public widgetObj = {};
 
   /**
    * 
@@ -324,6 +326,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private contactsService: ContactsService,
     private cacheService: CacheService,
+    private widgetService: WidgetService,
     private roleService: RoleService,
     public rolesService: RolesService
     // private formGroup: FormGroup
@@ -2991,9 +2994,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
           }
 
-          
-
-
 
           // Automatic unavailable status
           if (project.settings.automatic_idle_chats) {
@@ -3021,6 +3021,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.isAllowedSendEmoji = true;
            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
         }
+
+
+        // ---------------------------
+        // Widget object
+        // ---------------------------
+        if (project.widget) {
+          this.widgetObj = project.widget;
+          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT', this.widgetObj) 
+        } else {
+          
+          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT IS UNDEFINED', this.widgetObj) 
+
+          this.widgetObj = {}
+        }
+
       }
 
     }, (error) => {
@@ -3162,11 +3177,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleAllowSendEmoji(event) {
-    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji', event.target.checked);
+    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
     this.isAllowedSendEmoji = event.target.checked;
     this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
       console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      // FOR  WIDGET
+      if (this.isAllowedSendEmoji === false) {
+        this.widgetObj['allowEmoji'] = this.isAllowedSendEmoji
+        this.widgetService.updateWidgetProject(this.widgetObj, 'project-edit-add')
+      } else if (this.isAllowedSendEmoji === true) {
+        delete this.widgetObj['allowEmoji'];
+      }
+       
+      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
+
       this.cacheService.clearCache()
     }).catch((err) => {
       console.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
