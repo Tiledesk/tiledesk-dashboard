@@ -29,6 +29,7 @@ import { CreditCardValidators } from 'angular-cc-library';
 import { ContactsService } from '../services/contacts.service';
 import { CacheService } from 'app/services/cache.service';
 import { RoleService } from 'app/services/role.service';
+import { WidgetService } from 'app/services/widget.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -162,7 +163,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   automatic_unavailable_status_on: boolean;
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
-
+  isAllowedSendEmoji: boolean;
   // unavailable_status_on: boolean;
 
 
@@ -252,6 +253,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   };
   allowedIPs: any
+
+  public widgetObj = {};
+
   /**
    * 
    * @param projectService 
@@ -283,6 +287,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private contactsService: ContactsService,
     private cacheService: CacheService,
+    private widgetService: WidgetService,
     private roleService: RoleService
     // private formGroup: FormGroup
 
@@ -2636,6 +2641,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.areHideChatbotAttributesInConvDtls = false;
           }
 
+          if (project.settings.allow_send_emoji !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
+            this.isAllowedSendEmoji = project.settings.allow_send_emoji
+             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
+          } else {
+            this.isAllowedSendEmoji = true;
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
+          }
 
 
           // Automatic unavailable status
@@ -2662,6 +2675,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.agents_can_see_only_own_convs = false;
           this.areHideChatbotAttributesInConvDtls = false;
         }
+
+
+        // ---------------------------
+        // Widget object
+        // ---------------------------
+        if (project.widget) {
+          this.widgetObj = project.widget;
+          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT', this.widgetObj) 
+        } else {
+          
+          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT IS UNDEFINED', this.widgetObj) 
+
+          this.widgetObj = {}
+        }
+
       }
 
     }, (error) => {
@@ -2737,6 +2765,30 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.cacheService.clearCache()
     }).catch((err) => {
       this.logger.error("[PRJCT-EDIT-ADD] - TtoggleCurrentAgentViewOnlyOwnConv ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+  }
+
+  toggleAllowSendEmoji(event) {
+    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.isAllowedSendEmoji = event.target.checked;
+    this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      // FOR  WIDGET
+      if (this.isAllowedSendEmoji === false) {
+        this.widgetObj['allowEmoji'] = this.isAllowedSendEmoji
+        this.widgetService.updateWidgetProject(this.widgetObj, 'project-edit-add')
+      } else if (this.isAllowedSendEmoji === true) {
+        delete this.widgetObj['allowEmoji'];
+      }
+       
+      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
+
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      console.error("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji ERROR: ", err)
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }

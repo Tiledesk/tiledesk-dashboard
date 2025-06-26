@@ -61,13 +61,15 @@ export class WidgetService {
    * UPDATE PROJECT WIDGET
    * @param widgetSettingsObj 
    */
-  updateWidgetProject(widgetSettingsObj: any) {
+  updateWidgetProject(widgetSettingsObj: any, calledBy?:string) {
     this.projectService.updateWidgetProject(widgetSettingsObj)
       .subscribe((data) => {
         // this.logger.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data', data);
         this.logger.log('[WIDGET-SERV] - UPDATE PROJECT WIDGET - RESPONSE data.widget', data['widget']);
-
-        this.translateAndShowUpdateWidgetNotification();
+        console.log('[WIDGET-SERV] - UPDATE PROJECT WIDGET - calledBy ', calledBy);
+        if (calledBy === undefined) {
+          this.translateAndShowUpdateWidgetNotification();
+        }
 
       }, (error) => {
         this.logger.error('[WIDGET-SERV] - UPDATE PROJECT WIDGET - ERROR ', error);
