@@ -49,7 +49,8 @@
 
 .login-container input[type="text"],
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+input[type="tel"] {
   //   width: 400px !important;
   height: 56px;
   font-size: 16px;
@@ -59,7 +60,7 @@ input[type="email"] {
   appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
-  border-top: 1px solid #c0c0c0;
+  // border-top: 1px solid #c0c0c0;
   // border-radius: 2px;
   padding: 0 8px;
   box-sizing: border-box;
@@ -68,15 +69,16 @@ input[type="email"] {
   // border: solid 1px #ddd;
 }
 
-.login-container input[type="text"]:hover,
-input[type="password"]:hover,
-input[type="email"]:hover {
-  border: 1px solid #b9b9b9;
-  border-top: 1px solid #a0a0a0;
-  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
+// .login-container input[type="text"]:hover,
+// input[type="password"]:hover,
+// input[type="email"]:hover,
+// input[type="phone"]:hover {
+//   border: 1px solid #b9b9b9;
+//   border-top: 1px solid #a0a0a0;
+//   -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+//   -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+//   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+// }
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
@@ -709,3 +711,48 @@ input.secure {
 // .gray-bckgnd {
 //   background: #eeeeee !important;
 // }
+
+.phone-container {
+  display: flex;
+  align-items: center;
+  // border: 1px solid #ccc;
+  // border-radius: 5px;
+  // padding: 5px;
+  width: 100%;
+}
+
+.country-select {
+  // width: 120px;
+  width: 80px;
+  margin-bottom: 10px
+  // margin-right: 5px;
+}
+
+.ng-select.country-select ::ng-deep .ng-select-container {
+  height: 56px !important;
+  border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: unset;
+    border-color: #d9d9d9;
+}
+
+.ng-select.country-select ::ng-deep .ng-select-container .ng-value-container .ng-input>input {
+  padding-top: 10px;
+}
+
+.ng-select.country-select ::ng-deep ng-dropdown-panel {
+  width: max-content !important;
+}
+
+input[formControlName="phone"] {
+  flex: 1;
+  // border: none;
+  outline: none;
+  // font-size: 16px;
+}
+
+.signup-mobile-phone {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+

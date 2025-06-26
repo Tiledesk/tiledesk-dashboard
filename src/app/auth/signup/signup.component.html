@@ -37,7 +37,7 @@
           <!-- {{'WelcomeTo' | translate }} -->
 
           <!-- <span> Welcome </span> <span style="display: block;"> to Tiledesk </span> -->
-          <span> 
+          <span>
             <!-- Shorten your lead conversion cycle with AI  -->
             Resolve 75% of Customer Inquiries with AI
           </span>
@@ -45,30 +45,31 @@
         </div>
 
         <div class="welcome-text-subtitle-wpr">
-    
+
           <div class="arrow-circle-right-wpr">
-            <span class="material-icons"  [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
+            <span class="material-icons" [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
               arrow_circle_right
             </span>
           </div>
-    
+
           <!-- Old -->
           <!-- <div> Create your AI assistant with the <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style=" font-weight: 500;">Visual Conversation
               Builder </span> 
           </div> -->
 
-          <div class="welcome-text-subtitle"> 
-            Create and 
-            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style=" font-weight: 500;">
-              train AI Agents on your data 
-            </span> 
+          <div class="welcome-text-subtitle">
+            Create and
+            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }"
+              style=" font-weight: 500;">
+              train AI Agents on your data
+            </span>
             in minutes
-         </div>
+          </div>
         </div>
 
         <div class="welcome-text-subtitle-wpr">
           <div class="arrow-circle-right-wpr">
-            <span class="material-icons"  [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
+            <span class="material-icons" [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
               arrow_circle_right
             </span>
           </div>
@@ -78,27 +79,29 @@
             channels
           </div> -->
 
-          <div class="welcome-text-subtitle"> 
-              Increase
-            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style="font-weight: 500;"> 
-              engagement 4x 
-            </span> 
-              and 
-            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style="font-weight: 500;"> 
+          <div class="welcome-text-subtitle">
+            Increase
+            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }"
+              style="font-weight: 500;">
+              engagement 4x
+            </span>
+            and
+            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }"
+              style="font-weight: 500;">
               auto-qualify leads
-            </span> 
+            </span>
           </div>
 
         </div>
 
         <div class="welcome-text-subtitle-wpr">
-        
+
           <div class="arrow-circle-right-wpr">
-            <span class="material-icons"  [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
+            <span class="material-icons" [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
               arrow_circle_right
             </span>
           </div>
-          
+
           <!-- Old -->
           <!-- <div class="welcome-text-subtitle">
             Turn leads into buying customers with <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style="font-weight: 500;"> WhatsApp automation
@@ -106,8 +109,9 @@
           </div> -->
 
           <div class="welcome-text-subtitle">
-            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style="font-weight: 500;"> 
-              Accelerate sales cycle 7X 
+            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }"
+              style="font-weight: 500;">
+              Accelerate sales cycle 7X
             </span>
             with WhatsApp marketing
           </div>
@@ -154,11 +158,11 @@
               </a>
             </div>
 
-            
 
 
-           
-            
+
+
+
             <!-- <div class="social-proof softwareadvice">
               <a style="cursor: default;">
                 <img border="0"
@@ -166,7 +170,7 @@
                   style="width: 80px;" />
               </a>
             </div> -->
-            
+
             <!-- <div class="social-proof capterra">
               <a style="cursor: default;">
                 <img src="https://assets.capterra.com/badge/df9c5368d6b2558cc4a82e34a7ed1793.svg?v=2131354&p=187541"
@@ -174,7 +178,7 @@
               </a>
             </div> -->
 
-            
+
             <!-- <div class="social-proof getapp">
               <a style="cursor: default;">
                 <img border="0"
@@ -183,7 +187,7 @@
               </a>
             </div> -->
 
-          
+
 
           </div>
         </div>
@@ -318,6 +322,77 @@
               Email must be a valid email
             </div>
 
+
+            <!-- ----------------------------- -->
+            <!-- Mobile phone number -->
+            <!-- ----------------------------- -->
+            <label for="phone">Mobile Number <span style="color:#ff5252">*</span></label>
+
+            <div class="phone-container">
+              <!-- Country Selection Dropdown (Small Dropdown Inside Input) [(ngModel)]="phoneCountry" -->
+              <ng-select class="country-select" 
+                formControlName="phoneCountry" 
+                #countrySelect
+                [items]="countries" 
+                bindLabel="name" 
+                bindValue="code"
+                placeholder="Country" 
+                (change)="onCountryChange($event)"
+                [clearable]="false">
+                <ng-template ng-label-tmp let-item="item">
+                  
+                  <img *ngIf="item.code" style="width: 25px; height: auto;border: .5px solid #ddd;"
+                  [src]="'assets/img/flags/' + item.code + '.png'" />
+                </ng-template>
+                <!-- <ng-template ng-option-tmp let-item="item">
+                  <img  style="width: 20px; height: 14px; margin-right:3px "
+                  [src]="'assets/img/flags/' + item.code + '.png'" />
+                  <span>{{ item.name }} ({{ item.dialCode }})</span>
+                </ng-template> -->
+                <ng-template ng-option-tmp let-item="item">
+                  <div style="display: flex; align-items: center;">
+                    <!-- Flag container with fixed width -->
+                    <div style="width: 25px; display: flex; justify-content: center;">
+                      <img 
+                        [src]="'assets/img/flags/' + item.code + '.png'" 
+                        style="max-width: 100%; height: auto; border: .5px solid #ddd;" 
+                        alt="{{ item.name }}"
+                      />
+                    </div>
+                    
+                    <!-- Country name and dial code with flexible width -->
+                    <div style="margin-left: 8px; flex-grow: 1;">
+                      <span>{{ item.name }} ({{ item.dialCode }})</span>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-select>
+
+                <input 
+                  #phoneInput
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  formControlName="phone" 
+                  (input)="formatAsYouType()"  
+                  class="signup-mobile-phone" style="border-left: unset !important;" />
+            </div>
+            <!-- Error Message -->
+            <div *ngIf="formErrors.phone" class="is-danger" translate>
+              {{ formErrors.phone }}
+            </div>
+
+            <!-- isValidPhoneNumber -- {{ isValidPhoneNumber }} -->
+            <div *ngIf="userForm && userForm.get('phone')?.value !== '' && isValidPhoneNumber === false" class="is-danger">
+              Invalid mobile number.
+            </div>
+
+
+
+
+            <!-- ----------------------------- -->
+            <!-- Password -->
+            <!-- ----------------------------- -->
             <label for="password">Password <span style="color:#ff5252">*</span></label>
             <div class="pswrd-wpr">
 
@@ -348,7 +423,7 @@
                 </svg>
               </button>
             </div>
-           
+
             <div *ngIf="formErrors.password" class="is-danger" translate style="margin-bottom: 0px;">
               {{ formErrors.password }}
             </div>
@@ -375,16 +450,14 @@
             <label class="i-accept-label" for="terms">
               <!-- {{ "iAgree" | translate }} -->
               {{ "IAccept" | translate }}
-              <a *ngIf="display_terms_and_conditions_link"  target="_blank"
-                [href]="terms_and_conditions_url">
+              <a *ngIf="display_terms_and_conditions_link" target="_blank" [href]="terms_and_conditions_url">
                 {{ "TermsAndConditions" | translate }}<span *ngIf="display_dpa" style="color: #aaa;">, </span>
               </a>
-              <a *ngIf="display_dpa" target="_blank"
-              [href]="dpa_url">
+              <a *ngIf="display_dpa" target="_blank" [href]="dpa_url">
                 DPA
-             </a>
+              </a>
               <span *ngIf="display_terms_and_conditions_link"> {{ "And" | translate }} </span>
-              <a  target="_blank" [href]="privacy_policy_url">
+              <a target="_blank" [href]="privacy_policy_url">
                 {{ privacy_policy_link_text }}
               </a>
               <!-- [checked]="checkModel" -->
@@ -400,13 +473,13 @@
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
 
-            <!-- userForm.valid {{userForm.valid}} -->
-            <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" 
-              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
+            <!-- userForm.valid {{userForm.valid}}    || !isValidPhone() -->
+            <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit"
+              class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn || !isValidPhoneNumber">
               <span *ngIf="!showSpinnerInLoginBtn">
                 {{ "GetStarted" | translate}}
               </span>
-              <span *ngIf="showSpinnerInLoginBtn"> 
+              <span *ngIf="showSpinnerInLoginBtn">
                 <i class="fa fa-spinner fa-spin"></i>
               </span>
             </button>

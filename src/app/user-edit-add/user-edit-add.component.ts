@@ -19,6 +19,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
+import { ProjectUser } from 'app/models/project-user';
 const swal = require('sweetalert');
 
 @Component({
@@ -140,11 +141,11 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   appSumoProfile: string;
   public hideHelpLink: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
-  roles: any;
-
+ 
   isAuthorized = false;
   permissionChecked = false;
 
+  roles: any[] = [];
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -169,9 +170,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   ngOnInit() {
 
-    console.log('on init  Role ', this.role);
+    // console.log('on init  Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
-    console.log('on init Selected Role ', this.selectedRole);
+    // console.log('on init Selected Role ', this.selectedRole);
 
     if (this.router.url.indexOf('/add') !== -1) {
       console.log('[USER-EDIT-ADD] HAS CLICKED INVITES ');
@@ -254,6 +255,10 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         console.log('[USER-EDIT-ADD] - GET ROLES * COMPLETE *')
       });
   }
+
+  // get isUserRoleMatched(): boolean {
+  //   return this.roles.some(role => role.name === this.user_role);
+  // }
 
   trackPage() {
     if (!isDevMode()) {
@@ -360,7 +365,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      //  console.log('[USER-EDIT-ADD] - LOGGED USER ', user)
+      this.logger.log('[USER-EDIT-ADD] - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
         this.CURRENT_USER_ID = user._id;
@@ -369,14 +374,17 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     });
   }
 
-  getUserRole() {
-    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
 
-      console.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
-      // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
-      this.CURRENT_USER_ROLE = userRole;
+  getUserRole() {
+    this.subscription = this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[USER-EDIT-ADD] - PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', projectUser)
+      if (projectUser) {
+        this.CURRENT_USER_ROLE = projectUser.role;
+
+      } 
     })
   }
+
 
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
@@ -629,7 +637,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - EMAIL: ', this.user_email);
 
         this.user_role = projectUser.role;
-        this.logger.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
+        console.log('[USER-EDIT-ADD] PROJECT-USER DETAILS (GET getProjectUsersById) - ROLE: ', this.user_role);
 
         if (projectUser && projectUser.max_assigned_chat) {
           this.max_assigned_chat = projectUser.max_assigned_chat;
