@@ -4,17 +4,21 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 30px;
+  padding: 20px;
 }
 
 .add-content-container.unanswered-questions-modal {
-    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 30px;
+    padding: 20px;
     border-radius: var(--card-border-radius);
     border: 1px solid #e5effe !important;
+
+    margin: 25px 0;
+    display: inline-block;
+    position: relative;
+    width: 100%;
 }
 
 
@@ -61,11 +65,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
-  font-weight: 500;
-  color: #b2b2b2;
   padding: 0 0 8px 0;
   border-bottom: 1px solid #f0f4f8;
+
+  font-size: 14px;
+  font-weight: var(--table-thead-font-weight);
+  margin: auto 4px;
+  color: var(--table-thead-color);
+  vertical-align: middle;
 }
 .uq-list-header-question {
   flex: 1 1 0;
@@ -90,7 +97,7 @@
 .uq-question-text {
   flex: 1 1 0;
   color: #3c4858;
-  font-size: 15px;
+  font-size: 14px;
   font-family: var(--header-font-family);
 }
 .uq-actions {
@@ -166,3 +173,4 @@
 .uq-btn-icon[mat-icon-button]:hover mat-icon.add-icon {
   color: #2196f3;
 } 
+
