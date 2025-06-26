@@ -44,7 +44,7 @@ import { SleekplanApiService } from './services/sleekplan-api.service';
 
 
 
-declare const gtag: Function;
+// declare const gtag: Function;
 
 @Component({
     selector: 'appdashboard-root',
@@ -121,12 +121,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.currenturl = event.url
 
                 if (this.currenturl === '/projects' || this.currenturl === '/login') {
-                    this.hideSleekPlanRightPopup()
+                    // this.hideSleekPlanRightPopup()
                 } else {
                     this.stopObservingSleekPlan(); // Disconnect observer when navigating away
                 }
 
-                gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
+                // gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
 
                 if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup' && event.urlAfterRedirects !== '/create-new-project') {
                     this.logger.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
@@ -948,7 +948,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.logger.log('[APP-COMPONENT] before to call sleekplanSso window.location.href lastPart', lastPart);
 
                 if (lastPart !== 'onboarding' && lastPart !== 'signup' && lastPart !== 'create-new-project') {
-                    this.sleekplanSso(user)
+                    // this.sleekplanSso(user)
                 }
             }
             if (!user) {

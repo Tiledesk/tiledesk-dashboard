@@ -330,10 +330,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
-    this.getProjectUser();
+    // this.getProjectUser();
 
     // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-    this.usersService.getBotsByProjectIdAndSaveInStorage();
+    // this.usersService.getBotsByProjectIdAndSaveInStorage();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     // this.getAvailableProjectUsersByProjectId();
@@ -433,7 +433,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
           // this.findCurrentProjectAmongAll(this.projectId)
           this.getProjectById(this.projectId);
-          this.getProjectBots();
+          // this.getProjectBots();
+           this.showskeleton = false;
           // this.init()
         }
       }, (error) => {
@@ -634,12 +635,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.project = project
         if (project.attributes && project.attributes.dashlets) {
           this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getDashlet(this.PROJECT_ATTRIBUTES)
+          // this.getDashlet(this.PROJECT_ATTRIBUTES)
         }
 
         if (project.attributes && project.attributes.userPreferences) {
           this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
+          // this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
 
         } else {
           this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES > USER PREFERENCES UNDEFINED - SET DEFAULT', this.PROJECT_ATTRIBUTES)
@@ -650,8 +651,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const projectProfileData = project.profile
 
-        this.manageChatbotVisibility(projectProfileData)
-        this.manageVoiceQuotaVisibility(projectProfileData)
+        // this.manageChatbotVisibility(projectProfileData)
+        // this.manageVoiceQuotaVisibility(projectProfileData)
 
         this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 

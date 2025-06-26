@@ -708,7 +708,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
       // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
       if (this.user) {
-        this.fetchNewChangelogCount(this.user);
+        // this.fetchNewChangelogCount(this.user);
         const stored_preferred_lang = localStorage.getItem(this.user._id + '_lang')
 
         if (stored_preferred_lang) {
@@ -1179,8 +1179,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             // Sleekplan is already loaded
             return;
           }
-          if (this.user && this.isVisiblePay && !this.browserRefresh)
-            this.sleekplanSso(this.user)
+          if (this.user && this.isVisiblePay && !this.browserRefresh) {
+            // this.sleekplanSso(this.user)
+          }
+          
         }
         this.logger.log('[NAVBAR] this.user', this.user)
         if (

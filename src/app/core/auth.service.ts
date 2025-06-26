@@ -743,29 +743,24 @@ export class AuthService {
   
     if (isActivePAY) {
       //  this.logger.log('[Auth-SERV] calling sleekplanSso ')
-      this.sleekplanSsoService.getSsoToken(user).subscribe(
-        (response) => {
-          this.logger.log('[Auth-SERV] sleekplanSso response ', response)
-          this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
-          this.logger.log('[Auth-SERV] sleekplanSso response $sleek', window['$sleek'])
+      // this.sleekplanSsoService.getSsoToken(user).subscribe(
+      //   (response) => {
+      //     this.logger.log('[Auth-SERV] sleekplanSso response ', response)
+      //     this.logger.log('[Auth-SERV] sleekplanSso response token', response['token'])
+      //     this.logger.log('[Auth-SERV] sleekplanSso response $sleek', window['$sleek'])
 
 
-          window['SLEEK_USER'] = { token: response['token'] }
+      //     window['SLEEK_USER'] = { token: response['token'] }
 
-          // Load the Sleekplan widget
-          this.sleekplanService.loadSleekplan()
+      //     // Load the Sleekplan widget
+      //     this.sleekplanService.loadSleekplan()
 
-          // .then(() => {
-          //  this.logger.log('[Auth-SERV] - Sleekplan successfully initialized');
-          // })
-          //   .catch(err => {
-          //     this.logger.error('[Auth-SERV] - Sleekplan initialization failed', err);
-          //   });
-        },
-        (error) => {
-          this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
-        }
-      );
+        
+      //   },
+      //   (error) => {
+      //     this.logger.error('[Auth-SERV] - Failed to fetch Sleekplan SSO token', error);
+      //   }
+      // );
     } else {
       this.logger.log('[Auth-SERV] NOT calling sleekplanSso ')
     }

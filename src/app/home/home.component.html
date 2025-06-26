@@ -164,21 +164,14 @@
                 <!-- ------------------------------------ -->
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
-                <button id="dashlet-filter-btn" *ngIf="USER_ROLE !== 'agent'" mat-mini-fab aria-label="filter icon"
+                <!-- <button id="dashlet-filter-btn" *ngIf="USER_ROLE !== 'agent'" mat-mini-fab aria-label="filter icon"
                   [matMenuTriggerFor]="dashletMenu" matTooltipClass="custom-mat-tooltip" matTooltip="Dashlets filter"
                   #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                  <!-- <span class="mat-button-wrapper"> -->
+                 
                   <mat-icon>
                     tune
                   </mat-icon>
-                  <!-- <span class="ml-2 button-dashlet-settings">
-                      <!- - {{'ViewOption' | translate}} - ->
-                      View Options
-                    </span> -->
-                  <!-- </span> -->
-
-
-                </button>
+                </button> -->
 
                 <mat-menu #dashletMenu="matMenu">
                   <!-- *ngIf="displayAnalyticsConvsGraph" -->
@@ -443,81 +436,7 @@
 
 
 
-        <!-- -------------------- -->
-        <!-- <div class="css-1ae9jt6 emzqq8l0">
-          <div class="css-1i8g5ql e1tmijxs2">
-            <div class="css-1tiye3v e15c8v5c0">
-              <h2 class="css-g9kwll eimqq0f0">Customer service</h2>
-              <span class="css-1mjafm2 e1qlbays0">Free</span>
-            </div>
-            <div class="css-1gcxp0x e15c8v5c0">
-              <div class="css-144jxd7 e1tfsndr0" style="width: 24px; height: 24px;">
-                <svg class="svg-pi"
-                  style="width: 24px; height: 24px;">
-                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"></circle>
-                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"
-                    stroke-dasharray="56.548667764616276" stroke-dashoffset="56.548667764616276" stroke-linecap="round">
-                  </circle>
-                </svg>
-                <div class="svg-pi-label"></div>
-              </div>
-              <div class="css-u49bkm e15c8v5c0">
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">0</h2>
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">&nbsp;/&nbsp;</h2>
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">50</h2>
-              </div>
-            </div>
-            <div class="css-1839bav e1tmijxs0"><a class="css-7zud1g e1y2rc4y0"
-                href="/panel/settings/live-chat/installation">Install Chat Widget to see this</a></div>
-          </div>
-          <div class="css-1i8g5ql e1tmijxs2">
-            <div class="css-1tiye3v e15c8v5c0">
-              <h2 class="css-g9kwll eimqq0f0">Lyro AI Chatbot</h2><span class="css-1mjafm2 e1qlbays0">Free</span>
-            </div>
-            <div class="css-1gcxp0x e15c8v5c0">
-              <div class="css-144jxd7 e1tfsndr0" style="width: 24px; height: 24px;"><svg class="svg-pi"
-                  style="width: 24px; height: 24px;">
-                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"></circle>
-                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#eff2f6" stroke-width="3"
-                    stroke-dasharray="56.548667764616276" stroke-dashoffset="56.548667764616276" stroke-linecap="round">
-                  </circle>
-                </svg>
-                <div class="svg-pi-label"></div>
-              </div>
-              <div class="css-u49bkm e15c8v5c0">
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">0</h2>
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">&nbsp;/&nbsp;</h2>
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">50</h2>
-              </div>
-            </div>
-            <div class="css-1839bav e1tmijxs0"><a class="css-7zud1g e1y2rc4y0" href="/panel/lyro-ai/configure">Set up
-                Lyro AI Chatbot</a></div>
-          </div>
-          <div class="css-1i8g5ql e1tmijxs2">
-            <div class="css-1tiye3v e15c8v5c0">
-              <h2 class="css-g9kwll eimqq0f0">Flows</h2><span class="css-1mjafm2 e1qlbays0">Free</span>
-            </div>
-            <div class="css-1gcxp0x e15c8v5c0">
-              <div class="css-144jxd7 e1tfsndr0" style="width: 24px; height: 24px;"><svg class="svg-pi"
-                  style="width: 24px; height: 24px;">
-                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#dce9ff" stroke-width="3"></circle>
-                  <circle cx="12" cy="12" fill="transparent" r="9" stroke="#0566ff" stroke-width="3"
-                    stroke-dasharray="56.548667764616276" stroke-dashoffset="56.548667764616276" stroke-linecap="round">
-                  </circle>
-                </svg>
-                <div class="svg-pi-label"></div>
-              </div>
-              <div class="css-u49bkm e15c8v5c0">
-                <h2 class="css-10gqelt eimqq0f0">0</h2>
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">&nbsp;/&nbsp;</h2>
-                <h2 color="disabled" class="css-1v24s3u eimqq0f0">100</h2>
-              </div>
-            </div>
-            <div class="css-1839bav e1tmijxs0">
-              <p color="subdued" class="css-1yjik4h eimqq0f0">100 visitors reached</p>
-            </div>
-          </div>
-        </div> -->
+  
 
 
 
@@ -656,7 +575,15 @@
 
             <span *ngIf="USER_ROLE !== 'agent'">
 
-              <ng-container *ngIf="areVisibleChatbot">
+              <div class="welcome-to-tiledesk" style="display: flex;
+                    height: calc(100vh - 330px);
+                    align-items: center;
+                    font-size: 34px;
+                    font-family: 'Poppins';">
+                Welcome to Tiledesk
+              </div>
+
+              <!-- <ng-container *ngIf="areVisibleChatbot">
                 <home-cds (goToCreateChatbot)="goToCreateChatbot()" 
                   [chatbots]="chatbots" 
                   [project]="project"
@@ -664,16 +591,9 @@
                   [isVisibleKNB]="isVisibleKNB"
                   [USER_ROLE]="USER_ROLE">
                 </home-cds>
-              </ng-container>
-
-              <!-- for kb hero section -->
-              <!-- <ng-container *ngIf="displayKbHeroSection">
-                <home-cds *ngIf="isVisibleKNB"
-                  (goToCreateChatbot)="goToCreateChatbot()" 
-                  (dismissKbSkeleton)="dismissKbSkeleton($event)"
-                  [chatbots] = "chatbots"
-                  [displayKbHeroSection]="displayKbHeroSection" > </home-cds>
               </ng-container> -->
+
+              
 
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order" style="margin-top:18px ;">
                
@@ -705,38 +625,38 @@
                 <!-- ----------------------- -->
                 <!-- (hasCreatedChatbot)="hasCreatedChatbot($event)" -->
                 <ng-container *ngIf="item.type === 'child3'">
-                  <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
+                  <!-- <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
                     style="margin-bottom: 18px;" 
                     (goToConnectWA)="goToConnectWA()"
                     [use_case_for_child]="use_case_for_child" 
                     [solution_channel_for_child]="solution_channel_for_child"
                     [solution_for_child]="solution_for_child" >
-                  </appdashboard-home-whatsapp-account-wizard>
+                  </appdashboard-home-whatsapp-account-wizard> -->
                 </ng-container>
 
                 <!-- ----------------------- -->
                 <!-- Child 4 Whatsapp Account-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child4'">
-                  <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
+                  <!-- <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
                     #childWhatsappAccount 
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     [solution_channel_for_child]="solution_channel_for_child" 
                     [solution_for_child]="solution_for_child">
-                  </appdashboard-home-whatsapp-account>
+                  </appdashboard-home-whatsapp-account> -->
                 </ng-container>
 
                 <!-- ----------------------- -->
                 <!-- Child 5 Create Chatbot -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
-                  <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
+                  <!-- <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
                     [use_case_for_child]="use_case_for_child" 
                     [solution_channel_for_child]="solution_channel_for_child"
                     [chatbots]="chatbots"
                     [projectId]="projectId"
                     (trackUserAction)="trackUserAction($event)">
-                  </appdashboard-home-create-chatbot>
+                  </appdashboard-home-create-chatbot> -->
                 </ng-container>
 
 
@@ -745,54 +665,38 @@
                 <!-- Child 7 KB -->
                 <!-- ----------------------- -->
                 <!-- *ngIf="displayKnowledgeBase" -->
-                <ng-container *ngIf="areVisibleChatbot">
+                <!-- <ng-container *ngIf="areVisibleChatbot">
                   <ng-container *ngIf="item.type === 'child7' && isVisibleKNB && !displayKbHeroSection">
                     <appdashboard-home-kb (trackUserAction)="trackUserAction($event)">
                     </appdashboard-home-kb>
                   </ng-container>
-                </ng-container>
-
-                <!-- <ng-container  *ngIf="areVisibleChatbot">
-                  <ng-container *ngIf="item.type === 'child6' && isVisibleKNB">
-                    <appdashboard-home-kb (trackUserAction)="trackUserAction($event)">
-                    </appdashboard-home-kb>
-                  </ng-container>
                 </ng-container> -->
+
+               
 
 
 
                 <!-- ----------------------- -->
                 <!-- Child 6 Create Teammate -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child7'">
+                <!-- <ng-container *ngIf="item.type === 'child7'">
                   <appdashboard-home-create-teammate *ngIf="displayInviteTeammate">
                   </appdashboard-home-create-teammate>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- ----------------------- -->
                 <!-- Child 8 Customize Widget -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child8'">
+                <!-- <ng-container *ngIf="item.type === 'child8'">
                   <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"
                     (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-customize-widget>
-                </ng-container>
+                </ng-container> -->
 
               </div>
             </span>
             <span *ngIf="USER_ROLE === 'agent'">
               <div class="home--blocks">
-
-
-                <!-- <appdashboard-home-convs-graph *ngIf="isVisibleANA"
-                  [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
-                  [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-convs-graph> -->
-
-
-                <!-- <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
-                  [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-analytics-indicator> -->
 
 
                 <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
