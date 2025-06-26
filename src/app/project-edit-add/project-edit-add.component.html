@@ -2025,6 +2025,62 @@
                         </div>
                       </div>
 
+
+                      <!-- ----------------------------------- -->
+                      <!-- Allowed URLs -->
+                      <!-- ----------------------------------- -->
+                      <div class="row" style="margin-top: 40px;">
+                        <div class="col-md-6">
+                          <h3 class="card_title__underlined">
+                            <span class="card_title__underline">
+
+                             Allowed URLs
+                            </span>
+                          </h3>
+                        </div>
+
+                        <!-- SUBTITLE -->
+                        <div class="col-md-12">
+                          <div class="section-subtitle" style="width: calc((100% / 3) + 372px)"></div>
+                          <p class="section-subtitle-paragraph" style="width: calc((100% / 3) + 372px)">
+                            <!-- {{'EnablingThisOptionHidesChatbotAttributes' | translate }} -->
+                             By enabling this option a teammate cannot send URLs that are not in the whitelist
+                          </p>
+                        </div>
+
+                        <!-- SWITCH BUTTON -->
+                        <div class="col-md-6">
+
+                          <span class="span-12"></span>
+
+                          <div class="label--switch-wpr">
+                            <label>
+                              {{ 'Enable' | translate}}
+                            </label>
+                            <div class="onoffswitch">
+
+                              <input (change)="toggleAllowedURLs($event)" type="checkbox"
+                                name="allowed-urls" class="onoffswitch-checkbox"
+                                id="allowed-urls"
+                                [checked]="isEnabledAllowedURLs">
+                              <label class="onoffswitch-label" for="allowed-urls">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div>
+
+                            <button (click)="onOpenUrlsWhitelist()">
+                              Configure
+                            </button>
+                          </div>
+
+
+                        </div>
+                      </div>
+
                     </ng-container>
                     <ng-template #unauthorizedTplAdvanced>
                       <unauthorized-for-settings></unauthorized-for-settings>

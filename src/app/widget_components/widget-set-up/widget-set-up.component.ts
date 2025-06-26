@@ -1929,8 +1929,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         this.calloutTitle = this.selected_translation["CALLOUT_TITLE_PLACEHOLDER"];
         // this.calloutTitleForPreview =  this.calloutTitle.trim();
+        console.log('[WIDGET-SET-UP] -  calloutTitle (on getCurrentTranslation)', this.calloutTitle);
         this.checkIsEmoji(this.calloutTitle.trim());
-        this.logger.log('[WIDGET-SET-UP] - checkIsEmoji calloutTitleForPreview (on getCurrentTranslation)', this.calloutTitleForPreview);
+        
+        console.log('[WIDGET-SET-UP] - checkIsEmoji calloutTitleForPreview (on getCurrentTranslation)', this.calloutTitleForPreview);
 
         this.calloutMsg = this.selected_translation["CALLOUT_MSG_PLACEHOLDER"];
         this.logger.log('[WIDGET-SET-UP] ***** selected translation CALLOUT_TITLE_PLACEHOLDER: ', this.calloutTitle, ' - CALLOUT_MSG: ', this.calloutMsg);

@@ -32,6 +32,8 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { WidgetService } from 'app/services/widget.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -166,6 +168,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
   isAllowedSendEmoji: boolean;
+  isEnabledAllowedURLs: boolean;
 
   // unavailable_status_on: boolean;
 
@@ -328,7 +331,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private cacheService: CacheService,
     private widgetService: WidgetService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    public dialog: MatDialog,
     // private formGroup: FormGroup
 
   ) {
@@ -2994,6 +2998,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
           }
 
+          if (project.settings.allowed_urls !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allowed_urls', project.settings.allowed_urls) 
+            this.isEnabledAllowedURLs = project.settings.allowed_urls
+             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs ', this.isEnabledAllowedURLs) 
+          } else {
+            this.isEnabledAllowedURLs = false;
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else) ', this.isEnabledAllowedURLs) 
+          }
+
+         
+
 
           // Automatic unavailable status
           if (project.settings.automatic_idle_chats) {
@@ -3019,7 +3034,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.agents_can_see_only_own_convs = false;
           this.areHideChatbotAttributesInConvDtls = false;
           this.isAllowedSendEmoji = true;
+          this.isEnabledAllowedURLs = false;
            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
 
 
@@ -3199,6 +3216,40 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
+
+  toggleAllowedURLs(event){
+    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.isEnabledAllowedURLs = event.target.checked;
+    this.projectService.switchAllowedURLS(this.isEnabledAllowedURLs).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs RESULT: ", result)
+     
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      console.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+
+  }
+
+    onOpenUrlsWhitelist() {
+      const dialogRef = this.dialog.open(UrlsWhitelistComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '500px',
+      });
+  
+      dialogRef.afterClosed().subscribe((result: string[]) => {
+        if (result) {
+          const urlWhitelist = result;
+          // Save to backend or localStorage as needed
+          console.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", urlWhitelist)
+        }
+      });
+    }
+
+
 
   toggleSupportWidgetVisibility($event) {
     // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);

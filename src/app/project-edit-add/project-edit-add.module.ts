@@ -9,14 +9,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 const routes: Routes = [
-  { path: "", component: ProjectEditAddComponent},
+  { path: "", component: ProjectEditAddComponent },
 ];
 
 @NgModule({
   declarations: [
-    ProjectEditAddComponent
+    ProjectEditAddComponent,
+    UrlsWhitelistComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -28,7 +36,13 @@ const routes: Routes = [
     ReactiveFormsModule,
     MomentModule,
     MatTooltipModule,
-    UnauthorizedForSettingsModule
+    UnauthorizedForSettingsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule
   ]
 })
 export class ProjectEditAddModule { }
