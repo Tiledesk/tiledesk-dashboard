@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+
+### 2.7.114-rc2
+- Fixes the bug: changed css module in knowledge-base
+
 ### 2.7.114-rc1
 - Added: added flow webhooks logs
 
