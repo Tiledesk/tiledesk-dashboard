@@ -892,6 +892,27 @@ export class ProjectService {
     return promise;
   }
 
+  // --------------------------------------------------------------------------------------
+  // SWITCH ALLOWED URL
+  // --------------------------------------------------------------------------------------
+  switchAllowedURLS (status) {
+    let promise = new Promise((resolve, reject) => {
+      this.logger.log("[PROJECT-SERV] SWITCH ALLOWED URL status", status)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_urls": status }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
   // -------------------------------------
   // New home service
   // -------------------------------------

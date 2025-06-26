@@ -30,6 +30,8 @@ import { ContactsService } from '../services/contacts.service';
 import { CacheService } from 'app/services/cache.service';
 import { RoleService } from 'app/services/role.service';
 import { WidgetService } from 'app/services/widget.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -164,6 +166,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
   isAllowedSendEmoji: boolean;
+  isEnabledAllowedURLs: boolean;
+
   // unavailable_status_on: boolean;
 
 
@@ -288,7 +292,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private contactsService: ContactsService,
     private cacheService: CacheService,
     private widgetService: WidgetService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public dialog: MatDialog,
     // private formGroup: FormGroup
 
   ) {
@@ -2642,13 +2647,24 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
 
           if (project.settings.allow_send_emoji !== undefined) {
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allow_send_emoji', project.settings.allow_send_emoji) 
             this.isAllowedSendEmoji = project.settings.allow_send_emoji
-             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
+             this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji ', this.isAllowedSendEmoji) 
           } else {
             this.isAllowedSendEmoji = true;
-            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else) ', this.isAllowedSendEmoji) 
           }
+
+          if (project.settings.allowed_urls !== undefined) {
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji  project.settings.allowed_urls', project.settings.allowed_urls) 
+            this.isEnabledAllowedURLs = project.settings.allowed_urls
+             this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs ', this.isEnabledAllowedURLs) 
+          } else {
+            this.isEnabledAllowedURLs = false;
+            this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else) ', this.isEnabledAllowedURLs) 
+          }
+
+         
 
 
           // Automatic unavailable status
@@ -2674,6 +2690,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.automatic_unavailable_status_on = false;
           this.agents_can_see_only_own_convs = false;
           this.areHideChatbotAttributesInConvDtls = false;
+          this.isAllowedSendEmoji = true;
+          this.isEnabledAllowedURLs = false;
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
+          this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
 
 
@@ -2682,10 +2702,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ---------------------------
         if (project.widget) {
           this.widgetObj = project.widget;
-          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT', this.widgetObj) 
+          this.logger.log('[PRJCT-EDIT-ADD] WIDGET OBJECT', this.widgetObj) 
         } else {
           
-          console.log('[PRJCT-EDIT-ADD] WIDGET OBJECT IS UNDEFINED', this.widgetObj) 
+          this.logger.log('[PRJCT-EDIT-ADD] WIDGET OBJECT IS UNDEFINED', this.widgetObj) 
 
           this.widgetObj = {}
         }
@@ -2770,10 +2790,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   toggleAllowSendEmoji(event) {
-    console.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
     this.isAllowedSendEmoji = event.target.checked;
     this.projectService.switchAllowToSendEmoji(this.isAllowedSendEmoji).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji RESULT: ", result)
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
       // FOR  WIDGET
@@ -2784,7 +2804,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         delete this.widgetObj['allowEmoji'];
       }
        
-      console.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
+      this.logger.log("[PRJCT-EDIT-ADD] - toggleAllowSendEmoji widgetObj: ", this.widgetObj)
 
       this.cacheService.clearCache()
     }).catch((err) => {
@@ -2792,6 +2812,40 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
   }
+
+  toggleAllowedURLs(event){
+    this.logger.log('[PRJCT-EDIT-ADD]- toggleAllowSendEmoji isAllowedSendEmoji', event.target.checked);
+    this.isEnabledAllowedURLs = event.target.checked;
+    this.projectService.switchAllowedURLS(this.isEnabledAllowedURLs).then((result) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs RESULT: ", result)
+     
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      console.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+
+  }
+
+    onOpenUrlsWhitelist() {
+      const dialogRef = this.dialog.open(UrlsWhitelistComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '500px',
+      });
+  
+      dialogRef.afterClosed().subscribe((result: string[]) => {
+        if (result) {
+          const urlWhitelist = result;
+          // Save to backend or localStorage as needed
+          this.logger.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", urlWhitelist)
+        }
+      });
+    }
+
+
 
   toggleSupportWidgetVisibility($event) {
     // this.logger.log("[PRJCT-EDIT-ADD] - Toggle Widget Visibility event.target.checked: ", $event.target.checked);
