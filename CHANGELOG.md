@@ -1,5 +1,18 @@
 # tiledesk-dashboard
 
+### 2.7.114-rc3
+- Adds the ability in Project settings > Advanced tab to disable sending emojis
+- Updates "emoji-regex” library to 10.4.0
+
+### 2.7.114-rc2
+- Changed: css unanswered-questions module
+
+### 2.7.114-rc1
+- Added: webhook logs (deployed only on stage)
+
+### 2.7.112
+- Adds the ability for teammates with admin roles to edit email templates
+
 ### 2.7.112-rc6
 - Adds environment variable "OAUTH2_SIGNIN_ENABLED"
 - Adds the ability to perform OAuth2 sign in
