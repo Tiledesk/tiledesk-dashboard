@@ -37,6 +37,7 @@ import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
+import emojiRegex from 'emoji-regex';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -2139,7 +2140,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   calloutTitleChange(event) {
     this.calloutTitle = event;
-    this.logger.log('[WIDGET-SET-UP] - CALLOUT TITLE CHANGE: ', this.calloutTitle);
+    console.log('[WIDGET-SET-UP] - CALLOUT TITLE CHANGE: ', this.calloutTitle);
     // if (event.length === 0) {   }
     this.checkIsEmoji(this.calloutTitle.trim())
   }
@@ -2148,15 +2149,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   checkIsEmoji(calloutTitle) {
     this.calloutTitleForPreview = calloutTitle;
     this.callout_emoticon = null;
-    const emojiRegex = require('emoji-regex');
+    // const emojiRegex = require('emoji-regex');
+    
 
     const regex = emojiRegex();
     let match;
     while (match = regex.exec(this.calloutTitleForPreview)) {
       const emoji = match[0];
-      this.logger.log(`[WIDGET-SET-UP] checkIsEmoji emoji ${emoji} — code points: ${[emoji].length}`);
+      console.log(`[WIDGET-SET-UP] checkIsEmoji emoji ${emoji} — code points: ${[emoji].length}`);
 
-      this.logger.log(`[WIDGET-SET-UP] checkIsEmoji emoji: ${emoji} — position: `, this.calloutTitleForPreview.indexOf(emoji));
+      console.log(`[WIDGET-SET-UP] checkIsEmoji emoji: ${emoji} — position: `, this.calloutTitleForPreview.indexOf(emoji));
 
       if (this.calloutTitleForPreview.indexOf(emoji) === 0) {
 
