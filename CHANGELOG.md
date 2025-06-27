@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.114-rc4
+- Added: added flow request logs
 
 ### 2.7.114-rc2
 - Fixes the bug: changed css module in knowledge-base
