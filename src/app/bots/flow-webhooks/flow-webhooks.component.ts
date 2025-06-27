@@ -109,7 +109,7 @@ export class FlowWebhooksComponent implements OnInit {
 
   goToFlowWebhookDetail(webhookid: string) {
     if (this.project && this.project._id) {
-      this.router.navigate(['project/' + this.project._id + '/flows/flow-webhooks-logs/' + webhookid]);
+      this.router.navigate(['project/' + this.project._id + '/flows/flow-webhooks-logs/webhook/' + webhookid]);
     }
   }
 
