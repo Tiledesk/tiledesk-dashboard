@@ -83,19 +83,20 @@ export class FlowWebhooksLogsService {
    * @param logLevel livello di log (opzionale)
    */
   public getStaticLastLogs(
-    webhook_id: string,
+    type: string,
+    id: string,
     direction?: string,
     timestamp?: string,
     logLevel?: string
   ): Observable<any> {
-    this.LOG_URL = `${this.SERVER_BASE_PATH}${this.projectID}/logs/flows/${webhook_id}`;
+    this.LOG_URL = `${this.SERVER_BASE_PATH}${this.projectID}/logs/flows/${id}`;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-    let url = this.LOG_URL + '?type=webhook';
+    let url = this.LOG_URL + `?type=${type}`;
     if (direction) url += `&direction=${direction}`;
     if (timestamp) url += `&timestamp=${timestamp}`;
     if (logLevel) url += `&logLevel=${logLevel}`;

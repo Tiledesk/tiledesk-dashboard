@@ -934,7 +934,7 @@ const routes: Routes = [
     path: 'project/:projectid/notification-email',
     loadChildren: () => import('app/project-edit-add/notification-email/notification-email.module').then(m => m.NotificationEmailModule),
     canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner'] }]
+    data: [{ roles: ['owner','admin'] }]
   },
   // { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] }, // now lazy
 
@@ -1063,7 +1063,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'project/:projectid/flows/flow-webhooks-logs/:webhookid',
+    path: 'project/:projectid/flows/flow-webhooks-logs/:type/:id',
     loadChildren: () => import('app/bots/flow-webhooks-logs/flow-webhooks-logs.module').then(m => m.FlowWebhooksLogsModule),
     canActivate: [AuthGuard, RoleGuard],
     data: [{ roles: ['owner', 'admin'] }]

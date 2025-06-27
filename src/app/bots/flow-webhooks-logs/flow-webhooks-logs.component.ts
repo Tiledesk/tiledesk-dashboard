@@ -12,6 +12,11 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { FlowWebhooksLogsService } from 'app/services/flow-webhooks-logs.service';
 const Swal = require('sweetalert2');
 
+export enum LogType {
+  WEBHOOK = 'webhook',
+  REQUEST = 'request',
+} 
+
 @Component({
   selector: 'appdashboard-flow-webhooks-logs',
   templateUrl: './flow-webhooks-logs.component.html',
@@ -20,6 +25,7 @@ const Swal = require('sweetalert2');
 export class FlowWebhooksLogsComponent implements OnInit {
   @ViewChild('tooltip') tooltip: MatTooltip;
 
+  LogType = LogType;
   isChromeVerGreaterThan100: boolean;
   IS_OPEN_SETTINGS_SIDEBAR = true;
   SERVER_BASE_PATH: string;
@@ -27,6 +33,8 @@ export class FlowWebhooksLogsComponent implements OnInit {
   webhookURL: string;
   webhook_id: string;
   copied = false;
+  log_type: string;
+  log_id: string;
 
   // Log filtering and state
   selectedLogLevel = 'info';
@@ -75,11 +83,16 @@ export class FlowWebhooksLogsComponent implements OnInit {
   private getRouteParams(): Promise<void> {
     return new Promise((resolve) => {
       this.route.params.subscribe(async (params) => {
-        if (params.webhookid) {
-          await this.getFlowWebhookById(params.webhookid);
+        this.log_type = params.type;
+        this.log_id = params.id;
+        if (this.log_type === LogType.WEBHOOK && this.log_id) {
+          await this.getFlowWebhookById(params.id);
           if (this.webhook_id) {
             this.getStaticLastLogs();
           }
+        } else if (this.log_type === LogType.REQUEST && this.log_id) {
+          this.logger.log('[FLOW-WEBHOOKS-LOGS] GET REQUEST BY ID ', params.id);
+          this.getStaticLastLogs();
         }
         resolve();
       });
@@ -226,17 +239,18 @@ export class FlowWebhooksLogsComponent implements OnInit {
     if (this.expandedLogs.has(index)) {
       this.expandedLogs.delete(index); // collapse
     } else {
-      this.expandedLogs.add(index); // expand
+      if (this.isButtonEnabled(index)) {
+        this.expandedLogs.add(index);
+      }
     }
   }
 
   isButtonEnabled(index: number): boolean {
     const blockTextId = 'row-log-text_' + index;
     const elementText = document.getElementById(blockTextId);
-    const blockButtonId = 'row-log-button_' + index;
-    const elementButton = document.getElementById(blockButtonId);
-    if (elementText && elementButton) {
-      return elementText.offsetHeight > elementButton.offsetHeight;
+    if (elementText) {
+      // Se il testo è ellissato/troncato scrollWidth > clientWidth
+      return elementText.scrollWidth > elementText.clientWidth;
     }
     return false;
   }
@@ -256,6 +270,19 @@ export class FlowWebhooksLogsComponent implements OnInit {
   }
 
   getStaticLastLogs(): void {
+    if(this.log_type === LogType.WEBHOOK) {
+      this.flowWebhooksLogsService.getStaticLastLogs(this.log_type, this.log_id, null, null, this.selectedLogLevel).subscribe((logs: any[]) => {
+        this.listOfLogs = logs;
+      }, (error) => {
+        this.logger.error('[FLOW-WEBHOOKS-LOGS] Error loading logs', error);
+      });
+    } else if(this.log_type === LogType.REQUEST) {  
+      this.flowWebhooksLogsService.getStaticLastLogs(this.log_type, this.log_id, null, null, this.selectedLogLevel).subscribe((logs: any[]) => {
+        this.listOfLogs = logs;
+      }, (error) => {
+        this.logger.error('[FLOW-WEBHOOKS-LOGS] Error loading logs', error);
+      });
+    }
     // this.flowWebhooksLogsService.getLogs(this.webhook_id).subscribe((logs: any[]) => {
     //   this.listOfLogs = logs;
     // }, (error) => {
@@ -263,12 +290,12 @@ export class FlowWebhooksLogsComponent implements OnInit {
     //   this.loadingLogs = false;
     // });
     // return;
-    this.flowWebhooksLogsService.getStaticLastLogs(this.webhook_id, null, null, this.selectedLogLevel).subscribe((logs: any[]) => {
-      this.listOfLogs = logs;
-      // this.applyFilter();
-    }, (error) => {
-      this.logger.error('[FLOW-WEBHOOKS-LOGS] Error loading logs', error);
-    });
+    // this.flowWebhooksLogsService.getStaticLastLogs(this.webhook_id, null, null, this.selectedLogLevel).subscribe((logs: any[]) => {
+    //   this.listOfLogs = logs;
+    //   // this.applyFilter();
+    // }, (error) => {
+    //   this.logger.error('[FLOW-WEBHOOKS-LOGS] Error loading logs', error);
+    // });
   }
 
   loadPrevLogs(): void {
@@ -280,7 +307,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
     this.loadingNext = false;
     this.loadingLogs = true;
     const timestamp = this.listOfLogs[0].rows.timestamp;
-    this.flowWebhooksLogsService.getStaticLastLogs(this.webhook_id, 'prev', timestamp, this.selectedLogLevel).subscribe((logs: any[]) => {
+    this.flowWebhooksLogsService.getStaticLastLogs(this.log_type, this.log_id, 'prev', timestamp, this.selectedLogLevel).subscribe((logs: any[]) => {
       setTimeout(() => {
         this.listOfLogs.unshift(...logs);
         this.loadingLogs = false;
@@ -303,7 +330,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
     this.loadingLogs = true;
     const timestamp = this.listOfLogs[this.listOfLogs.length - 1].rows.timestamp;
     this.logger.log('[FLOW-WEBHOOKS-LOGS] loadNextLogs: timestamp ', this.listOfLogs[this.listOfLogs.length - 1], ' - ', timestamp);
-    this.flowWebhooksLogsService.getStaticLastLogs(this.webhook_id, 'next', timestamp, this.selectedLogLevel).subscribe((logs: any[]) => {
+    this.flowWebhooksLogsService.getStaticLastLogs(this.log_type, this.log_id, 'next', timestamp, this.selectedLogLevel).subscribe((logs: any[]) => {
       setTimeout(() => {
         this.listOfLogs.push(...logs);
         // this.applyFilter();

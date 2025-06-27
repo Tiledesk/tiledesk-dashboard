@@ -19,20 +19,14 @@
             z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6
             c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z" />
         </svg>
-
     </div>
-
     <span class="chatbot-sidebar-title" *ngIf="IS_OPEN_SETTINGS_SIDEBAR">
         {{'Flows' | translate }}
     </span>
-
 </span>
-
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
-
     <div class="page-title--sidebar-settings"
         [ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-
         <div class="top-header-wpr" style="display: flex;">
             <div class="top-header-back-icon-wpr" (click)="goBack()">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -40,46 +34,31 @@
                 </svg>
             </div>
             <div class="top-header-page-name-wpr">
-                Webhook Logs
+                {{ log_type === LogType.WEBHOOK ? 'Webhook Logs' : 'Request Logs' }}
             </div>
-
         </div>
-
     </div>
-
     <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
         <div class="content-wpr" style="display: flex;">
-
-
             <div class="teplate-content" style="flex: 1 1 auto; margin-left: 15px; ">
-
                 <div class="row">
                     <div class="col-xs-12">
-
                         <div class="card card--no-border" style="margin-top: 5px;">
-
-
                             <div class="main--wrapper">
 
-                                <div class="flow-webhook-detail" style="display: flex;
-                                        justify-content: space-between;
-                                        align-items: center;">
+                                <div *ngIf="log_type === LogType.WEBHOOK"  class="flow-webhook-detail" style="display: flex; justify-content: space-between; align-items: center;">
                                     <div class="flow-webhook-detail-left">
                                         <div class="flow-webhook-header">
                                             <div class="flow-webhook-name">
                                                 {{currentWH?.name }}
                                             </div>
                                         </div>
-
                                         <div class="flow-webhook-meta-wpr">
                                             <div class="flow-webhook-meta" style="margin-top: 6px;">
                                                 <div class="flow-webhook-url-wpr">
-                                                   
-
                                                     <div class="flow-webhook-url">
                                                         <span id="webhook-text">{{ webhookURL }}</span>
                                                     </div>
-
                                                     <!-- Copy Icon -->
                                                     <div class="copy-container" (click)="copyToClipboard($event)">
                                                         <span>
@@ -90,20 +69,14 @@
                                                                 <path
                                                                     d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
                                                             </svg>
-
-                                                            <span class="copy--tooltip" *ngIf="copied">{{'Copied' |
-                                                                translate}}!</span>
+                                                            <span class="copy--tooltip" *ngIf="copied">{{'Copied' | translate}}!</span>
                                                         </span>
                                                     </div>
-
-
                                                 </div>
-        
-
                                             </div>
-
                                         </div>
                                     </div>
+
                                     <div class="flow-webhook-detail-right">
                                         <div class="wh-onoffswitch">
                                             <input type="checkbox" name="onoffswitch" class="wh-onoffswitch-checkbox"
@@ -116,26 +89,29 @@
                                         </div>
 
                                         <div class="wh-btn-delete-wpr">
-
                                             <button class="btn btn-round-red delete-flow-wh"
                                                 (click)="$event.stopPropagation();deleteWebhook(currentWH?.webhook_id)">
                                                 <span>
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="22px"
                                                         viewBox="0 -960 960 960" width="22px" fill="none">
-                                                        <path
-                                                            d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z">
-                                                        </path>
+                                                        <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"></path>
                                                     </svg>
                                                 </span>
                                             </button>
                                         </div>
                                     </div>
 
-
-
                                 </div>
 
-
+                                <div *ngIf="log_type === LogType.REQUEST" class="request-detail" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div class="request-detail-left">
+                                        <div class="request-detail-header">
+                                            <div class="request-detail-title">
+                                                {{currentRequest?.title}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- ------------------------------------------------------------ -->
                                 <!-- Logs -->
@@ -163,6 +139,7 @@
                                             <!-- <div class="logs-label">Level:</div> -->
                                             <ng-select class="custom--input loglevel-select" [clearable]="false"
                                                 [(ngModel)]="selectedLogLevel" (ngModelChange)="onLogLevelChange(selectedLogLevel)" dropdownPosition="bottom"
+                                                [searchable]="false"
                                                 style="width: 90px;">
                                                 <ng-option *ngFor="let level of logLevels" [value]="level.value">{{ level.label }}</ng-option>
                                             </ng-select>
@@ -241,6 +218,13 @@
                                     <!-- ---------------------------------- -->
                                     <div id="cds_widget_log" class="cds-widget-log-container">
 
+                                        <div class="content-log" [ngStyle]="{'min-height': '100px', 'display': listOfLogs.length === 0 ? 'flex' : 'none', 'align-items': 'center', 'justify-content': 'center', 'flex-direction': 'column', 'gap':'0px'}">
+                                            <span class="no-logs-title">No logs available</span>
+                                            <button (click)="getStaticLastLogs()" class="btn btn-refresh-log" title="Refresh logs">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3ea9f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                                            </button>
+                                        </div>
+
                                         <div class="content-log" *ngIf="listOfLogs.length > 0" (wheel)="onWheel($event)">
                                             
                                             <div *ngIf="loadingPrev" class="row-log-loading" style="text-align:center; padding: 10px 0;">
@@ -253,12 +237,14 @@
                                                 </span>
                                             </div>
 
-                                            <div *ngFor="let log of listOfLogs; let i = index;" class="log--row" [class.closed]="!log.open" (click)="onToggleLog(i)">
-                                                <!-- <span
+                                            <div *ngFor="let log of listOfLogs; let i = index;" class="log--row" [class.closed]="!log.open">
+                                                <span    
                                                     [id]="'row-log-button_'+i"
-                                                    class="row-log-button material-icons-outlined"
+                                                    class="material-icons-outlined row-log-button"
                                                     [class.open]="expandedLogs.has(i)"
-                                                >chevron_right</span> -->
+                                                    (click)="onToggleLog(i)">
+                                                    chevron_right
+                                                </span>
                                                 <div class="log--col-time2 row-log-time">
                                                     {{ log.rows?.timestamp | date: 'dd/MM/yyyy HH:mm:ss' }}
                                                 </div>
