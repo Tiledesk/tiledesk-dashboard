@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.114-rc5
+- changed: added request_id in flow-request-logs row
+
 ### 2.7.114-rc4
 - Added: added flow request logs
 
