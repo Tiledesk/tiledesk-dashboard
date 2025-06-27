@@ -376,6 +376,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   CHANNELS_NAME = CHANNELS_NAME;
   HIDE_CHATBOT_ATTRIBUTES: boolean;
   ALLOW_TO_SEND_EMOJI: boolean;
+  IS_ENABLED_URLS_WHITELIST: boolean
+  URLS_WITHELIST: string[] = [];
 
   panelOpenState = false;
 
@@ -1440,6 +1442,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.ALLOW_TO_SEND_EMOJI = true;
           console.log('[WS-REQUESTS-MSGS] - allow_send_emoji not set, defaulting to true ', this.ALLOW_TO_SEND_EMOJI);
+        }
+
+        // Is Enabled URLs Whitelist
+        const isEnabledURLsWhitelist = this.current_selected_prjct.id_project.settings.allowed_urls;
+        if (isEnabledURLsWhitelist !== undefined) {
+          this.IS_ENABLED_URLS_WHITELIST = isEnabledURLsWhitelist;
+          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
+          if (this.IS_ENABLED_URLS_WHITELIST) {
+            const urlsWitheList =  this.current_selected_prjct.id_project.settings.allowed_urls_list
+            this.URLS_WITHELIST = urlsWitheList;
+            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+          }
+        } else {
+          this.IS_ENABLED_URLS_WHITELIST = false;
+          console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST not set, defaulting to false ', this.IS_ENABLED_URLS_WHITELIST);
         }
 
 
@@ -5693,6 +5710,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // }
   }
 
+  extractUrls(text: string): string[] {
+  const urlRegex = /https?:\/\/[^\s]+/g;
+  return text.match(urlRegex) || [];
+}
+
   sendChatMessage() {
 
     if (this.PERMISSION_TO_UPDATE_REQUEST) {
@@ -5741,6 +5763,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if(_chat_message === '') {
            this.chat_message = _chat_message
+          return;
+        }
+
+        const urlsInMessage = this.extractUrls(_chat_message);
+        console.log('urlsInMessage:', urlsInMessage);
+
+        // ✅ Check if all URLs are in the whitelist
+        const nonWhitelistedUrls = urlsInMessage.filter(
+          (url) => !this.URLS_WITHELIST.includes(url)
+        );
+
+        if (nonWhitelistedUrls.length > 0) {
+          // You can show an error message or a toast here
+          console.warn('Message contains non-whitelisted URLs:', nonWhitelistedUrls);
           return;
         }
 

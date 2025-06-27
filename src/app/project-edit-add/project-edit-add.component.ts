@@ -298,6 +298,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ROLE: string
   public widgetObj = {};
 
+  urlWhitelist: string[] = [];
+  currentWhitelist: string[] = [];
   /**
    * 
    * @param projectService 
@@ -3007,6 +3009,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else) ', this.isEnabledAllowedURLs) 
           }
 
+          if (project.settings.allowed_urls_list !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] allowed_urls_list  project.settings.allowed_urls_list', project.settings.allowed_urls_list) 
+            this.currentWhitelist = project.settings.allowed_urls_list
+             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.currentWhitelist ', this.currentWhitelist) 
+          } else {
+            this.currentWhitelist = [];
+            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.currentWhitelist (else) ', this.currentWhitelist) 
+          }
+
+          
+
          
 
 
@@ -3035,6 +3048,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.areHideChatbotAttributesInConvDtls = false;
           this.isAllowedSendEmoji = true;
           this.isEnabledAllowedURLs = false;
+          this.currentWhitelist = []
            console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
             console.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
@@ -3238,17 +3252,34 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
         width: '500px',
+        data: this.currentWhitelist
+       
       });
   
       dialogRef.afterClosed().subscribe((result: string[]) => {
         if (result) {
-          const urlWhitelist = result;
+          this.urlWhitelist = result;
           // Save to backend or localStorage as needed
-          console.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", urlWhitelist)
+          console.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
+
+          this.saveUrlWhitelist(this.urlWhitelist)
         }
       });
     }
 
+  saveUrlWhitelist(urlWhitelist) {
+    this.projectService.saveURLsWhitelist(urlWhitelist).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - saveURLs Whitelist  RESULT: ", result)
+     
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      console.error("[PRJCT-EDIT-ADD] - isEnabledAllowedURLs ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
+
+  }
 
 
   toggleSupportWidgetVisibility($event) {

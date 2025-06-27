@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Manage Whitelisted URLs</h2>
 
 <mat-dialog-content>
-  <form (ngSubmit)="addUrl()" #urlForm="ngForm">
+  <!-- <form (ngSubmit)="addUrl()" #urlForm="ngForm" style="display: flex;">
     <mat-form-field class="full-width">
       <input
         matInput
@@ -10,19 +10,41 @@
         [(ngModel)]="newUrl"
         required
         (keydown.enter)="addUrl()"
-      />
+        (ngModelChange)="validateUrl()"/>
       <mat-error *ngIf="urlError">{{ urlError }}</mat-error>
+      
     </mat-form-field>
+  
     <button mat-button type="submit">Add</button>
-  </form>
+  </form> -->
 
-  <mat-list>
+  <form [formGroup]="urlForm" (ngSubmit)="addUrl()" style="display: flex;">
+  <mat-form-field class="full-width">
+    <input
+      matInput
+      placeholder="Enter a URL"
+      formControlName="url" />
+    <mat-error *ngIf="urlControl.hasError('required')">
+      URL is required
+    </mat-error>
+    <mat-error *ngIf="urlControl.hasError('strongUrl')">
+      Invalid URL format
+    </mat-error>
+  </mat-form-field>
+
+  <!-- <button mat-button type="submit">Add</button> -->
+  <button mat-icon-button type="submit">
+        <mat-icon>add</mat-icon>
+      </button>
+</form>
+
+  <mat-list dense>
     <mat-list-item *ngFor="let url of whitelistedUrls; let i = index">
-      <mat-form-field>
+      <mat-form-field style="width: 100%;">
         <input matInput [(ngModel)]="whitelistedUrls[i]" />
       </mat-form-field>
       <button mat-icon-button (click)="removeUrl(i)">
-        <mat-icon>delete</mat-icon>
+        <mat-icon style="font-size: 18px;">delete</mat-icon>
       </button>
     </mat-list-item>
   </mat-list>
