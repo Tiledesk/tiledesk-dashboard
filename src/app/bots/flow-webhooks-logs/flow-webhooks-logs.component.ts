@@ -239,9 +239,9 @@ export class FlowWebhooksLogsComponent implements OnInit {
     if (this.expandedLogs.has(index)) {
       this.expandedLogs.delete(index); // collapse
     } else {
-      if (this.isButtonEnabled(index)) {
+      //if (this.isButtonEnabled(index)) {
         this.expandedLogs.add(index);
-      }
+      //}
     }
   }
 

@@ -252,7 +252,8 @@
                                                     {{ log.rows?.level }}
                                                 </div>
                                                 <div [id]="'row-log-text_'+i" class="log--col-message2 row-log-text" [class.expanded]="expandedLogs.has(i)">
-                                                    {{ log.rows?.text }}
+                                                    {{ log.rows?.text }} 
+                                                    <div *ngIf="expandedLogs.has(i)"><b>request id: </b>{{ log?.request_id }}</div> 
                                                 </div>
                                             </div>
 
