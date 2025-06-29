@@ -19,38 +19,65 @@
   </form> -->
 
   <form [formGroup]="urlForm" (ngSubmit)="addUrl()" style="display: flex;">
-  <mat-form-field class="full-width">
-    <input
-      matInput
-      placeholder="Enter a URL"
-      formControlName="url" />
-    <mat-error *ngIf="urlControl.hasError('required')">
-      URL is required
-    </mat-error>
-    <mat-error *ngIf="urlControl.hasError('strongUrl')">
-      Invalid URL format
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field class="full-width url-input" appearance="outline" [class.show-error]="submitted && urlControl.invalid">
+      <mat-label>URL</mat-label>
+      <input matInput placeholder="Enter an URL" formControlName="url" />
+      <mat-error *ngIf="submitted && urlControl.hasError('required')">
+        URL is required
+      </mat-error>
+      <mat-error *ngIf="submitted && !urlControl.hasError('required') && urlControl.hasError('strongUrl')">
+        Invalid URL format
+      </mat-error>
+      <mat-error *ngIf="submitted && urlControl.hasError('duplicate')">
+        This URL is already in the list
+      </mat-error>
+    </mat-form-field>
 
-  <!-- <button mat-button type="submit">Add</button> -->
-  <button mat-icon-button type="submit">
-        <mat-icon>add</mat-icon>
+    <button mat-button type="submit" style="
+      height: 40px;
+      margin-left: 3px;
+      margin-top: 2px;
+      color: var(--blue-20);">
+      Add
+    </button>
+    <!-- <button mat-icon-button type="submit">
+      <mat-icon style="color: var(--blue-20);">add_circle</mat-icon>
+    </button> -->
+  </form>
+
+  <p *ngIf="formArray.length === 0" class="no-urls-message">
+    No URLs added yet.
+  </p>
+
+  <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0">
+    <mat-list-item *ngFor="let ctrl of formArray.controls; let i = index">
+      <mat-form-field class="full-width">
+        <input matInput [formControl]="ctrl" />
+        <mat-error *ngIf="ctrl.hasError('required')">URL is required</mat-error>
+        <mat-error *ngIf="ctrl.hasError('strongUrl')">Invalid URL</mat-error>
+      </mat-form-field>
+      <button mat-icon-button (click)="formArray.removeAt(i)">
+        <mat-icon class="delete-url-icon" style="font-size: 18px; color: #647491">delete</mat-icon>
       </button>
-</form>
+    </mat-list-item>
+  </mat-list>
 
-  <mat-list dense>
+
+  <!-- <mat-list dense>
     <mat-list-item *ngFor="let url of whitelistedUrls; let i = index">
       <mat-form-field style="width: 100%;">
         <input matInput [(ngModel)]="whitelistedUrls[i]" />
       </mat-form-field>
       <button mat-icon-button (click)="removeUrl(i)">
-        <mat-icon style="font-size: 18px;">delete</mat-icon>
+        <mat-icon  class="delete-url-icon" style="font-size: 18px; color: #647491">delete</mat-icon>
       </button>
     </mat-list-item>
-  </mat-list>
+  </mat-list> -->
+
+
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="center">
   <button mat-button class="mat-dialog-close-btn" (click)="onNoClick()">Cancel</button>
-  <button mat-button class="mat-dialog-ok-btn" (click)="onSave()">Save</button>
+  <button mat-button class="mat-dialog-ok-btn" (click)="onSave()" [disabled]="formArray.invalid">Save</button>
 </mat-dialog-actions>

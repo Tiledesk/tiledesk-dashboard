@@ -1410,8 +1410,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
             const urlsWitheList =  this.current_selected_prjct.id_project.settings.allowed_urls_list
-            this.URLS_WITHELIST = urlsWitheList;
-            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+            if (urlsWitheList !== undefined) {
+              this.URLS_WITHELIST = urlsWitheList;
+              console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+            }
+             console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
@@ -5595,33 +5598,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  // not used - used the check availble in utils-message
-removeEmojis(text: string): string {
-  const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Emoji}\u200d]+/gu;
-  return text.replace(emojiRegex, '');
-}
 
+  extractUrls(text: string): string[] {
+    const urlRegex = /https?:\/\/[^\s]+/g;
+    return text.match(urlRegex) || [];
+  }
 
+ 
 
-extractUrls(text: string): string[] {
-  const urlRegex = /https?:\/\/[^\s]+/g;
-  return text.match(urlRegex) || [];
-}
+  triggerWarning(message: string) {
+    this.warningMessage = message;
 
-triggerWarning(message: string) {
-  this.warningMessage = message;
+    setTimeout(() => {
+      this.warningMessage = null;
+    }, 3000);
+  }
 
-  setTimeout(() => {
-    this.warningMessage = null;
-  }, 3000);
-}
-
-triggerEmojiWarning() {
-  this.showEmojiWarning = true;
-  setTimeout(() => {
-    this.showEmojiWarning = false;
-  }, 3000); // 3000 =3 seconds
-}
+  triggerEmojiWarning() {
+    this.showEmojiWarning = true;
+    setTimeout(() => {
+      this.showEmojiWarning = false;
+    }, 3000); // 3000 =3 seconds
+  }
 
 
 sendChatMessage() {
