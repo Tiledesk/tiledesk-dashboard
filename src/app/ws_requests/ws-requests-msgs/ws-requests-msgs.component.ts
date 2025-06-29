@@ -375,9 +375,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   CHANNELS_NAME = CHANNELS_NAME;
   HIDE_CHATBOT_ATTRIBUTES: boolean;
+
   ALLOW_TO_SEND_EMOJI: boolean;
+  showEmojiWarning: boolean = false;
+
   IS_ENABLED_URLS_WHITELIST: boolean
   URLS_WITHELIST: string[] = [];
+  warningMessage: string | null = null;
 
   panelOpenState = false;
 
@@ -1451,8 +1455,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('[WS-REQUESTS-MSGS] - IS_ENABLED_URLS_WHITELIST', this.IS_ENABLED_URLS_WHITELIST);
           if (this.IS_ENABLED_URLS_WHITELIST) {
             const urlsWitheList =  this.current_selected_prjct.id_project.settings.allowed_urls_list
-            this.URLS_WITHELIST = urlsWitheList;
-            console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+            if (urlsWitheList !== undefined) {
+              this.URLS_WITHELIST = urlsWitheList;
+              console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST', this.URLS_WITHELIST);
+            }
+             console.log('[WS-REQUESTS-MSGS] - URLS_WITHELIST (2) ', this.URLS_WITHELIST);
           }
         } else {
           this.IS_ENABLED_URLS_WHITELIST = false;
@@ -5699,6 +5706,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   );
   // }
 
+  // not used - used the check availble in utils-message
   removeEmojis(text: string): string {
     const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Emoji}\u200d]+/gu;
     return text.replace(emojiRegex, '');
@@ -5711,12 +5719,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   extractUrls(text: string): string[] {
-  const urlRegex = /https?:\/\/[^\s]+/g;
-  return text.match(urlRegex) || [];
-}
+    const urlRegex = /https?:\/\/[^\s]+/g;
+    return text.match(urlRegex) || [];
+  }
+
+ 
+
+  triggerWarning(message: string) {
+    this.warningMessage = message;
+
+    setTimeout(() => {
+      this.warningMessage = null;
+    }, 3000);
+  }
+
+  triggerEmojiWarning() {
+    this.showEmojiWarning = true;
+    setTimeout(() => {
+      this.showEmojiWarning = false;
+    }, 3000); // 3000 =3 seconds
+  }
 
   sendChatMessage() {
-
     if (this.PERMISSION_TO_UPDATE_REQUEST) {
       // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
       console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
@@ -5753,32 +5777,47 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
         }
 
-        
         // ❌ Remove emojis if not allowed
         // let cleanedMessage = _chat_message;
+        // if (!this.ALLOW_TO_SEND_EMOJI) {
+        //   console.log('[WS-REQUESTS-MSGS] removeEmojis _chat_message ', _chat_message)
+        //   _chat_message = removeEmojis(_chat_message).trim();
+        // }
+
         if (!this.ALLOW_TO_SEND_EMOJI) {
-          console.log('[WS-REQUESTS-MSGS] removeEmojis _chat_message ', _chat_message)
-          _chat_message = removeEmojis(_chat_message).trim();
+          const messageWithoutEmojis = removeEmojis(_chat_message).trim();
+
+          // 🚫 Block if only emojis OR if original message is different from cleaned one (i.e., it had emojis)
+          if (messageWithoutEmojis === '' || messageWithoutEmojis.length !== _chat_message.trim().length) {
+            this.triggerEmojiWarning();
+            return;
+          }
+
+          _chat_message = messageWithoutEmojis;
         }
 
         if(_chat_message === '') {
-           this.chat_message = _chat_message
+          //  this.chat_message = _chat_message
+            this.chat_message = ''
           return;
         }
 
-        const urlsInMessage = this.extractUrls(_chat_message);
-        console.log('urlsInMessage:', urlsInMessage);
+        if (this.IS_ENABLED_URLS_WHITELIST) {
+          const urlsInMessage = this.extractUrls(_chat_message);
+          console.log('urlsInMessage ++++ :', urlsInMessage);
 
-        // ✅ Check if all URLs are in the whitelist
-        const nonWhitelistedUrls = urlsInMessage.filter(
-          (url) => !this.URLS_WITHELIST.includes(url)
-        );
+          // ✅ Check if all URLs are in the whitelist
+          const nonWhitelistedUrls = urlsInMessage.filter(
+            (url) => !this.URLS_WITHELIST.includes(url)
+          );
 
-        if (nonWhitelistedUrls.length > 0) {
-          // You can show an error message or a toast here
-          console.warn('Message contains non-whitelisted URLs:', nonWhitelistedUrls);
-          return;
-        }
+          if (nonWhitelistedUrls.length > 0) {
+            
+            this.triggerWarning('The message contains URLs that are not allowed.'); // Show an error message here
+            console.warn('Message contains non-whitelisted URLs:', nonWhitelistedUrls);
+            return;
+          }
+       }
 
         // if (!this.ALLOW_TO_SEND_EMOJI && isOnlyEmoji(_chat_message)) {
         //   // this.notify.presentDialogNoPermissionToPermomfAction();

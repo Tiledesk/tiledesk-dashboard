@@ -439,14 +439,32 @@
                         </span>
                       </span>
                     </div>
-                    <!-- height:46px -->
-                    <!-- style="  margin-bottom: 8px;" -->
-                    <!-- (keydown.enter)="onKeydownEnter($event)" -->
-                    <!-- (ngModelChange)="onChangeTextInSendMsg($event)" -->
-                    <!-- (paste)="onPasteInSendMsg($event)" -->
-                    <div class="col-xs-12 h-100 plr-0"
-                      [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+                  
+
+  
+                      <!-- <div *ngIf="showEmojiWarning"
+                        class="emoji-warning animated-fade">
+                        Emojis not allowed
+                      </div> -->
                       
+
+                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
+                      [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+
+                      <!-- For emojis -->
+                      <div class="emoji-warning-container">
+                        <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
+                          Emojis not allowed
+                        </div>
+                      </div>
+
+                      <!-- For not allowed URLs -->
+                      <div class="warning-container">
+                        <div class="warning-message" [class.visible]="warningMessage">
+                          {{ warningMessage }}
+                        </div>
+                      </div>
+                    
                       <textarea #sendMessageTexarea class="send-message-texarea" 
                         [(ngModel)]="chat_message"
                         placeholder="Write your message" 
@@ -454,42 +472,12 @@
                         (paste)="onPasteInSendMsg($event)"
                         (ngModelChange)="onMessageChange($event)">  
                       </textarea>
-
-
-                      <!-- <div class="chat-msg-attachement" *ngIf="uploadedFiles">
-                            <span *ngIf="showSpinnerAttachmentUplolad === true">
-                              <i class="fa fa-spinner fa-spin"></i>
-                            </span>
-                            <span *ngIf="uploadedFiles?.type.startsWith('image')">
-                              <i class="fa fa-file-image-o" aria-hidden="true"></i>
-                            </span>
-                            <span *ngIf="!uploadedFiles?.type.startsWith('image')">
-                              <i class="fa fa-file-o" aria-hidden="true"></i>
-                            </span>
-                            {{uploadedFiles?.name }} ({{uploadedFiles?.formattedBytes }})
-                            <span *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="remove-attachment"
-                              (click)="removeAttachment(uploadedFiles?.downloadURL, uploadedFiles?.name)">
-                              <span class="material-icons">
-                                clear
-                              </span>
-                            </span>
-                          </div> -->
-
                     </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
+
 
                     <div class="col-xs-12  w-100 plr-0 chat-footer-actions">
                       <div class="row w-100">
-
                         <div class="col-xs-12 h-100 plr-0" style="margin-top: -4px;position: relative;left: 15px;">
-                          <!-- <button class="btn pull-right send-chat-msg-btn" (click)="sendChatMessage()"
-                            [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)">
-                            <span class="material-icons">
-                              send
-                            </span>
-                          </button>  -->
-
                           <div class="btn-group dropup pull-right" style="margin: 5px 1px;">
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"

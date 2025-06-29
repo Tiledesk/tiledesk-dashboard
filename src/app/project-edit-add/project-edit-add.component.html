@@ -2070,9 +2070,9 @@
                             </div>
                           </div>
 
-                          <div>
+                          <div *ngIf="isEnabledAllowedURLs" class="configure-urls-whitelist-btn-wpr">
 
-                            <button (click)="onOpenUrlsWhitelist()">
+                            <button class="btn configure-urls-whitelist-btn" (click)="onOpenUrlsWhitelist()">
                               Configure
                             </button>
                           </div>

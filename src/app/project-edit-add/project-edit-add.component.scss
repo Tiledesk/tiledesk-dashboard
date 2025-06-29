@@ -1462,6 +1462,23 @@ button.close {
 .btn-edit-smart-assigment {
   margin-top: 18px !important;
 }
+
+.configure-urls-whitelist-btn {
+    border: 1px solid var(--blue-20);
+    border-radius: 9999px;
+    background: var(--blue-20);
+    color: #fff;
+    font-family: 'Poppins';
+    font-size: 12px;
+    padding: 4px 8px;
+    text-transform: none;
+    box-shadow: unset;
+}
+
+.configure-urls-whitelist-btn-wpr {
+    margin-top: 12px;
+}
+
 // .link-to-automatic-assignment-doc>div>svg {
 //   width: 25px;
 //   height: auto;
