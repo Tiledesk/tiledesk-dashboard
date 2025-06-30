@@ -24,7 +24,7 @@ export class UnauthorizedForSidebarComponent implements OnInit {
       if (this.callingPage === 'wsrequests' || this.callingPage === 'all-conversations') {
         this.pageName = 'Requests'
       }
-      if (this.callingPage === 'wsrequest-detail') {
+      if (this.callingPage === 'wsrequest-detail' || this.callingPage === 'wsrequest-detail-history') {
         this.pageName = 'RequestMsgsPage.RequestDetails'
       }
 

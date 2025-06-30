@@ -1,35 +1,17 @@
-<h2 mat-dialog-title>Manage Whitelisted URLs</h2>
-
+<h2 mat-dialog-title>Manage Whitelisted Domains</h2>
 <mat-dialog-content>
-  <!-- <form (ngSubmit)="addUrl()" #urlForm="ngForm" style="display: flex;">
-    <mat-form-field class="full-width">
-      <input
-        matInput
-        placeholder="Enter a URL"
-        name="url"
-        [(ngModel)]="newUrl"
-        required
-        (keydown.enter)="addUrl()"
-        (ngModelChange)="validateUrl()"/>
-      <mat-error *ngIf="urlError">{{ urlError }}</mat-error>
-      
-    </mat-form-field>
-  
-    <button mat-button type="submit">Add</button>
-  </form> -->
-
   <form [formGroup]="urlForm" (ngSubmit)="addUrl()" style="display: flex;">
     <mat-form-field class="full-width url-input" appearance="outline" [class.show-error]="submitted && urlControl.invalid">
-      <mat-label>URL</mat-label>
-      <input matInput placeholder="Enter an URL" formControlName="url" />
+      <mat-label>Domain</mat-label>
+      <input matInput placeholder="Enter a domain" formControlName="url" />
       <mat-error *ngIf="submitted && urlControl.hasError('required')">
-        URL is required
+        Field required
       </mat-error>
       <mat-error *ngIf="submitted && !urlControl.hasError('required') && urlControl.hasError('strongUrl')">
-        Invalid URL format
+        Invalid domain format
       </mat-error>
       <mat-error *ngIf="submitted && urlControl.hasError('duplicate')">
-        This URL is already in the list
+        This domain is already in the list
       </mat-error>
     </mat-form-field>
 
@@ -40,40 +22,24 @@
       color: var(--blue-20);">
       Add
     </button>
-    <!-- <button mat-icon-button type="submit">
-      <mat-icon style="color: var(--blue-20);">add_circle</mat-icon>
-    </button> -->
   </form>
 
   <p *ngIf="formArray.length === 0" class="no-urls-message">
-    No URLs added yet.
+    No Domains added yet.
   </p>
 
   <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0">
     <mat-list-item *ngFor="let ctrl of formArray.controls; let i = index">
       <mat-form-field class="full-width">
         <input matInput [formControl]="ctrl" />
-        <mat-error *ngIf="ctrl.hasError('required')">URL is required</mat-error>
-        <mat-error *ngIf="ctrl.hasError('strongUrl')">Invalid URL</mat-error>
+        <mat-error *ngIf="ctrl.hasError('required')">Domain is required</mat-error>
+        <mat-error *ngIf="ctrl.hasError('strongUrl')">Invalid domain</mat-error>
       </mat-form-field>
       <button mat-icon-button (click)="formArray.removeAt(i)">
         <mat-icon class="delete-url-icon" style="font-size: 18px; color: #647491">delete</mat-icon>
       </button>
     </mat-list-item>
   </mat-list>
-
-
-  <!-- <mat-list dense>
-    <mat-list-item *ngFor="let url of whitelistedUrls; let i = index">
-      <mat-form-field style="width: 100%;">
-        <input matInput [(ngModel)]="whitelistedUrls[i]" />
-      </mat-form-field>
-      <button mat-icon-button (click)="removeUrl(i)">
-        <mat-icon  class="delete-url-icon" style="font-size: 18px; color: #647491">delete</mat-icon>
-      </button>
-    </mat-list-item>
-  </mat-list> -->
-
 
 </mat-dialog-content>
 

@@ -105,16 +105,29 @@ export class UsersNewRoleComponent implements OnInit {
     },
     {
       key: 'conversationManagement',
-      title: 'Conversations Management',
+      title: 'Conversations',
       parentLabel: 'Select all',
       type: 'checkbox',
       expanded: false,
       children: [
         { key: PERMISSIONS.INBOX_READ, label: 'Able to view real time and opened' },
-        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
-        { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' }
+        // { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+        { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
+        { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message' },
+        // { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete' }
       ]
     },
+    {
+      key: 'historyManagement',
+      title: 'History',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+      ]
+    },
+
     {
       key: 'knowledgeBasesManagement',
       title: 'Knowledge bases',
@@ -145,7 +158,7 @@ export class UsersNewRoleComponent implements OnInit {
        { key: PERMISSIONS.LEADS_READ, label: 'Able to view' },
        { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
        { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
-       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete (⚠️ internal note - to resolve Error 403)' },
+       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
        { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },
       ]
     },
@@ -221,9 +234,9 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.CANNED_RESPONSES_READ, label: 'Able to view' },
-        { key: PERMISSIONS.CANNED_RESPONSES_UPDATE, label: 'Able to edit (⚠️ internal note - to resolve Error 403)' },
+        { key: PERMISSIONS.CANNED_RESPONSES_UPDATE, label: 'Able to edit' },
         { key: PERMISSIONS.CANNED_RESPONSES_CREATE, label: 'Able to create' },
-        { key: PERMISSIONS.CANNED_RESPONSES_DELETE, label: 'Able to delete (⚠️ internal note - to resolve Error 403)' },
+        { key: PERMISSIONS.CANNED_RESPONSES_DELETE, label: 'Able to delete' },
       ]
     },
 

@@ -6,12 +6,14 @@ export const PERMISSIONS = {
  
   INBOX_READ: 'inbox_read',
   REQUEST_UPDATE: 'request_update',
+  REQUEST_SEND: 'request_send',
+  REQUEST_DELETE: 'request_delete',
+
+  HISTORY_READ: 'history_read',
 
   KB_READ: 'kb_read',
   FLOWS_READ: 'flows_read',
  
-  HISTORY_READ: 'history_read',
-
   LEADS_READ: 'leads_read',
   LEAD_UPDATE: 'lead_update',
   LEAD_TRASH: 'lead_trash',

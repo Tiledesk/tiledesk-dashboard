@@ -389,6 +389,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
   PERMISSION_TO_UPDATE_REQUEST: boolean
+  PERMISSION_TO_SEND_REQUEST: boolean
   /**
    * Constructor
    * @param router 
@@ -527,7 +528,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
   ngOnInit() {
-    this.roleService.checkRoleForCurrentProject('wsrequest-detail')
+    // this.roleService.checkRoleForCurrentProject('wsrequest-detail') moved in getWsRequestById$
     this.getParamRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -564,6 +565,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe(status => {
         console.log('[WS-REQUESTS-MSGS] - Role:', status.role);
         console.log('[WS-REQUESTS-MSGS] - Permissions:', status.matchedPermissions);
+
+        // PERMISSION_TO_UPDATE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
             // Enable update action
@@ -576,6 +579,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.PERMISSION_TO_UPDATE_REQUEST = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // PERMISSION_TO_SEND_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_SEND)) {
+            // Enable update action
+            this.PERMISSION_TO_SEND_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_REQUEST 1 ', this.PERMISSION_TO_SEND_REQUEST);
+          } else {
+            this.PERMISSION_TO_SEND_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_SEND_REQUEST 2', this.PERMISSION_TO_SEND_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_SEND_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_SEND_REQUEST ', this.PERMISSION_TO_SEND_REQUEST);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -752,18 +770,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       if (params.calledby === '1') {
         this.previousUrl = 'wsrequests'
-        this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
       }
 
       if (params.calledby === '2') {
         this.previousUrl = 'history',
-          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
       }
 
       if (params.calledby === '3') {
         this.previousUrl = 'all-conversations',
-          this.logger.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
+        console.log('[WS-REQUESTS-MSGS] this.previousUrl', this.previousUrl)
         this.hasSearchedBy = params.hassearchedby
         this.logger.log('[WS-REQUESTS-MSGS] this.hasSearchedBy', this.hasSearchedBy)
       }
@@ -1806,6 +1824,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
+        console.log('[WS-REQUESTS-MSGS] wsrequest status this.request ',  this.request.status)
+          
+        if (this.request.status !== 1000) {
+          this.roleService.checkRoleForCurrentProject('wsrequest-detail')
+        } else {
+          this.roleService.checkRoleForCurrentProject('wsrequest-detail-history')
+        }
+       
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
@@ -5741,7 +5767,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   sendChatMessage() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_SEND_REQUEST) {
       // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
       console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - request ', this.request)
       console.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  chat_message', this.chat_message)
@@ -5806,15 +5832,32 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           const urlsInMessage = this.extractUrls(_chat_message);
           console.log('urlsInMessage ++++ :', urlsInMessage);
 
-          // ✅ Check if all URLs are in the whitelist
-          const nonWhitelistedUrls = urlsInMessage.filter(
-            (url) => !this.URLS_WITHELIST.includes(url)
-          );
+          // // ✅ Check if all URLs are in the whitelist
+          // const nonWhitelistedUrls = urlsInMessage.filter(
+          //   (url) => !this.URLS_WITHELIST.includes(url)
+          // );
 
-          if (nonWhitelistedUrls.length > 0) {
+          // if (nonWhitelistedUrls.length > 0) {
             
-            this.triggerWarning('The message contains URLs that are not allowed.'); // Show an error message here
-            console.warn('Message contains non-whitelisted URLs:', nonWhitelistedUrls);
+          //   this.triggerWarning('The message contains URLs that are not allowed.'); // Show an error message here
+          //   console.warn('Message contains non-whitelisted URLs:', nonWhitelistedUrls);
+          //   return;
+          // }
+
+            const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+            try {
+              const domain = new URL(url).hostname.toLowerCase();
+              return !this.URLS_WITHELIST.includes(domain);
+            } catch (e) {
+              // Ignore invalid URLs
+              return true;
+            }
+          });
+
+          if (nonWhitelistedDomains.length > 0) {
+            console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+            this.triggerWarning('This message contains a URL from a domain that is not allowed.'); 
+            // this.domainWarning = true; // <-- display a warning
             return;
           }
        }

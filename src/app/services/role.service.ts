@@ -43,6 +43,7 @@ export class RoleService {
           if (calledby === 'wsrequests' ||
              calledby === 'all-conversations' ||
             calledby === 'wsrequest-detail' ||
+            calledby ===  'wsrequest-detail-history' ||
             calledby === 'contacts' ||
             calledby === 'contact-details' ||
             calledby === 'history') {
@@ -69,11 +70,12 @@ export class RoleService {
           }
 
           // History
-          if (calledby === 'history') {
+          if (calledby === 'history' || calledby === 'wsrequest-detail-history') {
             console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
             if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
-              // if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.INBOX_READ)) { 
-              this.router.navigate([`project/${projectId}/unauthorized`])
+              
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 
@@ -546,6 +548,7 @@ export class RoleService {
           if (calledby === 'wsrequests' ||
             calledby === 'all-conversations' ||
             calledby === 'wsrequest-detail' ||
+            calledby === 'wsrequest-detail-history' ||
             calledby === 'contacts' ||
             calledby === 'contact-details' ||
             calledby === 'history') {
@@ -572,11 +575,12 @@ export class RoleService {
           }
 
           // History
-          if (calledby === 'history') {
+          if (calledby === 'history' || calledby === 'wsrequest-detail-history') {
             console.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.HISTORY_READ)) {
-              // if (!_projectUser.rolePermissions.includes(PERMISSIONS.INBOX_READ)) {
-              this.router.navigate([`project/${projectId}/unauthorized`])
+             
+              // this.router.navigate([`project/${projectId}/unauthorized`])
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
 

@@ -199,6 +199,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
+  CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE: boolean;
   CONV_DEMO_ROUTE_IS_ACTIVE: boolean;
   MONITOR_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
@@ -283,6 +284,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   company_brand_color: string;
 
   PERMISSION_TO_VIEW_MONITOR: boolean;
+  PERMISSION_TO_VIEW_HISTORY: boolean;
   PERMISSION_TO_VIEW_CONTACTS: boolean;
   PERMISSION_TO_VIEW_FLOWS: boolean;
   PERMISSION_TO_VIEW_KB: boolean;
@@ -396,6 +398,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           this.PERMISSION_TO_VIEW_MONITOR = true
           console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_MONITOR ', this.PERMISSION_TO_VIEW_MONITOR);
+        }
+
+        // -------------------------------
+        // PERMISSION TO VIEW HISTORY
+        // -------------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+
+          if (status.matchedPermissions.includes(PERMISSIONS.HISTORY_READ)) {
+            this.PERMISSION_TO_VIEW_HISTORY = true
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_HISTORY ', this.PERMISSION_TO_VIEW_HISTORY);
+          } else {
+            this.PERMISSION_TO_VIEW_MONITOR = false
+
+            console.log('[SIDEBAR] - PERMISSION_TO_VIEW_HISTORY ', this.PERMISSION_TO_VIEW_HISTORY);
+          }
+        } else {
+          this.PERMISSION_TO_VIEW_HISTORY = true
+          console.log('[SIDEBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_HISTORY ', this.PERMISSION_TO_VIEW_HISTORY);
         }
         // -------------------------------
         // PERMISSION TO VIEW CONTACTS
@@ -1448,18 +1468,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // if (event.url.indexOf('/messages') !== -1) {
         if (event.url.indexOf('/messages') !== -1) {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         } else {
           this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          console.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/wsrequest-detail') !== -1) {
-          this.CONV_DETAIL_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+        if (event.url.indexOf('/wsrequest-detail') !== -1 || event.url.indexOf('/wsrequest-detail-history') !== -1) {
+          this.CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE);
         } else {
-          this.CONV_DETAIL_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
+          this.CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_NO_AUTH_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/wsrequests-demo') !== -1) {
@@ -2192,6 +2212,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   handleActivitiesClick(event: MouseEvent): void {
     if (!this.PERMISSION_TO_VIEW_ACTVITIES) {
+      event.preventDefault(); // Stops routerLink navigation
+      event.stopPropagation(); // Stops bubbling
+      this.notify.presentDialogNoPermissionToViewThisSection()
+    }
+  }
+
+  handleHistoryClick(event: MouseEvent): void {
+    if (!this.PERMISSION_TO_VIEW_HISTORY) {
       event.preventDefault(); // Stops routerLink navigation
       event.stopPropagation(); // Stops bubbling
       this.notify.presentDialogNoPermissionToViewThisSection()

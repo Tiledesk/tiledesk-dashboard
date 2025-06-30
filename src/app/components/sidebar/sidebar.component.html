@@ -330,12 +330,14 @@
     </ng-container>
 
     <!-- ----------------------------- -->
-    <!-- REQUESTS HISTORY -->
+    <!-- REQUESTS HISTORY  routerLink="project/{{ project._id }}/history" -->
     <!-- ----------------------------- -->
     <div id="history" *ngIf="project" routerLinkActive="item-active" (click)="stopScroll()"
       matTooltipClass="sb-mat-tooltip" matTooltip="{{ 'History' | translate }}" #tooltip="matTooltip"
       matTooltipPosition='right' matTooltipHideDelay="100">
-      <a class="customAncor" routerLink="project/{{ project._id }}/history">
+      <a class="customAncor" 
+      [routerLink]="PERMISSION_TO_VIEW_HISTORY ? ['/project', project._id, 'history'] : null"
+      (click)="handleHistoryClick($event)">
         <!-- <i class="material-icons sidebar-icons">history</i> -->
         <!-- <i class="material-symbols-outlined sidebar-icons">
           history
