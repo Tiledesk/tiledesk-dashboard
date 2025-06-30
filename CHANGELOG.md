@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.115-rc3
+- Auto closes the domains whitelist dialog when the user change route
+- Makes the domain list in the dialog "Manage Whitelisted Domains" not editable
+
 ### 2.7.115-rc2
 - Changes URLs whitelist in domains whitelist
 
