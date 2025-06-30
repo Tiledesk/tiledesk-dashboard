@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.114
+- Minor improvements and bug fixing
+
 ### 2.7.113
 - Adds the environment variable "oauth2SigninEnabled"
 
