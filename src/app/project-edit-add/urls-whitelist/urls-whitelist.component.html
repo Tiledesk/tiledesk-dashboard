@@ -23,7 +23,7 @@
       <mat-label>URL</mat-label>
       <input matInput placeholder="Enter an URL" formControlName="url" />
       <mat-error *ngIf="submitted && urlControl.hasError('required')">
-        URL is required
+       Domain is required
       </mat-error>
       <mat-error *ngIf="submitted && !urlControl.hasError('required') && urlControl.hasError('strongUrl')">
         Invalid URL format
@@ -52,9 +52,9 @@
   <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0">
     <mat-list-item *ngFor="let ctrl of formArray.controls; let i = index">
       <mat-form-field class="full-width">
-        <input matInput [formControl]="ctrl" />
-        <mat-error *ngIf="ctrl.hasError('required')">URL is required</mat-error>
-        <mat-error *ngIf="ctrl.hasError('strongUrl')">Invalid URL</mat-error>
+        <input matInput [formControl]="ctrl" [readonly]="true" />
+        <mat-error *ngIf="ctrl.hasError('required')">Domain is required</mat-error>
+        <mat-error *ngIf="ctrl.hasError('strongUrl')">Invalid domain</mat-error>
       </mat-form-field>
       <button mat-icon-button (click)="formArray.removeAt(i)">
         <mat-icon class="delete-url-icon" style="font-size: 18px; color: #647491">delete</mat-icon>
