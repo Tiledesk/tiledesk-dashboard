@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.115-rc2
+- Changes URLs whitelist in domains whitelist
+
 ### 2.7.115-rc1
 - Adds the ability in Project settings > Advanced tab to create a whitelist of URLs
 - Does not allow sending messages containing non whitelisted  URLs on conversation details page
