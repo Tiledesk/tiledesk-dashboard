@@ -35,6 +35,7 @@ import { BrandService } from 'app/services/brand.service';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectUser } from 'app/models/project-user';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -1633,8 +1634,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               let newFillColour = '';
 
               if (request.lead && request.lead.fullname) {
+                this.logger.log('request.lead.fullname', request.lead.fullname)
+                this.logger.log('request.lead.fullname is a number', !isNaN(Number(request.lead.fullname)) )
                 newInitials = avatarPlaceholder(request.lead.fullname);
                 newFillColour = getColorBck(request.lead.fullname)
+                if (!isNaN(Number(request.lead.fullname))) {
+                  request['fullnameIsNumber'] = true
+                }
               } else {
                 newInitials = 'N/A';
                 newFillColour = 'rgb(98, 100, 167)';
@@ -1765,6 +1771,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
     this.logger.log('[HISTORY & NORT-CONVS] - detectMobile IS MOBILE ', this.isMobile);
   }
+
 
 
 
@@ -2717,7 +2724,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     //   this.conversationTypeValue = '';
 
     // }
-
+    
+    
 
     if (this.requester_email) {
       this.emailValue = this.requester_email;
@@ -3145,9 +3153,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       .subscribe((projectUser: any) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);

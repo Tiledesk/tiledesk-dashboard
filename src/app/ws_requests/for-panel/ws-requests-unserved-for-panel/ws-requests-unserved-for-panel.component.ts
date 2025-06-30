@@ -30,6 +30,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectUser } from 'app/models/project-user';
 
 @Component({
   selector: 'appdashboard-ws-requests-unserved-for-panel',
@@ -245,14 +246,12 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   // ------------------------------------------
@@ -489,29 +488,24 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET PROJECT-USER ROLE user_role ', user_role);
-
-        this.ONLY_MY_REQUESTS = true
-        this.getWsRequests$();
-        // if (user_role) {
-        //   if (user_role === 'agent') {
-        //     this.ROLE_IS_AGENT = true
-        //     // this.displayBtnLabelSeeYourRequets = true
-        //     // ------ 
-        //     this.ONLY_MY_REQUESTS = true
-        //     this.getWsRequests$();
-        //   } else {
-        //     this.ROLE_IS_AGENT = false
-        //     // this.displayBtnLabelSeeYourRequets = false;
-        //     this.getWsRequests$();
-        //   }
-        // }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - GET PROJECT-USER ROLE user_role ', projectUser);
+      this.ONLY_MY_REQUESTS = true
+      this.getWsRequests$();
+      // if (user_role) {
+      //   if (user_role === 'agent') {
+      //     this.ROLE_IS_AGENT = true
+      //     // this.displayBtnLabelSeeYourRequets = true
+      //     // ------ 
+      //     this.ONLY_MY_REQUESTS = true
+      //     this.getWsRequests$();
+      //   } else {
+      //     this.ROLE_IS_AGENT = false
+      //     // this.displayBtnLabelSeeYourRequets = false;
+      //     this.getWsRequests$();
+      //   }
+      // }
+    });
   }
 
 

@@ -296,8 +296,8 @@
                         <!-- ---------------------------------------- -->
                         <!-- AI Settings -->
                         <!-- ---------------------------------------- -->
-                        <!-- custom--button preview-settings btn-outlined-round-blu-->
-                        <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
+                        <!-- custom--button preview-settings -->
+                        <button id="ai-settings" class="btn btn-dark"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
@@ -315,7 +315,7 @@
                         <!-- ---------------------------------------- -->
                         <!-- KB preview custom--button preview btn-outlined-blu-->
                         <!-- ---------------------------------------- -->
-                        <button id="kb-preview" class="btn custom--button preview" aria-label="Preview"
+                        <button id="kb-preview" class="btn btn-dark" aria-label="Preview"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
@@ -405,6 +405,7 @@
                             <span *ngIf="directionDesc === -1" id="expand_less"
                                 class="th-label material-icons-outlined icon-direction">expand_less</span>
                         </th>
+
                         <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
                             <div>
                                 <span style="margin: 0px;">{{'Name' | translate }}</span>
@@ -505,6 +506,7 @@
                                 matTooltipHideDelay="100" 
                                 [matTooltipDisabled]="isAvailableRefreshRateFeature">
                                 
+                            
                                 <span *ngIf="kb.refresh_rate === 'never' ">
                                     {{'Never' | translate}}
                                 </span>
@@ -519,6 +521,8 @@
                                 <span *ngIf="kb.refresh_rate === 'monthly' ">
                                     {{'Monthly' | translate}}
                                 </span>
+
+                                
                             </span>
                             <span *ngIf="kb.type !== 'url'">
                                 —
