@@ -46,20 +46,20 @@ export class CreateFlowsModalComponent implements OnInit {
       keys.forEach(key => {
         if (key.includes("COP")) {
           let cop = key.split(":");
-          console.log('PUBLIC-KEY [CREATE FLOWS MODAL] - cop key&value', cop);
+          this.logger.log('PUBLIC-KEY [CREATE FLOWS MODAL] - cop key&value', cop);
           if (cop[1] === "F") {
             this.isVisibleCOP = false;
-            console.log("[CREATE FLOWS MODAL]isVisibleCOP: ", this.isVisibleCOP)
+            this.logger.log("[CREATE FLOWS MODAL]isVisibleCOP: ", this.isVisibleCOP)
           } else {
             this.isVisibleCOP = true;
-           console.log("[CREATE FLOWS MODAL] isVisibleCOP: ", this.isVisibleCOP)
+           this.logger.log("[CREATE FLOWS MODAL] isVisibleCOP: ", this.isVisibleCOP)
           }
         }
       });
 
     if (!this.public_Key.includes("COP")) {
       this.isVisibleCOP = false;
-      console.log("[CREATE FLOWS MODAL] isVisibleCOP: ", this.isVisibleCOP)
+      this.logger.log("[CREATE FLOWS MODAL] isVisibleCOP: ", this.isVisibleCOP)
     }
   }
 

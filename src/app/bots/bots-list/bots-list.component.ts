@@ -1212,13 +1212,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       if (key.includes("COP")) {
         let cop = key.split(":");
-        console.log('PUBLIC-KEY [BOTS-LIST] - cop key&value', cop);
+        this.logger.log('PUBLIC-KEY [BOTS-LIST] - cop key&value', cop);
         if (cop[1] === "F") {
           this.isVisibleCOP = false;
-          console.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
+          this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
         } else {
           this.isVisibleCOP = true;
-          console.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
+          this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
         }
       }
 
@@ -1235,7 +1235,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     if (!this.public_Key.includes("COP")) {
       this.isVisibleCOP = false;
-      console.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
+      this.logger.log("[BOTS-LIST] isVisibleCOP: ", this.isVisibleCOP)
     }
 
   }
@@ -1859,7 +1859,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   presentDialogCreateFlows(isChatbotRoute) {
-    console.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
+    this.logger.log(`[BOTS-LIST] present Dialog Create Flows - isChatbotRoute :`, isChatbotRoute);
     const showTwilio = this.diplayTwilioVoiceChabotCard;
     const showVXML = this.diplayVXMLVoiceChabotCard;
 
