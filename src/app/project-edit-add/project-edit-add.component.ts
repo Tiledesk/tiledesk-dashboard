@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 
 
 // USED FOR go back last page
@@ -47,6 +47,7 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./project-edit-add.component.scss']
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
+  private routerSubscription: Subscription;
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -643,6 +644,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -3256,6 +3262,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         data: this.currentWhitelist
        
       });
+
+        // Auto-close dialog on route change
+      this.routerSubscription = this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart) {
+          dialogRef.close();
+        }
+      });
   
       dialogRef.afterClosed().subscribe((result: string[]) => {
         if (result) {
@@ -3264,6 +3277,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           console.log("[PRJCT-EDIT-ADD] - UrlsWhitelistComponent afterClosed: ", this.urlWhitelist)
 
           this.saveUrlWhitelist(this.urlWhitelist)
+        }
+
+        if (this.routerSubscription) {
+          this.routerSubscription.unsubscribe();
         }
       });
     }
