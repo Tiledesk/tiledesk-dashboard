@@ -26,6 +26,10 @@ export class UrlsWhitelistComponent implements OnInit {
       //   'i'
       // );
       // return pattern.test(url) ? null : { strongUrl: true };
+
+    if (typeof domain !== 'string' || !domain.trim()) {
+      return { strongUrl: true };
+    }
     const pattern = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)+[a-zA-Z]{2,}$/;
     return pattern.test(domain.trim()) ? null : { strongUrl: true };
     };
