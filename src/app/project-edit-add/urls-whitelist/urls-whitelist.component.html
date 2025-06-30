@@ -5,7 +5,7 @@
       <mat-label>Domain</mat-label>
       <input matInput placeholder="Enter a domain" formControlName="url" />
       <mat-error *ngIf="submitted && urlControl.hasError('required')">
-        Field required
+       Domain is required
       </mat-error>
       <mat-error *ngIf="submitted && !urlControl.hasError('required') && urlControl.hasError('strongUrl')">
         Invalid domain format
@@ -31,7 +31,7 @@
   <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0">
     <mat-list-item *ngFor="let ctrl of formArray.controls; let i = index">
       <mat-form-field class="full-width">
-        <input matInput [formControl]="ctrl" />
+        <input matInput [formControl]="ctrl" [readonly]="true" />
         <mat-error *ngIf="ctrl.hasError('required')">Domain is required</mat-error>
         <mat-error *ngIf="ctrl.hasError('strongUrl')">Invalid domain</mat-error>
       </mat-form-field>
