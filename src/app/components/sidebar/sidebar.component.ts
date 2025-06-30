@@ -47,6 +47,7 @@ import { environment } from 'environments/environment';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ProjectUser } from 'app/models/project-user';
 
 declare const $: any;
 
@@ -335,8 +336,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.translateChangeAvailabilitySuccessMsg();
     this.translateChangeAvailabilityErrorMsg();
     this.getProfileImageStorage();
-    this.getUserAvailability();
-    this.getUserUserIsBusy();
     this.getProjectUserId();
     this.hasChangedAvailabilityStatusInUsersComp();
     this.checkUserImageUploadIsComplete();
@@ -365,7 +364,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // const pathElement = this.svgPath.nativeElement;
-    // console.log('[SIDEBAR] pathElement ', pathElement)
+    // this.logger.log('[SIDEBAR] pathElement ', pathElement)
     // this.renderer.setStyle(this.element.nativeElement, '--brandColor', this.company_brand_color);
     if (this.company_brand_color) {
       // this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor', this.company_brand_color)
@@ -504,9 +503,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   // ngAfterContentInit(): void { 
   //   if (this.company_brand_color) { 
-  //     console.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
-  //      const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
-  //      console.log('[SIDEBAR] pathElement ', pathElement)
+  //     this.logger.log('[SIDEBAR] company_brand_color ', this.company_brand_color)
+  //     // const pathElement = this.element.nativeElement.querySelector('.item-active').style.setProperty('--brandColor', this.company_brand_color)
+  //     // this.logger.log('[SIDEBAR] pathElement ', pathElement)
 
   //      this.renderer.setStyle(document.documentElement, '--sidebar-active-icon', this.company_brand_color);
   //     this.renderer.setStyle(document.body, '--sidebar-active-icon', this.company_brand_color);
@@ -1246,7 +1245,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // Chatbot sidebar
-        if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
+        if (event.url.indexOf('/bots/my-chatbots/all') !== -1 || event.url.indexOf('/bots') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
@@ -1602,7 +1601,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
         // if (event.url.indexOf('/support') !== -1) {
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'support') {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'support') {  
           this.SUPPORT_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE; ', this.SUPPORT_ROUTE_IS_ACTIVE);
         } else {
@@ -1610,9 +1609,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - SUPPORT_ROUTE_IS_ACTIVE ', this.SUPPORT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/home') !== -1) {
-          this.presentHelpCenterPopup()
-        }
+        // if (event.url.indexOf('/home') !== -1) { 
+        //   this.presentHelpCenterPopup() 
+        // }
       }
     });
   }
@@ -1728,17 +1727,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   getProjectUserId() {
-    this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-      this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser_id);
+    this.usersService.projectUser_bs.subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser);
+      if (projectUser) {
+        this.projectUser_id = projectUser._id;
+        this.IS_AVAILABLE = projectUser.user_available;
+        this.IS_BUSY = projectUser.isBusy;
 
-      // if (this.projectUser_id) {
-      //     this.logger.log('[SIDEBAR] - PROJECT-USER-ID (THIS)  ', this.projectUser_id);
-      //     this.logger.log('[SIDEBAR] - PROJECT-USER-ID ', projectUser_id);
-
-      //     this.usersService.unsubscriptionToWsCurrentUser(projectUser_id)
-      // }
-      if (projectUser_id) {
-        this.projectUser_id = projectUser_id;
+        this.USER_ROLE = projectUser.role;
+        if (this.USER_ROLE) {
+          if (this.USER_ROLE === 'agent') {
+            this.SHOW_SETTINGS_SUBMENU = false;
+          }
+        }
       }
     });
   }
@@ -1750,22 +1751,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
      - the USER-SERVICE PUBLISH THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER ID
      - the SIDEBAR (this component) SUBSCRIBES THESE VALUES
   */
-  getUserAvailability() {
-    this.usersService.user_is_available_bs.subscribe((user_available) => {
-      this.IS_AVAILABLE = user_available;
-      // this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
-    });
-  }
-
-  getUserUserIsBusy() {
-    this.usersService.user_is_busy$.subscribe((user_isbusy) => {
-      this.IS_BUSY = user_isbusy;
-      // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
-      // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      // this.logger.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
-    });
-  }
-
 
   // changeAvailabilityState(IS_AVAILABLE, profilestatus) {
   //     this.logger.log('[SIDEBAR] - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
@@ -1863,7 +1848,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
           }
         });
-        this.getProjectUserRole();
+
+        this.getProjectUserId();
 
         this.getProjectUser();
         // this.getFaqKbByProjectId()
@@ -2041,7 +2027,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   //     this.logger.log('[SIDEBAR] GET BOTS COMPLETE');
   //   });
   // }
-
 
 
 

@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -46,6 +46,7 @@ import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
+import { ProjectUser } from 'app/models/project-user';
 // import {
 //   // provideHighlightOptions,
 //   Highlight,
@@ -231,7 +232,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
-   
+
 
     // this.getListOfKb(this.paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
@@ -244,7 +245,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.listenSidebarIsOpened();
     // this.getTemplates();
     // this.getCommunityTemplates()
-    // this.getFaqKbByProjectId();
+    this.getFaqKbByProjectId();
     this.getOSCODE();
     this.getProjectPlan();
     this.getProjectUserRole();
@@ -535,7 +536,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
+        console.log('[KNOWLEDGE-BASES-COMP] - GET ALL NAMESPACES', res);
         this.namespaces = res
       }
     }, (error) => {
@@ -866,7 +867,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.hasChangedNameSpace = true;
       this.selectedNamespace = namespace
       this.selectedNamespaceName = namespace['name']
-      this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
+      console.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace', this.selectedNamespace)
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace hasChangedNameSpace', this.hasChangedNameSpace)
       // this.selectedNamespaceName = namespace['name']
       this.logger.log('[KNOWLEDGE-BASES-COMP] onSelectNamespace selectedNamespace NAME', this.selectedNamespaceName)
@@ -1163,6 +1164,420 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   }
 
+  presentDialogExportContents() {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      text: this.translate.instant('KbPage.OnlyUrlTextFaqWillBeExported'),
+      icon: "info",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: true,
+      showDenyButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.kbService.exportContents(this.selectedNamespace.id).subscribe((res: any) => {
+
+            this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT  - RES', res);
+
+            if (res) {
+              this.downloadObjectAsJson(res, this.selectedNamespace.name + ' contents')
+            }
+          }, (error) => {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('HoursPage.ErrorOccurred'),
+              icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
+            });
+            this.logger.error('[KNOWLEDGE-BASES-COMP] EXPORT  ERROR ', error);
+          }, () => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT * COMPLETE *');
+
+
+
+            Swal.fire({
+              title: this.translate.instant('Done') + "!",
+              text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyExported'),
+              icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+            }).then((okpressed) => {
+
+            });
+          });
+        } else {
+          this.logger.log('[KNOWLEDGE-BASES-COMP] EXPORT (else)')
+        }
+      });
+  }
+
+  downloadObjectAsJson(exportObj, exportName) {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
+  presentDialogImportContents() {
+  Swal.fire({
+    title: this.translate.instant('Warning'),
+    html: `
+      <p>${this.translate.instant('KbPage.ImportWillDeleteAllContents')}</p>
+      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />
+    `,
+    icon: "info",
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
+    cancelButtonText: this.translate.instant('Cancel'),
+    reverseButtons: true,
+    didOpen: () => {
+      const confirmBtn = Swal.getConfirmButton();
+      const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
+
+      // Replace file input to remove old event listeners
+      const newFileInput = fileInput.cloneNode(true) as HTMLInputElement;
+      fileInput.parentNode?.replaceChild(newFileInput, fileInput);
+
+      confirmBtn.addEventListener('click', () => {
+        newFileInput.click();
+      });
+
+      newFileInput.addEventListener('change', () => {
+        const file = newFileInput.files?.[0];
+        if (!file) return;
+
+        if (file.type !== "application/json" && !file.name.endsWith('.json')) {
+          Swal.fire({
+            icon: 'error',
+            title: this.translate.instant('InvalidJSON'),
+            text: this.translate.instant('SorryFileTypeNotSupported')
+          });
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const jsonText = reader.result as string;
+
+          if (containsXSS(jsonText)) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
+            });
+            return;
+          }
+
+          try {
+            JSON.parse(jsonText);
+          } catch (error) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
+            });
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('uploadFile', file, file.name);
+
+          // Show loading modal while importing
+          Swal.fire({
+            title: this.translate.instant('KbPage.Importing'),
+            text: this.translate.instant('KbPage.ImportingDataPleaseWait'),
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe({
+            next: (res) => {
+              this.logger.log('[KB IMPORT] Response:', res);
+            },
+            error: (error) => {
+              let errorMessage = ""
+              if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
+                // console.log('[KB IMPORT] error.error.error :', error.error.error);
+                // console.log('[KB IMPORT] error.error.plan_limit :', error.error.plan_limit);
+                const planLimit = error.error.plan_limit;
+                errorMessage = this.translate.instant('KbPage.CannotExceedTheNumberOfResourcesInTheCurrentPlan', { plan_limit: planLimit })
+              } else {
+                errorMessage = this.translate.instant('HoursPage.ErrorOccurred')
+              }
+              Swal.close();
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: errorMessage, // this.translate.instant('HoursPage.ErrorOccurred'),
+                icon: "error",
+                confirmButtonText: this.translate.instant('Ok')
+              });
+              this.logger.error('[KB IMPORT ERROR]', error);
+            },
+            complete: () => {
+              Swal.close();
+              this.logger.log('[KB IMPORT] * COMPLETE *');
+
+              const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
+              this.getListOfKb(paramsDefault, 'onImportJSON');
+
+              Swal.fire({
+                title: this.translate.instant('Done') + "!",
+                text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
+                icon: "success",
+                confirmButtonText: this.translate.instant('Ok')
+              });
+            }
+          });
+        };
+
+        reader.readAsText(file);
+      });
+    }
+  });
+}
+
+
+_presentDialogImportContents() {
+  Swal.fire({
+    title: this.translate.instant('Warning'),
+    html: `
+      <p>${this.translate.instant('KbPage.ImportWillDeleteAllContents')}</p>
+      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />
+    `,
+    icon: "info",
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
+    cancelButtonText: this.translate.instant('Cancel'),
+    reverseButtons: true,
+    didOpen: () => {
+      
+      const confirmBtn = Swal.getConfirmButton();
+      const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
+
+      // Clear previous event listeners to prevent duplicate handlers
+      const newFileInput = fileInput.cloneNode(true) as HTMLInputElement;
+      fileInput.parentNode?.replaceChild(newFileInput, fileInput);
+
+      confirmBtn.addEventListener('click', () => {
+        newFileInput.click();
+      });
+
+      newFileInput.addEventListener('change', () => {
+        const file = newFileInput.files?.[0];
+        if (!file) return;
+
+        if (file.type !== "application/json" && !file.name.endsWith('.json')) {
+          Swal.fire({
+            icon: 'error',
+            title: this.translate.instant('InvalidJSON'),
+            text: this.translate.instant('SorryFileTypeNotSupported')
+          });
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const jsonText = reader.result as string;
+
+          if (containsXSS(jsonText)) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
+            });
+            return;
+          }
+
+          try {
+            const jsonData = JSON.parse(jsonText);
+            this.logger.log('Parsed JSON:', jsonData);
+          } catch (error) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
+            });
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('uploadFile', file, file.name);
+
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe({
+            next: (res) => {
+              this.logger.log('[KB IMPORT] Response:', res);
+            },
+            error: (error) => {
+              Swal.fire({
+                title: this.translate.instant('Oops') + '!',
+                text: this.translate.instant('HoursPage.ErrorOccurred'),
+                icon: "error",
+                confirmButtonText: this.translate.instant('Ok')
+              });
+              this.logger.error('[KB IMPORT ERROR]', error);
+            },
+            complete: () => {
+              this.logger.log('[KB IMPORT] * COMPLETE *');
+              const paramsDefault = `?limit=${KB_DEFAULT_PARAMS.LIMIT}&page=${KB_DEFAULT_PARAMS.NUMBER_PAGE}&sortField=${KB_DEFAULT_PARAMS.SORT_FIELD}&direction=${KB_DEFAULT_PARAMS.DIRECTION}&namespace=${this.selectedNamespace.id}`;
+              this.getListOfKb(paramsDefault, 'onImportJSON');
+
+              Swal.fire({
+                title: this.translate.instant('Done') + "!",
+                text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
+                icon: "success",
+                confirmButtonText: this.translate.instant('Ok')
+              });
+            }
+          });
+        };
+
+        reader.readAsText(file);
+      });
+    }
+  });
+}
+
+
+
+  __presentDialogImportContents() {
+    Swal.fire({
+      title: this.translate.instant('Warning'),
+      // text: this.translate.instant('KbPage.ImportWillDeleteAllContents'),
+      html: `
+      <p> ${this.translate.instant('KbPage.ImportWillDeleteAllContents')}  <p> 
+      <input type="file" id="hiddenFileInput" accept=".json" style="display: none;" />`,
+      icon: "info",
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: true,
+      showDenyButton: false,
+      confirmButtonText: this.translate.instant('FaqPage.ChooseFile'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+      // input: 'file',
+      // inputAttributes: {
+      //   accept: '.json', // allowed file types
+      //   'aria-label': 'Upload your file'
+      // },
+      didOpen: () => {
+        const confirmBtn = Swal.getConfirmButton();
+        const fileInput = document.getElementById('hiddenFileInput') as HTMLInputElement;
+
+        confirmBtn.addEventListener('click', () => {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files?.[0];
+          this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', file);
+
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const jsonString = JSON.stringify(reader.result as string)
+            this.logger.log('jsonString :', jsonString);
+            try {
+              const jsonData = JSON.parse(reader.result as string);
+              this.logger.log('Parsed JSON:', jsonData);
+              // Handle JSON data here
+              // Swal.fire({
+              //   icon: 'success',
+              //   title: 'Import successful',
+              //   text: `Imported: ${file.name}`
+              // });
+            } catch (error) {
+              Swal.fire({
+                icon: 'error',
+                title: this.translate.instant('InvalidJSON'),
+                text: this.translate.instant('TheSelectedFileDoesNotContainValidJSON'),
+              });
+              return;
+            }
+
+            if (containsXSS(jsonString)) {
+              Swal.fire({
+                icon: 'error',
+                title: this.translate.instant('InvalidJSON'),
+                text: this.translate.instant('UploadedFileMayContainsDangerousCode'),
+              });
+              return;
+            }
+          };
+          reader.readAsText(file);
+
+
+          if (!file) return;
+
+          if (file.type !== "application/json" && !file.name.endsWith('.json')) {
+            Swal.fire({
+              icon: 'error',
+              title: this.translate.instant('InvalidJSON'),
+              text: this.translate.instant('SorryFileTypeNotSupported')
+            });
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append('uploadFile', file, file.name); // Backend should accept 'file' field
+
+          this.kbService.importContents(formData, this.selectedNamespace.id).subscribe((res: any) => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
+          }, (error) => {
+            Swal.fire({
+              title: this.translate.instant('Oops') + '!',
+              text: this.translate.instant('HoursPage.ErrorOccurred'),
+              icon: "error",
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+              // confirmButtonColor: "var(--primary-btn-background)",
+            });
+            this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
+          }, () => {
+            this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
+            let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
+            this.getListOfKb(paramsDefault, 'onImportJSON');
+            Swal.fire({
+              title: this.translate.instant('Done') + "!",
+              text: this.translate.instant('KbPage.TheContentsHaveBeenSuccessfullyImported'),
+              icon: "success",
+              showCloseButton: false,
+              showCancelButton: false,
+              // confirmButtonColor: "var(--primary-btn-background)",
+              confirmButtonText: this.translate.instant('Ok'),
+
+
+            }).then((okpressed) => {
+
+            });
+          });
+        });
+      }
+
+    })
+
+  }
+
 
   presentDialogChatbotSuccessfullyCreated() {
     this.logger.log('[KNOWLEDGE-BASES-COMP] --->  DIALOG CHATBOT CREATED depts_without_bot_array 1', this.depts_without_bot_array);
@@ -1404,10 +1819,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     });
     dialogRef.backdropClick().subscribe((event) => {
       this.logger.log('Modal preview Backdrop clicked', event);
-       this.hasClickedPreviewModalBackdrop = true
-       const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
-       document.dispatchEvent(customevent);
-     });
+      this.hasClickedPreviewModalBackdrop = true
+      const customevent = new CustomEvent("on-backdrop-clicked", { detail: this.hasClickedPreviewModalBackdrop });
+      document.dispatchEvent(customevent);
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[ModalPreview] Dialog AFTER CLOSED result : ', result);
       if (result === undefined) {
@@ -1641,7 +2056,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         t_params: this.t_params,
         id_project: this.id_project,
-        project_name:  this.project_name,
+        project_name: this.project_name,
         payIsVisible: this.payIsVisible
       },
     });
@@ -1671,7 +2086,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         refreshRateIsEnabled: this.refreshRateIsEnabled,
         t_params: this.t_params,
         id_project: this.id_project,
-        project_name:  this.project_name,
+        project_name: this.project_name,
         payIsVisible: this.payIsVisible
       },
     });
@@ -1753,17 +2168,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role
-
-        }
-      });
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
+      if (projectUser) {
+        this.USER_ROLE = projectUser.role
+      }
+    });
   }
 
 
@@ -2094,7 +2504,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB calledby", calledby);
     this.logger.log("[KNOWLEDGE BASES COMP] GET LIST OF KB params", params);
 
-    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace') {
+    if (calledby === 'onSelectNamespace' || calledby === 'createNewNamespace' || calledby === 'deleteNamespace' || calledby === 'onImportJSON' ) {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);

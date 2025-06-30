@@ -24,6 +24,8 @@ import { FaqService } from 'app/services/faq.service';
 import { ProjectService } from 'app/services/project.service';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 const Swal = require('sweetalert2')
+import { ProjectUser } from 'app/models/project-user';
+
 
 
 @Component({
@@ -118,6 +120,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     const brand = brandService.getBrand();
     this.displayChatbotsCommunity = brand['display_chatbots_community']
     this.displayTemplatesCategory = brand['display_templates_category']
+    // console.log('displayTemplatesCategory ',  this.displayTemplatesCategory)
   }
 
 
@@ -199,14 +202,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userRole) => {
-        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
-        this.USER_ROLE = userRole;
-      })
+    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
+      if(projectUser){
+        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', projectUser)
+        this.USER_ROLE = projectUser.role;
+      }
+    })
   }
 
   getProfileImageStorage() {
