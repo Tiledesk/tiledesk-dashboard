@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.115-rc1
+- Adds the ability in Project settings > Advanced tab to create a whitelist of URLs
+- Does not allow sending messages containing non whitelisted  URLs on conversation details page
+
 ### 2.7.114-rc3
 - Adds the ability in Project settings > Advanced tab to disable sending emojis
 - Updates "emoji-regex” library to 10.4.0
