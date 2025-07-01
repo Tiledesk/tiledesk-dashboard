@@ -810,17 +810,15 @@ table {
 
 .chatbot-using-current-namespace-wpr {
     display: flex;
-    // flex-direction: row;
-    // align-items: center;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 6px;
     margin-top: 6px;
-    // margin-left: -6px;
 }
 
 .chatbot-using-current-namespace {
     font-weight: 400;
+    font-size: 12px;
     height: 24px;
     display: flex;
 }
@@ -974,11 +972,12 @@ table {
   margin-top: 8px;
   gap: 0;
   overflow: hidden;
-  border-radius: 999px;
-  background: #f5f7fa;
+  border-radius: 10px;
+  background: #f7f7f7;
   border: 1px solid #e3e8ee;
   width: fit-content;
-  height: 40px;
+  //height: 40px;
+  padding: 4px;
   min-height: 40px;
 }
 .kb-switch-field input[type="radio"] {
@@ -998,7 +997,7 @@ table {
     color: #3c4858;
     background: transparent;
     cursor: pointer;
-    border-radius: 999px;
+    border-radius: 10px;
     transition: background .2s, color .2s;
     position: relative;
     z-index: 1;
@@ -1016,9 +1015,11 @@ table {
   position: relative;
   top: 0px;
 }
-.kb-switch-field input[type="radio"]:checked + label {
-  background: var(--primary-btn-background, #006cff);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0,108,255,0.08);
-  z-index: 2;
+.kb-switch-field input[type="radio"]:checked + label {  
+  background: #fff;
+    color: #1b1919;
+    box-shadow: 0px 0px 10px #006cff00;
+    z-index: 2;
+    font-weight: bold;
+    border: solid 1px #f0f0f0;
 }
