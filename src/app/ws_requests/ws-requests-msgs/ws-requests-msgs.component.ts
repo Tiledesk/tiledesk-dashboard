@@ -5598,6 +5598,36 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  // removeEmojis(text: string): string {
+  //   // Remove all emoji characters including ZWJ sequences and modifiers
+  //   return text.replace(
+  //     /([\u231A-\u231B]|\u23E9|\u23EA|\u23EB|\u23EC|\u23F0|\u23F3|\u25FD|\u25FE|\u2614|\u2615|\u2648-\u2653|\u267F|\u2693|\u26A1|\u26AA|\u26AB|\u26BD|\u26BE|\u26C4|\u26C5|\u26CE|\u26D4|\u26EA|\u26F2|\u26F3|\u26F5|\u26FA|\u26FD|\u2705|\u270A|\u270B|\u2728|\u274C|\u274E|\u2753|\u2754|\u2755|\u2757|\u2795|\u2796|\u2797|\u27B0|\u27BF|\u2B1B|\u2B1C|\u2B50|\u2B55|\u3030|\u303D|\u3297|\u3299|\uD83C[\uDC04-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDFFF]|\uFE0F|\u200D)+/gu,
+  //     ''
+  //   );
+  // }
+
+  // not used - used the check availble in utils-message
+  removeEmojis(text: string): string {
+    const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}\p{Emoji}\u200d]+/gu;
+    return text.replace(emojiRegex, '');
+  }
+
+  onMessageChange(msg: string) {
+    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg) 
+    // if (!this.ALLOW_TO_SEND_EMOJI) {
+    //   this.chat_message = removeEmojis(msg);
+    // }
+    this.checkEmojiContent(msg)
+  }
+
+checkEmojiContent(message: string): void {
+  if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
+    const messageWithoutEmojis = removeEmojis(message).trim();
+    this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+  } else {
+    this.showEmojiWarning = false;
+  }
+}
 
   extractUrls(text: string): string[] {
     const urlRegex = /https?:\/\/[^\s]+/g;
@@ -5674,7 +5704,104 @@ sendChatMessage() {
           return;
         }
 
-        _chat_message = messageWithoutEmojis;
+        // if (this.IS_ENABLED_URLS_WHITELIST) {
+        //   const urlsInMessage = this.extractUrls(_chat_message);
+        //   console.log('urlsInMessage ++++ :', urlsInMessage);
+
+        //     const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+        //     try {
+        //       const domain = new URL(url).hostname.toLowerCase();
+        //       return !this.URLS_WITHELIST.includes(domain);
+        //     } catch (e) {
+        //       // Ignore invalid URLs
+        //       return true;
+        //     }
+        //   });
+
+        //   if (nonWhitelistedDomains.length > 0) {
+        //     console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+        //     this.triggerWarning('This message contains a URL from a domain that is not allowed.'); 
+        //     // this.domainWarning = true; // <-- display a warning
+        //     return;
+        //   }
+        // }
+        if (this.IS_ENABLED_URLS_WHITELIST) {
+          const urlsInMessage = this.extractUrls(_chat_message);
+          console.log('urlsInMessage ++++ :', urlsInMessage);
+
+          const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+            try {
+              const domain = new URL(url).hostname.toLowerCase();
+
+              // Check if domain matches any whitelist rule
+              const isWhitelisted = this.URLS_WITHELIST.some(whitelisted => {
+                whitelisted = whitelisted.toLowerCase().trim();
+
+                // Match exact domain
+                if (whitelisted === domain) return true;
+
+                // Match wildcard domain (*.example.com)
+                if (whitelisted.startsWith('*.')) {
+                  const baseDomain = whitelisted.substring(2); // remove '*.'
+                  return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+                }
+
+                return false;
+              });
+
+              return !isWhitelisted;
+            } catch (e) {
+              // Invalid URL - consider it not allowed
+              return true;
+            }
+          });
+
+          if (nonWhitelistedDomains.length > 0) {
+            console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+            this.triggerWarning('This message contains a URL from a domain that is not allowed.');
+            return;
+          }
+        }
+
+
+        
+
+        // if (!this.ALLOW_TO_SEND_EMOJI && isOnlyEmoji(_chat_message)) {
+        //   // this.notify.presentDialogNoPermissionToPermomfAction();
+        //   return;
+        // }
+
+        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_OPENED ', this.HAS_SELECTED_SEND_AS_OPENED)
+        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_PENDING ', this.HAS_SELECTED_SEND_AS_PENDING)
+        // this.logger.log('[WS-REQUESTS-MSGS] SEND CHAT MESSAGE HAS_SELECTED_SEND_AS_SOLVED ', this.HAS_SELECTED_SEND_AS_SOLVED)
+
+        this.wsMsgsService.sendChatMessage(this.id_project, this.id_request, _chat_message, this.selectedResponseTypeID, this.requester_id, this.IS_CURRENT_USER_JOINED, this.metadata, this.type)
+          .subscribe((msg) => {
+
+            this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE ', msg);
+          }, (error) => {
+            this.logger.error('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - ERROR ', error);
+
+          }, () => {
+            this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE * COMPLETE *');
+            this.chat_message = undefined;
+            this.uploadedFiles = undefined;
+            this.metadata = undefined;
+            this.type = undefined;
+            this.existAnAttacment = false;
+            this.sendMessageTexarea.nativeElement.style.height = null;
+            let convWokingStatus = ""
+            if (this.HAS_SELECTED_SEND_AS_OPENED === true && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+              convWokingStatus = 'open'
+            } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === true && this.HAS_SELECTED_SEND_AS_SOLVED === false) {
+              convWokingStatus = 'pending'
+            } else if (this.HAS_SELECTED_SEND_AS_OPENED === false && this.HAS_SELECTED_SEND_AS_PENDING === false && this.HAS_SELECTED_SEND_AS_SOLVED === true) {
+              convWokingStatus = ''
+            }
+
+            this.updateRequestWorkingStatus(convWokingStatus)
+
+          });
       }
 
       if(_chat_message === '') {
