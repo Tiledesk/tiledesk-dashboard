@@ -328,17 +328,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
          if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          console.log('[WS-REQUESTS-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
 
         } else if (status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          console.log('[WS-REQUESTS-LIST] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_SMART_ASSIGN = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_SMARTASSIGNMENT_UPDATE);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
+          console.log('[WS-REQUESTS-LIST] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_SMART_ASSIGN:', this.PERMISSION_TO_EDIT_SMART_ASSIGN);
         }
 
         // -------------------------------------
@@ -347,17 +347,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_EDIT_OPERATING_HOURS = true;
-          console.log('[PRJCT-EDIT-ADD] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+          console.log('[WS-REQUESTS-LIST] - Project user is owner or admin (1)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
 
         } else if (status.role === 'agent') {
           // Admin and agent never have permission
           this.PERMISSION_TO_EDIT_OPERATING_HOURS = false;
-          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+          console.log('[WS-REQUESTS-LIST] - Project user is admin or agent (2)', 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
 
         } else {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_EDIT_OPERATING_HOURS = status.matchedPermissions.includes(PERMISSIONS.HOURS_UPDATE);
-          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
+          console.log('[WS-REQUESTS-LIST] - Custom role (3) role', status.role, 'PERMISSION_TO_EDIT_OPERATING_HOURS:', this.PERMISSION_TO_EDIT_OPERATING_HOURS);
         }
 
 
