@@ -45,5 +45,8 @@
 
 <mat-dialog-actions align="center">
   <button mat-button class="mat-dialog-close-btn" (click)="onNoClick()">Cancel</button>
-  <button mat-button class="mat-dialog-ok-btn" (click)="onSave()" [disabled]="formArray.invalid">Save</button>
+  <button mat-button class="mat-dialog-ok-btn" (click)="onSave()" 
+  [disabled]="formArray.invalid || !hasChanges()">
+    Save
+  </button>
 </mat-dialog-actions>

@@ -26,6 +26,10 @@ export class UrlsWhitelistComponent implements OnInit {
       //   'i'
       // );
       // return pattern.test(url) ? null : { strongUrl: true };
+    if (typeof domain !== 'string' || !domain.trim()) {
+      return { strongUrl: true };
+    }
+
     const pattern = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)+[a-zA-Z]{2,}$/;
     return pattern.test(domain.trim()) ? null : { strongUrl: true };
     };
@@ -142,6 +146,17 @@ export class UrlsWhitelistComponent implements OnInit {
     return this.urlForm.get('url') as FormControl;
   }
 
+  hasChanges(): boolean {
+    const currentValues = this.formArray.value.map((v: string) => v.trim().toLowerCase());
+    const originalValues = this.whitelistedUrls.map((v: string) => v.trim().toLowerCase());
+
+    // Sort both arrays for consistent comparison
+    currentValues.sort();
+    originalValues.sort();
+
+    return JSON.stringify(currentValues) !== JSON.stringify(originalValues);
+}
+
   removeUrl(index: number) {
     this.whitelistedUrls.splice(index, 1);
   }
@@ -151,7 +166,7 @@ export class UrlsWhitelistComponent implements OnInit {
   //   }
 
   onSave(): void {
-
+    console.warn('this.formArray ', this.formArray);
     if (this.formArray.invalid) {
       this.formArray.markAllAsTouched();
       return;
