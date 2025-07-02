@@ -13,37 +13,27 @@ export class UrlsWhitelistComponent implements OnInit {
   urlError: string | null = null;
   whitelistedUrls: string[] = [];
 
-//   strongUrlValidator(control: AbstractControl): ValidationErrors | null {
-//   const value = control.value;
+  strongUrlValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const domain = control.value;
+      // const pattern = new RegExp(
+      //   '^https?:\\/\\/' +
+      //   '(([\\da-z.-]+)\\.([a-z.]{2,6})|' +
+      //   '([\\d.]+))' +
+      //   '(\\:[0-9]{1,5})?' +
+      //   '(\\/[-a-zA-Z0-9@:%_+.~#?&//=]*)?$',
+      //   'i'
+      // );
+      // return pattern.test(url) ? null : { strongUrl: true };
+      if (typeof domain !== 'string' || !domain.trim()) {
+        return { strongUrl: true };
+      }
 
-//   if (!value) return null;
-
-//   const pattern = new RegExp(
-//     '^https?:\\/\\/' +                  // protocol
-//     '(([\\da-z.-]+)\\.([a-z.]{2,6})|' + // domain name and extension
-//     '([\\d.]+))' +                      // OR ip (v4) address
-//     '(\\:[0-9]{1,5})?' +                // port (optional)
-//     '(\\/[-a-zA-Z0-9@:%_+.~#?&//=]*)?$', // path (optional)
-//     'i'
-//   );
-
-//   return pattern.test(value) ? null : { strongUrl: true };
-// }
-
-strongUrlValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const url = control.value;
-    const pattern = new RegExp(
-      '^https?:\\/\\/' +
-      '(([\\da-z.-]+)\\.([a-z.]{2,6})|' +
-      '([\\d.]+))' +
-      '(\\:[0-9]{1,5})?' +
-      '(\\/[-a-zA-Z0-9@:%_+.~#?&//=]*)?$',
-      'i'
-    );
-    return pattern.test(url) ? null : { strongUrl: true };
-  };
-}
+      // const pattern = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)+[a-zA-Z]{2,}$/;
+      const pattern = /^(?:\*\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/; // Accepts: *.example.com, example.com, sub.example.com
+      return pattern.test(domain.trim()) ? null : { strongUrl: true };
+    };
+  }
 
  formArray: FormArray = new FormArray([]);
  urlForm: FormGroup;
@@ -147,6 +137,17 @@ addUrl(): void {
     return this.urlForm.get('url') as FormControl;
   }
 
+  hasChanges(): boolean {
+    const currentValues = this.formArray.value.map((v: string) => v.trim().toLowerCase());
+    const originalValues = this.whitelistedUrls.map((v: string) => v.trim().toLowerCase());
+
+    // Sort both arrays for consistent comparison
+    currentValues.sort();
+    originalValues.sort();
+
+    return JSON.stringify(currentValues) !== JSON.stringify(originalValues);
+}
+
   removeUrl(index: number) {
     this.whitelistedUrls.splice(index, 1);
   }
@@ -156,7 +157,7 @@ addUrl(): void {
 //   }
 
   onSave(): void {
-    this.submitted = true;
+    console.warn('this.formArray ', this.formArray);
     if (this.formArray.invalid) {
       this.formArray.markAllAsTouched();
       return;
