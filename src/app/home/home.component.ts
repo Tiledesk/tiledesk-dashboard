@@ -2237,7 +2237,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy, projectUser[0]);
         }
         if (projectUser[0].role !== undefined) {
-          this.logger.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+          console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
 
           // SEND THE ROLE TO USER SERVICE THAT PUBLISH
           this.usersService.user_role(projectUser[0].role);

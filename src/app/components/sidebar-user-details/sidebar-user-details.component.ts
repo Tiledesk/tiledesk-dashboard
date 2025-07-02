@@ -478,7 +478,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
         // ADDED 21 AGO
         if (projectUser[0].role !== undefined) {
-          this.logger.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+          console.log('[SIDEBAR-USER-DETAILS] GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
 
           // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
           this.USER_ROLE = projectUser[0].role;

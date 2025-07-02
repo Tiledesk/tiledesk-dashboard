@@ -969,7 +969,7 @@ export class UsersService {
    * @param projectUser_role 
    */
   public user_role(projectUser_role: string) {
-    this.logger.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+    console.log('[USER-SERV] PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
 
     // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);
