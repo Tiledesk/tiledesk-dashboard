@@ -114,7 +114,10 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
   join_polling: any
   archive_polling: any;
   CHAT_PANEL_MODE: boolean = true;
-  PERMISSION_TO_UPDATE_REQUEST: boolean
+
+  PERMISSION_TO_UPDATE_REQUEST: boolean;
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+
   /**
    * 
    * @param wsRequestsService 
@@ -183,9 +186,11 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       .subscribe(status => {
         console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
         console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+        
+        // PERMISSION_TO_UPDATE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
-            // Enable update action
+           
             this.PERMISSION_TO_UPDATE_REQUEST = true
             console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
           } else {
@@ -195,6 +200,22 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         } else {
           this.PERMISSION_TO_UPDATE_REQUEST = true
           console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -370,7 +391,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
 
   archiveRequest(request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
       this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 

@@ -75,7 +75,10 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   archive_polling: any
   MORE_INFO_ACCORDION_IS_OPENED: boolean = false;
   CHAT_PANEL_MODE: boolean = true;
-  PERMISSION_TO_UPDATE_REQUEST: boolean
+
+  PERMISSION_TO_UPDATE_REQUEST: boolean;
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+
   constructor(
     private wsMsgsService: WsMsgsService,
     public appConfigService: AppConfigService,
@@ -152,6 +155,8 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
       .subscribe(status => {
         console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Role:', status.role);
         console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Permissions:', status.matchedPermissions);
+        
+        // PERMISSION_TO_UPDATE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
             // Enable update action
@@ -164,6 +169,22 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
         } else {
           this.PERMISSION_TO_UPDATE_REQUEST = true
           console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[REQUEST-DTLS-X-PANEL] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[REQUEST-DTLS-X-PANEL] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[REQUEST-DTLS-X-PANEL] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -300,7 +321,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
   }
 
   archiveRequest(request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       // this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
       this.logger.log('[REQUEST-DTLS-X-PANEL] - HAS CLICKED ARCHIVE REQUEST ');
 

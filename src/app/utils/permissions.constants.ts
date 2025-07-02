@@ -7,7 +7,11 @@ export const PERMISSIONS = {
   INBOX_READ: 'inbox_read',
   REQUEST_UPDATE: 'request_update',
   REQUEST_SEND: 'request_send',
+  REQUEST_CLOSE: 'request_close',
+  REQUEST_JOIN: 'request_join',
+  REQUEST_REOPEN: 'request_reopen',
   REQUEST_DELETE: 'request_delete',
+  
 
   HISTORY_READ: 'history_read',
 

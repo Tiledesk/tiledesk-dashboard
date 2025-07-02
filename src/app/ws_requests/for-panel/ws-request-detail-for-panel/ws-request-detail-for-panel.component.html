@@ -404,7 +404,7 @@
       <!-- ----------------------- -->
       <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
         class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn" (click)='archiveRequest(request?.request_id)'
-        [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
+        [disabled]="((request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000) ||  !PERMISSION_TO_ARCHIVE_REQUEST">
 
         <i class="material-icons">archive</i>
         <span

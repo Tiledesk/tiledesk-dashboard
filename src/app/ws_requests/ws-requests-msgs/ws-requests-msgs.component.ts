@@ -388,8 +388,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   public translationMap: Map<string, string> = new Map();
   imagePreview: string | null = null;
-  PERMISSION_TO_UPDATE_REQUEST: boolean
-  PERMISSION_TO_SEND_REQUEST: boolean
+  PERMISSION_TO_UPDATE_REQUEST: boolean;
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_SEND_REQUEST: boolean;
   /**
    * Constructor
    * @param router 
@@ -579,6 +580,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else {
           this.PERMISSION_TO_UPDATE_REQUEST = true
           console.log('[WS-REQUESTS-MSGS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-MSGS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[WS-REQUESTS-MSGS] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[WS-REQUESTS-MSGS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // PERMISSION_TO_SEND_REQUEST
@@ -4307,7 +4324,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   archiveRequest(requestid) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.translationMap.get('ArchivingRequestNoticationMsg'));
 
       this.wsRequestsService.closeSupportGroup(requestid)

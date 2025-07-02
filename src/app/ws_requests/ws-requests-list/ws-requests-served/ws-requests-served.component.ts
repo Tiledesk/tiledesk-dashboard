@@ -26,6 +26,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 import scrollToWithAnimation from 'scrollto-with-animation'
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -95,6 +97,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   storedRequestId: string
   CHANNELS_NAME = CHANNELS_NAME;
 
+
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean
+
   /**
    * Constructor
    * @param botLocalDbService 
@@ -127,7 +132,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     private wsMsgsService: WsMsgsService,
     public brandService: BrandService,
     public route: ActivatedRoute,
-
+    public rolesService: RolesService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
 
@@ -168,7 +173,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectUserRole();
     this.detectMobile();
     this.getFirebaseAuth();
-
+    this.listenToProjectUser()
 
     // this.router.events.subscribe((event) => { 
     //   if (event instanceof NavigationEnd || event instanceof NavigationStart) {    
@@ -177,6 +182,38 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // })
 
   }
+
+    listenToProjectUser() {
+      this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+      this.rolesService.getUpdateRequestPermission()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(status => {
+         
+          console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
+          console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
+          
+          // PERMISSION_TO_ARCHIVE_REQUEST
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+              console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+             
+              this.PERMISSION_TO_ARCHIVE_REQUEST = true
+              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            } else {
+              this.PERMISSION_TO_ARCHIVE_REQUEST = false
+              console.log('[WS-REQUESTS-LIST][SERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+            }
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+  
+  
+         
+  
+        
+        });
+    }
 
 
 
@@ -664,7 +701,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // }
 
   archiveRequest(request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
       this.logger.log('[WS-REQUESTS-LIST][SERVED] - HAS CLICKED ARCHIVE REQUEST (CLOSE SUPPORT GROUP)');
 
@@ -1024,7 +1061,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   archiveSelected() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       let count = 0;
       this.requests_selected.forEach((requestid, index) => {
         this.wsRequestsService.closeSupportGroup(requestid)

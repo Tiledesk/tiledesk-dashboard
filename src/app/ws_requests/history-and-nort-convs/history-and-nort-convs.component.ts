@@ -314,7 +314,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
-  PERMISSION_TO_UPDATE_REQUEST: boolean
+  isDefaultRole: boolean;
+  PERMISSION_TO_UPDATE_REQUEST: boolean;
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   /**
    * 
    * @param router 
@@ -426,10 +428,14 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       .subscribe(status => {
         console.log('[HISTORY & NORT-CONVS] - Role:', status.role);
         console.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
+       
+        this.isDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('[HISTORY & NORT-CONVS] isDefaultRole ', this.isDefaultRole)
+        // PERMISSION_TO_UPDATE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
             console.log('PERMISSIONS.REQUEST_UPDATE ', PERMISSIONS.REQUEST_UPDATE)
-            // Enable update action
+            
             this.PERMISSION_TO_UPDATE_REQUEST = true
             console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
           } else {
@@ -439,6 +445,22 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         } else {
           this.PERMISSION_TO_UPDATE_REQUEST = true
           console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+        }
+
+        // PERMISSION_TO_ARCHIVE_REQUEST
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
+            console.log('[WS-REQUESTS-LIST][SERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
+            
+            this.PERMISSION_TO_ARCHIVE_REQUEST = true
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          } else {
+            this.PERMISSION_TO_ARCHIVE_REQUEST = false
+            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
+          }
+        } else {
+          this.PERMISSION_TO_ARCHIVE_REQUEST = true
+          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
         }
 
         // if (status.matchedPermissions.includes('lead_update')) {
@@ -3201,7 +3223,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       for (let request of this.requestList) {
         const index = this.request_selected.indexOf(request.request_id);
         // || request.status !== 1000
-        if (index > -1) {
+        if (index > -1 || request.status !== 1000) {
           this.logger.log("[HISTORY & NORT-CONVS] **++ Already present")
         } else {
           this.logger.log("[HISTORY & NORT-CONVS] *+*+ Request Selected: ", request.request_id);
@@ -3283,7 +3305,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   archiveRequest(request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
       console.log('[HISTORY & NORT-CONVS] - HAS CLICKED ARCHIVE REQUEST request_id ', request_id);
 
@@ -3330,7 +3352,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   archiveSelected() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
       this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
       let count = 0;
@@ -3368,7 +3390,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   deleteSelected() {
-    this.logger.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
+   console.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
     let nRequestsBefore = this.requestList.length;
     //let correctnessCheck = (this.requestList.length - this.request_selected.length);
 

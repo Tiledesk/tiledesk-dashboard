@@ -1407,7 +1407,7 @@
                             matTooltipPosition='above' matTooltipHideDelay="100">
                             <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
                               class="btn sideber-header-btn pull-right" role="button"
-                              [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true">
+                              [disabled]="(request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true) || !PERMISSION_TO_ARCHIVE_REQUEST">
                               <i class="material-icons" style="vertical-align: middle; ">archive</i>
                               <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
                             </button>

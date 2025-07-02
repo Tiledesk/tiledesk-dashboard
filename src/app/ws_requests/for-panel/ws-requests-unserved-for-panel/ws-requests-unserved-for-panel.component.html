@@ -155,7 +155,7 @@
                     <button class="btn btn-block btn-primary action--btn"
                       (click)='$event.stopPropagation();archiveRequest(request?.request_id, request)'
                       style="background-color: #e4e6eb; color: #050505; border-radius: var(--btn-border-radius) !important;"
-                      [disabled]="request?.currentUserIsJoined === false && USER_ROLE === 'agent'">
+                      [disabled]="(request?.currentUserIsJoined === false && USER_ROLE === 'agent') || !PERMISSION_TO_ARCHIVE_REQUEST">
                       {{'VisitorsPage.Resolve' | translate}}
                     </button>
                     <span

@@ -42,7 +42,9 @@
           padding-bottom: 4px !important;">
 
             <label for="allServedCheckbox">
-              <input id="allServedCheckbox" [disabled]="ROLE_IS_AGENT === true" [checked]="allChecked === true"
+              <input id="allServedCheckbox" 
+                [disabled]="ROLE_IS_AGENT === true || !PERMISSION_TO_ARCHIVE_REQUEST" 
+                [checked]="allChecked === true"
                 type="checkbox" class="form-check-input" style="cursor: pointer; width: 20px; height: 20px;"
                 (click)="selectAll($event)">
             </label>
@@ -1227,7 +1229,7 @@
             <!-- -------------------------- -->
             <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
               class="btn btn-tdblu btn-simple btn-xs" (click)='archiveRequest(request?.request_id)'
-              [disabled]="request?.currentUserIsJoined === false && ROLE_IS_AGENT === true"
+              [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || !PERMISSION_TO_ARCHIVE_REQUEST"
               matTooltipClass="mat-white-tooltip"
               matTooltip="{{'VisitorsPage.Resolve' | translate}}" 
               #tooltip="matTooltip" 
@@ -1236,11 +1238,6 @@
 
               <i class="material-icons">archive</i>
 
-              <!-- // tooltip text 'Archive' -->
-              <!-- <span style="min-width: fit-content; top:-8px; border-radius: 3px; padding: 3px 10px;" class="top">
-                <span style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve' | translate }} </span>
-                <i></i>
-              </span> -->
             </button>
 
           </td>
