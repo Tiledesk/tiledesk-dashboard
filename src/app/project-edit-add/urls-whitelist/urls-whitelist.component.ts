@@ -26,12 +26,13 @@ export class UrlsWhitelistComponent implements OnInit {
       //   'i'
       // );
       // return pattern.test(url) ? null : { strongUrl: true };
-    if (typeof domain !== 'string' || !domain.trim()) {
-      return { strongUrl: true };
-    }
+      if (typeof domain !== 'string' || !domain.trim()) {
+        return { strongUrl: true };
+      }
 
-    const pattern = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)+[a-zA-Z]{2,}$/;
-    return pattern.test(domain.trim()) ? null : { strongUrl: true };
+      // const pattern = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)+[a-zA-Z]{2,}$/;
+      const pattern = /^(?:\*\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/; // Accepts: *.example.com, example.com, sub.example.com
+      return pattern.test(domain.trim()) ? null : { strongUrl: true };
     };
   }
 
@@ -62,85 +63,49 @@ export class UrlsWhitelistComponent implements OnInit {
     });
   }
 
-  _addUrl(): void {
-    this.submitted = true;
-
-    const url = this.urlForm.get('url')?.value;
-
-    if (this.urlForm.valid && url) {
-      const trimmedUrl = url.trim();
-
-      const isDuplicate = this.formArray.controls.some(ctrl =>
-        ctrl.value?.trim().toLowerCase() === trimmedUrl.toLowerCase()
-      );
-
-      console.log('[URLS WHITELIST] isDuplicate ', isDuplicate)
-      if (isDuplicate) {
-        // Optionally show a duplicate warning (you can add a message in template)
-        console.warn('[URLS WHITELIS] Duplicate URL');
-        this.urlForm.get('url')?.setErrors({ duplicate: true });
-        return;
-      }
-
-      // Add to reactive form array
-      this.formArray.push(
-        new FormControl(trimmedUrl, [Validators.required, this.strongUrlValidator()])
-      );
-
-      // Reset input
-      this.urlForm.reset();
-      this.urlControl.setErrors(null);
-      this.urlControl.markAsPristine();
-      this.urlControl.markAsUntouched();
-      this.submitted = false;
-    } else {
-      this.urlForm.markAllAsTouched();
-    }
-  }
 
   addUrl(): void {
     this.submitted = true;
     let input = this.urlForm.get('url')?.value;
 
-  if (input) {
-    input = input.trim().toLowerCase();
+    if (input) {
+      input = input.trim().toLowerCase();
 
-    // Extract domain from full URL if needed
-    try {
-      if (input.startsWith('http://') || input.startsWith('https://')) {
-        const urlObj = new URL(input);
-        input = urlObj.hostname;
+      // Extract domain from full URL if needed
+      try {
+        if (input.startsWith('http://') || input.startsWith('https://')) {
+          const urlObj = new URL(input);
+          input = urlObj.hostname;
+        }
+      } catch (e) {
+        // fallback: strip protocols manually if URL constructor fails
+        input = input.replace(/(^\w+:|^)\/\//, '');
       }
-    } catch (e) {
-      // fallback: strip protocols manually if URL constructor fails
-      input = input.replace(/(^\w+:|^)\/\//, '');
-    }
 
-    const isDuplicate = this.formArray.controls.some(ctrl =>
-      ctrl.value?.trim().toLowerCase() === input
-    );
+      const isDuplicate = this.formArray.controls.some(ctrl =>
+        ctrl.value?.trim().toLowerCase() === input
+      );
 
-    if (isDuplicate) {
-      this.urlForm.get('url')?.setErrors({ duplicate: true });
-      return;
-    }
+      if (isDuplicate) {
+        this.urlForm.get('url')?.setErrors({ duplicate: true });
+        return;
+      }
 
-    if (this.urlForm.valid) {
-      this.formArray.push(new FormControl(input, [
-        Validators.required,
-        this.strongUrlValidator()
-      ]));
+      if (this.urlForm.valid) {
+        this.formArray.push(new FormControl(input, [Validators.required,
+          this.strongUrlValidator()
+        ]));
 
-      this.urlForm.reset();
-      this.urlControl.setErrors(null);
-      this.urlControl.markAsPristine();
-      this.urlControl.markAsUntouched();
-      this.submitted = false;
-    } else {
-      this.urlForm.markAllAsTouched();
+        this.urlForm.reset();
+        this.urlControl.setErrors(null);
+        this.urlControl.markAsPristine();
+        this.urlControl.markAsUntouched();
+        this.submitted = false;
+      } else {
+        this.urlForm.markAllAsTouched();
+      }
     }
   }
-}
 
   get urlControl(): FormControl {
     return this.urlForm.get('url') as FormControl;
@@ -155,15 +120,12 @@ export class UrlsWhitelistComponent implements OnInit {
     originalValues.sort();
 
     return JSON.stringify(currentValues) !== JSON.stringify(originalValues);
-}
+  }
 
   removeUrl(index: number) {
     this.whitelistedUrls.splice(index, 1);
   }
 
-  //  onSave(){
-  //     this.dialogRef.close(this.whitelistedUrls);
-  //   }
 
   onSave(): void {
     console.warn('this.formArray ', this.formArray);
@@ -179,6 +141,46 @@ export class UrlsWhitelistComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(null);
   }
+
+  // _addUrl(): void {
+  //   this.submitted = true;
+
+  //   const url = this.urlForm.get('url')?.value;
+
+  //   if (this.urlForm.valid && url) {
+  //     const trimmedUrl = url.trim();
+
+  //     const isDuplicate = this.formArray.controls.some(ctrl =>
+  //       ctrl.value?.trim().toLowerCase() === trimmedUrl.toLowerCase()
+  //     );
+
+  //     console.log('[URLS WHITELIST] isDuplicate ', isDuplicate)
+  //     if (isDuplicate) {
+  //       // Optionally show a duplicate warning (you can add a message in template)
+  //       console.warn('[URLS WHITELIS] Duplicate URL');
+  //       this.urlForm.get('url')?.setErrors({ duplicate: true });
+  //       return;
+  //     }
+
+  //     // Add to reactive form array
+  //     this.formArray.push(
+  //       new FormControl(trimmedUrl, [Validators.required, this.strongUrlValidator()])
+  //     );
+
+  //     // Reset input
+  //     this.urlForm.reset();
+  //     this.urlControl.setErrors(null);
+  //     this.urlControl.markAsPristine();
+  //     this.urlControl.markAsUntouched();
+  //     this.submitted = false;
+  //   } else {
+  //     this.urlForm.markAllAsTouched();
+  //   }
+  // }
+
+  //  onSave(){
+  //     this.dialogRef.close(this.whitelistedUrls);
+  //   }
 
   //    addUrl() {
   //     if (this.isValidUrl(this.newUrl)) {

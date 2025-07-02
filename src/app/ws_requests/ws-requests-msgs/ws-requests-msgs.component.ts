@@ -5756,10 +5756,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onMessageChange(msg: string) {
+    console.log('[WS-REQUESTS-MSGS] onMessageChange msg', msg) 
     // if (!this.ALLOW_TO_SEND_EMOJI) {
     //   this.chat_message = removeEmojis(msg);
     // }
+    this.checkEmojiContent(msg)
   }
+
+checkEmojiContent(message: string): void {
+  if (!this.ALLOW_TO_SEND_EMOJI && message.trim()) {
+    const messageWithoutEmojis = removeEmojis(message).trim();
+    this.showEmojiWarning = messageWithoutEmojis.length !== message.trim().length;
+  } else {
+    this.showEmojiWarning = false;
+  }
+}
 
   extractUrls(text: string): string[] {
     const urlRegex = /https?:\/\/[^\s]+/g;
@@ -5845,39 +5856,67 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           return;
         }
 
+        // if (this.IS_ENABLED_URLS_WHITELIST) {
+        //   const urlsInMessage = this.extractUrls(_chat_message);
+        //   console.log('urlsInMessage ++++ :', urlsInMessage);
+
+        //     const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+        //     try {
+        //       const domain = new URL(url).hostname.toLowerCase();
+        //       return !this.URLS_WITHELIST.includes(domain);
+        //     } catch (e) {
+        //       // Ignore invalid URLs
+        //       return true;
+        //     }
+        //   });
+
+        //   if (nonWhitelistedDomains.length > 0) {
+        //     console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
+        //     this.triggerWarning('This message contains a URL from a domain that is not allowed.'); 
+        //     // this.domainWarning = true; // <-- display a warning
+        //     return;
+        //   }
+        // }
         if (this.IS_ENABLED_URLS_WHITELIST) {
           const urlsInMessage = this.extractUrls(_chat_message);
           console.log('urlsInMessage ++++ :', urlsInMessage);
 
-          // // ✅ Check if all URLs are in the whitelist
-          // const nonWhitelistedUrls = urlsInMessage.filter(
-          //   (url) => !this.URLS_WITHELIST.includes(url)
-          // );
-
-          // if (nonWhitelistedUrls.length > 0) {
-            
-          //   this.triggerWarning('The message contains URLs that are not allowed.'); // Show an error message here
-          //   console.warn('Message contains non-whitelisted URLs:', nonWhitelistedUrls);
-          //   return;
-          // }
-
-            const nonWhitelistedDomains = urlsInMessage.filter((url) => {
+          const nonWhitelistedDomains = urlsInMessage.filter((url) => {
             try {
               const domain = new URL(url).hostname.toLowerCase();
-              return !this.URLS_WITHELIST.includes(domain);
+
+              // Check if domain matches any whitelist rule
+              const isWhitelisted = this.URLS_WITHELIST.some(whitelisted => {
+                whitelisted = whitelisted.toLowerCase().trim();
+
+                // Match exact domain
+                if (whitelisted === domain) return true;
+
+                // Match wildcard domain (*.example.com)
+                if (whitelisted.startsWith('*.')) {
+                  const baseDomain = whitelisted.substring(2); // remove '*.'
+                  return domain === baseDomain || domain.endsWith(`.${baseDomain}`);
+                }
+
+                return false;
+              });
+
+              return !isWhitelisted;
             } catch (e) {
-              // Ignore invalid URLs
+              // Invalid URL - consider it not allowed
               return true;
             }
           });
 
           if (nonWhitelistedDomains.length > 0) {
             console.warn('Message blocked: Non-whitelisted domain(s):', nonWhitelistedDomains);
-            this.triggerWarning('This message contains a URL from a domain that is not allowed.'); 
-            // this.domainWarning = true; // <-- display a warning
+            this.triggerWarning('This message contains a URL from a domain that is not allowed.');
             return;
           }
-       }
+        }
+
+
+        
 
         // if (!this.ALLOW_TO_SEND_EMOJI && isOnlyEmoji(_chat_message)) {
         //   // this.notify.presentDialogNoPermissionToPermomfAction();
